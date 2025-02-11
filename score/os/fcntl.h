@@ -64,6 +64,7 @@ class Fcntl : public ObjectSeam<Fcntl>
         kExclusive = 64UL,
         kTruncate = 128UL,
         kDirectory = 256UL,
+        kAppend = 512UL,
         kSynchronized = 1052672UL
     };
 
