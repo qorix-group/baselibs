@@ -19,9 +19,7 @@
 #include <functional>
 #include <sstream>
 
-namespace score
-{
-namespace filesystem
+namespace score::filesystem
 {
 
 /// @brief Fake implementation of IFileFactory, to be used for Unit-Tests.
@@ -40,17 +38,26 @@ class FileFactoryFake : public FileFactoryMock
     ///
     /// @details The method is intended to be used in unit tests.
     /// The specified path should exist in IStringStreamCollection, otherwise the assert error occurs.
-    std::stringstream& Get(const Path& path) const;
+    [[nodiscard]] std::stringstream& Get(const Path& path) const;
 
   private:
-    score::Result<std::unique_ptr<std::iostream>> FakeOpen(const Path& path,
-                                                         const std::ios_base::openmode mode = std::ios_base::in |
-                                                                                              std::ios_base::out) const;
+    [[nodiscard]] score::Result<std::unique_ptr<std::iostream>> FakeOpenWithMode(const Path& path,
+                                                                               std::ios_base::openmode mode,
+                                                                               os::Stat::Mode create_mode) const;
+
+    [[nodiscard]] score::Result<std::unique_ptr<std::iostream>> FakeOpen(const Path& path,
+                                                                       std::ios_base::openmode mode) const
+    {
+        return FakeOpenWithMode(path, mode, os::Stat::Mode::kNone);
+    }
+    // The fake implementation of AtomicUpdate is behaving just like Open. This is fine as the behavior is the same
+    // in the absence of spontaneous power cuts that skip the sync / rename part.
+    [[nodiscard]] Result<std::unique_ptr<FileStream>> FakeAtomicUpdate(const Path& path,
+                                                                       std::ios_base::openmode mode) const;
 
     std::reference_wrapper<IStringStreamCollection> collection_;
 };
 
-}  // namespace filesystem
-}  // namespace score
+}  // namespace score::filesystem
 
 #endif  // SCORE_LIB_FILESYSTEM_FILESTREAM_FILE_FACTORY_FAKE_H

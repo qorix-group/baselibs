@@ -206,6 +206,12 @@ class Path final
     /// Equivalent to relative_path().empty() ? path() : *--end()
     Path Filename() const noexcept;
 
+    /// \brief Returns the filename component of the generic-format path as a string view.
+    ///
+    /// \returns The filename component of the generic-format path as a string view or std::nullopt if the path does not
+    /// contain a file name.
+    [[nodiscard]] std::optional<std::string_view> FilenameView() const noexcept;
+
     /// \brief Returns the extension of the filename component of the generic-format view of *this.
     ///
     /// \details If the filename() component of the generic-format path contains a period (.), and is not one of the

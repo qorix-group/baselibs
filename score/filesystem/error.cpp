@@ -119,6 +119,12 @@ class FilesystemErrorDomain final : public score::result::ErrorDomain
             case static_cast<score::result::ErrorCode>(ErrorCode::kCouldNotReadSymlink):
                 return "Could not read symlink";
             // coverity[autosar_cpp14_m6_4_5_violation]
+            case static_cast<score::result::ErrorCode>(ErrorCode::kFsyncFailed):
+                return "Could not issue file sync";
+            // coverity[autosar_cpp14_m6_4_5_violation]
+            case static_cast<score::result::ErrorCode>(ErrorCode::kCouldNotRenameFile):
+                return "Could not rename file";
+            // coverity[autosar_cpp14_m6_4_5_violation]
             case static_cast<score::result::ErrorCode>(ErrorCode::kNotImplemented):
                 return "Not implemented";
             // coverity[autosar_cpp14_m6_4_5_violation]
