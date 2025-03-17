@@ -35,7 +35,7 @@ class FakeFileBuf : public details::StdioFileBuf, std::stringbuf
                   "char_type differs between StdioFileBuf and std::stringbuf");
 
     explicit FakeFileBuf(std::stringstream& sstream, std::ios::openmode mode)
-        : StdioFileBuf(-1, mode), std::stringbuf{sstream.str()}, sstream_{sstream}
+        : StdioFileBuf{-1, mode}, std::stringbuf{sstream.str()}, sstream_{sstream}
     {
     }
     ~FakeFileBuf() override
@@ -135,7 +135,7 @@ Result<std::unique_ptr<FileStream>> FileFactoryFake::FakeAtomicUpdate(const Path
     {
         return MakeUnexpected<std::unique_ptr<FileStream>>(stream_result.error());
     }
-    return std::make_unique<FileStreamImpl<FakeFileBuf>>(stream_result->get(), mode);
+    return std::make_unique<details::FileStreamImpl<FakeFileBuf>>(stream_result->get(), mode);
 }
 
 std::stringstream& FileFactoryFake::Get(const Path& path) const

@@ -60,6 +60,7 @@ class StdioFileBuf : public StdioFilebufBase
     StdioFileBuf(StdioFileBuf&&) = default;
     StdioFileBuf(const StdioFileBuf&) = delete;
     StdioFileBuf& operator=(const StdioFileBuf&) = delete;
+    ~StdioFileBuf() override = default;
 
     int sync() override;
     virtual ResultBlank Close();
@@ -76,6 +77,7 @@ class AtomicFileBuf : public StdioFileBuf
     AtomicFileBuf(AtomicFileBuf&&) = default;
     AtomicFileBuf(const AtomicFileBuf&) = delete;
     AtomicFileBuf& operator=(const AtomicFileBuf&) = delete;
+    ~AtomicFileBuf() override = default;
 
     ResultBlank Close() override;
 

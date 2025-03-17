@@ -13,37 +13,50 @@
 namespace score::filesystem
 {
 
+// NOLINTNEXTLINE(fuchsia-multiple-inheritance): The multiple inheritance comes from iostream. We can't change that.
 class FileStream : public std::iostream
 {
   public:
     explicit FileStream(details::StdioFileBuf* filebuf) : std::iostream{filebuf} {}
     ~FileStream() override = default;
 
-    ResultBlank Close()
-    {
-        auto buf = std::ostream::rdbuf();
-        auto stdio_filebuf = dynamic_cast<details::StdioFileBuf*>(buf);
-        return stdio_filebuf->Close();
-    }
+    ResultBlank Close();
 };
 
+namespace details
+{
+
 template <typename Buf>
+// NOLINTNEXTLINE(fuchsia-multiple-inheritance): The multiple inheritance comes from iostream. We can't change that.
 class FileStreamImpl : public FileStream
 {
   public:
-    ~FileStreamImpl() override
-    {
-        FileStream::Close();
-    }
-
     template <typename... Args>
     explicit FileStreamImpl(Args&&... args) : FileStream{&buf_}, buf_{std::forward<Args>(args)...}
     {
     }
 
+    FileStreamImpl(const FileStreamImpl&) = delete;
+
+    FileStreamImpl& operator=(FileStreamImpl&& other) noexcept(false)
+    {
+        buf_ = std::move(other.buf_);
+        return *this;
+    }
+
+    ~FileStreamImpl() override
+    {
+        Close();
+    }
+
+    FileStreamImpl& operator=(const FileStreamImpl&) = delete;
+    FileStreamImpl(FileStreamImpl&& other) noexcept(false) : FileStream{&buf_}, buf_{std::move(other.buf_)} {}
+
   private:
     Buf buf_;
 };
+
+}  // namespace details
 
 }  // namespace score::filesystem
 

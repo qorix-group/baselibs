@@ -16,8 +16,9 @@
 #include "score/filesystem/filestream/file_factory_mock.h"
 #include "score/filesystem/filestream/i_string_stream_collection.h"
 
+#include "score/os/stat.h"
+
 #include <functional>
-#include <sstream>
 
 namespace score::filesystem
 {
