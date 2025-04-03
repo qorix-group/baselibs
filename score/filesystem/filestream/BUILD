@@ -26,7 +26,7 @@ cc_library(
         "file_stream.h",
         "i_file_factory.h",
     ],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_WARNING_FEATURES + ["throws_upon_exception"],
     implementation_deps = [
         "@score-baselibs//score/os:fcntl",
         "@score-baselibs//score/os:stdio",
