@@ -553,7 +553,7 @@
     "@@toolchains_llvm~//toolchain/extensions:llvm.bzl%llvm": {
       "general": {
         "bzlTransitiveDigest": "DbHjmsbc+5UNcxe3NTxwxbUMxZqW/A99vu2JcopPuJk=",
-        "usagesDigest": "SWDZN96VBc5gSBjFgQ8v2iIksjBe3Fjv4svRgv3ktBA=",
+        "usagesDigest": "pVyhicNdz6DWq/to8WIO6ETa7wiRVASzRpEOWZajGW4=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -593,8 +593,7 @@
                   "-fcolor-diagnostics",
                   "-Wno-deprecated-declarations",
                   "-Wno-error=self-assign-overloaded",
-                  "-Wthread-safety",
-                  "-Wself-assign"
+                  "-Wthread-safety"
                 ]
               },
               "conly_flags": {},

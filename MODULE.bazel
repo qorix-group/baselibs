@@ -29,7 +29,7 @@ llvm.toolchain(
         "-fstack-protector",
         "-fno-omit-frame-pointer",
         # Diagnostics
-        "-fcolor-diagnostics",,
+        "-fcolor-diagnostics",
         "-Wno-deprecated-declarations",
         "-Wno-error=self-assign-overloaded",
         "-Wthread-safety",
