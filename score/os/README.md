@@ -31,16 +31,16 @@ agreed with OSAL maintainers.
 The following diagram shows the main Bazel targets of OSAL and how applications depend on it. The modules of OSAL are
 grouped by portability.
 
-![OSAL package](broken_link_k/swh/ddad_platform/aas/lib/os/diagrams/osal_arch.uxf)
+![OSAL package](broken_link_k/swh/ddad_score/os/diagrams/osal_arch.uxf)
 
 * **`//platform/aas/lib/os`**
     * Contains OS-agnostic low-level APIs that should do nothing more than wrap the underlying OS call
-* **`//platform/aas/lib/os/utils`**
+* **`//score/os/utils`**
     * Contains OS-agnostic high-level APIs that may contain some commonly used sequences for the purpose of reuse
-* **`//platform/aas/lib/os/linux`**
+* **`//score/os/linux`**
     * Provides Linux-specific APIs for applications that have to use a Linux-specific functionality (
       e.g., [epoll](https://man7.org/linux/man-pages/man7/epoll.7.html)).
-* **`//platform/aas/lib/os/qnx`**
+* **`//score/os/qnx`**
     * Provides QNX-specific APIs for applications that have to use a QNX-specific functionality (
       e.g. [channels](https://www.qnx.com/developers/docs/7.1/#com.qnx.doc.neutrino.sys_arch/topic/ipc_Channels.html), [pulses](https://www.qnx.com/developers/docs/7.1/#com.qnx.doc.neutrino.sys_arch/topic/ipc_Pulses.html)).
 
@@ -99,7 +99,7 @@ means:
 
 #### High-Level API
 
-The high-level API is located in the package `//platform/aas/lib/os/utils`. It provides a modern, type-safe, and elegant
+The high-level API is located in the package `//score/os/utils`. It provides a modern, type-safe, and elegant
 C++14 API. It uses the low-level public API in its implementation. Users are highly encouraged to use the high-level
 public API if possible. The intention of those APIs is to facilitate the most common use cases and to decouple customer
 applications from OS implementation details as much as possible.
@@ -135,7 +135,7 @@ as long as they are only used in the implementation (e.g., within
 an [`#if defined(__QNX__)`](https://www.qnx.com/developers/docs/7.1/#com.qnx.doc.neutrino.prog/topic/devel_Neutrino_specific.html)
 or `#if defined(__linux__)` block). These OS-specifics shall not be exposed in the API of OSAL!
 
-An application that depends on a library in the packages `//platform/aas/lib/os/linux` or `//platform/aas/lib/os/qnx` is
+An application that depends on a library in the packages `//score/os/linux` or `//score/os/qnx` is
 not portable! Visibility to the Bazel targets in these packages is therefore approved only on a case-by-case basis and
 has to be justified.
 

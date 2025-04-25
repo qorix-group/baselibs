@@ -1,5 +1,5 @@
 # Specification of the core skeleton of QNX resource manager low level design
-This document describes the low level design of the core skeleton of QNX resource manager which intended to be used as ASIL B library serving the need of the platform described in [Specification of the hardware register resource managers architecture design](../../../../../../pas/hw_reg_res_mgrs/doc/common/README.md)
+This document describes the low level design of the core skeleton of QNX resource manager which intended to be used as ASIL B library serving the need of the platform described in [Specification of the hardware register resource managers architecture design](../../../../../../pas/hw_reg_res_mgrs/doc/score/static_reflection_with_serialization/README.md)
 
 ## Introduction
 In general terms, a resource manager is a process that registers a name in the filesystem name space. Other processes use that path to communicate with the resource manager.
@@ -24,9 +24,9 @@ Note: There is a reason to not inherit the `Application class` in the lifecycle 
 ## Static Architecture
 The below component diagrams show the interaction between the user of the base template class and the resource manager skeleton:
 
-![Resource Manager Core template class diagram](broken_link_k/swh/ddad_platform/aas/lib/os/utils/qnx/resource_manager/detailed_design/ResourceManager_ClassDiagram.uxf?ref=b2ce85bc75f64c80e66d84f1b4cb2fa9eef63ae8)
+![Resource Manager Core template class diagram](broken_link_k/swh/ddad_score/os/utils/qnx/resource_manager/detailed_design/ResourceManager_ClassDiagram.uxf?ref=b2ce85bc75f64c80e66d84f1b4cb2fa9eef63ae8)
 
-![Resource Manager Core component diagram](broken_link_k/swh/ddad_platform/aas/lib/os/utils/qnx/resource_manager/detailed_design/ResourceManager_ComponentDiagram.uxf?ref=625310cf30c6614b4bfeb26ab2df812618179c03)
+![Resource Manager Core component diagram](broken_link_k/swh/ddad_score/os/utils/qnx/resource_manager/detailed_design/ResourceManager_ComponentDiagram.uxf?ref=625310cf30c6614b4bfeb26ab2df812618179c03)
 
 ### Functional interfacing
 
@@ -49,10 +49,10 @@ As shown in the diagrams:
 
 The core implementation of the resource manager has the following dependencies which should be provided:
 - score::os (QNX APIs by OSAL) interface with resmgr library and procnto APIS need to attach the resource manager.
-   - platform/aas/lib/os/qnx:iofunc
-   - platform/aas/lib/os/qnx:resmgr
-   - platform/aas/lib/os/qnx:types
-   - platform/aas/lib/os/qnx:dispatch
+   - score/os/qnx:iofunc
+   - score/os/qnx:resmgr
+   - score/os/qnx:types
+   - score/os/qnx:dispatch
    - platform/aas/lib/os:errno
    - platform/aas/lib/result
 - BMW::Middleware Logging library to monitor and notify the system with a proper state for the resource manager.      
@@ -62,11 +62,11 @@ The core implementation of the resource manager has the following dependencies w
 ## Dynamic Architecture
 The following diagram represents behavior of the resource manager during the Runtime:
 
-![Resource Manager Core startup sequence diagram](broken_link_k/swh/ddad_platform/aas/lib/os/utils/qnx/resource_manager/detailed_design/ResourceManager_StartupSequenceDiagram.uxf?ref=625310cf30c6614b4bfeb26ab2df812618179c03)
+![Resource Manager Core startup sequence diagram](broken_link_k/swh/ddad_score/os/utils/qnx/resource_manager/detailed_design/ResourceManager_StartupSequenceDiagram.uxf?ref=625310cf30c6614b4bfeb26ab2df812618179c03)
 
-![Resource Manager Core runtime sequence diagram](broken_link_k/swh/ddad_platform/aas/lib/os/utils/qnx/resource_manager/detailed_design/ResourceManager_RuntimeSequenceDiagram.uxf?ref=625310cf30c6614b4bfeb26ab2df812618179c03)
+![Resource Manager Core runtime sequence diagram](broken_link_k/swh/ddad_score/os/utils/qnx/resource_manager/detailed_design/ResourceManager_RuntimeSequenceDiagram.uxf?ref=625310cf30c6614b4bfeb26ab2df812618179c03)
 
-![Resource Manager Core activity diagram](broken_link_k/swh/ddad_platform/aas/lib/os/utils/qnx/resource_manager/detailed_design/ResourceManager_ActivityDiagram.uxf?ref=625310cf30c6614b4bfeb26ab2df812618179c03)
+![Resource Manager Core activity diagram](broken_link_k/swh/ddad_score/os/utils/qnx/resource_manager/detailed_design/ResourceManager_ActivityDiagram.uxf?ref=625310cf30c6614b4bfeb26ab2df812618179c03)
 
 ## Performance
 ### Limitations and Constraints

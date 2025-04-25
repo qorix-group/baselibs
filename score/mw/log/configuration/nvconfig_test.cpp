@@ -75,7 +75,7 @@ class NonVerboseConfig : public ::testing::Test
   private:
     const std::string get_path(const std::string& file_name)
     {
-        const std::string default_path = "platform/aas/mw/log/configuration/test/data/" + file_name;
+        const std::string default_path = "score/mw/log/configuration/test/data/" + file_name;
 
         std::ifstream file(default_path);
         if (file.is_open())

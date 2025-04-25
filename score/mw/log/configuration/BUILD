@@ -77,7 +77,7 @@ cc_library(
     deps = [
         ":configuration",
         ":configuration_interface",
-        "//platform/aas/lib/json:json_parser",
+        "//score/json:json_parser",
         "//score/memory:split_string_view",
         "//score/os:stdlib",
         "//score/os:unistd",
@@ -180,7 +180,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     implementation_deps = [
-        "//platform/aas/lib/json:json_parser",
+        "//score/json:json_parser",
     ],
     tags = ["FFI"],
     visibility = [

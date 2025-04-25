@@ -13,7 +13,7 @@
 #include "score/mw/log/configuration/target_config_reader.h"
 
 #include "score/callback.hpp"
-#include "platform/aas/lib/json/json_parser.h"
+#include "score/json/json_parser.h"
 #include "score/memory/split_string_view.h"
 #include "score/mw/log/detail/error.h"
 #include "score/mw/log/detail/initialization_reporter.h"

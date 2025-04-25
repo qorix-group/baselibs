@@ -1,5 +1,5 @@
 {
-	"bmw::logging::PersistentLogFileEvent": {
+	"score::logging::PersistentLogFileEvent": {
 		"id": 301,
 		"ctxid": "PERL",
 		"appid": "DRC",

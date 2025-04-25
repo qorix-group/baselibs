@@ -245,7 +245,7 @@ score::cpp::expected_blank<score::os::Error> score::os::internal::UnistdImpl::se
     {
         return score::cpp::make_unexpected(score::os::Error::createFromErrno());
     }
-    /* This path is covered within QNX tests, but not for Linux: platform/aas/lib/os/test/qnx/unistd_test.cpp */
+    /* This path is covered within QNX tests, but not for Linux: score/os/test/qnx/unistd_test.cpp */
 
     /* A test case is written to achieve the positive scenario of setuid using ForkAndExpectTrue. */
     /* As ForkAndExpectTrue executes the verification of positive scenario in a child process, */
@@ -262,7 +262,7 @@ score::cpp::expected_blank<score::os::Error> score::os::internal::UnistdImpl::se
     {
         return score::cpp::make_unexpected(score::os::Error::createFromErrno());
     }
-    /* This path is covered within QNX tests, but not for Linux: platform/aas/lib/os/test/qnx/unistd_test.cpp */
+    /* This path is covered within QNX tests, but not for Linux: score/os/test/qnx/unistd_test.cpp */
     return {};
 }
 

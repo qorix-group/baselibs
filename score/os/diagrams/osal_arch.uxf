@@ -62,7 +62,7 @@ layer=1</panel_attributes>
       <w>270</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes> //platform/aas/lib/os/linux:module_z
+    <panel_attributes> //score/os/linux:module_z
  &lt;&lt;QM&gt;&gt;
 bg=blue
 layer=1
@@ -109,7 +109,7 @@ layer=1</panel_attributes>
       <w>290</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes> //platform/aas/lib/os/qnx:module_z
+    <panel_attributes> //score/os/qnx:module_z
  &lt;&lt;ASIL B&gt;&gt;
 bg=blue
 layer=1</panel_attributes>
@@ -210,7 +210,7 @@ bg=yellow</panel_attributes>
       <w>290</w>
       <h>170</h>
     </coordinates>
-    <panel_attributes> //platform/aas/lib/os/linux
+    <panel_attributes> //score/os/linux
 --
 bg=gray</panel_attributes>
     <additional_attributes/>
@@ -223,7 +223,7 @@ bg=gray</panel_attributes>
       <w>310</w>
       <h>170</h>
     </coordinates>
-    <panel_attributes> //platform/aas/lib/os/qnx
+    <panel_attributes> //score/os/qnx
 bg=gray</panel_attributes>
     <additional_attributes/>
   </element>
@@ -271,7 +271,7 @@ layer=1</panel_attributes>
       <w>270</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes> //platform/aas/lib/os/qnx:module_y
+    <panel_attributes> //score/os/qnx:module_y
  &lt;&lt;QM&gt;&gt;
 bg=blue
 layer=1</panel_attributes>
@@ -511,7 +511,7 @@ bg=yellow</panel_attributes>
       <w>270</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes> //platform/aas/lib/os/linux:module_x
+    <panel_attributes> //score/os/linux:module_x
  &lt;&lt;QM&gt;&gt;
 bg=blue
 layer=1

@@ -72,7 +72,7 @@ if(!first_try && first_try.error() == MyErrorCode::kFirstError) {
 
 ## Design
 
-![Static Design](broken_link_k/swh/ddad_platform/aas/lib/result/static_design.uxf)
+![Static Design](broken_link_k/swh/ddad_score/result/static_design.uxf)
 
 As you can see in the static architecture above, the main idea is to provide an `ErrorDomain` which users can inherit
 from. In this case, they will need to implement two things. First they will need to implement an `enum` of type

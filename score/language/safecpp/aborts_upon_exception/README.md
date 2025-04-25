@@ -55,7 +55,7 @@ This assumes as pre-requisite that a C++ toolchain is already configured in Baze
 
 Steps to extend a toolchain to support `aborts_upon_exception`:
 1. Build the `aborts_upon_exception` library with the desired toolchain. e.g.
-   `bazel build --config=spp_host_gcc //platform/aas/language/safecpp/aborts_upon_exception:abortsuponexception`
+   `bazel build --config=spp_host_gcc //score/language/safecpp/aborts_upon_exception:abortsuponexception`
 2. Add the library either to your toolchain `sysroot`, or as an extra package
    that's exposed into compilation actions sandbox.
 3. Add the respective linking flag `-labortsuponexception`. **Ensure that this
@@ -63,4 +63,4 @@ Steps to extend a toolchain to support `aborts_upon_exception`:
    you added an extra package, ensure that the library search directory is also
    configured, typically using the `-L` flag.
 4. Test your toolchain.
-   e.g. `bazel test --config=spp_host_gcc //platform/aas/language/safecpp/aborts_upon_exception:abortsuponexception_toolchain_test`
+   e.g. `bazel test --config=spp_host_gcc //score/language/safecpp/aborts_upon_exception:abortsuponexception_toolchain_test`

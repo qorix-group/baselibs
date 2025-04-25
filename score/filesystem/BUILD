@@ -1,0 +1,199 @@
+# *******************************************************************************
+# Copyright (c) 2025 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0
+#
+# SPDX-License-Identifier: Apache-2.0
+# *******************************************************************************
+COMPILER_WARNING_FEATURES = [
+    "treat_warnings_as_errors",
+    "strict_warnings",
+    "additional_warnings",
+]
+
+cc_library(
+    name = "filesystem",
+    hdrs = [
+        "filesystem.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "//visibility:public",
+        # "@ddad//score/filesystem:__pkg__",
+    ],
+    deps = [
+        ":struct",
+        "//score/filesystem/factory",
+    ],
+)
+
+cc_library(
+    name = "mock",
+    testonly = True,
+    srcs = ["filesystem_mock.cpp"],
+    hdrs = [
+        "filesystem_mock.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    visibility = [
+        "//visibility:public",
+        # "@ddad//score/filesystem:__pkg__",
+    ],
+    deps = [
+        ":standard_filesystem_fake",
+        "//score/filesystem/factory:fake",
+        "//score/filesystem/file_utils:mock",
+        "//score/filesystem/filestream:fake",
+        "@googletest//:gtest",
+    ],
+)
+
+cc_library(
+    name = "struct",
+    srcs = [
+        "filesystem_struct.cpp",
+    ],
+    hdrs = [
+        "filesystem_struct.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [":__subpackages__"],
+    deps = [
+        ":standard_filesystem",
+        "//score/filesystem/file_utils",
+        "//score/filesystem/filestream",
+    ],
+)
+
+cc_library(
+    name = "path",
+    srcs = ["path.cpp"],
+    hdrs = ["path.h"],
+    features = COMPILER_WARNING_FEATURES,
+    implementation_deps = [
+        "@score-baselibs//score/language/futurecpp",
+    ],
+    tags = ["FFI"],
+    visibility = [":__subpackages__"],
+)
+
+cc_library(
+    name = "error",
+    srcs = ["error.cpp"],
+    hdrs = ["error.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [":__subpackages__"],
+    deps = ["//score/result"],
+)
+
+cc_library(
+    name = "file_status",
+    srcs = ["file_status.cpp"],
+    hdrs = ["file_status.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [":__subpackages__"],
+    deps = ["//score/os:stat"],
+)
+
+cc_library(
+    name = "standard_filesystem",
+    srcs = [
+        "details/standard_filesystem.cpp",
+        "i_standard_filesystem.cpp",
+        "iterator/directory_entry.cpp",
+        "iterator/directory_iterator.cpp",
+        "iterator/recursive_directory_iterator.cpp",
+    ],
+    hdrs = [
+        "details/standard_filesystem.h",
+        "i_standard_filesystem.h",
+        "iterator/directory_entry.h",
+        "iterator/directory_iterator.h",
+        "iterator/recursive_directory_iterator.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    implementation_deps = [
+        "@score-baselibs//score/language/futurecpp",
+    ],
+    tags = ["FFI"],
+    visibility = [":__subpackages__"],
+    deps = [
+        ":error",
+        ":file_status",
+        ":path",
+        "//score/filesystem/filestream",
+        "//score/os:dirent",
+        "//score/os:errno",
+        "//score/os:object_seam",
+        "//score/os:stdio",
+        "//score/os:stdlib",
+        "//score/os:unistd",
+    ],
+)
+
+cc_library(
+    name = "standard_filesystem_fake",
+    testonly = True,
+    srcs = [
+        "iterator/dirent_fake.cpp",
+        "standard_filesystem_fake.cpp",
+    ],
+    hdrs = [
+        "iterator/dirent_fake.h",
+        "standard_filesystem_fake.h",
+        "standard_filesystem_mock.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    visibility = [
+        ":__subpackages__",
+    ],
+    deps = [
+        ":filesystem",
+        "//score/filesystem/filestream:fake",
+        "//score/os/mocklib:dirent_mock",
+        "//score/os/mocklib:stat_mock",
+        "//score/os/mocklib:stdlib_mock",
+        "@googletest//:gtest",
+    ],
+)
+
+cc_test(
+    name = "standard_filesystem_unit_test",
+    srcs = [
+        "details/standard_filesystem_test.cpp",
+        "details/test_helper.cpp",
+        "details/test_helper.h",
+        "error_test.cpp",
+        "file_status_test.cpp",
+        "iterator/directory_entry_test.cpp",
+        "iterator/directory_iterator_test.cpp",
+        "iterator/dirent_fake_test.cpp",
+        "iterator/recursive_directory_iterator_test.cpp",
+        "path_test.cpp",
+        "standard_filesystem_fake_test.cpp",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["unit"],
+    visibility = [
+        # "@ddad//score/filesystem:__pkg__",
+    ],
+    deps = [
+        ":standard_filesystem",
+        ":standard_filesystem_fake",
+        "//score/os/mocklib:dirent_mock",
+        "//score/os/mocklib:stat_mock",
+        "//score/os/mocklib:stdio_mock",
+        "//score/os/mocklib:stdlib_mock",
+        "//score/os/mocklib:unistd_mock",
+        "@googletest//:gtest_main",
+    ],
+)

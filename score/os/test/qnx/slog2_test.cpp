@@ -19,7 +19,7 @@
 
 namespace
 {
-// ---------- platform/aas/lib/os/qnx/slog2_impl.cpp --------
+// ---------- score/os/qnx/slog2_impl.cpp --------
 class Slog2ImplFixture : public ::testing::Test
 {
   protected:

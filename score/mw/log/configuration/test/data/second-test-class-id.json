@@ -23,7 +23,7 @@
 		"appid": "Plan",
 		"loglevel": 4
 	},
-	"bmw::logging::timesync::DltTimeSyncTimestamp": {
+	"score::logging::timesync::DltTimeSyncTimestamp": {
 		"id": 27,
 		"ctxid": "TSNC",
 		"appid": "STDF",
@@ -47,13 +47,13 @@
 		"appid": "Plan",
 		"loglevel": 3
 	},
-	"bmw::sli::CommonStrategiesConfig": {
+	"score::sli::CommonStrategiesConfig": {
 		"id": 8458555,
 		"ctxid": "sli",
 		"appid": "Fasi",
 		"loglevel": 4
 	},
-	"bmw::sli::TsfBaseConfig": {
+	"score::sli::TsfBaseConfig": {
 		"id": 8458423,
 		"ctxid": "sli",
 		"appid": "Fasi",

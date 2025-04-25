@@ -12,7 +12,7 @@
  ********************************************************************************/
 #include "nvconfig.h"
 
-#include "platform/aas/lib/json/json_parser.h"
+#include "score/json/json_parser.h"
 
 #include <string_view>
 
