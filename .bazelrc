@@ -1,4 +1,5 @@
 # use mw/log stub implementation by default
 common --//score/mw/log/detail/flags:KUse_Stub_Implementation_Only=True
+common --//score/json:base_library=nlohmann
 build --incompatible_strict_action_env
 test --test_tag_filters=-manual
