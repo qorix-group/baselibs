@@ -505,7 +505,7 @@ TEST(serializer_visitor, serializer)
     EXPECT_TRUE(is_equal(s1wcin6.f1, s1wcout6.f1));
 }
 
-// TODO: [SPPAD-30390]  better tests for SERIALIZE-LAYOUT, SERIALIZE-SERIALIZER;
+// TODO: [TicketOld-30390]  better tests for SERIALIZE-LAYOUT, SERIALIZE-SERIALIZER;
 // more requirements and tests for corner cases (borderline sizes)
 // and allocation error handling
 

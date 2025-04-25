@@ -240,7 +240,7 @@ cc_library(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
-        "//platform/aas/analysis/tracing/daemon:__subpackages__",
+        "//score/analysis/tracing/daemon:__subpackages__",
         "//score/os/mocklib/qnx:__subpackages__",
         "//score/os/test/qnx:__subpackages__",
         "//platform/aas/pas/hw_reg_res_mgrs:__subpackages__",

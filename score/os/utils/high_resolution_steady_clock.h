@@ -29,7 +29,7 @@ namespace os
 ///          method (cf. https://www.qnx.com/developers/docs/7.1/#com.qnx.doc.neutrino.lib_ref/topic/c/clockcycles.html)
 ///          which reads the TSC counter of the Intel Denverton Processor (mPAD). According to Intel's Safety Manual,
 ///          for the Denverton Processor, such counter is stable and also offers integrity according to ASIL-B.
-///          Further details are also contained in ticket broken_link_ac/jira/browse/SPPAD-82361.
+///          Further details are also contained in ticket broken_link_ac/jira/browse/TicketOld-82361.
 ///
 class HighResolutionSteadyClock
 {

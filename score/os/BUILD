@@ -80,7 +80,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//platform/aas/analysis/tracing/daemon:__subpackages__",
+        "//score/analysis/tracing/daemon:__subpackages__",
         "//platform/aas/ara/tsync/bmw:__subpackages__",
         "//platform/aas/intc/typedmemd:__subpackages__",
         "//score/filesystem:__subpackages__",
@@ -113,7 +113,7 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//platform/aas/abac/abac/core/BasicSecurity/generic:__subpackages__",
-        "//platform/aas/analysis/tracing/daemon/code:__subpackages__",
+        "//score/analysis/tracing/daemon/code:__subpackages__",
         "//platform/aas/ara/tsync/ptp:__subpackages__",
         "//platform/aas/intc/jc_launcher:__subpackages__",
         "//platform/aas/intc/typedmemd:__subpackages__",
@@ -209,7 +209,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//platform/aas/analysis/tracing/daemon/code:__subpackages__",
+        "//score/analysis/tracing/daemon/code:__subpackages__",
         "//platform/aas/ara/tsync/ptp:__subpackages__",
         "//platform/aas/lib/network:__subpackages__",
         "//score/os:__subpackages__",
@@ -321,7 +321,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//platform/aas/analysis/tracing/daemon/code/plugin/perf:__subpackages__",
+        "//score/analysis/tracing/daemon/code/plugin/perf:__subpackages__",
         "//platform/aas/ara/tsync/bmw:__subpackages__",
         "//score/os:__subpackages__",
         "//platform/aas/mw/time/HWLoggerTime:__subpackages__",
@@ -368,7 +368,7 @@ cc_library(
     visibility = [
         "//application/adp/aas/lifecycle/qnx_migration:__subpackages__",  # Temporary workaround, see Ticket-84191
         "//platform/aas/abac/abac/core/BasicSecurity/generic:__subpackages__",
-        "//platform/aas/analysis/tracing:__subpackages__",
+        "//score/analysis/tracing:__subpackages__",
         "//platform/aas/ara/tsync/bmw:__subpackages__",
         "//platform/aas/ara/tsync/ptp:__subpackages__",
         "//platform/aas/intc/conditional_launcher:__subpackages__",
@@ -458,7 +458,7 @@ cc_library(
     hdrs = ["net_if.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//platform/aas/analysis/tracing/daemon:__subpackages__",
+        "//score/analysis/tracing/daemon:__subpackages__",
         "//platform/aas/ara/tsync/ptp:__subpackages__",
         "//score/os:__subpackages__",
         # "@ddad//score/os:__subpackages__",
@@ -563,7 +563,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//platform/aas/analysis/tracing/daemon:__subpackages__",
+        "//score/analysis/tracing/daemon:__subpackages__",
         "//platform/aas/lib/network:__subpackages__",
         "//score/os:__subpackages__",
         # "@ddad//score/os:__subpackages__",
@@ -613,7 +613,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//platform/aas/analysis/tracing/daemon:__subpackages__",
+        "//score/analysis/tracing/daemon:__subpackages__",
         "//platform/aas/lib/message_passing:__subpackages__",
         "//score/os:__subpackages__",
         # "@ddad//score/os:__subpackages__",
@@ -797,9 +797,9 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//platform/aas/analysis/tracing/daemon/code/plugin/score/static_reflection_with_serialization/mock:__subpackages__",
-        "//platform/aas/analysis/tracing/daemon/code/plugin/score/static_reflection_with_serialization/plugin_statistics:__subpackages__",
-        "//platform/aas/analysis/tracing/daemon/code/plugin/ipc_trace/ipc_trace_statistics:__subpackages__",
+        "//score/analysis/tracing/daemon/code/plugin/common/mock:__subpackages__",
+        "//score/analysis/tracing/daemon/code/plugin/common/plugin_statistics:__subpackages__",
+        "//score/analysis/tracing/daemon/code/plugin/ipc_trace/ipc_trace_statistics:__subpackages__",
         "//platform/aas/ara/SDaT2Sys/code/app/sdat_sync:__subpackages__",
         "//platform/aas/ara/iam/code:__subpackages__",
         "//platform/aas/ara/iam/test/PDPHostSimulation:__subpackages__",
@@ -860,7 +860,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//platform/aas/analysis/tracing/daemon:__subpackages__",
+        "//score/analysis/tracing/daemon:__subpackages__",
         "//platform/aas/ara/log:__subpackages__",
         "//platform/aas/ara/log/test:__subpackages__",
         "//platform/aas/ara/tsync/bmw:__subpackages__",
@@ -912,7 +912,7 @@ alias(
     visibility = [
         "//application/adp/activities/mic/someip_message_receiver:__subpackages__",
         "//platform/aas/abac/mw/diag:__subpackages__",
-        "//platform/aas/analysis/tracing:__subpackages__",
+        "//score/analysis/tracing:__subpackages__",
         "//platform/aas/ara/log/example:__subpackages__",
         "//score/concurrency:__subpackages__",
         "//score/os:__subpackages__",

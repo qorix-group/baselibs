@@ -226,8 +226,8 @@ constexpr bool IsFloatingPointValueContainedInOutputType(Input input)
     // Input is a floating point number and output is an integer.
     // Here we actually have to check the concrete value at runtime if a cast results in a precision loss.
 
-    // TODO SPPAD-76807: The implementation below will be obsolete and can be replaced by `return false;` when
-    // SPPAD-76807 is resolved.
+    // TODO TicketOld-76807: The implementation below will be obsolete and can be replaced by `return false;` when
+    // TicketOld-76807 is resolved.
 
     // The set of integers that can be represented in a float is determined by the number of bits in the mantissa.
     // For single-precision float this is 23 bits.

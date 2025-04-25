@@ -74,7 +74,7 @@ cc_library(
         "//score/mw/log/log_ext:__pkg__",
         "//score/mw/log/test:__subpackages__",
         "//score/mw/log/test/sctf_example:__subpackages__",
-        "//platform/aas/sysfunc/score/static_reflection_with_serialization/logistics/error:__pkg__",
+        "//platform/aas/sysfunc/common/logistics/error:__pkg__",
         # "@ddad//platform/aas/ara/log:__subpackages__",
         # "@ddad//score/memory/shared:__subpackages__",  # Needed to break cyclic dependency (Ticket-105741)
         # "@ddad//score/mw/log:__pkg__",
@@ -83,7 +83,7 @@ cc_library(
         # "@ddad//score/mw/log/log_ext:__pkg__",
         # "@ddad//score/mw/log/test:__subpackages__",
         # "@ddad//score/mw/log/test/sctf_example:__subpackages__",
-        # "@ddad//platform/aas/sysfunc/score/static_reflection_with_serialization/logistics/error:__pkg__",
+        # "@ddad//platform/aas/sysfunc/common/logistics/error:__pkg__",
     ],
     deps = [
         ":log_stream",
@@ -196,7 +196,7 @@ cc_library(
         "//platform/aas/sysfunc/SoftwareUpdate/code/data_provider/read_programming_counter/details:__pkg__",
         "//platform/aas/sysfunc/SoftwareUpdate/code/minion_data/error:__pkg__",
         "//platform/aas/sysfunc/SoftwareUpdate/code/mirror_protocol/01_preprocessing/preprocessing_step:__pkg__",
-        "//platform/aas/sysfunc/score/static_reflection_with_serialization/logistics/error:__pkg__",
+        "//platform/aas/sysfunc/common/logistics/error:__pkg__",
         # "@ddad//platform/aas/lib/hash/code/common:__pkg__",
         # "@ddad//score/os:__pkg__",
         # "@ddad//score/mw/log:__pkg__",
@@ -212,7 +212,7 @@ cc_library(
         # "@ddad//platform/aas/sysfunc/SoftwareUpdate/code/data_provider/read_programming_counter/details:__pkg__",
         # "@ddad//platform/aas/sysfunc/SoftwareUpdate/code/minion_data/error:__pkg__",
         # "@ddad//platform/aas/sysfunc/SoftwareUpdate/code/mirror_protocol/01_preprocessing/preprocessing_step:__pkg__",
-        # "@ddad//platform/aas/sysfunc/score/static_reflection_with_serialization/logistics/error:__pkg__",
+        # "@ddad//platform/aas/sysfunc/common/logistics/error:__pkg__",
     ],
     deps = [
         ":recorder",

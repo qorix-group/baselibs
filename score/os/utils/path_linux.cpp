@@ -30,7 +30,7 @@ score::cpp::expected<std::string, score::os::Error> score::os::PathImpl::get_exe
     constexpr const std::size_t null_termination{1U};
     std::vector<char> vec_result(path_max + null_termination);
 
-    // TODO: Consider using score::os wrapper functions once SPPAD-70062 is resolved for:
+    // TODO: Consider using score::os wrapper functions once TicketOld-70062 is resolved for:
     // readlink(), read(), errno,
 
     /* KW_SUPPRESS_START:AUTOSAR.BUILTIN_NUMERIC:Char is used to store POSIX call return value */

@@ -701,4 +701,4 @@ This library provides the following functions:
 ## Design rationales
 EPIC for OSAL implementation broken_link_j/Ticket-12624
 
-for design rationale see README for lib/os broken_link_g/swh/ddad_platform/blob/sop/2311/aas/lib/os/README.md
+for design rationale see README for lib/os README.md
