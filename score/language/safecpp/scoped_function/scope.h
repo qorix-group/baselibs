@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_SCOPED_FUNCTION_SCOPE_H
-#define PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_SCOPED_FUNCTION_SCOPE_H
+#ifndef SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_SCOPED_FUNCTION_SCOPE_H
+#define SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_SCOPED_FUNCTION_SCOPE_H
 
 #include "score/language/safecpp/scoped_function/details/allocator_wrapper.h"
 #include "score/language/safecpp/scoped_function/details/scope_state.h"
@@ -106,4 +106,4 @@ class Scope final
 
 }  // namespace score::safecpp
 
-#endif  // PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_SCOPED_FUNCTION_SCOPE_H
+#endif  // SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_SCOPED_FUNCTION_SCOPE_H

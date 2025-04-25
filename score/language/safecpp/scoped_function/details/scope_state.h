@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_SCOPE_STATE_H
-#define PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_SCOPE_STATE_H
+#ifndef SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_SCOPE_STATE_H
+#define SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_SCOPE_STATE_H
 
 #include <score/optional.hpp>
 #include <score/stop_token.hpp>
@@ -83,4 +83,4 @@ class ScopeState final
 
 }  // namespace score::safecpp::details
 
-#endif  // PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_SCOPE_STATE_H
+#endif  // SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_SCOPE_STATE_H

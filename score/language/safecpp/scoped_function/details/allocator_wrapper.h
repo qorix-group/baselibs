@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_ALLOCATOR_WRAPPER_H
-#define PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_ALLOCATOR_WRAPPER_H
+#ifndef SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_ALLOCATOR_WRAPPER_H
+#define SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_ALLOCATOR_WRAPPER_H
 
 #include <score/memory.hpp>
 
@@ -54,7 +54,7 @@ class AllocatorWrapper
         : allocator_container_memory_{},
           // Usage of placement new is intended here and safe as the allocator container is constructed
           // in the pre-allocated memory provided by the allocator wrapper
-          // NOLINTNEXTLINE(bmw-no-dynamic-raw-memory): Tolerated see above
+          // NOLINTNEXTLINE(score-no-dynamic-raw-memory): Tolerated see above
           allocator_container_{::new(&allocator_container_memory_) AllocatorContainer{allocator}}
     {
     }
@@ -68,7 +68,7 @@ class AllocatorWrapper
         : allocator_container_memory_{},
           // Usage of placement new is intended here and safe as the allocator container is constructed
           // in the pre-allocated memory provided by the allocator wrapper
-          // NOLINTNEXTLINE(bmw-no-dynamic-raw-memory): Tolerated see above
+          // NOLINTNEXTLINE(score-no-dynamic-raw-memory): Tolerated see above
           allocator_container_{::new(&allocator_container_memory_) AllocatorContainer{*other}}
     {
     }
@@ -80,7 +80,7 @@ class AllocatorWrapper
             allocator_container_->~AllocatorContainer();
             // Usage of placement new is intended here and safe as the allocator container is constructed
             // in the pre-allocated memory provided by the allocator wrapper
-            // NOLINTNEXTLINE(bmw-no-dynamic-raw-memory): Tolerated see above
+            // NOLINTNEXTLINE(score-no-dynamic-raw-memory): Tolerated see above
             allocator_container_ = ::new (&allocator_container_memory_) AllocatorContainer{*other};
         }
         return *this;
@@ -93,7 +93,7 @@ class AllocatorWrapper
         // Rationale: No make sense to move array of bytes, so new object is created.
         // coverity[autosar_cpp14_a12_8_4_violation]
         : allocator_container_memory_{},
-          // NOLINTNEXTLINE(bmw-no-dynamic-raw-memory): Tolerated, see copy constructor
+          // NOLINTNEXTLINE(score-no-dynamic-raw-memory): Tolerated, see copy constructor
           allocator_container_{::new(&allocator_container_memory_) AllocatorContainer{*other}}
     {
     }
@@ -105,7 +105,7 @@ class AllocatorWrapper
             allocator_container_->~AllocatorContainer();
             // Usage of placement new is intended here and safe as the allocator container is constructed
             // in the pre-allocated memory provided by the allocator wrapper
-            // NOLINTNEXTLINE(bmw-no-dynamic-raw-memory): Tolerated see above
+            // NOLINTNEXTLINE(score-no-dynamic-raw-memory): Tolerated see above
             allocator_container_ = ::new (&allocator_container_memory_) AllocatorContainer{*other};
         }
         return *this;
@@ -151,4 +151,4 @@ class AllocatorWrapper
 
 }  // namespace score::safecpp::details
 
-#endif  // PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_ALLOCATOR_WRAPPER_H
+#endif  // SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_ALLOCATOR_WRAPPER_H

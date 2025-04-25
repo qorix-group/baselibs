@@ -1,0 +1,294 @@
+/********************************************************************************
+ * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Apache License Version 2.0 which is available at
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ ********************************************************************************/
+#include "score/os/utils/mqueue.h"
+
+#include <fcntl.h>
+#include <gtest/gtest.h>
+#include <mqueue.h>
+#include <sys/stat.h>
+#include <exception>
+#include <memory>
+#include <thread>
+
+namespace score
+{
+namespace os
+{
+namespace test
+{
+
+static const std::string name{"myqueue"};
+
+struct FixtureMQueueShould : ::testing::Test
+{
+    MQueue queue{name, AccessMode::kCreate};
+
+    void check_mq_permissions()
+    {
+        auto perm = queue.get_mq_st_mode();
+
+        ASSERT_TRUE((perm.value() & S_IRUSR));
+        ASSERT_TRUE((perm.value() & S_IWUSR));
+        ASSERT_TRUE((perm.value() & S_IRGRP));
+        ASSERT_TRUE((perm.value() & S_IWGRP));
+        ASSERT_TRUE((perm.value() & S_IROTH));
+        ASSERT_FALSE((perm.value() & S_IWOTH));
+        ASSERT_FALSE((perm.value() & S_IXOTH));
+    }
+
+    void SetUp() override
+    {
+        check_mq_permissions();
+    }
+
+    void TearDown() override
+    {
+        queue.unlink();
+    }
+};
+
+struct FixtureMQueueStringShould : ::testing::Test
+{
+    std::int32_t m_fd = -1;
+    std::string m_name = "/" + name;
+    void SetUp() override
+    {
+        mode_t perm{S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH};
+
+        std::int32_t flags = O_CREAT | O_RDWR;
+
+        struct mq_attr attrib;
+        attrib.mq_flags = 0;
+        attrib.mq_maxmsg = 10;
+        attrib.mq_msgsize = 100;
+        attrib.mq_curmsgs = 0;
+
+        m_fd = mq_open(m_name.c_str(), flags, perm, &attrib);
+    }
+
+    void TearDown() override
+    {
+        mq_unlink(m_name.c_str());
+    }
+};
+
+struct FixtureMQueueMaxMsgSizeShould : ::testing::Test
+{
+    MQueue queue{name, AccessMode::kCreate, 100};
+    std::string msg{""};
+
+    void SetUp() override
+    {
+        for (std::uint16_t i = 1; i < 99; ++i)
+        {
+            msg += "1";
+        }
+    }
+
+    void TearDown() override
+    {
+        queue.unlink();
+    }
+};
+
+TEST_F(FixtureMQueueShould, sendACharPointerToOtherProcess)
+{
+    const char* msg = "020223456"; /* TODO : create tests with different formats of the msg, for better check */
+    std::thread test_tr([&msg = msg]() {
+        MQueue sender{name, AccessMode::kUse};
+        sender.send(msg, 9);
+    });
+
+    MQueue receiver{name, AccessMode::kUse};
+    char str[10] = {0};
+    receiver.receive(str);
+    test_tr.join();
+
+    std::string result(str, 9);
+    EXPECT_FALSE(result.empty());
+    EXPECT_EQ(result.size(), 9);
+    EXPECT_EQ(result, std::string(msg, 9));
+}
+
+TEST_F(FixtureMQueueShould, sendAStringToOtherProcess)
+{
+    std::string msg{std::to_string(0x01)};
+    std::thread test_tr([&msg = msg]() {
+        MQueue sender{name, AccessMode::kUse};
+        sender.send(msg);
+    });
+
+    MQueue receiver{name, AccessMode::kUse};
+    std::string str = receiver.receive();
+    test_tr.join();
+    EXPECT_EQ(str, msg);
+}
+
+TEST_F(FixtureMQueueMaxMsgSizeShould, SendALongStringToOtherProzess)
+{
+    std::thread test_tr([&msg = msg]() {
+        MQueue sender{name, AccessMode::kUse};
+        sender.send(msg);
+    });
+
+    MQueue receiver{name, AccessMode::kUse};
+    std::string str = receiver.receive();
+    test_tr.join();
+
+    EXPECT_EQ(str, msg);
+}
+
+TEST_F(FixtureMQueueMaxMsgSizeShould, ReopenOnlyWithId)
+{
+    size_t id = queue.get_id();
+
+    std::thread test_tr([&msg = msg]() {
+        MQueue sender{name, AccessMode::kUse};
+        sender.send(msg);
+    });
+
+    MQueue receiver{id};
+    std::string str = receiver.receive();
+    test_tr.join();
+    EXPECT_EQ(str, msg);
+}
+
+#if defined(__linux__)
+TEST(MQueue, TryOpenNotExistingMQqueue)
+{
+    const size_t queue_name_hash = 2445131158773332806U;
+    MQueue test{"blah", AccessMode::kUse};
+    EXPECT_EQ(test.get_id(), queue_name_hash);
+    EXPECT_FALSE(test.unlink().has_value());
+}
+
+TEST(MQueue, shouldReturnId)
+{
+    const size_t queue_name_hash = 3778941452914592862U;
+    MQueue queue{"some_name", AccessMode::kCreate};
+    std::size_t n = queue.get_id();
+    EXPECT_EQ(n, queue_name_hash);
+    EXPECT_TRUE(queue.unlink().has_value());
+}
+#else
+TEST(MQueue, TryOpenNotExistingMQqueue)
+{
+    const size_t queue_name_hash = 16659226646718876469U;
+    MQueue test{"blah", AccessMode::kUse};
+    EXPECT_EQ(test.get_id(), queue_name_hash);
+    EXPECT_FALSE(test.unlink().has_value());
+}
+
+TEST(MQueue, shouldReturnId)
+{
+    const size_t queue_name_hash = 18020715410057215184U;
+    MQueue queue{"some_name", AccessMode::kCreate};
+    std::size_t n = queue.get_id();
+    EXPECT_EQ(n, queue_name_hash);
+    EXPECT_TRUE(queue.unlink().has_value());
+}
+#endif
+
+TEST(MQueue, ShouldGetEmtpyMessage)
+{
+    MQueue queue{"some_name", AccessMode::kCreateNonBlocking};
+    std::string msg = queue.receive();
+    EXPECT_EQ(msg, "");
+    queue.unlink();
+}
+
+TEST_F(FixtureMQueueShould, timedBlockEmptyQueue)
+{
+    std::pair<std::string, bool> result = queue.timed_receive(std::chrono::milliseconds(100));
+    EXPECT_EQ(result.first, "");
+    EXPECT_TRUE(result.second);
+}
+
+TEST(MQueue, timedNonBlockEmptyQueue)
+{
+    MQueue queue{"some_name", AccessMode::kCreateNonBlocking};
+    std::pair<std::string, bool> result = queue.timed_receive(std::chrono::milliseconds(100));
+    EXPECT_EQ(result.first, "");
+    EXPECT_TRUE(result.second);
+    queue.unlink();
+}
+
+TEST_F(FixtureMQueueShould, timedBlockSendMessage)
+{
+    std::string msg{"thunder"};
+    std::thread test_tr1([&msg = msg]() {
+        MQueue sender{name, AccessMode::kUse};
+        sender.send(msg);
+    });
+    test_tr1.join();
+    std::pair<std::string, bool> result = queue.timed_receive(std::chrono::milliseconds(100));
+    EXPECT_EQ(result.first, "thunder");
+    EXPECT_FALSE(result.second);
+}
+
+TEST_F(FixtureMQueueStringShould, timedBlockCharArrayMessage)
+{
+    std::thread test_tr1([]() {
+        char smsg[] = {'0', '2', '0', '2', '2', '3', '4', '5', '6', '\0'};
+        MQueue sender{name};
+        sender.send(smsg, 9);
+    });
+    test_tr1.join();
+    MQueue receiver{name};
+    const auto msg_size = static_cast<std::size_t>(receiver.get_msg_size());
+    auto rmsg = std::make_unique<char[]>(msg_size);
+
+    const std::pair<ssize_t, bool> result = receiver.timed_receive(rmsg.get(), std::chrono::milliseconds(100));
+    EXPECT_EQ(result.first, 9);
+    EXPECT_FALSE(result.second);
+    EXPECT_EQ("020223456", std::string(rmsg.get()));
+}
+
+TEST_F(FixtureMQueueStringShould, timedBlockDeffectedCharArrayMessage)
+{
+    std::thread test_tr1([]() {
+        uint8_t send_arr[9] = {0x00, 0x02, 0x00, 0x02, 0x02, 0x03, 0x04, 0x05, 0x06};
+        char* smsg = reinterpret_cast<char*>(send_arr);
+        MQueue sender{name};
+        sender.send(smsg, 9);
+    });
+    test_tr1.join();
+    char* rmsg = NULL;
+    MQueue receiver{name};
+    std::pair<ssize_t, bool> result = receiver.timed_receive(rmsg, std::chrono::milliseconds(100));
+    EXPECT_EQ(result.first, -1);
+    EXPECT_FALSE(result.second);
+}
+
+TEST_F(FixtureMQueueStringShould, timedBlockMessage)
+{
+    std::thread test_tr1([]() {
+        uint8_t send_arr[9] = {0x00, 0x02, 0x00, 0x02, 0x02, 0x03, 0x04, 0x05, 0x06};
+        char* smsg = reinterpret_cast<char*>(send_arr);
+        MQueue sender{name};
+        for (std::uint16_t i = 0; i < 10; ++i)
+        {
+            sender.timed_send(smsg, 9, std::chrono::milliseconds(100));
+        }
+    });
+    test_tr1.join();
+    char* rmsg = NULL;
+    MQueue receiver{name};
+    std::pair<ssize_t, bool> result = receiver.timed_receive(rmsg, std::chrono::milliseconds(100));
+    EXPECT_EQ(result.first, -1);
+    EXPECT_FALSE(result.second);
+}
+
+}  // namespace test
+}  // namespace os
+}  // namespace score

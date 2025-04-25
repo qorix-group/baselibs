@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_ALLOCATOR_AWARE_TYPE_ERASURE_POINTER_H
-#define PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_ALLOCATOR_AWARE_TYPE_ERASURE_POINTER_H
+#ifndef SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_ALLOCATOR_AWARE_TYPE_ERASURE_POINTER_H
+#define SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_ALLOCATOR_AWARE_TYPE_ERASURE_POINTER_H
 
 #include "score/language/safecpp/scoped_function/details/allocator_aware_erased_type.h"
 #include "score/language/safecpp/scoped_function/details/allocator_wrapper.h"
@@ -385,4 +385,4 @@ struct uses_allocator<score::safecpp::details::AllocatorAwareTypeErasurePointer<
 
 }  // namespace std
 
-#endif  // PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_ALLOCATOR_AWARE_TYPE_ERASURE_POINTER_H
+#endif  // SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_ALLOCATOR_AWARE_TYPE_ERASURE_POINTER_H

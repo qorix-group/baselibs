@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_CALL_AND_RETURN_MODIFIED_H
-#define PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_CALL_AND_RETURN_MODIFIED_H
+#ifndef SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_CALL_AND_RETURN_MODIFIED_H
+#define SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_CALL_AND_RETURN_MODIFIED_H
 
 #include "score/language/safecpp/scoped_function/details/modify_return_type.h"
 
@@ -47,4 +47,4 @@ template <class... Args,
 
 }  // namespace score::safecpp::details
 
-#endif  // PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_CALL_AND_RETURN_MODIFIED_H
+#endif  // SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_CALL_AND_RETURN_MODIFIED_H

@@ -34,10 +34,10 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//platform/aas/ara/log:__pkg__",
-        "//platform/aas/mw/log:__pkg__",
+        "//score/mw/log:__pkg__",
         # "@ddad//platform/aas/ara/log:__pkg__",
         # "@ddad//score/result:__pkg__",
-        # "@ddad//platform/aas/mw/log:__pkg__",
+        # "@ddad//score/mw/log:__pkg__",
     ],
 )
 

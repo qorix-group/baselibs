@@ -54,7 +54,7 @@ void terminate_handler()
     __gcov_flush();
 #endif
 
-    // NOLINTNEXTLINE(bmw-banned-function): This code will only be used for unit-testing.
+    // NOLINTNEXTLINE(score-banned-function): This code will only be used for unit-testing.
     std::abort();
 }
 

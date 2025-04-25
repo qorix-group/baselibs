@@ -51,7 +51,7 @@ TEST(StdIntegralTypes, signess_and_bytes_number)
 // char on QNX is considered as unsigned char and on GCC and Clang is considered as signed.
 #if defined(__QNX__)
     // As the signess of char depends on using qemu or the real hardware, this line got commented until we decide
-    // How to move forward in this ticket SWP-141110
+    // How to move forward in this ticket Ticket-141110
     // static_assert(std::numeric_limits<char>::is_signed == false,
     //               "it is expected a 'char' to be unsigned in a QNX environment");
 #else

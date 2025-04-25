@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_COPYABLE_SCOPED_FUNCTION_H
-#define PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_COPYABLE_SCOPED_FUNCTION_H
+#ifndef SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_COPYABLE_SCOPED_FUNCTION_H
+#define SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_COPYABLE_SCOPED_FUNCTION_H
 
 #include "score/language/safecpp/scoped_function/details/allocator_aware_type_erasure_pointer.h"
 #include "score/language/safecpp/scoped_function/details/function_wrapper.h"
@@ -200,4 +200,4 @@ struct uses_allocator<score::safecpp::CopyableScopedFunction<FunctionType, Alloc
 
 }  // namespace std
 
-#endif  // PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_COPYABLE_SCOPED_FUNCTION_H
+#endif  // SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_COPYABLE_SCOPED_FUNCTION_H

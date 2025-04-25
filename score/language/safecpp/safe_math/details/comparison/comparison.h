@@ -35,13 +35,13 @@ namespace score::safe_math
 // only applied for the implementation that exhibits this bug in GCC.
 // coverity[autosar_cpp14_a16_0_1_violation]
 #if defined(__GNUC__) && (__GNUC__ == 8) && defined(__GNUC_MINOR__) && (__GNUC_MINOR__ == 4) && !defined(__clang__) && \
-    !defined(__QNXNTO__)
+    !defined(__QNX__)
 // The GCC optimization tree-forwprop performs forwarding of single use variables from their definition site into their
 // use site. Here in this function we run into issues that some of the optimizations done by tree-frowprop might lead to
 // overflows or underflows with given input parameters. GCC provides a warning with -Wstrict-overflow that informs about
 // this situation. From the warning it is unknown whether GCC would apply said optimization in such cases or not. For
 // safety reasons we disable the optimization for this function in GCC on host, as we only see the warnings there.
-// TODO: Further investigation into this topic will be handled in ticket SWP-79675
+// TODO: Further investigation into this topic will be handled in ticket Ticket-79675
 
 // The call is required to circumvent an implementation specific bug and is guarded by an additional check so that it is
 // only applied for the implementation that exhibits this bug in GCC. GCC first sends push_options to enable setting a
@@ -112,7 +112,7 @@ constexpr bool CmpLess(FloatingLhs lhs, FloatingRhs rhs) noexcept
 
 // coverity[autosar_cpp14_a16_0_1_violation]
 #if defined(__GNUC__) && (__GNUC__ == 8) && defined(__GNUC_MINOR__) && (__GNUC_MINOR__ == 4) && !defined(__clang__) && \
-    !defined(__QNXNTO__)
+    !defined(__QNX__)
 // This unsets the tree-forwprop  option and hence should not be removed.
 // coverity[autosar_cpp14_a16_7_1_violation]
 // coverity[autosar_cpp14_a16_0_1_violation]
@@ -297,13 +297,13 @@ constexpr bool CmpLess(IntegralLhs lhs_integral, FloatingRhs rhs_floating) noexc
 
 // coverity[autosar_cpp14_a16_0_1_violation]
 #if defined(__GNUC__) && (__GNUC__ == 8) && defined(__GNUC_MINOR__) && (__GNUC_MINOR__ == 4) && !defined(__clang__) && \
-    !defined(__QNXNTO__)
+    !defined(__QNX__)
 // The GCC optimization tree-forwprop performs forwarding of single use variables from their definition site into their
 // use site. Here in this function we run into issues that some of the optimizations done by tree-frowprop might lead to
 // overflows or underflows with given input parameters. GCC provides a warning with -Wstrict-overflow that informs about
 // this situation. From the warning it is unknown whether GCC would apply said optimization in such cases or not. For
 // safety reasons we disable the optimization for this function in GCC on host, as we only see the warnings there.
-// TODO: Further investigation into this topic will be handled in ticket SWP-79675
+// TODO: Further investigation into this topic will be handled in ticket Ticket-79675
 
 // coverity[autosar_cpp14_a16_7_1_violation]
 // coverity[autosar_cpp14_a16_0_1_violation]
@@ -344,7 +344,7 @@ constexpr bool CmpEqual(SignedLhs lhs_signed, UnsignedRhs rhs_unsigned) noexcept
 
 // coverity[autosar_cpp14_a16_0_1_violation]
 #if defined(__GNUC__) && (__GNUC__ == 8) && defined(__GNUC_MINOR__) && (__GNUC_MINOR__ == 4) && !defined(__clang__) && \
-    !defined(__QNXNTO__)
+    !defined(__QNX__)
 // coverity[autosar_cpp14_a16_7_1_violation]
 // coverity[autosar_cpp14_a16_0_1_violation]
 #pragma GCC pop_options
@@ -362,13 +362,13 @@ constexpr bool CmpEqual(UnsignedLhs lhs_unsigned, SignedRhs rhs_signed) noexcept
 
 // coverity[autosar_cpp14_a16_0_1_violation]
 #if defined(__GNUC__) && (__GNUC__ == 8) && defined(__GNUC_MINOR__) && (__GNUC_MINOR__ == 4) && !defined(__clang__) && \
-    !defined(__QNXNTO__)
+    !defined(__QNX__)
 // The GCC optimization tree-forwprop performs forwarding of single use variables from their definition site into their
 // use site. Here in this function we run into issues that some of the optimizations done by tree-frowprop might lead to
 // overflows or underflows with given input parameters. GCC provides a warning with -Wstrict-overflow that informs about
 // this situation. From the warning it is unknown whether GCC would apply said optimization in such cases or not. For
 // safety reasons we disable the optimization for this function in GCC on host, as we only see the warnings there.
-// TODO: Further investigation into this topic will be handled in ticket SWP-79675
+// TODO: Further investigation into this topic will be handled in ticket Ticket-79675
 
 // coverity[autosar_cpp14_a16_7_1_violation]
 // coverity[autosar_cpp14_a16_0_1_violation]
@@ -410,7 +410,7 @@ constexpr bool CmpEqual(FloatingLhs lhs, FloatingRhs rhs, std::int32_t tolerance
 
 // coverity[autosar_cpp14_a16_0_1_violation]
 #if defined(__GNUC__) && (__GNUC__ == 8) && defined(__GNUC_MINOR__) && (__GNUC_MINOR__ == 4) && !defined(__clang__) && \
-    !defined(__QNXNTO__)
+    !defined(__QNX__)
 // coverity[autosar_cpp14_a16_7_1_violation]
 // coverity[autosar_cpp14_a16_0_1_violation]
 #pragma GCC pop_options

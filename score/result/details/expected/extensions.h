@@ -51,7 +51,7 @@ auto to_score_expected(expected<T, E>&& expected) -> score::cpp::expected<T, E>
 }
 
 template <typename T, typename E>
-auto to_bmw_expected(const score::cpp::expected<T, E>& expected) -> score::details::expected<T, E>
+auto to_score_expected(const score::cpp::expected<T, E>& expected) -> score::details::expected<T, E>
 {
     if (expected.has_value())
     {
@@ -64,7 +64,7 @@ auto to_bmw_expected(const score::cpp::expected<T, E>& expected) -> score::detai
 }
 
 template <typename T, typename E>
-auto to_bmw_expected(score::cpp::expected<T, E>&& expected) -> score::details::expected<T, E>
+auto to_score_expected(score::cpp::expected<T, E>&& expected) -> score::details::expected<T, E>
 {
     if (expected.has_value())
     {

@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_MODIFY_SIGNATURE_H
-#define PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_MODIFY_SIGNATURE_H
+#ifndef SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_MODIFY_SIGNATURE_H
+#define SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_MODIFY_SIGNATURE_H
 
 #include "score/language/safecpp/scoped_function/details/modify_return_type.h"
 
@@ -52,4 +52,4 @@ using ModifySignatureT = typename ModifySignature<T>::Type;
 
 }  // namespace score::safecpp::details
 
-#endif  // PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_MODIFY_SIGNATURE_H
+#endif  // SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_MODIFY_SIGNATURE_H

@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_FUNCTION_WRAPPER_FUNCTION_WRAPPER_H
-#define PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_FUNCTION_WRAPPER_FUNCTION_WRAPPER_H
+#ifndef SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_FUNCTION_WRAPPER_FUNCTION_WRAPPER_H
+#define SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_FUNCTION_WRAPPER_FUNCTION_WRAPPER_H
 
 #include "score/language/safecpp/scoped_function/details/allocator_aware_erased_type.h"
 #include "score/language/safecpp/scoped_function/details/invoker.h"
@@ -189,4 +189,4 @@ class FunctionWrapperImpl : public details::Invoker<details::FunctionWrapperInvo
 
 }  // namespace score::safecpp::details
 
-#endif  // PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_FUNCTION_WRAPPER_FUNCTION_WRAPPER_H
+#endif  // SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_FUNCTION_WRAPPER_FUNCTION_WRAPPER_H

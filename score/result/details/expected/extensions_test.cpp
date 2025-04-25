@@ -88,7 +88,7 @@ TEST(ExtensionsTest, CanConvertFromAmpExpectedConstLValueRefToExpectedWithValue)
     const score::cpp::expected<CopyableType, ErrorType> score_expected{value};
 
     // When converting it to a score::details::expected
-    const score::details::expected<CopyableType, ErrorType> expected{to_bmw_expected(score_expected)};
+    const score::details::expected<CopyableType, ErrorType> expected{to_score_expected(score_expected)};
 
     // Then the score::expected holds the value
     ASSERT_TRUE(expected.has_value());
@@ -102,7 +102,7 @@ TEST(ExtensionsTest, CanConvertFromAmpExpectedConstLValueRefToExpectedWithError)
     const score::cpp::expected<ValueType, CopyableType> score_expected{score::cpp::make_unexpected(CopyableType{value})};
 
     // When converting it to a score::details::expected
-    const score::details::expected<ValueType, CopyableType> expected{to_bmw_expected(score_expected)};
+    const score::details::expected<ValueType, CopyableType> expected{to_score_expected(score_expected)};
 
     // Then the score::expected holds the error
     ASSERT_FALSE(expected.has_value());
@@ -116,7 +116,7 @@ TEST(ExtensionsTest, CanConvertFromAmpExpectedRValueRefToExpectedWithValue)
     score::cpp::expected<NothrowMoveOnlyType, ErrorType> score_expected{value};
 
     // When converting it to a score::details::expected
-    const score::details::expected<NothrowMoveOnlyType, ErrorType> expected{to_bmw_expected(std::move(score_expected))};
+    const score::details::expected<NothrowMoveOnlyType, ErrorType> expected{to_score_expected(std::move(score_expected))};
 
     // Then the score::expected holds the value
     ASSERT_TRUE(expected.has_value());
@@ -130,7 +130,7 @@ TEST(ExtensionsTest, CanConvertFromAmpExpectedRValueRefToExpectedWithError)
     score::cpp::expected<ValueType, NothrowMoveOnlyType> score_expected{score::cpp::make_unexpected(NothrowMoveOnlyType{value})};
 
     // When converting it to a score::details::expected
-    const score::details::expected<ValueType, NothrowMoveOnlyType> expected{to_bmw_expected(std::move(score_expected))};
+    const score::details::expected<ValueType, NothrowMoveOnlyType> expected{to_score_expected(std::move(score_expected))};
 
     // Then the score::expected holds the error
     ASSERT_FALSE(expected.has_value());

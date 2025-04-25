@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_MODIFY_RETURN_TYPE_H
-#define PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_MODIFY_RETURN_TYPE_H
+#ifndef SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_MODIFY_RETURN_TYPE_H
+#define SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_MODIFY_RETURN_TYPE_H
 
 #include <score/blank.hpp>
 #include <score/optional.hpp>
@@ -50,4 +50,4 @@ using ModifyReturnTypeT = typename ModifyReturnType<T>::Type;
 
 }  // namespace score::safecpp::details
 
-#endif  // PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_MODIFY_RETURN_TYPE_H
+#endif  // SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_MODIFY_RETURN_TYPE_H

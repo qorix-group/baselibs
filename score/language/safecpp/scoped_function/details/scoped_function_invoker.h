@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_SCOPED_FUNCTION_INVOKER_H
-#define PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_SCOPED_FUNCTION_INVOKER_H
+#ifndef SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_SCOPED_FUNCTION_INVOKER_H
+#define SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_SCOPED_FUNCTION_INVOKER_H
 
 #include "score/language/safecpp/scoped_function/details/call_and_return_modified.h"
 
@@ -52,4 +52,4 @@ class ScopedFunctionInvoker<NoExcept, ReturnType(Args...)>
 
 }  // namespace score::safecpp::details
 
-#endif  // PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_SCOPED_FUNCTION_INVOKER_H
+#endif  // SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_SCOPED_FUNCTION_INVOKER_H

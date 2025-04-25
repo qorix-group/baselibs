@@ -1,0 +1,239 @@
+/********************************************************************************
+ * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Apache License Version 2.0 which is available at
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ ********************************************************************************/
+
+#include "score/os/stat_impl.h"
+
+#include "gtest/gtest.h"
+#include <fcntl.h>
+
+namespace score
+{
+namespace os
+{
+namespace test
+{
+
+TEST(StatImpl, StatRegularFile)
+{
+    constexpr auto filename{"stat_file"};
+    const auto fd = ::open(filename, O_CREAT | O_RDWR, 0644);
+    EXPECT_NE(fd, -1);
+    struct StatBuffer buf;
+    bool resolve_symlinks = true;
+
+    const auto result = score::os::Stat::instance().stat(filename, buf, resolve_symlinks);
+
+    EXPECT_TRUE(result.has_value());
+    EXPECT_TRUE(S_ISREG(buf.st_mode));
+    ::close(fd);
+}
+
+TEST(StatImpl, StatSymbolicLink)
+{
+    constexpr auto filename{"stat_file"};
+    const auto fd = ::open(filename, O_CREAT | O_RDWR, 0644);
+    EXPECT_NE(fd, -1);
+    struct StatBuffer buf;
+    bool resolve_symlinks = false;
+    const auto result = score::os::Stat::instance().stat(filename, buf, resolve_symlinks);
+
+    EXPECT_TRUE(result.has_value());
+    EXPECT_FALSE(S_ISLNK(buf.st_mode));
+    ::close(fd);
+}
+
+TEST(StatImpl, StatNonExistentFile)
+{
+    const char* non_existent_file = "nonexistent/file";
+    struct StatBuffer buf;
+    bool resolve_symlinks = true;
+
+    const auto result = score::os::Stat::instance().stat(non_existent_file, buf, resolve_symlinks);
+
+    EXPECT_FALSE(result.has_value());
+    EXPECT_EQ(result.error(), Error::Code::kNoSuchFileOrDirectory);
+}
+
+TEST(StatImpl, fstatSuccess)
+{
+    constexpr auto filename{"stat_file"};
+    const auto fd = ::open(filename, O_CREAT | O_RDONLY, 0644);
+    EXPECT_NE(fd, -1);
+    struct StatBuffer buf;
+    const auto result = score::os::Stat::instance().fstat(fd, buf);
+    EXPECT_TRUE(result.has_value());
+    EXPECT_TRUE(S_ISREG(buf.st_mode));
+    ::close(fd);
+}
+
+TEST(StatImpl, fstatFailure)
+{
+    const auto fd = -1;
+    struct StatBuffer buf;
+    EXPECT_FALSE(score::os::Stat::instance().fstat(fd, buf).has_value());
+}
+
+TEST(StatImpl, MkdirFailure)
+{
+    const char* directory = "/hd/src";
+    Stat::Mode mode = Stat::Mode::kUnknown;
+
+    const auto result = score::os::Stat::instance().mkdir(directory, mode);
+    EXPECT_FALSE(result.has_value());
+
+    struct StatBuffer buf;
+    auto stat = score::os::Stat::instance().stat(directory, buf, true);
+    EXPECT_FALSE(stat.has_value());
+}
+
+TEST(StatImpl, MkdirSuccess)
+{
+    const char* directory = "directory";
+    Stat::Mode mode = Stat::Mode::kReadWriteExecUser;
+
+    const auto result = score::os::Stat::instance().mkdir(directory, mode);
+    EXPECT_TRUE(result.has_value());
+
+    struct StatBuffer buf;
+    auto stat = score::os::Stat::instance().stat(directory, buf, true);
+    EXPECT_TRUE(stat.has_value());
+    EXPECT_TRUE(S_ISDIR(buf.st_mode));
+}
+
+TEST(StatImpl, ChmodSuccess)
+{
+    constexpr auto filename{"stat_test_file"};
+    const auto fd = ::open(filename, O_CREAT | O_WRONLY, 0644);
+    EXPECT_NE(fd, -1);
+    Stat::Mode mode = Stat::Mode::kReadWriteExecUser;
+
+    const auto result = score::os::Stat::instance().chmod(filename, mode);
+    EXPECT_TRUE(result.has_value());
+
+    struct stat file_info;
+    ::stat(filename, &file_info);
+    EXPECT_TRUE(file_info.st_mode & S_IRWXU);
+    ::close(fd);
+}
+
+TEST(StatImpl, ChmodFailure)
+{
+    constexpr auto filename{""};
+    Stat::Mode mode = Stat::Mode::kUnknown;
+
+    const auto result = score::os::Stat::instance().chmod(filename, mode);
+    EXPECT_FALSE(result.has_value());
+}
+
+TEST(StatImpl, FchmodSuccess)
+{
+    constexpr auto filename{"stat_test_file"};
+    const auto fd = ::open(filename, O_CREAT | O_WRONLY, 0644);
+    EXPECT_NE(fd, -1);
+
+    const auto result = score::os::Stat::instance().fchmod(fd, Stat::Mode::kReadWriteExecUser);
+    EXPECT_TRUE(result.has_value());
+
+    struct stat file_info;
+    ::stat(filename, &file_info);
+    EXPECT_TRUE(file_info.st_mode & S_IRWXU);
+
+    ::close(fd);
+}
+
+TEST(StatImpl, FchmodFailure)
+{
+    constexpr auto fd = -1;
+
+    const auto result = score::os::Stat::instance().fchmod(fd, Stat::Mode::kReadWriteExecUser);
+    EXPECT_FALSE(result.has_value());
+}
+
+TEST(StatImpl, UmaskSuccess)
+{
+    using Mode = Stat::Mode;
+    auto current_mode =
+        Mode::kReadUser | Mode::kWriteUser | Mode::kExecUser | Mode::kReadGroup | Mode::kWriteGroup | Mode::kExecGroup;
+    EXPECT_TRUE(score::os::Stat::instance().umask(current_mode).has_value());
+
+    std::vector<Mode> mode_vector = {Mode::kNone,
+                                     Mode::kReadWriteExecGroup,
+                                     Mode::kReadWriteExecOthers,
+                                     Mode::kWriteUser,
+                                     Mode::kExecUser,
+                                     Mode::kReadGroup,
+                                     Mode::kWriteGroup,
+                                     Mode::kExecGroup,
+                                     Mode::kReadOthers,
+                                     Mode::kWriteOthers,
+                                     Mode::kExecOthers};
+
+    for (const auto& mode : mode_vector)
+    {
+        const auto new_mode = current_mode | mode;
+        const auto prev_mode = score::os::Stat::instance().umask(new_mode);
+        EXPECT_TRUE(prev_mode.has_value());
+        EXPECT_EQ(current_mode, prev_mode.value());
+        current_mode = new_mode;
+    }
+}
+
+TEST(StatImpl, UmaskFailure)
+{
+    const auto result = score::os::Stat::instance().umask(Stat::Mode::kUnknown);
+    EXPECT_TRUE(result.has_value());
+}
+
+TEST(StatImpl, FchmodatSuccess)
+{
+    const char* file_name = "my_directory";
+    int fd = open(file_name, O_CREAT, S_IRWXU | S_IRWXG | S_IRWXO);
+    EXPECT_NE(fd, -1);
+    bool resolve_symlinks = true;
+
+    const auto result =
+        score::os::Stat::instance().fchmodat(AT_FDCWD, file_name, Stat::Mode::kReadUser, resolve_symlinks);
+    EXPECT_TRUE(result.has_value());
+    ::close(fd);
+}
+
+TEST(StatImpl, FchmodatErrorNoFollowSymlinks)
+{
+    constexpr auto filename{"stat_test_file"};
+    const auto fd = ::open(filename, O_CREAT | O_RDWR, 0644);
+    EXPECT_NE(fd, -1);
+    bool resolve_symlinks = false;
+
+    const auto result =
+        score::os::Stat::instance().fchmodat(fd, filename, Stat::Mode::kReadWriteExecUser, resolve_symlinks);
+    EXPECT_FALSE(result.has_value());
+    ::close(fd);
+}
+
+TEST(StatImpl, DefaultObjectAllocationIsNotNull)
+{
+    const auto result = score::os::Stat::Default();
+    EXPECT_NE(result, nullptr);
+}
+
+TEST(StatImpl, PMRDefaultShallReturnImplInstance)
+{
+    score::cpp::pmr::memory_resource* memory_resource = score::cpp::pmr::get_default_resource();
+    const auto instance = score::os::Stat::Default(memory_resource);
+    ASSERT_TRUE(instance != nullptr);
+    EXPECT_NO_THROW(std::ignore = dynamic_cast<score::os::StatImpl*>(instance.get()));
+}
+
+}  // namespace test
+}  // namespace os
+}  // namespace score

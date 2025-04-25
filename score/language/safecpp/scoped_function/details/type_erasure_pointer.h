@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_TYPE_ERASURE_POINTER_H
-#define PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_TYPE_ERASURE_POINTER_H
+#ifndef SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_TYPE_ERASURE_POINTER_H
+#define SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_TYPE_ERASURE_POINTER_H
 
 #include <score/assert.hpp>
 #include <score/memory.hpp>
@@ -79,4 +79,4 @@ TypeErasurePointer<Implementation> MakeTypeErasurePointer(score::cpp::pmr::polym
 
 }  // namespace score::safecpp::details
 
-#endif  // PLATFORM_AAS_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_TYPE_ERASURE_POINTER_H
+#endif  // SCORE_LANGUAGE_SAFECPP_SCOPED_FUNCTION_DETAILS_TYPE_ERASURE_POINTER_H

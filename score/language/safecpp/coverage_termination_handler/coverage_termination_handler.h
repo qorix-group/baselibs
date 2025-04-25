@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef PLATFORM_AAS_LANGUAGE_SAFECPP_COVERAGE_TERMINATION_HANDLER_COVERAGE_TERMINATION_HANDLER_H
-#define PLATFORM_AAS_LANGUAGE_SAFECPP_COVERAGE_TERMINATION_HANDLER_COVERAGE_TERMINATION_HANDLER_H
+#ifndef SCORE_LANGUAGE_SAFECPP_COVERAGE_TERMINATION_HANDLER_COVERAGE_TERMINATION_HANDLER_H
+#define SCORE_LANGUAGE_SAFECPP_COVERAGE_TERMINATION_HANDLER_COVERAGE_TERMINATION_HANDLER_H
 
 /// \file
 /// \brief This library has no external linkage. Its sole purpose is to set a termination handler that will flush
@@ -27,4 +27,4 @@
 /// library, we will register such a termination handler which ensures that all the gcov buffers will be flushed prior
 /// to termination.
 
-#endif  // PLATFORM_AAS_LANGUAGE_SAFECPP_COVERAGE_TERMINATION_HANDLER_COVERAGE_TERMINATION_HANDLER_H
+#endif  // SCORE_LANGUAGE_SAFECPP_COVERAGE_TERMINATION_HANDLER_COVERAGE_TERMINATION_HANDLER_H

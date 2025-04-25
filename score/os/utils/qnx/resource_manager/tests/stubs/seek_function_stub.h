@@ -1,0 +1,45 @@
+/********************************************************************************
+ * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Apache License Version 2.0 which is available at
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ ********************************************************************************/
+///
+/// @file
+/// @copyright Copyright (C) 2022, Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
+///
+/// @brief Stub class for the lseek handler interface used only for testing
+///
+///
+
+#ifndef BASELIBS_SCORE_OS_QNX_RESOURCE_TEST_LSEEK_HANDLER_INTERFACE_STUB_H
+#define BASELIBS_SCORE_OS_QNX_RESOURCE_TEST_LSEEK_HANDLER_INTERFACE_STUB_H
+
+#include "score/os/utils/qnx/resource_manager/include/resource.h"
+
+namespace score
+{
+namespace os
+{
+namespace test
+{
+
+class SeekFunctionStub final : public score::os::ISeekFunction
+{
+    int operator()(resmgr_context_t*, io_lseek_t*, RESMGR_OCB_T*)
+    {
+        return 0;
+    }
+};
+
+}  // namespace test
+}  // namespace os
+}  // namespace score
+
+#endif  // BASELIBS_SCORE_OS_QNX_RESOURCE_TEST_LSEEK_HANDLER_INTERFACE_STUB_H
