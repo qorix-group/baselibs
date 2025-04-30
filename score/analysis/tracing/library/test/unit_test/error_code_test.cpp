@@ -115,6 +115,9 @@ TEST(ERROR_CODE, MessageForMatchWithErrorCode)
                     .MessageFor(static_cast<score::result::ErrorCode>(ErrorCode::kServerConnectionNameOpenFailedFatal))
                     .compare("Server name open failed") == 0);
     ASSERT_TRUE(generic_trace_api_error_domain
+                    .MessageFor(static_cast<score::result::ErrorCode>(ErrorCode::kDaemonTerminationDetectionFailedFatal))
+                    .compare("Daemon termination detection failed") == 0);
+    ASSERT_TRUE(generic_trace_api_error_domain
                     .MessageFor(static_cast<score::result::ErrorCode>(ErrorCode::kInvalidShmObjectHandleFatal))
                     .compare("Invalid SHM object handle") == 0);
     ASSERT_TRUE(generic_trace_api_error_domain
@@ -211,6 +214,9 @@ TEST(ERROR_CODE, MessageForMatchWithErrorCode)
             .MessageFor(static_cast<score::result::ErrorCode>(ErrorCode::kTraceJobAllocatorInitializationFailedFatal))
             .compare("TraceJobAllocator initialization failed") == 0);
     ASSERT_TRUE(generic_trace_api_error_domain
+                    .MessageFor(static_cast<score::result::ErrorCode>(ErrorCode::kDaemonIsDisconnectedFatal))
+                    .compare("Daemon is disconnected") == 0);
+    ASSERT_TRUE(generic_trace_api_error_domain
                     .MessageFor(static_cast<score::result::ErrorCode>(ErrorCode::kGenericErrorRecoverable))
                     .compare("Unknown generic error") == 0);
     ASSERT_TRUE(
@@ -279,6 +285,8 @@ std::vector<std::tuple<ErrorCode, bool>> test_cases{
     std::make_tuple(ErrorCode::kDaemonCommunicatorNotSupportedFatal, false),
     // QNX name open failed (Fatal)
     std::make_tuple(ErrorCode::kServerConnectionNameOpenFailedFatal, false),
+    // Daemon termination detection failed (Fatal)
+    std::make_tuple(ErrorCode::kDaemonTerminationDetectionFailedFatal, false),
     // Callback already registered the client id (Recoverable)
     std::make_tuple(ErrorCode::kCallbackAlreadyRegisteredRecoverable, true),
     // No free slot is found to save the callback (Recoverable)
@@ -347,6 +355,8 @@ std::vector<std::tuple<ErrorCode, bool>> test_cases{
     std::make_tuple(ErrorCode::kFailedRegisterCachedShmObjectsFatal, false),
     // TraceJobAllocator initialization failed (Fatal)
     std::make_tuple(ErrorCode::kTraceJobAllocatorInitializationFailedFatal, false),
+    // Daemon is disconnected (Fatal)
+    std::make_tuple(ErrorCode::kDaemonIsDisconnectedFatal, false),
     // Terminal (Fatal)
     std::make_tuple(ErrorCode::kTerminalFatal, false)};
 
