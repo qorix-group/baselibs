@@ -112,6 +112,18 @@ TEST_F(FileUtilsTest, CreateDirectoryThatAlreadyExistsWithWrongPermissions)
     ASSERT_FALSE(success.has_value());
 }
 
+TEST_F(FileUtilsTest, CreateDirectoryThatAlreadyExistsAsFile)
+{
+    EXPECT_CALL(*filesystemMock_, Status(Path{"/foo/bar"}))
+        .WillOnce(Return(FileStatus{FileType::kRegular, Perms::kWriteUser}));
+    EXPECT_CALL(*filesystemMock_, CreateDirectory(_)).Times(0);
+    EXPECT_CALL(*filesystemMock_, Permissions(_, _, _)).Times(0);
+
+    const auto success = unit_.CreateDirectory("/foo/bar", permissions);
+
+    ASSERT_FALSE(success.has_value());
+}
+
 TEST_F(FileUtilsTest, CreateDirectoryFailsOnCreate)
 {
     EXPECT_CALL(*filesystemMock_, Status(Path{"/foo/bar"})).WillOnce(Return(FileStatus{FileType::kNotFound}));
