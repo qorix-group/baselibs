@@ -50,7 +50,7 @@ class FileUtilsTest : public ::testing::Test
     // error constants
     const ResultBlank no_error{};
     const ResultBlank error_create_directory = MakeUnexpected(ErrorCode::kCouldNotCreateDirectory);
-    const Result<bool> error_is_directory = MakeUnexpected(filesystem::ErrorCode::kCouldNotRetrieveStatus);
+    const Result<FileStatus> error_is_directory = MakeUnexpected(filesystem::ErrorCode::kCouldNotRetrieveStatus);
     const ResultBlank error_permissions = MakeUnexpected(filesystem::ErrorCode::kCouldNotChangePermissions);
     const score::cpp::expected_blank<score::os::Error> os_no_error{};
     const score::cpp::expected_blank<score::os::Error> os_enoent = score::cpp::make_unexpected(score::os::Error::createFromErrno(ENOENT));
@@ -78,7 +78,7 @@ class FileUtilsTest : public ::testing::Test
 
 TEST_F(FileUtilsTest, CreateDirectory)
 {
-    EXPECT_CALL(*filesystemMock_, IsDirectory(Path{"/foo/bar"})).WillOnce(Return(false));
+    EXPECT_CALL(*filesystemMock_, Status(Path{"/foo/bar"})).WillOnce(Return(FileStatus{FileType::kNotFound}));
     EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/foo/bar"})).WillOnce(Return(no_error));
     EXPECT_CALL(*filesystemMock_, Permissions(Path{"/foo/bar"}, permissions, PermOptions::kReplace))
         .WillOnce(Return(no_error));
@@ -88,9 +88,10 @@ TEST_F(FileUtilsTest, CreateDirectory)
     ASSERT_TRUE(success.has_value());
 }
 
-TEST_F(FileUtilsTest, CreateDirectoryThatAlreadyExists)
+TEST_F(FileUtilsTest, CreateDirectoryThatAlreadyExistsWithCorrectPermissions)
 {
-    EXPECT_CALL(*filesystemMock_, IsDirectory(Path{"/foo/bar"})).WillOnce(Return(true));
+    EXPECT_CALL(*filesystemMock_, Status(Path{"/foo/bar"}))
+        .WillOnce(Return(FileStatus{FileType::kDirectory, permissions}));
     EXPECT_CALL(*filesystemMock_, CreateDirectory(_)).Times(0);
     EXPECT_CALL(*filesystemMock_, Permissions(_, _, _)).Times(0);
 
@@ -99,9 +100,21 @@ TEST_F(FileUtilsTest, CreateDirectoryThatAlreadyExists)
     ASSERT_TRUE(success.has_value());
 }
 
+TEST_F(FileUtilsTest, CreateDirectoryThatAlreadyExistsWithWrongPermissions)
+{
+    EXPECT_CALL(*filesystemMock_, Status(Path{"/foo/bar"}))
+        .WillOnce(Return(FileStatus{FileType::kDirectory, Perms::kNone}));
+    EXPECT_CALL(*filesystemMock_, CreateDirectory(_)).Times(0);
+    EXPECT_CALL(*filesystemMock_, Permissions(_, _, _)).Times(0);
+
+    const auto success = unit_.CreateDirectory("/foo/bar", permissions);
+
+    ASSERT_FALSE(success.has_value());
+}
+
 TEST_F(FileUtilsTest, CreateDirectoryFailsOnCreate)
 {
-    EXPECT_CALL(*filesystemMock_, IsDirectory(Path{"/foo/bar"})).WillOnce(Return(false));
+    EXPECT_CALL(*filesystemMock_, Status(Path{"/foo/bar"})).WillOnce(Return(FileStatus{FileType::kNotFound}));
     EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/foo/bar"})).WillOnce(Return(error_create_directory));
     EXPECT_CALL(*filesystemMock_, Permissions(_, _, _)).Times(0);
 
@@ -113,7 +126,7 @@ TEST_F(FileUtilsTest, CreateDirectoryFailsOnCreate)
 
 TEST_F(FileUtilsTest, CreateDirectoryFailsOnIsDirectory)
 {
-    EXPECT_CALL(*filesystemMock_, IsDirectory(Path{"/foo/bar"})).WillOnce(Return(error_is_directory));
+    EXPECT_CALL(*filesystemMock_, Status(Path{"/foo/bar"})).WillOnce(Return(error_is_directory));
     EXPECT_CALL(*filesystemMock_, CreateDirectory(_)).Times(0);
     EXPECT_CALL(*filesystemMock_, Permissions(_, _, _)).Times(0);
 
@@ -125,7 +138,7 @@ TEST_F(FileUtilsTest, CreateDirectoryFailsOnIsDirectory)
 
 TEST_F(FileUtilsTest, CreateDirectoryFailsOnPermissions)
 {
-    EXPECT_CALL(*filesystemMock_, IsDirectory(Path{"/foo/bar"})).WillOnce(Return(false));
+    EXPECT_CALL(*filesystemMock_, Status(Path{"/foo/bar"})).WillOnce(Return(FileStatus{FileType::kNotFound}));
     EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/foo/bar"})).WillOnce(Return(no_error));
     EXPECT_CALL(*filesystemMock_, Permissions(_, _, _)).WillOnce(Return(error_permissions));
 
@@ -137,7 +150,7 @@ TEST_F(FileUtilsTest, CreateDirectoryFailsOnPermissions)
 
 TEST_F(FileUtilsTest, CreateDirectories_AbsolutePathTest)
 {
-    EXPECT_CALL(*filesystemMock_, IsDirectory(_)).WillRepeatedly(Return(false));
+    EXPECT_CALL(*filesystemMock_, Status(_)).WillRepeatedly(Return(FileStatus{FileType::kNotFound}));
     EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/dir1"})).WillOnce(Return(no_error));
     EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/dir1/dir2"})).WillOnce(Return(no_error));
     EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/dir1/dir2/dir3"})).WillOnce(Return(no_error));
@@ -153,7 +166,7 @@ TEST_F(FileUtilsTest, CreateDirectories_AbsolutePathTest)
 
 TEST_F(FileUtilsTest, CreateDirectories_AbsolutePathRetryTest)
 {
-    EXPECT_CALL(*filesystemMock_, IsDirectory(_)).WillRepeatedly(Return(false));
+    EXPECT_CALL(*filesystemMock_, Status(_)).WillRepeatedly(Return(FileStatus{FileType::kNotFound}));
     EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/dir1"})).WillOnce(Return(no_error));
     EXPECT_CALL(*unistd_mock_, nanosleep(_, _)).Times(3).WillRepeatedly(Return(os_no_error));
     Sequence s1;
@@ -175,7 +188,7 @@ TEST_F(FileUtilsTest, CreateDirectories_AbsolutePathRetryTest)
 
 TEST_F(FileUtilsTest, CreateDirectories_AbsolutePathRetryFailTest)
 {
-    EXPECT_CALL(*filesystemMock_, IsDirectory(_)).WillRepeatedly(Return(false));
+    EXPECT_CALL(*filesystemMock_, Status(_)).WillRepeatedly(Return(FileStatus{FileType::kNotFound}));
     EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/dir1"})).WillOnce(Return(no_error));
     EXPECT_CALL(*filesystemMock_, Permissions(Path{"/dir1"}, permissions, PermOptions::kReplace))
         .WillOnce(Return(no_error));
@@ -190,6 +203,7 @@ TEST_F(FileUtilsTest, CreateDirectories_AbsolutePathRetryFailTest)
 TEST_F(FileUtilsTest, CreateDirectories_RelativePathTest)
 {
     EXPECT_CALL(*filesystemMock_, IsDirectory(_)).WillRepeatedly(Return(false));
+    EXPECT_CALL(*filesystemMock_, Status(_)).WillRepeatedly(Return(FileStatus{FileType::kNotFound}));
     EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"dir1"})).WillOnce(Return(no_error));
     EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"dir1/dir2"})).WillOnce(Return(no_error));
     EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"dir1/dir2/dir3"})).WillOnce(Return(no_error));
@@ -207,7 +221,8 @@ TEST_F(FileUtilsTest, CreateDirectories_PartialDirectoryExistsTest)
 {
     EXPECT_CALL(*filesystemMock_, IsDirectory(Path{"/dir1"})).WillOnce(Return(true));
     EXPECT_CALL(*filesystemMock_, IsDirectory(Path{"/dir1/dir2"})).WillOnce(Return(false));
-    EXPECT_CALL(*filesystemMock_, IsDirectory(Path{"/dir1/dir2/dir3"})).WillOnce(Return(false));
+    EXPECT_CALL(*filesystemMock_, Status(Path{"/dir1/dir2"})).WillOnce(Return(FileStatus{FileType::kNotFound}));
+    EXPECT_CALL(*filesystemMock_, Status(Path{"/dir1/dir2/dir3"})).WillOnce(Return(FileStatus{FileType::kNotFound}));
     EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/dir1/dir2"})).WillOnce(Return(no_error));
     EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/dir1/dir2/dir3"})).WillOnce(Return(no_error));
     EXPECT_CALL(*filesystemMock_, Permissions(Path{"/dir1/dir2"}, permissions, PermOptions::kReplace))
@@ -223,6 +238,18 @@ TEST_F(FileUtilsTest, CreateDirectories_PathEndsWithSlash)
     EXPECT_CALL(*filesystemMock_, IsDirectory(Path{"dir1"})).WillOnce(Return(true));
 
     ASSERT_TRUE(unit_.CreateDirectories("dir1/", permissions).has_value());
+}
+
+TEST_F(FileUtilsTest, CreateDirectories_FailsWithExistingPathWithWrongPermissions)
+{
+    testing::InSequence seq{};
+
+    ON_CALL(*filesystemMock_, IsDirectory(Path{"/dir1"})).WillByDefault(Return(true));
+    ON_CALL(*filesystemMock_, IsDirectory(Path{"/dir1/dir2"})).WillByDefault(Return(true));
+    ON_CALL(*filesystemMock_, Status(Path{"/dir1/dir2/dir3"}))
+        .WillByDefault(Return(FileStatus{FileType::kDirectory, Perms::kNone}));
+
+    ASSERT_FALSE(unit_.CreateDirectories("/dir1/dir2/dir3", permissions).has_value());
 }
 
 TEST_F(FileUtilsTest, ValidateGroup_failedStat)

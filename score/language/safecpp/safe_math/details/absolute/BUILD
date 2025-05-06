@@ -11,13 +11,13 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score-baselibs//score/language/safecpp/safe_math:compiler_features.bzl", "COMPILER_FEATURES")
 
 cc_library(
     name = "absolute",
     srcs = ["absolute.cpp"],
     hdrs = ["absolute.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/language/safecpp/safe_math:__pkg__",
@@ -36,7 +36,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "unit_test",
     srcs = ["absolute_test.cpp"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/language/safecpp/safe_math:__pkg__",
     ],

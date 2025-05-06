@@ -71,23 +71,33 @@ FileUtils::FileUtils(IStandardFilesystem& standard_filesystem, IFileFactory& fil
 // coverity[autosar_cpp14_a15_5_3_violation : FALSE]
 ResultBlank FileUtils::CreateDirectory(const Path& path, const score::os::Stat::Mode perms) const noexcept
 {
-    const auto is_directory_result = standard_filesystem_.IsDirectory(path);
-    if (!is_directory_result.has_value())
+    const Result<filesystem::FileStatus> status = standard_filesystem_.Status(path);
+    if (status.has_value())
     {
-        return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory, "Failed to check 'is directory'");
-    }
-    if (!is_directory_result.value())
-    {
-        if (!standard_filesystem_.CreateDirectory(path).has_value())
+        if (status.value().Type() == filesystem::FileType::kDirectory)
         {
-            return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory);
+            if (status.value().Permissions() == perms)
+            {
+                return {};
+            }
+            return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory, "Directory exists but with wrong permissions");
         }
-        if (!standard_filesystem_.Permissions(path, perms, PermOptions::kReplace).has_value())
+
+        if (status.value().Type() == filesystem::FileType::kNotFound)
         {
-            return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory, "Failed to set permissions");
+            if (!standard_filesystem_.CreateDirectory(path).has_value())
+            {
+                return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory);
+            }
+            if (!standard_filesystem_.Permissions(path, perms, PermOptions::kReplace).has_value())
+            {
+                return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory, "Failed to set permissions");
+            }
+            return {};
         }
+        return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory, "Path already exists and is not a directory");
     }
-    return {};
+    return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory, "Failed to retrieve status");
 }
 
 ResultBlank FileUtils::CreateDirectories(const Path& path, const score::os::Stat::Mode perms) const noexcept
@@ -123,6 +133,16 @@ ResultBlank FileUtils::CreateDirectories(const Path& path, const score::os::Stat
         // internal loop just to handle (accumulating across the whole path) retry attempts
         while (true)
         {
+            // For parent directories of the final path we accept that they exist with whatever permissions
+            if (parent_path != path)
+            {
+                const auto exists = standard_filesystem_.IsDirectory(parent_path);
+                if (exists.has_value() && exists.value())
+                {
+                    break;
+                }
+            }
+
             const auto result = CreateDirectory(parent_path, perms);
             if (!result.has_value())
             {

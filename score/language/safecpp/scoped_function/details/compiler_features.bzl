@@ -10,19 +10,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
+visibility("//score/language/safecpp/scoped_function/...")
 
-bool_flag(
-    name = "KRemote_Logging",
-    build_setting_default = True,
-)
-
-config_setting(
-    name = "Remote_Logging",
-    flag_values = {
-        ":KRemote_Logging": "True",
-    },
-    visibility = [
-        "@score-baselibs//score/mw/log:__subpackages__",
-    ],
-)
+COMPILER_FEATURES = [
+    "treat_warnings_as_errors",
+    "strict_warnings",
+    "additional_warnings",
+]
