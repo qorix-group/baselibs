@@ -62,11 +62,6 @@ class MetaInfo : public MetaInfoBase
     // No harm to declare the members as public
     //  coverity[autosar_cpp14_m11_0_1_violation]
     Properties properties_;  ///< Properties of the meta data specific to the protocol that needs to be traced
-
-    friend bool operator==(const MetaInfo& lhs, const MetaInfo& rhs) noexcept
-    {
-        return lhs.properties_ == rhs.properties_;
-    }
 };
 
 }  // namespace tracing

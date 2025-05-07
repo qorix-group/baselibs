@@ -25,10 +25,6 @@ namespace tracing
 /// Struct used to store properties specifed to Dlt protocol
 struct DltProperties
 {
-    friend bool operator==(const DltProperties&, const DltProperties&) noexcept
-    {
-        return true;
-    }
 };
 
 }  // namespace tracing

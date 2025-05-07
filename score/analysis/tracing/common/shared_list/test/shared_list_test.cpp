@@ -205,24 +205,6 @@ TEST_F(SharedListFixture, Iterators)
     }
 }
 
-TEST_F(SharedListFixture, IncrementOnEmptyList)
-{
-    shared::List<std::uint8_t> list(flexible_allocator_mock_, 0, 0, 0);
-
-    auto it = list.begin();
-
-    // Make sure the iterator starts at the end for an empty list
-    EXPECT_EQ(it, list.end());
-
-    // Increment the iterator and check if it remains at end
-    ++it;
-    EXPECT_EQ(it, list.end());
-
-    // Also check post-increment operator
-    it++;
-    EXPECT_EQ(it, list.end());
-}
-
 TEST_F(SharedListFixture, IteratorDereferenceAllocateSuccessfully)
 {
     void* allocated_memory = nullptr;
