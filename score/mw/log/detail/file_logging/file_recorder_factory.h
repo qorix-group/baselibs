@@ -31,7 +31,7 @@ class FileRecorderFactory : public LogRecorderFactory<FileRecorderFactory>
 {
   public:
     FileRecorderFactory() = delete;
-    explicit FileRecorderFactory(score::cpp::pmr::unique_ptr<score::os::Fcntl> fcntl_instance)
+    FileRecorderFactory(score::cpp::pmr::unique_ptr<score::os::Fcntl> fcntl_instance)
         : LogRecorderFactory<FileRecorderFactory>(), fcntl_{std::move(fcntl_instance)}
     {
     }

@@ -10,23 +10,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-_COMPILER_FEATURES = [
-    "treat_warnings_as_errors",
-    "additional_warnings",
-    "strict_warnings",
-]
+visibility("//score/language/safecpp/scoped_function/...")
 
-cc_library(
-    name = "coverage_termination_handler",
-    testonly = True,
-    srcs = ["coverage_termination_handler.cpp"],
-    hdrs = ["coverage_termination_handler.h"],
-    features = _COMPILER_FEATURES,
-    linkopts = ["-lgcov"],
-    visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
-    ],
-    deps = ["@score-baselibs//score/language/futurecpp"],
-    alwayslink = True,
-)
+COMPILER_FEATURES = [
+    "treat_warnings_as_errors",
+    "strict_warnings",
+    "additional_warnings",
+]

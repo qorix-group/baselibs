@@ -40,10 +40,7 @@ cc_test(
     features = COMMON_FEATURES + ["aborts_upon_exception"],
     local_defines = ["VAJSON"],
     tags = ["unit"],
-    visibility = [
-        "@score-baselibs//score/json:__subpackages__",
-        # "@ddad@score-baselibs//score/json:__pkg__",
-    ],
+    visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
         "@score-baselibs//score/json/internal/parser:parser_test_suite",
         "@score-baselibs//score/json/internal/parser/vajson:vajson_parser",
@@ -57,10 +54,7 @@ cc_test(
     features = COMMON_FEATURES + ["aborts_upon_exception"],
     local_defines = ["VAJSON"],
     tags = ["unit"],
-    visibility = [
-        "@score-baselibs//score/json:__subpackages__",
-        # "@ddad@score-baselibs//score/json:__pkg__",
-    ],
+    visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
         ":vajson_parser",
         "@score-baselibs//score/language/safecpp/coverage_termination_handler",
