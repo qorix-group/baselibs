@@ -112,6 +112,10 @@ ResultBlank FileUtils::CreateDirectories(const Path& path, const score::os::Stat
     constexpr std::int64_t kCreationRetryInitialDelayNanoseconds = kCreationRetryInitialDelayMicroseconds * 1000;
     constexpr std::uint32_t kCreationRetryLimit = 3U;
     constexpr std::int64_t kCreationRetryFactor = 2;
+    constexpr std::int64_t kNanosecondsPerSecond = 1000000000;
+    static_assert(
+        kCreationRetryInitialDelayNanoseconds * kCreationRetryFactor * kCreationRetryLimit < kNanosecondsPerSecond,
+        "Delay may exceed one second, breaking algorithm");
 
     timespec creation_retry_delay{0, kCreationRetryInitialDelayNanoseconds};
     std::uint32_t creation_retry_counter = kCreationRetryLimit;
