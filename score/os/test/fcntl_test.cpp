@@ -108,6 +108,13 @@ TEST(IntegerToOpenFlag, Translate_O_DIRECTORY)
     EXPECT_EQ(result, Fcntl::Open::kDirectory | Fcntl::Open::kReadOnly);
 }
 
+TEST(IntegerToOpenFlag, Translate_O_APPEND)
+{
+    const auto result = internal::fcntl_helper::IntegerToOpenFlag(O_APPEND);
+    // Open flags have always an access mode. If none is explicitly set it is readonly
+    EXPECT_EQ(result, Fcntl::Open::kAppend | Fcntl::Open::kReadOnly);
+}
+
 #ifdef __linux__
 TEST(IntegerToOpenFlag, Translate_O_SYNC)
 {
@@ -176,6 +183,12 @@ TEST(OpenFlagToInteger, TranslateKDirectory)
 {
     const auto result = internal::fcntl_helper::OpenFlagToInteger(Fcntl::Open::kDirectory);
     EXPECT_EQ(result, O_DIRECTORY);
+}
+
+TEST(OpenFlagToInteger, TranslatekAppend)
+{
+    const auto result = internal::fcntl_helper::OpenFlagToInteger(Fcntl::Open::kAppend);
+    EXPECT_EQ(result, O_APPEND);
 }
 
 #ifdef __linux__
