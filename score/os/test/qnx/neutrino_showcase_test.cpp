@@ -325,147 +325,6 @@ TEST_F(NeutrinoTest, TimerTimeoutCalledOnMessageSend)
         });
 }
 
-TEST_F(NeutrinoTest, TimerTimeoutCalledOnMessageSend_1)
-{
-    std::mutex client_server_sync_mutex;
-    std::condition_variable client_server_sync;
-    bool is_ready_to_connect = false;
-    bool is_ready_for_destruction = false;
-
-    auto server_thread = score::cpp::jthread(
-        [this, &is_ready_to_connect, &client_server_sync, &client_server_sync_mutex, &is_ready_for_destruction]() {
-            const auto create_server =
-                CreateNamedServer(Neutrino::ChannelFlag::kPrivate | Neutrino::ChannelFlag::kDisconnect);
-            EXPECT_TRUE(create_server.has_value());
-
-            {
-                std::lock_guard<std::mutex> lock(client_server_sync_mutex);
-                is_ready_to_connect = true;
-            }
-            client_server_sync.notify_one();
-
-            iov_t response;
-
-            char request_message[kMinMessageSize];
-            iov_t request;
-            channel_->SetIov(&request, request_message, kMinMessageSize);
-
-            const auto clock_type{Neutrino::ClockType::kRealtime};
-            const auto timeout_flag{Neutrino::TimerTimeoutFlag::kReceive};
-
-            auto channel_id = std::get<0>(create_server.value());
-            auto name_attach = std::get<1>(create_server.value());
-            auto dispatch = std::get<2>(create_server.value());
-
-            bool first_request = true;
-            while (true)
-            {
-                const auto message_receive = ReceiveMessage(
-                    channel_id, request, std::make_tuple(clock_type, timeout_flag, std::chrono::milliseconds{10}));
-                if (!message_receive.has_value())
-                {
-                    EXPECT_EQ(message_receive.error(), score::os::Error::Code::kKernelTimeout);
-                    // you don't reply if you are timed out
-                    continue;
-                }
-                else
-                {
-                    if (message_receive.value() != 0)
-                    {
-                        EXPECT_STREQ(request_message, sample_request);
-                    }
-                    else
-                    {
-                        const auto pulse = *reinterpret_cast<_pulse*>(request_message);
-                        EXPECT_EQ(pulse.code, _PULSE_CODE_DISCONNECT);
-                        // we need to destroy the internal server-client connection id mapping
-                        // keep in mind that the client coid (from MsgReceive) != scoid from this pulse
-                        const auto destroy_client = DestroyClient(pulse.scoid);
-                        EXPECT_TRUE(destroy_client.has_value());
-                        // all the clients are tied to the same process and we receive one pulse when the last client
-                        // from a process has disconnected, as stated by the QNX documentation
-                        break;
-                    }
-                }
-
-                if (first_request)
-                {
-                    std::this_thread::sleep_for(std::chrono::milliseconds{kDefaultTimerTimeoutMilliseconds + 10});
-                    char response_message[kMinMessageSize] = "SampleRespons0";
-                    channel_->SetIovConst(&response, response_message, kMinMessageSize);
-                }
-                else
-                {
-                    // SampleResponse
-                    char response_message[kMinMessageSize];
-                    memcpy(response_message, kSampleReponseMessage.c_str(), kSampleReponseMessage.size());
-                    channel_->SetIovConst(&response, response_message, kMinMessageSize);
-                }
-                const auto message_reply = ReplyMessage(message_receive.value(), response);
-                if (first_request)
-                {
-                    EXPECT_FALSE(message_reply.has_value());
-                    // we should fail to reply, the sender was timed out
-                    EXPECT_EQ(message_reply.error(), score::os::Error::Code::kNoSuchProcess);
-                    first_request = false;
-                }
-                else
-                {
-                    EXPECT_TRUE(message_reply.has_value());
-                }
-            }
-
-            const auto destroy_named_server = DestroyNamedServer(name_attach, dispatch);
-            EXPECT_TRUE(destroy_named_server.has_value());
-        });
-
-    auto client_thread = score::cpp::jthread(
-        [this, &is_ready_to_connect, &client_server_sync, &client_server_sync_mutex, &is_ready_for_destruction]() {
-            {
-                std::unique_lock<std::mutex> lock(client_server_sync_mutex);
-                client_server_sync.wait(lock, [&is_ready_to_connect]() {
-                    return is_ready_to_connect;
-                });
-            }
-
-            const auto create_client = CreateNamedServerClient();
-            EXPECT_TRUE(create_client.has_value());
-
-            iov_t request;
-            channel_->SetIovConst(&request, sample_request, kMinMessageSize);
-            char response_message[kMinMessageSize];
-            iov_t response;
-            channel_->SetIov(&response, &response_message, kMinMessageSize);
-
-            const auto clock_type{Neutrino::ClockType::kRealtime};
-            const auto timeout_flag{Neutrino::TimerTimeoutFlag::kSend | Neutrino::TimerTimeoutFlag::kReply};
-
-            // Send a message which had an error due to timeout
-            auto send_message = SendMessage(
-                create_client.value(),
-                request,
-                response,
-                std::make_tuple(clock_type, timeout_flag, std::chrono::milliseconds{kDefaultTimerTimeoutMilliseconds}));
-            EXPECT_FALSE(send_message.has_value());
-            EXPECT_EQ(send_message.error(), score::os::Error::Code::kKernelTimeout);
-
-            // Send the message once again
-            send_message = SendMessage(
-                create_client.value(),
-                request,
-                response,
-                std::make_tuple(clock_type, timeout_flag, std::chrono::milliseconds{kDefaultTimerTimeoutMilliseconds}));
-
-            // Now it should succeed
-            EXPECT_TRUE(send_message.has_value());
-            // We should receive the response specific to the current request, not the older one
-            EXPECT_STREQ(response_message, kSampleReponseMessage.c_str());
-
-            const auto destroy_client = DestroyClient(create_client.value());
-            EXPECT_TRUE(destroy_client.has_value());
-        });
-}
-
 TEST_F(NeutrinoTest, TimerTimeoutCalledOnMessageReply)
 {
     std::mutex client_server_sync_mutex;
@@ -741,68 +600,70 @@ TEST_F(NeutrinoTest, TestServerPulseOnClientShutdown)
     std::condition_variable client_server_sync;
     bool is_ready_to_connect{false};
 
-    auto server_thread = score::cpp::jthread(
-        [this, &is_ready_to_connect, &client_server_sync, &client_server_sync_mutex](const score::cpp::stop_token&) {
-            // get notified for every client which disconnects
-            const auto create_server =
-                CreateNamedServer(Neutrino::ChannelFlag::kPrivate | Neutrino::ChannelFlag::kDisconnect);
-            EXPECT_TRUE(create_server.has_value());
+    auto server_thread = score::cpp::jthread([this, &is_ready_to_connect, &client_server_sync, &client_server_sync_mutex](
+                                          const score::cpp::stop_token&) {
+        // get notified for every client which disconnects
+        const auto create_server =
+            CreateNamedServer(Neutrino::ChannelFlag::kPrivate | Neutrino::ChannelFlag::kDisconnect);
+        EXPECT_TRUE(create_server.has_value());
 
-            auto channel_id = std::get<0>(create_server.value());
-            auto name_attach = std::get<1>(create_server.value());
-            auto dispatch = std::get<2>(create_server.value());
+        auto channel_id = std::get<0>(create_server.value());
+        auto name_attach = std::get<1>(create_server.value());
+        auto dispatch = std::get<2>(create_server.value());
 
+        {
+            std::lock_guard<std::mutex> lock(client_server_sync_mutex);
+            is_ready_to_connect = true;
+        }
+        client_server_sync.notify_one();
+
+        iov_t response;
+        channel_->SetIovConst(&response, sample_response, kMinMessageSize);
+
+        char request_message[kMinMessageSize];
+        iov_t request;
+        channel_->SetIov(&request, request_message, kMinMessageSize);
+
+        const auto clock_type{Neutrino::ClockType::kRealtime};
+        const auto timeout_flag{Neutrino::TimerTimeoutFlag::kReceive};
+        while (true)
+        {
+            const auto message_receive = ReceiveMessage(
+                channel_id,
+                request,
+                std::make_tuple(clock_type, timeout_flag, std::chrono::milliseconds{kDefaultTimerTimeoutMilliseconds}));
+            if (!message_receive.has_value())
             {
-                std::lock_guard<std::mutex> lock(client_server_sync_mutex);
-                is_ready_to_connect = true;
+                EXPECT_EQ(message_receive.error(), score::os::Error::Code::kKernelTimeout);
+                // you don't reply if you are timed out
+                continue;
             }
-            client_server_sync.notify_one();
-
-            iov_t response;
-            channel_->SetIovConst(&response, sample_response, kMinMessageSize);
-
-            char request_message[kMinMessageSize];
-            iov_t request;
-            channel_->SetIov(&request, request_message, kMinMessageSize);
-
-            const auto clock_type{Neutrino::ClockType::kRealtime};
-            const auto timeout_flag{Neutrino::TimerTimeoutFlag::kReceive};
-            while (true)
+            else
             {
-                const auto message_receive = ReceiveMessage(
-                    channel_id, request, std::make_tuple(clock_type, timeout_flag, std::chrono::milliseconds{10}));
-                if (!message_receive.has_value())
+                if (message_receive.value() != 0)
                 {
-                    EXPECT_EQ(message_receive.error(), score::os::Error::Code::kKernelTimeout);
-                    // you don't reply if you are timed out
-                    continue;
+                    EXPECT_STREQ(request_message, sample_request);
                 }
                 else
                 {
-                    if (message_receive.value() != 0)
-                    {
-                        EXPECT_STREQ(request_message, sample_request);
-                    }
-                    else
-                    {
-                        const auto pulse = *reinterpret_cast<_pulse*>(request_message);
-                        EXPECT_EQ(pulse.code, _PULSE_CODE_DISCONNECT);
-                        // we need to destroy the internal server-client connection id mapping
-                        // keep in mind that the client coid (from MsgReceive) != scoid from this pulse
-                        const auto destroy_client = DestroyClient(pulse.scoid);
-                        EXPECT_TRUE(destroy_client.has_value());
-                        // all the clients are tied to the same process and we receive one pulse when the last client
-                        // from a process has disconnected, as stated by the QNX documentation
-                        break;
-                    }
+                    const auto pulse = *reinterpret_cast<_pulse*>(request_message);
+                    EXPECT_EQ(pulse.code, _PULSE_CODE_DISCONNECT);
+                    // we need to destroy the internal server-client connection id mapping
+                    // keep in mind that the client coid (from MsgReceive) != scoid from this pulse
+                    const auto destroy_client = DestroyClient(pulse.scoid);
+                    EXPECT_TRUE(destroy_client.has_value());
+                    // all the clients are tied to the same process and we receive one pulse when the last client
+                    // from a process has disconnected, as stated by the QNX documentation
+                    break;
                 }
-                const auto message_reply = ReplyMessage(message_receive.value(), response);
-                EXPECT_TRUE(message_reply.has_value());
             }
+            const auto message_reply = ReplyMessage(message_receive.value(), response);
+            EXPECT_TRUE(message_reply.has_value());
+        }
 
-            const auto destroy_named_server = DestroyNamedServer(name_attach, dispatch);
-            EXPECT_TRUE(destroy_named_server.has_value());
-        });
+        const auto destroy_named_server = DestroyNamedServer(name_attach, dispatch);
+        EXPECT_TRUE(destroy_named_server.has_value());
+    });
 
     auto client_thread = score::cpp::jthread([this, &is_ready_to_connect, &client_server_sync, &client_server_sync_mutex]() {
         {
