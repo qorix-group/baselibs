@@ -11,13 +11,13 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score-baselibs//score/language/safecpp/safe_math:compiler_features.bzl", "COMPILER_FEATURES")
 
 cc_library(
     name = "safe_math",
     srcs = ["safe_math.cpp"],
     hdrs = ["safe_math.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = ["//visibility:public"],
     deps = [
@@ -38,7 +38,7 @@ cc_library(
     name = "error",
     srcs = ["error.cpp"],
     hdrs = ["error.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/language/safecpp/safe_math:__subpackages__"],
     deps = ["@score-baselibs//score/result"],
@@ -47,7 +47,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "error_test",
     srcs = ["error_test.cpp"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/language/safecpp/safe_math:__pkg__",
     ],

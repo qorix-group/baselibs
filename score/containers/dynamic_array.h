@@ -617,6 +617,7 @@ inline auto DynamicArray<ElementType, Allocator>::GetPastTheEndIterator() const 
 }
 
 template <typename ElementType, typename Allocator>
+// coverity[autosar_cpp14_a0_1_3_violation] false-positive: used in data(), GetPastTheEndIterator()
 inline auto DynamicArray<ElementType, Allocator>::GetFirstElement(const pointer dynamic_array,
                                                                   const std::size_t dynamic_array_size) -> iterator
 {
@@ -628,6 +629,7 @@ inline auto DynamicArray<ElementType, Allocator>::GetFirstElement(const pointer 
 }
 
 template <typename ElementType, typename Allocator>
+// coverity[autosar_cpp14_a0_1_3_violation] false-positive: used in data(), GetPastTheEndIterator()
 inline auto DynamicArray<ElementType, Allocator>::GetLastElement(const pointer dynamic_array,
                                                                  const std::size_t dynamic_array_size) -> iterator
 {

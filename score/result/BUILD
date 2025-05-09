@@ -11,7 +11,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
+_COMPILER_WARNING_FEATURES = [
+    "treat_warnings_as_errors",
+    "additional_warnings",
+    "strict_warnings",
+]
 
 cc_library(
     name = "error",
@@ -25,7 +30,7 @@ cc_library(
         "error_code.h",
         "error_domain.h",
     ],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//platform/aas/ara/log:__pkg__",
@@ -40,7 +45,7 @@ cc_library(
     name = "result",
     srcs = ["result.cpp"],
     hdrs = ["result.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -60,7 +65,7 @@ cc_gtest_unit_test(
         "error_test.cpp",
         "result_test.cpp",
     ],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_WARNING_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/result:__pkg__",
     ],

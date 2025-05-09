@@ -10,23 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@score-baselibs//score/os:common_features.bzl", "COMPILER_WARNING_FEATURES")
-
-cc_binary(
-    name = "permission_check",
-    srcs = [
-        "permission_check.cpp",
-    ],
-    data = [],
-    features = COMPILER_WARNING_FEATURES + [
-        "aborts_upon_exception",
-    ],
-    visibility = [
-        # "@ddad@score-baselibs//score/memory:__subpackages__",
-    ],
-    deps = [
-        "@score-baselibs//score/memory/shared",
-        "@score-baselibs//score/mw/log",
-        "@score-baselibs//score/language/futurecpp",
-    ],
-)
+COMPILER_FEATURES = [
+    "treat_warnings_as_errors",
+    "strict_warnings",
+    "additional_warnings",
+]

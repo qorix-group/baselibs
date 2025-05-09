@@ -10,7 +10,9 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-COMPILER_WARNING_FEATURES = [
+visibility("//score/language/safecpp/safe_math/...")
+
+COMPILER_FEATURES = [
     "treat_warnings_as_errors",
     "strict_warnings",
     "additional_warnings",

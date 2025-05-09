@@ -10,8 +10,14 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+
 load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
+COMMON_FEATURES = [
+    "treat_warnings_as_errors",
+    "strict_warnings",
+    "additional_warnings",
+]
 
 string_flag(
     name = "base_library",
@@ -46,7 +52,7 @@ cc_library(
         "json_parser.h",
         "json_writer.h",
     ],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMMON_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -66,7 +72,7 @@ cc_library(
         "json_parser.cpp",
         "json_writer.cpp",
     ],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMMON_FEATURES,
     local_defines = select({
         ":base_library_nlohmann": ["NLOHMANN"],
         ":base_library_vajson": ["VAJSON"],
@@ -87,7 +93,7 @@ cc_library(
     name = "json_serializer",
     srcs = ["json_serializer.cpp"],
     hdrs = ["json_serializer.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMMON_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -126,7 +132,7 @@ cc_library(
         "i_json_parser_mock.h",
         "i_json_writer_mock.h",
     ],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMMON_FEATURES,
     visibility = [
         "@score-baselibs//score/json:__subpackages__",
         # "@ddad@score-baselibs//score/json:__subpackages__",
@@ -142,7 +148,7 @@ cc_test(
     srcs = [
         "json_test.cpp",
     ],
-    features = COMPILER_WARNING_FEATURES + ["aborts_upon_exception"],
+    features = COMMON_FEATURES + ["aborts_upon_exception"],
     tags = ["unit"],
     visibility = [
         "@score-baselibs//score/json:__pkg__",
@@ -175,7 +181,7 @@ cc_test(
     srcs = [
         "json_writer_test.cpp",
     ],
-    features = COMPILER_WARNING_FEATURES + [
+    features = COMMON_FEATURES + [
         "test_warnings",
         "aborts_upon_exception",
     ],
@@ -196,7 +202,7 @@ cc_test(
     srcs = [
         "json_serializer_test.cpp",
     ],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMMON_FEATURES,
     tags = ["unit"],
     visibility = [
         # "@ddad@score-baselibs//score/json:__pkg__",

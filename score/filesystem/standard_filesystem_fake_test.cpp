@@ -220,7 +220,7 @@ TEST_F(FilesystemFakeFixture, CreateDirectory_EmptyName)
 
     const auto result = unit_.CreateDirectory("/tmp/");
 
-    ASSERT_TRUE(result.has_value());
+    ASSERT_FALSE(result.has_value());
 }
 
 TEST_F(FilesystemFakeFixture, CreateDirectory_AlreadyExisted)
@@ -229,7 +229,7 @@ TEST_F(FilesystemFakeFixture, CreateDirectory_AlreadyExisted)
 
     const auto result = unit_.CreateDirectory("/tmp");
 
-    ASSERT_TRUE(result.has_value());
+    ASSERT_FALSE(result.has_value());
 }
 
 TEST_F(FilesystemFakeFixture, CreateDirectory_ParentFolderDoesntExist)

@@ -11,13 +11,13 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load(":compiler_features.bzl", "COMPILER_FEATURES")
 
 cc_library(
     name = "allocator_wrapper",
     srcs = ["allocator_wrapper.cpp"],
     hdrs = ["allocator_wrapper.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/language/safecpp/scoped_function:__pkg__"],
     deps = ["@score-baselibs//score/language/futurecpp"],
@@ -26,7 +26,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "allocator_wrapper_test",
     srcs = ["allocator_wrapper_test.cpp"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
     ],
@@ -41,7 +41,7 @@ cc_library(
     name = "allocator_aware_erased_type",
     srcs = ["allocator_aware_erased_type.cpp"],
     hdrs = ["allocator_aware_erased_type.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/language/safecpp/scoped_function:__pkg__"],
     deps = [
@@ -54,7 +54,7 @@ cc_library(
     name = "allocator_aware_type_erasure_pointer",
     srcs = ["allocator_aware_type_erasure_pointer.cpp"],
     hdrs = ["allocator_aware_type_erasure_pointer.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/language/safecpp/scoped_function:__pkg__"],
     deps = [
@@ -67,7 +67,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "allocator_aware_type_erasure_pointer_test",
     srcs = ["allocator_aware_type_erasure_pointer_test.cpp"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
     ],
@@ -83,7 +83,7 @@ cc_library(
     name = "call_and_return_modified",
     srcs = ["call_and_return_modified.cpp"],
     hdrs = ["call_and_return_modified.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/language/safecpp/scoped_function:__pkg__"],
     deps = [
@@ -95,7 +95,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "call_and_return_modified_test",
     srcs = ["call_and_return_modified_test.cpp"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
     ],
@@ -109,7 +109,7 @@ cc_library(
     name = "function_wrapper",
     srcs = ["function_wrapper.cpp"],
     hdrs = ["function_wrapper.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/language/safecpp/scoped_function:__subpackages__"],
     deps = [
@@ -122,7 +122,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "function_wrapper_test",
     srcs = ["function_wrapper_test.cpp"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
     ],
@@ -138,7 +138,7 @@ cc_library(
     testonly = True,
     srcs = ["instrumented_memory_resource.cpp"],
     hdrs = ["instrumented_memory_resource.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/language/safecpp/scoped_function:__subpackages__"],
     deps = ["@score-baselibs//score/language/futurecpp"],
@@ -148,7 +148,7 @@ cc_library(
     name = "invoker",
     srcs = ["invoker.cpp"],
     hdrs = ["invoker.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/language/safecpp/scoped_function:__subpackages__"],
     deps = ["@score-baselibs//score/language/futurecpp"],
@@ -158,7 +158,7 @@ cc_library(
     name = "is_callable_from",
     srcs = ["is_callable_from.cpp"],
     hdrs = ["is_callable_from.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/language/safecpp/scoped_function:__subpackages__"],
     deps = ["@score-baselibs//score/language/futurecpp"],
@@ -171,7 +171,7 @@ cc_gtest_unit_test(
         "is_callable_from_with_compatible_modifiers_test.cpp",
         "is_callable_from_with_wrong_modifiers_test.cpp",
     ],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
     ],
@@ -182,7 +182,7 @@ cc_library(
     name = "modify_return_type",
     srcs = ["modify_return_type.cpp"],
     hdrs = ["modify_return_type.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/language/safecpp/scoped_function:__pkg__"],
     deps = ["@score-baselibs//score/language/futurecpp"],
@@ -191,7 +191,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "modify_return_type_test",
     srcs = ["modify_return_type_test.cpp"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
     ],
@@ -205,7 +205,7 @@ cc_library(
     name = "modify_signature",
     srcs = ["modify_signature.cpp"],
     hdrs = ["modify_signature.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/language/safecpp/scoped_function:__pkg__"],
     deps = [
@@ -217,7 +217,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "modify_signature_test",
     srcs = ["modify_signature_test.cpp"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
     ],
@@ -232,7 +232,7 @@ cc_library(
     testonly = True,
     srcs = ["parametrization_helper.cpp"],
     hdrs = ["parametrization_helper.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/language/safecpp/scoped_function:__subpackages__"],
 )
@@ -241,7 +241,7 @@ cc_library(
     name = "scope_state",
     srcs = ["scope_state.cpp"],
     hdrs = ["scope_state.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/language/safecpp/scoped_function:__pkg__"],
     deps = ["@score-baselibs//score/language/futurecpp"],
@@ -250,7 +250,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "scope_state_test",
     srcs = ["scope_state_test.cpp"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
     ],
@@ -265,7 +265,7 @@ cc_library(
     name = "scoped_function_invoker",
     srcs = ["scoped_function_invoker.cpp"],
     hdrs = ["scoped_function_invoker.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/language/safecpp/scoped_function:__subpackages__"],
     deps = [
@@ -279,7 +279,7 @@ cc_library(
     testonly = True,
     srcs = ["testing_allocator.cpp"],
     hdrs = ["testing_allocator.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/language/safecpp/scoped_function:__subpackages__"],
 )
@@ -295,7 +295,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "type_erasure_pointer_test",
     srcs = ["type_erasure_pointer_test.cpp"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
     ],

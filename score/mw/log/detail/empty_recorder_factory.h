@@ -28,7 +28,7 @@ class EmptyRecorderFactory : public LogRecorderFactory<EmptyRecorderFactory>
 {
   public:
     EmptyRecorderFactory() = default;
-    explicit EmptyRecorderFactory(score::cpp::pmr::unique_ptr<score::os::Fcntl> fcntl_instance);
+    EmptyRecorderFactory(score::cpp::pmr::unique_ptr<score::os::Fcntl> fcntl_instance);
     std::unique_ptr<Recorder> CreateConcreteLogRecorder(const Configuration& config,
                                                         score::cpp::pmr::memory_resource* memory_resource);
 };

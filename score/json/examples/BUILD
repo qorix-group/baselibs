@@ -10,7 +10,11 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+COMMON_FEATURES = [
+    "treat_warnings_as_errors",
+    "strict_warnings",
+    "additional_warnings",
+]
 
 cc_test(
     name = "json_object",
@@ -22,7 +26,7 @@ cc_test(
         "example.json",
         "logging.json",
     ],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMMON_FEATURES,
     # This is not a unit test, but with this tag we ensure the program is checked in the CI to prevent breaking changes.
     # It will not be accounted for unit test coverage as we do not add it here: `@score-baselibs//score/json:unit_tests`
     tags = ["unit"],
@@ -43,7 +47,7 @@ cc_test(
         "example.json",
         "logging.json",
     ],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMMON_FEATURES,
     # This is not a unit test, but with this tag we ensure the program is checked in the CI to prevent breaking changes.
     # It will not be accounted for unit test coverage as we do not add it here: `@score-baselibs//score/json:unit_tests`
     tags = ["unit"],
@@ -63,7 +67,7 @@ cc_test(
     data = [
         "logging.json",
     ],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMMON_FEATURES,
     # This is not a unit test, but with this tag we ensure the program is checked in the CI to prevent breaking changes.
     # It will not be accounted for unit test coverage as we do not add it here: `@score-baselibs//score/json:unit_tests`
     tags = ["unit"],
