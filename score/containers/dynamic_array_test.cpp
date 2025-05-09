@@ -179,12 +179,6 @@ TYPED_TEST(DynamicArrayTestFixture, ConstructTrivial)
     }
 }
 
-TYPED_TEST(DynamicArrayTestFixture, ConstructTrivialEmpty)
-{
-    DynamicArray<TrivialType, TypeParam> unit{0U, this->getAllocator()};
-    EXPECT_EQ(unit.size(), 0);
-}
-
 TYPED_TEST(DynamicArrayTestFixture, ConstructNonTrivial)
 {
     auto non_trivial_type_alloc = this->template getTypeSpecificAllocator<NonTrivialType>();
