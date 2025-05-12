@@ -46,6 +46,7 @@ class FileFactoryTest : public ::testing::Test
     void InitializeTempDir()
     {
         // First, check whether we have TEST_TMPDIR (which is set by Bazel)
+        // coverity[autosar_cpp14_m18_0_3_violation] Test code, not a problem to use getenv.
         auto* env_tmpdir = std::getenv("TEST_TMPDIR");
         if (env_tmpdir != nullptr)
         {

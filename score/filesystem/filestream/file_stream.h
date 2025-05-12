@@ -29,8 +29,12 @@ namespace score::filesystem
 class FileStream : public std::iostream
 {
   public:
-    explicit FileStream(details::StdioFileBuf* filebuf) : std::iostream{filebuf} {}
+    explicit FileStream(details::StdioFileBuf* filebuf) : std::basic_ios<char>::basic_ios(), std::iostream(filebuf) {}
     ~FileStream() override = default;
+    FileStream(const FileStream&) = delete;
+    FileStream& operator=(const FileStream&) = delete;
+    FileStream(FileStream&& other) = default;
+    FileStream& operator=(FileStream&& other) = default;
 
     ResultBlank Close();
 };
@@ -44,7 +48,7 @@ class FileStreamImpl : public FileStream
 {
   public:
     template <typename... Args>
-    explicit FileStreamImpl(Args&&... args) : FileStream{&buf_}, buf_{std::forward<Args>(args)...}
+    explicit FileStreamImpl(Args&&... args) : std::basic_ios<char>::basic_ios(), FileStream(&buf_), buf_(std::forward<Args>(args)...)
     {
     }
 
@@ -58,11 +62,13 @@ class FileStreamImpl : public FileStream
 
     ~FileStreamImpl() override
     {
+        // It's pointless to test the result of Close() here, because we are in the destructor.
+        // coverity[autosar_cpp14_a0_1_2_violation]
         Close();
     }
 
     FileStreamImpl& operator=(const FileStreamImpl&) = delete;
-    FileStreamImpl(FileStreamImpl&& other) noexcept(false) : FileStream{&buf_}, buf_{std::move(other.buf_)} {}
+    FileStreamImpl(FileStreamImpl&& other) noexcept(false) : FileStream(&buf_), buf_(std::move(other.buf_)) {}
 
   private:
     Buf buf_;
