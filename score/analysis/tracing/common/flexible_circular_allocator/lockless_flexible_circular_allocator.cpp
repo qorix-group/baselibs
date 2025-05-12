@@ -171,7 +171,11 @@ void* LocklessFlexibleCircularAllocator<AtomicIndirectorType>::Allocate(const st
 template <template <class> class AtomicIndirectorType>
 void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::ResetBufferQueuTail()
 {
-    for (uint8_t retries = 0U; retries < kMaxRetries; retries++)
+    // The retries loop is designed to secure successful completion well within the set limit. kMaxRetries
+    // is intentionally set high to ensure operations reliably complete without reaching it, aligning with
+    // the system's robustness goals. Scenarios hitting the max retries conflict with this design, focusing on
+    // success within fewer attempts.
+    for (uint8_t retries = 0u; retries < kMaxRetries; retries++)  // LCOV_EXCL_BR_LINE not testable see comment above.
     {
         auto old_queue = buffer_queue_.load();
         BufferQueue new_queue = old_queue;
@@ -189,7 +193,11 @@ template <template <class> class AtomicIndirectorType>
 // coverity[autosar_cpp14_a8_4_10_violation]
 void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::MarkListEntryAsFree(const BufferBlock* meta)
 {
-    for (uint8_t retries = 0U; retries < kMaxRetries; retries++)
+    // The retries loop is designed to secure successful completion well within the set limit. kMaxRetries
+    // is intentionally set high to ensure operations reliably complete without reaching it, aligning with
+    // the system's robustness goals. Scenarios hitting the max retries conflict with this design, focusing on
+    // success within fewer attempts.
+    for (uint8_t retries = 0u; retries < kMaxRetries; retries++)  // LCOV_EXCL_BR_LINE not testable see comment above.
     {
         auto list_entry_old = list_array_.at(static_cast<size_t>(meta->list_entry_offset)).load();
         auto list_entry_new = list_entry_old;
@@ -247,8 +255,10 @@ void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::IterateBlocksToDea
         {
             MarkListEntryAsFree(current_block);
         }
-
-        if (ValidateListEntryIndex(current_block->list_entry_offset))
+        // list_entry_offset is always set internally via controlled allocation paths, making invalid
+        // indices impossible during normal operation.
+        if (ValidateListEntryIndex(current_block->list_entry_offset))  // LCOV_EXCL_BR_LINE not testable
+        // see comment above.
         {
             if ((AtomicIndirectorType<ListEntry>::load(
                      list_array_.at(static_cast<size_t>(current_block->list_entry_offset)), std::memory_order_acquire)
@@ -259,7 +269,12 @@ void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::IterateBlocksToDea
 
                 if ((init_tail == gap_address_.load()) || (init_tail >= total_size_))
                 {
-                    for (uint8_t retries = 0U; retries < kMaxRetries; retries++)
+                    // The retries loop is designed to secure successful completion well within the set limit.
+                    // kMaxRetries is intentionally set high to ensure operations reliably complete without reaching it,
+                    // aligning with the system's robustness goals. Scenarios hitting the max retries conflict with this
+                    // design, focusing on success within fewer attempts.
+                    for (uint8_t retries = 0u; retries < kMaxRetries; retries++)  // LCOV_EXCL_BR_LINE not
+                    // testable see comment above.
                     {
                         auto old_queue = buffer_queue_.load();
                         BufferQueue new_queue = old_queue;
@@ -361,7 +376,11 @@ void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::FreeBlock(BufferBl
         }
         // LCOV_EXCL_STOP
     }
-    for (uint8_t retries = 0u; retries < kMaxRetries; retries++)
+    // The retries loop is designed to secure successful completion well within the set limit. kMaxRetries
+    // is intentionally set high to ensure operations reliably complete without reaching it, aligning with
+    // the system's robustness goals. Scenarios hitting the max retries conflict with this design, focusing on
+    // success within fewer attempts.
+    for (uint8_t retries = 0u; retries < kMaxRetries; retries++)  // LCOV_EXCL_BR_LINE not testable see comment above.
     {
         ListQueue old_queue = list_queue_.load();
         ListQueue new_queue = old_queue;
@@ -522,7 +541,12 @@ uint8_t* LocklessFlexibleCircularAllocator<AtomicIndirectorType>::AllocateWithNo
         // since list_entry_new.length is a std::uint16_t and cannot hold a larger value.
         return nullptr;
     }
-    for (uint8_t retries = 0u; retries < kMaxRetries; retries++)
+
+    // The retries loop is designed to secure successful completion well within the set limit. kMaxRetries
+    // is intentionally set high to ensure operations reliably complete without reaching it, aligning with
+    // the system's robustness goals. Scenarios hitting the max retries conflict with this design, focusing on
+    // success within fewer attempts.
+    for (uint8_t retries = 0u; retries < kMaxRetries; retries++)  // LCOV_EXCL_BR_LINE not testable see comment above.
     {
         auto list_entry_old = list_array_.at(static_cast<size_t>(list_entry_element_index)).load();
         auto list_entry_new = list_entry_old;

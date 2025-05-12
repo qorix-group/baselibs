@@ -19,13 +19,7 @@ cc_library(
         "strict_warnings",
         "additional_warnings",
     ],
-    visibility = [
-        "@score-baselibs//score/analysis:__subpackages__",
-        "//platform/aas/ara/IPCTraceAdapter/details/test/ut:__subpackages__",
-        "//platform/aas/mw/com:__subpackages__",
-        # "@ddad@score-baselibs//score/analysis/tracing/library/generic_trace_api/mocks:__subpackages__",
-        "@safe_posix_platform@score-baselibs//score/analysis/tracing:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         "@score-baselibs//score/analysis/tracing/library/generic_trace_api:generic_trace_api_stub",
         "@googletest//:gtest_main",

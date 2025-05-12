@@ -24,12 +24,7 @@ cc_library(
         "additional_warnings",
     ],
     tags = ["FFI"],
-    visibility = [
-        "@score-baselibs//score/analysis:__subpackages__",
-        "//platform/aas/ara:__subpackages__",
-        "//platform/aas/mw/com:__subpackages__",
-        # "@ddad@score-baselibs//score/analysis:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":trace_library_interface",
         "@score-baselibs//score/language/futurecpp",
