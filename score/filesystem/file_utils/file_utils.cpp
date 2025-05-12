@@ -71,51 +71,31 @@ FileUtils::FileUtils(IStandardFilesystem& standard_filesystem, IFileFactory& fil
 // coverity[autosar_cpp14_a15_5_3_violation : FALSE]
 ResultBlank FileUtils::CreateDirectory(const Path& path, const score::os::Stat::Mode perms) const noexcept
 {
-    const Result<filesystem::FileStatus> status = standard_filesystem_.Status(path);
-    if (status.has_value())
+    const auto is_directory_result = standard_filesystem_.IsDirectory(path);
+    if (!is_directory_result.has_value())
     {
-        if (status.value().Type() == filesystem::FileType::kDirectory)
-        {
-            if (status.value().Permissions() == perms)
-            {
-                return {};
-            }
-            return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory, "Directory exists but with wrong permissions");
-        }
-
-        if (status.value().Type() == filesystem::FileType::kNotFound)
-        {
-            if (!standard_filesystem_.CreateDirectory(path).has_value())
-            {
-                return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory);
-            }
-            if (!standard_filesystem_.Permissions(path, perms, PermOptions::kReplace).has_value())
-            {
-                return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory, "Failed to set permissions");
-            }
-            return {};
-        }
-        return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory, "Path already exists and is not a directory");
+        return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory, "Failed to check 'is directory'");
     }
-    return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory, "Failed to retrieve status");
+    if (!is_directory_result.value())
+    {
+        if (!standard_filesystem_.CreateDirectory(path).has_value())
+        {
+            return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory);
+        }
+        if (!standard_filesystem_.Permissions(path, perms, PermOptions::kReplace).has_value())
+        {
+            return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory, "Failed to set permissions");
+        }
+    }
+    return {};
 }
 
-// Implicit call in .value(). Call does not issue terminate because of
-// previous check in algorithm.
-// coverity[autosar_cpp14_a15_5_3_violation]
 ResultBlank FileUtils::CreateDirectories(const Path& path, const score::os::Stat::Mode perms) const noexcept
 {
     // For the purpose of Ticket-172058 fix, we need to save the existing APIs,
     // thus we keep these values as predefined constants. The maximum accumulated delay for path creation is 140ms
-    constexpr std::int64_t kCreationRetryInitialDelayMilliseconds = 20;
-    constexpr std::int64_t kCreationRetryInitialDelayMicroseconds = kCreationRetryInitialDelayMilliseconds * 1000;
-    constexpr std::int64_t kCreationRetryInitialDelayNanoseconds = kCreationRetryInitialDelayMicroseconds * 1000;
+    constexpr std::int64_t kCreationRetryInitialDelayNanoseconds = 20 * 1000 * 1000;
     constexpr std::uint32_t kCreationRetryLimit = 3U;
-    constexpr std::int64_t kCreationRetryFactor = 2;
-    constexpr std::int64_t kNanosecondsPerSecond = 1000000000;
-    static_assert(
-        kCreationRetryInitialDelayNanoseconds * kCreationRetryFactor * kCreationRetryLimit < kNanosecondsPerSecond,
-        "Delay may exceed one second, breaking algorithm");
 
     timespec creation_retry_delay{0, kCreationRetryInitialDelayNanoseconds};
     std::uint32_t creation_retry_counter = kCreationRetryLimit;
@@ -131,41 +111,26 @@ ResultBlank FileUtils::CreateDirectories(const Path& path, const score::os::Stat
     {
         if (part_path.Empty())
         {
-            // coverity[autosar_cpp14_m6_6_3_violation] This is a well-formed for loop for C++17 upwards
             continue;  // for last empty part of path (for example, 'for/bar/')
         }
         parent_path /= part_path;
         if (do_skip_root_path)
         {
             do_skip_root_path = false;
-            // coverity[autosar_cpp14_m6_6_3_violation] This is a well-formed for loop for C++17 upwards
             continue;
         }
 
         // internal loop just to handle (accumulating across the whole path) retry attempts
         while (true)
         {
-            // For parent directories of the final path we accept that they exist with whatever permissions
-            if (parent_path != path)
-            {
-                const auto exists = standard_filesystem_.IsDirectory(parent_path);
-                if (exists.has_value() && exists.value())
-                {
-                    break;
-                }
-            }
-
             const auto result = CreateDirectory(parent_path, perms);
             if (!result.has_value())
             {
-                if (creation_retry_counter != 0U)
+                if (creation_retry_counter != 0)
                 {
                     --creation_retry_counter;
                     std::ignore = os::Unistd::instance().nanosleep(&creation_retry_delay, nullptr);
-                    // coverity[autosar_cpp14_a4_7_1_violation] Values are chosen to not lead to data loss
-                    creation_retry_delay.tv_nsec *= kCreationRetryFactor;  // shall not be larger than 1 second
-
-                    // coverity[autosar_cpp14_m6_6_3_violation] This is a well-formed for loop for C++17 upwards
+                    creation_retry_delay.tv_nsec *= 2;  // shall not be larger than 1 second
                     continue;
                 }
                 return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory);
