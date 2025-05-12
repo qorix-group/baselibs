@@ -36,11 +36,9 @@ namespace score
 namespace os
 {
 
-Spinlock::Spinlock() noexcept : atomic_lock(false) {} /* KW_SUPPRESS:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE:False positive*/
+Spinlock::Spinlock() noexcept : atomic_lock(false) {}
 
-/* KW_SUPPRESS_START:MISRA.OBJ.TYPE.IDENT: False positive, method has the same declaration */
 Spinlock::~Spinlock() noexcept = default;
-/* KW_SUPPRESS_END:MISRA.OBJ.TYPE.IDENT: */
 
 bool Spinlock::try_lock() noexcept
 {

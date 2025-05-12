@@ -13,7 +13,6 @@
 #include "gtest/gtest.h"
 #ifdef NLOHMANN
 
-#include "amsr/json/util/number.h"
 #include "score/json/internal/parser/nlohmann/nlohmann_parser.h"
 #include "score/json/internal/parser/number_parser_test_suite.h"
 

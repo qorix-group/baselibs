@@ -29,10 +29,10 @@ cc_library(
     }),
     visibility = [
         "//ecu/xpad/ara:__subpackages__",
-        "//score/os/linux/utils/mocklib:__subpackages__",
-        "//score/os/linux/utils/test:__subpackages__",
+        "@score-baselibs//score/os/linux/utils/mocklib:__subpackages__",
+        "@score-baselibs//score/os/linux/utils/test:__subpackages__",
         "//platform/aas/pas/sysmon:__subpackages__",
-        # "@ddad//score/os/linux/utils:__subpackages__",
+        # "@ddad@score-baselibs//score/os/linux/utils:__subpackages__",
     ],
     deps = select({
         "//bazel/platforms:config_xpad_dnv": [],
@@ -40,8 +40,8 @@ cc_library(
             "//third_party/libseccomp2",
         ],
     }) + [
-        "//score/os:stat",
-        "//score/os/linux",
+        "@score-baselibs//score/os:stat",
+        "@score-baselibs//score/os/linux",
         "@score-baselibs//score/language/futurecpp",
     ],
 )

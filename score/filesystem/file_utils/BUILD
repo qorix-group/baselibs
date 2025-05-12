@@ -29,19 +29,19 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/filesystem:__subpackages__",
-        # "@ddad//score/filesystem:__subpackages__",
+        "@score-baselibs//score/filesystem:__subpackages__",
+        # "@ddad@score-baselibs//score/filesystem:__subpackages__",
     ],
     deps = [
-        "//score/filesystem:error",
-        "//score/filesystem:path",
-        "//score/filesystem:standard_filesystem",
-        "//score/os:fcntl",
-        "//score/os:grp",
-        "//score/os:object_seam",
-        "//score/os:stat",
-        "//score/os:stdlib",
-        "//score/result",
+        "@score-baselibs//score/filesystem:error",
+        "@score-baselibs//score/filesystem:path",
+        "@score-baselibs//score/filesystem:standard_filesystem",
+        "@score-baselibs//score/os:fcntl",
+        "@score-baselibs//score/os:grp",
+        "@score-baselibs//score/os:object_seam",
+        "@score-baselibs//score/os:stat",
+        "@score-baselibs//score/os:stdlib",
+        "@score-baselibs//score/result",
     ],
 )
 
@@ -51,7 +51,7 @@ cc_library(
     srcs = ["file_utils_fake.cpp"],
     hdrs = ["file_utils_fake.h"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = ["//score/filesystem:__subpackages__"],
+    visibility = ["@score-baselibs//score/filesystem:__subpackages__"],
     deps = [
         ":mock",
     ],
@@ -67,7 +67,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//score/filesystem:__subpackages__",
+        "@score-baselibs//score/filesystem:__subpackages__",
     ],
     deps = [
         ":file_utils",
@@ -85,17 +85,17 @@ cc_test(
     features = COMPILER_WARNING_FEATURES,
     tags = ["unit"],
     visibility = [
-        "//score/filesystem:__pkg__",
-        # "@ddad//score/filesystem:__pkg__",
+        "@score-baselibs//score/filesystem:__pkg__",
+        # "@ddad@score-baselibs//score/filesystem:__pkg__",
     ],
     deps = [
         ":file_utils",
         ":mock",
-        "//score/filesystem:standard_filesystem_fake",
-        "//score/os/mocklib:fcntl_mock",
-        "//score/os/mocklib:grp_mock",
-        "//score/os/mocklib:stat_mock",
-        "//score/os/mocklib:unistd_mock",
+        "@score-baselibs//score/filesystem:standard_filesystem_fake",
+        "@score-baselibs//score/os/mocklib:fcntl_mock",
+        "@score-baselibs//score/os/mocklib:grp_mock",
+        "@score-baselibs//score/os/mocklib:stat_mock",
+        "@score-baselibs//score/os/mocklib:unistd_mock",
         "@googletest//:gtest_main",
     ],
 )

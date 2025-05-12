@@ -10,8 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("//score/language/safecpp/scoped_function/details:compiler_features.bzl", "COMPILER_FEATURES")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//score/language/safecpp/scoped_function/details:compiler_features.bzl", "COMPILER_FEATURES")
 
 cc_library(
     name = "scope",
@@ -24,8 +24,8 @@ cc_library(
         # "@ddad//visibility:public",
     ],
     deps = [
-        "//score/language/safecpp/scoped_function/details:allocator_wrapper",
-        "//score/language/safecpp/scoped_function/details:scope_state",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:allocator_wrapper",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:scope_state",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -35,13 +35,13 @@ cc_gtest_unit_test(
     srcs = ["scope_test.cpp"],
     features = COMPILER_FEATURES,
     visibility = [
-        # "@ddad//score/language/safecpp/scoped_function:__pkg__",
+        # "@ddad@score-baselibs//score/language/safecpp/scoped_function:__pkg__",
     ],
     deps = [
         ":copyable_scoped_function",
         ":move_only_scoped_function",
         ":scope",
-        "//score/language/safecpp/scoped_function/details:instrumented_memory_resource",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:instrumented_memory_resource",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -58,13 +58,13 @@ cc_library(
     ],
     deps = [
         ":scope",
-        "//score/language/safecpp/scoped_function/details:allocator_aware_type_erasure_pointer",
-        "//score/language/safecpp/scoped_function/details:function_wrapper",
-        "//score/language/safecpp/scoped_function/details:invoker",
-        "//score/language/safecpp/scoped_function/details:is_callable_from",
-        "//score/language/safecpp/scoped_function/details:modify_signature",
-        "//score/language/safecpp/scoped_function/details:scope_state",
-        "//score/language/safecpp/scoped_function/details:scoped_function_invoker",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:allocator_aware_type_erasure_pointer",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:function_wrapper",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:invoker",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:is_callable_from",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:modify_signature",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:scope_state",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:scoped_function_invoker",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -82,13 +82,13 @@ cc_library(
     deps = [
         ":copyable_scoped_function",
         ":scope",
-        "//score/language/safecpp/scoped_function/details:allocator_aware_type_erasure_pointer",
-        "//score/language/safecpp/scoped_function/details:function_wrapper",
-        "//score/language/safecpp/scoped_function/details:invoker",
-        "//score/language/safecpp/scoped_function/details:is_callable_from",
-        "//score/language/safecpp/scoped_function/details:modify_signature",
-        "//score/language/safecpp/scoped_function/details:scope_state",
-        "//score/language/safecpp/scoped_function/details:scoped_function_invoker",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:allocator_aware_type_erasure_pointer",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:function_wrapper",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:invoker",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:is_callable_from",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:modify_signature",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:scope_state",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:scoped_function_invoker",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -103,14 +103,14 @@ cc_gtest_unit_test(
     ],
     features = COMPILER_FEATURES,
     visibility = [
-        # "@ddad//score/language/safecpp/scoped_function:__pkg__",
+        # "@ddad@score-baselibs//score/language/safecpp/scoped_function:__pkg__",
     ],
     deps = [
         ":copyable_scoped_function",
         ":move_only_scoped_function",
-        "//score/language/safecpp/scoped_function/details:instrumented_memory_resource",
-        "//score/language/safecpp/scoped_function/details:parametrization_helper",
-        "//score/language/safecpp/scoped_function/details:testing_allocator",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:instrumented_memory_resource",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:parametrization_helper",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:testing_allocator",
         "@score-baselibs//score/language/futurecpp",
     ],
 )

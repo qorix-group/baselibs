@@ -10,7 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
 
 cc_gtest_unit_test(
     name = "intrusive_list_test",
@@ -21,7 +21,7 @@ cc_gtest_unit_test(
         "additional_warnings",
     ],
     visibility = [
-        # "@ddad//score/containers:__subpackages__",
+        # "@ddad@score-baselibs//score/containers:__subpackages__",
     ],
     deps = [":intrusivelist"],
 )
@@ -35,13 +35,13 @@ cc_gtest_unit_test(
         "additional_warnings",
     ],
     visibility = [
-        # "@ddad//score/containers:__subpackages__",
+        # "@ddad@score-baselibs//score/containers:__subpackages__",
     ],
     deps = [
         ":dynamic_array",
-        "//score/memory/shared:fake_memory_resources",
-        "//score/memory/shared:types",
-        "//score/mw/log",
+        "@score-baselibs//score/memory/shared:fake_memory_resources",
+        "@score-baselibs//score/memory/shared:types",
+        "@score-baselibs//score/mw/log",
     ],
 )
 
@@ -57,7 +57,7 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
-        # "@ddad//score/containers:__subpackages__",
+        # "@ddad@score-baselibs//score/containers:__subpackages__",
     ],
     deps = ["@score-baselibs//score/language/futurecpp"],
 )
@@ -74,7 +74,7 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
-        # "@ddad//score/containers:__subpackages__",
+        # "@ddad@score-baselibs//score/containers:__subpackages__",
     ],
     deps = ["@score-baselibs//score/language/futurecpp"],
 )

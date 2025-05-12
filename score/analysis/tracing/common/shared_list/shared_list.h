@@ -130,7 +130,9 @@ class alignas(std::max_align_t) List
      */
     void DeallocateNode(Node* node)
     {
-        if (node != nullptr)
+        // when ResolveOffset(head_offset_) returns nullptr initially, the loop won't execute, and
+        // DeallocateNode won't be called so this condition always evaluate to true.
+        if (node != nullptr)  // LCOV_EXCL_BR_LINE not testable see comment above.
         {
             score::cpp::ignore = flexible_allocator_->Deallocate(static_cast<void*>(node), sizeof(Node));
         }

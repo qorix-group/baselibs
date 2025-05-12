@@ -23,10 +23,13 @@ cc_test(
         "network_interface_test.cpp",
     ],
     tags = ["unit"],
+    visibility = [
+        # "@ddad@score-baselibs//score/os/linux/utils/test:__subpackages__",
+    ],
     deps = [
-        "//score/os/linux/utils/mocklib:network_interface_mock",
-        "//score/os/mocklib:nonposixwrapper_mock",
-        "//score/os/mocklib:stat_mock",
+        "@score-baselibs//score/os/linux/utils/mocklib:network_interface_mock",
+        "@score-baselibs//score/os/mocklib:nonposixwrapper_mock",
+        "@score-baselibs//score/os/mocklib:stat_mock",
         "@googletest//:gtest_main",
-    ] + ["//score/os/linux/utils:network_interface"],
+    ] + ["@score-baselibs//score/os/linux/utils:network_interface"],
 )

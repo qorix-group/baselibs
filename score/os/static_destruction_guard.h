@@ -103,15 +103,10 @@ class StaticDestructionGuard
     StaticDestructionGuard(StaticDestructionGuard&&) noexcept = default;
     StaticDestructionGuard& operator=(StaticDestructionGuard&&) noexcept = default;
 
-  private: /* KW_SUPPRESS:MISRA.USE.EXPANSION:False postive as private is an access specifier, not macro */
+  private:
     static std::int32_t& GetCounter()
     {
-        /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Variable is identifiable through namespace usage */
-        /* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: */
-        /* False Positive - variable counter is declared on separate line  */
         static std::int32_t counter;
-        /* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: */
-        /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Variable is identifiable through namespace usage */
         return counter;
     }
 };

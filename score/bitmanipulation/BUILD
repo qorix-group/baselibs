@@ -21,7 +21,7 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/bitmanipulation:__pkg__",
+        # "@ddad@score-baselibs//score/bitmanipulation:__pkg__",
     ],
     deps = [
         ":bitmanipulation",
@@ -40,7 +40,7 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/bitmanipulation:__pkg__",
+        # "@ddad@score-baselibs//score/bitmanipulation:__pkg__",
     ],
     deps = [
         ":bitmask_operators",

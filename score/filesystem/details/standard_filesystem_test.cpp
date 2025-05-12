@@ -101,6 +101,11 @@ class FilesystemFixture : public ::testing::Test
         EXPECT_CALL(*stat_mock_, fchmodat(_, _, mode, _)).WillOnce(Return(score::cpp::expected_blank<os::Error>{}));
     }
 
+    void ExpectNoFcmodat()
+    {
+        EXPECT_CALL(*stat_mock_, fchmodat(_, _, _, _)).Times(0);
+    }
+
     void ExpectStatusEqual(const mode_t mode, std::pair<FileType, Perms> expected_mode)
     {
         ExpectStatWith(mode);
@@ -1120,6 +1125,15 @@ TEST_F(TempDirectory, NoEnvExists)
 }
 
 using Permissions = FilesystemFixture;
+
+TEST_F(Permissions, DoesntTryToChangeSamePermissions)
+{
+    ExpectStatWith(mode_t{S_IRUSR | S_IWUSR});
+    ExpectNoFcmodat();
+    const auto result = unit_.Permissions("/foo/bar", Perms::kReadUser | Perms::kWriteUser, PermOptions::kReplace);
+
+    EXPECT_TRUE(result.has_value());
+}
 
 TEST_F(Permissions, OverWritesAnyPreviousPermissions)
 {

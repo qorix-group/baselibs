@@ -22,11 +22,11 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/analysis/tracing/common/shared_list:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis/tracing/common/shared_list:__subpackages__",
     ],
     deps = [
-        "//score/analysis/tracing/common/flexible_circular_allocator/test/mocks:flexible_circular_allocator_mock",
-        "//score/analysis/tracing/common/shared_list",
+        "@score-baselibs//score/analysis/tracing/common/flexible_circular_allocator/test/mocks:flexible_circular_allocator_mock",
+        "@score-baselibs//score/analysis/tracing/common/shared_list",
         "@googletest//:gtest_main",
     ],
 )

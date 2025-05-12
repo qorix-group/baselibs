@@ -25,12 +25,12 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//platform/aas/ara/log:__subpackages__",
-        "//score/mw/log:__subpackages__",
+        "@score-baselibs//score/mw/log:__subpackages__",
         # "@ddad//platform/aas/ara/log:__subpackages__",
-        # "@ddad//score/mw/log:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
-        "//score/memory/shared:atomic_indirector",
+        "@score-baselibs//score/memory/shared:atomic_indirector",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -43,11 +43,11 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail/wait_free_stack:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/wait_free_stack:__pkg__",
     ],
     deps = [
         ":wait_free_stack",
-        "//score/memory/shared:atomic_indirector_mock_binding",
+        "@score-baselibs//score/memory/shared:atomic_indirector_mock_binding",
         "@googletest//:gtest_main",
     ],
 )
@@ -55,5 +55,5 @@ cc_test(
 test_suite(
     name = "unit_tests",
     tests = ["unit_test"],
-    visibility = ["//score/mw/log/detail:__pkg__"],
+    visibility = ["@score-baselibs//score/mw/log/detail:__pkg__"],
 )

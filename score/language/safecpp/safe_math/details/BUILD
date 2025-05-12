@@ -10,8 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("//score/language/safecpp/safe_math:compiler_features.bzl", "COMPILER_FEATURES")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//score/language/safecpp/safe_math:compiler_features.bzl", "COMPILER_FEATURES")
 
 cc_library(
     name = "floating_point_environment",
@@ -19,10 +19,10 @@ cc_library(
     hdrs = ["floating_point_environment.h"],
     features = COMPILER_FEATURES,
     tags = ["FFI"],
-    visibility = ["//score/language/safecpp/safe_math/details:__subpackages__"],
+    visibility = ["@score-baselibs//score/language/safecpp/safe_math/details:__subpackages__"],
     deps = [
-        "//score/language/safecpp/safe_math:error",
-        "//score/result",
+        "@score-baselibs//score/language/safecpp/safe_math:error",
+        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -33,11 +33,11 @@ cc_gtest_unit_test(
     # Required to know in code if the test is running under memcheck
     features = COMPILER_FEATURES + ["memcheck_macro"],
     visibility = [
-        # "@ddad//score/language/safecpp/safe_math:__pkg__",
+        # "@ddad@score-baselibs//score/language/safecpp/safe_math:__pkg__",
     ],
     deps = [
         ":floating_point_environment",
-        "//score/language/safecpp/safe_math:error",
+        "@score-baselibs//score/language/safecpp/safe_math:error",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -48,6 +48,6 @@ cc_library(
     srcs = ["test_type_collection.cpp"],
     hdrs = ["test_type_collection.h"],
     features = COMPILER_FEATURES,
-    visibility = ["//score/language/safecpp/safe_math/details:__subpackages__"],
+    visibility = ["@score-baselibs//score/language/safecpp/safe_math/details:__subpackages__"],
     deps = ["@googletest//:gtest"],
 )

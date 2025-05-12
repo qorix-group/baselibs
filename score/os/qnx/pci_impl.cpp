@@ -68,9 +68,7 @@ score::cpp::expected<pci_devhdl_t, std::string> PciImpl::pci_device_attach(const
                                                                     const pci_attachFlags_t flags) const noexcept
 {
     pci_err_t pci_status = PCI_ERR_OK;
-    /* KW_SUPPRESS_START:MISRA.VAR.MIN.VIS: false positive, suitbale visibility for devhdl */
     const pci_devhdl_t devhdl = ::pci_device_attach(pdf, flags, &pci_status);
-    /* KW_SUPPRESS_END:MISRA.VAR.MIN.VIS: false positive, suitbale visibility for devhdl */
     if (pci_status == PCI_ERR_OK)
     {
         return devhdl;

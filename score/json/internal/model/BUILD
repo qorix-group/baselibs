@@ -36,10 +36,10 @@ cc_library(
     ],
     features = COMMON_FEATURES,
     tags = ["FFI"],
-    visibility = ["//score/json:__subpackages__"],
+    visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
-        "//score/memory:string_comparison_adaptor",
-        "//score/result",
+        "@score-baselibs//score/memory:string_comparison_adaptor",
+        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -55,8 +55,8 @@ cc_test(
     features = COMMON_FEATURES + ["aborts_upon_exception"],
     tags = ["unit"],
     visibility = [
-        "//score/json:__pkg__",
-        # "@ddad//score/json:__pkg__",
+        "@score-baselibs//score/json:__pkg__",
+        # "@ddad@score-baselibs//score/json:__pkg__",
     ],
     deps = [
         ":model",

@@ -12,10 +12,8 @@
  ********************************************************************************/
 #ifndef BASELIBS_SCORE_JSON_INTERNAL_PARSER_NUMBER_PARSER_TEST_SUITE_H
 #define BASELIBS_SCORE_JSON_INTERNAL_PARSER_NUMBER_PARSER_TEST_SUITE_H
-#include "score/json/internal/parser/vajson/vajson_parser.h"
 
 #include "gtest/gtest.h"
-#include "vajson/vajson_parser.h"
 
 #include <cmath>
 #include <cstdint>
@@ -23,6 +21,10 @@
 #include <sstream>
 #include <string>
 #include <type_traits>
+
+#include "score/json/internal/model/any.h"
+#include "score/json/internal/model/object.h"
+#include "score/result/result.h"
 
 namespace score
 {

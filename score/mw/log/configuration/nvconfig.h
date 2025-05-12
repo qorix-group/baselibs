@@ -13,9 +13,8 @@
 #ifndef SCORE_MW_LOG_NVCONFIG_H_
 #define SCORE_MW_LOG_NVCONFIG_H_
 
-#include "nvmsgdescriptor.h"
+#include "invconfig.h"
 
-#include <string>
 #include <unordered_map>
 
 namespace score
@@ -26,21 +25,14 @@ namespace log
 {
 
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
-class NvConfig
+class NvConfig : public INvConfig
 {
   public:
-    enum class ReadResult : std::uint8_t
-    {
-        kOK = 0,
-        kERROR_PARSE,
-        kERROR_CONTENT
-    };
-
     using typemap_t = std::unordered_map<std::string, config::NvMsgDescriptor>;
 
     explicit NvConfig(const std::string& file_path = "/bmw/platform/opt/datarouter/etc/class-id.json");
 
-    ~NvConfig() noexcept = default;
+    ~NvConfig() noexcept override = default;
     NvConfig(const NvConfig&) = default;
 
     NvConfig& operator=(const NvConfig& other) noexcept
@@ -67,8 +59,8 @@ class NvConfig
         return *this;
     }
 
-    ReadResult parseFromJson() noexcept;
-    const config::NvMsgDescriptor* getDltMsgDesc(const std::string& typeName) const noexcept;
+    INvConfig::ReadResult parseFromJson() noexcept override;
+    const config::NvMsgDescriptor* getDltMsgDesc(const std::string& typeName) const noexcept override;
 
     /* KW_SUPPRESS_START: MISRA.USE.EXPANSION: False positive: it is not macro. */
   private:

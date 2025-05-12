@@ -25,12 +25,6 @@ namespace os
 class SignalMock : public Signal
 {
   public:
-    /* KW_SUPPRESS_START:MISRA.MEMB.NOT_PRIVATE - False positive - Not a member but a function */
-    /* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE - False positive: MOCK macro is just one line each */
-    /* KW_SUPPRESS_START:MISRA.USE.EXPANSION - MOCK is only provided as macro */
-    /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN - No care in mocks, see actual implementation for reasoning */
-    /* KW_SUPPRESS_START:MISRA.VAR.NEEDS.CONST - False positive: anything that can be const is const. See actual
-     * implementation for additional reasoning */
     MOCK_METHOD(std::int32_t, add_termination_signal, (sigset_t&), (override));
     MOCK_METHOD(std::int32_t, pthread_sigmask, (sigset_t&), (const, override));
     MOCK_METHOD(std::int32_t,
@@ -103,12 +97,6 @@ class SignalMock : public Signal
                 (const, noexcept, override));
 
     MOCK_METHOD((score::cpp::expected<std::int32_t, Error>), SendSelfSigterm, (), (const, noexcept, override));
-    /* KW_SUPPRESS_END:MISRA.VAR.NEEDS.CONST - False positive: anything that can be const is const. See actual
-     * implementation for additional reasoning */
-    /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN - No care in mocks, see actual implementation for reasoning */
-    /* KW_SUPPRESS_END:MISRA.USE.EXPANSION - MOCK is only provided as macro */
-    /* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE - False positive: MOCK macro is just one line each */
-    /* KW_SUPPRESS_END:MISRA.MEMB.NOT_PRIVATE - False positive: Not a member but a function */
 };
 
 }  // namespace os

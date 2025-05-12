@@ -38,6 +38,7 @@ using ::testing::HasSubstr;
 using ::testing::Invoke;
 using ::testing::InvokeWithoutArgs;
 using ::testing::Return;
+using ::testing::Sequence;
 using ::testing::StartsWith;
 using ::testing::StrEq;
 using ::testing::StrNe;
@@ -150,13 +151,38 @@ TEST_F(FileUtilsTest, CreateDirectories_AbsolutePathTest)
     ASSERT_TRUE(unit_.CreateDirectories("/dir1/dir2/dir3", permissions).has_value());
 }
 
-TEST_F(FileUtilsTest, CreateDirectories_AbsolutePathFailTest)
+TEST_F(FileUtilsTest, CreateDirectories_AbsolutePathRetryTest)
+{
+    EXPECT_CALL(*filesystemMock_, IsDirectory(_)).WillRepeatedly(Return(false));
+    EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/dir1"})).WillOnce(Return(no_error));
+    EXPECT_CALL(*unistd_mock_, nanosleep(_, _)).Times(3).WillRepeatedly(Return(os_no_error));
+    Sequence s1;
+    EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/dir1/dir2"}))
+        .Times(3)
+        .InSequence(s1)
+        .WillRepeatedly(Return(error_create_directory));
+    EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/dir1/dir2"})).InSequence(s1).WillOnce(Return(no_error));
+    EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/dir1/dir2/dir3"})).WillOnce(Return(no_error));
+    EXPECT_CALL(*filesystemMock_, Permissions(Path{"/dir1"}, permissions, PermOptions::kReplace))
+        .WillOnce(Return(no_error));
+    EXPECT_CALL(*filesystemMock_, Permissions(Path{"/dir1/dir2"}, permissions, PermOptions::kReplace))
+        .WillOnce(Return(no_error));
+    EXPECT_CALL(*filesystemMock_, Permissions(Path{"/dir1/dir2/dir3"}, permissions, PermOptions::kReplace))
+        .WillOnce(Return(no_error));
+
+    ASSERT_TRUE(unit_.CreateDirectories("/dir1/dir2/dir3", permissions).has_value());
+}
+
+TEST_F(FileUtilsTest, CreateDirectories_AbsolutePathRetryFailTest)
 {
     EXPECT_CALL(*filesystemMock_, IsDirectory(_)).WillRepeatedly(Return(false));
     EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/dir1"})).WillOnce(Return(no_error));
     EXPECT_CALL(*filesystemMock_, Permissions(Path{"/dir1"}, permissions, PermOptions::kReplace))
         .WillOnce(Return(no_error));
-    EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/dir1/dir2"})).WillOnce(Return(error_create_directory));
+    EXPECT_CALL(*unistd_mock_, nanosleep(_, _)).Times(3).WillRepeatedly(Return(os_no_error));
+    EXPECT_CALL(*filesystemMock_, CreateDirectory(Path{"/dir1/dir2"}))
+        .Times(4)
+        .WillRepeatedly(Return(error_create_directory));
 
     ASSERT_FALSE(unit_.CreateDirectories("/dir1/dir2/dir3", permissions).has_value());
 }

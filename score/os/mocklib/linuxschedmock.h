@@ -25,15 +25,7 @@ class LinuxSchedMock
 {
   public:
     LinuxSchedMock();
-    /* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False positive */
-    /* KW_SUPPRESS_START:MISRA.MEMB.NOT_PRIVATE:Caused by MOCK_METHOD macros */
-    /* KW_SUPPRESS_START:MISRA.USE.EXPANSION:This implementation is intended */
-    /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Shadowing function name is intended */
     MOCK_METHOD(std::int32_t, sched_getcpu_os, ());
-    /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN */
-    /* KW_SUPPRESS_END:MISRA.USE.EXPANSION */
-    /* KW_SUPPRESS_END:MISRA.MEMB.NOT_PRIVATE */
-    /* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE */
 };
 
 } /* namespace os */

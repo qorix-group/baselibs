@@ -341,6 +341,11 @@ score::ResultBlank StandardFilesystem::Permissions(const Path& path,
     const bool do_not_follow_symlink = HasOption(PermOptions::kNoFollow);
     // coverity[autosar_cpp14_a0_1_1_violation] explicitly default-initialized to silence clang warning
     Perms new_permissions{};
+    const auto status = do_not_follow_symlink ? SymlinkStatus(path) : Status(path);
+    if (!status.has_value())
+    {
+        return score::MakeUnexpected(filesystem::ErrorCode::kCouldNotChangePermissions, "Failed stat()/lstat().");
+    }
     if (HasOption(PermOptions::kReplace))
     {
         new_permissions = permissions;
@@ -350,11 +355,6 @@ score::ResultBlank StandardFilesystem::Permissions(const Path& path,
         // LCOV_EXCL_BR_START caused by SCORE_LANGUAGE_FUTURECPP_ASSERT_PRD
         SCORE_LANGUAGE_FUTURECPP_ASSERT_PRD(HasOption(PermOptions::kAdd) || HasOption(PermOptions::kRemove));
         // LCOV_EXCL_BR_STOP
-        const auto status = do_not_follow_symlink ? SymlinkStatus(path) : Status(path);
-        if (!status.has_value())
-        {
-            return score::MakeUnexpected(filesystem::ErrorCode::kCouldNotChangePermissions, "Failed stat()/lstat().");
-        }
         new_permissions = status->Permissions();
         if (HasOption(PermOptions::kAdd))
         {
@@ -362,9 +362,12 @@ score::ResultBlank StandardFilesystem::Permissions(const Path& path,
         }
         else  // PermOptions::kRemove
         {
-            new_permissions &= ~permissions; /* KW_SUPPRESS:MISRA.BITS.NOT_UNSIGNED: false positive */
-            /* both operands are unsigned (Perms = enum class Stat::Mode : std::unit32_t) */
+            new_permissions &= ~permissions;
         }
+    }
+    if (new_permissions == status->Permissions())
+    {
+        return {};
     }
 
     // note: since lchmod() does not exist in QNX, fchmodat() is used instead of lchmod().

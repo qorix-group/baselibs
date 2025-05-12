@@ -92,6 +92,14 @@ ResultBlank FileUtils::CreateDirectory(const Path& path, const score::os::Stat::
 
 ResultBlank FileUtils::CreateDirectories(const Path& path, const score::os::Stat::Mode perms) const noexcept
 {
+    // For the purpose of Ticket-172058 fix, we need to save the existing APIs,
+    // thus we keep these values as predefined constants. The maximum accumulated delay for path creation is 140ms
+    constexpr std::int64_t kCreationRetryInitialDelayNanoseconds = 20 * 1000 * 1000;
+    constexpr std::uint32_t kCreationRetryLimit = 3U;
+
+    timespec creation_retry_delay{0, kCreationRetryInitialDelayNanoseconds};
+    std::uint32_t creation_retry_counter = kCreationRetryLimit;
+
     const Path native_path = path.LexicallyNormal();
     if (native_path.Empty())
     {
@@ -111,10 +119,23 @@ ResultBlank FileUtils::CreateDirectories(const Path& path, const score::os::Stat
             do_skip_root_path = false;
             continue;
         }
-        const auto result = CreateDirectory(parent_path, perms);
-        if (!result.has_value())
+
+        // internal loop just to handle (accumulating across the whole path) retry attempts
+        while (true)
         {
-            return result;
+            const auto result = CreateDirectory(parent_path, perms);
+            if (!result.has_value())
+            {
+                if (creation_retry_counter != 0)
+                {
+                    --creation_retry_counter;
+                    std::ignore = os::Unistd::instance().nanosleep(&creation_retry_delay, nullptr);
+                    creation_retry_delay.tv_nsec *= 2;  // shall not be larger than 1 second
+                    continue;
+                }
+                return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory);
+            }
+            break;
         }
     }
     return {};

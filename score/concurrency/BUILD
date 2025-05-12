@@ -10,8 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("//score/concurrency:compiler_featues.bzl", "COMPILER_FEATURES")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//score/concurrency:compiler_featues.bzl", "COMPILER_FEATURES")
 
 cc_library(
     name = "clock",
@@ -33,11 +33,11 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     visibility = [
-        # "@ddad//score/concurrency:__subpackages__",
+        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
     ],
     deps = [
         ":clock",
-        "//score/concurrency/future",
+        "@score-baselibs//score/concurrency/future",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -94,7 +94,7 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     visibility = [
-        # "@ddad//score/concurrency:__subpackages__",
+        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
     ],
     deps = [
         ":clock",
@@ -125,7 +125,7 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     visibility = [
-        # "@ddad//score/concurrency:__subpackages__",
+        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
     ],
     deps = [
         ":interruptible_wait",
@@ -156,7 +156,7 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     visibility = [
-        # "@ddad//score/concurrency:__subpackages__",
+        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
     ],
     deps = [
         ":notification",
@@ -175,8 +175,8 @@ cc_library(
     ],
     deps = [
         ":condition_variable",
-        "//score/os/utils/interprocess:interprocess_conditional_variable",
-        "//score/os/utils/interprocess:interprocess_mutex",
+        "@score-baselibs//score/os/utils/interprocess:interprocess_conditional_variable",
+        "@score-baselibs//score/os/utils/interprocess:interprocess_mutex",
     ],
 )
 
@@ -200,7 +200,7 @@ cc_library(
     ],
     deps = [
         ":task_result",
-        "//score/concurrency/future",
+        "@score-baselibs//score/concurrency/future",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -217,7 +217,7 @@ cc_library(
         # "@ddad//visibility:public",
     ],
     deps = [
-        "//score/concurrency/future",
+        "@score-baselibs//score/concurrency/future",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -234,7 +234,7 @@ cc_library(
     deps = [
         ":shared_task_result",
         ":task_result_base",
-        "//score/concurrency/future",
+        "@score-baselibs//score/concurrency/future",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -251,7 +251,7 @@ cc_library(
     ],
     deps = [
         ":task_result_base",
-        "//score/concurrency/future",
+        "@score-baselibs//score/concurrency/future",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -268,7 +268,7 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     visibility = [
-        # "@ddad//score/concurrency:__subpackages__",
+        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
     ],
     deps = [
         ":executor",
@@ -307,7 +307,7 @@ cc_library(
     deps = [
         ":condition_variable",
         ":executor",
-        "//score/os:pthread",
+        "@score-baselibs//score/os:pthread",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -319,11 +319,11 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     visibility = [
-        # "@ddad//score/concurrency:__subpackages__",
+        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
     ],
     deps = [
         ":thread_pool",
-        "//score/concurrency:notification",
+        "@score-baselibs//score/concurrency:notification",
     ],
 )
 
@@ -340,7 +340,7 @@ cc_library(
     deps = [
         ":condition_variable",
         ":executor",
-        "//score/os:pthread",
+        "@score-baselibs//score/os:pthread",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -352,7 +352,7 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     visibility = [
-        # "@ddad//score/concurrency:__subpackages__",
+        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
     ],
     deps = [
         ":long_running_threads_container",
@@ -383,7 +383,7 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     visibility = [
-        # "@ddad//score/concurrency:__subpackages__",
+        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
     ],
     deps = [
         ":clock",
@@ -417,7 +417,7 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     visibility = [
-        # "@ddad//score/concurrency:__subpackages__",
+        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
     ],
     deps = [
         ":clock",
@@ -459,7 +459,7 @@ cc_gtest_unit_test(
     ],
     flaky = True,  # TODO: Remove flakiness (Ticket-178835)
     visibility = [
-        # "@ddad//score/concurrency:__subpackages__",
+        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
     ],
     deps = [
         ":synchronized_queue",
@@ -485,7 +485,7 @@ cc_library(
         ":periodic_task",
         ":synchronized_queue",
         ":thread_pool",
-        "//score/concurrency/timed_executor",
-        "//score/concurrency/timed_executor:concurrent_timed_executor",
+        "@score-baselibs//score/concurrency/timed_executor",
+        "@score-baselibs//score/concurrency/timed_executor:concurrent_timed_executor",
     ],
 )

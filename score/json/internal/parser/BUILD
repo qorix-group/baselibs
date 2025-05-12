@@ -20,10 +20,10 @@ COMMON_FEATURES = [
 alias(
     name = "parser",
     actual = select({
-        "//score/json:base_library_nlohmann": "//score/json/internal/parser/nlohmann:nlohmann_parser",
-        "//score/json:base_library_vajson": "//score/json/internal/parser/vajson:vajson_parser",
+        "@score-baselibs//score/json:base_library_nlohmann": "@score-baselibs//score/json/internal/parser/nlohmann:nlohmann_parser",
+        "@score-baselibs//score/json:base_library_vajson": "@score-baselibs//score/json/internal/parser/vajson:vajson_parser",
     }),
-    visibility = ["//score/json:__pkg__"],
+    visibility = ["@score-baselibs//score/json:__pkg__"],
 )
 
 cc_library(
@@ -33,10 +33,10 @@ cc_library(
     hdrs = ["parsers_test_suite.h"],
     features = COMMON_FEATURES + ["aborts_upon_exception"],
     tags = ["unit"],
-    visibility = ["//score/json:__subpackages__"],
+    visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
-        "//score/language/safecpp/coverage_termination_handler",
-        "//score/json:json_impl",
+        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
+        "@score-baselibs//score/json:json_impl",
         "@googletest//:gtest",
     ],
 )
@@ -46,10 +46,10 @@ cc_test(
     srcs = ["json_parser_test.cpp"],
     features = COMMON_FEATURES + ["aborts_upon_exception"],
     tags = ["unit"],
-    visibility = ["//score/json:__pkg__"],
+    visibility = ["@score-baselibs//score/json:__pkg__"],
     deps = [
-        "//score/language/safecpp/coverage_termination_handler",
-        "//score/json:json_impl",
+        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
+        "@score-baselibs//score/json:json_impl",
         "@googletest//:gtest_main",
     ],
 )
@@ -61,11 +61,10 @@ cc_library(
     hdrs = ["number_parser_test_suite.h"],
     features = COMMON_FEATURES + ["aborts_upon_exception"],
     tags = ["unit"],
-    visibility = ["//score/json:__subpackages__"],
+    visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
-        "//score/language/safecpp/coverage_termination_handler",
-        "//score/json:json_impl",
-        "//score/json/internal/parser/vajson:vajson_parser",
+        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
+        "@score-baselibs//score/json:json_impl",
         "@googletest//:gtest_main",
     ],
 )
@@ -74,13 +73,13 @@ test_suite(
     name = "unit_tests",
     tests = [
         ":json_parser_test",
-        "//score/json/internal/parser/nlohmann:nlohmann_parser_test",
-        "//score/json/internal/parser/nlohmann:number_parser_test",
-        "//score/json/internal/parser/vajson:number_parser_test",
-        "//score/json/internal/parser/vajson:vajson_parser_test",
+        "@score-baselibs//score/json/internal/parser/nlohmann:nlohmann_parser_test",
+        "@score-baselibs//score/json/internal/parser/nlohmann:number_parser_test",
+        "@score-baselibs//score/json/internal/parser/vajson:number_parser_test",
+        "@score-baselibs//score/json/internal/parser/vajson:vajson_parser_test",
     ],
     visibility = [
-        "//score/json:__pkg__",
-        # "@ddad//score/json:__pkg__",
+        "@score-baselibs//score/json:__pkg__",
+        # "@ddad@score-baselibs//score/json:__pkg__",
     ],
 )

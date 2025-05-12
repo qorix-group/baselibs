@@ -31,8 +31,8 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
     ],
 )
 
@@ -56,8 +56,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":types",
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
     ],
 )
 
@@ -80,8 +80,8 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
     ],
 )
 
@@ -104,7 +104,7 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os:errno",
+        "@score-baselibs//score/os:errno",
     ],
 )
 
@@ -127,7 +127,7 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os:errno",
+        "@score-baselibs//score/os:errno",
     ],
 )
 
@@ -149,8 +149,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":types",
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
     ],
 )
 
@@ -169,13 +169,13 @@ cc_library(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
-        "//score/os:__subpackages__",
+        "@score-baselibs//score/os:__subpackages__",
         "//platform/aas/network/xnm:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
+        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
         "//third_party/libpcap",
     ],
 )
@@ -193,8 +193,8 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
     ],
 )
 
@@ -217,9 +217,9 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/bitmanipulation:bitmask_operators",
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/bitmanipulation:bitmask_operators",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
     ],
 )
 
@@ -240,15 +240,15 @@ cc_library(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
-        "//score/analysis/tracing/daemon:__subpackages__",
-        "//score/os/mocklib/qnx:__subpackages__",
-        "//score/os/test/qnx:__subpackages__",
+        "@score-baselibs//score/analysis/tracing/daemon:__subpackages__",
+        "@score-baselibs//score/os/mocklib/qnx:__subpackages__",
+        "@score-baselibs//score/os/test/qnx:__subpackages__",
         "//platform/aas/pas/hw_reg_res_mgrs:__subpackages__",
-        # "@ddad//score/os/qnx:__subpackages__",
+        # "@ddad@score-baselibs//score/os/qnx:__subpackages__",
     ],
     deps = [
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
         "//third_party/libpci",
     ],
 )
@@ -271,12 +271,12 @@ cc_library(
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
-        "//score/os:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
+        "@score-baselibs//score/os:__subpackages__",
+        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
         "//third_party/libpci_safety",
     ],
 )
@@ -299,13 +299,13 @@ cc_library(
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
-        "//score/os:__subpackages__",
+        "@score-baselibs//score/os:__subpackages__",
         "//platform/aas/pas/hw_reg_res_mgrs:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
+        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":types",
-        "//score/os:errno",
+        "@score-baselibs//score/os:errno",
     ],
 )
 
@@ -328,7 +328,7 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os:errno",
+        "@score-baselibs//score/os:errno",
     ],
 )
 
@@ -381,8 +381,8 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
         "//third_party/libsecpol",
     ],
 )
@@ -405,8 +405,8 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
     ],
 )
 
@@ -428,12 +428,12 @@ cc_library(
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
-        "//score/os/qnx:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
+        "@score-baselibs//score/os/qnx:__subpackages__",
+        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
         "//third_party/libslog2",
     ],
 )
@@ -466,8 +466,8 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
     ],
 )
 
@@ -486,13 +486,13 @@ cc_library(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
-        "//score/os/mocklib/qnx:__pkg__",
+        "@score-baselibs//score/os/mocklib/qnx:__pkg__",
         "//platform/aas/os/secpol/secpollog:__pkg__",
-        # "@ddad//score/os/qnx:__pkg__",
+        # "@ddad@score-baselibs//score/os/qnx:__pkg__",
     ],
     deps = [
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
         "//third_party/qnx:libsecpolev",
     ],
 )
@@ -516,7 +516,7 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os:errno",
+        "@score-baselibs//score/os:errno",
     ],
 )
 
@@ -539,7 +539,7 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os:errno",
+        "@score-baselibs//score/os:errno",
     ],
 )
 
@@ -562,11 +562,11 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "//platform/aas/intc/configure_persistency:__subpackages__",
-        "//score/os:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
+        "@score-baselibs//score/os:__subpackages__",
+        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
-        "//score/os:errno",
+        "@score-baselibs//score/os:errno",
         "//third_party/fscrypto",
     ],
 )

@@ -18,11 +18,11 @@ cc_library(
     target_compatible_with = ["@platforms//os:linux"],
     visibility = [
         "//platform/aas/pas/sysmon:__subpackages__",
-        # "@ddad//score/os/mocklib/linux:__subpackages__",
+        # "@ddad@score-baselibs//score/os/mocklib/linux:__subpackages__",
     ],
     deps = [
-        "//score/os/linux:linux_header",
-        "//score/os/mocklib:nonposixwrapper_mock",
+        "@score-baselibs//score/os/linux:linux_header",
+        "@score-baselibs//score/os/mocklib:nonposixwrapper_mock",
         "@googletest//:gtest_main",
         "@score-baselibs//score/language/futurecpp",
     ],

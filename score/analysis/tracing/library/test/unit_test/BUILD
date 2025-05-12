@@ -27,10 +27,11 @@ cc_test(
         "unit",
     ],
     visibility = [
-        # "@ddad//score/analysis/tracing/library:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis/tracing/library:__subpackages__",
     ],
     deps = [
-        "//score/analysis/tracing/library/generic_trace_api:generic_trace_api_stub",
+        "@score-baselibs//score/analysis/tracing/library/generic_trace_api:generic_trace_api_stub",
+        "@score-baselibs//score/analysis/tracing/library/generic_trace_api/mocks:trace_library_mock",
         "@googletest//:gtest_main",
     ],
 )

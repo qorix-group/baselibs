@@ -151,8 +151,9 @@ score::Result<SharedMemoryLocation> ShmDataChunkList::SaveToSharedMemory(
 
     const std::size_t offset = GetOffsetFromPointer(vector, memory_resource).value();
     SharedMemoryLocation result{handle, offset};
-
-    for (std::uint8_t i = 0U; i < this->Size(); i++)
+    // Tooling issue: as reported from quality team that cases where branch coverage is 100% but decision couldn't be
+    // analyzed are accepted as deviations
+    for (std::uint8_t i = 0U; i < this->Size(); i++)  // LCOV_EXCL_BR_LINE not testable see comment above.
     {
         // Suppress "AUTOSAR C++14 M5-0-3" rule findings. This rule states: "A cvalue expression shall
         // not be implicitly converted to a different underlying type"

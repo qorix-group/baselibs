@@ -25,11 +25,11 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
-        # "@ddad//score/filesystem:__pkg__",
+        # "@ddad@score-baselibs//score/filesystem:__pkg__",
     ],
     deps = [
         ":struct",
-        "//score/filesystem/factory",
+        "@score-baselibs//score/filesystem/factory",
     ],
 )
 
@@ -43,13 +43,13 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "//visibility:public",
-        # "@ddad//score/filesystem:__pkg__",
+        # "@ddad@score-baselibs//score/filesystem:__pkg__",
     ],
     deps = [
         ":standard_filesystem_fake",
-        "//score/filesystem/factory:fake",
-        "//score/filesystem/file_utils:mock",
-        "//score/filesystem/filestream:fake",
+        "@score-baselibs//score/filesystem/factory:fake",
+        "@score-baselibs//score/filesystem/file_utils:mock",
+        "@score-baselibs//score/filesystem/filestream:fake",
         "@googletest//:gtest",
     ],
 )
@@ -67,8 +67,8 @@ cc_library(
     visibility = [":__subpackages__"],
     deps = [
         ":standard_filesystem",
-        "//score/filesystem/file_utils",
-        "//score/filesystem/filestream",
+        "@score-baselibs//score/filesystem/file_utils",
+        "@score-baselibs//score/filesystem/filestream",
     ],
 )
 
@@ -91,7 +91,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [":__subpackages__"],
-    deps = ["//score/result"],
+    deps = ["@score-baselibs//score/result"],
 )
 
 cc_library(
@@ -101,7 +101,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [":__subpackages__"],
-    deps = ["//score/os:stat"],
+    deps = ["@score-baselibs//score/os:stat"],
 )
 
 cc_library(
@@ -130,13 +130,13 @@ cc_library(
         ":error",
         ":file_status",
         ":path",
-        "//score/filesystem/filestream",
-        "//score/os:dirent",
-        "//score/os:errno",
-        "//score/os:object_seam",
-        "//score/os:stdio",
-        "//score/os:stdlib",
-        "//score/os:unistd",
+        "@score-baselibs//score/filesystem/filestream",
+        "@score-baselibs//score/os:dirent",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
+        "@score-baselibs//score/os:stdio",
+        "@score-baselibs//score/os:stdlib",
+        "@score-baselibs//score/os:unistd",
     ],
 )
 
@@ -158,10 +158,10 @@ cc_library(
     ],
     deps = [
         ":filesystem",
-        "//score/filesystem/filestream:fake",
-        "//score/os/mocklib:dirent_mock",
-        "//score/os/mocklib:stat_mock",
-        "//score/os/mocklib:stdlib_mock",
+        "@score-baselibs//score/filesystem/filestream:fake",
+        "@score-baselibs//score/os/mocklib:dirent_mock",
+        "@score-baselibs//score/os/mocklib:stat_mock",
+        "@score-baselibs//score/os/mocklib:stdlib_mock",
         "@googletest//:gtest",
     ],
 )
@@ -184,16 +184,16 @@ cc_test(
     features = COMPILER_WARNING_FEATURES,
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/filesystem:__pkg__",
+        # "@ddad@score-baselibs//score/filesystem:__pkg__",
     ],
     deps = [
         ":standard_filesystem",
         ":standard_filesystem_fake",
-        "//score/os/mocklib:dirent_mock",
-        "//score/os/mocklib:stat_mock",
-        "//score/os/mocklib:stdio_mock",
-        "//score/os/mocklib:stdlib_mock",
-        "//score/os/mocklib:unistd_mock",
+        "@score-baselibs//score/os/mocklib:dirent_mock",
+        "@score-baselibs//score/os/mocklib:stat_mock",
+        "@score-baselibs//score/os/mocklib:stdio_mock",
+        "@score-baselibs//score/os/mocklib:stdlib_mock",
+        "@score-baselibs//score/os/mocklib:unistd_mock",
         "@googletest//:gtest_main",
     ],
 )

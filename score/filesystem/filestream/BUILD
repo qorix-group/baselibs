@@ -29,15 +29,15 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/filesystem:__subpackages__",
-        "//score/json:__subpackages__",
-        # "@ddad//score/filesystem/filestream:__subpackages__",
+        "@score-baselibs//score/filesystem:__subpackages__",
+        "@score-baselibs//score/json:__subpackages__",
+        # "@ddad@score-baselibs//score/filesystem/filestream:__subpackages__",
     ],
     deps = [
-        "//score/filesystem:error",
-        "//score/filesystem:path",
-        "//score/os:object_seam",
-        "//score/result",
+        "@score-baselibs//score/filesystem:error",
+        "@score-baselibs//score/filesystem:path",
+        "@score-baselibs//score/os:object_seam",
+        "@score-baselibs//score/result",
     ],
 )
 
@@ -58,7 +58,7 @@ cc_library(
         "simple_string_stream_collection.h",
     ],
     features = COMPILER_WARNING_FEATURES,
-    visibility = ["//score/filesystem:__subpackages__"],
+    visibility = ["@score-baselibs//score/filesystem:__subpackages__"],
     deps = [
         ":filestream",
         "@googletest//:gtest",
@@ -75,8 +75,8 @@ cc_test(
     features = COMPILER_WARNING_FEATURES,
     tags = ["unit"],
     visibility = [
-        "//score/filesystem:__pkg__",
-        # "@ddad//score/filesystem:__pkg__",
+        "@score-baselibs//score/filesystem:__pkg__",
+        # "@ddad@score-baselibs//score/filesystem:__pkg__",
     ],
     deps = [
         ":fake",

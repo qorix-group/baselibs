@@ -184,7 +184,7 @@ static StaticDestructionGuard<MmanImpl> nifty_counter;
 
 }  // namespace os
 
-template <> /* KW_SUPPRESS:MISRA.NS.GLOBAL:False positive as type declaration happens inside bmw namespace */
+template <>
 struct enable_bitmask_operators<os::Mman::Protection>
 {
     // Suppress "AUTOSAR C++14 A0-1-1" rule finding: "A project shall not contain instances of
@@ -194,7 +194,7 @@ struct enable_bitmask_operators<os::Mman::Protection>
     static constexpr bool value{true};
 };
 
-template <> /* KW_SUPPRESS:MISRA.NS.GLOBAL:False positive as type declaration happens inside bmw namespace */
+template <>
 struct enable_bitmask_operators<os::Mman::Map>
 {
     // Suppress "AUTOSAR C++14 A0-1-1" rule finding: "A project shall not contain instances of
@@ -206,7 +206,7 @@ struct enable_bitmask_operators<os::Mman::Map>
 
 // coverity[autosar_cpp14_a16_0_1_violation], see above rationale
 #if defined(__EXT_POSIX1_200112)
-template <> /* KW_SUPPRESS:MISRA.NS.GLOBAL:False positive as type declaration happens inside bmw namespace */
+template <>
 struct enable_bitmask_operators<os::Mman::PosixTypedMem>
 {
     static constexpr bool value{true};

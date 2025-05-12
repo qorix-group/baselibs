@@ -23,8 +23,8 @@ cc_library(
     hdrs = ["json_builder.h"],
     tags = ["FFI"],
     deps = [
-        "//score/json/internal/model",
-        "//score/result",
+        "@score-baselibs//score/json/internal/model",
+        "@score-baselibs//score/result",
         "@nlohmann_json//:json",
         "@score-baselibs//score/language/futurecpp",
     ],
@@ -36,11 +36,11 @@ cc_library(
     hdrs = ["nlohmann_parser.h"],
     features = COMMON_FEATURES,
     tags = ["FFI"],
-    visibility = ["//score/json:__subpackages__"],
+    visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
         ":json_builder",
-        "//score/json/internal/model",
-        "//score/result",
+        "@score-baselibs//score/json/internal/model",
+        "@score-baselibs//score/result",
         "@nlohmann_json//:json",
     ],
 )
@@ -52,12 +52,12 @@ cc_test(
     local_defines = ["NLOHMANN"],
     tags = ["unit"],
     visibility = [
-        "//score/json:__subpackages__",
-        # "@ddad//score/json:__subpackages__",
+        "@score-baselibs//score/json:__subpackages__",
+        # "@ddad@score-baselibs//score/json:__subpackages__",
     ],
     deps = [
-        "//score/json/internal/parser:parser_test_suite",
-        "//score/json/internal/parser/nlohmann:nlohmann_parser",
+        "@score-baselibs//score/json/internal/parser:parser_test_suite",
+        "@score-baselibs//score/json/internal/parser/nlohmann:nlohmann_parser",
         "@googletest//:gtest_main",
     ],
 )
@@ -69,14 +69,14 @@ cc_test(
     local_defines = ["NLOHMANN"],
     tags = ["unit"],
     visibility = [
-        "//score/json:__subpackages__",
-        # "@ddad//score/json:__subpackages__",
+        "@score-baselibs//score/json:__subpackages__",
+        # "@ddad@score-baselibs//score/json:__subpackages__",
     ],
     deps = [
         ":nlohmann_parser",
-        "//score/language/safecpp/coverage_termination_handler",
-        "//score/json:json_impl",
-        "//score/json/internal/parser:number_parser_test_suite",
+        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
+        "@score-baselibs//score/json:json_impl",
+        "@score-baselibs//score/json/internal/parser:number_parser_test_suite",
         "@googletest//:gtest_main",
     ],
 )

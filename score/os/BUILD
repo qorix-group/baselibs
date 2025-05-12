@@ -10,7 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//score/os:common_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score-baselibs//score/os:common_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "acl",
@@ -25,8 +25,8 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/os:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
+        "@score-baselibs//score/os:__subpackages__",
+        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":errno",
@@ -53,14 +53,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//score/filesystem:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/mw/com/impl/bindings/lola:__subpackages__",
-        "//platform/aas/pas/hw_reg_info:__subpackages__",
-        "//platform/aas/pas/std_frame:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
@@ -79,23 +72,11 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//score/analysis/tracing/daemon:__subpackages__",
-        "//platform/aas/ara/tsync/bmw:__subpackages__",
-        "//platform/aas/intc/typedmemd:__subpackages__",
-        "//score/filesystem:__subpackages__",
-        "//score/memory/shared:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/mw/com/message_passing:__subpackages__",
-        "//platform/aas/mw/com/test/common_test_resources:__subpackages__",
-        "//score/mw/log:__subpackages__",
-        "//platform/aas/pas/logging:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
-        "//score/bitmanipulation:bitmask_operators",
+        "@score-baselibs//score/bitmanipulation:bitmask_operators",
     ],
 )
 
@@ -111,39 +92,12 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//platform/aas/abac/abac/core/BasicSecurity/generic:__subpackages__",
-        "//score/analysis/tracing/daemon/code:__subpackages__",
-        "//platform/aas/ara/tsync/ptp:__subpackages__",
-        "//platform/aas/intc/jc_launcher:__subpackages__",
-        "//platform/aas/intc/typedmemd:__subpackages__",
-        "//score/filesystem:__subpackages__",
-        "//platform/aas/lib/hal/gpio:__subpackages__",
-        "//score/memory/shared:__subpackages__",
-        "//platform/aas/lib/message_passing:__subpackages__",
-        "//platform/aas/lib/network:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/mw/com/impl/bindings/lola:__subpackages__",
-        "//platform/aas/mw/com/message_passing:__subpackages__",
-        "//platform/aas/mw/com/test:__subpackages__",
-        "//score/mw/log:__subpackages__",
-        "//platform/aas/mw/storage:__subpackages__",
-        "//platform/aas/pas/crash_handler:__subpackages__",
-        "//platform/aas/pas/crash_reporter_ara_proxy:__subpackages__",
-        "//platform/aas/pas/hw_reg_info:__subpackages__",
-        "//platform/aas/pas/lib/zlib_util:__subpackages__",
-        "//platform/aas/pas/logging:__subpackages__",
-        "//platform/aas/sec/secured:__subpackages__",
-        "//platform/aas/test/pas/crash_reporter:__subpackages__",
-        "//platform/aas/test/pas/crash_reporter_ara_proxy:__subpackages__",
-        "//platform/aas/tools/proxy_app:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
         ":stat",
-        "//score/bitmanipulation:bitmask_operators",
+        "@score-baselibs//score/bitmanipulation:bitmask_operators",
     ],
 )
 
@@ -159,14 +113,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//platform/aas/intc/conditional_launcher:__subpackages__",
-        "//platform/aas/intc/configure_persistency:__subpackages__",
-        "//platform/aas/intc/typedmemd:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/pas/dtc_status_sender:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
@@ -186,13 +133,13 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/os:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
+        "@score-baselibs//score/os:__subpackages__",
+        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":errno",
         ":object_seam",
-        "//score/bitmanipulation:bitmask_operators",
+        "@score-baselibs//score/bitmanipulation:bitmask_operators",
     ],
 )
 
@@ -208,14 +155,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//score/analysis/tracing/daemon/code:__subpackages__",
-        "//platform/aas/ara/tsync/ptp:__subpackages__",
-        "//platform/aas/lib/network:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/sysfunc/BasicSecurity/code/pdr_eraser/details:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
@@ -234,11 +174,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//score/filesystem:__subpackages__",
-        "//score/os:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
@@ -258,8 +194,8 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/os:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
+        "@score-baselibs//score/os:__subpackages__",
+        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":errno",
@@ -280,8 +216,8 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/os:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
+        "@score-baselibs//score/os:__subpackages__",
+        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":errno",
@@ -295,16 +231,12 @@ cc_library(
     hdrs = ["mqueue.h"],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//score/os:__subpackages__",
-        "//platform/aas/mw/com/message_passing:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
         ":static_destruction_guard",
-        "//score/bitmanipulation:bitmask_operators",
+        "@score-baselibs//score/bitmanipulation:bitmask_operators",
     ],
 )
 
@@ -320,18 +252,11 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//score/analysis/tracing/daemon/code/plugin/perf:__subpackages__",
-        "//platform/aas/ara/tsync/bmw:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/mw/time/HWLoggerTime:__subpackages__",
-        "//platform/aas/network/xnm/src/ifconfig_wrapper:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
-        "//score/bitmanipulation:bitmask_operators",
+        "@score-baselibs//score/bitmanipulation:bitmask_operators",
     ],
 )
 
@@ -347,15 +272,11 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//score/os:__subpackages__",
-        "//platform/aas/pas/crash_reporter:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
-        "//score/bitmanipulation:bitmask_operators",
+        "@score-baselibs//score/bitmanipulation:bitmask_operators",
     ],
 )
 
@@ -365,53 +286,12 @@ cc_library(
     hdrs = ["unistd.h"],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//application/adp/aas/lifecycle/qnx_migration:__subpackages__",  # Temporary workaround, see Ticket-84191
-        "//platform/aas/abac/abac/core/BasicSecurity/generic:__subpackages__",
-        "//score/analysis/tracing:__subpackages__",
-        "//platform/aas/ara/tsync/bmw:__subpackages__",
-        "//platform/aas/ara/tsync/ptp:__subpackages__",
-        "//platform/aas/intc/conditional_launcher:__subpackages__",
-        "//platform/aas/intc/configure_persistency:__subpackages__",
-        "//platform/aas/intc/jc_launcher:__subpackages__",
-        "//platform/aas/intc/lifecycle_state_machine:__subpackages__",
-        "//platform/aas/intc/typedmemd:__subpackages__",
-        "//score/filesystem:__subpackages__",
-        "//platform/aas/lib/hal/gpio:__subpackages__",
-        "//score/json:__subpackages__",
-        "//score/memory/shared:__subpackages__",
-        "//platform/aas/lib/message_passing:__subpackages__",
-        "//platform/aas/lib/network:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/mw/com/impl/bindings/lola:__subpackages__",
-        "//platform/aas/mw/com/message_passing:__subpackages__",
-        "//platform/aas/mw/com/test/common_test_resources:__subpackages__",
-        "//score/mw/log:__subpackages__",
-        "//platform/aas/mw/storage:__subpackages__",
-        "//platform/aas/network/xnm/src/osif:__subpackages__",
-        "//platform/aas/pas/crash_handler:__subpackages__",
-        "//platform/aas/pas/crash_reporter_ara_proxy:__subpackages__",
-        "//platform/aas/pas/datarouterconf:__subpackages__",
-        "//platform/aas/pas/dtc_status_sender:__subpackages__",
-        "//platform/aas/pas/hw_reg_info:__subpackages__",
-        "//platform/aas/pas/hw_reg_res_mgrs:__subpackages__",
-        "//platform/aas/pas/instrumentation:__subpackages__",
-        "//platform/aas/pas/lib/zlib_util:__subpackages__",
-        "//platform/aas/pas/logging:__subpackages__",
-        "//platform/aas/sec/secured:__subpackages__",
-        "//platform/aas/sysfunc/SoftwareIdProvider/code/lib_swid_handler:__subpackages__",
-        "//platform/aas/test/os/linux/example_application:__subpackages__",
-        "//platform/aas/test/pas/crash_reporter:__subpackages__",
-        "//platform/aas/test/pas/crash_reporter_ara_proxy:__subpackages__",
-        "//platform/aas/tools/elk_persistent_backup:__subpackages__",
-        "//platform/aas/tools/proxy_app:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
         ":static_destruction_guard",
-        "//score/bitmanipulation:bitmask_operators",
+        "@score-baselibs//score/bitmanipulation:bitmask_operators",
     ],
 )
 
@@ -423,13 +303,7 @@ cc_library(
         "netinet_in.h",
     ],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        "//score/os:__subpackages__",
-        "//platform/aas/network/tunneling/npdu_daemon:__subpackages__",
-        "//platform/aas/pas/dtc_status_sender:__subpackages__",
-        "//platform/aas/sysfunc/SafeCarTime/code/apps/TimeSyncValidationNonFFI/utils/impl:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
@@ -442,13 +316,13 @@ cc_library(
     hdrs = ["netdb.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//score/os:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
+        "@score-baselibs//score/os:__subpackages__",
+        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":errno",
         ":object_seam",
-        "//score/bitmanipulation:bitmask_operators",
+        "@score-baselibs//score/bitmanipulation:bitmask_operators",
     ],
 )
 
@@ -457,16 +331,11 @@ cc_library(
     srcs = ["net_if.cpp"],
     hdrs = ["net_if.h"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        "//score/analysis/tracing/daemon:__subpackages__",
-        "//platform/aas/ara/tsync/ptp:__subpackages__",
-        "//score/os:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
-        "//score/bitmanipulation:bitmask_operators",
+        "@score-baselibs//score/bitmanipulation:bitmask_operators",
     ],
 )
 
@@ -476,8 +345,8 @@ cc_library(
     hdrs = ["cpuid.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//score/os:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
+        "@score-baselibs//score/os:__subpackages__",
+        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":errno",
@@ -496,23 +365,11 @@ cc_library(
         "socket_impl.h",
     ],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        "//platform/aas/ara/tsync/ptp:__subpackages__",
-        "//platform/aas/lib/message_passing:__subpackages__",
-        "//platform/aas/lib/network:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/pas/calibration_server:__subpackages__",
-        "//platform/aas/pas/datarouterconf:__subpackages__",
-        "//platform/aas/pas/dtc_status_sender:__subpackages__",
-        "//platform/aas/pas/logging:__subpackages__",
-        "//platform/aas/sysfunc/SafeCarTime/code/apps/TimeSyncValidationNonFFI/utils/impl:__subpackages__",
-        "//platform/aas/test/pas/perf_tests:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
-        "//score/bitmanipulation:bitmask_operators",
+        "@score-baselibs//score/bitmanipulation:bitmask_operators",
     ] + select({
         "@platforms//os:qnx": [
             "//third_party/libsocket",
@@ -527,8 +384,8 @@ cc_library(
     hdrs = ["makedev.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//score/os:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
+        "@score-baselibs//score/os:__subpackages__",
+        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":errno",
@@ -542,8 +399,8 @@ cc_library(
     hdrs = ["file_stream.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//score/os:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
+        "@score-baselibs//score/os:__subpackages__",
+        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":errno",
@@ -562,12 +419,7 @@ cc_library(
         "ifaddrs_impl.h",
     ],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        "//score/analysis/tracing/daemon:__subpackages__",
-        "//platform/aas/lib/network:__subpackages__",
-        "//score/os:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
@@ -586,14 +438,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//platform/aas/ara/tsync/ptp:__subpackages__",
-        "//platform/aas/lib/message_passing:__subpackages__",
-        "//platform/aas/lib/network:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/network/xnm/src/osif:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
@@ -612,12 +457,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//score/analysis/tracing/daemon:__subpackages__",
-        "//platform/aas/lib/message_passing:__subpackages__",
-        "//score/os:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
@@ -628,11 +468,11 @@ cc_library(
     name = "capability",
     srcs = select({
         "@platforms//os:linux": [
-            "//score/os/linux:capability.cpp",
-            "//score/os/linux:capability.h",
+            "@score-baselibs//score/os/linux:capability.cpp",
+            "@score-baselibs//score/os/linux:capability.h",
         ],
         "@platforms//os:qnx": [
-            "//score/os/qnx:capability.h",
+            "@score-baselibs//score/os/qnx:capability.h",
         ],
     }) + [
         "capability.cpp",
@@ -646,14 +486,7 @@ cc_library(
         ],
         "//conditions:default": [],
     }) + [],
-    visibility = [
-        "//application/adp/aas/applications:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/pas/sysmon:__subpackages__",
-        "//platform/aas/pas/temperature_sender:__subpackages__",
-        "//platform/aas/test/os/linux/example_application:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     #if QNX or DNV-GCC Toolchain dont link with explicit TP/libpcap,
     #if its a host build for linux do link with TP/libpcap
     deps = select({
@@ -665,7 +498,7 @@ cc_library(
     }) + [
         ":errno_logging",
         ":object_seam",
-        "//score/mw/log",
+        "@score-baselibs//score/mw/log",
     ],
 )
 
@@ -681,19 +514,11 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//platform/aas/intc/configure_persistency:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/sysfunc/ISOCMinion/code/installer/installer_factory:__subpackages__",
-        "//platform/aas/sysfunc/ISOCMinion/code/partition_mounty/details:__subpackages__",
-        "//platform/aas/sysfunc/SoftwareIdProvider:__subpackages__",
-        "//platform/aas/tools/elk_persistent_backup:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
-        "//score/bitmanipulation:bitmask_operators",
+        "@score-baselibs//score/bitmanipulation:bitmask_operators",
     ],
 )
 
@@ -709,21 +534,11 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//application/adp/aas/lifecycle/qnx_migration:__subpackages__",  # Temporary workaround, see Ticket-84191
-        "//score/filesystem:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/network/xnm/src/common:__subpackages__",
-        "//platform/aas/network/xnm/src/osif:__subpackages__",
-        "//platform/aas/pas/crash_reporter:__subpackages__",
-        "//platform/aas/pas/hw_reg_info:__subpackages__",
-        "//platform/aas/pas/logging:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
-        "//score/bitmanipulation:bitmask_operators",
+        "@score-baselibs//score/bitmanipulation:bitmask_operators",
     ],
 )
 
@@ -739,21 +554,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//platform/aas/intc/configure_persistency:__subpackages__",
-        "//platform/aas/intc/typedmemd:__subpackages__",
-        "//score/filesystem:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/mw/diag:__subpackages__",
-        "//platform/aas/mw/lifecycle:__subpackages__",
-        "//score/mw/log:__subpackages__",
-        "//platform/aas/network/xnm:__subpackages__",
-        "//platform/aas/pas/crash_reporter:__subpackages__",
-        "//platform/aas/pas/logging:__subpackages__",
-        "//platform/aas/sysfunc/ISOCMinion/code:__subpackages__",
-        "//platform/aas/tools/elk_persistent_backup:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
@@ -772,12 +573,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//platform/aas/intc/jc_launcher:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/pas/hw_reg_info:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
@@ -796,19 +592,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//score/analysis/tracing/daemon/code/plugin/common/mock:__subpackages__",
-        "//score/analysis/tracing/daemon/code/plugin/common/plugin_statistics:__subpackages__",
-        "//score/analysis/tracing/daemon/code/plugin/ipc_trace/ipc_trace_statistics:__subpackages__",
-        "//platform/aas/ara/SDaT2Sys/code/app/sdat_sync:__subpackages__",
-        "//platform/aas/ara/iam/code:__subpackages__",
-        "//platform/aas/ara/iam/test/PDPHostSimulation:__subpackages__",
-        "//platform/aas/ara/tsync/ptp:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/network/xnm/src/ifconfig_wrapper:__subpackages__",
-        "//platform/aas/pas/crash_reporter:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
@@ -828,25 +612,14 @@ cc_library(
     hdrs = ["mman.h"],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//platform/aas/ara/tsync/bmw:__subpackages__",
-        "//platform/aas/intc/typedmemd:__subpackages__",
-        "//score/memory/shared:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/mw/com/test/common_test_resources:__subpackages__",
-        "//score/mw/log:__subpackages__",
-        "//platform/aas/pas/hw_reg_info:__subpackages__",
-        "//platform/aas/pas/hw_reg_res_mgrs:__subpackages__",
-        "//platform/aas/pas/logging:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":fcntl",
         ":object_seam",
         ":rt",
         ":static_destruction_guard",
-        "//score/bitmanipulation:bitmask_operators",
+        "@score-baselibs//score/bitmanipulation:bitmask_operators",
     ],
 )
 
@@ -859,25 +632,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//score/analysis/tracing/daemon:__subpackages__",
-        "//platform/aas/ara/log:__subpackages__",
-        "//platform/aas/ara/log/test:__subpackages__",
-        "//platform/aas/ara/tsync/bmw:__subpackages__",
-        "//score/filesystem:__subpackages__",
-        "//platform/aas/lib/message_passing:__subpackages__",
-        "//platform/aas/lib/network:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/mw/com/message_passing:__subpackages__",
-        "//platform/aas/pas/hw_reg_info:__subpackages__",
-        "//platform/aas/pas/hw_reg_res_mgrs:__subpackages__",
-        "//platform/aas/pas/lib/ddad_version_reader/test/component:__subpackages__",
-        "//platform/aas/sysfunc/BasicSecurity/code/pdr_eraser:__subpackages__",
-        "//platform/aas/sysfunc/ISOCMinion:__subpackages__",
-        "//platform/aas/sysfunc/SafeCarTime:__subpackages__",
-        "//platform/aas/sysfunc/SoftwareIdProvider:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     # TODO: (Ticket-75170) Clarify if amp is allowed to be used in ASIL B context
     deps = ["@score-baselibs//score/language/futurecpp"],
 )
@@ -888,18 +643,10 @@ cc_library(
     hdrs = ["errno_logging.h"],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//platform/aas/lib/hal/gpio:__subpackages__",
-        "//score/memory/shared:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/mw/com:__subpackages__",
-        "//platform/aas/network/tunneling/npdu_daemon:__subpackages__",
-        "//platform/aas/network/xnm:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
-        "//score/mw/log:log_stream",
+        "@score-baselibs//score/mw/log:log_stream",
     ],
 )
 
@@ -909,26 +656,7 @@ alias(
         "@platforms//os:qnx": ":pthread_qnx",
         "//conditions:default": ":pthread_default",
     }),
-    visibility = [
-        "//application/adp/activities/mic/someip_message_receiver:__subpackages__",
-        "//platform/aas/abac/mw/diag:__subpackages__",
-        "//score/analysis/tracing:__subpackages__",
-        "//platform/aas/ara/log/example:__subpackages__",
-        "//score/concurrency:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/mw/diag:__subpackages__",
-        "//score/mw/log:__subpackages__",
-        "//platform/aas/pas/logging:__subpackages__",
-        "//platform/aas/sec/sfa_parser:__subpackages__",
-        "//platform/aas/sec/w_hsmlib:__subpackages__",
-        "//platform/aas/sysfunc/BasicSecurity:__subpackages__",
-        "//platform/aas/test/os/linux/example_application:__subpackages__",
-        "//platform/aas/test/pas/perf_tests/non_functional_tests/malloc:__subpackages__",
-        "//platform/aas/tools/itf/external/vsomeip:__subpackages__",
-        "//platform/aas/tools/itf/itf_cpp/mdf4_reprocessing:__subpackages__",
-        "//platform/aas/tools/testing/thread_benchmark:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
 )
 
 cc_library(
@@ -981,10 +709,7 @@ alias(
         "//conditions:default": ":rt_default",
     }),
     tags = ["FFI"],
-    visibility = [
-        "//platform/aas/ara/tsync/bmw:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
 )
 
 cc_library(
@@ -1011,13 +736,7 @@ cc_library(
     hdrs = ["ObjectSeam.h"],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//score/filesystem:__subpackages__",
-        "//platform/aas/lib/network:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/sysfunc/BasicSecurity/code/pdr_eraser:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
 )
 
 cc_library(
@@ -1036,16 +755,10 @@ cc_library(
         "additional_warnings",
     ],
     tags = ["FFI"],
-    visibility = [
-        "//platform/aas/intc/configure_persistency/code/persistency_encryption:__subpackages__",
-        "//platform/aas/intc/jc_launcher:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/pas/sysmon:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
     ],
 )
 
@@ -1065,17 +778,10 @@ cc_library(
         "additional_warnings",
     ],
     tags = ["FFI"],
-    visibility = [
-        "//platform/aas/intc/configure_persistency/code/persistency_encryption:__subpackages__",
-        "//platform/aas/intc/jc_launcher:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/network/xnm/src/common:__subpackages__",
-        "//platform/aas/pas/crash_reporter:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
     ],
 )
 
@@ -1095,16 +801,10 @@ cc_library(
         "additional_warnings",
     ],
     tags = ["FFI"],
-    visibility = [
-        "//platform/aas/intc/jc_launcher:__subpackages__",
-        "//score/os:__subpackages__",
-        "//platform/aas/network/xnm/src/common:__subpackages__",
-        "//platform/aas/pas/crash_reporter:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
-        "//score/os:errno",
-        "//score/os:object_seam",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:object_seam",
     ],
 )
 
@@ -1120,12 +820,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//score/os:__subpackages__",
-        "//platform/aas/network/xnm/src/common:__subpackages__",
-        "//platform/aas/pas/crash_reporter:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":errno",
         ":object_seam",
@@ -1151,7 +846,7 @@ cc_library(
     deps = [
         ":errno",
         ":object_seam",
-        "//score/bitmanipulation:bitmask_operators",
+        "@score-baselibs//score/bitmanipulation:bitmask_operators",
         "@score-baselibs//score/language/futurecpp",
     ],
 )

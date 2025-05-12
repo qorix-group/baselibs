@@ -10,8 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("//score/language/safecpp/safe_math:compiler_features.bzl", "COMPILER_FEATURES")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//score/language/safecpp/safe_math:compiler_features.bzl", "COMPILER_FEATURES")
 
 cc_library(
     name = "cast",
@@ -20,16 +20,16 @@ cc_library(
     features = COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/language/safecpp/safe_math:__pkg__",
-        "//score/language/safecpp/safe_math/details/addition_subtraction:__pkg__",
-        "//score/language/safecpp/safe_math/details/division:__pkg__",
-        "//score/language/safecpp/safe_math/details/multiplication:__pkg__",
-        "//score/language/safecpp/safe_math/details/negate:__pkg__",
+        "@score-baselibs//score/language/safecpp/safe_math:__pkg__",
+        "@score-baselibs//score/language/safecpp/safe_math/details/addition_subtraction:__pkg__",
+        "@score-baselibs//score/language/safecpp/safe_math/details/division:__pkg__",
+        "@score-baselibs//score/language/safecpp/safe_math/details/multiplication:__pkg__",
+        "@score-baselibs//score/language/safecpp/safe_math/details/negate:__pkg__",
     ],
     deps = [
-        "//score/language/safecpp/safe_math:error",
-        "//score/language/safecpp/safe_math/details/comparison",
-        "//score/result",
+        "@score-baselibs//score/language/safecpp/safe_math:error",
+        "@score-baselibs//score/language/safecpp/safe_math/details/comparison",
+        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -39,11 +39,11 @@ cc_gtest_unit_test(
     srcs = ["cast_test.cpp"],
     features = COMPILER_FEATURES,
     visibility = [
-        # "@ddad//score/language/safecpp/safe_math:__pkg__",
+        # "@ddad@score-baselibs//score/language/safecpp/safe_math:__pkg__",
     ],
     deps = [
         ":cast",
-        "//score/language/safecpp/safe_math/details:test_type_collection",
+        "@score-baselibs//score/language/safecpp/safe_math/details:test_type_collection",
         "@score-baselibs//score/language/futurecpp",
     ],
 )

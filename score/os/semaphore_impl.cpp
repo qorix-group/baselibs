@@ -23,13 +23,9 @@ namespace score
 namespace os
 {
 
-/* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False Positive */
-/* KW_SUPPRESS_START:AUTOSAR.MEMB.VIRTUAL.FINAL: Compiler warn suggests override */
 score::cpp::expected_blank<Error> SemaphoreImpl::sem_init(sem_t* const sem,
                                                    const std::int32_t pshared,
                                                    const std::uint32_t value) const noexcept
-/* KW_SUPPRESS_END:AUTOSAR.MEMB.VIRTUAL.FINAL: Compiler warn suggests override  */
-/* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False Positive */
 {
     // Manual code analysis:
     // As per QNX documentation function returns error when the given semaphore was previously initialized,

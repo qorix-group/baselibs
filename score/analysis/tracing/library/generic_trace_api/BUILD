@@ -24,12 +24,7 @@ cc_library(
         "additional_warnings",
     ],
     tags = ["FFI"],
-    visibility = [
-        "//score/analysis:__subpackages__",
-        "//platform/aas/ara:__subpackages__",
-        "//platform/aas/mw/com:__subpackages__",
-        # "@ddad//score/analysis:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":trace_library_interface",
         "@score-baselibs//score/language/futurecpp",
@@ -46,14 +41,14 @@ cc_library(
     ],
     tags = ["FFI"],
     visibility = [
-        "//score/analysis/tracing/library:__subpackages__",
-        # "@ddad//score/analysis/tracing/library:__subpackages__",
+        "@score-baselibs//score/analysis/tracing/library:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis/tracing/library:__subpackages__",
     ],
     deps = [
         ":meta_info",
-        "//score/analysis/tracing/library/generic_trace_api/chunk_list",
-        "//score/analysis/tracing/library/generic_trace_api/error_code",
-        "//score/concurrency",
+        "@score-baselibs//score/analysis/tracing/library/generic_trace_api/chunk_list",
+        "@score-baselibs//score/analysis/tracing/library/generic_trace_api/error_code",
+        "@score-baselibs//score/concurrency",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -79,12 +74,12 @@ cc_library(
     ],
     tags = ["FFI"],
     visibility = [
-        "//score/analysis/tracing:__subpackages__",
-        # "@ddad//score/analysis/tracing:__subpackages__",
+        "@score-baselibs//score/analysis/tracing:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis/tracing:__subpackages__",
     ],
     deps = [
         ":type_definitions",
-        "//score/memory:string_literal",
+        "@score-baselibs//score/memory:string_literal",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -102,7 +97,7 @@ cc_library(
     ],
     tags = ["FFI"],
     visibility = [
-        "//score/analysis/tracing:__subpackages__",
-        # "@ddad//score/analysis/tracing:__subpackages__",
+        "@score-baselibs//score/analysis/tracing:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis/tracing:__subpackages__",
     ],
 )

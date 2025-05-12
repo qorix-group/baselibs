@@ -12,7 +12,7 @@
 # *******************************************************************************
 package(
     default_visibility = [
-        # "@ddad//score/os/utils/qnx/resource_manager:__subpackages__",
+        # "@ddad@score-baselibs//score/os/utils/qnx/resource_manager:__subpackages__",
     ],
 )
 
@@ -52,11 +52,11 @@ cc_library(
         # "@ddad//visibility:public",
     ],
     deps = [
-        "//score/os:errno",
-        "//score/os/qnx:dispatch",
-        "//score/os/qnx:iofunc",
-        "//score/os/utils/qnx/resource_manager:resource",
-        "//score/mw/log",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os/qnx:dispatch",
+        "@score-baselibs//score/os/qnx:iofunc",
+        "@score-baselibs//score/os/utils/qnx/resource_manager:resource",
+        "@score-baselibs//score/mw/log",
     ],
 )
 
@@ -80,7 +80,7 @@ cc_library(
         # "@ddad//visibility:public",
     ],
     deps = [
-        "//score/os/qnx:types",
+        "@score-baselibs//score/os/qnx:types",
     ],
 )
 
@@ -107,11 +107,11 @@ cc_library(
     ],
     deps = [
         ":error",
-        "//score/os:errno",
-        "//score/os/qnx:iofunc",
-        "//score/os/qnx:resmgr",
-        "//score/os/qnx:types",
-        "//score/mw/log",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os/qnx:iofunc",
+        "@score-baselibs//score/os/qnx:resmgr",
+        "@score-baselibs//score/os/qnx:types",
+        "@score-baselibs//score/mw/log",
     ],
 )
 
@@ -134,8 +134,8 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os/qnx:dispatch",
-        "//score/os/utils/qnx/resource_manager:resource",
+        "@score-baselibs//score/os/qnx:dispatch",
+        "@score-baselibs//score/os/utils/qnx/resource_manager:resource",
         "@googletest//:gtest",
     ],
 )
@@ -159,8 +159,8 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os/qnx:dispatch",
-        "//score/os/utils/qnx/resource_manager:resource",
+        "@score-baselibs//score/os/qnx:dispatch",
+        "@score-baselibs//score/os/utils/qnx/resource_manager:resource",
         "@googletest//:gtest",
     ],
 )
@@ -178,8 +178,8 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
-        "//score/os/utils/qnx/resource_manager:handlers_stub",
-        "//score/os/utils/qnx/resource_manager:resource",
+        "@score-baselibs//score/os/utils/qnx/resource_manager:handlers_stub",
+        "@score-baselibs//score/os/utils/qnx/resource_manager:resource",
         "@googletest//:gtest_main",
     ],
 )
@@ -197,9 +197,9 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
-        "//score/os/mocklib/qnx:dispatch_mock",
-        "//score/os/mocklib/qnx:iofunc_mock",
-        "//score/os/utils/qnx/resource_manager",
+        "@score-baselibs//score/os/mocklib/qnx:dispatch_mock",
+        "@score-baselibs//score/os/mocklib/qnx:iofunc_mock",
+        "@score-baselibs//score/os/utils/qnx/resource_manager",
         "@googletest//:gtest_main",
     ],
 )
@@ -217,8 +217,8 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
-        "//score/os/utils/qnx/resource_manager:handlers_mock",
-        "//score/os/utils/qnx/resource_manager:resource",
+        "@score-baselibs//score/os/utils/qnx/resource_manager:handlers_mock",
+        "@score-baselibs//score/os/utils/qnx/resource_manager:resource",
         "@googletest//:gtest_main",
     ],
 )
@@ -240,7 +240,7 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os/utils/qnx/resource_manager:simple_read_function",
+        "@score-baselibs//score/os/utils/qnx/resource_manager:simple_read_function",
         "@googletest//:gtest",
     ],
 )
@@ -263,9 +263,9 @@ cc_library(
         "//platform/aas/unit/qnx/resource_manager:__subpackages__",
     ],
     deps = [
-        "//score/os/qnx:iofunc",
-        "//score/os/qnx:resmgr",
-        "//score/os/utils/qnx/resource_manager:simple_read_function",
+        "@score-baselibs//score/os/qnx:iofunc",
+        "@score-baselibs//score/os/qnx:resmgr",
+        "@score-baselibs//score/os/utils/qnx/resource_manager:simple_read_function",
     ],
 )
 
@@ -284,14 +284,14 @@ cc_library(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
-        "//score/os/utils/qnx/resource_manager:__subpackages__",
+        "@score-baselibs//score/os/utils/qnx/resource_manager:__subpackages__",
     ],
     deps = [
-        "//score/os/qnx:channel",
-        "//score/os/qnx:dispatch",
-        "//score/os/qnx:iofunc",
-        "//score/os/qnx:resmgr",
-        "//score/os/utils/qnx/resource_manager:simple_read_function_stub",
+        "@score-baselibs//score/os/qnx:channel",
+        "@score-baselibs//score/os/qnx:dispatch",
+        "@score-baselibs//score/os/qnx:iofunc",
+        "@score-baselibs//score/os/qnx:resmgr",
+        "@score-baselibs//score/os/utils/qnx/resource_manager:simple_read_function_stub",
         "@googletest//:gtest_main",
     ],
 )
@@ -310,10 +310,10 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
-        "//score/os/mocklib/qnx:iofunc_mock",
-        "//score/os/mocklib/qnx:resmgr_mock",
-        "//score/os/utils/qnx/resource_manager:simple_read_function_mock",
-        "//score/os/utils/qnx/resource_manager:simple_read_function_test_fixture",
+        "@score-baselibs//score/os/mocklib/qnx:iofunc_mock",
+        "@score-baselibs//score/os/mocklib/qnx:resmgr_mock",
+        "@score-baselibs//score/os/utils/qnx/resource_manager:simple_read_function_mock",
+        "@score-baselibs//score/os/utils/qnx/resource_manager:simple_read_function_test_fixture",
         "@googletest//:gtest_main",
     ],
 )
@@ -335,10 +335,10 @@ cc_library(
         "FUSA",
     ],
     visibility = [
-        "//score/os/utils/qnx/resource_manager:__pkg__",
+        "@score-baselibs//score/os/utils/qnx/resource_manager:__pkg__",
     ],
     deps = [
-        "//score/result",
+        "@score-baselibs//score/result",
     ],
 )
 

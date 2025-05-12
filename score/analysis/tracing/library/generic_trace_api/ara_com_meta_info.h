@@ -25,8 +25,6 @@ namespace tracing
 
 using AraComMetaInfo = MetaInfo<AraComProperties>;
 
-bool operator==(AraComMetaInfo& lhs, AraComMetaInfo& rhs);
-
 }  // namespace tracing
 }  // namespace analysis
 }  // namespace score

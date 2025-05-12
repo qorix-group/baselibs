@@ -94,8 +94,17 @@ constexpr bool trivially_initializable_v = std::conjunction<std::is_trivially_de
 /// \brief Fixed-size array data structure whose size can be dynamically set at construction.
 ///
 /// The DynamicArray should be used if a vector-like data structure is needed whose size is not known at compile time
-/// but only needs to be set once (i.e. on construction of DynamicArray) and never resized. The current implementation
-/// only supports default initialising the array but also supports non-copyable / non-moveable ElementType.
+/// but only needs to be set once (i.e. on construction of DynamicArray) and never resized.
+///
+/// \details The implementation also provides some "performance optimizations" in its iterator handling:
+/// It makes sure to return "raw-pointers" as its begin/end-iterators. E.g. independent from the pointer-type, the
+/// underlying Allocator provides, it doesn't return these pointer-types 1:1 as begin/end iterator, but returns
+/// raw-pointers instead. This is a performance benefit, when we use DynamicArray in shared-memory, where we use
+/// score::memory::shared::PolymorphicOffsetPtrAllocator as our allocator, which creates fancy OffsetPtr.
+/// Dereferencing an OffsetPtr is expensive as it applies bounds-checking for safety-reasons. But when iterating over
+/// a DynamicArray residing in shared-memory, doing a bounds-check for every element is unnecessary. Only the 1st/last
+/// OffsetPtr needs to be checked. This is exactly the iterator optimization applied here: Only the start/end gets
+/// bounds-checked and if this is successful a raw-pointer is handed out as an iterator.
 template <typename ElementType, typename Allocator = std::allocator<ElementType>>
 class DynamicArray
 {

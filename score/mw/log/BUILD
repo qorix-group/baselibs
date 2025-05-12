@@ -24,11 +24,11 @@ cc_library(
     deps = [
         ":frontend",
     ] + select({
-        "//score/mw/log/detail/flags:config_KUse_Stub_Implementation_Only": [
-            "//score/mw/log/detail:recorder_factory_stub",
+        "@score-baselibs//score/mw/log/detail/flags:config_KUse_Stub_Implementation_Only": [
+            "@score-baselibs//score/mw/log/detail:recorder_factory_stub",
         ],
         "//conditions:default": [
-            # "@ddad//score/mw/log/detail:recorder_factory",
+            "@score-baselibs//score/mw/log/detail:recorder_factory",
         ],
     }),
 )
@@ -40,9 +40,9 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log/detail:__subpackages__",
-        # "@ddad//score/mw/log:__pkg__",
-        # "@ddad//score/mw/log/detail:__subpackages__",
+        "@score-baselibs//score/mw/log/detail:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__subpackages__",
     ],
     deps = [":recorder"],
 )
@@ -68,21 +68,21 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//platform/aas/ara/log:__subpackages__",
-        "//score/memory/shared:__subpackages__",  # Needed to break cyclic dependency (Ticket-105741)
-        "//score/mw/log/detail:__subpackages__",
-        "//score/mw/log/legacy_non_verbose_api:__pkg__",
-        "//score/mw/log/log_ext:__pkg__",
-        "//score/mw/log/test:__subpackages__",
-        "//score/mw/log/test/sctf_example:__subpackages__",
+        "@score-baselibs//score/memory/shared:__subpackages__",  # Needed to break cyclic dependency (Ticket-105741)
+        "@score-baselibs//score/mw/log/detail:__subpackages__",
+        "@score-baselibs//score/mw/log/legacy_non_verbose_api:__pkg__",
+        "@score-baselibs//score/mw/log/log_ext:__pkg__",
+        "@score-baselibs//score/mw/log/test:__subpackages__",
+        "@score-baselibs//score/mw/log/test/sctf_example:__subpackages__",
         "//platform/aas/sysfunc/common/logistics/error:__pkg__",
         # "@ddad//platform/aas/ara/log:__subpackages__",
-        # "@ddad//score/memory/shared:__subpackages__",  # Needed to break cyclic dependency (Ticket-105741)
-        # "@ddad//score/mw/log:__pkg__",
-        # "@ddad//score/mw/log/detail:__subpackages__",
-        # "@ddad//score/mw/log/legacy_non_verbose_api:__pkg__",
-        # "@ddad//score/mw/log/log_ext:__pkg__",
-        # "@ddad//score/mw/log/test:__subpackages__",
-        # "@ddad//score/mw/log/test/sctf_example:__subpackages__",
+        # "@ddad@score-baselibs//score/memory/shared:__subpackages__",  # Needed to break cyclic dependency (Ticket-105741)
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log/legacy_non_verbose_api:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/log_ext:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/test:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log/test/sctf_example:__subpackages__",
         # "@ddad//platform/aas/sysfunc/common/logistics/error:__pkg__",
     ],
     deps = [
@@ -90,11 +90,11 @@ cc_library(
         ":recorder",
         ":recorder_interface",
         ":shared_types",
-        "//score/result",
-        "//score/mw/log/detail:circular_allocator",
-        "//score/mw/log/detail:empty_recorder",
-        "//score/mw/log/detail:thread_local_guard",
-        "//score/mw/log/detail/wait_free_stack",
+        "@score-baselibs//score/result",
+        "@score-baselibs//score/mw/log/detail:circular_allocator",
+        "@score-baselibs//score/mw/log/detail:empty_recorder",
+        "@score-baselibs//score/mw/log/detail:thread_local_guard",
+        "@score-baselibs//score/mw/log/detail/wait_free_stack",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -117,19 +117,19 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//platform/aas/ara/log:__subpackages__",
-        "//score/mw/log/configuration:__pkg__",
-        "//score/mw/log/detail:__pkg__",
-        "//score/mw/log/detail/data_router:__pkg__",
-        "//score/mw/log/detail/file_logging:__pkg__",
-        "//score/mw/log/detail/slog:__pkg__",
+        "@score-baselibs//score/mw/log/configuration:__pkg__",
+        "@score-baselibs//score/mw/log/detail:__pkg__",
+        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
+        "@score-baselibs//score/mw/log/detail/slog:__pkg__",
         "//platform/aas/test/pas/logging/utils:__pkg__",
         # "@ddad//platform/aas/ara/log:__subpackages__",
-        # "@ddad//score/mw/log:__pkg__",
-        # "@ddad//score/mw/log/configuration:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log/detail/data_router:__pkg__",
-        # "@ddad//score/mw/log/detail/file_logging:__pkg__",
-        # "@ddad//score/mw/log/detail/slog:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/configuration:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/slog:__pkg__",
         # "@ddad//platform/aas/test/pas/logging/utils:__pkg__",
     ],
     deps = ["@score-baselibs//score/language/futurecpp"],
@@ -142,15 +142,15 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log/detail:__pkg__",
-        "//score/mw/log/detail/data_router:__pkg__",
-        "//score/mw/log/detail/file_logging:__pkg__",
-        "//score/mw/log/detail/slog:__pkg__",
-        # "@ddad//score/mw/log:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log/detail/data_router:__pkg__",
-        # "@ddad//score/mw/log/detail/file_logging:__pkg__",
-        # "@ddad//score/mw/log/detail/slog:__pkg__",
+        "@score-baselibs//score/mw/log/detail:__pkg__",
+        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
+        "@score-baselibs//score/mw/log/detail/slog:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/slog:__pkg__",
     ],
     deps = [
         ":shared_types",
@@ -183,11 +183,11 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//platform/aas/lib/hash/code/common:__pkg__",
-        "//score/os:__pkg__",
-        "//score/mw/log/detail:__pkg__",
-        "//score/mw/log/log_ext:__pkg__",
-        "//score/mw/log/test/my_custom_lib:__pkg__",
-        "//score/mw/log/test/sample_ara_core_logging:__pkg__",
+        "@score-baselibs//score/os:__pkg__",
+        "@score-baselibs//score/mw/log/detail:__pkg__",
+        "@score-baselibs//score/mw/log/log_ext:__pkg__",
+        "@score-baselibs//score/mw/log/test/my_custom_lib:__pkg__",
+        "@score-baselibs//score/mw/log/test/sample_ara_core_logging:__pkg__",
         "//platform/aas/sysfunc/BasicSecurity/code/secure_feature_activation:__pkg__",
         "//platform/aas/sysfunc/SoftwareUpdate/code/auto_sync/error:__pkg__",
         "//platform/aas/sysfunc/SoftwareUpdate/code/bank_information:__pkg__",
@@ -198,12 +198,12 @@ cc_library(
         "//platform/aas/sysfunc/SoftwareUpdate/code/mirror_protocol/01_preprocessing/preprocessing_step:__pkg__",
         "//platform/aas/sysfunc/common/logistics/error:__pkg__",
         # "@ddad//platform/aas/lib/hash/code/common:__pkg__",
-        # "@ddad//score/os:__pkg__",
-        # "@ddad//score/mw/log:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log/log_ext:__pkg__",
-        # "@ddad//score/mw/log/test/my_custom_lib:__pkg__",
-        # "@ddad//score/mw/log/test/sample_ara_core_logging:__pkg__",
+        # "@ddad@score-baselibs//score/os:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/log_ext:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/test/my_custom_lib:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/test/sample_ara_core_logging:__pkg__",
         # "@ddad//platform/aas/sysfunc/BasicSecurity/code/secure_feature_activation:__pkg__",
         # "@ddad//platform/aas/sysfunc/SoftwareUpdate/code/auto_sync/error:__pkg__",
         # "@ddad//platform/aas/sysfunc/SoftwareUpdate/code/bank_information:__pkg__",
@@ -217,9 +217,9 @@ cc_library(
     deps = [
         ":recorder",
         ":shared_types",
-        "//score/result:error",
-        "//score/mw/log/detail:logging_identifier",
-        "//score/mw/log/detail:thread_local_guard",
+        "@score-baselibs//score/result:error",
+        "@score-baselibs//score/mw/log/detail:logging_identifier",
+        "@score-baselibs//score/mw/log/detail:thread_local_guard",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -234,7 +234,7 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
     ],
     deps = [
         ":shared_types",
@@ -252,7 +252,7 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
     ],
     deps = [
         ":log",
@@ -271,7 +271,7 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
     ],
     deps = [
         ":log",
@@ -290,7 +290,7 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
     ],
     deps = [
         ":log",
@@ -309,11 +309,31 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
     ],
     deps = [
         ":log",
         ":recorder_mock",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "runtime_test",  # leave
+    srcs = [
+        ":runtime_test.cpp",
+    ],
+    features = COMPILER_WARNING_FEATURES + [
+        "aborts_upon_exception",
+    ],
+    tags = ["unit"],
+    visibility = [
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
+    ],
+    deps = [
+        ":frontend",
+        ":recorder_mock",
+        "@score-baselibs//score/mw/log/detail:recorder_factory",
         "@googletest//:gtest_main",
     ],
 )
@@ -328,7 +348,7 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
     ],
     deps = [
         ":log",
@@ -347,7 +367,7 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
     ],
     deps = [
         ":log",
@@ -366,7 +386,7 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
     ],
     deps = [
         ":shared_types",
@@ -382,10 +402,11 @@ test_suite(
         ":logger_container_test",
         ":logger_test",
         ":logging_test",
+        ":runtime_test",
         ":runtime_test_instance_fallback",
         ":runtime_test_without_pointer_initialization",
         ":slot_handle_test",
-        "//score/mw/log/detail:unit_tests",
+        "@score-baselibs//score/mw/log/detail:unit_tests",
     ],
     visibility = ["//platform/aas/mw:__pkg__"],
 )

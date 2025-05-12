@@ -28,10 +28,7 @@
 // coverity[autosar_cpp14_m7_3_1_violation] see comment below
 struct stat; /* KW_SUPPRESS:MISRA.NS.GLOBAL:Struct declaration needed to avoid incomplete type error in stat() */
 
-/* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: */
-/* False Positive - namespace score is defined on separate line  */
 namespace score
-/* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: */
 {
 namespace os
 {

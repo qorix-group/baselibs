@@ -462,36 +462,28 @@ MQueue::MQueue(const size_t id)
     m_pointer = std::make_unique<MQueuePrivate>(id);
 }
 
-/* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Class method doesn't hide system lib func */
 void MQueue::send(const std::string& msg) const
 {
-    /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Class method doesn't hide system lib func */
     m_pointer->send(msg);
 }
 
-/* KW_SUPPRESS_START:AUTOSAR.BUILTIN_NUMERIC:Char is used as an argument of called function */
-score::cpp::expected_blank<score::os::Error>
-MQueue::send(/* KW_SUPPRESS:MISRA.VAR.HIDDEN:Class method doesn't hide system lib func */
-             const char* const msg,
-             const size_t length) const
+score::cpp::expected_blank<score::os::Error> MQueue::send(const char* const msg, const size_t length) const
 {
     return m_pointer->send(msg, length);
-} /* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC:Char is used as an argument of called function */
+}
 
-/* KW_SUPPRESS_START:AUTOSAR.BUILTIN_NUMERIC:Char is used as an argument of called function */
 ssize_t MQueue::timed_send(const char* const msg, const size_t length, const std::chrono::milliseconds timeout) const
 {
     return m_pointer->timed_send(msg, length, timeout);
-} /* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC:Char is used as an argument of called function */
+}
 
 std::string MQueue::receive() const
 {
     return m_pointer->receive();
 }
 
-/* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Class method doesn't hide system lib func */
 score::cpp::expected_blank<score::os::Error> MQueue::unlink() const
-{ /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Class method doesn't hide system lib func */
+{
     return m_pointer->unlink();
 }
 
@@ -500,11 +492,10 @@ std::size_t MQueue::get_id() const
     return m_pointer->get_id();
 }
 
-/* KW_SUPPRESS_START:AUTOSAR.BUILTIN_NUMERIC:Char is used as an argument of called function */
 std::pair<ssize_t, bool> MQueue::timed_receive(char* const msg, const std::chrono::milliseconds timeout) const
 {
     return m_pointer->timed_receive(msg, timeout);
-} /* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC:Char is used as an argument of called function */
+}
 
 std::pair<std::string, bool> MQueue::timed_receive(const std::chrono::milliseconds timeout) const
 {
@@ -521,11 +512,9 @@ score::cpp::expected<std::uint32_t, Error> MQueue::get_mq_st_mode() const noexce
     return result.value();
 }
 
-MQueue::~MQueue() = default; /* KW_SUPPRESS:MISRA.OBJ.TYPE.IDENT:Destructor signature is the same */
+MQueue::~MQueue() = default;
 MQueue::MQueue(MQueue&&) noexcept = default;
-/* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE:Operator overload */
 MQueue& MQueue::operator=(MQueue&&) noexcept = default;
-/* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE:Operator overload */
 
 }  // namespace os
 }  // namespace score

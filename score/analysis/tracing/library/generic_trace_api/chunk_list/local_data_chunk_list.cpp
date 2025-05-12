@@ -164,8 +164,9 @@ score::Result<SharedMemoryLocation> LocalDataChunkList::FillVectorInSharedMemory
     // coverity[autosar_cpp14_m8_5_2_violation] kept for the sake of zero-initialization
     std::array<std::pair<void*, std::size_t>, kMaxChunksPerOneTraceRequest> allocated_data{};
     std::uint8_t index = 0U;
-
-    for (std::uint8_t i = 0U; i < this->Size(); i++)
+    // Tooling issue: as reported from quality team that cases where branch coverage is 100% but decision couldn't be
+    // analyzed are accepted as deviations
+    for (std::uint8_t i = 0U; i < this->Size(); i++)  // LCOV_EXCL_BR_LINE not testable see comment above.
     {
         // Suppress "AUTOSAR C++14 M5-0-3" rule findings. This rule states: "A cvalue expression shall
         // not be implicitly converted to a different underlying type"

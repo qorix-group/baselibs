@@ -22,11 +22,11 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/analysis/tracing/common/flexible_circular_allocator:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis/tracing/common/flexible_circular_allocator:__subpackages__",
     ],
     deps = [
-        "//score/analysis/tracing/common/flexible_circular_allocator",
-        "//score/mw/log",
+        "@score-baselibs//score/analysis/tracing/common/flexible_circular_allocator",
+        "@score-baselibs//score/mw/log",
         "@googletest//:gtest_main",
     ],
 )
@@ -43,11 +43,11 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/analysis/tracing/common/flexible_circular_allocator:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis/tracing/common/flexible_circular_allocator:__subpackages__",
     ],
     deps = [
-        "//score/analysis/tracing/common/flexible_circular_allocator:flexible_circular_allocator_factory",
-        "//score/mw/log",
+        "@score-baselibs//score/analysis/tracing/common/flexible_circular_allocator:flexible_circular_allocator_factory",
+        "@score-baselibs//score/mw/log",
         "@googletest//:gtest_main",
     ],
 )
@@ -64,11 +64,11 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/analysis/tracing/common/flexible_circular_allocator:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis/tracing/common/flexible_circular_allocator:__subpackages__",
     ],
     deps = [
-        "//score/analysis/tracing/common/flexible_circular_allocator:lockless_flexible_circular_allocator_factory",
-        "//score/mw/log",
+        "@score-baselibs//score/analysis/tracing/common/flexible_circular_allocator:lockless_flexible_circular_allocator_factory",
+        "@score-baselibs//score/mw/log",
         "@googletest//:gtest_main",
     ],
 )

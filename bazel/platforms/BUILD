@@ -79,3 +79,22 @@ platform(
         "@swf_platforms//:x86_64-linux",
     ],
 )
+
+platform(
+    name = "host_linux_x86_64_clang",
+    constraint_values = [
+        "@bazel_tools//tools/cpp:clang",
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+)
+
+platform(
+    name = "host_linux_x86_64_clang_container_platform",
+    constraint_values = [
+        "@io_bazel_rules_docker//platforms:run_in_container",
+    ],
+    parents = [
+        ":host_linux_x86_64_clang",
+    ],
+)

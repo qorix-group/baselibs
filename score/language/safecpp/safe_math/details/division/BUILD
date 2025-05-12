@@ -10,8 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("//score/language/safecpp/safe_math:compiler_features.bzl", "COMPILER_FEATURES")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//score/language/safecpp/safe_math:compiler_features.bzl", "COMPILER_FEATURES")
 
 cc_library(
     name = "division",
@@ -19,15 +19,15 @@ cc_library(
     hdrs = ["division.h"],
     features = COMPILER_FEATURES,
     tags = ["FFI"],
-    visibility = ["//score/language/safecpp/safe_math:__pkg__"],
+    visibility = ["@score-baselibs//score/language/safecpp/safe_math:__pkg__"],
     deps = [
-        "//score/language/safecpp/safe_math:error",
-        "//score/language/safecpp/safe_math/details:floating_point_environment",
-        "//score/language/safecpp/safe_math/details/absolute",
-        "//score/language/safecpp/safe_math/details/cast",
-        "//score/language/safecpp/safe_math/details/negate",
-        "//score/language/safecpp/safe_math/details/type_traits",
-        "//score/result",
+        "@score-baselibs//score/language/safecpp/safe_math:error",
+        "@score-baselibs//score/language/safecpp/safe_math/details:floating_point_environment",
+        "@score-baselibs//score/language/safecpp/safe_math/details/absolute",
+        "@score-baselibs//score/language/safecpp/safe_math/details/cast",
+        "@score-baselibs//score/language/safecpp/safe_math/details/negate",
+        "@score-baselibs//score/language/safecpp/safe_math/details/type_traits",
+        "@score-baselibs//score/result",
     ],
 )
 
@@ -36,10 +36,10 @@ cc_gtest_unit_test(
     srcs = ["division_test.cpp"],
     features = COMPILER_FEATURES,
     visibility = [
-        # "@ddad//score/language/safecpp/safe_math:__pkg__",
+        # "@ddad@score-baselibs//score/language/safecpp/safe_math:__pkg__",
     ],
     deps = [
         ":division",
-        "//score/language/safecpp/safe_math/details:test_type_collection",
+        "@score-baselibs//score/language/safecpp/safe_math/details:test_type_collection",
     ],
 )

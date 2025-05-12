@@ -29,10 +29,10 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/filesystem:__subpackages__",
+        "@score-baselibs//score/filesystem:__subpackages__",
     ],
     deps = [
-        "//score/filesystem:struct",
+        "@score-baselibs//score/filesystem:struct",
     ],
 )
 
@@ -50,13 +50,13 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//score/filesystem:__subpackages__",
+        "@score-baselibs//score/filesystem:__subpackages__",
     ],
     deps = [
         ":factory",
-        "//score/filesystem:standard_filesystem_fake",
-        "//score/filesystem/file_utils:fake",
-        "//score/filesystem/filestream:fake",
+        "@score-baselibs//score/filesystem:standard_filesystem_fake",
+        "@score-baselibs//score/filesystem/file_utils:fake",
+        "@score-baselibs//score/filesystem/filestream:fake",
         "@googletest//:gtest",
     ],
 )
@@ -71,8 +71,8 @@ cc_test(
     features = COMPILER_WARNING_FEATURES,
     tags = ["unit"],
     visibility = [
-        "//score/filesystem:__pkg__",
-        # "@ddad//score/filesystem:__pkg__",
+        "@score-baselibs//score/filesystem:__pkg__",
+        # "@ddad@score-baselibs//score/filesystem:__pkg__",
     ],
     deps = [
         ":factory",

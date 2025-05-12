@@ -17,20 +17,132 @@ COMPILER_WARNING_FEATURES = [
 ]
 
 cc_library(
+    name = "recorder_factory",
+    srcs = [
+        "recorder_factory.cpp",
+    ],
+    hdrs = [
+        "recorder_factory.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "@score-baselibs//score/mw/log:__subpackages__",
+        # "@ddad//platform/aas/ara/log/test:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
+        # "@ddad//platform/aas/tools/kaitai/kaitai_zero_copy_generator:__subpackages__",
+    ],
+    deps = [
+        ":composite_recorder",
+        ":empty_recorder",
+        ":initialization_reporter",
+        ":recorder_config",
+        "@score-baselibs//score/mw/log:recorder_interface",
+        "@score-baselibs//score/mw/log/configuration:configuration_parser",
+    ],
+    alwayslink = True,
+)
+
+cc_library(
+    name = "recorder_config",
+    hdrs = [
+        "recorder_config.h",
+    ],
+    defines = select({
+        "@score-baselibs//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
+        "//conditions:default": [],
+    }) + select({
+        "@score-baselibs//score/mw/log/detail/flags:config_KFile_Logging": ["KFILE_LOGGING"],
+        "//conditions:default": [],
+    }) + select({
+        "@score-baselibs//score/mw/log/flags:Remote_Logging": ["KREMOTE_LOGGING"],
+        "//conditions:default": [],
+    }),
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "@score-baselibs//score/mw/log:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
+    ],
+    deps = [
+        ":empty_recorder_factory",
+    ] + select({
+        "@platforms//os:linux": [],
+        "@platforms//os:qnx": [
+            "@score-baselibs//score/mw/log/detail/slog",
+        ],
+    }) + select({
+        "@score-baselibs//score/mw/log/detail/flags:config_KConsole_Logging": [
+            "@score-baselibs//score/mw/log/detail/file_logging:console_recorder_factory",
+        ],
+        "//conditions:default": [],
+    }) + select({
+        "@score-baselibs//score/mw/log/detail/flags:config_KFile_Logging": [
+            "@score-baselibs//score/mw/log/detail/file_logging:file_recorder_factory",
+        ],
+        "//conditions:default": [],
+    }) + select({
+        "@score-baselibs//score/mw/log/flags:Remote_Logging": [
+            # "@ddad@score-baselibs//score/mw/log/detail/data_router:remote_dlt_recorder_factory",
+        ],
+        "//conditions:default": [],
+    }),
+)
+
+cc_library(
+    name = "log_recorder_factory",
+    srcs = [
+        "log_recorder_factory.hpp",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "@score-baselibs//score/mw/log:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
+    ],
+    deps = [
+        "@score-baselibs//score/os:fcntl",
+        "@score-baselibs//score/mw/log/configuration",
+        "@score-baselibs//score/language/futurecpp",
+    ],
+)
+
+cc_library(
+    name = "empty_recorder_factory",
+    srcs = [
+        "empty_recorder_factory.cpp",
+    ],
+    hdrs = [
+        "empty_recorder_factory.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "@score-baselibs//score/mw/log:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
+    ],
+    deps = [
+        ":empty_recorder",
+        ":initialization_reporter",
+        ":log_recorder_factory",
+    ],
+)
+
+cc_library(
     name = "backend_interface",
     srcs = ["backend.cpp"],
     hdrs = ["backend.h"],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log/detail/data_router:__pkg__",
-        "//score/mw/log/detail/file_logging:__pkg__",
-        "//score/mw/log/detail/slog:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
+        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
+        "@score-baselibs//score/mw/log/detail/slog:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":log_data_types",
-        "//score/mw/log:recorder",
+        "@score-baselibs//score/mw/log:recorder",
     ],
 )
 
@@ -41,13 +153,13 @@ cc_library(
     hdrs = ["backend_mock.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//score/mw/log:__pkg__",
-        "//score/mw/log/detail/data_router:__pkg__",
-        "//score/mw/log/detail/file_logging:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
+        "@score-baselibs//score/mw/log:__pkg__",
+        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
-        "//score/mw/log/detail:backend_interface",
+        "@score-baselibs//score/mw/log/detail:backend_interface",
         "@googletest//:gtest",
     ],
 )
@@ -63,13 +175,13 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log:__subpackages__",
+        "@score-baselibs//score/mw/log:__subpackages__",
         "//platform/aas/pas/logging:__pkg__",
-        # "@ddad//score/mw/log:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
         # "@ddad//platform/aas/pas/logging:__pkg__",
     ],
     deps = [
-        "//score/static_reflection_with_serialization/visitor",
+        "@score-baselibs//score/static_reflection_with_serialization/visitor",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -81,18 +193,18 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log:__pkg__",
-        "//score/mw/log/configuration:__pkg__",
-        "//score/mw/log/detail/data_router:__pkg__",
-        "//score/mw/log/detail/file_logging:__pkg__",
-        # "@ddad//score/mw/log:__pkg__",
-        # "@ddad//score/mw/log/configuration:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log/detail/data_router:__pkg__",
-        # "@ddad//score/mw/log/detail/file_logging:__pkg__",
+        "@score-baselibs//score/mw/log:__pkg__",
+        "@score-baselibs//score/mw/log/configuration:__pkg__",
+        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/configuration:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
     ],
     deps = [
-        "//score/result",
+        "@score-baselibs//score/result",
     ],
 )
 
@@ -103,14 +215,14 @@ cc_library(
     visibility = [
         "//platform/aas/pas/logging:__pkg__",
         "//platform/aas/pas/logging/test:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
         # "@ddad//platform/aas/pas/logging:__pkg__",
         # "@ddad//platform/aas/pas/logging/test:__pkg__",
     ],
     deps = [
         ":logging_identifier",
-        "//score/static_reflection_with_serialization/visitor",
-        "//score/mw/log:shared_types",
+        "@score-baselibs//score/static_reflection_with_serialization/visitor",
+        "@score-baselibs//score/mw/log:shared_types",
     ],
 )
 
@@ -122,19 +234,19 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//platform/aas/ara/log:__pkg__",
-        "//score/mw/log/detail/data_router:__pkg__",
+        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
         "//platform/aas/pas/logging:__pkg__",
         "//platform/aas/pas/logging/test:__pkg__",
         # "@ddad//platform/aas/ara/log:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log/detail/data_router:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/data_router:__pkg__",
         # "@ddad//platform/aas/pas/logging:__pkg__",
         # "@ddad//platform/aas/pas/logging/test:__pkg__",
     ],
     deps = [
         ":logging_identifier",
-        "//score/static_reflection_with_serialization/visitor",
-        "//score/mw/log:shared_types",
+        "@score-baselibs//score/static_reflection_with_serialization/visitor",
+        "@score-baselibs//score/mw/log:shared_types",
     ],
 )
 
@@ -146,7 +258,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        # "@ddad//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
 )
 
@@ -163,11 +275,11 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log/detail/data_router:__pkg__",
-        "//score/mw/log/detail/file_logging:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log/detail/data_router:__pkg__",
-        # "@ddad//score/mw/log/detail/file_logging:__pkg__",
+        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
     ],
     deps = [
         ":helper_functions",
@@ -188,14 +300,14 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log/detail/data_router:__pkg__",
-        "//score/mw/log/detail/file_logging:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log/detail/data_router:__pkg__",
-        # "@ddad//score/mw/log/detail/file_logging:__pkg__",
+        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
     ],
     deps = [
-        "//score/mw/log:recorder",
+        "@score-baselibs//score/mw/log:recorder",
     ],
 )
 
@@ -209,11 +321,11 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log/detail/data_router:__pkg__",
-        "//score/mw/log/detail/file_logging:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log/detail/data_router:__pkg__",
-        # "@ddad//score/mw/log/detail/file_logging:__pkg__",
+        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
     ],
     deps = [
         "@score-baselibs//score/language/futurecpp",
@@ -228,8 +340,8 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log/detail/file_logging:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
+        "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
 )
 
@@ -244,20 +356,20 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log/detail/data_router:__pkg__",
-        "//score/mw/log/detail/file_logging:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log/detail/data_router:__pkg__",
-        # "@ddad//score/mw/log/detail/file_logging:__pkg__",
+        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
     ],
     deps = [
         ":dlt_argument_counter",
         ":helper_functions",
         ":integer_representation",
         ":log_data_types",
-        "//score/bitmanipulation",
-        "//score/memory:string_literal",
-        "//score/mw/log:shared_types",
+        "@score-baselibs//score/bitmanipulation",
+        "@score-baselibs//score/memory:string_literal",
+        "@score-baselibs//score/mw/log:shared_types",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -273,15 +385,17 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log:__pkg__",
-        "//score/mw/log/configuration:__pkg__",
-        "//score/mw/log/detail/data_router:__pkg__",
-        "//score/mw/log/detail/slog:__pkg__",
-        # "@ddad//score/mw/log:__pkg__",
-        # "@ddad//score/mw/log/configuration:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log/detail/data_router:__pkg__",
-        # "@ddad//score/mw/log/detail/slog:__pkg__",
+        "@score-baselibs//score/mw/log:__pkg__",
+        "@score-baselibs//score/mw/log/configuration:__pkg__",
+        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
+        "@score-baselibs//score/mw/log/detail/slog:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/configuration:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/slog:__pkg__",
     ],
     deps = [
         ":types_and_errors",
@@ -299,16 +413,16 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log:__pkg__",
-        "//score/mw/log/detail/data_router:__pkg__",
-        # "@ddad//score/mw/log:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log/detail/data_router:__pkg__",
+        "@score-baselibs//score/mw/log:__pkg__",
+        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/data_router:__pkg__",
     ],
     deps = [
         ":initialization_reporter",
         ":types_and_errors",
-        "//score/mw/log:recorder",
+        "@score-baselibs//score/mw/log:recorder",
     ],
 )
 
@@ -323,18 +437,20 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log:__pkg__",
-        "//score/mw/log/detail/data_router:__pkg__",
-        # "@ddad//score/mw/log:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log/detail/data_router:__pkg__",
+        "@score-baselibs//score/mw/log:__pkg__",
+        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
     ],
     deps = [
         ":log_data_types",
         ":log_entry",
         ":logging_identifier",
         ":types_and_errors",
-        "//score/mw/log:recorder",
+        "@score-baselibs//score/mw/log:recorder",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -346,9 +462,9 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log:__subpackages__",
-        # "@ddad//score/mw/log:__subpackages__",
-        # "@ddad//score/mw/log/detail:__subpackages__",
+        "@score-baselibs//score/mw/log:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__subpackages__",
     ],
 )
 
@@ -364,14 +480,14 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log:__subpackages__",
-        # "@ddad//score/mw/log:__subpackages__",
-        # "@ddad//score/mw/log/detail:__subpackages__",
+        "@score-baselibs//score/mw/log:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__subpackages__",
     ],
     deps = [
         ":empty_recorder",
-        "//score/mw/log:recorder_interface",
-        "//score/mw/log/detail/file_logging:text_recorder",
+        "@score-baselibs//score/mw/log:recorder_interface",
+        "@score-baselibs//score/mw/log/detail/file_logging:text_recorder",
     ],
     alwayslink = True,
 )
@@ -386,9 +502,9 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log:__subpackages__",
-        # "@ddad//score/mw/log:__subpackages__",
-        # "@ddad//score/mw/log/detail:__subpackages__",
+        "@score-baselibs//score/mw/log:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__subpackages__",
     ],
     deps = ["@score-baselibs//score/language/futurecpp"],
 )
@@ -403,16 +519,9 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    local_defines = select({
-        "//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
-        "//conditions:default": [],
-    }) + select({
-        "//score/mw/log/detail/flags:config_KFile_Logging": ["KFILE_LOGGING"],
-        "//conditions:default": [],
-    }),
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":circular_allocator",
@@ -430,20 +539,13 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    local_defines = select({
-        "//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
-        "//conditions:default": [],
-    }) + select({
-        "//score/mw/log/detail/flags:config_KFile_Logging": ["KFILE_LOGGING"],
-        "//conditions:default": [],
-    }),
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":composite_recorder",
-        "//score/mw/log:recorder_mock",
+        "@score-baselibs//score/mw/log:recorder_mock",
         "@googletest//:gtest_main",
     ],
 )
@@ -458,16 +560,9 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    local_defines = select({
-        "//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
-        "//conditions:default": [],
-    }) + select({
-        "//score/mw/log/detail/flags:config_KFile_Logging": ["KFILE_LOGGING"],
-        "//conditions:default": [],
-    }),
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":dlt_argument_counter",
@@ -485,16 +580,9 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    local_defines = select({
-        "//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
-        "//conditions:default": [],
-    }) + select({
-        "//score/mw/log/detail/flags:config_KFile_Logging": ["KFILE_LOGGING"],
-        "//conditions:default": [],
-    }),
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":dlt_content_formatting",
@@ -512,16 +600,9 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    local_defines = select({
-        "//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
-        "//conditions:default": [],
-    }) + select({
-        "//score/mw/log/detail/flags:config_KFile_Logging": ["KFILE_LOGGING"],
-        "//conditions:default": [],
-    }),
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":empty_recorder",
@@ -539,16 +620,9 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    local_defines = select({
-        "//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
-        "//conditions:default": [],
-    }) + select({
-        "//score/mw/log/detail/flags:config_KFile_Logging": ["KFILE_LOGGING"],
-        "//conditions:default": [],
-    }),
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":types_and_errors",
@@ -566,16 +640,9 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    local_defines = select({
-        "//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
-        "//conditions:default": [],
-    }) + select({
-        "//score/mw/log/detail/flags:config_KFile_Logging": ["KFILE_LOGGING"],
-        "//conditions:default": [],
-    }),
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         "helper_functions",
@@ -593,16 +660,9 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    local_defines = select({
-        "//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
-        "//conditions:default": [],
-    }) + select({
-        "//score/mw/log/detail/flags:config_KFile_Logging": ["KFILE_LOGGING"],
-        "//conditions:default": [],
-    }),
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":log_entry_deserialize",
@@ -620,20 +680,13 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    local_defines = select({
-        "//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
-        "//conditions:default": [],
-    }) + select({
-        "//score/mw/log/detail/flags:config_KFile_Logging": ["KFILE_LOGGING"],
-        "//conditions:default": [],
-    }),
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":log_data_types",
-        "//score/quality/compiler_warnings",
+        "@score-baselibs//score/quality/compiler_warnings",
         "@googletest//:gtest_main",
     ],
 )
@@ -648,19 +701,34 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    local_defines = select({
-        "//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
-        "//conditions:default": [],
-    }) + select({
-        "//score/mw/log/detail/flags:config_KFile_Logging": ["KFILE_LOGGING"],
-        "//conditions:default": [],
-    }),
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":logging_identifier",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "recorder_factory_test",
+    srcs = [
+        "recorder_factory_test.cpp",
+    ],
+    data = [
+    ],
+    features = COMPILER_WARNING_FEATURES + [
+        "aborts_upon_exception",
+    ],
+    tags = ["unit"],
+    visibility = [
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+    ],
+    deps = [
+        ":recorder_factory",
+        "@score-baselibs//score/os/mocklib:fcntl_mock",
+        "@score-baselibs//score/mw/log/configuration:target_config_reader_mock",
         "@googletest//:gtest_main",
     ],
 )
@@ -675,16 +743,9 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    local_defines = select({
-        "//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
-        "//conditions:default": [],
-    }) + select({
-        "//score/mw/log/detail/flags:config_KFile_Logging": ["KFILE_LOGGING"],
-        "//conditions:default": [],
-    }),
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":circular_allocator",
@@ -702,20 +763,13 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    local_defines = select({
-        "//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
-        "//conditions:default": [],
-    }) + select({
-        "//score/mw/log/detail/flags:config_KFile_Logging": ["KFILE_LOGGING"],
-        "//conditions:default": [],
-    }),
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":statistics_reporter",
-        "//score/mw/log:recorder_mock",
+        "@score-baselibs//score/mw/log:recorder_mock",
         "@googletest//:gtest_main",
     ],
 )
@@ -730,16 +784,9 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    local_defines = select({
-        "//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
-        "//conditions:default": [],
-    }) + select({
-        "//score/mw/log/detail/flags:config_KFile_Logging": ["KFILE_LOGGING"],
-        "//conditions:default": [],
-    }),
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":log_data_types",
@@ -756,10 +803,10 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
-        "//score/mw/log/detail:recorder_factory_stub",
+        "@score-baselibs//score/mw/log/detail:recorder_factory_stub",
         "@googletest//:gtest_main",
     ],
 )
@@ -777,10 +824,11 @@ test_suite(
         ":log_entry_deserialize_test",
         ":log_record_test",
         ":logging_identifier_test",
+        ":recorder_factory_test",
         ":slot_test",
         ":statistics_reporter_test",
         ":verbose_payload_test",
-        "//score/mw/log/detail/wait_free_stack:unit_tests",
+        "@score-baselibs//score/mw/log/detail/wait_free_stack:unit_tests",
     ],
-    visibility = ["//score/mw/log:__pkg__"],
+    visibility = ["@score-baselibs//score/mw/log:__pkg__"],
 )

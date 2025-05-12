@@ -10,8 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("//score/concurrency:compiler_featues.bzl", "COMPILER_FEATURES")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//score/concurrency:compiler_featues.bzl", "COMPILER_FEATURES")
 
 cc_library(
     name = "timed_task",
@@ -24,7 +24,7 @@ cc_library(
         # "@ddad//visibility:public",
     ],
     deps = [
-        "//score/concurrency:executor",
+        "@score-baselibs//score/concurrency:executor",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -52,12 +52,12 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     visibility = [
-        # "@ddad//score/concurrency/timed_executor:__subpackages__",
+        # "@ddad@score-baselibs//score/concurrency/timed_executor:__subpackages__",
     ],
     deps = [
         ":periodic_task",
-        "//score/concurrency:clock",
-        "//score/concurrency:executor_mock",
+        "@score-baselibs//score/concurrency:clock",
+        "@score-baselibs//score/concurrency:executor_mock",
     ],
 )
 
@@ -84,12 +84,12 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     visibility = [
-        # "@ddad//score/concurrency/timed_executor:__subpackages__",
+        # "@ddad@score-baselibs//score/concurrency/timed_executor:__subpackages__",
     ],
     deps = [
         ":delayed_task",
-        "//score/concurrency:clock",
-        "//score/concurrency:executor_mock",
+        "@score-baselibs//score/concurrency:clock",
+        "@score-baselibs//score/concurrency:executor_mock",
     ],
 )
 
@@ -149,12 +149,12 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     visibility = [
-        # "@ddad//score/concurrency/timed_executor:__subpackages__",
+        # "@ddad@score-baselibs//score/concurrency/timed_executor:__subpackages__",
     ],
     deps = [
         ":concurrent_timed_executor",
-        "//score/concurrency:clock",
-        "//score/concurrency:executor_mock",
-        "//score/concurrency:thread_pool",
+        "@score-baselibs//score/concurrency:clock",
+        "@score-baselibs//score/concurrency:executor_mock",
+        "@score-baselibs//score/concurrency:thread_pool",
     ],
 )

@@ -313,7 +313,7 @@ TEST_F(EmptyRecorderFixture, Log_LogSlog2Message)
 
 TEST_F(EmptyRecorderFixture, IsLogEnabledShallReturnValue)
 {
-    RecordProperty("Requirement", "SCR-861534");
+    RecordProperty("Requirement", "SCR-861534, SCR-2592577");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "EmptyRecorder contains IsLogEnabled for testing purpose.");
     RecordProperty("TestingTechnique", "Requirements-based test");

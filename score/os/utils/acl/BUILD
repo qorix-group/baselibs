@@ -31,9 +31,9 @@ cc_library(
         # "@ddad//visibility:public",
     ],
     deps = [
-        "//score/os:acl",
-        "//score/os:errno",
-        "//score/result",
+        "@score-baselibs//score/os:acl",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -69,12 +69,12 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        "//score/os/utils/test:__pkg__",
-        # "@ddad//score/os/utils:__subpackages__",
+        "@score-baselibs//score/os/utils/test:__pkg__",
+        # "@ddad@score-baselibs//score/os/utils:__subpackages__",
     ],
     deps = [
         ":acl",
-        "//score/os/mocklib:acl_mock",
+        "@score-baselibs//score/os/mocklib:acl_mock",
         "@googletest//:gtest_main",
     ],
 )

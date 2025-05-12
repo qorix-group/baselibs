@@ -49,7 +49,7 @@ class ObjectSeam  // LCOV_EXCL_LINE: tooling issue
         get_local_instance() = nullptr;  // Next invocation of instance() will restore the pointer.
     }
 
-  protected: /* KW_SUPPRESS:MISRA.USE.EXPANSION:False postive as protected is an access specifier, not macro */
+  protected:
     /// \detail Invoking this function is thread safe stand-alone (as used in production code)
     ///         Invoking `restore_instance()` or `set_testing_instance()` is _not_ safe!
     static Object& select_instance(Object& instance)
@@ -137,8 +137,8 @@ class MockGuard
         return &mock_;
     }
 
-  private:   /* KW_SUPPRESS:MISRA.USE.EXPANSION:False postive as private is an access specifier, not macro */
-    M mock_; /* KW_SUPPRESS:MISRA.MEMB.NOT_PRIVATE:False Positive - mock_ is private member*/
+  private:
+    M mock_;
 };
 
 }  // namespace os

@@ -10,7 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//score/os:common_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score-baselibs//score/os:common_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "inotify_event",
@@ -24,7 +24,7 @@ cc_library(
     ],
     deps = [
         ":inotify_watch_descriptor",
-        "//score/os:inotify",
+        "@score-baselibs//score/os:inotify",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -60,12 +60,12 @@ cc_library(
         ":inotify_event",
         ":inotify_instance",
         ":inotify_watch_descriptor",
-        "//score/os:errno",
-        "//score/os:fcntl",
-        "//score/os:inotify",
-        "//score/os:sys_poll",
-        "//score/os:unistd",
-        "//score/os/utils:abortable_blocking_reader",
+        "@score-baselibs//score/os:errno",
+        "@score-baselibs//score/os:fcntl",
+        "@score-baselibs//score/os:inotify",
+        "@score-baselibs//score/os:sys_poll",
+        "@score-baselibs//score/os:unistd",
+        "@score-baselibs//score/os/utils:abortable_blocking_reader",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -129,15 +129,15 @@ cc_test(
         "unit",
     ],
     visibility = [
-        "//score/os/utils/test:__pkg__",
-        # "@ddad//score/os/utils/test:__pkg__",
+        "@score-baselibs//score/os/utils/test:__pkg__",
+        # "@ddad@score-baselibs//score/os/utils/test:__pkg__",
     ],
     deps = [
         ":inotify_instance_impl",
-        "//score/os/mocklib:fcntl_mock",
-        "//score/os/mocklib:inotify_mock",
-        "//score/os/mocklib:sys_poll_mock",
-        "//score/os/mocklib:unistd_mock",
+        "@score-baselibs//score/os/mocklib:fcntl_mock",
+        "@score-baselibs//score/os/mocklib:inotify_mock",
+        "@score-baselibs//score/os/mocklib:sys_poll_mock",
+        "@score-baselibs//score/os/mocklib:unistd_mock",
         "@googletest//:gtest_main",
     ],
 )

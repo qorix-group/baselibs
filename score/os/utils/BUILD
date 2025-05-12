@@ -10,16 +10,16 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//score/os:common_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score-baselibs//score/os:common_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "mqueue_headers",
     hdrs = ["mqueue.h"],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = ["//score/os/utils/mocklib:__subpackages__"],
+    visibility = ["@score-baselibs//score/os/utils/mocklib:__subpackages__"],
     deps = [
-        "//score/os:errno",
+        "@score-baselibs//score/os:errno",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -32,10 +32,10 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":mqueue_headers",
-        "//score/os:mqueue",
-        "//score/os:stat",
-        "//score/utils:string_hash",
-        "//score/utils:time_conversion",
+        "@score-baselibs//score/os:mqueue",
+        "@score-baselibs//score/os:stat",
+        "@score-baselibs//score/utils:string_hash",
+        "@score-baselibs//score/utils:time_conversion",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -44,9 +44,9 @@ cc_library(
     name = "semaphore_headers",
     hdrs = ["semaphore.h"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = ["//score/os/utils/mocklib:__subpackages__"],
+    visibility = ["@score-baselibs//score/os/utils/mocklib:__subpackages__"],
     deps = [
-        "//score/utils:pimpl_ptr",
+        "@score-baselibs//score/utils:pimpl_ptr",
     ],
 )
 
@@ -57,8 +57,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":semaphore_headers",
-        "//score/os:semaphore",
-        "//score/os:socket",
+        "@score-baselibs//score/os:semaphore",
+        "@score-baselibs//score/os:socket",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -71,9 +71,9 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = ["//score/os/utils/mocklib:__subpackages__"],
+    visibility = ["@score-baselibs//score/os/utils/mocklib:__subpackages__"],
     deps = [
-        "//score/os:errno",
+        "@score-baselibs//score/os:errno",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -87,16 +87,16 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/os:__subpackages__",
+        "@score-baselibs//score/os:__subpackages__",
         "//platform/aas/mw/lifecycle:__subpackages__",
-        "//score/mw/log:__subpackages__",
+        "@score-baselibs//score/mw/log:__subpackages__",
         "//platform/aas/pas/crash_reporter:__subpackages__",
         "//platform/aas/pas/logging:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
+        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":signal_headers",
-        "//score/os:unistd",
+        "@score-baselibs//score/os:unistd",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -106,7 +106,7 @@ cc_library(
     hdrs = ["thread.h"],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = ["//score/os/utils/mocklib:__subpackages__"],
+    visibility = ["@score-baselibs//score/os/utils/mocklib:__subpackages__"],
 )
 
 cc_library(
@@ -122,8 +122,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":thread_headers",
-        "//score/os:pthread",
-        "//score/mw/log",
+        "@score-baselibs//score/os:pthread",
+        "@score-baselibs//score/mw/log",
     ],
 )
 
@@ -134,19 +134,19 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/analysis/tracing/daemon/code/plugin/ipc_trace/utils:__pkg__",
-        "//score/analysis/tracing/daemon/code/plugin/utils:__pkg__",
-        "//score/analysis/tracing/library/generic_trace_api/trace_job_allocator:__pkg__",
-        "//score/analysis/tracing/library/test/unit_test:__pkg__",
-        "//score/os/utils/test:__pkg__",
-        "//score/mw/log/detail/data_router/shared_memory:__pkg__",
-        "//score/mw/log/detail/file_logging:__pkg__",
+        "@score-baselibs//score/analysis/tracing/daemon/code/plugin/ipc_trace/utils:__pkg__",
+        "@score-baselibs//score/analysis/tracing/daemon/code/plugin/utils:__pkg__",
+        "@score-baselibs//score/analysis/tracing/library/generic_trace_api/trace_job_allocator:__pkg__",
+        "@score-baselibs//score/analysis/tracing/library/test/unit_test:__pkg__",
+        "@score-baselibs//score/os/utils:__pkg__",
+        "@score-baselibs//score/os/utils/test:__pkg__",
+        "@score-baselibs//score/mw/log/detail/data_router/shared_memory:__pkg__",
+        "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
         "//platform/aas/pas/logging:__pkg__",
         "//platform/aas/sysfunc/SafeCarTime/code/apps/TimeSyncValidationNonFFI/factory/impl:__pkg__",
         "//platform/aas/sysfunc/SafeCarTime/code/factory/impl:__pkg__",
         "//platform/aas/test/pas/perf_tests/tools/perf_apps:__pkg__",
-        # "@ddad//score/os/utils:__pkg__",
-        # "@ddad//score/os/utils/test:__pkg__",
+        # "@ddad@score-baselibs//score/os/utils:__pkg__",
     ],
 )
 
@@ -181,17 +181,17 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//platform/aas/abac/abac/core/DataLogistic:__subpackages__",
-        "//score/os:__subpackages__",
-        "//score/mw/log:__subpackages__",
+        "@score-baselibs//score/os:__subpackages__",
+        "@score-baselibs//score/mw/log:__subpackages__",
         "//platform/aas/mw/storage:__subpackages__",
         "//platform/aas/pas/logging:__subpackages__",
         "//platform/aas/sec/secured:__subpackages__",
-        # "@ddad//score/os:__subpackages__",
+        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":path_header",
-        "//score/os:libgen",
-        "//score/os:unistd",
+        "@score-baselibs//score/os:libgen",
+        "@score-baselibs//score/os:unistd",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -217,14 +217,14 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     local_defines = select({
-        "//bazel/settings/qemu:on_qemu": ["MACHINE_QEMU"],
+        "@score-baselibs//bazel/settings/qemu:on_qemu": ["MACHINE_QEMU"],
         "//conditions:default": [],
     }),
     tags = ["FFI"],
     visibility = ["//visibility:public"],
     deps = [
         ":machine_header",
-        "//score/os:stdlib",
+        "@score-baselibs//score/os:stdlib",
     ],
 )
 
@@ -236,7 +236,7 @@ cc_library(
     tags = ["FFI"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os:uname",
+        "@score-baselibs//score/os:uname",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -251,8 +251,8 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os:socket",
-        "//score/mw/log",
+        "@score-baselibs//score/os:socket",
+        "@score-baselibs//score/mw/log",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -263,11 +263,11 @@ cc_library(
     hdrs = ["abortable_blocking_reader.h"],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = ["//score/os/utils:__subpackages__"],
+    visibility = ["@score-baselibs//score/os/utils:__subpackages__"],
     deps = [
-        "//score/os:fcntl",
-        "//score/os:sys_poll",
-        "//score/os:unistd",
+        "@score-baselibs//score/os:fcntl",
+        "@score-baselibs//score/os:sys_poll",
+        "@score-baselibs//score/os:unistd",
         "@score-baselibs//score/language/futurecpp",
     ],
 )

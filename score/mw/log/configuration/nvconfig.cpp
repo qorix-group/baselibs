@@ -65,7 +65,7 @@ config::NvMsgDescriptor GetMsgDescriptor(const std::uint32_t id,
 // Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
 // std::terminate() will not  implicitly be called from HandleParseResult as it declared as noexcept.
 // coverity[autosar_cpp14_a15_5_3_violation]
-NvConfig::ReadResult HandleParseResult(const score::json::Object& parse_result, NvConfig::typemap_t& typemap) noexcept
+INvConfig::ReadResult HandleParseResult(const score::json::Object& parse_result, NvConfig::typemap_t& typemap) noexcept
 {
     for (auto& result_iterator : parse_result)
     {
@@ -74,26 +74,26 @@ NvConfig::ReadResult HandleParseResult(const score::json::Object& parse_result, 
         if (!object_array_result.has_value())
         /* KW_SUPPRESS_END: MISRA.LOGIC.NOT_BOOL: False positive. */
         {
-            return NvConfig::ReadResult::kERROR_PARSE;
+            return INvConfig::ReadResult::kERROR_PARSE;
         }
 
         auto& object_array_value = object_array_result.value().get();
         const auto& object_ctxid_iterator = object_array_value.find("ctxid");
         if (object_ctxid_iterator == object_array_value.end())
         {
-            return NvConfig::ReadResult::kERROR_CONTENT;
+            return INvConfig::ReadResult::kERROR_CONTENT;
         }
 
         const auto& object_id_iterator = object_array_value.find("id");
         if (object_id_iterator == object_array_value.end())
         {
-            return NvConfig::ReadResult::kERROR_CONTENT;
+            return INvConfig::ReadResult::kERROR_CONTENT;
         }
 
         const auto& object_appid_iterator = object_array_value.find("appid");
         if (object_appid_iterator == object_array_value.end())
         {
-            return NvConfig::ReadResult::kERROR_CONTENT;
+            return INvConfig::ReadResult::kERROR_CONTENT;
         }
 
         auto id = object_id_iterator->second.As<std::uint32_t>();
@@ -103,14 +103,14 @@ NvConfig::ReadResult HandleParseResult(const score::json::Object& parse_result, 
         /* KW_SUPPRESS_END: MISRA.LOGIC.NOT_BOOL: It is correct boolean statement. */
         /* KW_SUPPRESS_END: MISRA.STMT.COND.NOT_BOOLEAN: It is correct boolean statement. */
         {
-            return NvConfig::ReadResult::kERROR_CONTENT;
+            return INvConfig::ReadResult::kERROR_CONTENT;
         }
 
         auto object_name = result_iterator.first.GetAsStringView();
         typemap[object_name.data()] =
             GetMsgDescriptor(id.value(), object_array_value, object_appid_iterator, object_ctxid_iterator);
     }
-    return NvConfig::ReadResult::kOK;
+    return INvConfig::ReadResult::kOK;
 }
 
 }  // namespace
@@ -122,7 +122,7 @@ NvConfig::NvConfig(const std::string& file_path) : json_path_(file_path), typema
 // Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
 // std::terminate() will not  implicitly be called from parseFromJson as it declared as noexcept.
 // coverity[autosar_cpp14_a15_5_3_violation]
-NvConfig::ReadResult NvConfig::parseFromJson() noexcept
+INvConfig::ReadResult NvConfig::parseFromJson() noexcept
 /* KW_SUPPRESS_END: MISRA.MEMB.NON_STATIC: False positive. Method uses class fields. */
 /* KW_SUPPRESS_END: MISRA.LINKAGE.EXTERN: False positive. These are not declarations, these are definitions. */
 {
@@ -137,7 +137,7 @@ NvConfig::ReadResult NvConfig::parseFromJson() noexcept
     /* KW_SUPPRESS_END: MISRA.LOGIC.NOT_BOOL: It is correct boolean statement. */
     /* KW_SUPPRESS_END: MISRA.STMT.COND.NOT_BOOLEAN: It is correct boolean statement. */
     {
-        return ReadResult::kERROR_PARSE;
+        return INvConfig::ReadResult::kERROR_PARSE;
     }
 
     auto parse_result = root.value().As<score::json::Object>();
@@ -145,7 +145,7 @@ NvConfig::ReadResult NvConfig::parseFromJson() noexcept
     if (!parse_result.has_value())
     /* KW_SUPPRESS_END: MISRA.LOGIC.NOT_BOOL: It is correct boolean statement. */
     {
-        return ReadResult::kERROR_PARSE;
+        return INvConfig::ReadResult::kERROR_PARSE;
     }
 
     return HandleParseResult(parse_result.value(), typemap_);

@@ -10,7 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
 
 _COMPILER_WARNING_FEATURES = [
     "treat_warnings_as_errors",
@@ -24,7 +24,7 @@ cc_library(
     hdrs = ["expected.h"],
     features = _COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = ["//score/result:__pkg__"],
+    visibility = ["@score-baselibs//score/result:__pkg__"],
 )
 
 cc_library(
@@ -52,7 +52,7 @@ cc_gtest_unit_test(
     ],
     features = _COMPILER_WARNING_FEATURES,
     visibility = [
-        # "@ddad//score/result/details/expected:__pkg__",
+        # "@ddad@score-baselibs//score/result/details/expected:__pkg__",
     ],
     deps = [":test_type_traits"],
 )
@@ -72,7 +72,7 @@ cc_gtest_unit_test(
         "-aborts_upon_exception",
     ],
     visibility = [
-        # "@ddad//score/result/details/expected:__pkg__",
+        # "@ddad@score-baselibs//score/result/details/expected:__pkg__",
     ],
     deps = [
         ":expected",
@@ -87,7 +87,7 @@ cc_library(
     hdrs = ["extensions.h"],
     features = _COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = ["//score/result:__pkg__"],
+    visibility = ["@score-baselibs//score/result:__pkg__"],
     deps = [
         ":expected",
         "@score-baselibs//score/language/futurecpp",
@@ -99,7 +99,7 @@ cc_gtest_unit_test(
     srcs = ["extensions_test.cpp"],
     features = _COMPILER_WARNING_FEATURES,
     visibility = [
-        # "@ddad//score/result/details/expected:__pkg__",
+        # "@ddad@score-baselibs//score/result/details/expected:__pkg__",
     ],
     deps = [
         ":extensions",

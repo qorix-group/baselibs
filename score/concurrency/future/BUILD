@@ -10,8 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("//score/concurrency:compiler_featues.bzl", "COMPILER_FEATURES")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//score/concurrency:compiler_featues.bzl", "COMPILER_FEATURES")
 
 cc_library(
     name = "future",
@@ -42,10 +42,10 @@ cc_library(
         # "@ddad//visibility:public",
     ],
     deps = [
-        "//score/language/safecpp/scoped_function:move_only_scoped_function",
-        "//score/language/safecpp/scoped_function:scope",
-        "//score/concurrency:interruptible_wait",
-        "//score/result",
+        "@score-baselibs//score/language/safecpp/scoped_function:move_only_scoped_function",
+        "@score-baselibs//score/language/safecpp/scoped_function:scope",
+        "@score-baselibs//score/concurrency:interruptible_wait",
+        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -73,7 +73,7 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     visibility = [
-        # "@ddad//score/concurrency/future:__subpackages__",
+        # "@ddad@score-baselibs//score/concurrency/future:__subpackages__",
     ],
     deps = [
         ":future",

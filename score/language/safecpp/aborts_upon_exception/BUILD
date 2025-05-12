@@ -31,11 +31,11 @@ cc_test(
     features = ["throws_upon_exception"],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/language/safecpp/aborts_upon_exception:__pkg__",
+        # "@ddad@score-baselibs//score/language/safecpp/aborts_upon_exception:__pkg__",
     ],
     deps = [
         ":abortsuponexception",
-        "//score/language/safecpp/coverage_termination_handler",
+        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
         "@googletest//:gtest_main",
         "@score-baselibs//score/language/futurecpp",
     ],
@@ -50,10 +50,10 @@ cc_test(
     features = ["aborts_upon_exception"],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/language/safecpp/aborts_upon_exception:__pkg__",
+        # "@ddad@score-baselibs//score/language/safecpp/aborts_upon_exception:__pkg__",
     ],
     deps = [
-        "//score/language/safecpp/coverage_termination_handler",
+        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
         "@googletest//:gtest_main",
         "@score-baselibs//score/language/futurecpp",
     ],

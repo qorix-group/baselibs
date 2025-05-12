@@ -13,7 +13,11 @@
 #include "score/mw/log/runtime.h"
 
 #include "score/mw/log/detail/empty_recorder.h"
+
+#if defined(KUSE_STUB_IMPLEMENTATION_ONLY)
 #include "score/mw/log/detail/file_logging/text_recorder.h"
+#endif
+
 #include "score/mw/log/recorder_mock.h"
 
 #include "gtest/gtest.h"
@@ -51,7 +55,12 @@ TEST(RuntimeTest, RuntimeInitializationWithoutPointer)
     // Do not add additional tests here, but in runtime_test.cpp.
     auto& recorder = Runtime::GetRecorder();
 
-    EXPECT_TRUE(IsRecorderOfType<EmptyRecorder>(recorder) || IsRecorderOfType<TextRecorder>(recorder));
+#if defined(KUSE_STUB_IMPLEMENTATION_ONLY)
+    EXPECT_TRUE(IsRecorderOfType<TextRecorder>(recorder));
+#else
+    EXPECT_TRUE(IsRecorderOfType<EmptyRecorder>(recorder));
+#endif
+
     // GetRecorder() shall always return a valid reference to a recorder.
     // We enforce checking this by calling an arbitrary method on the reference.
     // Address sanitizer and valgrind would detect a memory error if the implementation is faulty.

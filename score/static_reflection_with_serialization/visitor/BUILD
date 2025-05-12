@@ -38,7 +38,7 @@ test_suite(
         ":visitor_ut",
     ],
     visibility = [
-        # "@ddad//score/mw/log/test:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/test:__pkg__",
     ],
 )
 
@@ -52,7 +52,7 @@ cc_test(
     features = _compiler_warning_features,
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/test:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/test:__pkg__",
     ],
     deps = [
         ":visitor",

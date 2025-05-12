@@ -44,13 +44,8 @@ class IWriteFunction
     IWriteFunction& operator=(const IWriteFunction&) = delete;
     IWriteFunction(IWriteFunction&& other) = delete;
     IWriteFunction& operator=(IWriteFunction&& other) = delete;
-    /* KW_SUPPRESS_START:AUTOSAR.BUILTIN_NUMERIC: Should fit QNX library signature */
-    /* KW_SUPPRESS_START:MISRA.MEMB.NOT_PRIVATE: False positive - used as POD */
-    /* KW_SUPPRESS_START:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
     virtual int operator()(resmgr_context_t* ctp, io_write_t* msg, RESMGR_OCB_T* ocb) = 0;
-    /* KW_SUPPRESS_END:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
-    /* KW_SUPPRESS_END:MISRA.MEMB.NOT_PRIVATE: False positive - used as POD */
-    /* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC: Should fit QNX library signature */
+
   protected:
     IWriteFunction() = default;
 };

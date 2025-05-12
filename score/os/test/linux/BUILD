@@ -10,7 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//score/os:common_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score-baselibs//score/os:common_features.bzl", "COMPILER_WARNING_FEATURES")
 
 test_suite(
     name = "unit_tests_linux",
@@ -29,9 +29,12 @@ cc_test(
         "unit",
     ],
     target_compatible_with = ["@platforms//os:linux"],
+    visibility = [
+        # "@ddad@score-baselibs//score/os/test/linux:__pkg__",
+    ],
     deps = [
-        "//score/os/linux",
-        "//score/os/linux:linux_header",
+        "@score-baselibs//score/os/linux",
+        "@score-baselibs//score/os/linux:linux_header",
         "@googletest//:gtest_main",
     ],
 )
@@ -46,8 +49,11 @@ cc_test(
         "unit",
     ],
     target_compatible_with = ["@platforms//os:linux"],
+    visibility = [
+        # "@ddad@score-baselibs//score/os/test/linux:__pkg__",
+    ],
     deps = [
-        "//score/os:pthread",
+        "@score-baselibs//score/os:pthread",
         "@googletest//:gtest_main",
     ],
 )

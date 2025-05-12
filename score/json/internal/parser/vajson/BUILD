@@ -23,13 +23,13 @@ cc_library(
     features = COMMON_FEATURES,
     tags = ["FFI"],
     target_compatible_with = select({
-        "//score/json:base_library_nlohmann": ["@platforms//:incompatible"],
-        "//score/json:base_library_vajson": [],
+        "@score-baselibs//score/json:base_library_nlohmann": ["@platforms//:incompatible"],
+        "@score-baselibs//score/json:base_library_vajson": [],
     }),
-    visibility = ["//score/json:__subpackages__"],
+    visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
-        "//score/json/internal/model",
-        "//score/result",
+        "@score-baselibs//score/json/internal/model",
+        "@score-baselibs//score/result",
         # "@ddad//ecu/xpad/ara/vector:vajson",
     ],
 )
@@ -40,10 +40,10 @@ cc_test(
     features = COMMON_FEATURES + ["aborts_upon_exception"],
     local_defines = ["VAJSON"],
     tags = ["unit"],
-    visibility = ["//score/json:__subpackages__"],
+    visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
-        "//score/json/internal/parser:parser_test_suite",
-        "//score/json/internal/parser/vajson:vajson_parser",
+        "@score-baselibs//score/json/internal/parser:parser_test_suite",
+        "@score-baselibs//score/json/internal/parser/vajson:vajson_parser",
         "@googletest//:gtest_main",
     ],
 )
@@ -54,12 +54,12 @@ cc_test(
     features = COMMON_FEATURES + ["aborts_upon_exception"],
     local_defines = ["VAJSON"],
     tags = ["unit"],
-    visibility = ["//score/json:__subpackages__"],
+    visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
         ":vajson_parser",
-        "//score/language/safecpp/coverage_termination_handler",
-        "//score/json:json_impl",
-        "//score/json/internal/parser:number_parser_test_suite",
+        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
+        "@score-baselibs//score/json:json_impl",
+        "@score-baselibs//score/json/internal/parser:number_parser_test_suite",
         "@googletest//:gtest_main",
     ],
 )

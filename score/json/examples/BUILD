@@ -28,12 +28,12 @@ cc_test(
     ],
     features = COMMON_FEATURES,
     # This is not a unit test, but with this tag we ensure the program is checked in the CI to prevent breaking changes.
-    # It will not be accounted for unit test coverage as we do not add it here: `//score/json:unit_tests`
+    # It will not be accounted for unit test coverage as we do not add it here: `@score-baselibs//score/json:unit_tests`
     tags = ["unit"],
     deps = [
-        "//score/json:json_parser",
-        "//score/os:unistd",
-        "//score/mw/log",
+        "@score-baselibs//score/json:json_parser",
+        "@score-baselibs//score/os:unistd",
+        "@score-baselibs//score/mw/log",
     ],
 )
 
@@ -49,12 +49,12 @@ cc_test(
     ],
     features = COMMON_FEATURES,
     # This is not a unit test, but with this tag we ensure the program is checked in the CI to prevent breaking changes.
-    # It will not be accounted for unit test coverage as we do not add it here: `//score/json:unit_tests`
+    # It will not be accounted for unit test coverage as we do not add it here: `@score-baselibs//score/json:unit_tests`
     tags = ["unit"],
     deps = [
-        "//score/json:json_parser",
-        "//score/os:unistd",
-        "//score/mw/log",
+        "@score-baselibs//score/json:json_parser",
+        "@score-baselibs//score/os:unistd",
+        "@score-baselibs//score/mw/log",
     ],
 )
 
@@ -69,11 +69,11 @@ cc_test(
     ],
     features = COMMON_FEATURES,
     # This is not a unit test, but with this tag we ensure the program is checked in the CI to prevent breaking changes.
-    # It will not be accounted for unit test coverage as we do not add it here: `//score/json:unit_tests`
+    # It will not be accounted for unit test coverage as we do not add it here: `@score-baselibs//score/json:unit_tests`
     tags = ["unit"],
     deps = [
-        "//score/json:json_parser",
-        "//score/os:unistd",
-        "//score/mw/log",
+        "@score-baselibs//score/json:json_parser",
+        "@score-baselibs//score/os:unistd",
+        "@score-baselibs//score/mw/log",
     ],
 )

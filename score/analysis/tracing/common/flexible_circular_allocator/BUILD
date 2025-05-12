@@ -26,14 +26,14 @@ cc_library(
         "additional_warnings",
     ],
     visibility = [
-        "//score/analysis:__subpackages__",
-        # "@ddad//score/analysis:__subpackages__",
+        "@score-baselibs//score/analysis:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
         "flexible_circular_allocator_interface",
-        "//score/analysis/tracing/common:generic_trace_api_types",
-        "//score/analysis/tracing/library/generic_trace_api/error_code",
-        "//score/result",
+        "@score-baselibs//score/analysis/tracing/common:generic_trace_api_types",
+        "@score-baselibs//score/analysis/tracing/library/generic_trace_api/error_code",
+        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -56,14 +56,14 @@ cc_library(
     ],
     tags = ["FUSA"],
     visibility = [
-        "//score/analysis:__subpackages__",
-        # "@ddad//score/analysis:__subpackages__",
+        "@score-baselibs//score/analysis:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
         "flexible_circular_allocator_interface",
-        "//score/analysis/tracing/common:generic_trace_api_types",
-        "//score/analysis/tracing/library/generic_trace_api/error_code",
-        "//score/result",
+        "@score-baselibs//score/analysis/tracing/common:generic_trace_api_types",
+        "@score-baselibs//score/analysis/tracing/library/generic_trace_api/error_code",
+        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -83,13 +83,13 @@ cc_library(
     ],
     tags = ["FUSA"],
     visibility = [
-        "//score/analysis:__subpackages__",
-        # "@ddad//score/analysis:__subpackages__",
+        "@score-baselibs//score/analysis:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
-        "//score/analysis/tracing/common:generic_trace_api_types",
-        "//score/memory/shared:types",
-        "//score/mw/log",
+        "@score-baselibs//score/analysis/tracing/common:generic_trace_api_types",
+        "@score-baselibs//score/memory/shared:types",
+        "@score-baselibs//score/mw/log",
     ],
 )
 
@@ -104,8 +104,8 @@ cc_library(
         "additional_warnings",
     ],
     visibility = [
-        "//score/analysis:__subpackages__",
-        # "@ddad//score/analysis:__subpackages__",
+        "@score-baselibs//score/analysis:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
         "error_code",
@@ -126,8 +126,8 @@ cc_library(
     ],
     tags = ["FUSA"],
     visibility = [
-        "//score/analysis:__subpackages__",
-        # "@ddad//score/analysis:__subpackages__",
+        "@score-baselibs//score/analysis:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
         "error_code",
@@ -148,8 +148,8 @@ cc_library(
     ],
     tags = ["FUSA"],
     visibility = [
-        "//score/analysis:__subpackages__",
-        # "@ddad//score/analysis:__subpackages__",
+        "@score-baselibs//score/analysis:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
         "error_code",
@@ -172,11 +172,11 @@ cc_library(
     ],
     tags = ["FUSA"],
     visibility = [
-        "//score/analysis:__subpackages__",
-        # "@ddad//score/analysis:__subpackages__",
+        "@score-baselibs//score/analysis:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
-        "//score/result",
+        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
     ],
 )

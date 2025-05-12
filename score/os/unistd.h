@@ -51,14 +51,8 @@ class Unistd : public ObjectSeam<Unistd>
     static score::cpp::pmr::unique_ptr<Unistd> Default(score::cpp::pmr::memory_resource* memory_resource) noexcept;
 
     /// \brief Mode declaration for access() system call
-    /* KW_SUPPRESS_START:MISRA.ONEDEFRULE.VAR: */
-    /* False Positive -  std::int32_t is an underlying type for enum */
-    /* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: */
-    /* False Positive -  Below enum class statement does not effect the readability */
     enum class AccessMode : std::int32_t
     {
-        /* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: */
-        /* KW_SUPPRESS_END:MISRA.ONEDEFRULE.VAR: */
         kRead = 1,
         kWrite = 2,
         kExec = 4,
@@ -126,10 +120,8 @@ class Unistd : public ObjectSeam<Unistd>
                                                       const gid_t gid) const noexcept = 0;
 
     virtual score::cpp::expected<char*, score::os::Error> getcwd(char* const buf, const size_t size) const noexcept = 0;
-    /* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: */
-    /* False Positive -  Below line does not effect the readability */
+
     virtual std::uint32_t alarm(const std::uint32_t seconds) const noexcept = 0;
-    /* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: */
 
     virtual score::cpp::expected_blank<score::os::Error> sync() const noexcept = 0;
 

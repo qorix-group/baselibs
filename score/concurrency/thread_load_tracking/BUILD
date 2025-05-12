@@ -10,8 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("//score/concurrency:compiler_featues.bzl", "COMPILER_FEATURES")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//score/concurrency:compiler_featues.bzl", "COMPILER_FEATURES")
 
 cc_library(
     name = "thread_load_tracking",
@@ -45,7 +45,7 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     visibility = [
-        # "@ddad//score/concurrency/thread_load_tracking:__subpackages__",
+        # "@ddad@score-baselibs//score/concurrency/thread_load_tracking:__subpackages__",
     ],
     deps = [
         ":thread_load_tracking",

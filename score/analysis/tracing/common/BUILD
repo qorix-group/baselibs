@@ -25,13 +25,13 @@ cc_library(
     ],
     tags = ["FFI"],
     visibility = [
-        "//score/analysis/tracing:__subpackages__",
-        # "@ddad//score/analysis/tracing:__subpackages__",
+        "@score-baselibs//score/analysis/tracing:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis/tracing:__subpackages__",
     ],
     deps = [
-        "//score/language/safecpp/scoped_function:move_only_scoped_function",
-        "//score/memory/shared",
-        "//score/result",
+        "@score-baselibs//score/language/safecpp/scoped_function:move_only_scoped_function",
+        "@score-baselibs//score/memory/shared",
+        "@score-baselibs//score/result",
     ],
 )
 
@@ -46,8 +46,8 @@ cc_library(
     ],
     tags = ["FFI"],
     visibility = [
-        "//score/analysis/tracing:__subpackages__",
-        # "@ddad//score/analysis/tracing:__subpackages__",
+        "@score-baselibs//score/analysis/tracing:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis/tracing:__subpackages__",
     ],
     deps = [
         ":generic_trace_api_types",
@@ -65,14 +65,14 @@ cc_library(
     ],
     tags = ["FFI"],
     visibility = [
-        "//score/analysis/tracing:__subpackages__",
-        # "@ddad//score/analysis/tracing:__subpackages__",
+        "@score-baselibs//score/analysis/tracing:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis/tracing:__subpackages__",
     ],
     deps = [
         ":generic_trace_api_types",
         ":shared_memory_chunk",
         ":shared_memory_location",
-        "//score/analysis/tracing/library/generic_trace_api/error_code",
+        "@score-baselibs//score/analysis/tracing/library/generic_trace_api/error_code",
     ],
 )
 
@@ -87,8 +87,8 @@ cc_library(
     ],
     tags = ["FFI"],
     visibility = [
-        "//score/analysis/tracing:__subpackages__",
-        # "@ddad//score/analysis/tracing:__subpackages__",
+        "@score-baselibs//score/analysis/tracing:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis/tracing:__subpackages__",
     ],
     deps = [
         ":generic_trace_api_types",

@@ -25,11 +25,11 @@ cc_library(
     ],
     tags = ["FFI"],
     visibility = [
-        "//score/analysis:__subpackages__",
-        # "@ddad//score/analysis:__subpackages__",
+        "@score-baselibs//score/analysis:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
-        "//score/result",
+        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
     ],
 )

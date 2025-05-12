@@ -76,7 +76,7 @@ TEST_F(TextRecorderFixtureWithLogLevelCheck, WillObtainSlotForSufficientLogLevel
 
 TEST_F(TextRecorderFixtureWithLogLevelCheck, WillObtainEmptySlotForInsufficentLogLevel)
 {
-    RecordProperty("Requirement", "SCR-861534");
+    RecordProperty("Requirement", "SCR-861534, SCR-2592577");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Empty slots will be returned in case of insufficent log level");
     RecordProperty("TestingTechnique", "Requirements-based test");

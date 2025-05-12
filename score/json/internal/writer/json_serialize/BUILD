@@ -27,10 +27,10 @@ cc_library(
     ],
     features = COMMON_FEATURES,
     tags = ["FFI"],
-    visibility = ["//score/json:__subpackages__"],
+    visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
-        "//score/json/internal/model",
-        "//score/result",
+        "@score-baselibs//score/json/internal/model",
+        "@score-baselibs//score/result",
     ],
 )
 
@@ -42,8 +42,8 @@ cc_test(
     features = COMMON_FEATURES + ["aborts_upon_exception"],
     tags = ["unit"],
     visibility = [
-        "//score/json:__pkg__",
-        # "@ddad//score/json:__pkg__",
+        "@score-baselibs//score/json:__pkg__",
+        # "@ddad@score-baselibs//score/json:__pkg__",
     ],
     deps = [
         ":json_serialize",

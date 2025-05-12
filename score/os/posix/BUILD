@@ -22,6 +22,6 @@ cc_library(
     tags = ["FFI"],
     visibility = ["//visibility:public"],
     deps = [
-        "//score/os/interface:ftw",
+        "@score-baselibs//score/os/interface:ftw",
     ],
 )

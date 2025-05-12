@@ -40,9 +40,7 @@ score::cpp::expected_blank<std::string> PciSafetyImpl::pci_device_cfg_rd32(const
                                                                     std::uint32_t* const val) const noexcept
 /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 {
-    /* KW_SUPPRESS_START:MISRA.CVALUE.IMPL.CAST.CPP:False positive - both operand are of type pci_err_t */
     const pci_err_t res = ::pci_device_cfg_rd32(bdf, offset, val);
-    /* KW_SUPPRESS_END:MISRA.CVALUE.IMPL.CAST.CPP:False positive - both operand are of type pci_err_t */
     if (res != PCI_ERR_OK)
     {
         return score::cpp::make_unexpected<std::string>(kPciErrorMsg);

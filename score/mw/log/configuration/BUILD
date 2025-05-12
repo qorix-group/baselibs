@@ -27,12 +27,12 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log:__subpackages__",
-        # "@ddad//score/mw/log:__subpackages__",
+        "@score-baselibs//score/mw/log:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
-        "//score/mw/log:shared_types",
-        "//score/mw/log/detail:logging_identifier",
+        "@score-baselibs//score/mw/log:shared_types",
+        "@score-baselibs//score/mw/log/detail:logging_identifier",
     ],
 )
 
@@ -49,12 +49,12 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log/configuration:__pkg__",
+        "@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/configuration:__pkg__",
     ],
     deps = [
         ":configuration",
-        "//score/result",
+        "@score-baselibs//score/result",
     ],
 )
 
@@ -71,19 +71,19 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log:__subpackages__",
+        "@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
         ":configuration",
         ":configuration_interface",
-        "//score/json:json_parser",
-        "//score/memory:split_string_view",
-        "//score/os:stdlib",
-        "//score/os:unistd",
-        "//score/os/utils:path",
-        "//score/mw/log/detail:initialization_reporter",
-        "//score/mw/log/detail:types_and_errors",
+        "@score-baselibs//score/json:json_parser",
+        "@score-baselibs//score/memory:split_string_view",
+        "@score-baselibs//score/os:stdlib",
+        "@score-baselibs//score/os:unistd",
+        "@score-baselibs//score/os/utils:path",
+        "@score-baselibs//score/mw/log/detail:initialization_reporter",
+        "@score-baselibs//score/mw/log/detail:types_and_errors",
     ],
 )
 
@@ -94,11 +94,11 @@ cc_library(
     hdrs = ["target_config_reader_mock.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//score/mw/log:__pkg__",
-        "//score/mw/log/detail:__pkg__",
-        "//score/mw/log/detail/data_router:__pkg__",
-        "//score/mw/log/detail/slog:__pkg__",
-        # "@ddad//score/mw/log:__subpackages__",
+        "@score-baselibs//score/mw/log:__pkg__",
+        "@score-baselibs//score/mw/log/detail:__pkg__",
+        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
+        "@score-baselibs//score/mw/log/detail/slog:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
         ":configuration_interface",
@@ -113,8 +113,8 @@ cc_library(
     hdrs = ["configuration_file_discoverer_mock.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log:__subpackages__",
+        "@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
         ":configuration_interface",
@@ -134,8 +134,8 @@ filegroup(
         "test/data/wrong-loglevel-value.json",
     ],
     visibility = [
-        "//score/mw/log:__pkg__",
-        # "@ddad//score/mw/log:__subpackages__",
+        "@score-baselibs//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
 )
 
@@ -154,18 +154,40 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
         ":configuration_file_discoverer_mock",
         ":configuration_parser",
         ":target_config_reader_mock",
-        "//score/os/mocklib:fcntl_mock",
-        "//score/os/mocklib:stdlib_mock",
-        "//score/os/mocklib:unistd_mock",
-        "//score/os/utils/mocklib:path_mock",
-        "//score/mw/log/test/console_logging_environment",
+        "@score-baselibs//score/os/mocklib:fcntl_mock",
+        "@score-baselibs//score/os/mocklib:stdlib_mock",
+        "@score-baselibs//score/os/mocklib:unistd_mock",
+        "@score-baselibs//score/os/utils/mocklib:path_mock",
+        "@score-baselibs//score/mw/log/test/console_logging_environment",
         "@googletest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "nvconfig_interface",
+    srcs = [
+        "invconfig.cpp",
+    ],
+    hdrs = [
+        "invconfig.h",
+        "nvmsgdescriptor.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "@score-baselibs//score/mw/log:__subpackages__",
+        "//platform/aas/pas/logging:__subpackages__",
+    ],
+    deps = [
+        "@score-baselibs//score/mw/log:shared_types",
+        "@score-baselibs//score/mw/log/detail:logging_identifier",
+        "@score-baselibs//score/language/futurecpp",
     ],
 )
 
@@ -180,16 +202,17 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     implementation_deps = [
-        "//score/json:json_parser",
+        "@score-baselibs//score/json:json_parser",
     ],
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log:__subpackages__",
-        # "@ddad//score/mw/log:__subpackages__",
+        "@score-baselibs//score/mw/log:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
-        "//score/mw/log:shared_types",
-        "//score/mw/log/detail:logging_identifier",
+        ":nvconfig_interface",
+        "@score-baselibs//score/mw/log:shared_types",
+        "@score-baselibs//score/mw/log/detail:logging_identifier",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -216,7 +239,7 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log:__subpackages__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
         ":nvconfig",
@@ -239,8 +262,8 @@ filegroup(
         "test/data/test-class-id.json",
     ],
     visibility = [
-        "//score/mw/log:__pkg__",
-        # "@ddad//score/mw/log:__subpackages__",
+        "@score-baselibs//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
 )
 
@@ -251,7 +274,7 @@ test_suite(
         ":unit_test",
     ],
     visibility = [
-        "//score/mw/log:__pkg__",
-        # "@ddad//score/mw/log:__subpackages__",
+        "@score-baselibs//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
 )

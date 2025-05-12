@@ -22,11 +22,11 @@ cc_library(
         "additional_warnings",
     ],
     visibility = [
-        "//score/analysis:__subpackages__",
-        # "@ddad//score/analysis:__subpackages__",
+        "@score-baselibs//score/analysis:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
-        "//score/analysis/tracing/common/flexible_circular_allocator:flexible_circular_allocator_interface",
+        "@score-baselibs//score/analysis/tracing/common/flexible_circular_allocator:flexible_circular_allocator_interface",
         "@googletest//:gtest_main",
     ],
 )
@@ -43,11 +43,11 @@ cc_library(
         "additional_warnings",
     ],
     visibility = [
-        "//score/analysis:__subpackages__",
-        # "@ddad//score/analysis:__subpackages__",
+        "@score-baselibs//score/analysis:__subpackages__",
+        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
-        "//score/analysis/tracing/common/flexible_circular_allocator:flexible_circular_allocator_factory_interface",
+        "@score-baselibs//score/analysis/tracing/common/flexible_circular_allocator:flexible_circular_allocator_factory_interface",
         "@googletest//:gtest_main",
     ],
 )

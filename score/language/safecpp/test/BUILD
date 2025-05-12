@@ -10,12 +10,12 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
 
 cc_gtest_unit_test(
     name = "test_std_arithmetic_types",
     srcs = ["test_std_arithmetic_types.cpp"],
     visibility = [
-        # "@ddad//score/language/safecpp/test:__pkg__",
+        # "@ddad@score-baselibs//score/language/safecpp/test:__pkg__",
     ],
 )

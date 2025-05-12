@@ -10,7 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
 
 _COMPILER_WARNING_FEATURES = [
     "treat_warnings_as_errors",
@@ -34,10 +34,10 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//platform/aas/ara/log:__pkg__",
-        "//score/mw/log:__pkg__",
+        "@score-baselibs//score/mw/log:__pkg__",
         # "@ddad//platform/aas/ara/log:__pkg__",
-        # "@ddad//score/result:__pkg__",
-        # "@ddad//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/result:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log:__pkg__",
     ],
 )
 
@@ -53,8 +53,8 @@ cc_library(
     ],
     deps = [
         ":error",
-        "//score/result/details/expected",
-        "//score/result/details/expected:extensions",
+        "@score-baselibs//score/result/details/expected",
+        "@score-baselibs//score/result/details/expected:extensions",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -67,7 +67,7 @@ cc_gtest_unit_test(
     ],
     features = _COMPILER_WARNING_FEATURES,
     visibility = [
-        # "@ddad//score/result:__pkg__",
+        # "@ddad@score-baselibs//score/result:__pkg__",
     ],
     deps = [
         ":error",

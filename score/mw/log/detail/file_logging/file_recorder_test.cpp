@@ -79,7 +79,7 @@ TEST_F(FileRecorderFixtureWithLogLevelCheck, WillObtainSlotForSufficientLogLevel
 
 TEST_F(FileRecorderFixtureWithLogLevelCheck, WillObtainEmptySlotForInsufficentLogLevel)
 {
-    RecordProperty("Requirement", "SCR-1633236");
+    RecordProperty("Requirement", "SCR-1633236, SCR-2592577");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Verifies that recorder can not get slots in case of InActive LogLevel.");
     RecordProperty("TestingTechnique", "Requirements-based test");
@@ -91,7 +91,7 @@ TEST_F(FileRecorderFixtureWithLogLevelCheck, WillObtainEmptySlotForInsufficentLo
 
 TEST_F(FileRecorderFixtureWithLogLevelCheck, DisablesOrEnablesLogAccordingToLevel)
 {
-    RecordProperty("Requirement", "SCR-1633236");
+    RecordProperty("Requirement", "SCR-1633236, SCR-2592577");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Verifies the ability of enabling or disabling specific log level");
     RecordProperty("TestingTechnique", "Requirements-based test");

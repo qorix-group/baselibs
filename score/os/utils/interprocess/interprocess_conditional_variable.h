@@ -18,10 +18,7 @@
 #include <sys/types.h>
 #include <mutex>
 
-/* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: */
-/* False Positive - namespace score is defined on separate line  */
 namespace score
-/* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: */
 {
 namespace os
 {

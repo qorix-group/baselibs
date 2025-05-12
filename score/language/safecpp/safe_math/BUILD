@@ -10,39 +10,27 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("//score/language/safecpp/safe_math:compiler_features.bzl", "COMPILER_FEATURES")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//score/language/safecpp/safe_math:compiler_features.bzl", "COMPILER_FEATURES")
 
-# This library is currently lacking any kind of detailed design or even high level design.
-# Furthermore, this is a first draft of some methods required for mathematically sound math operations. There is
-# probably a lot of refactoring and extension of scope necessary before this library can be used by other domains.
-# Progress is tracked in Ticket-87885
 cc_library(
     name = "safe_math",
     srcs = ["safe_math.cpp"],
     hdrs = ["safe_math.h"],
     features = COMPILER_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//score/memory/shared:__subpackages__",
-        "//platform/aas/mw/com/impl:__subpackages__",
-        "//platform/aas/network/tunneling/pdu_handling:__subpackages__",
-        # "@ddad//score/language/safecpp/safe_math:__pkg__",
-        # "@ddad//score/memory/shared:__subpackages__",
-        # "@ddad//platform/aas/mw/com/impl:__subpackages__",
-        # "@ddad//platform/aas/network/tunneling/pdu_handling:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":error",
-        "//score/language/safecpp/safe_math/details/absolute",
-        "//score/language/safecpp/safe_math/details/addition_subtraction",
-        "//score/language/safecpp/safe_math/details/cast",
-        "//score/language/safecpp/safe_math/details/comparison",
-        "//score/language/safecpp/safe_math/details/division",
-        "//score/language/safecpp/safe_math/details/multiplication",
-        "//score/language/safecpp/safe_math/details/negate",
-        "//score/language/safecpp/safe_math/details/type_traits",
-        "//score/result",
+        "@score-baselibs//score/language/safecpp/safe_math/details/absolute",
+        "@score-baselibs//score/language/safecpp/safe_math/details/addition_subtraction",
+        "@score-baselibs//score/language/safecpp/safe_math/details/cast",
+        "@score-baselibs//score/language/safecpp/safe_math/details/comparison",
+        "@score-baselibs//score/language/safecpp/safe_math/details/division",
+        "@score-baselibs//score/language/safecpp/safe_math/details/multiplication",
+        "@score-baselibs//score/language/safecpp/safe_math/details/negate",
+        "@score-baselibs//score/language/safecpp/safe_math/details/type_traits",
+        "@score-baselibs//score/result",
     ],
 )
 
@@ -52,8 +40,8 @@ cc_library(
     hdrs = ["error.h"],
     features = COMPILER_FEATURES,
     tags = ["FFI"],
-    visibility = ["//score/language/safecpp/safe_math:__subpackages__"],
-    deps = ["//score/result"],
+    visibility = ["@score-baselibs//score/language/safecpp/safe_math:__subpackages__"],
+    deps = ["@score-baselibs//score/result"],
 )
 
 cc_gtest_unit_test(
@@ -61,7 +49,7 @@ cc_gtest_unit_test(
     srcs = ["error_test.cpp"],
     features = COMPILER_FEATURES,
     visibility = [
-        # "@ddad//score/language/safecpp/safe_math:__pkg__",
+        # "@ddad@score-baselibs//score/language/safecpp/safe_math:__pkg__",
     ],
     deps = [":error"],
 )

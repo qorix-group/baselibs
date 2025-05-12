@@ -52,7 +52,7 @@ def cc_gtest_unit_test(name, **kwargs):
       **kwargs: Additional parameters to be forwarded to cc_unit_test and transitively to cc_test. size and timeout
       cannot be provided and if tags is provided, it should not contain the tag unit.
       The following dependencies are already added to deps:
-      "//score/language/safecpp/coverage_termination_handler", and "@googletest//:gtest_main".
+      "@score-baselibs//score/language/safecpp/coverage_termination_handler", and "@googletest//:gtest_main".
       The following toolchain features are already added to features: "aborts_upon_exception".
 
     Wrapper to create a cc_unit_test that provides the most common dependencies to be used in a unit test of an ASIL B
@@ -66,7 +66,7 @@ def cc_gtest_unit_test(name, **kwargs):
 
     # Avoid mutating input arguments
     deps = [
-        "//score/language/safecpp/coverage_termination_handler",
+        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
         "@googletest//:gtest_main",
     ]
     deps += kwargs.pop("deps", [])

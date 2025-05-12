@@ -10,7 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
 
 _COMPILER_FEATURES = [
     "treat_warnings_as_errors",
@@ -24,9 +24,9 @@ cc_library(
     hdrs = ["time_conversion.h"],
     features = _COMPILER_FEATURES,
     visibility = [
-        "//score/os/utils:__subpackages__",
-        # "@ddad//score/os/utils:__subpackages__",
-        # "@ddad//score/utils:__subpackages__",
+        "@score-baselibs//score/os/utils:__subpackages__",
+        # "@ddad@score-baselibs//score/os/utils:__subpackages__",
+        # "@ddad@score-baselibs//score/utils:__subpackages__",
     ],
 )
 
@@ -36,9 +36,9 @@ cc_library(
     hdrs = ["pimpl_ptr.h"],
     features = _COMPILER_FEATURES,
     visibility = [
-        "//score/os/utils:__subpackages__",
-        # "@ddad//score/os/utils:__subpackages__",
-        # "@ddad//score/utils:__subpackages__",
+        "@score-baselibs//score/os/utils:__subpackages__",
+        # "@ddad@score-baselibs//score/os/utils:__subpackages__",
+        # "@ddad@score-baselibs//score/utils:__subpackages__",
     ],
 )
 
@@ -48,9 +48,9 @@ cc_library(
     hdrs = ["string_hash.h"],
     features = _COMPILER_FEATURES,
     visibility = [
-        "//score/os/utils:__subpackages__",
-        # "@ddad//score/os/utils:__subpackages__",
-        # "@ddad//score/utils:__subpackages__",
+        "@score-baselibs//score/os/utils:__subpackages__",
+        # "@ddad@score-baselibs//score/os/utils:__subpackages__",
+        # "@ddad@score-baselibs//score/utils:__subpackages__",
     ],
 )
 
@@ -82,7 +82,7 @@ cc_gtest_unit_test(
     srcs = ["pimpl_ptr_test.cpp"],
     features = _COMPILER_FEATURES,
     visibility = [
-        # "@ddad//score/utils:__subpackages__",
+        # "@ddad@score-baselibs//score/utils:__subpackages__",
     ],
     deps = [":pimpl_ptr"],
 )
@@ -92,7 +92,7 @@ cc_gtest_unit_test(
     srcs = ["time_conversion.cpp"],
     features = _COMPILER_FEATURES,
     visibility = [
-        # "@ddad//score/utils:__subpackages__",
+        # "@ddad@score-baselibs//score/utils:__subpackages__",
     ],
     deps = [":time_conversion"],
 )
@@ -102,7 +102,7 @@ cc_gtest_unit_test(
     srcs = ["test/payloadvalidationtest.cpp"],
     features = _COMPILER_FEATURES,
     visibility = [
-        # "@ddad//score/utils:__subpackages__",
+        # "@ddad@score-baselibs//score/utils:__subpackages__",
     ],
     deps = [":payloadvalidation"],
 )
@@ -112,7 +112,7 @@ cc_gtest_unit_test(
     srcs = ["test/scoped_operation_test.cpp"],
     features = _COMPILER_FEATURES,
     visibility = [
-        # "@ddad//score/utils:__subpackages__",
+        # "@ddad@score-baselibs//score/utils:__subpackages__",
     ],
     deps = [":scoped_operation"],
 )

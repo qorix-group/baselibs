@@ -31,20 +31,20 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
+        "@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":file_output_backend",
         ":message_builder_interface",
-        "//score/static_reflection_with_serialization/serialization",
-        "//score/os/utils:high_resolution_steady_clock",
-        "//score/mw/log:recorder",
-        "//score/mw/log:shared_types",
-        "//score/mw/log/configuration",
-        "//score/mw/log/detail:backend_interface",
-        "//score/mw/log/detail:dlt_content_formatting",
-        "//score/mw/log/detail:statistics_reporter",
+        "@score-baselibs//score/static_reflection_with_serialization/serialization",
+        "@score-baselibs//score/os/utils:high_resolution_steady_clock",
+        "@score-baselibs//score/mw/log:recorder",
+        "@score-baselibs//score/mw/log:shared_types",
+        "@score-baselibs//score/mw/log/configuration",
+        "@score-baselibs//score/mw/log/detail:backend_interface",
+        "@score-baselibs//score/mw/log/detail:dlt_content_formatting",
+        "@score-baselibs//score/mw/log/detail:statistics_reporter",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -62,19 +62,20 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log/detail:__pkg__",
-        # "@ddad//score/mw/log/detail:__pkg__",
+        "@score-baselibs//score/mw/log/detail:__pkg__",
+        "@score-baselibs//score/mw/log/detail/slog:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__subpackages__",
     ],
     deps = [
         ":file_output_backend",
         ":message_builder_interface",
         ":text_content_formatting",
-        "//score/os/utils:high_resolution_steady_clock",
-        "//score/mw/log:recorder",
-        "//score/mw/log:shared_types",
-        "//score/mw/log/configuration",
-        "//score/mw/log/detail:backend_interface",
-        "//score/mw/log/detail:dlt_argument_counter",
+        "@score-baselibs//score/os/utils:high_resolution_steady_clock",
+        "@score-baselibs//score/mw/log:recorder",
+        "@score-baselibs//score/mw/log:shared_types",
+        "@score-baselibs//score/mw/log/configuration",
+        "@score-baselibs//score/mw/log/detail:backend_interface",
+        "@score-baselibs//score/mw/log/detail:dlt_argument_counter",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -90,12 +91,56 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     deps = [
-        "//score/memory:string_literal",
-        "//score/mw/log:shared_types",
-        "//score/mw/log/detail:dlt_argument_counter",
-        "//score/mw/log/detail:integer_representation",
-        "//score/mw/log/detail:log_data_types",
+        "@score-baselibs//score/memory:string_literal",
+        "@score-baselibs//score/mw/log:shared_types",
+        "@score-baselibs//score/mw/log/detail:dlt_argument_counter",
+        "@score-baselibs//score/mw/log/detail:integer_representation",
+        "@score-baselibs//score/mw/log/detail:log_data_types",
         "@score-baselibs//score/language/futurecpp",
+    ],
+)
+
+cc_library(
+    name = "file_recorder_factory",
+    srcs = [
+        "file_recorder_factory.cpp",
+    ],
+    hdrs = [
+        "file_recorder_factory.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+    ],
+    deps = [
+        ":file_recorder",
+        "@score-baselibs//score/mw/log/configuration",
+        "@score-baselibs//score/mw/log/detail:empty_recorder",
+        "@score-baselibs//score/mw/log/detail:initialization_reporter",
+        "@score-baselibs//score/mw/log/detail:log_recorder_factory",
+    ],
+)
+
+cc_library(
+    name = "console_recorder_factory",
+    srcs = [
+        "console_recorder_factory.cpp",
+    ],
+    hdrs = [
+        "console_recorder_factory.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "@score-baselibs//score/mw/log/detail:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+    ],
+    deps = [
+        ":text_recorder",
+        "@score-baselibs//score/mw/log/configuration",
+        "@score-baselibs//score/mw/log/detail:log_recorder_factory",
     ],
 )
 
@@ -106,11 +151,11 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log/detail:__pkg__",
+        "@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
-        "//score/os:unistd",
-        "//score/mw/log/detail:types_and_errors",
+        "@score-baselibs//score/os:unistd",
+        "@score-baselibs//score/mw/log/detail:types_and_errors",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -126,10 +171,10 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//score/mw/log:__pkg__",
+        "@score-baselibs//score/mw/log:__pkg__",
     ],
     deps = [
-        "//score/mw/log/detail:log_data_types",
+        "@score-baselibs//score/mw/log/detail:log_data_types",
     ],
 )
 
@@ -145,13 +190,13 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = ["//score/mw/log:__pkg__"],
+    visibility = ["@score-baselibs//score/mw/log:__pkg__"],
     deps = [
         ":message_builder_interface",
         ":non_blocking_writer",
-        "//score/os:fcntl",
-        "//score/mw/log/detail:backend_interface",
-        "//score/mw/log/detail:circular_allocator",
+        "@score-baselibs//score/os:fcntl",
+        "@score-baselibs//score/mw/log/detail:backend_interface",
+        "@score-baselibs//score/mw/log/detail:circular_allocator",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -161,6 +206,7 @@ cc_test(
     srcs = [
         "dlt_message_builder_test.cpp",
         "file_output_backend_test.cpp",
+        "file_recorder_factory_test.cpp",
         "file_recorder_test.cpp",
         "slot_drainer_test.cpp",
         "text_format_test.cpp",
@@ -174,19 +220,20 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail/file_logging:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
     ],
     deps = [
         ":file_output_backend",
         ":file_output_backend_mocks",
         ":file_recorder",
+        ":file_recorder_factory",
         ":text_recorder",
-        "//score/os/mocklib:fcntl_mock",
-        "//score/os/mocklib:unistd_mock",
-        "//score/os/utils/mocklib:path_mock",
-        "//score/mw/log/detail:backend_mock",
-        "//score/mw/log/detail:circular_allocator",
-        "//score/mw/log/test/console_logging_environment",
+        "@score-baselibs//score/os/mocklib:fcntl_mock",
+        "@score-baselibs//score/os/mocklib:unistd_mock",
+        "@score-baselibs//score/os/utils/mocklib:path_mock",
+        "@score-baselibs//score/mw/log/detail:backend_mock",
+        "@score-baselibs//score/mw/log/detail:circular_allocator",
+        "@score-baselibs//score/mw/log/test/console_logging_environment",
         "@googletest//:gtest_main",
     ],
 )
@@ -209,7 +256,7 @@ test_suite(
         ":non_blocking_writer_test",
         ":unit_test",
     ],
-    visibility = ["//score/mw/log/detail:__pkg__"],
+    visibility = ["@score-baselibs//score/mw/log/detail:__pkg__"],
 )
 
 cc_test(
@@ -220,12 +267,12 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/mw/log/detail/file_logging:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
     ],
     deps = [
         ":non_blocking_writer",
-        "//score/os/mocklib:unistd_mock",
-        "//score/mw/log/test/console_logging_environment",
+        "@score-baselibs//score/os/mocklib:unistd_mock",
+        "@score-baselibs//score/mw/log/test/console_logging_environment",
         "@googletest//:gtest_main",
     ],
 )

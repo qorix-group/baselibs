@@ -11,13 +11,16 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 #include "score/analysis/tracing/library/generic_trace_api/generic_trace_api.h"
+#include "score/analysis/tracing/library/generic_trace_api/mocks/trace_library_mock.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <thread>
 using namespace score::analysis::tracing;
+using ::testing::Ref;
 using ::testing::Return;
 
+using ::testing::_;
 namespace score
 {
 namespace analysis
@@ -61,6 +64,46 @@ TEST(GenericTraceAPIImpl, CheckMethodsReturn)
     EXPECT_TRUE(trace_shm_result.has_value());
 
     auto trace_local_result = GenericTraceAPI::Trace(client, meta_info, local_data_chunk_list);
+    EXPECT_TRUE(trace_local_result.has_value());
+
+    // inject mock and testing return
+    auto trace_library_mock = std::make_unique<TraceLibraryMock>();
+
+    EXPECT_CALL(*trace_library_mock, RegisterClient(type, app_instance_identifier))
+        .WillOnce(Return(score::Result<TraceClientId>(client)));
+    register_client_result = GenericTraceAPI::RegisterClient(type, app_instance_identifier);
+    EXPECT_TRUE(register_client_result.has_value());
+    EXPECT_EQ(register_client_result.value(), client);
+
+    EXPECT_CALL(*trace_library_mock, RegisterShmObject(client, shm_object_path))
+        .WillOnce(Return(score::Result<ShmObjectHandle>(handle)));
+    register_shm_object_path_result = GenericTraceAPI::RegisterShmObject(client, shm_object_path);
+    EXPECT_TRUE(register_shm_object_path_result.has_value());
+    EXPECT_EQ(register_shm_object_path_result.value(), handle);
+
+    EXPECT_CALL(*trace_library_mock, RegisterShmObject(client, shm_object_fd))
+        .WillOnce(Return(score::Result<ShmObjectHandle>(handle)));
+    register_shm_object_fd_result = GenericTraceAPI::RegisterShmObject(client, shm_object_fd);
+    EXPECT_TRUE(register_shm_object_fd_result.has_value());
+    EXPECT_EQ(register_shm_object_fd_result.value(), handle);
+
+    EXPECT_CALL(*trace_library_mock, UnregisterShmObject(client, handle)).WillOnce(Return(score::Result<Blank>()));
+    unregister_shm_object_result = GenericTraceAPI::UnregisterShmObject(client, handle);
+    EXPECT_TRUE(unregister_shm_object_result.has_value());
+
+    EXPECT_CALL(*trace_library_mock, RegisterTraceDoneCB(client, _)).WillOnce(Return(score::Result<Blank>()));
+    register_trace_done_cb_result = GenericTraceAPI::RegisterTraceDoneCB(client, std::move(trace_done_callback));
+    EXPECT_TRUE(register_trace_done_cb_result.has_value());
+
+    EXPECT_CALL(*trace_library_mock,
+                Trace(client, MetaInfoVariants::type{meta_info}, Ref(shm_data_chunk_list), context_id))
+        .WillOnce(Return(score::Result<Blank>()));
+    trace_shm_result = GenericTraceAPI::Trace(client, meta_info, shm_data_chunk_list, context_id);
+    EXPECT_TRUE(trace_shm_result.has_value());
+
+    EXPECT_CALL(*trace_library_mock, Trace(client, MetaInfoVariants::type{meta_info}, Ref(local_data_chunk_list)))
+        .WillOnce(Return(score::Result<Blank>()));
+    trace_local_result = GenericTraceAPI::Trace(client, meta_info, local_data_chunk_list);
     EXPECT_TRUE(trace_local_result.has_value());
 }
 

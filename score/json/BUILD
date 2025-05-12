@@ -31,13 +31,13 @@ string_flag(
 config_setting(
     name = "base_library_vajson",
     flag_values = {":base_library": "vajson"},
-    visibility = ["//score/json/internal/parser:__subpackages__"],
+    visibility = ["@score-baselibs//score/json/internal/parser:__subpackages__"],
 )
 
 config_setting(
     name = "base_library_nlohmann",
     flag_values = {":base_library": "nlohmann"},
-    visibility = ["//score/json/internal/parser:__subpackages__"],
+    visibility = ["@score-baselibs//score/json/internal/parser:__subpackages__"],
 )
 
 cc_library(
@@ -56,12 +56,12 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
-        # "@ddad//score/json:__subpackages__",
+        # "@ddad@score-baselibs//score/json:__subpackages__",
     ],
     deps = [
-        "//score/filesystem/filestream",
-        "//score/json/internal/model",
-        "//score/result",
+        "@score-baselibs//score/filesystem/filestream",
+        "@score-baselibs//score/json/internal/model",
+        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -80,12 +80,12 @@ cc_library(
     tags = ["FUSA"],
     visibility = [
         "//visibility:public",
-        # "@ddad//score/json:__subpackages__",
+        # "@ddad@score-baselibs//score/json:__subpackages__",
     ],
     deps = [
         ":interface",
-        "//score/json/internal/parser",
-        "//score/json/internal/writer/json_serialize",
+        "@score-baselibs//score/json/internal/parser",
+        "@score-baselibs//score/json/internal/writer/json_serialize",
     ],
 )
 
@@ -97,12 +97,12 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
-        # "@ddad//score/json:__subpackages__",
+        # "@ddad@score-baselibs//score/json:__subpackages__",
     ],
     deps = [
         ":json_parser",
-        "//score/static_reflection_with_serialization/visitor",
-        "//score/result",
+        "@score-baselibs//score/static_reflection_with_serialization/visitor",
+        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
     ],
 )
@@ -111,8 +111,8 @@ alias(
     name = "json",
     actual = ":interface",
     visibility = [
-        "//score/json:__subpackages__",
-        # "@ddad//score/json:__subpackages__",
+        "@score-baselibs//score/json:__subpackages__",
+        # "@ddad@score-baselibs//score/json:__subpackages__",
     ],
 )
 
@@ -120,8 +120,8 @@ alias(
     name = "json_impl",
     actual = ":json_parser",
     visibility = [
-        "//score/json:__subpackages__",
-        # "@ddad//score/json:__subpackages__",
+        "@score-baselibs//score/json:__subpackages__",
+        # "@ddad@score-baselibs//score/json:__subpackages__",
     ],
 )
 
@@ -134,8 +134,8 @@ cc_library(
     ],
     features = COMMON_FEATURES,
     visibility = [
-        "//score/json:__subpackages__",
-        # "@ddad//score/json:__subpackages__",
+        "@score-baselibs//score/json:__subpackages__",
+        # "@ddad@score-baselibs//score/json:__subpackages__",
     ],
     deps = [
         ":interface",
@@ -151,8 +151,8 @@ cc_test(
     features = COMMON_FEATURES + ["aborts_upon_exception"],
     tags = ["unit"],
     visibility = [
-        "//score/json:__pkg__",
-        # "@ddad//score/json:__pkg__",
+        "@score-baselibs//score/json:__pkg__",
+        # "@ddad@score-baselibs//score/json:__pkg__",
     ],
     deps = [
         ":json_impl",
@@ -165,9 +165,9 @@ test_suite(
     tests = [
         ":json_test",
         ":json_writer_unit_test",  # workaround to include coverage for json_writer
-        "//score/json/internal/model:unit_test",
-        "//score/json/internal/parser:unit_tests",
-        "//score/json/internal/writer/json_serialize:json_serialize_unit_test",  # workaround to include coverage for json_serialize
+        "@score-baselibs//score/json/internal/model:unit_test",
+        "@score-baselibs//score/json/internal/parser:unit_tests",
+        "@score-baselibs//score/json/internal/writer/json_serialize:json_serialize_unit_test",  # workaround to include coverage for json_serialize
     ],
     visibility = ["//visibility:public"],
 )
@@ -187,12 +187,12 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        "//score/json:__pkg__",
-        # "@ddad//score/json:__pkg__",
+        "@score-baselibs//score/json:__pkg__",
+        # "@ddad@score-baselibs//score/json:__pkg__",
     ],
     deps = [
-        "//score/filesystem:mock",
-        "//score/json:json_impl",
+        "@score-baselibs//score/filesystem:mock",
+        "@score-baselibs//score/json:json_impl",
         "@googletest//:gtest_main",
     ],
 )
@@ -205,7 +205,7 @@ cc_test(
     features = COMMON_FEATURES,
     tags = ["unit"],
     visibility = [
-        # "@ddad//score/json:__pkg__",
+        # "@ddad@score-baselibs//score/json:__pkg__",
     ],
     deps = [
         ":json_serializer",
