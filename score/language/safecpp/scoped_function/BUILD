@@ -11,13 +11,13 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("@score-baselibs//score/language/safecpp/scoped_function/details:compiler_features.bzl", "COMPILER_FEATURES")
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "scope",
     srcs = ["scope.cpp"],
     hdrs = ["scope.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -33,7 +33,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "scope_test",
     srcs = ["scope_test.cpp"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/language/safecpp/scoped_function:__pkg__",
     ],
@@ -50,7 +50,7 @@ cc_library(
     name = "copyable_scoped_function",
     srcs = ["copyable_scoped_function.cpp"],
     hdrs = ["copyable_scoped_function.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -73,7 +73,7 @@ cc_library(
     name = "move_only_scoped_function",
     srcs = ["move_only_scoped_function.cpp"],
     hdrs = ["move_only_scoped_function.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -101,7 +101,7 @@ cc_gtest_unit_test(
         "scoped_function_invocation_test.cpp",
         "scoped_function_movability_test.cpp",
     ],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/language/safecpp/scoped_function:__pkg__",
     ],
