@@ -11,13 +11,13 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("@score-baselibs//score/language/safecpp/safe_math:compiler_features.bzl", "COMPILER_FEATURES")
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "addition_subtraction",
     srcs = ["addition_subtraction.cpp"],
     hdrs = ["addition_subtraction.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/language/safecpp/safe_math:__pkg__",
@@ -37,7 +37,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "unit_test",
     srcs = ["addition_subtraction_test.cpp"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/language/safecpp/safe_math:__pkg__",
     ],
