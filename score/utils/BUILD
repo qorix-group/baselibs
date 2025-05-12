@@ -11,13 +11,18 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
+_COMPILER_FEATURES = [
+    "treat_warnings_as_errors",
+    "additional_warnings",
+    "strict_warnings",
+]
 
 cc_library(
     name = "time_conversion",
     srcs = ["time_conversion.cpp"],
     hdrs = ["time_conversion.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_FEATURES,
     visibility = [
         "@score-baselibs//score/os/utils:__subpackages__",
         # "@ddad@score-baselibs//score/os/utils:__subpackages__",
@@ -29,7 +34,7 @@ cc_library(
     name = "pimpl_ptr",
     srcs = ["pimpl_ptr.cpp"],
     hdrs = ["pimpl_ptr.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_FEATURES,
     visibility = [
         "@score-baselibs//score/os/utils:__subpackages__",
         # "@ddad@score-baselibs//score/os/utils:__subpackages__",
@@ -41,7 +46,7 @@ cc_library(
     name = "string_hash",
     srcs = ["string_hash.cpp"],
     hdrs = ["string_hash.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_FEATURES,
     visibility = [
         "@score-baselibs//score/os/utils:__subpackages__",
         # "@ddad@score-baselibs//score/os/utils:__subpackages__",
@@ -53,7 +58,7 @@ cc_library(
     name = "payloadvalidation",
     srcs = ["src/PayloadValidation.cpp"],
     hdrs = ["src/PayloadValidation.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_FEATURES,
     visibility = [
         "//visibility:public",
         # "@ddad//visibility:public",
@@ -63,7 +68,7 @@ cc_library(
 cc_library(
     name = "scoped_operation",
     hdrs = ["src/scoped_operation.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -75,7 +80,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "pimpl_ptr_test",
     srcs = ["pimpl_ptr_test.cpp"],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/utils:__subpackages__",
     ],
@@ -85,7 +90,7 @@ cc_gtest_unit_test(
 cc_gtest_unit_test(
     name = "time_conversion_test",
     srcs = ["time_conversion.cpp"],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/utils:__subpackages__",
     ],
@@ -95,7 +100,7 @@ cc_gtest_unit_test(
 cc_gtest_unit_test(
     name = "payloadvalidation_test",
     srcs = ["test/payloadvalidationtest.cpp"],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/utils:__subpackages__",
     ],
@@ -105,7 +110,7 @@ cc_gtest_unit_test(
 cc_gtest_unit_test(
     name = "scoped_operation_test",
     srcs = ["test/scoped_operation_test.cpp"],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/utils:__subpackages__",
     ],

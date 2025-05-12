@@ -11,13 +11,18 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
+_COMPILER_WARNING_FEATURES = [
+    "treat_warnings_as_errors",
+    "additional_warnings",
+    "strict_warnings",
+]
 
 cc_library(
     name = "expected",
     srcs = ["expected.cpp"],
     hdrs = ["expected.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/result:__pkg__"],
 )
@@ -27,7 +32,7 @@ cc_library(
     testonly = True,
     srcs = ["test_types.cpp"],
     hdrs = ["test_types.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
 )
 
@@ -36,7 +41,7 @@ cc_library(
     testonly = True,
     srcs = ["test_type_traits.cpp"],
     hdrs = ["test_type_traits.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
 )
 
@@ -45,7 +50,7 @@ cc_gtest_unit_test(
     srcs = [
         "test_type_traits_test.cpp",
     ],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_WARNING_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/result/details/expected:__pkg__",
     ],
@@ -63,7 +68,7 @@ cc_gtest_unit_test(
         "expected_type_trait_test.cpp",
         "unexpected_test.cpp",
     ],
-    features = COMPILER_WARNING_FEATURES + [
+    features = _COMPILER_WARNING_FEATURES + [
         "-aborts_upon_exception",
     ],
     visibility = [
@@ -80,7 +85,7 @@ cc_library(
     name = "extensions",
     srcs = ["extensions.cpp"],
     hdrs = ["extensions.h"],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/result:__pkg__"],
     deps = [
@@ -92,7 +97,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "extensions_test",
     srcs = ["extensions_test.cpp"],
-    features = COMPILER_WARNING_FEATURES,
+    features = _COMPILER_WARNING_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/result/details/expected:__pkg__",
     ],

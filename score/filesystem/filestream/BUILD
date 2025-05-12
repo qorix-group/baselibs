@@ -10,7 +10,11 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+COMPILER_WARNING_FEATURES = [
+    "treat_warnings_as_errors",
+    "strict_warnings",
+    "additional_warnings",
+]
 
 cc_library(
     name = "filestream",
