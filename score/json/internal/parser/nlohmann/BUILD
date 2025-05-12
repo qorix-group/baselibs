@@ -10,12 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-
-COMMON_FEATURES = [
-    "treat_warnings_as_errors",
-    "strict_warnings",
-    "additional_warnings",
-]
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "json_builder",
@@ -34,7 +29,7 @@ cc_library(
     name = "nlohmann_parser",
     srcs = ["nlohmann_parser.cpp"],
     hdrs = ["nlohmann_parser.h"],
-    features = COMMON_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
@@ -48,7 +43,7 @@ cc_library(
 cc_test(
     name = "nlohmann_parser_test",
     srcs = ["nlohmann_parser_test.cpp"],
-    features = COMMON_FEATURES + ["aborts_upon_exception"],
+    features = COMPILER_WARNING_FEATURES + ["aborts_upon_exception"],
     local_defines = ["NLOHMANN"],
     tags = ["unit"],
     visibility = [
@@ -65,7 +60,7 @@ cc_test(
 cc_test(
     name = "number_parser_test",
     srcs = ["number_parser_test.cpp"],
-    features = COMMON_FEATURES + ["aborts_upon_exception"],
+    features = COMPILER_WARNING_FEATURES + ["aborts_upon_exception"],
     local_defines = ["NLOHMANN"],
     tags = ["unit"],
     visibility = [

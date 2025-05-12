@@ -10,17 +10,13 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-COMMON_FEATURES = [
-    "treat_warnings_as_errors",
-    "strict_warnings",
-    "additional_warnings",
-]
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "vajson_parser",
     srcs = ["vajson_parser.cpp"],
     hdrs = ["vajson_parser.h"],
-    features = COMMON_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = select({
         "@score-baselibs//score/json:base_library_nlohmann": ["@platforms//:incompatible"],
@@ -37,7 +33,7 @@ cc_library(
 cc_test(
     name = "vajson_parser_test",
     srcs = ["vajson_parser_test.cpp"],
-    features = COMMON_FEATURES + ["aborts_upon_exception"],
+    features = COMPILER_WARNING_FEATURES + ["aborts_upon_exception"],
     local_defines = ["VAJSON"],
     tags = ["unit"],
     visibility = [
@@ -54,7 +50,7 @@ cc_test(
 cc_test(
     name = "number_parser_test",
     srcs = ["number_parser_test.cpp"],
-    features = COMMON_FEATURES + ["aborts_upon_exception"],
+    features = COMPILER_WARNING_FEATURES + ["aborts_upon_exception"],
     local_defines = ["VAJSON"],
     tags = ["unit"],
     visibility = [
