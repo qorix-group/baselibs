@@ -10,6 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
 cc_test(
     name = "bit_manipulation_test",
     srcs = ["bit_manipulation_test.cpp"],
@@ -52,11 +54,7 @@ cc_library(
     name = "bitmanipulation",
     srcs = ["bit_manipulation.cpp"],
     hdrs = ["bit_manipulation.h"],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -68,11 +66,7 @@ cc_library(
     name = "bitmask_operators",
     srcs = ["bitmask_operators.cpp"],
     hdrs = ["bitmask_operators.h"],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
