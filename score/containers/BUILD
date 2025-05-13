@@ -11,15 +11,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_gtest_unit_test(
     name = "intrusive_list_test",
     srcs = ["intrusive_list_test.cpp"],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/containers:__subpackages__",
     ],
@@ -29,11 +26,7 @@ cc_gtest_unit_test(
 cc_gtest_unit_test(
     name = "dynamic_array_test",
     srcs = ["dynamic_array_test.cpp"],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     visibility = [
         # "@ddad@score-baselibs//score/containers:__subpackages__",
     ],
@@ -49,11 +42,7 @@ cc_library(
     name = "dynamic_array",
     srcs = ["dynamic_array.cpp"],
     hdrs = ["dynamic_array.h"],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -66,11 +55,7 @@ cc_library(
     name = "intrusivelist",
     srcs = ["intrusive_list.cpp"],
     hdrs = ["intrusive_list.h"],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
