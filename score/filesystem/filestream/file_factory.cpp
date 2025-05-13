@@ -20,6 +20,8 @@
 #include "score/os/unistd.h"
 
 #include <charconv>
+#include <algorithm>
+#include <cstdint>
 #include <iostream>
 #include <random>
 #include <thread>
@@ -37,10 +39,16 @@ using OpenFlags = os::Fcntl::Open;
 
 OpenFlags IosOpenModeToOpenFlags(const std::ios_base::openmode mode) noexcept
 {
+    // The value won't be used as such, but rather will be initialized properly by the bit-wise operations below.
+    // Also, the Enum does not provide a 0-valued element, that must be the starting point.
+    // Therefore, initializing it to 0U is the simplest solution. We could do something like
+    // OpenFlags flags{OpenFlags::kReadOnly & OpenFlags::kWriteOnly} but that would be a bit
+    // overkill for this case and would depend on the current values;
+    // coverity[autosar_cpp14_a7_2_1_violation]
     OpenFlags flags{0U};
-    if ((mode & std::ios_base::in) != 0)
+    if ((mode & std::ios_base::in) != 0U)
     {
-        if ((mode & std::ios_base::out) != 0)
+        if ((mode & std::ios_base::out) != 0U)
         {
             flags = OpenFlags::kReadWrite;
         }
@@ -49,20 +57,16 @@ OpenFlags IosOpenModeToOpenFlags(const std::ios_base::openmode mode) noexcept
             flags = OpenFlags::kReadOnly;
         }
     }
-    else if ((mode & std::ios_base::out) != 0)
+    else if ((mode & std::ios_base::out) != 0U)
     {
         flags = OpenFlags::kWriteOnly | OpenFlags::kCreate;
     }
-    else
-    {
-        flags = static_cast<OpenFlags>(0U);
-    }
 
-    if ((mode & std::ios_base::app) != 0)
+    if ((mode & std::ios_base::app) != 0U)
     {
         flags |= OpenFlags::kAppend | OpenFlags::kCreate;
     }
-    if ((mode & std::ios_base::trunc) != 0)
+    if ((mode & std::ios_base::trunc) != 0U)
     {
         flags |= OpenFlags::kTruncate | OpenFlags::kCreate;
     }
@@ -86,12 +90,26 @@ Result<std::unique_ptr<FileStream>> CreateFileStream(Args&&... args)
 template <std::uint32_t NumDigits>
 Result<std::string> AppendRandomDigits(std::string str) noexcept
 {
-    thread_local std::default_random_engine random_engine{
-        static_cast<std::default_random_engine::result_type>(std::hash<std::thread::id>{}(std::this_thread::get_id()))};
+    auto seed = std::hash<std::thread::id>{}(std::this_thread::get_id());
+    // The usage of an unique seed per thread is paramount to avoid collisions,
+    // meaning that threads could write to the same file.
+    // Notice that the engine is not default initialized, but rather seeded with the thread id.
+    // coverity[autosar_cpp14_a3_3_2_violation]
+    // coverity[autosar_cpp14_a26_5_2_violation]
+    thread_local std::default_random_engine random_engine{static_cast<std::default_random_engine::result_type>(seed)};
 
-    static_assert(NumDigits < 8U,
-                  "max_num_digits must be less than 8");  // This prevents an overflow in the next line
-    std::uniform_int_distribution<std::uint32_t> random_distribution{0U, (1U << (NumDigits * 4U)) - 1U};
+    static_assert(
+        NumDigits < 8U,
+        "max_num_digits must be less than 8");  // This prevents usage with NumDigits that would lead to overflow.
+    constexpr std::uint32_t shift = std::min(31U, NumDigits * 4U - 1U);
+    // The shift operation is guaranteed to be bound, as we limit it's range from 0 to 31.
+    // The result is immediately cast to the underlying type. Therefore, these two violations are false positives.
+    // coverity[autosar_cpp14_m5_8_1_violation]
+    // coverity[autosar_cpp14_m5_0_10_violation]
+    constexpr std::uint32_t upper_bound = static_cast<std::uint32_t>(1U << shift);
+    std::uniform_int_distribution<std::uint32_t> random_distribution{0U, upper_bound};
+    // False positive, random_number lives until the end of the function, so it overlives the call to std::to_chars.
+    // coverity[autosar_cpp14_m7_5_2_violation]
     auto random_number = random_distribution(random_engine);
     std::array<char, NumDigits> random_number_buffer{};
     const auto to_chars_result =
@@ -127,7 +145,7 @@ Result<int> OpenFileHandle(const Path& path,
 
 }  // namespace
 
-Result<std::unique_ptr<std::iostream>> FileFactory::Open(const Path& path, const std::ios_base::openmode mode) noexcept
+Result<std::unique_ptr<std::iostream>> FileFactory::Open(const Path& path, const std::ios_base::openmode mode)
 {
     return OpenFileHandle(path, mode, kDefaultMode).and_then([mode](int file_handle) {
         return CreateFileStream<details::StdioFileBuf>(file_handle, mode);
@@ -137,7 +155,7 @@ Result<std::unique_ptr<std::iostream>> FileFactory::Open(const Path& path, const
 Result<std::unique_ptr<FileStream>> FileFactory::AtomicUpdate(const Path& path,
                                                               const std::ios_base::openmode mode) noexcept
 {
-    if ((mode & ~(std::ios::out | std::ios::trunc)) != 0)
+    if ((mode & ~(std::ios::out | std::ios::trunc)) != 0U)
     {
         return MakeUnexpected(ErrorCode::kNotImplemented);
     }

@@ -59,7 +59,7 @@ ResultBlank AtomicFileBuf::Close()
     {
         if (sync() != 0)
         {
-            std::cerr << "Failed to issue fsync call before atomic update" << std::endl;
+            std::cerr << "Failed to issue fsync call before atomic update" << '\n';
             result = MakeUnexpected(ErrorCode::kFsyncFailed);
         }
 
@@ -77,7 +77,7 @@ ResultBlank AtomicFileBuf::Close()
         {
             std::cerr << "Failed to rename temporary file to actual file name for "
                          "atomic update: "
-                      << rename_result.error().ToString() << std::endl;
+                      << rename_result.error().ToString() << '\n';
             if (result.has_value())
             {
                 result = MakeUnexpected(ErrorCode::kCouldNotRenameFile);
@@ -85,6 +85,8 @@ ResultBlank AtomicFileBuf::Close()
         }
     }
 
+    // False positive, result is initialized at the beginning of the method.
+    // coverity[autosar_cpp14_a8_5_0_violation]
     return result;
 }
 

@@ -26,9 +26,10 @@ class FileFactory final : public IFileFactory
   public:
     FileFactory() noexcept = default;
 
-    Result<std::unique_ptr<std::iostream>> Open(const Path&, std::ios_base::openmode mode) noexcept override;
+    Result<std::unique_ptr<std::iostream>> Open(const Path&, const std::ios_base::openmode mode) override;
 
-    Result<std::unique_ptr<FileStream>> AtomicUpdate(const Path& path, std::ios_base::openmode mode) noexcept override;
+    Result<std::unique_ptr<FileStream>> AtomicUpdate(const Path& path,
+                                                     const std::ios_base::openmode mode) noexcept override;
 };
 
 }  // namespace score::filesystem
