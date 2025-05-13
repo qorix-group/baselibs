@@ -112,6 +112,7 @@ ResultBlank FileUtils::CreateDirectories(const Path& path, const score::os::Stat
     constexpr std::int64_t kCreationRetryInitialDelayNanoseconds = kCreationRetryInitialDelayMicroseconds * 1000;
     constexpr std::uint32_t kCreationRetryLimit = 3U;
     constexpr std::int64_t kCreationRetryFactor = 2;
+    // coverity[autosar_cpp14_a0_1_1_violation] false-positive: used in the following static assert
     constexpr std::int64_t kNanosecondsPerSecond = 1000000000;
     static_assert(
         kCreationRetryInitialDelayNanoseconds * kCreationRetryFactor * kCreationRetryLimit < kNanosecondsPerSecond,
