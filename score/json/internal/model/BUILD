@@ -10,7 +10,12 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
+COMMON_FEATURES = [
+    "treat_warnings_as_errors",
+    "strict_warnings",
+    "additional_warnings",
+]
 
 cc_library(
     name = "model",
@@ -29,7 +34,7 @@ cc_library(
         "number.h",
         "object.h",
     ],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMMON_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
@@ -47,7 +52,7 @@ cc_test(
         "number_test.cpp",
         "object_test.cpp",
     ],
-    features = COMPILER_WARNING_FEATURES + ["aborts_upon_exception"],
+    features = COMMON_FEATURES + ["aborts_upon_exception"],
     tags = ["unit"],
     visibility = [
         "@score-baselibs//score/json:__pkg__",
