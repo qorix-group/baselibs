@@ -11,13 +11,13 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("@score-baselibs//score/concurrency:compiler_featues.bzl", "COMPILER_FEATURES")
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "timed_task",
     srcs = ["timed_task.cpp"],
     hdrs = ["timed_task.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -33,7 +33,7 @@ cc_library(
     name = "periodic_task",
     srcs = ["periodic_task.cpp"],
     hdrs = ["periodic_task.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -48,7 +48,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "periodic_task_tests",
     srcs = ["periodic_task_test.cpp"],
-    features = COMPILER_FEATURES + [
+    features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
     visibility = [
@@ -65,7 +65,7 @@ cc_library(
     name = "delayed_task",
     srcs = ["delayed_task.cpp"],
     hdrs = ["delayed_task.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -80,7 +80,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "delayed_task_tests",
     srcs = ["delayed_task_test.cpp"],
-    features = COMPILER_FEATURES + [
+    features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
     visibility = [
@@ -97,7 +97,7 @@ cc_library(
     name = "timed_executor",
     srcs = ["timed_executor.cpp"],
     hdrs = ["timed_executor.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -114,7 +114,7 @@ cc_library(
     name = "concurrent_timed_executor",
     srcs = ["concurrent_timed_executor.cpp"],
     hdrs = ["concurrent_timed_executor.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -131,7 +131,7 @@ cc_library(
     testonly = True,
     srcs = ["timed_executor_mock.cpp"],
     hdrs = ["timed_executor_mock.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     visibility = [
         "//visibility:public",
         # "@ddad//visibility:public",
@@ -145,7 +145,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "concurrent_timed_executor_test",
     srcs = ["concurrent_timed_executor_test.cpp"],
-    features = COMPILER_FEATURES + [
+    features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
     visibility = [

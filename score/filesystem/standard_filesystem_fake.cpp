@@ -294,6 +294,19 @@ Result<bool> StandardFilesystemFake::FakeExists(const Path& path) const noexcept
 
 ResultBlank StandardFilesystemFake::FakeCreateDirectory(const Path& path) const noexcept
 {
+    const auto entry = FindEntry(path);
+    if (entry.has_value())
+    {
+        if (entry.value()->IsTypeDirectory())
+        {
+            return {};
+        }
+        else
+        {
+            return MakeUnexpected(ErrorCode::kCouldNotCreateDirectory, "Path exists but is not a directory");
+        }
+    }
+
     const auto new_entry = CreateEntry(path, FileType::kDirectory, default_permissions_);
     if (!new_entry.has_value())
     {

@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("@score-baselibs//score/concurrency:compiler_featues.bzl", "COMPILER_FEATURES")
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "thread_load_tracking",
@@ -25,7 +25,7 @@ cc_library(
         "thread_load_tracking_token.h",
         "work_load.h",
     ],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -41,7 +41,7 @@ cc_gtest_unit_test(
     srcs = [
         "thread_load_tracking_test.cpp",
     ],
-    features = COMPILER_FEATURES + [
+    features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
     visibility = [

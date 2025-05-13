@@ -11,14 +11,14 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("@score-baselibs//score/concurrency:compiler_featues.bzl", "COMPILER_FEATURES")
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "clock",
     testonly = True,
     srcs = ["clock.cpp"],
     hdrs = ["clock.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -29,7 +29,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "clock_tests",
     srcs = ["clock_test.cpp"],
-    features = COMPILER_FEATURES + [
+    features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
     visibility = [
@@ -46,7 +46,7 @@ cc_library(
     name = "destruction_guard",
     srcs = ["destruction_guard.cpp"],
     hdrs = ["destruction_guard.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -58,7 +58,7 @@ cc_library(
     name = "condition_variable",
     srcs = ["condition_variable.cpp"],
     hdrs = ["condition_variable.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -75,7 +75,7 @@ cc_library(
     testonly = True,
     srcs = ["interruptible_conditional_variable_mock.cpp"],
     hdrs = ["interruptible_conditional_variable_mock.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     visibility = [
         "//visibility:public",
         # "@ddad//visibility:public",
@@ -90,7 +90,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "condition_variable_tests",
     srcs = ["condition_variable_test.cpp"],
-    features = COMPILER_FEATURES + [
+    features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
     visibility = [
@@ -106,7 +106,7 @@ cc_library(
     name = "interruptible_wait",
     srcs = ["interruptible_wait.cpp"],
     hdrs = ["interruptible_wait.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -121,7 +121,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "interruptible_wait_tests",
     srcs = ["interruptible_wait_test.cpp"],
-    features = COMPILER_FEATURES + [
+    features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
     visibility = [
@@ -136,7 +136,7 @@ cc_library(
     name = "notification",
     srcs = ["notification.cpp"],
     hdrs = ["notification.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -152,7 +152,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "notification_tests",
     srcs = ["notification_test.cpp"],
-    features = COMPILER_FEATURES + [
+    features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
     visibility = [
@@ -167,7 +167,7 @@ cc_library(
     name = "interruptible_interprocess_condition_variable",
     srcs = ["interruptible_interprocess_condition_variable.cpp"],
     hdrs = ["interruptible_interprocess_condition_variable.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -192,7 +192,7 @@ cc_library(
         "simple_task.h",
         "task.h",
     ],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -243,7 +243,7 @@ cc_library(
     name = "shared_task_result",
     srcs = ["shared_task_result.cpp"],
     hdrs = ["shared_task_result.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -264,7 +264,7 @@ cc_gtest_unit_test(
         "task_result_test.cpp",
         "task_test.cpp",
     ],
-    features = COMPILER_FEATURES + [
+    features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
     visibility = [
@@ -283,7 +283,7 @@ cc_library(
     testonly = True,
     srcs = ["executor_mock.cpp"],
     hdrs = ["executor_mock.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     visibility = [
         "//visibility:public",
         # "@ddad//visibility:public",
@@ -298,7 +298,7 @@ cc_library(
     name = "thread_pool",
     srcs = ["thread_pool.cpp"],
     hdrs = ["thread_pool.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -315,7 +315,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "thread_pool_tests",
     srcs = ["thread_pool_test.cpp"],
-    features = COMPILER_FEATURES + [
+    features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
     visibility = [
@@ -331,7 +331,7 @@ cc_library(
     name = "long_running_threads_container",
     srcs = ["long_running_threads_container.cpp"],
     hdrs = ["long_running_threads_container.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -348,7 +348,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "long_running_threads_container_tests",
     srcs = ["long_running_threads_container_test.cpp"],
-    features = COMPILER_FEATURES + [
+    features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
     visibility = [
@@ -363,7 +363,7 @@ cc_library(
     name = "periodic_task",
     srcs = ["periodic_task.cpp"],
     hdrs = ["periodic_task.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -379,7 +379,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "periodic_task_tests",
     srcs = ["periodic_task_test.cpp"],
-    features = COMPILER_FEATURES + [
+    features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
     visibility = [
@@ -397,7 +397,7 @@ cc_library(
     name = "delayed_task",
     srcs = ["delayed_task.cpp"],
     hdrs = ["delayed_task.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -413,7 +413,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "delayed_task_tests",
     srcs = ["delayed_task_test.cpp"],
-    features = COMPILER_FEATURES + [
+    features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
     visibility = [
@@ -431,7 +431,7 @@ cc_library(
     name = "synchronized_queue",
     srcs = ["synchronized_queue.cpp"],
     hdrs = ["synchronized_queue.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -454,7 +454,7 @@ cc_library(
 cc_gtest_unit_test(
     name = "synchronized_queue_test",
     srcs = ["synchronized_queue_test.cpp"],
-    features = COMPILER_FEATURES + [
+    features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
     flaky = True,  # TODO: Remove flakiness (Ticket-178835)
@@ -469,7 +469,7 @@ cc_gtest_unit_test(
 
 cc_library(
     name = "concurrency",
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",

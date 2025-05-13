@@ -10,12 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-
-COMMON_FEATURES = [
-    "treat_warnings_as_errors",
-    "strict_warnings",
-    "additional_warnings",
-]
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "json_serialize",
@@ -25,7 +20,7 @@ cc_library(
     hdrs = [
         "json_serialize.h",
     ],
-    features = COMMON_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
@@ -39,7 +34,7 @@ cc_test(
     srcs = [
         "json_serialize_test.cpp",
     ],
-    features = COMMON_FEATURES + ["aborts_upon_exception"],
+    features = COMPILER_WARNING_FEATURES + ["aborts_upon_exception"],
     tags = ["unit"],
     visibility = [
         "@score-baselibs//score/json:__pkg__",

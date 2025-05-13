@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
-load("@score-baselibs//score/concurrency:compiler_featues.bzl", "COMPILER_FEATURES")
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "future",
@@ -35,7 +35,7 @@ cc_library(
         "interruptible_shared_future.h",
         "interruptible_state.h",
     ],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -54,7 +54,7 @@ cc_library(
     name = "test_types",
     srcs = ["test_types.cpp"],
     hdrs = ["test_types.h"],
-    features = COMPILER_FEATURES,
+    features = COMPILER_WARNING_FEATURES,
 )
 
 cc_gtest_unit_test(
@@ -69,7 +69,7 @@ cc_gtest_unit_test(
         "interruptible_shared_future_test.cpp",
         "interruptible_state_test.cpp",
     ],
-    features = COMPILER_FEATURES + [
+    features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
     visibility = [

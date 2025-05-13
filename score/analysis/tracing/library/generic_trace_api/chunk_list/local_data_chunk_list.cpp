@@ -257,6 +257,8 @@ void LocalDataChunkList::CopyDataToSharedMemory(const LocalDataChunk& element, v
     std::ignore = std::copy(static_cast<const std::uint8_t*>(element.start_), element_start_end, static_cast<std::uint8_t*>(shm_pointer));
 }
 // clang-format on
+// Const Reference passing for shared pointer.
+// coverity[autosar_cpp14_a8_4_13_violation] passing shared pointer is intended.
 void LocalDataChunkList::CleanupAllocatedData(
     std::array<std::pair<void*, std::size_t>, kMaxChunksPerOneTraceRequest>& allocated_data,
     const std::shared_ptr<IFlexibleCircularAllocator>& flexible_allocator,
