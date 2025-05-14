@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_STATVFS_H
-#define BASELIBS_SCORE_OS_STATVFS_H
+#ifndef SCORE_LIB_OS_STATVFS_H
+#define SCORE_LIB_OS_STATVFS_H
 
 #include "score/bitmanipulation/bitmask_operators.h"
 #include "score/os/ObjectSeam.h"
@@ -52,4 +52,4 @@ class Statvfs : public ObjectSeam<Statvfs>
 
 }  // namespace os
 }  // namespace score
-#endif  // BASELIBS_SCORE_OS_STATVFS_H
+#endif  // SCORE_LIB_OS_STATVFS_H

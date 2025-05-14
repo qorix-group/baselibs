@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_MOCKLIB_NETDBMOCK_H
-#define BASELIBS_SCORE_OS_MOCKLIB_NETDBMOCK_H
+#ifndef SCORE_LIB_OS_MOCKLIB_NETDBMOCK_H
+#define SCORE_LIB_OS_MOCKLIB_NETDBMOCK_H
 
 #include "score/os/netdb.h"
 
@@ -35,4 +35,4 @@ class NetdbMock : public Netdb
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_MOCKLIB_NETDBMOCK_H
+#endif  // SCORE_LIB_OS_MOCKLIB_NETDBMOCK_H

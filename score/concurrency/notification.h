@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONCURRENCY_NOTIFICATION_H
-#define BASELIBS_SCORE_CONCURRENCY_NOTIFICATION_H
+#ifndef SCORE_LIB_CONCURRENCY_NOTIFICATION_H
+#define SCORE_LIB_CONCURRENCY_NOTIFICATION_H
 
 #include "score/concurrency/destruction_guard.h"
 #include "score/concurrency/interruptible_wait.h"
@@ -188,4 +188,4 @@ using Notification = NotificationBasic<std::mutex, InterruptibleConditionalVaria
 }  // namespace concurrency
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_CONCURRENCY_NOTIFICATION_H
+#endif  // SCORE_LIB_CONCURRENCY_NOTIFICATION_H

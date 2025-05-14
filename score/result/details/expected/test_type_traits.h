@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_EXPECTED_TEST_TYPE_TRAITS_H
-#define BASELIBS_SCORE_EXPECTED_TEST_TYPE_TRAITS_H
+#ifndef SCORE_LIB_EXPECTED_TEST_TYPE_TRAITS_H
+#define SCORE_LIB_EXPECTED_TEST_TYPE_TRAITS_H
 
 #include <type_traits>
 
@@ -42,4 +42,4 @@ constexpr auto is_only_explicitly_constructible_v =
 
 }  // namespace score::details
 
-#endif  // BASELIBS_SCORE_EXPECTED_TEST_TYPE_TRAITS_H
+#endif  // SCORE_LIB_EXPECTED_TEST_TYPE_TRAITS_H

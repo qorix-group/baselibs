@@ -17,8 +17,8 @@
 /// @brief Implementation class for the ifaddrs.h module wrapper
 ///
 
-#ifndef BASELIBS_SCORE_OS_IFADDRS_IMPL_H
-#define BASELIBS_SCORE_OS_IFADDRS_IMPL_H
+#ifndef SCORE_LIB_OS_IFADDRS_IMPL_H
+#define SCORE_LIB_OS_IFADDRS_IMPL_H
 
 #include "score/os/ifaddrs.h"
 #include <ifaddrs.h>
@@ -44,4 +44,4 @@ class IfaddrsImpl final : public Ifaddrs
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_IFADDRS_IMPL_H
+#endif  // SCORE_LIB_OS_IFADDRS_IMPL_H

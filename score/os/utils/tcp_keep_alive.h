@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_UTILS_TCP_KEEP_ALIVE_H
-#define BASELIBS_SCORE_OS_UTILS_TCP_KEEP_ALIVE_H
+#ifndef SCORE_LIB_OS_UTILS_TCP_KEEP_ALIVE_H
+#define SCORE_LIB_OS_UTILS_TCP_KEEP_ALIVE_H
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <sys/time.h>
@@ -31,4 +31,4 @@ bool TcpKeepAlive(int sockfd);
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_UTILS_TCP_KEEP_ALIVE_H
+#endif  // SCORE_LIB_OS_UTILS_TCP_KEEP_ALIVE_H

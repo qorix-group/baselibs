@@ -11,8 +11,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-#ifndef BASELIBS_SCORE_JSON_JSON_PARSER_H
-#define BASELIBS_SCORE_JSON_JSON_PARSER_H
+#ifndef SCORE_LIB_JSON_JSON_PARSER_H
+#define SCORE_LIB_JSON_JSON_PARSER_H
 
 #include "score/json/i_json_parser.h"
 #include "score/json/internal/model/any.h"
@@ -47,4 +47,4 @@ Any operator"" _json(const char* const data, const size_t size);
 }  // namespace json
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_JSON_JSON_PARSER_H
+#endif  // SCORE_LIB_JSON_JSON_PARSER_H

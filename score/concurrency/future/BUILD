@@ -38,8 +38,8 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/language/safecpp/scoped_function:move_only_scoped_function",

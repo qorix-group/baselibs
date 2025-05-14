@@ -10,7 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@score-baselibs//score/os:common_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "inotify_event",
@@ -19,8 +19,8 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":inotify_watch_descriptor",
@@ -36,8 +36,8 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":inotify_event",
@@ -53,8 +53,8 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":inotify_event",
@@ -77,8 +77,8 @@ cc_library(
     hdrs = ["inotify_instance_mock.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":inotify_instance",
@@ -93,8 +93,8 @@ cc_library(
     hdrs = ["inotify_instance_facade.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":inotify_instance",
@@ -110,8 +110,8 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
 )
 

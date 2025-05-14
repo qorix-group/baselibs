@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_UTILS_INOTIFY_INOTIFY_WATCH_DESCRIPTOR_H
-#define BASELIBS_SCORE_OS_UTILS_INOTIFY_INOTIFY_WATCH_DESCRIPTOR_H
+#ifndef SCORE_LIB_OS_UTILS_INOTIFY_INOTIFY_WATCH_DESCRIPTOR_H
+#define SCORE_LIB_OS_UTILS_INOTIFY_INOTIFY_WATCH_DESCRIPTOR_H
 
 #include <cstdint>
 
@@ -53,4 +53,4 @@ class hash<score::os::InotifyWatchDescriptor>
 
 }  // namespace std
 
-#endif  // BASELIBS_SCORE_OS_UTILS_INOTIFY_INOTIFY_WATCH_DESCRIPTOR_H
+#endif  // SCORE_LIB_OS_UTILS_INOTIFY_INOTIFY_WATCH_DESCRIPTOR_H

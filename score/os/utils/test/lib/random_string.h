@@ -10,12 +10,12 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_UTILS_TEST_LIB_RANDOM_STRING_H
-#define BASELIBS_SCORE_OS_UTILS_TEST_LIB_RANDOM_STRING_H
+#ifndef SCORE_LIB_OS_UTILS_TEST_LIB_RANDOM_STRING_H
+#define SCORE_LIB_OS_UTILS_TEST_LIB_RANDOM_STRING_H
 
 #include <cstdint>
 #include <string>
 
 std::string random_string(std::size_t length);
 
-#endif  // BASELIBS_SCORE_OS_UTILS_TEST_LIB_RANDOM_STRING_H
+#endif  // SCORE_LIB_OS_UTILS_TEST_LIB_RANDOM_STRING_H

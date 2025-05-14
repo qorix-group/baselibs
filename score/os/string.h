@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_STRING_H
-#define BASELIBS_SCORE_OS_STRING_H
+#ifndef SCORE_LIB_OS_STRING_H
+#define SCORE_LIB_OS_STRING_H
 
 #include "score/os/ObjectSeam.h"
 #include "score/os/errno.h"
@@ -60,4 +60,4 @@ class String : public ObjectSeam<String>
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_STRING_H
+#endif  // SCORE_LIB_OS_STRING_H

@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONCURRENCY_FUTURE_BASE_INTERRUPTIBLE_FUTURE_H
-#define BASELIBS_SCORE_CONCURRENCY_FUTURE_BASE_INTERRUPTIBLE_FUTURE_H
+#ifndef SCORE_LIB_CONCURRENCY_FUTURE_BASE_INTERRUPTIBLE_FUTURE_H
+#define SCORE_LIB_CONCURRENCY_FUTURE_BASE_INTERRUPTIBLE_FUTURE_H
 
 #include "score/concurrency/future/error.h"
 #include "score/concurrency/future/interruptible_state.h"
@@ -326,4 +326,4 @@ class BaseInterruptibleFuture
 }  // namespace concurrency
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_CONCURRENCY_FUTURE_BASE_INTERRUPTIBLE_FUTURE_H
+#endif  // SCORE_LIB_CONCURRENCY_FUTURE_BASE_INTERRUPTIBLE_FUTURE_H

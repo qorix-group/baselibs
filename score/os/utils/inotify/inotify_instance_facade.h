@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_UTILS_INOTIFY_INOTIFY_INSTANCE_FACADE_H
-#define BASELIBS_SCORE_OS_UTILS_INOTIFY_INOTIFY_INSTANCE_FACADE_H
+#ifndef SCORE_LIB_OS_UTILS_INOTIFY_INOTIFY_INSTANCE_FACADE_H
+#define SCORE_LIB_OS_UTILS_INOTIFY_INOTIFY_INSTANCE_FACADE_H
 
 #include "score/os/utils/inotify/inotify_instance.h"
 #include "score/os/utils/inotify/inotify_instance_mock.h"
@@ -65,4 +65,4 @@ class InotifyInstanceFacade : public InotifyInstance
 
 }  // namespace score::os
 
-#endif  // BASELIBS_SCORE_OS_UTILS_INOTIFY_INOTIFY_INSTANCE_FACADE_H
+#endif  // SCORE_LIB_OS_UTILS_INOTIFY_INOTIFY_INSTANCE_FACADE_H

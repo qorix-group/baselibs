@@ -17,8 +17,8 @@
 /// @brief the declaration of ResourceManager class.
 ///
 
-#ifndef BASELIBS_SCORE_OS_QNX_RESOURCE_MANAGER_H
-#define BASELIBS_SCORE_OS_QNX_RESOURCE_MANAGER_H
+#ifndef SCORE_LIB_OS_QNX_RESOURCE_MANAGER_H
+#define SCORE_LIB_OS_QNX_RESOURCE_MANAGER_H
 
 #include "score/os/utils/qnx/resource_manager/include/resource.h"
 #include "score/mw/log/logger.h"
@@ -129,4 +129,4 @@ class ResourceManager final
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_QNX_RESOURCE_MANAGER_H
+#endif  // SCORE_LIB_OS_QNX_RESOURCE_MANAGER_H

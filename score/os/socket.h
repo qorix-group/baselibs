@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_SOCKET_H
-#define BASELIBS_SCORE_OS_SOCKET_H
+#ifndef SCORE_LIB_OS_SOCKET_H
+#define SCORE_LIB_OS_SOCKET_H
 
 #include "score/bitmanipulation/bitmask_operators.h"
 #include "score/os/ObjectSeam.h"
@@ -194,4 +194,4 @@ struct enable_bitmask_operators<score::os::Socket::MessageFlag>
 
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_SOCKET_H
+#endif  // SCORE_LIB_OS_SOCKET_H

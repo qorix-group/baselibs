@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONCURRENCY_CONDITION_VARIABLE_H
-#define BASELIBS_SCORE_CONCURRENCY_CONDITION_VARIABLE_H
+#ifndef SCORE_LIB_CONCURRENCY_CONDITION_VARIABLE_H
+#define SCORE_LIB_CONCURRENCY_CONDITION_VARIABLE_H
 
 #include "score/concurrency/destruction_guard.h"
 
@@ -350,4 +350,4 @@ using InterruptibleConditionalVariable = InterruptibleConditionalVariableBasic<s
 
 }  // namespace concurrency
 }  // namespace score
-#endif  // BASELIBS_SCORE_CONCURRENCY_CONDITION_VARIABLE_H
+#endif  // SCORE_LIB_CONCURRENCY_CONDITION_VARIABLE_H

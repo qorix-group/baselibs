@@ -32,11 +32,11 @@ TEST(ExtensionsTest, CanConvertFromExpectedConstLValueRefToAmpExpectedWithValue)
     const score::details::expected<CopyableType, ErrorType> expected{value};
 
     // When converting it to a score::cpp::expected
-    const score::cpp::expected<CopyableType, ErrorType> score_expected{to_score_expected(expected)};
+    const score::cpp::expected<CopyableType, ErrorType> score_future_cpp_expected{to_score_future_cpp_expected(expected)};
 
     // Then the score::cpp::expected holds the value
-    ASSERT_TRUE(score_expected.has_value());
-    EXPECT_EQ(score_expected->value_, value);
+    ASSERT_TRUE(score_future_cpp_expected.has_value());
+    EXPECT_EQ(score_future_cpp_expected->value_, value);
 }
 
 TEST(ExtensionsTest, CanConvertFromExpectedConstLValueRefToAmpExpectedWithError)
@@ -46,11 +46,11 @@ TEST(ExtensionsTest, CanConvertFromExpectedConstLValueRefToAmpExpectedWithError)
     const score::details::expected<ValueType, CopyableType> expected{unexpect, value};
 
     // When converting it to a score::cpp::expected
-    const score::cpp::expected<ValueType, CopyableType> score_expected{to_score_expected(expected)};
+    const score::cpp::expected<ValueType, CopyableType> score_future_cpp_expected{to_score_future_cpp_expected(expected)};
 
     // Then the score::cpp::expected holds the error
-    ASSERT_FALSE(score_expected.has_value());
-    EXPECT_EQ(score_expected.error().value_, value);
+    ASSERT_FALSE(score_future_cpp_expected.has_value());
+    EXPECT_EQ(score_future_cpp_expected.error().value_, value);
 }
 
 TEST(ExtensionsTest, CanConvertFromExpectedRValueRefToAmpExpectedWithValue)
@@ -60,11 +60,11 @@ TEST(ExtensionsTest, CanConvertFromExpectedRValueRefToAmpExpectedWithValue)
     score::details::expected<NothrowMoveOnlyType, ErrorType> expected{value};
 
     // When converting it to a score::cpp::expected
-    const score::cpp::expected<NothrowMoveOnlyType, ErrorType> score_expected{to_score_expected(std::move(expected))};
+    const score::cpp::expected<NothrowMoveOnlyType, ErrorType> score_future_cpp_expected{to_score_future_cpp_expected(std::move(expected))};
 
     // Then the score::cpp::expected holds the value
-    ASSERT_TRUE(score_expected.has_value());
-    EXPECT_EQ(score_expected->value_, value);
+    ASSERT_TRUE(score_future_cpp_expected.has_value());
+    EXPECT_EQ(score_future_cpp_expected->value_, value);
 }
 
 TEST(ExtensionsTest, CanConvertFromExpectedRValueRefToAmpExpectedWithError)
@@ -74,21 +74,21 @@ TEST(ExtensionsTest, CanConvertFromExpectedRValueRefToAmpExpectedWithError)
     score::details::expected<ValueType, NothrowMoveOnlyType> expected{unexpect, value};
 
     // When converting it to a score::cpp::expected
-    const score::cpp::expected<ValueType, NothrowMoveOnlyType> score_expected{to_score_expected(std::move(expected))};
+    const score::cpp::expected<ValueType, NothrowMoveOnlyType> score_future_cpp_expected{to_score_future_cpp_expected(std::move(expected))};
 
     // Then the score::cpp::expected holds the error
-    ASSERT_FALSE(score_expected.has_value());
-    EXPECT_EQ(score_expected.error().value_, value);
+    ASSERT_FALSE(score_future_cpp_expected.has_value());
+    EXPECT_EQ(score_future_cpp_expected.error().value_, value);
 }
 
 TEST(ExtensionsTest, CanConvertFromAmpExpectedConstLValueRefToExpectedWithValue)
 {
     // Given an score::cpp::expected with a value
     const std::int32_t value{57};
-    const score::cpp::expected<CopyableType, ErrorType> score_expected{value};
+    const score::cpp::expected<CopyableType, ErrorType> score_future_cpp_expected{value};
 
     // When converting it to a score::details::expected
-    const score::details::expected<CopyableType, ErrorType> expected{to_score_expected(score_expected)};
+    const score::details::expected<CopyableType, ErrorType> expected{to_score_expected(score_future_cpp_expected)};
 
     // Then the score::expected holds the value
     ASSERT_TRUE(expected.has_value());
@@ -99,10 +99,10 @@ TEST(ExtensionsTest, CanConvertFromAmpExpectedConstLValueRefToExpectedWithError)
 {
     // Given an score::cpp::expected with an error
     const std::int32_t value{57};
-    const score::cpp::expected<ValueType, CopyableType> score_expected{score::cpp::make_unexpected(CopyableType{value})};
+    const score::cpp::expected<ValueType, CopyableType> score_future_cpp_expected{score::cpp::make_unexpected(CopyableType{value})};
 
     // When converting it to a score::details::expected
-    const score::details::expected<ValueType, CopyableType> expected{to_score_expected(score_expected)};
+    const score::details::expected<ValueType, CopyableType> expected{to_score_expected(score_future_cpp_expected)};
 
     // Then the score::expected holds the error
     ASSERT_FALSE(expected.has_value());
@@ -113,10 +113,10 @@ TEST(ExtensionsTest, CanConvertFromAmpExpectedRValueRefToExpectedWithValue)
 {
     // Given an score::cpp::expected with a value
     const std::int32_t value{57};
-    score::cpp::expected<NothrowMoveOnlyType, ErrorType> score_expected{value};
+    score::cpp::expected<NothrowMoveOnlyType, ErrorType> score_future_cpp_expected{value};
 
     // When converting it to a score::details::expected
-    const score::details::expected<NothrowMoveOnlyType, ErrorType> expected{to_score_expected(std::move(score_expected))};
+    const score::details::expected<NothrowMoveOnlyType, ErrorType> expected{to_score_expected(std::move(score_future_cpp_expected))};
 
     // Then the score::expected holds the value
     ASSERT_TRUE(expected.has_value());
@@ -127,10 +127,10 @@ TEST(ExtensionsTest, CanConvertFromAmpExpectedRValueRefToExpectedWithError)
 {
     // Given an score::cpp::expected with an error
     const std::int32_t value{57};
-    score::cpp::expected<ValueType, NothrowMoveOnlyType> score_expected{score::cpp::make_unexpected(NothrowMoveOnlyType{value})};
+    score::cpp::expected<ValueType, NothrowMoveOnlyType> score_future_cpp_expected{score::cpp::make_unexpected(NothrowMoveOnlyType{value})};
 
     // When converting it to a score::details::expected
-    const score::details::expected<ValueType, NothrowMoveOnlyType> expected{to_score_expected(std::move(score_expected))};
+    const score::details::expected<ValueType, NothrowMoveOnlyType> expected{to_score_expected(std::move(score_future_cpp_expected))};
 
     // Then the score::expected holds the error
     ASSERT_FALSE(expected.has_value());
@@ -149,7 +149,7 @@ TEST(ExtensionsTest, ConvertToAmpOptionalWhenExpectedConstLValueRefHasValue)
 
     // When converting it to an optional
     const score::cpp::optional<CopyableType> optional{
-        expected_value_to_score_optional_or_else(expected, on_error.AsStdFunction())};
+        expected_value_to_score_future_cpp_optional_or_else(expected, on_error.AsStdFunction())};
 
     // Then the optional holds the value
     ASSERT_TRUE(optional.has_value());
@@ -167,7 +167,7 @@ TEST(ExtensionsTest, OnConversionToAmpOptionalCallInvocableWhenExpectedConstLVal
     EXPECT_CALL(on_error, Call(CopyableType{value})).Times(1);
 
     // When converting it to an optional
-    const score::cpp::optional<ValueType> optional{expected_value_to_score_optional_or_else(expected, on_error.AsStdFunction())};
+    const score::cpp::optional<ValueType> optional{expected_value_to_score_future_cpp_optional_or_else(expected, on_error.AsStdFunction())};
 
     // Then the optional holds no value
     ASSERT_FALSE(optional.has_value());
@@ -185,7 +185,7 @@ TEST(ExtensionsTest, ConvertToAmpOptionalWhenExpectedRValueRefHasValue)
 
     // When converting it to an optional
     const score::cpp::optional<NothrowMoveOnlyType> optional{
-        expected_value_to_score_optional_or_else(std::move(expected), on_error.AsStdFunction())};
+        expected_value_to_score_future_cpp_optional_or_else(std::move(expected), on_error.AsStdFunction())};
 
     // Then the optional holds the value
     ASSERT_TRUE(optional.has_value());
@@ -206,7 +206,7 @@ TEST(ExtensionsTest, OnConversionToAmpOptionalCallInvocableWhenExpectedLValueRef
 
     // When converting it to an optional
     const score::cpp::optional<ValueType> optional{
-        expected_value_to_score_optional_or_else(std::move(expected), on_error.AsStdFunction())};
+        expected_value_to_score_future_cpp_optional_or_else(std::move(expected), on_error.AsStdFunction())};
 
     // Then the optional holds no value
     ASSERT_FALSE(optional.has_value());

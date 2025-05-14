@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_FILESYSTEM_DETAILS_STANDARD_FILESYSTEM_H
-#define BASELIBS_SCORE_FILESYSTEM_DETAILS_STANDARD_FILESYSTEM_H
+#ifndef SCORE_LIB_FILESYSTEM_DETAILS_STANDARD_FILESYSTEM_H
+#define SCORE_LIB_FILESYSTEM_DETAILS_STANDARD_FILESYSTEM_H
 
 #include "score/filesystem/i_standard_filesystem.h"
 
@@ -65,4 +65,4 @@ class StandardFilesystem final : public IStandardFilesystem
 }  // namespace filesystem
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_FILESYSTEM_DETAILS_STANDARD_FILESYSTEM_H
+#endif  // SCORE_LIB_FILESYSTEM_DETAILS_STANDARD_FILESYSTEM_H

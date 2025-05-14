@@ -18,8 +18,8 @@
 ///
 ///
 
-#ifndef BASELIBS_SCORE_OS_QNX_RESOURCE_TEST_OPEN_HANDLER_INTERFACE_STUB_H
-#define BASELIBS_SCORE_OS_QNX_RESOURCE_TEST_OPEN_HANDLER_INTERFACE_STUB_H
+#ifndef SCORE_LIB_OS_QNX_RESOURCE_TEST_OPEN_HANDLER_INTERFACE_STUB_H
+#define SCORE_LIB_OS_QNX_RESOURCE_TEST_OPEN_HANDLER_INTERFACE_STUB_H
 
 #include "score/os/utils/qnx/resource_manager/include/resource.h"
 
@@ -42,4 +42,4 @@ class OpenFunctionStub final : public score::os::IOpenFunction
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_QNX_RESOURCE_TEST_OPEN_HANDLER_INTERFACE_STUB_H
+#endif  // SCORE_LIB_OS_QNX_RESOURCE_TEST_OPEN_HANDLER_INTERFACE_STUB_H

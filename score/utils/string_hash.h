@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_UTILS_STRING_HASH_H
-#define BASELIBS_SCORE_UTILS_STRING_HASH_H
+#ifndef SCORE_LIB_UTILS_STRING_HASH_H
+#define SCORE_LIB_UTILS_STRING_HASH_H
 
 #include <string>
 
@@ -25,4 +25,4 @@ std::size_t get_string_as_hash(const std::string& name);
 }  // namespace common
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_UTILS_STRING_HASH_H
+#endif  // SCORE_LIB_UTILS_STRING_HASH_H

@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_MOCKLIB_IFADDRS_MOCK_H
-#define BASELIBS_SCORE_OS_MOCKLIB_IFADDRS_MOCK_H
+#ifndef SCORE_LIB_OS_MOCKLIB_IFADDRS_MOCK_H
+#define SCORE_LIB_OS_MOCKLIB_IFADDRS_MOCK_H
 
 #include "score/os/ifaddrs.h"
 #include <ifaddrs.h>
@@ -55,4 +55,4 @@ class IfaddrsMock final : public Ifaddrs
 
 /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 
-#endif  // BASELIBS_SCORE_OS_MOCKLIB_IFADDRS_MOCK_H
+#endif  // SCORE_LIB_OS_MOCKLIB_IFADDRS_MOCK_H

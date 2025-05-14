@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONTAINERS_DYNAMIC_ARRAY_H
-#define BASELIBS_SCORE_CONTAINERS_DYNAMIC_ARRAY_H
+#ifndef SCORE_LIB_CONTAINERS_DYNAMIC_ARRAY_H
+#define SCORE_LIB_CONTAINERS_DYNAMIC_ARRAY_H
 
 #include <score/assert.hpp>
 #include <score/utility.hpp>
@@ -645,4 +645,4 @@ inline auto DynamicArray<ElementType, Allocator>::GetLastElement(const pointer d
 
 }  // namespace score::containers
 
-#endif  // BASELIBS_SCORE_CONTAINERS_DYNAMIC_ARRAY_H
+#endif  // SCORE_LIB_CONTAINERS_DYNAMIC_ARRAY_H

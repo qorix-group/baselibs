@@ -10,17 +10,13 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
 package(
     default_visibility = [
         # "@ddad@score-baselibs//score/os/utils/qnx/resource_manager:__subpackages__",
     ],
 )
-
-FEAT_COMPILER_WARNINGS_AS_ERRORS = [
-    "treat_warnings_as_errors",
-    "strict_warnings",
-    "additional_warnings",
-]
 
 test_suite(
     name = "unit_tests",
@@ -42,14 +38,14 @@ cc_library(
     hdrs = [
         "include/resource_manager.h",
     ],
-    features = FEAT_COMPILER_WARNINGS_AS_ERRORS,
+    features = COMPILER_WARNING_FEATURES,
     tags = [
         "FUSA",
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os:errno",
@@ -70,14 +66,14 @@ cc_library(
         "include/resource.h",
         "include/static_c_wrappers.h",
     ],
-    features = FEAT_COMPILER_WARNINGS_AS_ERRORS,
+    features = COMPILER_WARNING_FEATURES,
     tags = [
         "FUSA",
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os/qnx:types",
@@ -92,18 +88,14 @@ cc_library(
     hdrs = [
         "include/simple_read_function.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = [
         "FUSA",
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":error",
@@ -130,7 +122,7 @@ cc_library(
         "tests/mocks/seek_function_mock.h",
         "tests/mocks/write_function_mock.h",
     ],
-    features = FEAT_COMPILER_WARNINGS_AS_ERRORS,
+    features = COMPILER_WARNING_FEATURES,
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
@@ -155,7 +147,7 @@ cc_library(
         "tests/stubs/seek_function_stub.h",
         "tests/stubs/write_function_stub.h",
     ],
-    features = FEAT_COMPILER_WARNINGS_AS_ERRORS,
+    features = COMPILER_WARNING_FEATURES,
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
@@ -171,7 +163,7 @@ cc_test(
     srcs = [
         "tests/resource_test.cpp",
     ],
-    features = FEAT_COMPILER_WARNINGS_AS_ERRORS,
+    features = COMPILER_WARNING_FEATURES,
     tags = [
         "manual",  # Remove when CI will start supporting 'os:qnx' test target.
         "unit",
@@ -190,7 +182,7 @@ cc_test(
     srcs = [
         "tests/resource_manager_test.cpp",
     ],
-    features = FEAT_COMPILER_WARNINGS_AS_ERRORS,
+    features = COMPILER_WARNING_FEATURES,
     tags = [
         "manual",  # Remove when CI will start supporting 'os:qnx' test target.
         "unit",
@@ -210,7 +202,7 @@ cc_test(
     srcs = [
         "tests/static_c_wrappers_test.cpp",
     ],
-    features = FEAT_COMPILER_WARNINGS_AS_ERRORS,
+    features = COMPILER_WARNING_FEATURES,
     tags = [
         "manual",  # Remove when CI will start supporting 'os:qnx' test target.
         "unit",
@@ -232,11 +224,7 @@ cc_library(
     hdrs = [
         "tests/mocks/mock_simple_read_function.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
@@ -253,11 +241,7 @@ cc_library(
     hdrs = [
         "tests/stubs/simple_read_function_stub.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "//platform/aas/unit/qnx/resource_manager:__subpackages__",
@@ -277,11 +261,7 @@ cc_library(
     hdrs = [
         "tests/simple_read_function_test_fixture.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "@score-baselibs//score/os/utils/qnx/resource_manager:__subpackages__",
@@ -299,11 +279,7 @@ cc_library(
 cc_test(
     name = "simple_read_function_test",
     srcs = ["tests/simple_read_function_test.cpp"],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = [
         "manual",  # to disable using as host unit test in CI
         "unit",
@@ -326,11 +302,7 @@ cc_library(
     hdrs = [
         "include/error.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = [
         "FUSA",
     ],
@@ -345,7 +317,7 @@ cc_library(
 cc_test(
     name = "error_test",
     srcs = ["tests/error_test.cpp"],
-    features = FEAT_COMPILER_WARNINGS_AS_ERRORS,
+    features = COMPILER_WARNING_FEATURES,
     tags = [
         "manual",  # to disable using as host unit test in CI
         "unit",

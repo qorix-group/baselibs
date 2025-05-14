@@ -50,7 +50,7 @@ class logging_serializer
     {
         if (get_offset_t_max() <= size)
         {
-            return 0;
+            return 0UL;
         }
         return impl::serialize(t, data, static_cast<offset_t>(size));
     }

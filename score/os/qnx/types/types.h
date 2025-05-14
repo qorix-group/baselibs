@@ -17,8 +17,8 @@
 /// @brief the common types of the resource manager
 ///
 
-#ifndef BASELIBS_SCORE_OS_QNX_TYPES_H
-#define BASELIBS_SCORE_OS_QNX_TYPES_H
+#ifndef SCORE_LIB_OS_QNX_TYPES_H
+#define SCORE_LIB_OS_QNX_TYPES_H
 
 /* KW_SUPPRESS_START:MISRA.INCL.INSIDE */
 /* Inclusion order is important to provide the right system defintion with the */
@@ -123,4 +123,4 @@ struct extended_dev_attr_t
 // NOLINTEND(cppcoreguidelines-pro-type-member-init)
 /* KW_SUPPRESS_END:MISRA.NS.GLOBAL: Passed to QNX C Library */
 
-#endif  // BASELIBS_SCORE_OS_QNX_TYPES_H
+#endif  // SCORE_LIB_OS_QNX_TYPES_H

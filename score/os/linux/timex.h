@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_LINUX_TIMEX_H
-#define BASELIBS_SCORE_OS_LINUX_TIMEX_H
+#ifndef SCORE_LIB_OS_LINUX_TIMEX_H
+#define SCORE_LIB_OS_LINUX_TIMEX_H
 
 #include <time.h>
 #include <cstdint>
@@ -26,4 +26,4 @@ std::int32_t clock_adjtime(const clockid_t clkid, struct timex* tx);
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_LINUX_TIMEX_H
+#endif  // SCORE_LIB_OS_LINUX_TIMEX_H

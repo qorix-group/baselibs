@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_UTILS_THREAD_H
-#define BASELIBS_SCORE_OS_UTILS_THREAD_H
+#ifndef SCORE_LIB_OS_UTILS_THREAD_H
+#define SCORE_LIB_OS_UTILS_THREAD_H
 
 #include <score/jthread.hpp>
 #include <cstddef>
@@ -38,4 +38,4 @@ std::string get_thread_name(std::thread& thread);
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_UTILS_THREAD_H
+#endif  // SCORE_LIB_OS_UTILS_THREAD_H

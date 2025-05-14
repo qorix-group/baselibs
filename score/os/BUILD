@@ -10,7 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@score-baselibs//score/os:common_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "acl",
@@ -749,11 +749,7 @@ cc_library(
         "sched.h",
         "sched_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = ["//visibility:public"],
     deps = [
@@ -772,11 +768,7 @@ cc_library(
         "spawn.h",
         "spawn_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = ["//visibility:public"],
     deps = [
@@ -795,11 +787,7 @@ cc_library(
         "sys_wait.h",
         "sys_wait_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = ["//visibility:public"],
     deps = [
@@ -840,8 +828,8 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":errno",

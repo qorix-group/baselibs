@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_RESULT_ERROR_H
-#define BASELIBS_SCORE_RESULT_ERROR_H
+#ifndef SCORE_LIB_RESULT_ERROR_H
+#define SCORE_LIB_RESULT_ERROR_H
 
 #include "score/result/error_code.h"
 #include "score/result/error_domain.h"
@@ -30,8 +30,13 @@ namespace details
 // will result in UB if the given type `T` is not an enum. Therefore, we first check whether the given type `Code` is
 // indeed an enum type before invoking std::underlying_type.
 template <typename Code>
+// Function is neither in an anonymous namespace, nor is it a static function with internal linkage,
+// nor is it a private member function. Hence, the rule does not apply.
+// coverity[autosar_cpp14_a0_1_3_violation]
 constexpr bool IsValidErrorCodeEnum() noexcept
 {
+    // false-positive; this is the correct syntax for a constexpr-if-statement. Reordering is not allowed by standard.
+    // coverity[autosar_cpp14_a7_1_8_violation]
     if constexpr (std::is_enum_v<Code>)
     {
         return std::is_same_v<ErrorCode, std::underlying_type_t<Code>>;
@@ -127,4 +132,4 @@ std::ostream& operator<<(std::ostream& out, const score::result::Error& value) n
 }  // namespace result
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_RESULT_ERROR_H
+#endif  // SCORE_LIB_RESULT_ERROR_H

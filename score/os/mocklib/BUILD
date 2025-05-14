@@ -10,7 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@score-baselibs//score/os:common_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "acl_mock",
@@ -484,8 +484,8 @@ cc_library(
     hdrs = ["ifaddrs_mock.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os:ifaddrs",
@@ -500,8 +500,8 @@ cc_library(
     hdrs = ["capability_mock.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os:capability",
@@ -530,8 +530,8 @@ cc_library(
     srcs = ["glob_mock.cpp"],
     hdrs = ["glob_mock.h"],
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os:glob",

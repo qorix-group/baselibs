@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_INOTIFY_H
-#define BASELIBS_SCORE_OS_INOTIFY_H
+#ifndef SCORE_LIB_OS_INOTIFY_H
+#define SCORE_LIB_OS_INOTIFY_H
 
 #include "score/bitmanipulation/bitmask_operators.h"
 #include "score/os/ObjectSeam.h"
@@ -76,4 +76,4 @@ struct enable_bitmask_operators<score::os::Inotify::EventMask>
 /* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC:Char is used in respect to the wrapped function's signature */
 /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 
-#endif  // BASELIBS_SCORE_OS_INOTIFY_H
+#endif  // SCORE_LIB_OS_INOTIFY_H

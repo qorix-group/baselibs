@@ -10,6 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
 exports_files([
     "capability.h",
     "capability.cpp",
@@ -55,11 +57,7 @@ cc_library(
         "timex.cpp",
         "unistd.cpp",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     linkopts = select({
         "//bazel/platforms:config_xpad_dnv": [
             "-lcap",

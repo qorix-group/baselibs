@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_JSON_INTERNAL_PARSER_PARSER_TEST_SUITE_H
-#define BASELIBS_SCORE_JSON_INTERNAL_PARSER_PARSER_TEST_SUITE_H
+#ifndef SCORE_LIB_JSON_INTERNAL_PARSER_PARSER_TEST_SUITE_H
+#define SCORE_LIB_JSON_INTERNAL_PARSER_PARSER_TEST_SUITE_H
 
 #include "score/json/internal/model/any.h"
 
@@ -383,4 +383,4 @@ REGISTER_TYPED_TEST_SUITE_P(ParserTest,
 }  // namespace json
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_JSON_INTERNAL_PARSER_PARSER_TEST_SUITE_H
+#endif  // SCORE_LIB_JSON_INTERNAL_PARSER_PARSER_TEST_SUITE_H

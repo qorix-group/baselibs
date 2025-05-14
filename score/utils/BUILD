@@ -55,8 +55,8 @@ cc_library(
     hdrs = ["src/PayloadValidation.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
 )
 
@@ -66,8 +66,8 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = ["@score-baselibs//score/language/futurecpp"],
 )

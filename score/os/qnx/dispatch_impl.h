@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_QNX_DISPATCH_IMPL_H
-#define BASELIBS_SCORE_OS_QNX_DISPATCH_IMPL_H
+#ifndef SCORE_LIB_OS_QNX_DISPATCH_IMPL_H
+#define SCORE_LIB_OS_QNX_DISPATCH_IMPL_H
 
 #include "score/os/qnx/dispatch.h"
 
@@ -131,4 +131,4 @@ class DispatchImpl final : public Dispatch
 /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 /* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC:Char is used in respect to the wrapped function's signature */
 
-#endif  // BASELIBS_SCORE_OS_QNX_DISPATCH_IMPL_H
+#endif  // SCORE_LIB_OS_QNX_DISPATCH_IMPL_H

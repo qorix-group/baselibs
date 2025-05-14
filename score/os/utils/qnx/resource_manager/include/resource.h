@@ -17,8 +17,8 @@
 /// @brief the declaration of Resource class.
 ///
 
-#ifndef BASELIBS_SCORE_OS_QNX_RESOURCE_H
-#define BASELIBS_SCORE_OS_QNX_RESOURCE_H
+#ifndef SCORE_LIB_OS_QNX_RESOURCE_H
+#define SCORE_LIB_OS_QNX_RESOURCE_H
 
 #include "score/os/utils/qnx/resource_manager/include/static_c_wrappers.h"
 
@@ -155,4 +155,4 @@ class Resource final
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_QNX_RESOURCE_H
+#endif  // SCORE_LIB_OS_QNX_RESOURCE_H

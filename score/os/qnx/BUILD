@@ -10,6 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
 exports_files(["capability.h"])
 
 cc_library(
@@ -22,11 +24,7 @@ cc_library(
         "channel.h",
         "channel_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
@@ -46,11 +44,7 @@ cc_library(
         "dispatch.h",
         "dispatch_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
@@ -71,11 +65,7 @@ cc_library(
         "devctl.h",
         "devctl_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
@@ -95,11 +85,7 @@ cc_library(
         "inout.h",
         "inout_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
@@ -118,11 +104,7 @@ cc_library(
         "mman.h",
         "mman_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
@@ -139,11 +121,7 @@ cc_library(
     hdrs = [
         "iofunc.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
@@ -162,11 +140,7 @@ cc_library(
     hdrs = [
         "pcap.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "@score-baselibs//score/os:__subpackages__",
@@ -184,11 +158,7 @@ cc_library(
     name = "procmgr",
     srcs = ["procmgr.cpp"],
     hdrs = ["procmgr.h"],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
@@ -208,11 +178,7 @@ cc_library(
         "neutrino.h",
         "neutrino_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
@@ -233,11 +199,7 @@ cc_library(
         "pci.h",
         "pci_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "@score-baselibs//score/analysis/tracing/daemon:__subpackages__",
@@ -263,11 +225,7 @@ cc_library(
         "pci_safety.h",
         "pci_safety_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
@@ -291,11 +249,7 @@ cc_library(
         "resmgr.h",
         "resmgr_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
@@ -319,11 +273,7 @@ cc_library(
         "timer.h",
         "timer_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
@@ -348,11 +298,7 @@ cc_library(
         "types/iofunc_types.h",
         "types/types.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
@@ -372,11 +318,7 @@ cc_library(
         "secpol.h",
         "secpol_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
@@ -397,11 +339,7 @@ cc_library(
         "sysctl.h",
         "sysctl_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
@@ -420,11 +358,7 @@ cc_library(
         "slog2.h",
         "slog2_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
@@ -442,8 +376,8 @@ alias(
     name = "slog2",
     actual = "slog2_impl",
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
 )
 
@@ -457,11 +391,7 @@ cc_library(
         "sysmgr.h",
         "sysmgr_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
@@ -479,11 +409,7 @@ cc_library(
     hdrs = [
         "secpolev.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "@score-baselibs//score/os/mocklib/qnx:__pkg__",
@@ -507,11 +433,7 @@ cc_library(
         "thread_ctl.h",
         "thread_ctl_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
@@ -530,11 +452,7 @@ cc_library(
         "unistd.h",
         "unistd_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
@@ -553,11 +471,7 @@ cc_library(
         "fs_crypto.h",
         "fs_crypto_impl.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [

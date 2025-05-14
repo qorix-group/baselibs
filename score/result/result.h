@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_RESULT_RESULT_H
-#define BASELIBS_SCORE_RESULT_RESULT_H
+#ifndef SCORE_LIB_RESULT_RESULT_H
+#define SCORE_LIB_RESULT_RESULT_H
 
 #include "score/result/error.h"
 
@@ -60,7 +60,7 @@ auto MakeUnexpected(score::result::Error error) noexcept -> Result<T>
 template <typename T, typename F>
 auto ResultToAmpOptionalOrElse(const Result<T>& result, F&& error_handling) -> score::cpp::optional<T>
 {
-    return details::expected_value_to_score_optional_or_else(result, std::forward<F>(error_handling));
+    return details::expected_value_to_score_future_cpp_optional_or_else(result, std::forward<F>(error_handling));
 }
 
 template <typename T, typename F>
@@ -70,7 +70,7 @@ template <typename T, typename F>
 // coverity[autosar_cpp14_a13_3_1_violation]
 auto ResultToAmpOptionalOrElse(Result<T>&& result, F&& error_handling) -> score::cpp::optional<T>
 {
-    return details::expected_value_to_score_optional_or_else(std::forward<Result<T>>(result),
+    return details::expected_value_to_score_future_cpp_optional_or_else(std::forward<Result<T>>(result),
                                                            std::forward<F>(error_handling));
 }
 
@@ -103,4 +103,4 @@ constexpr bool IsResultV = IsResult<T>::value;
 
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_RESULT_RESULT_H
+#endif  // SCORE_LIB_RESULT_RESULT_H

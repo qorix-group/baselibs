@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_MOCKLIB_SEMAPHOREOMOCK_H
-#define BASELIBS_SCORE_OS_MOCKLIB_SEMAPHOREOMOCK_H
+#ifndef SCORE_LIB_OS_MOCKLIB_SEMAPHOREOMOCK_H
+#define SCORE_LIB_OS_MOCKLIB_SEMAPHOREOMOCK_H
 
 #include "score/os/semaphore.h"
 
@@ -48,4 +48,4 @@ class SemaphoreMock : public Semaphore
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_MOCKLIB_SEMAPHOREOMOCK_H
+#endif  // SCORE_LIB_OS_MOCKLIB_SEMAPHOREOMOCK_H

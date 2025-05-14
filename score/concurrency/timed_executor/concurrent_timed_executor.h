@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONCURRENCY_CONCURRENT_TIMED_EXECUTOR_H
-#define BASELIBS_SCORE_CONCURRENCY_CONCURRENT_TIMED_EXECUTOR_H
+#ifndef SCORE_LIB_CONCURRENCY_CONCURRENT_TIMED_EXECUTOR_H
+#define SCORE_LIB_CONCURRENCY_CONCURRENT_TIMED_EXECUTOR_H
 
 #include "score/concurrency/condition_variable.h"
 #include "score/concurrency/executor.h"
@@ -238,4 +238,4 @@ class ConcurrentTimedExecutor final : public TimedExecutor<Clock>
 
 }  // namespace score::concurrency
 
-#endif  // BASELIBS_SCORE_CONCURRENCY_NON_CONCURRENT_TIMED_EXECUTOR_H
+#endif  // SCORE_LIB_CONCURRENCY_NON_CONCURRENT_TIMED_EXECUTOR_H

@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_INTERFACE_FTW_H
-#define BASELIBS_SCORE_OS_INTERFACE_FTW_H
+#ifndef SCORE_LIB_OS_INTERFACE_FTW_H
+#define SCORE_LIB_OS_INTERFACE_FTW_H
 
 #include "score/os/errno.h"
 
@@ -53,4 +53,4 @@ class Ftw
 
 /* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC:Char is used in respect to the wrapped function's signature */
 
-#endif  // BASELIBS_SCORE_OS_INTERFACE_FTW_H
+#endif  // SCORE_LIB_OS_INTERFACE_FTW_H

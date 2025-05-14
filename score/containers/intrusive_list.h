@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONTAINERS_INTRUSIVE_LIST_H
-#define BASELIBS_SCORE_CONTAINERS_INTRUSIVE_LIST_H
+#ifndef SCORE_LIB_CONTAINERS_INTRUSIVE_LIST_H
+#define SCORE_LIB_CONTAINERS_INTRUSIVE_LIST_H
 
 #include <score/assert.hpp>
 #include <score/utility.hpp>
@@ -700,4 +700,4 @@ void swap(intrusive_list<T, Tag>& x, intrusive_list<T, Tag>& y)
 }  // namespace containers
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_CONTAINERS_INTRUSIVE_LIST_H
+#endif  // SCORE_LIB_CONTAINERS_INTRUSIVE_LIST_H

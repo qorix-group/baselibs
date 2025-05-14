@@ -11,8 +11,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-#ifndef BASELIBS_SCORE_JSON_INTERNAL_MODEL_LOSSLESS_CAST_H
-#define BASELIBS_SCORE_JSON_INTERNAL_MODEL_LOSSLESS_CAST_H
+#ifndef SCORE_LIB_JSON_INTERNAL_MODEL_LOSSLESS_CAST_H
+#define SCORE_LIB_JSON_INTERNAL_MODEL_LOSSLESS_CAST_H
 
 #include "score/result/result.h"
 #include <type_traits>
@@ -98,4 +98,4 @@ extern template score::Result<std::int8_t> score::json::TryLosslessCast(double);
 }  // namespace json
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_JSON_INTERNAL_MODEL_LOSSLESS_CAST_H
+#endif  // SCORE_LIB_JSON_INTERNAL_MODEL_LOSSLESS_CAST_H

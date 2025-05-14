@@ -20,7 +20,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public",
+        "//visibility:public", # platform_only
         # "@ddad@score-baselibs//score/filesystem:__pkg__",
     ],
     deps = [
@@ -38,7 +38,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//visibility:public",
+        "//visibility:public", # platform_only
         # "@ddad@score-baselibs//score/filesystem:__pkg__",
     ],
     deps = [

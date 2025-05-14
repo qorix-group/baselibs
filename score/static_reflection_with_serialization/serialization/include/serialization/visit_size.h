@@ -64,6 +64,8 @@ template <typename SizeType,
                            std::int32_t> = 0>
 /* KW_SUPPRESS_END:MISRA.LOGIC.NOT_BOOL: false positive */
 /* KW_SUPPRESS_START: MISRA.FUNC.UNUSEDPAR.UNNAMED: Unused variables needed for correct template deduction. */
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void visit_as(size_helper<SizeType>& v, T&&)
 {
     static_assert(sizeof(std::decay_t<T>) <= std::numeric_limits<SizeType>::max(), "size of T too large");
@@ -83,6 +85,8 @@ inline void visit_as(size_helper<SizeType>& v, T&&)
 }
 
 template <typename SizeType, typename T, typename V = decltype(score::common::visitor::get_struct_visitable<T>())>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void visit_as(size_helper<SizeType>& v, T&& t)
 {
     V::visit(v, t);
@@ -104,7 +108,9 @@ inline void visit_as_struct(size_helper<SizeType>& v, S&&, Args&&... args)
 
 template <typename SizeType, typename T1, typename T2>
 // we to overload function, because we pass different types of T.
+// This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_a13_3_1_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void visit_as(size_helper<SizeType>& v, const std::pair<T1, T2>& t)
 {
     score::common::visitor::visit(v, t.first);
@@ -136,16 +142,24 @@ inline void visit_tuple_start(size_helper<SizeType>& v, const std::tuple<T...>& 
 }
 
 template <typename SizeType, typename... T>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void visit_as(size_helper<SizeType>& v, const std::tuple<T...>& t)
 {
     visit_tuple_start(v, t, std::make_index_sequence<sizeof...(T)>());
 }
 
 template <typename SizeType, typename C, typename T, typename Alloc>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void visit_as(size_helper<SizeType>& v, const std::basic_string<C, T, Alloc>& t)
 {
+    // Suppress "AUTOSAR C++14 A4-7-1" The rule states: "An integer expression shall not lead to data loss"
+    // Justification: data overflow is allowed as the overflow handling in the code
+    // coverity[autosar_cpp14_a4_7_1_violation]
     const auto new_size = v.out + v.string_offset + static_cast<SizeType>(sizeof(uint16_t)) +
-                          static_cast<SizeType>(t.size() * sizeof(std::string::value_type) + 1);
+                          // coverity[autosar_cpp14_a4_7_1_violation]  see above
+                          static_cast<SizeType>(t.size() * sizeof(std::string::value_type) + 1UL);
     // There is no benefit of writing unit test to cover the TRUE case of this condition, it will not have any
     // expectation or assertion because the function will return gracefully without any return values or even
     // a failure.
@@ -162,8 +176,13 @@ inline void visit_as(size_helper<SizeType>& v, const std::basic_string<C, T, All
 template <typename SizeType,
           typename T,
           std::enable_if_t<::score::common::visitor::is_vector_serializable<T>::value, std::int32_t> = 0>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void visit_as(size_helper<SizeType>& v, const T& t)
 {
+    // Suppress "AUTOSAR C++14 A4-7-1" The rule states: "An integer expression shall not lead to data loss"
+    // Justification: data overflow is allowed as the overflow handling in the code
+    // coverity[autosar_cpp14_a4_7_1_violation]
     const auto new_size = v.out + v.vector_offset + static_cast<SizeType>(sizeof(uint16_t));
     // There is no benefit of writing unit test to cover the TRUE case of this condition, it will not have any
     // expectation or assertion because the function will return gracefully without any return values or even
@@ -177,7 +196,7 @@ inline void visit_as(size_helper<SizeType>& v, const T& t)
         v.out = new_size;
     }
     // We are facing 'Decision couldn't be analyzed' for the below 'for' loop, it's phantom. So, we suppressed it.
-    for (std::size_t i = 0; i < t.size(); ++i)  // LCOV_EXCL_BR_LINE
+    for (std::size_t i = 0UL; i < t.size(); ++i)  // LCOV_EXCL_BR_LINE
     {
         score::common::visitor::visit(v, *(t.cbegin() + static_cast<std::ptrdiff_t>(i)));
     }
@@ -185,6 +204,8 @@ inline void visit_as(size_helper<SizeType>& v, const T& t)
 
 //  optimized version of size serialization for integral types
 template <typename SizeType, typename T, std::enable_if_t<std::is_integral<T>::value, std::int32_t> = 0>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void visit_as(size_helper<SizeType>& v, const std::vector<T>& t)
 {
     auto new_size = v.out + v.vector_offset;
@@ -220,6 +241,8 @@ inline void visit_as(size_helper<SizeType>& v, const std::vector<T>& t)
 }
 
 template <typename SizeType, typename T, size_t N>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void visit_as(size_helper<SizeType>& v, const std::array<T, N>& t)
 {
     for (size_t i = 0UL; i < N; ++i)
@@ -230,6 +253,8 @@ inline void visit_as(size_helper<SizeType>& v, const std::array<T, N>& t)
 
 template <typename SizeType, typename T, size_t N>
 /* KW_SUPPRESS_START:AUTOSAR.ARRAY.CSTYLE: intentionally */
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void visit_as(size_helper<SizeType>& v, const T (&t)[N])
 {
     /* KW_SUPPRESS_END:AUTOSAR.ARRAY.CSTYLE: intentionally */

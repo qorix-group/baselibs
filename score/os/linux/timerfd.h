@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_LINUX_TIMERFD_H
-#define BASELIBS_SCORE_OS_LINUX_TIMERFD_H
+#ifndef SCORE_LIB_OS_LINUX_TIMERFD_H
+#define SCORE_LIB_OS_LINUX_TIMERFD_H
 
 #include <sys/timerfd.h>
 #include <cstdint>
@@ -32,4 +32,4 @@ std::int32_t timerfd_settime(const std::int32_t fd,
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_LINUX_TIMERFD_H
+#endif  // SCORE_LIB_OS_LINUX_TIMERFD_H

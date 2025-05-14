@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_MOCKLIBE_IOCTLMOCK_H
-#define BASELIBS_SCORE_OS_MOCKLIBE_IOCTLMOCK_H
+#ifndef SCORE_LIB_OS_MOCKLIBE_IOCTLMOCK_H
+#define SCORE_LIB_OS_MOCKLIBE_IOCTLMOCK_H
 
 #include "score/os/ioctl.h"
 
@@ -38,4 +38,4 @@ class IoctlMock : public Ioctl
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_MOCKLIBE_IOCTLMOCK_H
+#endif  // SCORE_LIB_OS_MOCKLIBE_IOCTLMOCK_H

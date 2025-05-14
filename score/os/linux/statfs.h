@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_LINUX_STATFS_H
-#define BASELIBS_SCORE_OS_LINUX_STATFS_H
+#ifndef SCORE_LIB_OS_LINUX_STATFS_H
+#define SCORE_LIB_OS_LINUX_STATFS_H
 
 #include <sys/statfs.h>
 #include <cstdint>
@@ -28,4 +28,4 @@ std::int32_t statfs(const char* file, struct statfs* buf);
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_LINUX_STATFS_H
+#endif  // SCORE_LIB_OS_LINUX_STATFS_H

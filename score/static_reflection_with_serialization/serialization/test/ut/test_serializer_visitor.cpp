@@ -509,9 +509,9 @@ TEST(serializer_visitor, serializer)
 // more requirements and tests for corner cases (borderline sizes)
 // and allocation error handling
 
-using timestscore_t = std::chrono::steady_clock::time_point;
+using timestscore_future_cpp_t = std::chrono::steady_clock::time_point;
 
-MEMCPY_SERIALIZABLE(score::common::visitor::payload_tags::unsigned_le, timestscore_t)
+MEMCPY_SERIALIZABLE(score::common::visitor::payload_tags::unsigned_le, timestscore_future_cpp_t)
 
 TEST(serializer_visitor, custom)
 {
@@ -523,8 +523,8 @@ TEST(serializer_visitor, custom)
     using s = ::score::common::visitor::serializer_t<real_alloc_t>;
     char buffer[1024];
 
-    timestscore_t ttin = timestscore_t::clock::now();
-    timestscore_t ttout;
+    timestscore_future_cpp_t ttin = timestscore_future_cpp_t::clock::now();
+    timestscore_future_cpp_t ttout;
     EXPECT_EQ(s::serialize(ttin, buffer, sizeof(buffer)), sizeof(ttin));
     s::deserialize(buffer, sizeof(buffer), ttout);
     EXPECT_EQ(ttin, ttout);

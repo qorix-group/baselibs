@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_CAPABILITY_H
-#define BASELIBS_SCORE_OS_CAPABILITY_H
+#ifndef SCORE_LIB_OS_CAPABILITY_H
+#define SCORE_LIB_OS_CAPABILITY_H
 
 #include "score/expected.hpp"
 #include "score/os/ObjectSeam.h"

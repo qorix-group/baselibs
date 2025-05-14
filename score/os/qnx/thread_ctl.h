@@ -15,8 +15,8 @@
 /// @copyright Copyright (C) 2023, Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
 ///
 
-#ifndef BASELIBS_SCORE_OS_QNX_THREAD_CTL_H
-#define BASELIBS_SCORE_OS_QNX_THREAD_CTL_H
+#ifndef SCORE_LIB_OS_QNX_THREAD_CTL_H
+#define SCORE_LIB_OS_QNX_THREAD_CTL_H
 
 #include "score/os/errno.h"
 
@@ -56,4 +56,4 @@ class ThreadCtl
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_QNX_THREAD_CTL_H
+#endif  // SCORE_LIB_OS_QNX_THREAD_CTL_H

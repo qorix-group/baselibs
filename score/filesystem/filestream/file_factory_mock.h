@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_FILESYSTEM_FILESTREAM_FILE_FACTORY_MOCK_H
-#define BASELIBS_SCORE_FILESYSTEM_FILESTREAM_FILE_FACTORY_MOCK_H
+#ifndef SCORE_LIB_FILESYSTEM_FILESTREAM_FILE_FACTORY_MOCK_H
+#define SCORE_LIB_FILESYSTEM_FILESTREAM_FILE_FACTORY_MOCK_H
 
 #include "score/filesystem/error.h"
 #include "score/filesystem/filestream/i_file_factory.h"
@@ -23,9 +23,7 @@
 
 #include <gmock/gmock.h>
 
-namespace score
-{
-namespace filesystem
+namespace score::filesystem
 {
 
 class FileFactoryMock : public IFileFactory
@@ -35,9 +33,12 @@ class FileFactoryMock : public IFileFactory
                 Open,
                 (const Path&, std::ios_base::openmode),
                 (noexcept, override));
+    MOCK_METHOD(score::Result<std::unique_ptr<FileStream>>,
+                AtomicUpdate,
+                (const Path&, std::ios_base::openmode),
+                (noexcept, override));
 };
 
-}  // namespace filesystem
-}  // namespace score
+}  // namespace score::filesystem
 
-#endif  // BASELIBS_SCORE_FILESYSTEM_FILESTREAM_FILE_FACTORY_MOCK_H
+#endif  // SCORE_LIB_FILESYSTEM_FILESTREAM_FILE_FACTORY_MOCK_H

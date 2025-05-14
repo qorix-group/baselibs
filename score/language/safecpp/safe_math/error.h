@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_SAFE_MATH_ERROR_H
-#define BASELIBS_SCORE_SAFE_MATH_ERROR_H
+#ifndef SCORE_LIB_SAFE_MATH_ERROR_H
+#define SCORE_LIB_SAFE_MATH_ERROR_H
 
 #include "score/result/error.h"
 #include "score/result/error_code.h"
@@ -36,4 +36,4 @@ class ErrorDomain final : public score::result::ErrorDomain
 score::result::Error MakeError(const ErrorCode code, const std::string_view user_message = "") noexcept;
 
 }  // namespace score::safe_math
-#endif  // BASELIBS_SCORE_SAFE_MATH_ERROR_H
+#endif  // SCORE_LIB_SAFE_MATH_ERROR_H

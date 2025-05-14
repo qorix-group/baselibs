@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_TIME_H
-#define BASELIBS_SCORE_OS_TIME_H
+#ifndef SCORE_LIB_OS_TIME_H
+#define SCORE_LIB_OS_TIME_H
 
 #include "score/os/ObjectSeam.h"
 #include "score/os/errno.h"
@@ -64,4 +64,4 @@ class Time : public ObjectSeam<Time>
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_TIME_H
+#endif  // SCORE_LIB_OS_TIME_H

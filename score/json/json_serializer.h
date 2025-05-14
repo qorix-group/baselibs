@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_JSON_JSON_SERIALIZER_H
-#define BASELIBS_SCORE_JSON_JSON_SERIALIZER_H
+#ifndef SCORE_LIB_JSON_JSON_SERIALIZER_H
+#define SCORE_LIB_JSON_JSON_SERIALIZER_H
 
 #include "score/json/json_parser.h"
 
@@ -449,4 +449,4 @@ class JsonSerializer<Any>
 
 }  // namespace score::json
 
-#endif  // BASELIBS_SCORE_JSON_JSON_SERIALIZER_H
+#endif  // SCORE_LIB_JSON_JSON_SERIALIZER_H

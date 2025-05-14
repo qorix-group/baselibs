@@ -18,8 +18,8 @@
 /// by the user.
 ///
 
-#ifndef BASELIBS_SCORE_OS_QNX_RESOURCE_READ_HANDLER_INTERFACE_H
-#define BASELIBS_SCORE_OS_QNX_RESOURCE_READ_HANDLER_INTERFACE_H
+#ifndef SCORE_LIB_OS_QNX_RESOURCE_READ_HANDLER_INTERFACE_H
+#define SCORE_LIB_OS_QNX_RESOURCE_READ_HANDLER_INTERFACE_H
 
 // clang-format off
 // the order is important to correctly define RESMGR_HANDLE_T, see QNX resmgr_attach() documentation
@@ -53,4 +53,4 @@ class IReadFunction
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_QNX_RESOURCE_READ_HANDLER_INTERFACE_H
+#endif  // SCORE_LIB_OS_QNX_RESOURCE_READ_HANDLER_INTERFACE_H

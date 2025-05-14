@@ -35,3 +35,21 @@ cc_test(
         "@googletest//:gtest_main",
     ],
 )
+
+cc_test(
+    name = "error_code_test",
+    srcs = [
+        "error_code_test.cpp",
+    ],
+    features = FEAT_COMPILER_WARNINGS_AS_ERRORS,
+    tags = [
+        "unit",
+    ],
+    visibility = [
+        # "@ddad@score-baselibs//score/analysis/tracing:__subpackages__",
+    ],
+    deps = [
+        "@score-baselibs//score/analysis/tracing/library/generic_trace_api/error_code",
+        "@googletest//:gtest_main",
+    ],
+)

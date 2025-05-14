@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_FCNTL_IMPL_H
-#define BASELIBS_SCORE_OS_FCNTL_IMPL_H
+#ifndef SCORE_LIB_OS_FCNTL_IMPL_H
+#define SCORE_LIB_OS_FCNTL_IMPL_H
 
 #include "score/os/fcntl.h"
 
@@ -50,4 +50,4 @@ class FcntlImpl final : public Fcntl
 
 /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 
-#endif  // BASELIBS_SCORE_OS_FCNTL_IMPL_H
+#endif  // SCORE_LIB_OS_FCNTL_IMPL_H

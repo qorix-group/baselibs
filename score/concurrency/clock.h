@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONCURRENCY_CLOCK_H
-#define BASELIBS_SCORE_CONCURRENCY_CLOCK_H
+#ifndef SCORE_LIB_CONCURRENCY_CLOCK_H
+#define SCORE_LIB_CONCURRENCY_CLOCK_H
 
 #include <chrono>
 #include <mutex>
@@ -96,4 +96,4 @@ using NonSteadyClock = detail::Clock<false>;
 }  // namespace concurrency
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_CONCURRENCY_CLOCK_H
+#endif  // SCORE_LIB_CONCURRENCY_CLOCK_H

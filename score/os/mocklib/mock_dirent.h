@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_MOCKLIB_MOCK_DIRENT_H
-#define BASELIBS_SCORE_OS_MOCKLIB_MOCK_DIRENT_H
+#ifndef SCORE_LIB_OS_MOCKLIB_MOCK_DIRENT_H
+#define SCORE_LIB_OS_MOCKLIB_MOCK_DIRENT_H
 
 #include "score/os/dirent.h"
 
@@ -53,4 +53,4 @@ class MockDirent : public Dirent
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_MOCKLIB_MOCK_DIRENT_H
+#endif  // SCORE_LIB_OS_MOCKLIB_MOCK_DIRENT_H

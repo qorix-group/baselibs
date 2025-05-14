@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_MAKEDEV_H
-#define BASELIBS_SCORE_OS_MAKEDEV_H
+#ifndef SCORE_LIB_OS_MAKEDEV_H
+#define SCORE_LIB_OS_MAKEDEV_H
 
 #include "score/os/ObjectSeam.h"
 
@@ -47,4 +47,4 @@ class MakeDev : public ObjectSeam<MakeDev>
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_MAKEDEV_H
+#endif  // SCORE_LIB_OS_MAKEDEV_H

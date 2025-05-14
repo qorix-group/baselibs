@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_FILESYSTEM_FILE_STATUS_H
-#define BASELIBS_SCORE_FILESYSTEM_FILE_STATUS_H
+#ifndef SCORE_LIB_FILESYSTEM_FILE_STATUS_H
+#define SCORE_LIB_FILESYSTEM_FILE_STATUS_H
 
 #include "score/os/stat.h"
 
@@ -80,4 +80,4 @@ bool operator==(const FileStatus&, const FileStatus&) noexcept;
 }  // namespace filesystem
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_FILESYSTEM_FILE_STATUS_H
+#endif  // SCORE_LIB_FILESYSTEM_FILE_STATUS_H

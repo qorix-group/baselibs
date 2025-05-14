@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_FILESYSTEM_I_STANDARD_FILESYSTEM_H
-#define BASELIBS_SCORE_FILESYSTEM_I_STANDARD_FILESYSTEM_H
+#ifndef SCORE_LIB_FILESYSTEM_I_STANDARD_FILESYSTEM_H
+#define SCORE_LIB_FILESYSTEM_I_STANDARD_FILESYSTEM_H
 
 #include "score/filesystem/file_status.h"
 #include "score/filesystem/path.h"
@@ -199,4 +199,4 @@ inline score::filesystem::PermOptions operator|(const score::filesystem::PermOpt
 }
 /* KW_SUPPRESS_END:MISRA.NS.GLOBAL: */
 
-#endif  // BASELIBS_SCORE_FILESYSTEM_I_STANDARD_FILESYSTEM_H
+#endif  // SCORE_LIB_FILESYSTEM_I_STANDARD_FILESYSTEM_H

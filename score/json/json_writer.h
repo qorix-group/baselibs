@@ -11,11 +11,13 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-#ifndef BASELIBS_SCORE_JSON_JSON_WRITER_H
-#define BASELIBS_SCORE_JSON_JSON_WRITER_H
+#ifndef SCORE_LIB_JSON_JSON_WRITER_H
+#define SCORE_LIB_JSON_JSON_WRITER_H
 
 #include "score/filesystem/filestream/file_factory.h"
 #include "score/json/i_json_writer.h"
+
+#include <string_view>
 
 namespace score
 {
@@ -25,7 +27,7 @@ namespace json
 class JsonWriter final : public IJsonWriter
 {
   public:
-    JsonWriter() noexcept = default;
+    explicit JsonWriter(bool unsynced = false) noexcept;
     JsonWriter(const JsonWriter&) = delete;
     JsonWriter(JsonWriter&&) noexcept = delete;
     JsonWriter& operator=(const JsonWriter&) = delete;
@@ -41,9 +43,12 @@ class JsonWriter final : public IJsonWriter
 
     score::Result<std::string> ToBuffer(const score::json::Object& json_data) override;
     score::Result<std::string> ToBuffer(const score::json::List& json_data) override;
+
+  private:
+    bool unsynced_;
 };
 
 }  // namespace json
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_JSON_JSON_PARSER_H
+#endif  // SCORE_LIB_JSON_JSON_PARSER_H

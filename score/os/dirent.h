@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_DIRENT_H
-#define BASELIBS_SCORE_OS_DIRENT_H
+#ifndef SCORE_LIB_OS_DIRENT_H
+#define SCORE_LIB_OS_DIRENT_H
 
 #include "score/os/ObjectSeam.h"
 #include "score/os/errno.h"
@@ -64,4 +64,4 @@ class Dirent : public ObjectSeam<Dirent>
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_DIRENT_H
+#endif  // SCORE_LIB_OS_DIRENT_H

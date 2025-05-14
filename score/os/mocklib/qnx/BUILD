@@ -10,6 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
 cc_library(
     name = "channel_mock",
     testonly = True,
@@ -54,11 +56,7 @@ cc_library(
     testonly = True,
     srcs = ["mock_inout.cpp"],
     hdrs = ["mock_inout.h"],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
@@ -72,11 +70,7 @@ cc_library(
     testonly = True,
     srcs = ["mock_mman.cpp"],
     hdrs = ["mock_mman.h"],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
@@ -142,11 +136,7 @@ cc_library(
     testonly = True,
     srcs = ["mock_resmgr.cpp"],
     hdrs = ["mock_resmgr.h"],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "@score-baselibs//score/os:__subpackages__",

@@ -11,8 +11,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-#ifndef BASELIBS_SCORE_JSON_I_JSON_WRITER_H
-#define BASELIBS_SCORE_JSON_I_JSON_WRITER_H
+#ifndef SCORE_LIB_JSON_I_JSON_WRITER_H
+#define SCORE_LIB_JSON_I_JSON_WRITER_H
 
 #include "score/filesystem/filestream/i_file_factory.h"
 #include "score/json/internal/model/any.h"
@@ -49,4 +49,4 @@ class IJsonWriter
 }  // namespace json
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_JSON_I_JSON_WRITER_H
+#endif  // SCORE_LIB_JSON_I_JSON_WRITER_H

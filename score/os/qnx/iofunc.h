@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_QNX_IOFUNC_H
-#define BASELIBS_SCORE_OS_QNX_IOFUNC_H
+#ifndef SCORE_LIB_OS_QNX_IOFUNC_H
+#define SCORE_LIB_OS_QNX_IOFUNC_H
 
 #include "score/os/ObjectSeam.h"
 #include "score/os/errno.h"
@@ -228,4 +228,4 @@ class IoFuncQnx final : public IoFunc
 
 /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 
-#endif  // BASELIBS_SCORE_OS_QNX_IOFUNC_H
+#endif  // SCORE_LIB_OS_QNX_IOFUNC_H

@@ -20,8 +20,8 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     linkopts = ["-lgcov"],
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = ["@score-baselibs//score/language/futurecpp"],
     alwayslink = True,

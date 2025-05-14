@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_QNX_CHANNEL_H
-#define BASELIBS_SCORE_OS_QNX_CHANNEL_H
+#ifndef SCORE_LIB_OS_QNX_CHANNEL_H
+#define SCORE_LIB_OS_QNX_CHANNEL_H
 
 #include "score/os/ObjectSeam.h"
 #include "score/os/errno.h"
@@ -156,4 +156,4 @@ class Channel : public ObjectSeam<Channel>
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_QNX_CHANNEL_H
+#endif  // SCORE_LIB_OS_QNX_CHANNEL_H

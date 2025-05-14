@@ -18,8 +18,8 @@
 /// [QNX sysctl
 /// documentation](https://www.qnx.com/developers/docs/7.1/#com.qnx.doc.neutrino.lib_ref/topic/s/sysctl.html)
 ///
-#ifndef BASELIBS_SCORE_OS_QNX_SYSCTL_H
-#define BASELIBS_SCORE_OS_QNX_SYSCTL_H
+#ifndef SCORE_LIB_OS_QNX_SYSCTL_H
+#define SCORE_LIB_OS_QNX_SYSCTL_H
 
 #include "score/os/ObjectSeam.h"
 #include "score/os/errno.h"
@@ -58,4 +58,4 @@ class Sysctl : public ObjectSeam<Sysctl>
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_QNX_SYSCTL_H
+#endif  // SCORE_LIB_OS_QNX_SYSCTL_H

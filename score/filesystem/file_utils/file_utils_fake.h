@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_FILESYSTEM_FILE_UTILS_FILE_UTILS_FAKE_H
-#define BASELIBS_SCORE_FILESYSTEM_FILE_UTILS_FILE_UTILS_FAKE_H
+#ifndef SCORE_LIB_FILESYSTEM_FILE_UTILS_FILE_UTILS_FAKE_H
+#define SCORE_LIB_FILESYSTEM_FILE_UTILS_FILE_UTILS_FAKE_H
 
 #include "score/filesystem/file_utils/file_utils.h"
 #include "score/filesystem/file_utils/file_utils_mock.h"
@@ -35,4 +35,4 @@ class FileUtilsFake : public FileUtilsMock
 }  // namespace filesystem
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_FILESYSTEM_FILE_UTILS_FILE_UTILS_FAKE_H
+#endif  // SCORE_LIB_FILESYSTEM_FILE_UTILS_FILE_UTILS_FAKE_H

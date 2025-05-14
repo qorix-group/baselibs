@@ -17,8 +17,8 @@
 /// @brief the declaration of the c signature function fitting QNX c handler pointers.
 ///
 
-#ifndef BASELIBS_SCORE_OS_QNX_RESOURCE_MANAGER_STATIC_WRAPPERS_H
-#define BASELIBS_SCORE_OS_QNX_RESOURCE_MANAGER_STATIC_WRAPPERS_H
+#ifndef SCORE_LIB_OS_QNX_RESOURCE_MANAGER_STATIC_WRAPPERS_H
+#define SCORE_LIB_OS_QNX_RESOURCE_MANAGER_STATIC_WRAPPERS_H
 
 #include "score/os/qnx/types/types.h"
 
@@ -100,4 +100,4 @@ int connect_open_handler(resmgr_context_t* ctp, io_open_t* msg, extended_dev_att
 }
 #endif  // __cplusplus
 
-#endif  // BASELIBS_SCORE_OS_QNX_RESOURCE_MANAGER_STATIC_WRAPPERS_H
+#endif  // SCORE_LIB_OS_QNX_RESOURCE_MANAGER_STATIC_WRAPPERS_H

@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_QNX_PTHREAD_H
-#define BASELIBS_SCORE_OS_QNX_PTHREAD_H
+#ifndef SCORE_LIB_OS_QNX_PTHREAD_H
+#define SCORE_LIB_OS_QNX_PTHREAD_H
 
 #include "score/os/pthread.h"
 #include <pthread.h>
@@ -38,4 +38,4 @@ class QnxPthread : public score::os::Pthread
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_QNX_PTHREAD_H
+#endif  // SCORE_LIB_OS_QNX_PTHREAD_H

@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_SAFE_MATH_DETAILS_CAST_CAST_H
-#define BASELIBS_SCORE_SAFE_MATH_DETAILS_CAST_CAST_H
+#ifndef SCORE_LIB_SAFE_MATH_DETAILS_CAST_CAST_H
+#define SCORE_LIB_SAFE_MATH_DETAILS_CAST_CAST_H
 
 #include "score/language/safecpp/safe_math/details/comparison/comparison.h"
 #include "score/language/safecpp/safe_math/error.h"
@@ -176,4 +176,4 @@ constexpr score::Result<R> Cast(T value) noexcept
 
 }  // namespace score::safe_math
 
-#endif  // BASELIBS_SCORE_SAFE_MATH_DETAILS_CAST_CAST_H
+#endif  // SCORE_LIB_SAFE_MATH_DETAILS_CAST_CAST_H

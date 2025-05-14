@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_SEMAPHORE_IMPL
-#define BASELIBS_SCORE_OS_SEMAPHORE_IMPL
+#ifndef SCORE_LIB_OS_SEMAPHORE_IMPL
+#define SCORE_LIB_OS_SEMAPHORE_IMPL
 
 #include "score/os/semaphore.h"
 
@@ -81,4 +81,4 @@ class SemaphoreImpl final : public Semaphore
 /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 /* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC:Char is used in respect to the wrapped function's signature */
 
-#endif  // BASELIBS_SCORE_OS_SEMAPHORE_IMPL
+#endif  // SCORE_LIB_OS_SEMAPHORE_IMPL

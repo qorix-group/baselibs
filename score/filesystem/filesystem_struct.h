@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_FILESYSTEM_FILESYSTEM_STRUCT_H
-#define BASELIBS_SCORE_FILESYSTEM_FILESYSTEM_STRUCT_H
+#ifndef SCORE_LIB_FILESYSTEM_FILESYSTEM_STRUCT_H
+#define SCORE_LIB_FILESYSTEM_FILESYSTEM_STRUCT_H
 
 #include "score/filesystem/file_utils/i_file_utils.h"
 #include "score/filesystem/filestream/i_file_factory.h"
@@ -37,4 +37,4 @@ struct Filesystem
 }  // namespace filesystem
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_FILESYSTEM_FILESYSTEM_STRUCT_H
+#endif  // SCORE_LIB_FILESYSTEM_FILESYSTEM_STRUCT_H

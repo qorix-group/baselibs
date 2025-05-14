@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_MOCKLIB_SYS_POLL_MOCK_H
-#define BASELIBS_SCORE_OS_MOCKLIB_SYS_POLL_MOCK_H
+#ifndef SCORE_LIB_OS_MOCKLIB_SYS_POLL_MOCK_H
+#define SCORE_LIB_OS_MOCKLIB_SYS_POLL_MOCK_H
 
 #include "score/os/sys_poll.h"
 
@@ -33,4 +33,4 @@ class SysPollMock : public SysPoll
 
 }  // namespace os
 }  // namespace score
-#endif  // BASELIBS_SCORE_OS_MOCKLIB_SYS_POLL_MOCK_H
+#endif  // SCORE_LIB_OS_MOCKLIB_SYS_POLL_MOCK_H

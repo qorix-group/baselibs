@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONCURRENCY_THREAD_LOAD_TRACKING_WORK_LOAD_H
-#define BASELIBS_SCORE_CONCURRENCY_THREAD_LOAD_TRACKING_WORK_LOAD_H
+#ifndef SCORE_LIB_CONCURRENCY_THREAD_LOAD_TRACKING_WORK_LOAD_H
+#define SCORE_LIB_CONCURRENCY_THREAD_LOAD_TRACKING_WORK_LOAD_H
 
 #include <chrono>
 #include <optional>
@@ -41,4 +41,4 @@ struct WorkLoad
 }  // namespace concurrency
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_CONCURRENCY_THREAD_LOAD_TRACKING_WORK_LOAD_H
+#endif  // SCORE_LIB_CONCURRENCY_THREAD_LOAD_TRACKING_WORK_LOAD_H

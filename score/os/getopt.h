@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_GETOPT_H
-#define BASELIBS_SCORE_OS_GETOPT_H
+#ifndef SCORE_LIB_OS_GETOPT_H
+#define SCORE_LIB_OS_GETOPT_H
 
 #include "score/os/ObjectSeam.h"
 
@@ -69,4 +69,4 @@ class Getopt : public ObjectSeam<Getopt>
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_GETOPT_H
+#endif  // SCORE_LIB_OS_GETOPT_H

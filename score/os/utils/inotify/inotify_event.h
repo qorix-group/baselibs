@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_UTILS_INOTIFY_INOTIFY_EVENT_H
-#define BASELIBS_SCORE_OS_UTILS_INOTIFY_INOTIFY_EVENT_H
+#ifndef SCORE_LIB_OS_UTILS_INOTIFY_INOTIFY_EVENT_H
+#define SCORE_LIB_OS_UTILS_INOTIFY_INOTIFY_EVENT_H
 
 #include "score/os/utils/inotify/inotify_watch_descriptor.h"
 
@@ -81,4 +81,4 @@ struct enable_bitmask_operators<os::InotifyEvent::ReadMask>
 
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_UTILS_INOTIFY_INOTIFY_EVENT_H
+#endif  // SCORE_LIB_OS_UTILS_INOTIFY_INOTIFY_EVENT_H

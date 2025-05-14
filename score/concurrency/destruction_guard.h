@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONCURRENCY_DESTRUCTION_GUARD_H
-#define BASELIBS_SCORE_CONCURRENCY_DESTRUCTION_GUARD_H
+#ifndef SCORE_LIB_CONCURRENCY_DESTRUCTION_GUARD_H
+#define SCORE_LIB_CONCURRENCY_DESTRUCTION_GUARD_H
 
 #include <atomic>
 #include <cstdint>
@@ -38,4 +38,4 @@ class DestructionGuard
 
 }  // namespace concurrency
 }  // namespace score
-#endif  // BASELIBS_SCORE_CONCURRENCY_DESTRUCTION_GUARD_H
+#endif  // SCORE_LIB_CONCURRENCY_DESTRUCTION_GUARD_H

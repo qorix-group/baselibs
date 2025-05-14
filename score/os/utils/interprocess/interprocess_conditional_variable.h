@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_UTILS_INTERPROCESSCONDITIONALVARIABLE_H
-#define BASELIBS_SCORE_OS_UTILS_INTERPROCESSCONDITIONALVARIABLE_H
+#ifndef SCORE_LIB_OS_UTILS_INTERPROCESSCONDITIONALVARIABLE_H
+#define SCORE_LIB_OS_UTILS_INTERPROCESSCONDITIONALVARIABLE_H
 
 #include "score/os/utils/interprocess/interprocess_mutex.h"
 
@@ -54,4 +54,4 @@ class InterprocessConditionalVariable
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_UTILS_INTERPROCESSCONDITIONALVARIABLE_H
+#endif  // SCORE_LIB_OS_UTILS_INTERPROCESSCONDITIONALVARIABLE_H

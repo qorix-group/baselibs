@@ -36,14 +36,14 @@ template <typename Period>
 std::string_view DurationUnitSuffix() noexcept
 {
     auto result = detail::PeriodToSuffix.find(typeid(typename Period::type));
-    if (result != detail::PeriodToSuffix.end())
+    if (result != detail::PeriodToSuffix.end())  // LCOV_EXCL_BR_LINE : else branch cannot be reached
     {
         return result->second;
     }
     else
     {
         // should never reach here
-        return std::string_view{"not support unit"};
+        return std::string_view{"not support unit"};  // LCOV_EXCL_LINE : unreachable
     }
 }
 

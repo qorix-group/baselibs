@@ -15,8 +15,8 @@
 /// @copyright Copyright (C) 2023, Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
 ///
 
-#ifndef BASELIBS_SCORE_OS_MOCKLIB_QNX_MOCK_TIMER_H
-#define BASELIBS_SCORE_OS_MOCKLIB_QNX_MOCK_TIMER_H
+#ifndef SCORE_LIB_OS_MOCKLIB_QNX_MOCK_TIMER_H
+#define SCORE_LIB_OS_MOCKLIB_QNX_MOCK_TIMER_H
 
 #include "score/os/qnx/timer.h"
 
@@ -54,4 +54,4 @@ class MockTimer : public Timer
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_MOCKLIB_QNX_MOCK_TIMER_H
+#endif  // SCORE_LIB_OS_MOCKLIB_QNX_MOCK_TIMER_H

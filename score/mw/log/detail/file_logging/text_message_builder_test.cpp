@@ -51,8 +51,8 @@ class TextMessageBuilderFixture : public ::testing::TestWithParam<LogLevel>
 
         log_entry.app_id = LoggingIdentifier{"TMB"};
         log_entry.ctx_id = LoggingIdentifier{"CTX"};
-        //  log_entry.timestscore_steady_nsec = 8791823749;
-        //  log_entry.timestscore_system_nsec = 8872983746;
+        //  log_entry.timestscore_future_cpp_steady_nsec = 8791823749;
+        //  log_entry.timestscore_future_cpp_system_nsec = 8872983746;
         log_entry.num_of_args = 7;
         log_entry.log_level = LogLevel::kWarn;
         log_entry.payload = ByteVector{'p', 'a', 'y', 'l', 'o', 'a', 'd'};

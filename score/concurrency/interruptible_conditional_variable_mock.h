@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONCURRENCY_INTERRUPTIBLE_CONDITIONAL_VARIABLE_MOCK_H
-#define BASELIBS_SCORE_CONCURRENCY_INTERRUPTIBLE_CONDITIONAL_VARIABLE_MOCK_H
+#ifndef SCORE_LIB_CONCURRENCY_INTERRUPTIBLE_CONDITIONAL_VARIABLE_MOCK_H
+#define SCORE_LIB_CONCURRENCY_INTERRUPTIBLE_CONDITIONAL_VARIABLE_MOCK_H
 
 #include "score/concurrency/clock.h"
 
@@ -38,4 +38,4 @@ class InterruptibleConditionalVariableMock
 };
 }  // namespace score::concurrency::testing
 
-#endif  // BASELIBS_SCORE_CONCURRENCY_INTERRUPTIBLE_CONDITIONAL_VARIABLE_MOCK_H
+#endif  // SCORE_LIB_CONCURRENCY_INTERRUPTIBLE_CONDITIONAL_VARIABLE_MOCK_H

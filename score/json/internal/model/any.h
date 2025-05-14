@@ -11,8 +11,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-#ifndef BASELIBS_SCORE_JSON_INTERNAL_MODEL_ANY_H
-#define BASELIBS_SCORE_JSON_INTERNAL_MODEL_ANY_H
+#ifndef SCORE_LIB_JSON_INTERNAL_MODEL_ANY_H
+#define SCORE_LIB_JSON_INTERNAL_MODEL_ANY_H
 
 #include "score/json/internal/model/error.h"
 #include "score/json/internal/model/null.h"
@@ -262,4 +262,4 @@ class Any
 }  // namespace json
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_JSON_INTERNAL_MODEL_ANY_H
+#endif  // SCORE_LIB_JSON_INTERNAL_MODEL_ANY_H

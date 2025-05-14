@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_QNX_PCI_SAFETY_H
-#define BASELIBS_SCORE_OS_QNX_PCI_SAFETY_H
+#ifndef SCORE_LIB_OS_QNX_PCI_SAFETY_H
+#define SCORE_LIB_OS_QNX_PCI_SAFETY_H
 
 #include "score/os/ObjectSeam.h"
 
@@ -60,4 +60,4 @@ class PciSafety : public score::os::ObjectSeam<PciSafety>
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_QNX_PCI_SAFETY_H
+#endif  // SCORE_LIB_OS_QNX_PCI_SAFETY_H

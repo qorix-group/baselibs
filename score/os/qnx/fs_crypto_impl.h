@@ -19,8 +19,8 @@
 /// documentation](https://www.qnx.com/developers/docs/7.1/index.html#com.qnx.doc.neutrino.utilities/topic/f/fsencrypt.html)
 ///
 
-#ifndef BASELIBS_SCORE_OS_QNX_FS_CRYPTO_IMPL_H
-#define BASELIBS_SCORE_OS_QNX_FS_CRYPTO_IMPL_H
+#ifndef SCORE_LIB_OS_QNX_FS_CRYPTO_IMPL_H
+#define SCORE_LIB_OS_QNX_FS_CRYPTO_IMPL_H
 
 #include "score/os/qnx/fs_crypto.h"
 
@@ -94,4 +94,4 @@ class FsCryptoImpl final : public FsCrypto
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_QNX_FS_CRYPTO_IMPL_H
+#endif  // SCORE_LIB_OS_QNX_FS_CRYPTO_IMPL_H

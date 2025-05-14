@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_UTILS_DETECT_OS_H
-#define BASELIBS_SCORE_OS_UTILS_DETECT_OS_H
+#ifndef SCORE_LIB_OS_UTILS_DETECT_OS_H
+#define SCORE_LIB_OS_UTILS_DETECT_OS_H
 
 #include "score/os/uname.h"
 
@@ -29,4 +29,4 @@ bool IsQnx();
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_UTILS_DETECT_OS_H
+#endif  // SCORE_LIB_OS_UTILS_DETECT_OS_H

@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONCURRENCY_THREADPOOL_H
-#define BASELIBS_SCORE_CONCURRENCY_THREADPOOL_H
+#ifndef SCORE_LIB_CONCURRENCY_THREADPOOL_H
+#define SCORE_LIB_CONCURRENCY_THREADPOOL_H
 
 #include "score/concurrency/condition_variable.h"
 #include "score/concurrency/executor.h"
@@ -107,4 +107,4 @@ class ThreadPool final : public DerivableExecutor<ThreadPool>
 }  // namespace concurrency
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_CONCURRENCY_THREADPOOL_H
+#endif  // SCORE_LIB_CONCURRENCY_THREADPOOL_H

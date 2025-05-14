@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_EXPECTED_TEST_TYPES_H
-#define BASELIBS_SCORE_EXPECTED_TEST_TYPES_H
+#ifndef SCORE_LIB_EXPECTED_TEST_TYPES_H
+#define SCORE_LIB_EXPECTED_TEST_TYPES_H
 
 #include <cstdint>
 #include <utility>
@@ -129,4 +129,4 @@ class ErrorType
 
 }  // namespace score::details
 
-#endif  // BASELIBS_SCORE_EXPECTED_TEST_TYPES_H
+#endif  // SCORE_LIB_EXPECTED_TEST_TYPES_H

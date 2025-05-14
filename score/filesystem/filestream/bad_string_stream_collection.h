@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_FILESYSTEM_FILESTREAM_BAD_STRING_STREAM_COLLECTION_H
-#define BASELIBS_SCORE_FILESYSTEM_FILESTREAM_BAD_STRING_STREAM_COLLECTION_H
+#ifndef SCORE_LIB_FILESYSTEM_FILESTREAM_BAD_STRING_STREAM_COLLECTION_H
+#define SCORE_LIB_FILESYSTEM_FILESTREAM_BAD_STRING_STREAM_COLLECTION_H
 
 #include "score/filesystem/filestream/i_string_stream_collection.h"
 
@@ -29,4 +29,4 @@ class BadStringStreamCollection : public IStringStreamCollection
 }  // namespace filesystem
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_FILESYSTEM_FILESTREAM_BAD_STRING_STREAM_COLLECTION_H
+#endif  // SCORE_LIB_FILESYSTEM_FILESTREAM_BAD_STRING_STREAM_COLLECTION_H

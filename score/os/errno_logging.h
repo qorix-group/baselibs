@@ -15,8 +15,8 @@
 /// @copyright Copyright (C) 2023, Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
 ///
 
-#ifndef BASELIBS_SCORE_OS_ERRNO_LOGGING_H
-#define BASELIBS_SCORE_OS_ERRNO_LOGGING_H
+#ifndef SCORE_LIB_OS_ERRNO_LOGGING_H
+#define SCORE_LIB_OS_ERRNO_LOGGING_H
 
 #include "score/os/errno_decl.h"
 
@@ -41,4 +41,4 @@ score::mw::log::LogStream& operator<<(score::mw::log::LogStream& log_stream, con
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_ERRNO_LOGGING_H
+#endif  // SCORE_LIB_OS_ERRNO_LOGGING_H

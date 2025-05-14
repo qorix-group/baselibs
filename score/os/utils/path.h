@@ -15,8 +15,8 @@
 /// @copyright Copyright (C) 2021, Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
 ///
 
-#ifndef BASELIBS_SCORE_OS_UTILS_PATH_H
-#define BASELIBS_SCORE_OS_UTILS_PATH_H
+#ifndef SCORE_LIB_OS_UTILS_PATH_H
+#define SCORE_LIB_OS_UTILS_PATH_H
 
 #include "score/os/ObjectSeam.h"
 #include "score/os/errno.h"
@@ -68,4 +68,4 @@ class Path : public ObjectSeam<Path>
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_UTILS_PATH_H
+#endif  // SCORE_LIB_OS_UTILS_PATH_H

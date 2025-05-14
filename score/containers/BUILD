@@ -45,7 +45,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public",
+        "//visibility:public", # platform_only
         # "@ddad@score-baselibs//score/containers:__subpackages__",
     ],
     deps = ["@score-baselibs//score/language/futurecpp"],
@@ -58,7 +58,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public",
+        "//visibility:public", # platform_only
         # "@ddad@score-baselibs//score/containers:__subpackages__",
     ],
     deps = ["@score-baselibs//score/language/futurecpp"],

@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_RESULT_EXPECTED_H
-#define BASELIBS_SCORE_RESULT_EXPECTED_H
+#ifndef SCORE_LIB_RESULT_EXPECTED_H
+#define SCORE_LIB_RESULT_EXPECTED_H
 
 #include <functional>
 #include <type_traits>
@@ -361,7 +361,7 @@ class SPP_EXPECTED_NODISCARD expected : impl::base_expected
     // coverity[autosar_cpp14_a13_3_1_violation]
     constexpr expected& operator=(const unexpected<G>& other)
     {
-        storage_.template emplace<1>(other.error());
+        std::ignore = storage_.template emplace<1>(other.error());
         return *this;
     }
 
@@ -995,4 +995,4 @@ constexpr void swap(::score::details::expected<T, E>& lhs, ::score::details::exp
 
 }  // namespace std
 
-#endif  // BASELIBS_SCORE_RESULT_EXPECTED_H
+#endif  // SCORE_LIB_RESULT_EXPECTED_H

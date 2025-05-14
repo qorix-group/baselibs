@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONCURRENCY_SYNCHRONIZED_QUEUE_H
-#define BASELIBS_SCORE_CONCURRENCY_SYNCHRONIZED_QUEUE_H
+#ifndef SCORE_LIB_CONCURRENCY_SYNCHRONIZED_QUEUE_H
+#define SCORE_LIB_CONCURRENCY_SYNCHRONIZED_QUEUE_H
 
 #include "score/concurrency/notification.h"
 
@@ -187,4 +187,4 @@ class SynchronizedQueue final
 
 }  // namespace score::concurrency
 
-#endif  // BASELIBS_SCORE_CONCURRENCY_SYNCHRONIZED_QUEUE_H
+#endif  // SCORE_LIB_CONCURRENCY_SYNCHRONIZED_QUEUE_H

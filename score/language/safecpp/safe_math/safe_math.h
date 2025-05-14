@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_SAFE_MATH_SAFE_MATH_H
-#define BASELIBS_SCORE_SAFE_MATH_SAFE_MATH_H
+#ifndef SCORE_LIB_SAFE_MATH_SAFE_MATH_H
+#define SCORE_LIB_SAFE_MATH_SAFE_MATH_H
 
 #include "score/language/safecpp/safe_math/details/absolute/absolute.h"
 #include "score/language/safecpp/safe_math/details/addition_subtraction/addition_subtraction.h"
@@ -23,4 +23,4 @@
 #include "score/language/safecpp/safe_math/details/type_traits/type_traits.h"
 #include "score/language/safecpp/safe_math/error.h"
 
-#endif  // BASELIBS_SCORE_SAFE_MATH_SAFE_MATH_H
+#endif  // SCORE_LIB_SAFE_MATH_SAFE_MATH_H

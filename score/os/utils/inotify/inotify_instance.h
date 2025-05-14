@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_UTILS_INOTIFY_INOTIFY_INSTANCE_H
-#define BASELIBS_SCORE_OS_UTILS_INOTIFY_INOTIFY_INSTANCE_H
+#ifndef SCORE_LIB_OS_UTILS_INOTIFY_INOTIFY_INSTANCE_H
+#define SCORE_LIB_OS_UTILS_INOTIFY_INOTIFY_INSTANCE_H
 
 #include "score/os/utils/inotify/inotify_event.h"
 #include "score/os/utils/inotify/inotify_watch_descriptor.h"
@@ -93,4 +93,4 @@ class InotifyInstance
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_UTILS_INOTIFY_INOTIFY_INSTANCE_H
+#endif  // SCORE_LIB_OS_UTILS_INOTIFY_INOTIFY_INSTANCE_H

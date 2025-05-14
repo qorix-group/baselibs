@@ -12,8 +12,8 @@
  ********************************************************************************/
 // this header file is create to be called instead of <sys/iofunc.h> to guarantee the right order then right
 // definitation for IOFUNC_ATTR_T and RESMGR_HANDLE_T
-#ifndef BASELIBS_SCORE_OS_QNX_IOFUNC_TYPES_H_
-#define BASELIBS_SCORE_OS_QNX_IOFUNC_TYPES_H_
+#ifndef SCORE_LIB_OS_QNX_IOFUNC_TYPES_H_
+#define SCORE_LIB_OS_QNX_IOFUNC_TYPES_H_
 
 // clang-format off
 // the order is important to correctly define RESMGR_HANDLE_T, see QNX resmgr_attach() documentation
@@ -41,4 +41,4 @@ struct extended_dev_attr_t;
 // clang-format off
 // the order is important to correctly define RESMGR_HANDLE_T, see QNX resmgr_attach() documentation
 
-#endif  // BASELIBS_SCORE_OS_QNX_IOFUNC_TYPES_H_
+#endif  // SCORE_LIB_OS_QNX_IOFUNC_TYPES_H_

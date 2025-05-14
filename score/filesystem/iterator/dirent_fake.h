@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_FILESYSTEM_ITERATOR_DIRENT_FAKE_H
-#define BASELIBS_SCORE_FILESYSTEM_ITERATOR_DIRENT_FAKE_H
+#ifndef SCORE_LIB_FILESYSTEM_ITERATOR_DIRENT_FAKE_H
+#define SCORE_LIB_FILESYSTEM_ITERATOR_DIRENT_FAKE_H
 
 #include "score/filesystem/path.h"
 #include "score/os/mocklib/mock_dirent.h"
@@ -63,4 +63,4 @@ class DirentFake : public score::os::MockDirent
 }  // namespace filesystem
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_FILESYSTEM_ITERATOR_DIRENT_FAKE_H
+#endif  // SCORE_LIB_FILESYSTEM_ITERATOR_DIRENT_FAKE_H

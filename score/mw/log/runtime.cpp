@@ -75,7 +75,7 @@ score::mw::log::Recorder& Runtime::GetRecorder() noexcept
       guarantees.
     */
     // coverity[autosar_cpp14_a3_3_2_violation]
-    static EmptyRecorder empty_recorder{};
+    static EmptyRecorder empty_recorder{};  // LCOV_EXCL_LINE : false positive
     return empty_recorder;
 }
 

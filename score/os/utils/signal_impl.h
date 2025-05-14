@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_UTILS_SIGNAL_IMPL_H
-#define BASELIBS_SCORE_OS_UTILS_SIGNAL_IMPL_H
+#ifndef SCORE_LIB_OS_UTILS_SIGNAL_IMPL_H
+#define SCORE_LIB_OS_UTILS_SIGNAL_IMPL_H
 
 #include "score/os/utils/signal.h"
 
@@ -87,4 +87,4 @@ class SignalImpl : public Signal
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_UTILS_SIGNAL_IMPL_H
+#endif  // SCORE_LIB_OS_UTILS_SIGNAL_IMPL_H

@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_SAFE_MATH_DETAILS_FLOATING_POINT_ENVIRONMENT_H
-#define BASELIBS_SCORE_SAFE_MATH_DETAILS_FLOATING_POINT_ENVIRONMENT_H
+#ifndef SCORE_LIB_SAFE_MATH_DETAILS_FLOATING_POINT_ENVIRONMENT_H
+#define SCORE_LIB_SAFE_MATH_DETAILS_FLOATING_POINT_ENVIRONMENT_H
 
 #include "score/result/result.h"
 
@@ -61,4 +61,4 @@ class FloatingPointEnvironment
 
 }  // namespace score::safe_math::details
 
-#endif  // BASELIBS_SCORE_SAFE_MATH_DETAILS_FLOATING_POINT_ENVIRONMENT_H
+#endif  // SCORE_LIB_SAFE_MATH_DETAILS_FLOATING_POINT_ENVIRONMENT_H

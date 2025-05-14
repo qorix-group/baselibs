@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_SAFE_MATH_DETAILS_TEST_TYPE_COLLECTION_H
-#define BASELIBS_SCORE_SAFE_MATH_DETAILS_TEST_TYPE_COLLECTION_H
+#ifndef SCORE_LIB_SAFE_MATH_DETAILS_TEST_TYPE_COLLECTION_H
+#define SCORE_LIB_SAFE_MATH_DETAILS_TEST_TYPE_COLLECTION_H
 
 #include <gtest/gtest.h>
 
@@ -58,4 +58,4 @@ using FloatingPointFloatingPointTypePairs = ::testing::Types<std::pair<float, do
 
 }  // namespace score::safe_math
 
-#endif  // BASELIBS_SCORE_SAFE_MATH_DETAILS_TEST_TYPE_COLLECTION_H
+#endif  // SCORE_LIB_SAFE_MATH_DETAILS_TEST_TYPE_COLLECTION_H

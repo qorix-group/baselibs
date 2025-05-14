@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_RESULT_ERROR_DOMAIN_H
-#define BASELIBS_SCORE_RESULT_ERROR_DOMAIN_H
+#ifndef SCORE_LIB_RESULT_ERROR_DOMAIN_H
+#define SCORE_LIB_RESULT_ERROR_DOMAIN_H
 
 #include "score/result/error_code.h"
 
@@ -50,4 +50,4 @@ class ErrorDomain
 }  // namespace result
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_RESULT_ERROR_DOMAIN_H
+#endif  // SCORE_LIB_RESULT_ERROR_DOMAIN_H

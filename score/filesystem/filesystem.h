@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_FILESYSTEM_FILESYSTEM_H
-#define BASELIBS_SCORE_FILESYSTEM_FILESYSTEM_H
+#ifndef SCORE_LIB_FILESYSTEM_FILESYSTEM_H
+#define SCORE_LIB_FILESYSTEM_FILESYSTEM_H
 
 // Contains headers for filesystem library users (except headers for fakes and mocks).
 
@@ -30,4 +30,4 @@
 #include "score/filesystem/iterator/directory_iterator.h"
 #include "score/filesystem/iterator/recursive_directory_iterator.h"
 
-#endif  // BASELIBS_SCORE_FILESYSTEM_FILESYSTEM_H
+#endif  // SCORE_LIB_FILESYSTEM_FILESYSTEM_H

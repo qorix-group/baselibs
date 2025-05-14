@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_NETINET_IN_H
-#define BASELIBS_SCORE_OS_NETINET_IN_H
+#ifndef SCORE_LIB_OS_NETINET_IN_H
+#define SCORE_LIB_OS_NETINET_IN_H
 
 #include <netinet/in.h>
 
@@ -26,4 +26,4 @@ using InAddr = in_addr;
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_NETINET_IN_H
+#endif  // SCORE_LIB_OS_NETINET_IN_H

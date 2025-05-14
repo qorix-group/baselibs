@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONCURRENCY_TIMED_EXECUTOR_MOCK_H
-#define BASELIBS_SCORE_CONCURRENCY_TIMED_EXECUTOR_MOCK_H
+#ifndef SCORE_LIB_CONCURRENCY_TIMED_EXECUTOR_MOCK_H
+#define SCORE_LIB_CONCURRENCY_TIMED_EXECUTOR_MOCK_H
 
 #include "score/concurrency/timed_executor/timed_executor.h"
 
@@ -53,4 +53,4 @@ class TimedExecutorMock : public TimedExecutor<Clock>
 }  // namespace testing
 }  // namespace concurrency
 }  // namespace score
-#endif  // BASELIBS_SCORE_CONCURRENCY_EXECUTOR_MOCK_H
+#endif  // SCORE_LIB_CONCURRENCY_EXECUTOR_MOCK_H

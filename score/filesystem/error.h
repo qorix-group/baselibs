@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_FILESYSTEM_ERROR_H
-#define BASELIBS_SCORE_FILESYSTEM_ERROR_H
+#ifndef SCORE_LIB_FILESYSTEM_ERROR_H
+#define SCORE_LIB_FILESYSTEM_ERROR_H
 
 #include "score/result/result.h"
 
@@ -51,6 +51,9 @@ enum class ErrorCode : score::result::ErrorCode
     kCorruptedFileSystem,
     kCouldNotFormatPartition,
     kCouldNotReadSymlink,
+    kFsyncFailed,
+    kCouldNotRenameFile,
+    kCloseFailed,
     kNotImplemented,
 };
 
@@ -59,4 +62,4 @@ score::result::Error MakeError(const ErrorCode code, const std::string_view user
 }  // namespace filesystem
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_FILESYSTEM_ERROR_H
+#endif  // SCORE_LIB_FILESYSTEM_ERROR_H

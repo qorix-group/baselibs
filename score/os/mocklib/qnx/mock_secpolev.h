@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_MOCKLIB_QNX_MOCK_SECPOLEV_H
-#define BASELIBS_SCORE_OS_MOCKLIB_QNX_MOCK_SECPOLEV_H
+#ifndef SCORE_LIB_OS_MOCKLIB_QNX_MOCK_SECPOLEV_H
+#define SCORE_LIB_OS_MOCKLIB_QNX_MOCK_SECPOLEV_H
 
 #include "score/os/qnx/secpolev.h"
 
@@ -59,4 +59,4 @@ class MockSecpolEv : public SecpolEv
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_MOCKLIB_QNX_MOCK_SECPOLEV_H
+#endif  // SCORE_LIB_OS_MOCKLIB_QNX_MOCK_SECPOLEV_H

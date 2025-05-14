@@ -10,6 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
 cc_library(
     name = "acl",
     srcs = [
@@ -20,15 +22,11 @@ cc_library(
         "access_control_list.h",
         "i_access_control_list.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "additional_warnings",
-        "strict_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os:acl",
@@ -44,14 +42,10 @@ cc_library(
     hdrs = [
         "access_control_list_mock.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "additional_warnings",
-        "strict_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//visibility:public",
-        # "@ddad//visibility:public",
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":acl",
@@ -62,11 +56,7 @@ cc_library(
 cc_test(
     name = "unit_test",
     srcs = ["access_control_list_test.cpp"],
-    features = [
-        "treat_warnings_as_errors",
-        "additional_warnings",
-        "strict_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["unit"],
     visibility = [
         "@score-baselibs//score/os/utils/test:__pkg__",

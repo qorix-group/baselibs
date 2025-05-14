@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_LINUX_SHM_H
-#define BASELIBS_SCORE_OS_LINUX_SHM_H
+#ifndef SCORE_LIB_OS_LINUX_SHM_H
+#define SCORE_LIB_OS_LINUX_SHM_H
 
 #include <sys/shm.h>
 #include <cstdint>
@@ -26,4 +26,4 @@ std::int32_t shmctl(const std::int32_t shmid, const std::int32_t cmd, struct shm
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_LINUX_SHM_H
+#endif  // SCORE_LIB_OS_LINUX_SHM_H

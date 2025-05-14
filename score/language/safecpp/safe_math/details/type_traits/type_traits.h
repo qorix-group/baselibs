@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_SAFE_MATH_DETAILS_TYPE_TRAITS_TYPE_TRAITS_H
-#define BASELIBS_SCORE_SAFE_MATH_DETAILS_TYPE_TRAITS_TYPE_TRAITS_H
+#ifndef SCORE_LIB_SAFE_MATH_DETAILS_TYPE_TRAITS_TYPE_TRAITS_H
+#define SCORE_LIB_SAFE_MATH_DETAILS_TYPE_TRAITS_TYPE_TRAITS_H
 
 #include <limits>
 #include <type_traits>
@@ -53,4 +53,4 @@ using prefer_first_type_t = std::conditional_t<!std::is_void<T1>::value, T1, T2>
 
 }  // namespace score::safe_math
 
-#endif  // BASELIBS_SCORE_SAFE_MATH_DETAILS_TYPE_TRAITS_TYPE_TRAITS_H
+#endif  // SCORE_LIB_SAFE_MATH_DETAILS_TYPE_TRAITS_TYPE_TRAITS_H

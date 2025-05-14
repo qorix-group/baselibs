@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_UTILS_TIME_CONVERSION_H
-#define BASELIBS_SCORE_UTILS_TIME_CONVERSION_H
+#ifndef SCORE_LIB_UTILS_TIME_CONVERSION_H
+#define SCORE_LIB_UTILS_TIME_CONVERSION_H
 
 #include <time.h> /* KW_SUPPRESS:MISRA.INCL.UNSAFE:providing conversion to timespec is purpose of this file */
 #include <chrono>
@@ -35,4 +35,4 @@ timespec timeout_in_timespec(const std::chrono::milliseconds timeout,
 }  // namespace common
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_UTILS_TIME_CONVERSION_H
+#endif  // SCORE_LIB_UTILS_TIME_CONVERSION_H

@@ -73,7 +73,9 @@ void RemovePotentialFileNamesFollowedByMoveUpsAndSeparator(std::list<std::string
     {
         do_replace_dotdot = false;
         if (new_parts.empty())
+        {
             break;
+        }
 
         auto previous_part = new_parts.begin();
         for (auto current_part = std::next(new_parts.begin()); current_part != new_parts.end(); ++current_part)

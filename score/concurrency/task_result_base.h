@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONCURRENCY_TASK_RESULT_BASE_H
-#define BASELIBS_SCORE_CONCURRENCY_TASK_RESULT_BASE_H
+#ifndef SCORE_LIB_CONCURRENCY_TASK_RESULT_BASE_H
+#define SCORE_LIB_CONCURRENCY_TASK_RESULT_BASE_H
 
 #include "score/assert.hpp"
 #include "score/stop_token.hpp"
@@ -66,4 +66,4 @@ class TaskResultBase
 }  // namespace concurrency
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_CONCURRENCY_TASK_RESULT_BASE_H
+#endif  // SCORE_LIB_CONCURRENCY_TASK_RESULT_BASE_H

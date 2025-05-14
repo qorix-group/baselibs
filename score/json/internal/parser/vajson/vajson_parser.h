@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_JSON_INTERNAL_PARSER_VAJSON_VAJSON_PARSER_H
-#define BASELIBS_SCORE_JSON_INTERNAL_PARSER_VAJSON_VAJSON_PARSER_H
+#ifndef SCORE_LIB_JSON_INTERNAL_PARSER_VAJSON_VAJSON_PARSER_H
+#define SCORE_LIB_JSON_INTERNAL_PARSER_VAJSON_VAJSON_PARSER_H
 
 #include "score/json/internal/model/any.h"
 #include "score/result/result.h"
@@ -142,4 +142,4 @@ class VajsonParser final : private amsr::json::v2::Parser
 }  // namespace json
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_JSON_INTERNAL_PARSER_VAJSON_VAJSON_PARSER_H
+#endif  // SCORE_LIB_JSON_INTERNAL_PARSER_VAJSON_VAJSON_PARSER_H

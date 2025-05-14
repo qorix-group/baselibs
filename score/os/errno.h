@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_ERRNO_H
-#define BASELIBS_SCORE_OS_ERRNO_H
+#ifndef SCORE_LIB_OS_ERRNO_H
+#define SCORE_LIB_OS_ERRNO_H
 
 #include <array>
 #include <cerrno>  // shall be removed once transition is completed
@@ -163,4 +163,4 @@ void seterrno(const std::int32_t new_errno);
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_ERRNO_H
+#endif  // SCORE_LIB_OS_ERRNO_H

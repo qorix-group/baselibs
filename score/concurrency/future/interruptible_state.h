@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONCURRENCY_FUTURE_INTERRUPTIBLE_STATE_H
-#define BASELIBS_SCORE_CONCURRENCY_FUTURE_INTERRUPTIBLE_STATE_H
+#ifndef SCORE_LIB_CONCURRENCY_FUTURE_INTERRUPTIBLE_STATE_H
+#define SCORE_LIB_CONCURRENCY_FUTURE_INTERRUPTIBLE_STATE_H
 
 #include "score/language/safecpp/scoped_function/move_only_scoped_function.h"
 #include "score/language/safecpp/scoped_function/scope.h"
@@ -311,4 +311,4 @@ class InterruptibleState<void> final : public score::concurrency::detail::TypedB
 }  // namespace concurrency
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_CONCURRENCY_FUTURE_INTERRUPTIBLE_STATE_H
+#endif  // SCORE_LIB_CONCURRENCY_FUTURE_INTERRUPTIBLE_STATE_H

@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_LINUX_MOCKLIB_LINUX_SCHED_MOCK_H_
-#define BASELIBS_SCORE_OS_LINUX_MOCKLIB_LINUX_SCHED_MOCK_H_
+#ifndef SCORE_LIB_OS_LINUX_MOCKLIB_LINUX_SCHED_MOCK_H_
+#define SCORE_LIB_OS_LINUX_MOCKLIB_LINUX_SCHED_MOCK_H_
 
 #include "score/os/linux/linuxsched.h"
 #include <gmock/gmock.h>
@@ -31,4 +31,4 @@ class LinuxSchedMock
 } /* namespace os */
 } /* namespace score */
 
-#endif  // BASELIBS_SCORE_OS_LINUX_MOCKLIB_LINUX_SCHED_MOCK_H_
+#endif  // SCORE_LIB_OS_LINUX_MOCKLIB_LINUX_SCHED_MOCK_H_

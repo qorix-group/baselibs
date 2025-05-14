@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_UTILS_ACL_I_ACCESS_CONTROL_LIST_H
-#define BASELIBS_SCORE_OS_UTILS_ACL_I_ACCESS_CONTROL_LIST_H
+#ifndef SCORE_LIB_OS_UTILS_ACL_I_ACCESS_CONTROL_LIST_H
+#define SCORE_LIB_OS_UTILS_ACL_I_ACCESS_CONTROL_LIST_H
 
 #include "score/os/acl.h"
 #include "score/os/errno.h"
@@ -60,4 +60,4 @@ class IAccessControlList
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_UTILS_ACL_I_ACCESS_CONTROL_LIST_H
+#endif  // SCORE_LIB_OS_UTILS_ACL_I_ACCESS_CONTROL_LIST_H

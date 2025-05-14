@@ -11,8 +11,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-#ifndef BASELIBS_SCORE_JSON_INTERNAL_WRITER_JSON_SERIALIZE_JSON_SERIALIZE_H
-#define BASELIBS_SCORE_JSON_INTERNAL_WRITER_JSON_SERIALIZE_JSON_SERIALIZE_H
+#ifndef SCORE_LIB_JSON_INTERNAL_WRITER_JSON_SERIALIZE_JSON_SERIALIZE_H
+#define SCORE_LIB_JSON_INTERNAL_WRITER_JSON_SERIALIZE_JSON_SERIALIZE_H
 
 #include "score/json/internal/model/any.h"
 #include "score/json/internal/model/null.h"
@@ -89,4 +89,4 @@ class JsonSerialize final
 }  // namespace json
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_JSON_INTERNAL_WRITER_JSON_SERIALIZE_JSON_SERIALIZE_H
+#endif  // SCORE_LIB_JSON_INTERNAL_WRITER_JSON_SERIALIZE_JSON_SERIALIZE_H

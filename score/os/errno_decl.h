@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_ERRNO_DECL_H
-#define BASELIBS_SCORE_OS_ERRNO_DECL_H
+#ifndef SCORE_LIB_OS_ERRNO_DECL_H
+#define SCORE_LIB_OS_ERRNO_DECL_H
 
 /*
  * @file errno_decl.h
@@ -30,4 +30,4 @@ class Error;
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_ERRNO_DECL_H
+#endif  // SCORE_LIB_OS_ERRNO_DECL_H

@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_SAFE_MATH_DETAILS_ADDITION_SUBTRACTION_ADDITION_SUBTRACTION_H
-#define BASELIBS_SCORE_SAFE_MATH_DETAILS_ADDITION_SUBTRACTION_ADDITION_SUBTRACTION_H
+#ifndef SCORE_LIB_SAFE_MATH_DETAILS_ADDITION_SUBTRACTION_ADDITION_SUBTRACTION_H
+#define SCORE_LIB_SAFE_MATH_DETAILS_ADDITION_SUBTRACTION_ADDITION_SUBTRACTION_H
 
 #include "score/language/safecpp/safe_math/details/absolute/absolute.h"
 #include "score/language/safecpp/safe_math/details/cast/cast.h"
@@ -484,4 +484,4 @@ score::Result<R> Subtract(IntegralLHS lhs_integral, FloatingRHS rhs_floating) no
 
 }  // namespace score::safe_math
 
-#endif  // BASELIBS_SCORE_SAFE_MATH_DETAILS_ADDITION_SUBTRACTION_ADDITION_SUBTRACTION_H
+#endif  // SCORE_LIB_SAFE_MATH_DETAILS_ADDITION_SUBTRACTION_ADDITION_SUBTRACTION_H

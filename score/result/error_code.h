@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_RESULT_ERROR_CODE_H
-#define BASELIBS_SCORE_RESULT_ERROR_CODE_H
+#ifndef SCORE_LIB_RESULT_ERROR_CODE_H
+#define SCORE_LIB_RESULT_ERROR_CODE_H
 
 #include <cstdint>
 
@@ -27,4 +27,4 @@ using ErrorCode = std::int32_t;
 
 }  // namespace result
 }  // namespace score
-#endif  // BASELIBS_SCORE_RESULT_ERROR_CODE_H
+#endif  // SCORE_LIB_RESULT_ERROR_CODE_H

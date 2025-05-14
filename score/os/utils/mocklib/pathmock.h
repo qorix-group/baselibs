@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_UTILS_MOCKLIB_PATHMOCK_H
-#define BASELIBS_SCORE_OS_UTILS_MOCKLIB_PATHMOCK_H
+#ifndef SCORE_LIB_OS_UTILS_MOCKLIB_PATHMOCK_H
+#define SCORE_LIB_OS_UTILS_MOCKLIB_PATHMOCK_H
 
 #include "score/os/errno.h"
 #include "score/os/utils/path.h"
@@ -35,4 +35,4 @@ class PathMock : public Path
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_UTILS_MOCKLIB_PATHMOCK_H
+#endif  // SCORE_LIB_OS_UTILS_MOCKLIB_PATHMOCK_H

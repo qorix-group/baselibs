@@ -17,8 +17,8 @@
 /// @brief Device control functions OSAL class
 /// [QNX devctl documentation](http://www.qnx.com/developers/docs/7.1/#com.qnx.doc.neutrino.lib_ref/topic/d/devctl.html)
 ///
-#ifndef BASELIBS_SCORE_OS_QNX_DEVCTL_H
-#define BASELIBS_SCORE_OS_QNX_DEVCTL_H
+#ifndef SCORE_LIB_OS_QNX_DEVCTL_H
+#define SCORE_LIB_OS_QNX_DEVCTL_H
 
 #include "score/os/ObjectSeam.h"
 #include "score/os/errno.h"
@@ -71,4 +71,4 @@ class Devctl : public ObjectSeam<Devctl>
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_QNX_DEVCTL_H
+#endif  // SCORE_LIB_OS_QNX_DEVCTL_H

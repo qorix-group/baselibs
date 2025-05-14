@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_MOCKLIB_MMANMOCK_H
-#define BASELIBS_SCORE_OS_MOCKLIB_MMANMOCK_H
+#ifndef SCORE_LIB_OS_MOCKLIB_MMANMOCK_H
+#define SCORE_LIB_OS_MOCKLIB_MMANMOCK_H
 
 #include "score/os/errno.h"
 #include "score/os/mman.h"
@@ -54,4 +54,4 @@ class MmanMock : public Mman
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_MOCKLIB_MMANMOCK_H
+#endif  // SCORE_LIB_OS_MOCKLIB_MMANMOCK_H

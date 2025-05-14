@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_FILESYSTEM_FACTORY_FILESYSTEM_FACTORY_MOCK_OBJECTS_H
-#define BASELIBS_SCORE_FILESYSTEM_FACTORY_FILESYSTEM_FACTORY_MOCK_OBJECTS_H
+#ifndef SCORE_LIB_FILESYSTEM_FACTORY_FILESYSTEM_FACTORY_MOCK_OBJECTS_H
+#define SCORE_LIB_FILESYSTEM_FACTORY_FILESYSTEM_FACTORY_MOCK_OBJECTS_H
 
 #include "score/filesystem/factory/filesystem_factory_mock.h"
 
@@ -46,4 +46,4 @@ class FilesystemFactoryMockObjects : public FilesystemFactoryMock
 }  // namespace filesystem
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_FILESYSTEM_FACTORY_FILESYSTEM_FACTORY_MOCK_OBJECTS_H
+#endif  // SCORE_LIB_FILESYSTEM_FACTORY_FILESYSTEM_FACTORY_MOCK_OBJECTS_H

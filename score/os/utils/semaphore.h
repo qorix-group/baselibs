@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_UTILS_SEMAPHORE_H
-#define BASELIBS_SCORE_OS_UTILS_SEMAPHORE_H
+#ifndef SCORE_LIB_OS_UTILS_SEMAPHORE_H
+#define SCORE_LIB_OS_UTILS_SEMAPHORE_H
 
 #include "score/os/errno.h"
 #include "score/utils/pimpl_ptr.h"

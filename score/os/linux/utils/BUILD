@@ -10,6 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
 cc_library(
     name = "network_interface",
     srcs = ["network_interface.cpp"],
@@ -18,11 +20,7 @@ cc_library(
         "//bazel/platforms:config_xpad_dnv": ["CORBOS_SECCOMP"],
         "//conditions:default": [],
     }),
-    features = [
-        "additional_warnings",
-        "strict_warnings",
-        "treat_warnings_as_errors",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     linkopts = select({
         "//bazel/platforms:config_xpad_dnv": ["-lrt -lcap -lseccomp"],
         "//conditions:default": ["-lrt"],

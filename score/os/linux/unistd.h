@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_LINUX_UNISTD_H
-#define BASELIBS_SCORE_OS_LINUX_UNISTD_H
+#ifndef SCORE_LIB_OS_LINUX_UNISTD_H
+#define SCORE_LIB_OS_LINUX_UNISTD_H
 
 #include <unistd.h>
 #include <cstdint>
@@ -32,4 +32,4 @@ std::int32_t pipe2(std::int32_t pipedes[2], const std::int32_t flags);
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_LINUX_UNISTD_H
+#endif  // SCORE_LIB_OS_LINUX_UNISTD_H

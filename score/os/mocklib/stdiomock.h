@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_MOCKLIB_STDIOMOCK_H
-#define BASELIBS_SCORE_OS_MOCKLIB_STDIOMOCK_H
+#ifndef SCORE_LIB_OS_MOCKLIB_STDIOMOCK_H
+#define SCORE_LIB_OS_MOCKLIB_STDIOMOCK_H
 
 #include "score/os/stdio.h"
 
@@ -37,4 +37,4 @@ class StdioMock : public Stdio
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_MOCKLIB_STDIOMOCK_H
+#endif  // SCORE_LIB_OS_MOCKLIB_STDIOMOCK_H

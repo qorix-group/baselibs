@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_FILESYSTEM_PATH_H
-#define BASELIBS_SCORE_FILESYSTEM_PATH_H
+#ifndef SCORE_LIB_FILESYSTEM_PATH_H
+#define SCORE_LIB_FILESYSTEM_PATH_H
 
 #include <cstdint>
 #include <functional>
@@ -430,4 +430,4 @@ bool operator!=(const Path::iterator& l, const Path::iterator& r) noexcept;
 }  // namespace filesystem
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_FILESYSTEM_PATH_H
+#endif  // SCORE_LIB_FILESYSTEM_PATH_H

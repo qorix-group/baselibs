@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONCURRENCY_TIMED_EXECUTOR_TIMED_TASK_H
-#define BASELIBS_SCORE_CONCURRENCY_TIMED_EXECUTOR_TIMED_TASK_H
+#ifndef SCORE_LIB_CONCURRENCY_TIMED_EXECUTOR_TIMED_TASK_H
+#define SCORE_LIB_CONCURRENCY_TIMED_EXECUTOR_TIMED_TASK_H
 
 #include "score/concurrency/task.h"
 
@@ -48,4 +48,4 @@ class TimedTask : public Task
 
 }  // namespace score::concurrency
 
-#endif  // BASELIBS_SCORE_CONCURRENCY_TIMED_EXECUTOR_TIMED_TASK_H
+#endif  // SCORE_LIB_CONCURRENCY_TIMED_EXECUTOR_TIMED_TASK_H

@@ -712,6 +712,26 @@ cc_test(
 )
 
 cc_test(
+    name = "empty_recorder_factory_test",
+    srcs = [
+        "empty_recorder_factory_test.cpp",
+    ],
+    data = [
+    ],
+    features = COMPILER_WARNING_FEATURES + [
+        "aborts_upon_exception",
+    ],
+    tags = ["unit"],
+    visibility = [
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+    ],
+    deps = [
+        ":empty_recorder_factory",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
     name = "recorder_factory_test",
     srcs = [
         "recorder_factory_test.cpp",
@@ -818,6 +838,7 @@ test_suite(
         ":composite_recorder_test",
         ":dlt_argument_counter_test",
         ":dlt_format_test",
+        ":empty_recorder_factory_test",
         ":empty_recorder_test",
         ":error_test",
         ":helper_functions_test",

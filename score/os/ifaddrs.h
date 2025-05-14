@@ -17,8 +17,8 @@
 /// @brief Wrapper class for the ifaddrs.h module
 ///
 
-#ifndef BASELIBS_SCORE_OS_IFADDRS_H
-#define BASELIBS_SCORE_OS_IFADDRS_H
+#ifndef SCORE_LIB_OS_IFADDRS_H
+#define SCORE_LIB_OS_IFADDRS_H
 
 #include "score/os/ObjectSeam.h"
 #include "score/os/errno.h"
@@ -58,4 +58,4 @@ class Ifaddrs : public ObjectSeam<Ifaddrs>
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_IFADDRS_H
+#endif  // SCORE_LIB_OS_IFADDRS_H

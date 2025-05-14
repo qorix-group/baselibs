@@ -109,7 +109,7 @@ class CustomTask
     // This member could perfectly be private, we only care that the size of the CustomTask is big enough
     // We set it to protected in this way there is no warning regarding unused private member
     // For the purpose of this test it is perfectly fine that is not used
-    std::array<std::uint8_t, 255> heavy_workload_to_be_bigger_than_default_score_callback_size_{};
+    std::array<std::uint8_t, 255> heavy_workload_to_be_bigger_than_default_score_future_cpp_callback_size_{};
 };
 
 static_assert(sizeof(CustomTask) > 200, "The class is not big enough for these tests");

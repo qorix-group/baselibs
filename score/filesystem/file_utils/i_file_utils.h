@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_FILESYSTEM_FILE_UTILS_I_FILE_UTILS_H
-#define BASELIBS_SCORE_FILESYSTEM_FILE_UTILS_I_FILE_UTILS_H
+#ifndef SCORE_LIB_FILESYSTEM_FILE_UTILS_I_FILE_UTILS_H
+#define SCORE_LIB_FILESYSTEM_FILE_UTILS_I_FILE_UTILS_H
 
 #include "score/filesystem/error.h"
 #include "score/filesystem/path.h"
@@ -115,4 +115,4 @@ class IFileUtils : public os::ObjectSeam<IFileUtils>
 }  // namespace filesystem
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_FILESYSTEM_FILE_UTILS_I_FILE_UTILS_H
+#endif  // SCORE_LIB_FILESYSTEM_FILE_UTILS_I_FILE_UTILS_H

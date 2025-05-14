@@ -10,7 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@score-baselibs//score/os:common_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 package(
     default_visibility = [
@@ -177,11 +177,7 @@ cc_test(
     srcs = [
         "resmgr_test.cpp",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = [
         "manual",  # to disable using as host unit test in CI
         "unit",
@@ -198,11 +194,7 @@ cc_test(
     srcs = [
         "secpol_test.cpp",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = [
         "manual",  # to disable using as host unit test in CI
         "unit",
@@ -219,11 +211,7 @@ cc_test(
     srcs = [
         "slog2_test.cpp",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = [
         "manual",  # to disable using as host unit test in CI
         "unit",

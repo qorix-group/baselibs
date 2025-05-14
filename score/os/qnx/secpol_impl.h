@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_QNX_SECPOL_IMPL_H
-#define BASELIBS_SCORE_OS_QNX_SECPOL_IMPL_H
+#ifndef SCORE_LIB_OS_QNX_SECPOL_IMPL_H
+#define SCORE_LIB_OS_QNX_SECPOL_IMPL_H
 
 #include "score/os/qnx/secpol.h"
 #include <secpol/secpol.h>
@@ -59,4 +59,4 @@ class SecpolImpl final : public Secpol
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_QNX_SECPOL_IMPL_H
+#endif  // SCORE_LIB_OS_QNX_SECPOL_IMPL_H

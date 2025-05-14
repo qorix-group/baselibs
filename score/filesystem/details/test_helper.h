@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_FILESYSTEM_DETAILS_TEST_HELPER_H
-#define BASELIBS_SCORE_FILESYSTEM_DETAILS_TEST_HELPER_H
+#ifndef SCORE_LIB_FILESYSTEM_DETAILS_TEST_HELPER_H
+#define SCORE_LIB_FILESYSTEM_DETAILS_TEST_HELPER_H
 
 #include "score/filesystem/path.h"
 #include "score/os/dirent.h"
@@ -43,4 +43,4 @@ Path InitTempDirectoryFor(const std::string& test_name);
 }  // namespace filesystem
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_FILESYSTEM_DETAILS_TEST_HELPER_H
+#endif  // SCORE_LIB_FILESYSTEM_DETAILS_TEST_HELPER_H

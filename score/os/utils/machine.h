@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_UTILS_MACHINE_H
-#define BASELIBS_SCORE_OS_UTILS_MACHINE_H
+#ifndef SCORE_LIB_OS_UTILS_MACHINE_H
+#define SCORE_LIB_OS_UTILS_MACHINE_H
 
 #include "score/os/utils/machine_seam.h"
 
@@ -26,4 +26,4 @@ bool is_sctf() noexcept;
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_UTILS_MACHINE_H
+#endif  // SCORE_LIB_OS_UTILS_MACHINE_H

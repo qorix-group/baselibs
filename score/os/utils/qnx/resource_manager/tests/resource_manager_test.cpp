@@ -96,7 +96,7 @@ class ResourceManagerTestFixture : public ::testing::Test
     score::cpp::stop_source stop_source{};
     score::cpp::stop_token stop_token = stop_source.get_token();
 
-    score::cpp::expected_blank<score::os::Error> score_ret = {};
+    score::cpp::expected_blank<score::os::Error> score_future_cpp_ret = {};
 
     ResourceManagerConfig resource_manager_configuration;
     // prepare Resource
@@ -281,7 +281,7 @@ TEST_F(ResourceManagerTestFixture, should_run_successfully)
     ON_CALL(*dynamic_cast<MockDispatch*>(dispatch_ptr.get()), dispatch_block(_))
         .WillByDefault(::testing::InvokeWithoutArgs([&] {
             stop_source.request_stop();
-            return score_ret;
+            return score_future_cpp_ret;
         }));
 
     EXPECT_CALL(*dynamic_cast<MockDispatch*>(dispatch_ptr.get()), dispatch_handler(_))
@@ -316,7 +316,7 @@ TEST_F(ResourceManagerTestFixture, should_handle_dispatch_handle_error)
     expect_resource_manager_initialize_sequence();
 
     EXPECT_CALL(*dynamic_cast<MockDispatch*>(dispatch_ptr.get()), dispatch_block(_))
-        .WillOnce(::testing::Return(score_ret));
+        .WillOnce(::testing::Return(score_future_cpp_ret));
     EXPECT_CALL(*dynamic_cast<MockDispatch*>(dispatch_ptr.get()), dispatch_handler(_))
         .WillOnce(::testing::Return(score::cpp::make_unexpected(-1)));
 

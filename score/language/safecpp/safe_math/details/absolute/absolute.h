@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_SAFE_MATH_DETAILS_ABSOLUTE_ABSOLUTE_H
-#define BASELIBS_SCORE_SAFE_MATH_DETAILS_ABSOLUTE_ABSOLUTE_H
+#ifndef SCORE_LIB_SAFE_MATH_DETAILS_ABSOLUTE_ABSOLUTE_H
+#define SCORE_LIB_SAFE_MATH_DETAILS_ABSOLUTE_ABSOLUTE_H
 
 #include "score/language/safecpp/safe_math/details/comparison/comparison.h"
 #include "score/language/safecpp/safe_math/details/type_traits/type_traits.h"
@@ -61,4 +61,4 @@ auto Abs(FT value) -> FT
 
 }  // namespace score::safe_math
 
-#endif  // BASELIBS_SCORE_SAFE_MATH_DETAILS_ABSOLUTE_ABSOLUTE_H
+#endif  // SCORE_LIB_SAFE_MATH_DETAILS_ABSOLUTE_ABSOLUTE_H

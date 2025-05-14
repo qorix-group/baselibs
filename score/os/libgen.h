@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_LIBGEN_H
-#define BASELIBS_SCORE_OS_LIBGEN_H
+#ifndef SCORE_LIB_OS_LIBGEN_H
+#define SCORE_LIB_OS_LIBGEN_H
 
 #include "score/os/ObjectSeam.h"
 
@@ -48,4 +48,4 @@ class Libgen : public ObjectSeam<Libgen>
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_LIBGEN_H
+#endif  // SCORE_LIB_OS_LIBGEN_H

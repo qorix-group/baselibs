@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_UTILS_QNX_RESOURCE_MANAGER_INCLUDE_ERROR_H
-#define BASELIBS_SCORE_OS_UTILS_QNX_RESOURCE_MANAGER_INCLUDE_ERROR_H
+#ifndef SCORE_LIB_OS_UTILS_QNX_RESOURCE_MANAGER_INCLUDE_ERROR_H
+#define SCORE_LIB_OS_UTILS_QNX_RESOURCE_MANAGER_INCLUDE_ERROR_H
 
 #include "score/result/error_code.h"
 #include "score/result/error_domain.h"
@@ -39,4 +39,4 @@ score::result::Error MakeError(const ErrorCode code, const std::string_view user
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_UTILS_QNX_RESOURCE_MANAGER_INCLUDE_ERROR_H
+#endif  // SCORE_LIB_OS_UTILS_QNX_RESOURCE_MANAGER_INCLUDE_ERROR_H

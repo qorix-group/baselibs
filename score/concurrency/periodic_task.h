@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_CONCURRENCY_PERIODIC_TASK_H
-#define BASELIBS_SCORE_CONCURRENCY_PERIODIC_TASK_H
+#ifndef SCORE_LIB_CONCURRENCY_PERIODIC_TASK_H
+#define SCORE_LIB_CONCURRENCY_PERIODIC_TASK_H
 
 #include "score/concurrency/future/interruptible_promise.h"
 #include "score/concurrency/interruptible_wait.h"
@@ -369,4 +369,4 @@ class PeriodicTaskFactory
 }  // namespace concurrency
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_CONCURRENCY_PERIODIC_TASK_H
+#endif  // SCORE_LIB_CONCURRENCY_PERIODIC_TASK_H

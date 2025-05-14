@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef SCORE_SCORE_BIT_MANIPULATION_H
-#define SCORE_SCORE_BIT_MANIPULATION_H
+#ifndef SCORE_BIT_MANIPULATION_H
+#define SCORE_BIT_MANIPULATION_H
 
 #include <climits>
 #include <cstdint>

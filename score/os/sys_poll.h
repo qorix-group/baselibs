@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_OS_SYS_POLL_H
-#define BASELIBS_SCORE_OS_SYS_POLL_H
+#ifndef SCORE_LIB_OS_SYS_POLL_H
+#define SCORE_LIB_OS_SYS_POLL_H
 
 #include "score/os/ObjectSeam.h"
 #include "score/os/errno.h"
@@ -57,4 +57,4 @@ class SysPoll : public ObjectSeam<SysPoll>
 }  // namespace os
 }  // namespace score
 
-#endif  // BASELIBS_SCORE_OS_SYS_POLL_H
+#endif  // SCORE_LIB_OS_SYS_POLL_H

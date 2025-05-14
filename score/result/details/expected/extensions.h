@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_RESULT_EXPECTED_EXTENSIONS_H
-#define BASELIBS_SCORE_RESULT_EXPECTED_EXTENSIONS_H
+#ifndef SCORE_LIB_RESULT_EXPECTED_EXTENSIONS_H
+#define SCORE_LIB_RESULT_EXPECTED_EXTENSIONS_H
 
 #include "score/result/details/expected/expected.h"
 
@@ -25,7 +25,7 @@ namespace score::details
 {
 
 template <typename T, typename E>
-auto to_score_expected(const expected<T, E>& expected) -> score::cpp::expected<T, E>
+auto to_score_future_cpp_expected(const expected<T, E>& expected) -> score::cpp::expected<T, E>
 {
     if (expected.has_value())
     {
@@ -38,7 +38,7 @@ auto to_score_expected(const expected<T, E>& expected) -> score::cpp::expected<T
 }
 
 template <typename T, typename E>
-auto to_score_expected(expected<T, E>&& expected) -> score::cpp::expected<T, E>
+auto to_score_future_cpp_expected(expected<T, E>&& expected) -> score::cpp::expected<T, E>
 {
     if (expected.has_value())
     {
@@ -77,7 +77,7 @@ auto to_score_expected(score::cpp::expected<T, E>&& expected) -> score::details:
 }
 
 template <typename T, typename E, typename F, typename = std::enable_if_t<std::is_invocable_v<F, const E&>>>
-auto expected_value_to_score_optional_or_else(const expected<T, E>& expected, F&& error_handling) -> score::cpp::optional<T>
+auto expected_value_to_score_future_cpp_optional_or_else(const expected<T, E>& expected, F&& error_handling) -> score::cpp::optional<T>
 {
     if (expected.has_value())
     {
@@ -91,7 +91,7 @@ auto expected_value_to_score_optional_or_else(const expected<T, E>& expected, F&
 }
 
 template <typename T, typename E, typename F, typename = std::enable_if_t<std::is_invocable_v<F, E&&>>>
-auto expected_value_to_score_optional_or_else(expected<T, E>&& expected, F&& error_handling) -> score::cpp::optional<T>
+auto expected_value_to_score_future_cpp_optional_or_else(expected<T, E>&& expected, F&& error_handling) -> score::cpp::optional<T>
 {
     if (expected.has_value())
     {
@@ -137,4 +137,4 @@ auto expected_value_to_optional_or_else(expected<T, E>&& expected, F&& error_han
 
 }  // namespace score::details
 
-#endif  // BASELIBS_SCORE_RESULT_EXPECTED_EXTENSIONS_H
+#endif  // SCORE_LIB_RESULT_EXPECTED_EXTENSIONS_H

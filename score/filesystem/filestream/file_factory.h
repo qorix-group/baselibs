@@ -10,26 +10,28 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef BASELIBS_SCORE_FILESYSTEM_FILE_FACTORY_H
-#define BASELIBS_SCORE_FILESYSTEM_FILE_FACTORY_H
+#ifndef SCORE_LIB_FILESYSTEM_FILE_FACTORY_H
+#define SCORE_LIB_FILESYSTEM_FILE_FACTORY_H
 
 #include "score/filesystem/filestream/i_file_factory.h"
 
-namespace score
-{
-namespace filesystem
+#include "score/os/stat.h"
+
+namespace score::filesystem
 {
 
 /// @brief Production implementation of IFileFactory. Will create actual file streams.
 class FileFactory final : public IFileFactory
 {
   public:
-    FileFactory() noexcept;
+    FileFactory() noexcept = default;
 
-    score::Result<std::unique_ptr<std::iostream>> Open(const Path&, const std::ios_base::openmode mode) noexcept override;
+    Result<std::unique_ptr<std::iostream>> Open(const Path&, const std::ios_base::openmode mode) override;
+
+    Result<std::unique_ptr<FileStream>> AtomicUpdate(const Path& path,
+                                                     const std::ios_base::openmode mode) noexcept override;
 };
 
-}  // namespace filesystem
-}  // namespace score
+}  // namespace score::filesystem
 
-#endif  // BASELIBS_SCORE_FILESYSTEM_FILE_FACTORY_H
+#endif  // SCORE_LIB_FILESYSTEM_FILE_FACTORY_H
