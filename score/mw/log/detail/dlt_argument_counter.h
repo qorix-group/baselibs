@@ -17,6 +17,8 @@
 #include "score/callback.hpp"
 #include "score/mw/log/detail/add_argument_result.h"
 
+#include <cstdint>
+
 namespace score
 {
 namespace mw
