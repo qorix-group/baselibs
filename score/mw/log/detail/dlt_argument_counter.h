@@ -14,6 +14,7 @@
 #ifndef SCORE_MW_LOG_DETAIL_DLT_ARGUMENT_COUNTER_H
 #define SCORE_MW_LOG_DETAIL_DLT_ARGUMENT_COUNTER_H
 
+#include <cstdint>
 #include "score/callback.hpp"
 #include "score/mw/log/detail/add_argument_result.h"
 
