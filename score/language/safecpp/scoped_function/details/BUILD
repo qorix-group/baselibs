@@ -274,6 +274,24 @@ cc_library(
     ],
 )
 
+cc_gtest_unit_test(
+    name = "scoped_function_invoker_test",
+    srcs = [
+        "scoped_function_invoker_test.cpp",
+        "scoped_function_invoker_test_scoped_function.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    deps = [
+        ":allocator_aware_type_erasure_pointer",
+        ":function_wrapper",
+        ":invoker",
+        ":modify_signature",
+        ":scope_state",
+        ":scoped_function_invoker",
+        "@score-baselibs//score/language/futurecpp",
+    ],
+)
+
 cc_library(
     name = "testing_allocator",
     testonly = True,
