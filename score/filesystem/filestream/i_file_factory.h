@@ -16,6 +16,8 @@
 #include "score/filesystem/error.h"
 #include "score/filesystem/path.h"
 
+#include "score/os/stat.h"
+
 #include "score/os/ObjectSeam.h"
 
 #include <ios>
@@ -43,16 +45,17 @@ class IFileFactory : public os::ObjectSeam<IFileFactory>
     /// Open a (possibly existing) file for atomic updating its contents, creating it if it does not exist.
     ///
     /// If the file already exists, its contents get replaced by the new data when the returned object goes out of
-    /// scope, or it's `Close` method gets called. This happens atomically by creating a temporary file that receives
-    /// the data during the write phase. Once the returned object goes out of scope or is closed, the temporary file's
-    /// contents get synced to disc and the file gets / renamed to the target file name. This way, you will always
-    /// either see the previous content (if any), or the newly written complete data.
+    /// scope. This happens atomically by creating a temporary file that receives the data during the write phase.
+    /// Once the returned object goes out of scope, the temporary file's contents get synced to disc and the file gets
+    /// renamed to the target file name. This way, you will always either see the previous content (if any), or the
+    /// newly written complete data.
     ///
     /// @param path Path to the file that is going to be updated.
     /// @param mode The open mode for the file. Currently, only writing and truncating are supported.
+    /// @param create_mode The access permissions to set on the file if it does not exist.
     /// @return On success, a pointer to a FileStream object, an error otherwise.
-    [[nodiscard]] virtual Result<std::unique_ptr<FileStream>> AtomicUpdate(const Path& path,
-                                                                           std::ios_base::openmode mode) noexcept = 0;
+    virtual Result<std::unique_ptr<FileStream>> AtomicUpdate(const Path& path,
+                                                             std::ios_base::openmode mode) noexcept = 0;
 
     /// @brief Destructor
     virtual ~IFileFactory() noexcept;

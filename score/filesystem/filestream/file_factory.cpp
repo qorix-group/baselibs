@@ -37,7 +37,7 @@ using OpenFlags = os::Fcntl::Open;
 
 OpenFlags IosOpenModeToOpenFlags(const std::ios_base::openmode mode) noexcept
 {
-    OpenFlags flags{0U};
+    OpenFlags flags;
     if ((mode & std::ios_base::in) != 0)
     {
         if ((mode & std::ios_base::out) != 0)
@@ -79,7 +79,7 @@ Result<std::unique_ptr<FileStream>> CreateFileStream(Args&&... args)
     }
     else
     {
-        return std::make_unique<details::FileStreamImpl<Buf>>(std::move(filebuf));
+        return std::make_unique<FileStreamImpl<Buf>>(std::move(filebuf));
     }
 }
 
@@ -142,26 +142,25 @@ Result<std::unique_ptr<FileStream>> FileFactory::AtomicUpdate(const Path& path,
         return MakeUnexpected(ErrorCode::kNotImplemented);
     }
 
-    auto filename = path.Filename();
-    std::string_view filename_view{filename.Native()};
-    if (filename_view.empty())
+    auto filename_view = path.FilenameView();
+    if (!filename_view.has_value())
     {
         return MakeUnexpected(filesystem::ErrorCode::kCouldNotOpenFileStream);
     }
 
     static constexpr std::uint32_t kNumDigits = 6U;
     std::string temp_filename;
-    temp_filename.reserve(filename_view.size() + kNumDigits + 1U);  // add 1 for the leading '.'
+    temp_filename.reserve(filename_view->size() + kNumDigits + 1U);  // add 1 for the leading '.'
     temp_filename.push_back('.');
-    temp_filename.append(filename_view.begin(), filename_view.end());
-    auto rand_filename = AppendRandomDigits<kNumDigits>(std::move(temp_filename));
-    if (!rand_filename.has_value())
+    temp_filename.append(filename_view->begin(), filename_view->end());
+    auto filename = AppendRandomDigits<kNumDigits>(std::move(temp_filename));
+    if (!filename.has_value())
     {
-        return MakeUnexpected<std::unique_ptr<FileStream>>(std::move(rand_filename).error());
+        return MakeUnexpected<std::unique_ptr<FileStream>>(std::move(filename).error());
     }
 
     auto temp_path = path.ParentPath();
-    temp_path /= *rand_filename;
+    temp_path /= *filename;
 
     if (auto file_handle = OpenFileHandle(temp_path, mode, kDefaultMode); file_handle.has_value())
     {
