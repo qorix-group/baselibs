@@ -24,6 +24,7 @@ FileFactoryFake::FileFactoryFake(IStringStreamCollection& collection) : FileFact
 {
     using ::testing::_;
     ON_CALL(*this, Open(_, _)).WillByDefault(::testing::Invoke(this, &FileFactoryFake::FakeOpen));
+    ON_CALL(*this, AtomicUpdate(_, _)).WillByDefault(::testing::Invoke(this, &FileFactoryFake::FakeAtomicUpdate));
 }
 
 score::Result<std::unique_ptr<std::iostream>> FileFactoryFake::FakeOpen(const Path& path,

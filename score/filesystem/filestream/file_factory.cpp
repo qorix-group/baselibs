@@ -98,7 +98,7 @@ Result<std::string> AppendRandomDigits(std::string str) noexcept
         std::to_chars(random_number_buffer.begin(), random_number_buffer.end(), random_number, 16);
     if (to_chars_result.ec == std::errc{})
     {
-        str = str.append(random_number_buffer.begin(), to_chars_result.ptr);
+        str.append(random_number_buffer.begin(), to_chars_result.ptr);
         return str;
     }
     else
@@ -148,7 +148,29 @@ Result<std::unique_ptr<FileStream>> FileFactory::AtomicUpdate(const Path& path,
     {
         return MakeUnexpected(filesystem::ErrorCode::kCouldNotOpenFileStream);
     }
-    return {std::move(file)};
+
+    static constexpr std::uint32_t kNumDigits = 6U;
+    std::string temp_filename;
+    temp_filename.reserve(filename_view.size() + kNumDigits + 1U);  // add 1 for the leading '.'
+    temp_filename.push_back('.');
+    temp_filename.append(filename_view.begin(), filename_view.end());
+    auto rand_filename = AppendRandomDigits<kNumDigits>(std::move(temp_filename));
+    if (!rand_filename.has_value())
+    {
+        return MakeUnexpected<std::unique_ptr<FileStream>>(std::move(rand_filename).error());
+    }
+
+    auto temp_path = path.ParentPath();
+    temp_path /= *rand_filename;
+
+    if (auto file_handle = OpenFileHandle(temp_path, mode, kDefaultMode); file_handle.has_value())
+    {
+        return CreateFileStream<details::AtomicFileBuf>(*file_handle, mode, std::move(temp_path), path);
+    }
+    else
+    {
+        return MakeUnexpected<std::unique_ptr<FileStream>>(file_handle.error());
+    }
 }
 
 }  // namespace filesystem
