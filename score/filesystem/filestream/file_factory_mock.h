@@ -23,7 +23,9 @@
 
 #include <gmock/gmock.h>
 
-namespace score::filesystem
+namespace score
+{
+namespace filesystem
 {
 
 class FileFactoryMock : public IFileFactory
@@ -33,12 +35,9 @@ class FileFactoryMock : public IFileFactory
                 Open,
                 (const Path&, std::ios_base::openmode),
                 (noexcept, override));
-    MOCK_METHOD(score::Result<std::unique_ptr<FileStream>>,
-                AtomicUpdate,
-                (const Path&, std::ios_base::openmode),
-                (noexcept, override));
 };
 
-}  // namespace score::filesystem
+}  // namespace filesystem
+}  // namespace score
 
 #endif  // SCORE_LIB_FILESYSTEM_FILESTREAM_FILE_FACTORY_MOCK_H

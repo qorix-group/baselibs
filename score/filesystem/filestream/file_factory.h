@@ -15,22 +15,21 @@
 
 #include "score/filesystem/filestream/i_file_factory.h"
 
-#include "score/os/stat.h"
-
-namespace score::filesystem
+namespace score
+{
+namespace filesystem
 {
 
 /// @brief Production implementation of IFileFactory. Will create actual file streams.
 class FileFactory final : public IFileFactory
 {
   public:
-    FileFactory() noexcept = default;
+    FileFactory() noexcept;
 
-    Result<std::unique_ptr<std::iostream>> Open(const Path&, std::ios_base::openmode mode) noexcept override;
-
-    Result<std::unique_ptr<FileStream>> AtomicUpdate(const Path& path, std::ios_base::openmode mode) noexcept override;
+    score::Result<std::unique_ptr<std::iostream>> Open(const Path&, const std::ios_base::openmode mode) noexcept override;
 };
 
-}  // namespace score::filesystem
+}  // namespace filesystem
+}  // namespace score
 
 #endif  // SCORE_LIB_FILESYSTEM_FILE_FACTORY_H
