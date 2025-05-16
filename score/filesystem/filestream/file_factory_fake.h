@@ -16,11 +16,12 @@
 #include "score/filesystem/filestream/file_factory_mock.h"
 #include "score/filesystem/filestream/i_string_stream_collection.h"
 
-#include "score/os/stat.h"
-
 #include <functional>
+#include <sstream>
 
-namespace score::filesystem
+namespace score
+{
+namespace filesystem
 {
 
 /// @brief Fake implementation of IFileFactory, to be used for Unit-Tests.
@@ -39,26 +40,17 @@ class FileFactoryFake : public FileFactoryMock
     ///
     /// @details The method is intended to be used in unit tests.
     /// The specified path should exist in IStringStreamCollection, otherwise the assert error occurs.
-    [[nodiscard]] std::stringstream& Get(const Path& path) const;
+    std::stringstream& Get(const Path& path) const;
 
   private:
-    [[nodiscard]] score::Result<std::unique_ptr<std::iostream>> FakeOpenWithMode(const Path& path,
-                                                                               std::ios_base::openmode mode,
-                                                                               os::Stat::Mode create_mode) const;
-
-    [[nodiscard]] score::Result<std::unique_ptr<std::iostream>> FakeOpen(const Path& path,
-                                                                       std::ios_base::openmode mode) const
-    {
-        return FakeOpenWithMode(path, mode, os::Stat::Mode::kNone);
-    }
-    // The fake implementation of AtomicUpdate is behaving just like Open. This is fine as the behavior is the same
-    // in the absence of spontaneous power cuts that skip the sync / rename part.
-    [[nodiscard]] Result<std::unique_ptr<FileStream>> FakeAtomicUpdate(const Path& path,
-                                                                       std::ios_base::openmode mode) const;
+    score::Result<std::unique_ptr<std::iostream>> FakeOpen(const Path& path,
+                                                         const std::ios_base::openmode mode = std::ios_base::in |
+                                                                                              std::ios_base::out) const;
 
     std::reference_wrapper<IStringStreamCollection> collection_;
 };
 
-}  // namespace score::filesystem
+}  // namespace filesystem
+}  // namespace score
 
 #endif  // SCORE_LIB_FILESYSTEM_FILESTREAM_FILE_FACTORY_FAKE_H

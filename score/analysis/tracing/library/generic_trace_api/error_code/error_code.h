@@ -55,6 +55,7 @@ enum class ErrorCode : score::result::ErrorCode
     kDaemonConnectionFailedFatal,             ///< Daemon connection failed (Fatal)
     kDaemonCommunicatorNotSupportedFatal,     ///< Daemon connection is not supported
     kServerConnectionNameOpenFailedFatal,     ///< QNX name open failed (Fatal)
+    kDaemonTerminationDetectionFailedFatal,   ///< Daemon Termination detection failed (Fatal)
     kClientNotFoundRecoverable,               ///< Client not registered (Recoverable)
     kInvalidShmObjectHandleFatal,             ///< SHM Object handle found (Recoverable)
     kCallbackAlreadyRegisteredRecoverable,    ///< Callback already registered the client id (Recoverable)
@@ -91,6 +92,7 @@ enum class ErrorCode : score::result::ErrorCode
     kFailedRegisterCachedClientsFatal,     ///< Failed to register the cached client registration requests (Fatal)
     kFailedRegisterCachedShmObjectsFatal,  ///< Failed to register the cached SHM object registration requests (Fatal)
     kTraceJobAllocatorInitializationFailedFatal,  ///< TraceJobAllocator initialization failed (Fatal)
+    kDaemonIsDisconnectedFatal,                   ///< Daemon is disconnected after successful connection (Fatal)
 
     kGenericErrorRecoverable,  ///< Generic error (Recoverable)
     kTerminalFatal,            ///< Terminal (Fatal)

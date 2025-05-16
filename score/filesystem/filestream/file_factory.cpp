@@ -12,43 +12,35 @@
  ********************************************************************************/
 #include "score/filesystem/filestream/file_factory.h"
 
-#include "score/filesystem/filestream/file_buf.h"
-#include "score/filesystem/filestream/file_stream.h"
+// Current filesystem library as per design is wraper over OS filesystem so it should be the only place in the project
+// where <fstream> usage alowed
+// NOLINTNEXTLINE(score-banned-include): See above
+#include <fstream>
 
 #include "score/os/fcntl.h"
 #include "score/os/stdio.h"
 #include "score/os/unistd.h"
 
 #include <charconv>
-#include <algorithm>
-#include <cstdint>
 #include <iostream>
 #include <random>
 #include <thread>
 
 namespace score::filesystem
 {
-namespace
+namespace filesystem
 {
 
-constexpr os::Stat::Mode kDefaultMode = os::Stat::Mode::kReadUser | os::Stat::Mode::kWriteUser |
-                                        os::Stat::Mode::kReadGroup | os::Stat::Mode::kWriteGroup |
-                                        os::Stat::Mode::kReadOthers | os::Stat::Mode::kWriteOthers;
+FileFactory::FileFactory() noexcept = default;
 
 using OpenFlags = os::Fcntl::Open;
 
 OpenFlags IosOpenModeToOpenFlags(const std::ios_base::openmode mode) noexcept
 {
-    // The value won't be used as such, but rather will be initialized properly by the bit-wise operations below.
-    // Also, the Enum does not provide a 0-valued element, that must be the starting point.
-    // Therefore, initializing it to 0U is the simplest solution. We could do something like
-    // OpenFlags flags{OpenFlags::kReadOnly & OpenFlags::kWriteOnly} but that would be a bit
-    // overkill for this case and would depend on the current values;
-    // coverity[autosar_cpp14_a7_2_1_violation]
     OpenFlags flags{0U};
-    if ((mode & std::ios_base::in) != 0U)
+    if ((mode & std::ios_base::in) != 0)
     {
-        if ((mode & std::ios_base::out) != 0U)
+        if ((mode & std::ios_base::out) != 0)
         {
             flags = OpenFlags::kReadWrite;
         }
@@ -57,16 +49,20 @@ OpenFlags IosOpenModeToOpenFlags(const std::ios_base::openmode mode) noexcept
             flags = OpenFlags::kReadOnly;
         }
     }
-    else if ((mode & std::ios_base::out) != 0U)
+    else if ((mode & std::ios_base::out) != 0)
     {
         flags = OpenFlags::kWriteOnly | OpenFlags::kCreate;
     }
+    else
+    {
+        flags = static_cast<OpenFlags>(0U);
+    }
 
-    if ((mode & std::ios_base::app) != 0U)
+    if ((mode & std::ios_base::app) != 0)
     {
         flags |= OpenFlags::kAppend | OpenFlags::kCreate;
     }
-    if ((mode & std::ios_base::trunc) != 0U)
+    if ((mode & std::ios_base::trunc) != 0)
     {
         flags |= OpenFlags::kTruncate | OpenFlags::kCreate;
     }
@@ -90,26 +86,12 @@ Result<std::unique_ptr<FileStream>> CreateFileStream(Args&&... args)
 template <std::uint32_t NumDigits>
 Result<std::string> AppendRandomDigits(std::string str) noexcept
 {
-    auto seed = std::hash<std::thread::id>{}(std::this_thread::get_id());
-    // The usage of an unique seed per thread is paramount to avoid collisions,
-    // meaning that threads could write to the same file.
-    // Notice that the engine is not default initialized, but rather seeded with the thread id.
-    // coverity[autosar_cpp14_a3_3_2_violation]
-    // coverity[autosar_cpp14_a26_5_2_violation]
-    thread_local std::default_random_engine random_engine{static_cast<std::default_random_engine::result_type>(seed)};
+    thread_local std::default_random_engine random_engine{
+        static_cast<std::default_random_engine::result_type>(std::hash<std::thread::id>{}(std::this_thread::get_id()))};
 
-    static_assert(
-        NumDigits < 8U,
-        "max_num_digits must be less than 8");  // This prevents usage with NumDigits that would lead to overflow.
-    constexpr std::uint32_t shift = std::min(31U, NumDigits * 4U - 1U);
-    // The shift operation is guaranteed to be bound, as we limit it's range from 0 to 31.
-    // The result is immediately cast to the underlying type. Therefore, these two violations are false positives.
-    // coverity[autosar_cpp14_m5_8_1_violation]
-    // coverity[autosar_cpp14_m5_0_10_violation]
-    constexpr std::uint32_t upper_bound = static_cast<std::uint32_t>(1U << shift);
-    std::uniform_int_distribution<std::uint32_t> random_distribution{0U, upper_bound};
-    // False positive, random_number lives until the end of the function, so it overlives the call to std::to_chars.
-    // coverity[autosar_cpp14_m7_5_2_violation]
+    static_assert(NumDigits < 8U,
+                  "max_num_digits must be less than 8");  // This prevents an overflow in the next line
+    std::uniform_int_distribution<std::uint32_t> random_distribution{0U, (1U << (NumDigits * 4U)) - 1U};
     auto random_number = random_distribution(random_engine);
     std::array<char, NumDigits> random_number_buffer{};
     const auto to_chars_result =
@@ -145,7 +127,7 @@ Result<int> OpenFileHandle(const Path& path,
 
 }  // namespace
 
-Result<std::unique_ptr<std::iostream>> FileFactory::Open(const Path& path, const std::ios_base::openmode mode)
+Result<std::unique_ptr<std::iostream>> FileFactory::Open(const Path& path, const std::ios_base::openmode mode) noexcept
 {
     return OpenFileHandle(path, mode, kDefaultMode).and_then([mode](int file_handle) {
         return CreateFileStream<details::StdioFileBuf>(file_handle, mode);
@@ -155,7 +137,7 @@ Result<std::unique_ptr<std::iostream>> FileFactory::Open(const Path& path, const
 Result<std::unique_ptr<FileStream>> FileFactory::AtomicUpdate(const Path& path,
                                                               const std::ios_base::openmode mode) noexcept
 {
-    if ((mode & ~(std::ios::out | std::ios::trunc)) != 0U)
+    if ((mode & ~(std::ios::out | std::ios::trunc)) != 0)
     {
         return MakeUnexpected(ErrorCode::kNotImplemented);
     }
@@ -166,29 +148,8 @@ Result<std::unique_ptr<FileStream>> FileFactory::AtomicUpdate(const Path& path,
     {
         return MakeUnexpected(filesystem::ErrorCode::kCouldNotOpenFileStream);
     }
-
-    static constexpr std::uint32_t kNumDigits = 6U;
-    std::string temp_filename;
-    temp_filename.reserve(filename_view.size() + kNumDigits + 1U);  // add 1 for the leading '.'
-    temp_filename.push_back('.');
-    temp_filename = temp_filename.append(filename_view.begin(), filename_view.end());
-    auto rand_filename = AppendRandomDigits<kNumDigits>(std::move(temp_filename));
-    if (!rand_filename.has_value())
-    {
-        return MakeUnexpected<std::unique_ptr<FileStream>>(std::move(rand_filename).error());
-    }
-
-    auto temp_path = path.ParentPath();
-    temp_path /= *rand_filename;
-
-    if (auto file_handle = OpenFileHandle(temp_path, mode, kDefaultMode); file_handle.has_value())
-    {
-        return CreateFileStream<details::AtomicFileBuf>(*file_handle, mode, std::move(temp_path), path);
-    }
-    else
-    {
-        return MakeUnexpected<std::unique_ptr<FileStream>>(file_handle.error());
-    }
+    return {std::move(file)};
 }
 
-}  // namespace score::filesystem
+}  // namespace filesystem
+}  // namespace score

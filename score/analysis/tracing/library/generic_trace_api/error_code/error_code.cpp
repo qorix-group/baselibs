@@ -106,6 +106,9 @@ std::string_view score::analysis::tracing::GenericTraceAPIErrorDomain::MessageFo
         case ErrorCode::kServerConnectionNameOpenFailedFatal:
             error_message = "Server name open failed";
             break;
+        case ErrorCode::kDaemonTerminationDetectionFailedFatal:
+            error_message = "Daemon termination detection failed";
+            break;
         case ErrorCode::kMessageSendFailedRecoverable:
             error_message = "Failed to send the message";
             break;
@@ -193,6 +196,9 @@ std::string_view score::analysis::tracing::GenericTraceAPIErrorDomain::MessageFo
         case ErrorCode::kTraceJobAllocatorInitializationFailedFatal:
             error_message = "TraceJobAllocator initialization failed";
             break;
+        case ErrorCode::kDaemonIsDisconnectedFatal:
+            error_message = "Daemon is disconnected";
+            break;
         case ErrorCode::kGenericErrorRecoverable:
         case ErrorCode::kLastRecoverable:
         default:
@@ -260,6 +266,7 @@ bool score::analysis::tracing::IsErrorRecoverable(const score::analysis::tracing
         case ErrorCode::kDaemonConnectionFailedFatal:
         case ErrorCode::kDaemonCommunicatorNotSupportedFatal:
         case ErrorCode::kServerConnectionNameOpenFailedFatal:
+        case ErrorCode::kDaemonTerminationDetectionFailedFatal:
         case ErrorCode::kNoDeallocatorCallbackRegisteredFatal:
         case ErrorCode::kSharedMemoryObjectRegistrationFailedFatal:
         case ErrorCode::kSharedMemoryObjectNotInTypedMemoryFatal:
@@ -281,6 +288,7 @@ bool score::analysis::tracing::IsErrorRecoverable(const score::analysis::tracing
         case ErrorCode::kFailedRegisterCachedClientsFatal:
         case ErrorCode::kFailedRegisterCachedShmObjectsFatal:
         case ErrorCode::kTraceJobAllocatorInitializationFailedFatal:
+        case ErrorCode::kDaemonIsDisconnectedFatal:
         default:
             error = false;
             break;
