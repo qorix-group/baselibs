@@ -98,7 +98,7 @@ Result<std::string> AppendRandomDigits(std::string str) noexcept
         std::to_chars(random_number_buffer.begin(), random_number_buffer.end(), random_number, 16);
     if (to_chars_result.ec == std::errc{})
     {
-        str = str.append(random_number_buffer.begin(), to_chars_result.ptr);
+        str.append(random_number_buffer.begin(), to_chars_result.ptr);
         return str;
     }
     else
@@ -153,7 +153,7 @@ Result<std::unique_ptr<FileStream>> FileFactory::AtomicUpdate(const Path& path,
     std::string temp_filename;
     temp_filename.reserve(filename_view.size() + kNumDigits + 1U);  // add 1 for the leading '.'
     temp_filename.push_back('.');
-    temp_filename = temp_filename.append(filename_view.begin(), filename_view.end());
+    temp_filename.append(filename_view.begin(), filename_view.end());
     auto rand_filename = AppendRandomDigits<kNumDigits>(std::move(temp_filename));
     if (!rand_filename.has_value())
     {

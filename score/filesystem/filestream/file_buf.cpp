@@ -35,14 +35,7 @@ int StdioFileBuf::sync()
 
 ResultBlank StdioFileBuf::Close()
 {
-    if (is_open())
-    {
-        if (close() == nullptr)
-        {
-            std::cerr << "Failed to close file descriptor " << fd() << '\n';
-            return MakeUnexpected(ErrorCode::kCloseFailed, "Unable to close file descriptor file buffer");
-        }
-    }
+    close();
     return {};
 }
 
@@ -62,21 +55,11 @@ ResultBlank AtomicFileBuf::Close()
             std::cerr << "Failed to issue fsync call before atomic update" << std::endl;
             result = MakeUnexpected(ErrorCode::kFsyncFailed);
         }
-
-        if (close() == nullptr)
-        {
-            std::cerr << "Failed to close file descriptor " << fd() << '\n';
-            // If closing fails, do not try to rename since we might replace a working
-            // file with a corrupted one.
-            return MakeUnexpected(ErrorCode::kCloseFailed,
-                                  "Unable to close file descriptor file buffer during atomic update");
-        }
-
+        StdioFileBuf::close();
         if (auto rename_result = os::Stdio::instance().rename(from_path_.CStr(), to_path_.CStr());
             !rename_result.has_value())
         {
-            std::cerr << "Failed to rename temporary file to actual file name for "
-                         "atomic update: "
+            std::cerr << "Failed to rename temporary file to actual file name for atomic update: "
                       << rename_result.error().ToString() << std::endl;
             if (result.has_value())
             {

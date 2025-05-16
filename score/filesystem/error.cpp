@@ -128,9 +128,6 @@ class FilesystemErrorDomain final : public score::result::ErrorDomain
             case static_cast<score::result::ErrorCode>(ErrorCode::kNotImplemented):
                 return "Not implemented";
             // coverity[autosar_cpp14_m6_4_5_violation]
-            case static_cast<score::result::ErrorCode>(ErrorCode::kCloseFailed):
-                return "Close failed";
-            // coverity[autosar_cpp14_m6_4_5_violation]
             default:
                 return "Unknown Error!";
         }

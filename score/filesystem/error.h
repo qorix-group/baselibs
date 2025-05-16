@@ -53,7 +53,6 @@ enum class ErrorCode : score::result::ErrorCode
     kCouldNotReadSymlink,
     kFsyncFailed,
     kCouldNotRenameFile,
-    kCloseFailed,
     kNotImplemented,
 };
 
