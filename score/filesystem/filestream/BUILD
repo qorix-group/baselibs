@@ -23,6 +23,11 @@ cc_library(
         "i_file_factory.h",
     ],
     features = COMPILER_WARNING_FEATURES,
+    implementation_deps = [
+        "@score-baselibs//score/os:fcntl",
+        "@score-baselibs//score/os:stdio",
+        "@score-baselibs//score/os:unistd",
+    ],
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/filesystem:__subpackages__",
