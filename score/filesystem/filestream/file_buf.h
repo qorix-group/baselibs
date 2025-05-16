@@ -38,7 +38,7 @@ using StdioFilebufBase = __gnu_cxx::stdio_filebuf<char>;
 class StdioFilebufBase : public std::filebuf
 {
   public:
-    StdioFilebufBase(int fd, std::ios::openmode mode) : std::filebuf{}, file_handle_{fd}
+    StdioFilebufBase(int fd, std::ios::openmode mode) : std::filebuf{}
     {
         // Use a non-standard extension to associate the file descriptor with the filebuf
         __open(fd, mode);  // NOLINT(score-qnx-banned-builtin): This is not a builtin but an extension we need to use
@@ -48,14 +48,6 @@ class StdioFilebufBase : public std::filebuf
     StdioFilebufBase& operator=(StdioFilebufBase&&) = default;
     StdioFilebufBase(const StdioFilebufBase&) = delete;
     StdioFilebufBase& operator=(const StdioFilebufBase&) = delete;
-
-    int fd() const noexcept
-    {
-        return file_handle_;
-    }
-
-  private:
-    int file_handle_;
 };
 
 #endif
@@ -63,7 +55,7 @@ class StdioFilebufBase : public std::filebuf
 class StdioFileBuf : public StdioFilebufBase
 {
   public:
-    StdioFileBuf(int fd, std::ios::openmode mode) : StdioFilebufBase{fd, mode} {}
+    StdioFileBuf(int fd, std::ios::openmode mode) : StdioFilebufBase{fd, mode}, file_handle_{fd} {}
     StdioFileBuf& operator=(StdioFileBuf&&) = default;
     StdioFileBuf(StdioFileBuf&&) = default;
     StdioFileBuf(const StdioFileBuf&) = delete;
@@ -72,6 +64,9 @@ class StdioFileBuf : public StdioFilebufBase
 
     int sync() override;
     virtual ResultBlank Close();
+
+  private:
+    int file_handle_;
 };
 
 class AtomicFileBuf : public StdioFileBuf
