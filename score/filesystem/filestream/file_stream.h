@@ -29,13 +29,12 @@ namespace score::filesystem
 class FileStream : public std::iostream
 {
   public:
-    explicit FileStream(details::StdioFileBuf* filebuf) : std::basic_ios<char>::basic_ios{}, std::iostream{filebuf} {}
+    explicit FileStream(details::StdioFileBuf* filebuf) : std::basic_ios<char>::basic_ios(), std::iostream(filebuf) {}
     ~FileStream() override = default;
     FileStream(const FileStream&) = delete;
     FileStream& operator=(const FileStream&) = delete;
-    FileStream(FileStream&& other) = delete;
-    // coverity[autosar_cpp14_a12_8_6_violation] See above.
-    FileStream& operator=(FileStream&& other) = delete;
+    FileStream(FileStream&& other) = default;
+    FileStream& operator=(FileStream&& other) = default;
 
     ResultBlank Close();
 };
@@ -52,9 +51,9 @@ class FileStreamImpl : public FileStream
               std::enable_if_t<!std::is_same_v<score::cpp::remove_cvref_t<First>, FileStreamImpl>, bool> = true,
               typename... Args>
     explicit FileStreamImpl(First&& first, Args&&... remaining)
-        : std::basic_ios<char>::basic_ios{},
-          FileStream{&buf_},
-          buf_{std::forward<First>(first), std::forward<Args>(remaining)...}
+        : std::basic_ios<char>::basic_ios(),
+          FileStream(&buf_),
+          buf_(std::forward<First>(first), std::forward<Args>(remaining)...)
     {
     }
 
@@ -70,13 +69,11 @@ class FileStreamImpl : public FileStream
     {
         // It's pointless to test the result of Close() here, because we are in the destructor.
         // coverity[autosar_cpp14_a0_1_2_violation]
-        (void)Close();
+        Close();
     }
 
     FileStreamImpl& operator=(const FileStreamImpl&) = delete;
-    // There's no ambiguity, as constructor is templated to avoid first element belonging to this class
-    // coverity[autosar_cpp14_a13_3_1_violation:FALSE]
-    FileStreamImpl(FileStreamImpl&& other) noexcept(false) : FileStream{&buf_}, buf_{std::move(other.buf_)} {}
+    FileStreamImpl(FileStreamImpl&& other) noexcept(false) : FileStream(&buf_), buf_(std::move(other.buf_)) {}
 
   private:
     Buf buf_;
