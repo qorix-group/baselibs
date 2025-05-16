@@ -70,7 +70,7 @@ inline constexpr T HandleAddOverflow(T left, T right) noexcept
     static_assert(std::is_unsigned<T>::value, "HandleAddOverflow is designed for unsigned integral types only.");
 
     // Check if adding 'right' to 'left' would exceed T's maximum value.
-    if (left > std::numeric_limits<T>::max() - right)  // LCOV_EXCL_BR_LINE : false positive, true case tested in ut
+    if (left > std::numeric_limits<T>::max() - right)
     {
         std::cout << "Overflow would occur, clamp to max size of type " << typeid(T).name() << "\n";
 

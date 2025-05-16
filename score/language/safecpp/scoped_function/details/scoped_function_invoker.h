@@ -33,8 +33,8 @@ class ScopedFunctionInvoker<NoExcept, ReturnType(Args...)>
     template <class ScopedFunction>
     [[nodiscard]] static CallableType<ScopedFunction> ActualInvoker() noexcept
     {
-        return [](ScopedFunction& base_scoped_function, Args... args) noexcept(NoExcept) -> ReturnType {
-            if ((base_scoped_function.scope_state_ == nullptr) || (base_scoped_function.callable_ == nullptr))
+        return [](ScopedFunction& base_scoped_function, Args... args) -> ReturnType {
+            if (base_scoped_function.scope_state_ == nullptr || base_scoped_function.callable_ == nullptr)
             {
                 return {};
             }

@@ -78,8 +78,6 @@ class SlotHandle final
     friend bool operator!=(const SlotHandle& l_value, const SlotHandle& r_value) noexcept;
 
     /// \brief Maximum number of recorders supported at the same time.
-    // used in recorder_to_slot_, recorder_slot_available_ declaration.
-    // coverity[autosar_cpp14_a0_1_1_violation : FALSE]
     static constexpr std::size_t kMaxRecorders{4U};
 
     /* KW_SUPPRESS_START: MISRA.USE.EXPANSION: False positive: it is not macro. */

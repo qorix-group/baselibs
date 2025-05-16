@@ -116,7 +116,7 @@ INvConfig::ReadResult HandleParseResult(const score::json::Object& parse_result,
 }  // namespace
 
 /* KW_SUPPRESS_START: MISRA.LINKAGE.EXTERN: False positive. These are not declarations, these are definitions. */
-NvConfig::NvConfig(const std::string& file_path) : INvConfig(), json_path_(file_path), typemap_{} {}
+NvConfig::NvConfig(const std::string& file_path) : json_path_(file_path), typemap_{} {}
 
 /* KW_SUPPRESS_START: MISRA.MEMB.NON_STATIC: False positive. Method uses class fields. */
 // Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".

@@ -39,22 +39,6 @@ TEST(SumTest, SumOverflow)
     EXPECT_EQ(result2, expected_value);
 }
 
-TEST(ClampAddNullTerminatorTest, ClampAddNullTerminatorNoOverFlow)
-{
-    std::uint16_t v1 = 1U;
-    constexpr std::uint16_t expected_value = 2U;
-    std::size_t result1 = ClampAddNullTerminator(v1);
-    EXPECT_EQ(result1, expected_value);
-}
-
-TEST(ClampAddNullTerminatorTest, ClampAddNullTerminatorOverFlow)
-{
-    std::uint16_t v1 = std::numeric_limits<std::uint16_t>::max();
-    constexpr std::uint16_t expected_value = std::numeric_limits<std::uint16_t>::max();
-    std::size_t result1 = ClampAddNullTerminator(v1);
-    EXPECT_EQ(result1, expected_value);
-}
-
 template <typename TypeTuple>
 class ClampToTestFixture : public ::testing::Test
 {

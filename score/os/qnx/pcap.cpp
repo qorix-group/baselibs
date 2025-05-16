@@ -151,7 +151,7 @@ class PcapImpl final : public Pcap
     }
     score::cpp::expected<pcap_dumper_t*, Error> pcap_dump_open(pcap_t* p, const char* filename) const noexcept override
     {
-        pcap_dumper_t* dumper = nullptr;
+        pcap_dumper_t* dumper;
         if (p == nullptr)
         {
             return score::cpp::make_unexpected(::score::os::Error::createFromErrno(EINVAL));

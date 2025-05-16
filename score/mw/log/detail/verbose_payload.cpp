@@ -69,7 +69,7 @@ class ReservedData
         const std::size_t capacity = buffer_.capacity();
         std::size_t space_left{0UL};
 
-        if ((old_size_ < capacity) && (total_used_ < (capacity - old_size_)))  // LCOV_EXCL_BR_LINE : false positive
+        if ((old_size_ < capacity) && (total_used_ < (capacity - old_size_)))
         {
             space_left = capacity - (total_used_ + old_size_);
         }
@@ -82,7 +82,7 @@ class ReservedData
     score::cpp::span<Byte> GetData() const noexcept
     {
         const auto buffer_index = old_size_ + total_used_;
-        if ((buffer_index < buffer_.size()) && (reserved_ > total_used_))  // LCOV_EXCL_BR_LINE : false positive
+        if ((buffer_index < buffer_.size()) && (reserved_ > total_used_))
         {
             //  reserved_ is limited at construction time and total_used_ is derived from it and shall be always
             //  smaller:

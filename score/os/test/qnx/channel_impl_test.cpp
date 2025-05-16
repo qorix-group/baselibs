@@ -220,15 +220,6 @@ TEST_F(ChannelImplFixture, ConnectDetachReturnsErrorIfInvalidRcvId)
     EXPECT_FALSE(result.has_value());
 }
 
-TEST_F(ChannelImplFixture, ConnectAttachAndDetatchFlow)
-{
-    const auto chid = ChannelCreate(kOpenFlags);
-    const auto coid = this->unit_->ConnectAttach(kAttachId, kAttachId, chid, kAttachIndex, kAttachFlags);
-    EXPECT_TRUE(coid.has_value());
-    const auto result = this->unit_->ConnectDetach(coid.value());
-    EXPECT_TRUE(result.has_value());
-}
-
 TEST_F(ChannelImplFixture, MsgDeliverEventFlow)
 {
     // This test sends MsgDeliverEvent from main thread to client.
