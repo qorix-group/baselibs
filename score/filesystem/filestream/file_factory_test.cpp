@@ -14,7 +14,7 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>
+#include <unistd.h>
 
 namespace score
 {
@@ -26,22 +26,7 @@ namespace
 class FileFactoryTest : public ::testing::Test
 {
   public:
-    FileFactoryTest() : unit_{}, test_tmpdir_{}
-    {
-        auto* env_tmpdir = std::getenv("TEST_TMPDIR");
-        if (env_tmpdir != nullptr)
-        {
-            test_tmpdir_ = env_tmpdir;
-        }
-        else
-        {
-            test_tmpdir_ = "/tmp";
-        }
-    }
-
-  protected:
-    FileFactory unit_;
-    Path test_tmpdir_;
+    FileFactory unit_{};
 };
 
 TEST_F(FileFactoryTest, OpensFile)
