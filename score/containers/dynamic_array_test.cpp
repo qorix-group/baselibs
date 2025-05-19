@@ -27,7 +27,6 @@ using namespace score::containers;
 using namespace score::memory::shared;
 
 constexpr std::size_t kNonEmptyArraySize{10U};
-constexpr std::size_t kEmptyArraySize{0U};
 
 class NonTrivialType
 {
@@ -182,9 +181,10 @@ TYPED_TEST(DynamicArrayTestFixture, ConstructTrivial)
 
 TYPED_TEST(DynamicArrayTestFixture, ConstructTrivialEmpty)
 {
-    DynamicArray<TrivialType, TypeParam> unit{kEmptyArraySize, this->getAllocator()};
-    EXPECT_EQ(unit.size(), kEmptyArraySize);
+    DynamicArray<TrivialType, TypeParam> unit{0U, this->getAllocator()};
+    EXPECT_EQ(unit.size(), 0);
 }
+
 TYPED_TEST(DynamicArrayTestFixture, ConstructNonTrivial)
 {
     auto non_trivial_type_alloc = this->template getTypeSpecificAllocator<NonTrivialType>();
@@ -644,20 +644,6 @@ TYPED_TEST(DynamicArrayTestFixture, SizeReturnsZeroWhenArrayIsEmpty)
 {
     // Given an empty DynamicArray
     const DynamicArray<TrivialType> unit{0U};
-
-    // When calling size
-    const auto array_size = unit.size();
-
-    // Then the result is 0
-    EXPECT_EQ(array_size, 0U);
-}
-
-TYPED_TEST(DynamicArrayTestFixture, SizeReturnsZeroWhenArrayIsEmptyWithValue)
-{
-    // Given an empty DynamicArray which takes an initial value
-    constexpr std::size_t kNumberOfElements{0U};
-    constexpr TrivialType kInitialValue{1};
-    const DynamicArray<TrivialType> unit{kNumberOfElements, kInitialValue};
 
     // When calling size
     const auto array_size = unit.size();

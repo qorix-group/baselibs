@@ -219,14 +219,6 @@ class LogStream final
     template <typename T>
     std::enable_if_t<LogStreamSupports<T>(), LogStream&> operator<<(const T& value) & noexcept
     {
-        // Suppress "AUTOSAR C++14 M5-0-3" rule findings. This rule states: "A cvalue expression shall
-        // not be implicitly converted to a different underlying type"
-        // False positive, right hand value is the same type.
-        // Suppress "AUTOSAR C++14 M5-0-11" rule findings, This rule states: "The plain char type shall
-        // only be used for the storage and use of character values"
-        // False positive, single char is not supported by operator<<
-        // coverity[autosar_cpp14_m5_0_3_violation]
-        // coverity[autosar_cpp14_m5_0_11_violation]
         return Log(value);
     }
 
