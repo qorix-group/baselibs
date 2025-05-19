@@ -199,7 +199,7 @@ using struct_visitable = decltype(get_struct_visitable<T>());
     static constexpr std::size_t fields = static_cast<std::size_t>(COUNT_VARARGS(__VA_ARGS__)); \
     static const char* field_name(const std::size_t i)                                          \
     {                                                                                           \
-        static std::array<const char* const, fields> names = {{__VA_ARGS__}};                   \
+        static const std::array<const char* const, fields> names = {{__VA_ARGS__}};             \
         return names.at(i);                                                                     \
     }
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage) Macros are used to access field names
