@@ -27,7 +27,7 @@ namespace json
 class JsonWriter final : public IJsonWriter
 {
   public:
-    explicit JsonWriter(bool unsynced = false) noexcept;
+    explicit JsonWriter(bool unsynced = true) noexcept;
     JsonWriter(const JsonWriter&) = delete;
     JsonWriter(JsonWriter&&) noexcept = delete;
     JsonWriter& operator=(const JsonWriter&) = delete;

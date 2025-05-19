@@ -21,11 +21,10 @@ namespace score::filesystem::details
 
 ResultBlank StdioFileBuf::Close()
 {
-    if (is_open())
+    if (is_open() != 0)
     {
         if (close() == nullptr)
         {
-            std::cerr << "Failed to close file descriptor " << fd() << '\n';
             return MakeUnexpected(ErrorCode::kCloseFailed, "Unable to close file descriptor file buffer");
         }
     }
@@ -41,23 +40,20 @@ ResultBlank AtomicFileBuf::Close()
 {
     ResultBlank result{};
 
-    if (is_open())
+    if (is_open() != 0)
     {
         if (sync() != 0)
         {
-            std::cerr << "Failed to issue sync call before atomic update" << '\n';
-            result = MakeUnexpected(ErrorCode::kFsyncFailed);
+            return MakeUnexpected(ErrorCode::kFsyncFailed);
         }
 
         if (!os::Unistd::instance().fsync(fd()).has_value())
         {
-            std::cerr << "Failed to issue fsync call before atomic update" << '\n';
-            result = MakeUnexpected(ErrorCode::kFsyncFailed);
+            return MakeUnexpected(ErrorCode::kFsyncFailed);
         }
 
         if (close() == nullptr)
         {
-            std::cerr << "Failed to close file descriptor " << fd() << '\n';
             // If closing fails, do not try to rename since we might replace a working
             // file with a corrupted one.
             return MakeUnexpected(ErrorCode::kCloseFailed,
@@ -67,13 +63,7 @@ ResultBlank AtomicFileBuf::Close()
         if (auto rename_result = os::Stdio::instance().rename(from_path_.CStr(), to_path_.CStr());
             !rename_result.has_value())
         {
-            std::cerr << "Failed to rename temporary file to actual file name for "
-                         "atomic update: "
-                      << rename_result.error().ToString() << '\n';
-            if (result.has_value())
-            {
-                result = MakeUnexpected(ErrorCode::kCouldNotRenameFile);
-            }
+            return MakeUnexpected(ErrorCode::kCouldNotRenameFile);
         }
     }
 

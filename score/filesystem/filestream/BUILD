@@ -20,6 +20,7 @@ cc_library(
         "file_factory.cpp",
         "file_stream.cpp",
         "i_file_factory.cpp",
+        "stdio_filebuf_base.h",
     ],
     hdrs = [
         "file_factory.h",
@@ -72,8 +73,16 @@ cc_library(
     ],
 )
 
-cc_test(
+test_suite(
     name = "unit_test",
+    tests = [
+        ":unit_test_basic",
+        ":unit_test_extra",
+    ],
+)
+
+cc_test(
+    name = "unit_test_basic",
     srcs = [
         "file_factory_fake_test.cpp",
         "file_factory_test.cpp",
@@ -91,5 +100,40 @@ cc_test(
         "@score-baselibs//score/filesystem/factory",
         "@score-baselibs//score/os/mocklib:fcntl_mock",
         "@googletest//:gtest_main",
+    ],
+)
+
+# Special tests for error conditions
+cc_test(
+    name = "unit_test_extra",
+    srcs = [
+        "file_buf.cpp",
+        "file_buf.h",
+        "file_buf_test.cpp",
+        "stdio_filebuf_base_testing.h",
+    ],
+    defines = [
+        "STDIO_FILEBUF_BASE_TESTING",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["unit"],
+    visibility = [
+        "@score-baselibs//score/filesystem:__pkg__",
+        # "@ddad@score-baselibs//score/filesystem:__pkg__",
+    ],
+    deps = [
+        "@score-baselibs//score/filesystem:error",
+        "@score-baselibs//score/filesystem:path",
+        "@score-baselibs//score/os:fcntl",
+        "@score-baselibs//score/os:object_seam",
+        "@score-baselibs//score/os:stat",
+        "@score-baselibs//score/os:stdio",
+        "@score-baselibs//score/os:unistd",
+        "@score-baselibs//score/os/mocklib:fcntl_mock",
+        "@score-baselibs//score/os/mocklib:stdio_mock",
+        "@score-baselibs//score/os/mocklib:unistd_mock",
+        "@score-baselibs//score/result",
+        "@googletest//:gtest_main",
+        "@score-baselibs//score/language/futurecpp",
     ],
 )
