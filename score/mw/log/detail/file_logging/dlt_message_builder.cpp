@@ -167,7 +167,7 @@ void ConstructDltStandardHeaderTypes(DltStandardHeader& standard,
     standard.len = htons(msg_size);
 }
 
-using timestscore_future_cpp_t = score::os::HighResolutionSteadyClock::time_point;
+using timestamp_t = score::os::HighResolutionSteadyClock::time_point;
 using systime_t = std::chrono::system_clock::time_point;
 using dlt_duration_t = std::chrono::duration<std::uint32_t, std::ratio<1, 10000>>;
 
@@ -185,7 +185,7 @@ void DltMessageBuilder::SetNextMessage(LogRecord& log_record) noexcept
     log_record_ = log_record;
 
     const auto& entry = log_record.getLogEntry();
-    const auto time_stamp = timestscore_future_cpp_t::clock::now().time_since_epoch();
+    const auto time_stamp = timestamp_t::clock::now().time_since_epoch();
     const auto time_epoch = systime_t::clock::now().time_since_epoch();
 
     using secs_u32 = std::chrono::duration<std::uint32_t, std::ratio<1>>;

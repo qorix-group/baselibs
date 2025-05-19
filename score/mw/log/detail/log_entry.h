@@ -52,9 +52,9 @@ struct LogEntry
     // coverity[autosar_cpp14_m11_0_1_violation]
     ByteVector payload{};
     // coverity[autosar_cpp14_m11_0_1_violation]
-    std::uint64_t timestscore_future_cpp_steady_nsec{};
+    std::uint64_t timestamp_steady_nsec{};
     // coverity[autosar_cpp14_m11_0_1_violation]
-    std::uint64_t timestscore_future_cpp_system_nsec{};
+    std::uint64_t timestamp_system_nsec{};
     // coverity[autosar_cpp14_m11_0_1_violation]
     std::uint8_t num_of_args{};
     // coverity[autosar_cpp14_m11_0_1_violation]
@@ -103,8 +103,8 @@ STRUCT_VISITABLE(LogEntry,
                  app_id,
                  ctx_id,
                  payload,
-                 //  timestscore_future_cpp_steady_nsec,
-                 //  timestscore_future_cpp_system_nsec,
+                 //  timestamp_steady_nsec,
+                 //  timestamp_system_nsec,
                  num_of_args,
                  //  header_buffer,
                  log_level)
