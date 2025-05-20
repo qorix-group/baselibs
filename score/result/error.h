@@ -37,10 +37,12 @@ constexpr bool IsValidErrorCodeEnum() noexcept
 {
     // false-positive; this is the correct syntax for a constexpr-if-statement. Reordering is not allowed by standard.
     // coverity[autosar_cpp14_a7_1_8_violation]
+    // coverity[autosar_cpp14_m6_4_1_violation] false-positive: "if constexpr" is a valid statement since C++17.
     if constexpr (std::is_enum_v<Code>)
     {
         return std::is_same_v<ErrorCode, std::underlying_type_t<Code>>;
     }
+    // coverity[autosar_cpp14_m6_4_1_violation] false-positive: "if constexpr" is a valid statement since C++17.
     else
     {
         return false;
