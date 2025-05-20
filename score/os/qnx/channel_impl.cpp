@@ -244,6 +244,8 @@ score::cpp::expected<std::int32_t, score::os::Error> ChannelImpl::ConnectAttach(
                                                                        const std::int32_t flags) const noexcept
 /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 {
+    // Suppressed here because usage of this OSAL method is on banned list
+    // NOLINTNEXTLINE(score-banned-function) see comment above
     const std::int32_t result = ::ConnectAttach(reserved, pid, chid, index, flags);
     if (result == -1)
     {

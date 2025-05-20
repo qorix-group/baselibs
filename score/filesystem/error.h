@@ -51,6 +51,9 @@ enum class ErrorCode : score::result::ErrorCode
     kCorruptedFileSystem,
     kCouldNotFormatPartition,
     kCouldNotReadSymlink,
+    kFsyncFailed,
+    kCouldNotRenameFile,
+    kCloseFailed,
     kNotImplemented,
 };
 

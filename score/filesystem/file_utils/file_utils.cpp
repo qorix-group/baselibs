@@ -34,11 +34,10 @@ namespace
 // not be called implicitly". Since path_.has_value() is checked before calling path_.value(),
 // std::bad_optional_access should never be thrown. This is false positive.
 // coverity[autosar_cpp14_a15_5_3_violation : FALSE]
-bool IsFileContentIdentical(const score::Result<std::unique_ptr<std::iostream>>& file1,
-                            const score::Result<std::unique_ptr<std::iostream>>& file2) noexcept
+bool IsFileContentIdentical(std::iostream& file1, std::iostream& file2) noexcept
 {
-    std::istreambuf_iterator<char> it1{file1.value()->rdbuf()};
-    std::istreambuf_iterator<char> it2{file2.value()->rdbuf()};
+    std::istreambuf_iterator<char> it1{file1.rdbuf()};
+    std::istreambuf_iterator<char> it2{file2.rdbuf()};
     constexpr std::istreambuf_iterator<char> end{};
 
     while (it1 != end)
@@ -361,7 +360,7 @@ Result<bool> FileUtils::FileContentsAreIdentical(const Path& path1, const Path& 
     }
 
     // compare
-    return IsFileContentIdentical(file1, file2);
+    return IsFileContentIdentical(**file1, **file2);
 }
 
 ResultBlank FileUtils::CheckFileSystem(const Path& partition) const noexcept

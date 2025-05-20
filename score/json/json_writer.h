@@ -17,6 +17,8 @@
 #include "score/filesystem/filestream/file_factory.h"
 #include "score/json/i_json_writer.h"
 
+#include <string_view>
+
 namespace score
 {
 namespace json
@@ -25,7 +27,7 @@ namespace json
 class JsonWriter final : public IJsonWriter
 {
   public:
-    JsonWriter() noexcept = default;
+    explicit JsonWriter(bool unsynced = false) noexcept;
     JsonWriter(const JsonWriter&) = delete;
     JsonWriter(JsonWriter&&) noexcept = delete;
     JsonWriter& operator=(const JsonWriter&) = delete;
@@ -41,6 +43,9 @@ class JsonWriter final : public IJsonWriter
 
     score::Result<std::string> ToBuffer(const score::json::Object& json_data) override;
     score::Result<std::string> ToBuffer(const score::json::List& json_data) override;
+
+  private:
+    bool unsynced_;
 };
 
 }  // namespace json

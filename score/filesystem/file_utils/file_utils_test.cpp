@@ -963,7 +963,7 @@ class FileUtilsTest_IsQnxCompatible : public ::testing::Test
             *file << content;
             return file;
         };
-        EXPECT_CALL(*filefactory_mock_, Open).WillOnce(Invoke(ss));
+        EXPECT_CALL(*filefactory_mock_, Open(_, _)).WillOnce(Invoke(ss));
     }
 
     void ExpectBadFileOpen()
@@ -973,20 +973,20 @@ class FileUtilsTest_IsQnxCompatible : public ::testing::Test
             bad_ss_uptr->setstate(std::ios_base::badbit);
             return bad_ss_uptr;
         };
-        EXPECT_CALL(*filefactory_mock_, Open).WillOnce(Invoke(bad_ss));
+        EXPECT_CALL(*filefactory_mock_, Open(_, _)).WillOnce(Invoke(bad_ss));
     }
 
     void ExpectFileOpenNullPtr()
     {
         std::unique_ptr<std::iostream> null_ptr{};
-        EXPECT_CALL(*filefactory_mock_, Open).WillOnce(Return(ByMove(std::move(null_ptr))));
+        EXPECT_CALL(*filefactory_mock_, Open(_, _)).WillOnce(Return(ByMove(std::move(null_ptr))));
     }
 
     void ExpectFileOpenError()
     {
         score::Result<std::unique_ptr<std::iostream>> error =
             MakeUnexpected(filesystem::ErrorCode::kCouldNotOpenFileStream);
-        EXPECT_CALL(*filefactory_mock_, Open).WillOnce(Return(ByMove(std::move(error))));
+        EXPECT_CALL(*filefactory_mock_, Open(_, _)).WillOnce(Return(ByMove(std::move(error))));
     }
 };
 

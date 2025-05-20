@@ -286,6 +286,8 @@ inline LogRawBuffer MakeLogRawBuffer(const T& value) noexcept
 template <typename T>
 inline LogRawBuffer MakeLogRawBuffer(const score::cpp::span<T> values)
 {
+    // It is used by static_assert to check scalar types.
+    // coverity[autosar_cpp14_a0_1_1_violation : FALSE]
     constexpr const bool IsEligible = std::is_scalar<T>::value;
     static_assert(IsEligible, "Only scalar types are allowed for dumping for now.");
 
