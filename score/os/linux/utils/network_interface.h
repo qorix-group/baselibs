@@ -14,9 +14,11 @@
 #define LIB_OS_LINUX_UTILS_NETWORK_INTERFACE_H_
 
 #include <array>
+#include <cstdint>
 #include <functional>
 #include <iomanip>
 #include <map>
+#include <memory>
 #include <set>
 #include <vector>
 
