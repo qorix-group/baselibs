@@ -24,10 +24,42 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+// The usage of the pre-processor here is imperative to differentiate between
+// GCC's libstdc++ and LLVM's libstdcxx.
+// coverity[autosar_cpp14_a16_0_1_violation]
+#if defined(__GLIBCXX__)  // We're using GCC's libstdc++
+
+#include <ext/stdio_filebuf.h>
+// coverity[autosar_cpp14_a16_0_1_violation] See rationale at beginning of this file
+#define FILE_FACTORY_GLIBCXX
+
+// coverity[autosar_cpp14_a16_0_1_violation] See rationale at beginning of this file
+#elif defined(_LIBCPP_VERSION)  // We're using libstdcxx from LLVM
+#include <fstream>
+// coverity[autosar_cpp14_a16_0_1_violation] See rationale at beginning of this file
+#define FILE_FACTORY_LLVMLIBCXX
+// coverity[autosar_cpp14_a16_0_1_violation] See rationale at beginning of this file
+#else
+// coverity[autosar_cpp14_a16_0_1_violation] See rationale at beginning of this file
+#error Unknown standard C++ library variant
+// coverity[autosar_cpp14_a16_0_1_violation] See rationale at beginning of this file
+#endif
+
 namespace score::filesystem::details
 {
 
-class StdioFilebufBase
+// coverity[autosar_cpp14_a16_0_1_violation]
+#ifdef FILE_FACTORY_GLIBCXX
+#include <ext/stdio_filebuf.h>
+
+using RealStdioFilebufBase = __gnu_cxx::stdio_filebuf<char>;
+
+class StdioFilebufBase : public RealStdioFilebufBase
+// coverity[autosar_cpp14_a16_0_1_violation]
+#else
+// coverity[autosar_cpp14_a16_0_1_violation]
+class StdioFilebufBase : public std::filebuf
+#endif
 {
   public:
     StdioFilebufBase(int fd, std::ios::openmode) : file_handle_{fd} {}
@@ -52,7 +84,7 @@ class StdioFilebufBase
     // coverity[autosar_cpp14_m11_0_1_violation] False positive, mock declaration
     MOCK_METHOD(StdioFilebufBase*, close, (), ());
     // coverity[autosar_cpp14_m11_0_1_violation] False positive, mock declaration
-    MOCK_METHOD(int, sync, (), ());
+    MOCK_METHOD(int, sync, (), (override));
     // coverity[autosar_cpp14_m11_0_1_violation] False positive, mock declaration
     MOCK_METHOD(int, is_open, (), ());
     // coverity[autosar_cpp14_m11_0_1_violation] False positive, mock declaration

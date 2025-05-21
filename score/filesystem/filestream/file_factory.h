@@ -25,12 +25,40 @@ class FileFactory final : public IFileFactory
 {
   public:
     FileFactory() noexcept = default;
+    virtual ~FileFactory() noexcept = default;
+    FileFactory(const FileFactory&) = default;
+    FileFactory& operator=(const FileFactory&) = default;
+    FileFactory(FileFactory&&) noexcept = default;
+    FileFactory& operator=(FileFactory&&) noexcept = default;
 
     Result<std::unique_ptr<std::iostream>> Open(const Path&, const std::ios_base::openmode mode) override;
 
     Result<std::unique_ptr<FileStream>> AtomicUpdate(const Path& path,
                                                      const std::ios_base::openmode mode) noexcept override;
 };
+
+namespace details
+{
+
+template <typename Buf, typename... Args>
+Result<std::unique_ptr<FileStream>> CreateFileStream(Args&&... args)
+{
+    Buf filebuf{std::forward<Args>(args)...};
+    if (filebuf.is_open() != true)
+    {
+        return MakeUnexpected(ErrorCode::kCouldNotOpenFileStream);
+    }
+    else
+    {
+        return std::make_unique<details::FileStreamImpl<Buf>>(std::move(filebuf));
+    }
+}
+
+Result<int> OpenFileHandle(const Path& path,
+                           const std::ios_base::openmode mode,
+                           const os::Stat::Mode create_mode) noexcept;
+
+}  // namespace details
 
 }  // namespace score::filesystem
 
