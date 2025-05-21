@@ -281,6 +281,9 @@ cc_gtest_unit_test(
         "scoped_function_invoker_test_scoped_function.h",
     ],
     features = COMPILER_WARNING_FEATURES,
+    visibility = [
+        # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
+    ],
     deps = [
         ":allocator_aware_type_erasure_pointer",
         ":function_wrapper",
