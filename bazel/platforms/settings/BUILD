@@ -55,3 +55,11 @@ config_setting(
         "@platforms//os:linux",
     ],
 )
+
+config_setting(
+    name = "x86_64-qnx",
+    constraint_values = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:qnx",
+    ],
+)
