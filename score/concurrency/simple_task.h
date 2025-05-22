@@ -229,6 +229,9 @@ class SimpleTaskFactory final
     }
 
     template <class PromiseType, class CallableType, class... ArgumentTypes>
+    // Suppress "AUTOSAR C++14 A0-1-3" rule finding. This rule states: "Every function defined in an anonymous
+    // namespace, or static function with internal linkage, or private member function shall be used.".
+    // coverity[autosar_cpp14_a0_1_3_violation] False-positive, method is used in static class methods above
     static auto InternalMake(score::cpp::pmr::memory_resource* memory_resource,
                              PromiseType&& promise,
                              CallableType&& callable,
