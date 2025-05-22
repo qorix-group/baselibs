@@ -50,7 +50,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad@score-baselibs//score/json:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/filesystem/filestream",
@@ -103,7 +102,7 @@ cc_library(
 
 alias(
     name = "json",
-    actual = ":interface",
+    actual = ":json_parser",
     visibility = [
         "@score-baselibs//score/json:__subpackages__",
         # "@ddad@score-baselibs//score/json:__subpackages__",
