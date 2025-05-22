@@ -132,10 +132,16 @@ using if_same_struct = std::enable_if_t<std::is_same<S, detail::no_cref_t<T>>::v
 
 template <typename T>
 /*
-    rule of zero applied here, because we only have static function.
+    - rule of zero applied here, because we only have static function.
     so if we assign it or copy it, the compiler by default will generate these functions.
+
+    - Rule M3-2-3 (required, implementation, automated)
+      A type, object or function that is used in multiple translation units shall
+      be declared in one and only one file.
+      - false positive , because it was defined only once in this file.
 */
 // coverity[autosar_cpp14_a12_8_6_violation]
+// coverity[autosar_cpp14_m3_2_3_violation : FALSE]
 class struct_visitable_base
 {
   public:
@@ -149,6 +155,13 @@ class struct_visitable_base
 
 // Koenig lookup, SFINAE
 template <typename T>
+/*
+    - Rule M3-2-3 (required, implementation, automated)
+      A type, object or function that is used in multiple translation units shall
+      be declared in one and only one file.
+      - false positive , because it was defined only once in this file.
+*/
+// coverity[autosar_cpp14_m3_2_3_violation : FALSE]
 inline auto get_struct_visitable() -> decltype(get_struct_visitable_(static_cast<detail::no_cref_t<T>*>(nullptr)));
 
 template <typename T>
@@ -186,7 +199,7 @@ using struct_visitable = decltype(get_struct_visitable<T>());
     static constexpr std::size_t fields = static_cast<std::size_t>(COUNT_VARARGS(__VA_ARGS__)); \
     static const char* field_name(const std::size_t i)                                          \
     {                                                                                           \
-        static std::array<const char* const, fields> names = {{__VA_ARGS__}};                   \
+        static const std::array<const char* const, fields> names = {{__VA_ARGS__}};             \
         return names.at(i);                                                                     \
     }
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage) Macros are used to access field names

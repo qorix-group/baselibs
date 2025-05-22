@@ -106,6 +106,7 @@ auto WaitFreeStack<Element, AtomicIndirectorType>::Find(const FindPredicate<Elem
     // Justification: The atomic load operation does not modify 'i' or any loop-control variable.
     // The rule intends to prevent side effects in the loop condition, but atomic loads are
     // read-only operations and do not introduce side effects or modifications.
+    // LCOV_EXCL_BR_START : false positive
     for (auto i = 0UL; (i < elements_.size()) &&
                        // coverity[autosar_cpp14_m6_5_5_violation] see above
                        (i <= AtomicIndirectorType<std::size_t>::load(write_index_, std::memory_order_seq_cst));
@@ -120,6 +121,7 @@ auto WaitFreeStack<Element, AtomicIndirectorType>::Find(const FindPredicate<Elem
             }
         }
     }
+    // LCOV_EXCL_BR_STOP : false positive
 
     return score::cpp::nullopt;
 }

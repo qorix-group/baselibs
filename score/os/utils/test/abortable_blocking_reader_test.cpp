@@ -23,6 +23,7 @@
 
 #include <score/expected.hpp>
 #include <score/utility.hpp>
+#include <thread>
 
 #include <include/gtest/gtest.h>
 

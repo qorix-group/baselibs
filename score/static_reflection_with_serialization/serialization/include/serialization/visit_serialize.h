@@ -327,6 +327,8 @@ struct is_serialized_type<memcpy_serialized<N>> : public std::true_type
 
 /* KW_SUPPRESS_START: MISRA.FUNC.UNUSEDPAR.UNNAMED: Unused variables needed for correct template deduction. */
 template <typename A, typename T>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void serialize(const T& t, serializer_helper<A>& /*unused*/, memcpy_serialized<sizeof(T)>& serial)
 {
     // NOLINTNEXTLINE(score-banned-function) tolerated per design
@@ -343,8 +345,15 @@ template <typename A, typename T>
 // coverity[autosar_cpp14_m3_2_2_violation: FALSE]
 inline void deserialize(const memcpy_serialized<sizeof(T)>& serial, deserializer_helper<A>& /*unused*/, T& t)
 {
-    // NOLINTNEXTLINE(score-banned-function) tolerated per design
+    // NOLINTBEGIN(score-banned-function) tolerated per design
+    // Suppress "AUTOSAR C++14 A12-0-2" The rule states: "Bitwise operations and operations that assume data
+    // representation in memory shall not be performed on objects." Serialization and deserialization operations involve
+    // copying raw memory using std::memcpy. The object being deserialized (std::array<unsigned char, 16>) is
+    // TriviallyCopyable, and thus, safe to copy with memcpy.The source buffer is just raw bytes and this low-level
+    // operation is necessary for performance optimization in handling raw data.
+    // coverity[autosar_cpp14_a12_0_2_violation]
     std::ignore = std::memcpy(&t, serial.arr.data(), sizeof(T));
+    // NOLINTEND(score-banned-function) tolerated per design
 }
 /* KW_SUPPRESS_END: MISRA.FUNC.UNUSEDPAR.UNNAMED: Unused variables needed for correct template deduction. */
 
@@ -363,6 +372,8 @@ struct is_serialized_type<array_serialized<S, N>> : public std::true_type
 };
 
 template <typename A, typename S, std::size_t N, typename T>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void serialize(const T& t, serializer_helper<A>& a, array_serialized<S, N>& serial)
 {
     for (std::size_t i = 0UL; i != N; ++i)
@@ -399,6 +410,8 @@ struct is_serialized_type<pair_serialized<S1, S2>> : public std::true_type
 };
 
 template <typename A, typename S1, typename S2, typename T1, typename T2>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void serialize(const std::pair<T1, T2>& t, serializer_helper<A>& a, pair_serialized<S1, S2>& serial)
 {
     serialize(t.first, a, serial.first);
@@ -413,6 +426,8 @@ inline void deserialize(const pair_serialized<S1, S2>& serial, deserializer_help
 }
 
 template <typename A, typename P, typename T1, typename T2>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void serialize(const std::pair<T1, T2>& t, serializer_helper<A>& a, P& serial)
 {
     serialize(t.first, a, serial.pack.first);
@@ -429,6 +444,8 @@ inline void deserialize(const P& serial, deserializer_helper<A>& a, std::pair<T1
 // optional_serialized
 
 template <typename A, typename S, typename T1, typename T2>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void serialize(const score::cpp::optional<S>& t, serializer_helper<A>& a, pair_serialized<T1, T2>& s)
 {
     serialize(t.has_value(), a, s.first);
@@ -459,6 +476,8 @@ inline void deserialize(const pair_serialized<T1, T2>& s, deserializer_helper<A>
 }
 
 template <typename A, typename P, typename S>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void serialize(const score::cpp::optional<S>& t, serializer_helper<A>& a, P& s)
 {
     serialize(t, a, s.pack);
@@ -537,12 +556,14 @@ inline void resize(T& t, size_t n)
 }  // namespace detail
 
 template <typename A, typename S, typename T>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void serialize(const T& t, serializer_helper<A>& a, vector_serialized<A, S>& serial)
 {
     static_assert(sizeof(S) <= std::numeric_limits<std::size_t>::max(), "S is too large");
     using subsize_s_t = subsize_serialized<A>;
     const auto n = t.size();
-    const size_t max_n = (std::numeric_limits<typename A::offset_t>::max() - sizeof(subsize_s_t)) / sizeof(S);
+    constexpr size_t max_n = (std::numeric_limits<typename A::offset_t>::max() - sizeof(subsize_s_t)) / sizeof(S);
     // We can't achieve the TRUE case for the below condition due to:
     // 1- The above assertion.
     // 2- Even if we wrote a test case it will be useless and without any expectation or assertion because
@@ -558,13 +579,21 @@ inline void serialize(const T& t, serializer_helper<A>& a, vector_serialized<A, 
     serialize(offset, a, serial.offset);
     if (offset != 0)
     {
+        // Suppress AUTOSAR C++14 A4-7-1 rule findings. This rule stated: "An integer expression shall not lead to data
+        // loss."
+        // Justification: the comparison with max_n, ensure no data overflow
+        // coverity[autosar_cpp14_A4_7_1_violation]
         const auto subsize = static_cast<typename A::subsize_t>(n * sizeof(S));
         serialize(subsize, a, *a.template address<subsize_s_t>(offset));
         S* string_size_location =
             a.template address<S>(static_cast<typename A::offset_t>(offset + sizeof(subsize_s_t)));
-        for (std::size_t i = 0; i != n; ++i)
+        for (std::size_t i = 0UL; i != n; ++i)
         {
             /* KW_SUPPRESS_START:MISRA.PTR.ARITH:Needed to get offset from this location */
+            // Suppress AUTOSAR C++14 M5-0-15 rule findings. This rule stated: "indexing shall be the only
+            // form of pointer arithmetic"
+            // False positive, no pointer arithmetic applied to pointer string_size_location
+            // coverity[autosar_cpp14_m5_0_15_violation]
             serialize(*(t.cbegin() + static_cast<std::ptrdiff_t>(i)), a, string_size_location[i]);
             /* KW_SUPPRESS_END:MISRA.PTR.ARITH:Needed to get offset from this location */
         }
@@ -572,6 +601,8 @@ inline void serialize(const T& t, serializer_helper<A>& a, vector_serialized<A, 
 }
 
 template <typename A, typename S, typename T, std::enable_if_t<(std::is_integral<T>::value), std::int32_t> = 0>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void serialize(const std::vector<T>& t, serializer_helper<A>& a, vector_serialized<A, S>& serial)
 {
     static_assert(sizeof(S) <= std::numeric_limits<std::size_t>::max(), "S is too large");
@@ -595,12 +626,12 @@ inline void serialize(const std::vector<T>& t, serializer_helper<A>& a, vector_s
     if (offset != 0UL)
     {
         /*
-                Deviation from Rule A4-7-1:
-                - An integer expression shall not lead to data loss.
-                Justification:
-                - we already checked the overflow before statement and,
-            - if it happens so there is a data loss and we'll return.
-            - This will depend on passing the size of vector and which data type we use inside it.
+        Deviation from Rule A4-7-1:
+        - An integer expression shall not lead to data loss.
+        Justification:
+        - we already checked the overflow before statement and,
+        - if it happens so there is a data loss and we'll return.
+        - This will depend on passing the size of vector and which data type we use inside it.
         */
         // coverity[autosar_cpp14_a4_7_1_violation]
         const auto subsize = static_cast<typename A::subsize_t>(n * sizeof(S));
@@ -727,11 +758,14 @@ struct is_serialized_type<string_serialized<A>> : public std::true_type
 };
 
 template <typename A, typename T>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void serialize(const T& t, serializer_helper<A>& a, string_serialized<A>& serial)
 {
     using subsize_s_t = subsize_serialized<A>;
     auto n = t.size();
-    const auto max_n = std::numeric_limits<typename A::offset_t>::max() - sizeof(subsize_s_t) - 1;
+    constexpr auto max_n =
+        std::numeric_limits<typename A::offset_t>::max() - static_cast<typename A::offset_t>(sizeof(subsize_s_t) - 1UL);
     // There is no benefit of writing unit test to cover the TRUE case of this condition, it will not have any
     // expectation or assertion because the function will return gracefully without any return values or even
     // a failure. Also, it's not easy to write unit test to meet this condition.
@@ -742,10 +776,10 @@ inline void serialize(const T& t, serializer_helper<A>& a, string_serialized<A>&
         return;
     }
     // LCOV_EXCL_STOP
-    n += 1;  // +1 for null terminator for string
+    n += 1UL;  // +1 for null terminator for string
     const auto offset = a.advance(sizeof(subsize_s_t) + n);
     serialize(offset, a, serial.offset);
-    if (offset != 0)
+    if (offset != 0UL)
     {
         const auto subsize = static_cast<typename A::subsize_t>(n);
         serialize(subsize, a, *a.template address<subsize_s_t>(offset));
@@ -761,10 +795,10 @@ inline void deserialize(const string_serialized<A>& serial, deserializer_helper<
     using subsize_s_t = const subsize_serialized<A>;
     typename A::offset_t offset;
     deserialize(serial.offset, a, offset);
-    if (offset == 0)
+    if (offset == 0UL)
     {
         a.setZeroOffset();
-        t.resize(0);
+        t.resize(0UL);
         return;
     }
 
@@ -772,17 +806,17 @@ inline void deserialize(const string_serialized<A>& serial, deserializer_helper<
     if (string_size_location == nullptr)
     {
         // error condition already set by a.address()
-        t.resize(0);
+        t.resize(0UL);
         return;
     }
 
-    typename A::subsize_t subsize{0};
+    typename A::subsize_t subsize{0UL};
     deserialize(*string_size_location, a, subsize);
     const std::size_t n = subsize;
-    if (n == 0)
+    if (n == 0UL)
     {
         a.setInvalidFormat();
-        t.resize(0);
+        t.resize(0UL);
         return;
     }
 
@@ -791,10 +825,10 @@ inline void deserialize(const string_serialized<A>& serial, deserializer_helper<
     if (string_address == nullptr)
     {
         // error condition already set by a.address()
-        t.resize(0);
+        t.resize(0UL);
         return;
     }
-    t.assign(string_address, n - std::size_t{1});
+    std::ignore = t.assign(string_address, n - 1);
 }
 
 // serializing parameter packs
@@ -858,6 +892,8 @@ inline void serialize_tuple_start(const std::tuple<Args...>& t,
 }
 
 template <typename A, typename S, typename... Args>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void serialize(const std::tuple<Args...>& t, serializer_helper<A>& a, S& serial)
 {
     serialize_tuple_start(t, a, serial, std::make_index_sequence<sizeof...(Args)>());
@@ -908,6 +944,7 @@ inline void visit_as_struct(const struct_serializer_visitor<A, S>& visitor, T&& 
 template <typename A, typename S, typename T, typename V = decltype(get_struct_visitable<T>())>
 // This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void serialize(const T& t, serializer_helper<A>& a, S& serial)
 {
     struct_serializer_visitor<A, S> visitor{a, serial};
@@ -964,6 +1001,20 @@ template <typename A, typename T>
 using serialized_t = typename serialized_descriptor_t<A, T>::payload_type;
 
 template <typename Tag, typename T>
+/*
+    Deviation from Rule A11-0-2:
+    - A type defined as struct shall: (1) provide only public data members, (2)
+      not provide any special member functions or methods, (3) not be a base of
+      another struct or class, (4) not inherit from another struct or class.
+    Deviation from Rule M11-0-1:
+    - Member data in non-POD class types shall be private.
+
+    Justification:
+    - Maintaining compatibility and avoiding performance overhead outweighs POD Type (class) based design for this
+      particular struct. The Type is simple and does not require invariance (interface OR custom behavior) as per the
+      design.
+*/
+// coverity[autosar_cpp14_a11_0_2_violation]
 struct memcpy_serialized_descriptor
 {
     using payload_tag = Tag;
@@ -977,6 +1028,7 @@ template <typename A,
           std::enable_if_t<(std::is_integral<T>::value) && (std::is_signed<T>::value), std::int32_t> = 0>
 // This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, T& /*unused*/)
 {
     return memcpy_serialized_descriptor<payload_tags::signed_le, T>();
@@ -987,6 +1039,7 @@ template <typename A,
           std::enable_if_t<(std::is_integral<T>::value) && (!std::is_signed<T>::value), std::int32_t> = 0>
 // This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, T& /*unused*/)
 {
     return memcpy_serialized_descriptor<payload_tags::unsigned_le, T>();
@@ -995,6 +1048,7 @@ inline auto visit_as(serialized_visitor<A>& /*unused*/, T& /*unused*/)
 template <typename A, typename T, std::enable_if_t<std::is_floating_point<T>::value, std::int32_t> = 0>
 // This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, T& /*unused*/)
 {
     return memcpy_serialized_descriptor<payload_tags::ieee754_float_le, T>();
@@ -1005,6 +1059,7 @@ template <typename A,
           std::enable_if_t<(std::is_enum<T>::value) && (std::is_signed<T>::value), std::int32_t> = 0>
 // This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, T& /*unused*/)
 {
     return memcpy_serialized_descriptor<payload_tags::signed_le, T>();
@@ -1015,6 +1070,7 @@ template <typename A,
           std::enable_if_t<(std::is_enum<T>::value) && (!std::is_signed<T>::value), std::int32_t> = 0>
 // This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, T& /*unused*/)
 {
     return memcpy_serialized_descriptor<payload_tags::unsigned_le, T>();
@@ -1023,6 +1079,8 @@ inline auto visit_as(serialized_visitor<A>& /*unused*/, T& /*unused*/)
 /* KW_SUPPRESS_END:MISRA.LOGIC.NOT_BOOL: false positive */
 
 template <typename A, size_t N>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, std::bitset<N>& /*unused*/)
 {
     return memcpy_serialized_descriptor<payload_tags::bitset, uint64_t>();
@@ -1032,12 +1090,28 @@ template <typename A,
           typename Rep,
           typename Period,
           std::enable_if_t<(std::is_integral<Rep>::value) && (std::is_signed<Rep>::value), std::int32_t> = 0>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, std::chrono::duration<Rep, Period>& /*unused*/)
 {
     return memcpy_serialized_descriptor<payload_tags::signed_le, Rep>();
 }
 
 template <typename A, typename T, size_t N>
+/*
+    Deviation from Rule A11-0-2:
+    - A type defined as struct shall: (1) provide only public data members, (2)
+      not provide any special member functions or methods, (3) not be a base of
+      another struct or class, (4) not inherit from another struct or class.
+    Deviation from Rule M11-0-1:
+    - Member data in non-POD class types shall be private.
+
+    Justification:
+    - Maintaining compatibility and avoiding performance overhead outweighs POD Type (class) based design for this
+      particular struct. The Type is simple and does not require invariance (interface OR custom behavior) as per the
+      design.
+*/
+// coverity[autosar_cpp14_a11_0_2_violation]
 struct array_serialized_descriptor
 {
     using payload_tag = payload_tags::array;
@@ -1050,6 +1124,7 @@ struct array_serialized_descriptor
 template <typename A, typename T, size_t N>
 // This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, const T (&/*unused*/)[N])
 {  // NOLINT(modernize-avoid-c-arrays) intentionally
     return array_serialized_descriptor<A, T, N>();
@@ -1059,12 +1134,27 @@ inline auto visit_as(serialized_visitor<A>& /*unused*/, const T (&/*unused*/)[N]
 template <typename A, typename T, size_t N>
 // This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, const std::array<T, N>& /*unused*/)
 {
     return array_serialized_descriptor<A, T, N>();
 }
 
 template <typename A>
+/*
+    Deviation from Rule A11-0-2:
+    - A type defined as struct shall: (1) provide only public data members, (2)
+      not provide any special member functions or methods, (3) not be a base of
+      another struct or class, (4) not inherit from another struct or class.
+    Deviation from Rule M11-0-1:
+    - Member data in non-POD class types shall be private.
+
+    Justification:
+    - Maintaining compatibility and avoiding performance overhead outweighs POD Type (class) based design for this
+      particular struct. The Type is simple and does not require invariance (interface OR custom behavior) as per the
+      design.
+*/
+// coverity[autosar_cpp14_a11_0_2_violation]
 struct string_serialized_descriptor
 {
     using payload_tag = payload_tags::string;
@@ -1074,6 +1164,7 @@ struct string_serialized_descriptor
 template <typename A, typename CharT, typename Traits, typename Alloc>
 // This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, const std::basic_string<CharT, Traits, Alloc>& /*unused*/)
 {
     return string_serialized_descriptor<A>();
@@ -1082,6 +1173,7 @@ inline auto visit_as(serialized_visitor<A>& /*unused*/, const std::basic_string<
 template <typename A, typename CharT, typename Traits, typename Alloc>
 // This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, std::basic_string<CharT, Traits, Alloc>& /*unused*/)
 {
     return string_serialized_descriptor<A>();
@@ -1099,6 +1191,9 @@ struct vector_serialized_descriptor
 template <typename A,
           typename T,
           std::enable_if_t<::score::common::visitor::is_vector_serializable<T>::value, std::int32_t> = 0>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
+// coverity[autosar_cpp14_m3_2_3_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, const T& /*unused*/)
 {
     return vector_serialized_descriptor<A, typename T::value_type>();
@@ -1107,6 +1202,9 @@ inline auto visit_as(serialized_visitor<A>& /*unused*/, const T& /*unused*/)
 template <typename A,
           typename T,
           std::enable_if_t<::score::common::visitor::is_vector_serializable<T>::value, std::int32_t> = 0>
+// This is false positive, Overload signatures are different.
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
+// coverity[autosar_cpp14_m3_2_3_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, T& /*unused*/)
 {
     return vector_serialized_descriptor<A, typename T::value_type>();
@@ -1135,6 +1233,20 @@ inline auto visit_parameter_pack(serialized_visitor<A>& visitor, T& /*unused*/, 
 }
 
 template <typename A, typename D, typename... Ts>
+/*
+    Deviation from Rule A11-0-2:
+    - A type defined as struct shall: (1) provide only public data members, (2)
+      not provide any special member functions or methods, (3) not be a base of
+      another struct or class, (4) not inherit from another struct or class.
+    Deviation from Rule M11-0-1:
+    - Member data in non-POD class types shall be private.
+
+    Justification:
+    - Maintaining compatibility and avoiding performance overhead outweighs POD Type (class) based design for this
+      particular struct. The Type is simple and does not require invariance (interface OR custom behavior) as per the
+      design.
+*/
+// coverity[autosar_cpp14_a11_0_2_violation]
 struct pack_serialized_descriptor
 {
     using payload_tag = payload_tags::pack;
@@ -1142,6 +1254,8 @@ struct pack_serialized_descriptor
     using payload_type =
         pack_serialized<decltype(visit_parameter_pack(std::declval<serialized_visitor<A>&>(), std::declval<Ts&>()...))>;
     using pack_desc = D;
+    // It is used by outside repo.
+    // coverity[autosar_cpp14_a0_1_1_violation : FALSE]
     static constexpr size_t element_number = sizeof...(Ts);
 };
 
@@ -1203,6 +1317,7 @@ class optional_pack_desc
 template <typename A, typename T1, typename T2>
 // This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, const std::pair<T1, T2>& /*unused*/)
 {
     return pack_serialized_descriptor<A, default_pack_desc, T1, T2>();
@@ -1211,6 +1326,7 @@ inline auto visit_as(serialized_visitor<A>& /*unused*/, const std::pair<T1, T2>&
 template <typename A, typename T1, typename T2>
 // This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, std::pair<T1, T2>& /*unused*/)
 {
     return pack_serialized_descriptor<A, default_pack_desc, T1, T2>();
@@ -1227,6 +1343,7 @@ inline auto visit_tuple_start(serialized_visitor<A>& visitor, std::tuple<T...>& 
 template <typename A, typename... Ts>
 // This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, const std::tuple<Ts...>& /*unused*/)
 {
     return pack_serialized_descriptor<A, default_pack_desc, Ts...>();
@@ -1235,6 +1352,7 @@ inline auto visit_as(serialized_visitor<A>& /*unused*/, const std::tuple<Ts...>&
 template <typename A, typename... Ts>
 // This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, std::tuple<Ts...>& /*unused*/)
 {
     return pack_serialized_descriptor<A, default_pack_desc, Ts...>();
@@ -1243,6 +1361,7 @@ inline auto visit_as(serialized_visitor<A>& /*unused*/, std::tuple<Ts...>& /*unu
 template <typename A>
 // This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void visit_as(serialized_visitor<A>& /*unused*/, const std::tuple<>& /*unused*/)
 {
 }
@@ -1250,6 +1369,7 @@ inline void visit_as(serialized_visitor<A>& /*unused*/, const std::tuple<>& /*un
 template <typename A>
 // This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline void visit_as(serialized_visitor<A>& /*unused*/, std::tuple<>& /*unused*/)
 {
 }
@@ -1267,8 +1387,9 @@ inline auto visit_as_struct(serialized_visitor<A>& /*unused*/, S&& /*unused*/, A
 }
 
 template <typename A, typename T>
-// // This is false positive, Overload signatures are different.
+// This is false positive, Overload signatures are different.
 // coverity[autosar_cpp14_m3_2_3_violation : FALSE]
+// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 inline auto visit_as(serialized_visitor<A>& /*unused*/, const score::cpp::optional<T>& /*unused*/)
 {
     return pack_serialized_descriptor<A, optional_pack_desc, char, T>();
