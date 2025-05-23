@@ -31,6 +31,14 @@ TEST(EmptyRecorderFactory, TestCreateEmptyRecorder)
     ASSERT_TRUE(IsRecorderOfType<EmptyRecorder>(recorder));
 }
 
+TEST(EmptyRecorderFactory, TestCreateEmptyRecorderWithParameter)
+{
+    const Configuration config;
+    // fcntl_instance is not used, so nullptr is ok for test
+    auto recorder = EmptyRecorderFactory{nullptr}.CreateLogRecorder(config, nullptr);
+    ASSERT_TRUE(IsRecorderOfType<EmptyRecorder>(recorder));
+}
+
 }  // namespace
 }  // namespace detail
 }  // namespace log
