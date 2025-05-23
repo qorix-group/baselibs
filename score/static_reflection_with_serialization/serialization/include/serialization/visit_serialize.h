@@ -577,12 +577,12 @@ inline void serialize(const T& t, serializer_helper<A>& a, vector_serialized<A, 
     // LCOV_EXCL_STOP
     const auto offset = a.advance(sizeof(subsize_s_t) + n * sizeof(S));
     serialize(offset, a, serial.offset);
-    if (offset != 0)
+    if (offset != 0U)
     {
         // Suppress AUTOSAR C++14 A4-7-1 rule findings. This rule stated: "An integer expression shall not lead to data
         // loss."
         // Justification: the comparison with max_n, ensure no data overflow
-        // coverity[autosar_cpp14_A4_7_1_violation]
+        // coverity[autosar_cpp14_a4_7_1_violation]
         const auto subsize = static_cast<typename A::subsize_t>(n * sizeof(S));
         serialize(subsize, a, *a.template address<subsize_s_t>(offset));
         S* string_size_location =
@@ -828,7 +828,7 @@ inline void deserialize(const string_serialized<A>& serial, deserializer_helper<
         t.resize(0UL);
         return;
     }
-    std::ignore = t.assign(string_address, n - 1);
+    std::ignore = t.assign(string_address, n - 1U);
 }
 
 // serializing parameter packs
