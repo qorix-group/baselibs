@@ -1,7 +1,23 @@
+# *******************************************************************************
+# Copyright (c) 2025 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0
+#
+# SPDX-License-Identifier: Apache-2.0
+# *******************************************************************************
+
+common --registry=https://raw.githubusercontent.com/eclipse-score/bazel_registry/main/
+common --registry=https://bcr.bazel.build
+
 # use mw/log stub implementation by default
 common --//score/mw/log/detail/flags:KUse_Stub_Implementation_Only=False
 common --//score/mw/log/flags:KRemote_Logging=False
 common --//score/json:base_library=nlohmann
-common --extra_toolchains=@llvm_toolchain//:cc-toolchain-x86_64-linux
+common --extra_toolchains=@gcc_toolchain//:host_gcc_12
 build --incompatible_strict_action_env
 test --test_tag_filters=-manual
