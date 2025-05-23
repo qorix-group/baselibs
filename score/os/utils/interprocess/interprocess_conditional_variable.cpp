@@ -59,7 +59,15 @@ score::os::InterprocessConditionalVariable::InterprocessConditionalVariable() no
         /* LCOV_EXCL_STOP */
     }
 
-    std::ignore = ::pthread_condattr_destroy(&attr);
+    error = ::pthread_condattr_destroy(&attr);
+
+    /* Do not overreact if it fails. Just log it and proceed. Attr is a local variable and will be destroyed anyway */
+    if (error != 0)  // LCOV_EXCL_BR_LINE
+    {
+        /* LCOV_EXCL_START */
+        std::cerr << "pthread_condattr_destroy failed to destroy attribute object: error: " << error;
+        /* LCOV_EXCL_STOP */
+    }
 }
 
 score::os::InterprocessConditionalVariable::~InterprocessConditionalVariable() noexcept
