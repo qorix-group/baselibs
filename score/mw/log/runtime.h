@@ -82,7 +82,6 @@ class Runtime final
 
     Recorder* recorder_instance_ = nullptr;
     std::unique_ptr<Recorder> default_recorder_ = nullptr;
-    std::unique_ptr<Recorder> fallback_recorder_ = nullptr;
 };
 
 }  // namespace detail
