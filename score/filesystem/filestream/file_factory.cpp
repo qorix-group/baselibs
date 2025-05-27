@@ -138,6 +138,7 @@ Result<int> OpenFileHandle(const Path& path,
     }
     else
     {
+        std::cerr << "Error opening file " << file_handle.error();
         return MakeUnexpected(ErrorCode::kCouldNotOpenFileStream);
     }
 }

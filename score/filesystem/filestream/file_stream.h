@@ -70,7 +70,7 @@ class FileStreamImpl : public FileStream
     {
         // It's pointless to test the result of Close() here, because we are in the destructor.
         // coverity[autosar_cpp14_a0_1_2_violation]
-        score::cpp::ignore = Close();
+        (void)Close();
     }
 
     FileStreamImpl& operator=(const FileStreamImpl&) = delete;
