@@ -47,13 +47,8 @@ template <typename Buf>
 class FileStreamImpl : public FileStream
 {
   public:
-    template <typename First,
-              std::enable_if_t<!std::is_same_v<score::cpp::remove_cvref_t<First>, FileStreamImpl>, bool> = true,
-              typename... Args>
-    explicit FileStreamImpl(First&& first, Args&&... remaining)
-        : std::basic_ios<char>::basic_ios(),
-          FileStream(&buf_),
-          buf_(std::forward<First>(first), std::forward<Args>(remaining)...)
+    template <typename... Args>
+    explicit FileStreamImpl(Args&&... args) : std::basic_ios<char>::basic_ios(), FileStream(&buf_), buf_(std::forward<Args>(args)...)
     {
     }
 
