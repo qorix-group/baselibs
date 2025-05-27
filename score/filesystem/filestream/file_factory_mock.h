@@ -33,7 +33,6 @@ class FileFactoryMock : public IFileFactory
                 Open,
                 (const Path&, std::ios_base::openmode),
                 (noexcept, override));
-    // coverity[autosar_cpp14_m11_0_1_violation] False positive
     MOCK_METHOD(score::Result<std::unique_ptr<FileStream>>,
                 AtomicUpdate,
                 (const Path&, std::ios_base::openmode),
