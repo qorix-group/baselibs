@@ -103,6 +103,7 @@ class StdioFileBuf : public StdioFilebufBase
     // coverity[autosar_cpp14_a12_8_6_violation]
     StdioFileBuf(StdioFileBuf&&) = default;
 
+    int sync() override;
     virtual ResultBlank Close();
 };
 

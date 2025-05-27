@@ -19,6 +19,20 @@
 namespace score::filesystem::details
 {
 
+int StdioFileBuf::sync()
+{
+    const auto parent_sync = StdioFilebufBase::sync();
+
+    if (!os::Unistd::instance().fsync(fd()).has_value())
+    {
+        return -1;
+    }
+    else
+    {
+        return parent_sync;
+    }
+}
+
 ResultBlank StdioFileBuf::Close()
 {
     if (is_open())
@@ -44,12 +58,6 @@ ResultBlank AtomicFileBuf::Close()
     if (is_open())
     {
         if (sync() != 0)
-        {
-            std::cerr << "Failed to issue sync call before atomic update" << '\n';
-            result = MakeUnexpected(ErrorCode::kFsyncFailed);
-        }
-
-        if (!os::Unistd::instance().fsync(fd()).has_value())
         {
             std::cerr << "Failed to issue fsync call before atomic update" << '\n';
             result = MakeUnexpected(ErrorCode::kFsyncFailed);
