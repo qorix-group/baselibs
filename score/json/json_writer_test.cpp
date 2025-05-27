@@ -19,6 +19,8 @@
 #include <memory>
 #include <sstream>
 
+using ::testing::_;
+
 namespace score
 {
 namespace json
@@ -26,118 +28,125 @@ namespace json
 namespace
 {
 
-using ::testing::_;
-using ::testing::StrEq;
+const std::string input_json_object{R"({
+    "num": 1,
+    "string": "foo"
+})"};
 
-class TestJsonList : public json::List
-{
-  public:
-    TestJsonList()
-    {
-        emplace_back(1234);
-        emplace_back(std::string{"string"});
-        score::json::Object obj{};
-        obj["key"] = score::json::Any{std::string{"value"}};
-        emplace_back(std::move(obj));
-    }
-
-    static constexpr auto expected = R"([
+const std::string input_json_list{R"([
     1234,
     "string",
     {
         "key": "value"
     }
-])";
-};
+])"};
 
-class TestJsonObject : public json::Object
+TEST(JsonWriterTest, ToBufferObject)
 {
-  public:
-    TestJsonObject()
-    {
-        emplace("string", score::json::Any{std::string{"foo"}});
-        emplace("num", score::json::Any{1});
-    }
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "writing json object to string buffer");
+    RecordProperty("TestType", "Verification of the control flow and data flow");
+    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
 
-    static constexpr auto expected = R"({
-    "num": 1,
-    "string": "foo"
-})";
-};
+    score::json::Object json{};
+    json["string"] = score::json::Any{std::string{"foo"}};
+    json["num"] = score::json::Any{1};
 
-using JsonSampleTypes = ::testing::Types<TestJsonList, TestJsonObject>;
-
-template <typename T>
-class JsonWriterWriteToFileTest : public ::testing::Test
-{
-  protected:
-    using SampleJson = T;
-
-    score::filesystem::SimpleStringStreamCollection stream{};
-    std::shared_ptr<score::filesystem::FileFactoryFake> file_factory_fake{
-        std::make_shared<score::filesystem::FileFactoryFake>(stream)};
-
-    template <typename Json, typename... OpenArgs>
-    std::string WriteToFile(const Json& json, std::string_view path, bool unsynced, OpenArgs&&... open_args)
-    {
-        score::json::JsonWriter writer{unsynced};
-        score::cpp::string_view path_view{path.data(), path.size()};
-        auto result = writer.ToFile(json, path_view, file_factory_fake, std::forward<OpenArgs>(open_args)...);
-
-        EXPECT_EQ(result.has_value(), true);
-
-        auto& file = file_factory_fake->Get("/foo/foo.json");
-        return file.str();
-    }
-};
-
-TYPED_TEST_SUITE(JsonWriterWriteToFileTest, JsonSampleTypes, );
-
-TYPED_TEST(JsonWriterWriteToFileTest, ToBuffer)
-{
-    this->RecordProperty("ASIL", "B");
-    this->RecordProperty("Description", "writing json to string buffer, cf. RFC-8259 section 4, 5 and 9");
-    this->RecordProperty("TestType", "Verification of the control flow and data flow");
-    this->RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
-
-    typename TestFixture::SampleJson json;
     score::json::JsonWriter writer{};
     std::string buffer = *writer.ToBuffer(json);
 
-    EXPECT_EQ(buffer, TypeParam::expected);
+    EXPECT_EQ(buffer, input_json_object);
+}
+TEST(JsonWriterTest, ToBufferList)
+{
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "writing json list to string buffer, cf. RFC-8259 section 4, 5 and 9");
+    RecordProperty("TestType", "Verification of the control flow and data flow");
+    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+
+    score::json::List list{};
+    list.push_back(json::Any{1234});
+    list.push_back(json::Any{std::string{"string"}});
+    score::json::Object obj{};
+    obj["key"] = score::json::Any{std::string{"value"}};
+    list.push_back(json::Any{std::move(obj)});
+
+    score::json::JsonWriter writer{};
+    std::string buffer = *writer.ToBuffer(list);
+
+    EXPECT_EQ(buffer, input_json_list);
 }
 
-TYPED_TEST(JsonWriterWriteToFileTest, ToFile)
+TEST(JsonWriterTest, ToFileInvalidFilePath)
 {
-    this->RecordProperty("ASIL", "B");
-    this->RecordProperty("Description", "writing json to valid file path");
-    this->RecordProperty("TestType", "Verification of the control flow and data flow");
-    this->RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Failure while writing json object to invalid file path");
+    RecordProperty("TestType", "Verification of the control flow and data flow");
+    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
 
-    typename TestFixture::SampleJson json;
+    score::json::Object json{};
+    json["string"] = score::json::Any{std::string{"foo"}};
+    json["num"] = score::json::Any{1};
 
-    EXPECT_CALL(*this->file_factory_fake, AtomicUpdate(StrEq("/foo/foo.json"), std::ios::out | std::ios::trunc))
-        .Times(1);
+    score::json::JsonWriter writer{};
+    auto result = writer.ToFile(json, "/foo/bar.json", std::make_shared<score::filesystem::FileFactory>());
 
-    auto file_content = this->WriteToFile(json, "/foo/foo.json", false);
-
-    EXPECT_EQ(file_content, TypeParam::expected);
+    EXPECT_EQ(result.error(), score::json::Error::kInvalidFilePath);
 }
 
-TYPED_TEST(JsonWriterWriteToFileTest, ToUnsyncedFile)
+TEST(JsonWriterTest, ToFileObject)
 {
-    this->RecordProperty("ASIL", "B");
-    this->RecordProperty("Description", "writing json to valid file path");
-    this->RecordProperty("TestType", "Verification of the control flow and data flow");
-    this->RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "writing json object to valid file path");
+    RecordProperty("TestType", "Verification of the control flow and data flow");
+    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
 
-    typename TestFixture::SampleJson json;
+    score::json::Object json{};
+    json["string"] = score::json::Any{std::string{"foo"}};
+    json["num"] = score::json::Any{1};
 
-    EXPECT_CALL(*this->file_factory_fake, Open(StrEq("/foo/foo.json"), std::ios::out | std::ios::trunc)).Times(1);
+    score::filesystem::SimpleStringStreamCollection stream{};
+    auto file_factory_fake = std::make_shared<score::filesystem::FileFactoryFake>(stream);
 
-    auto file_content = this->WriteToFile(json, "/foo/foo.json", true);
+    EXPECT_CALL(*file_factory_fake, Open(_, _)).Times(1);
 
-    EXPECT_EQ(file_content, TypeParam::expected);
+    score::json::JsonWriter writer{};
+    auto result = writer.ToFile(json, "/foo/foo.json", file_factory_fake);
+
+    EXPECT_EQ(result.has_value(), true);
+
+    auto& file = file_factory_fake->Get("/foo/foo.json");
+
+    EXPECT_EQ(file.str(), input_json_object);
+}
+
+TEST(JsonWriterTest, ToFileList)
+{
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "writing json list to valid file path, cf. RFC-8259 section 4, 5 and 9");
+    RecordProperty("TestType", "Verification of the control flow and data flow");
+    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+
+    score::json::List list{};
+    list.push_back(json::Any{1234});
+    list.push_back(json::Any{std::string{"string"}});
+    score::json::Object obj{};
+    obj["key"] = score::json::Any{std::string{"value"}};
+    list.push_back(json::Any{std::move(obj)});
+
+    score::filesystem::SimpleStringStreamCollection stream{};
+    auto file_factory_fake = std::make_shared<score::filesystem::FileFactoryFake>(stream);
+
+    EXPECT_CALL(*file_factory_fake, Open(_, _)).Times(1);
+
+    score::json::JsonWriter writer{};
+    auto result = writer.ToFile(list, "/foo/foo.json", file_factory_fake);
+
+    EXPECT_EQ(result.has_value(), true);
+
+    auto& file = file_factory_fake->Get("/foo/foo.json");
+
+    EXPECT_EQ(file.str(), input_json_list);
 }
 
 }  // namespace
