@@ -15,23 +15,14 @@ load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER
 cc_library(
     name = "filestream",
     srcs = [
-        "file_buf.cpp",
-        "file_buf.h",
         "file_factory.cpp",
-        "file_stream.cpp",
         "i_file_factory.cpp",
     ],
     hdrs = [
         "file_factory.h",
-        "file_stream.h",
         "i_file_factory.h",
     ],
     features = COMPILER_WARNING_FEATURES,
-    implementation_deps = [
-        "@score-baselibs//score/os:fcntl",
-        "@score-baselibs//score/os:stdio",
-        "@score-baselibs//score/os:unistd",
-    ],
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/filesystem:__subpackages__",
@@ -42,9 +33,7 @@ cc_library(
         "@score-baselibs//score/filesystem:error",
         "@score-baselibs//score/filesystem:path",
         "@score-baselibs//score/os:object_seam",
-        "@score-baselibs//score/os:stat",
         "@score-baselibs//score/result",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 
@@ -88,8 +77,6 @@ cc_test(
     deps = [
         ":fake",
         ":filestream",
-        "@score-baselibs//score/filesystem/factory",
-        "@score-baselibs//score/os/mocklib:fcntl_mock",
         "@googletest//:gtest_main",
     ],
 )
