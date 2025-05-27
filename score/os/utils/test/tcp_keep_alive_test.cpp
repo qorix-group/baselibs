@@ -37,6 +37,12 @@ class TcpKeepAliveTest : public ::testing::Test
 
 TEST_F(TcpKeepAliveTest, TcpKeepAlive)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "TcpKeepAliveTest Tcp Keep Alive");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     int socketfd = 0;
     EXPECT_CALL(socketMock, setsockopt(socketfd, _, _, _, _)).WillRepeatedly(Return(score::cpp::expected_blank<Error>{}));
     TcpKeepAlive(socketfd);

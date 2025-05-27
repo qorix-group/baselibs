@@ -55,6 +55,12 @@ void f(Spinlock& lock, std::uint32_t& val1, std::uint32_t& val2, std::uint32_t l
  */
 TEST(SpinlockTest, ConcIntManipulation)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "SpinlockTest Conc Int Manipulation");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     Spinlock lk;
     std::uint32_t val1, val2, loopCount;
     val1 = 0u;
@@ -75,6 +81,12 @@ TEST(SpinlockTest, ConcIntManipulation)
 
 TEST(SpinlockTest, TryLock)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "SpinlockTest Try Lock");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     Spinlock lk;
 
     lk.lock();
@@ -92,6 +104,12 @@ TEST(SpinlockTest, TryLock)
  */
 TEST(SpinlockTest, LockGuardSupport)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "SpinlockTest Lock Guard Support");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     Spinlock spinlock;
 
     {

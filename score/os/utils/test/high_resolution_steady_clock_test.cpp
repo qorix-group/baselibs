@@ -23,6 +23,11 @@ namespace
 
 TEST(HighResolutionSteadyClock, UnderlyingClock)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     RecordProperty("Description",
                    "This test ensures that the underlying clock of "
                    "HighResolutionSteadyClock is set appropriately per OS.");
@@ -48,6 +53,11 @@ constexpr auto NanosecondsOf(const Timepoint timepoint) noexcept
 
 TEST(HighResolutionSteadyClock, now)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     RecordProperty("Description",
                    "This test ensures that the values returned by HighResolutionSteadyClock's "
                    "method now() are consistent with the ones returned by the underlying clock.");

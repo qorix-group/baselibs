@@ -25,6 +25,12 @@ namespace test
 
 TEST(InterprocessMutex, locks)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "InterprocessMutex locks");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::os::InterprocessMutex unit{};
 
     unit.lock();
@@ -34,6 +40,12 @@ TEST(InterprocessMutex, locks)
 
 TEST(InterprocessMutex, LocksAndFrees)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "InterprocessMutex Locks And Frees");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::os::InterprocessMutex unit{};
 
     unit.lock();
@@ -42,6 +54,12 @@ TEST(InterprocessMutex, LocksAndFrees)
 
 TEST(InterprocessMutex, DoubleTryLockFails)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "InterprocessMutex Double Try Lock Fails");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::os::InterprocessMutex unit{};
 
     ASSERT_TRUE(unit.try_lock());
@@ -51,6 +69,12 @@ TEST(InterprocessMutex, DoubleTryLockFails)
 
 TEST(InterprocessMutex, FulfillsBasicLockableRequirements)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "InterprocessMutex Fulfills Basic Lockable Requirements");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::os::InterprocessMutex unit{};
 
     std::lock_guard<score::os::InterprocessMutex> lock{unit};

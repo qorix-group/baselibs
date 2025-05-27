@@ -39,6 +39,12 @@ struct PosixSemaphoreWrapperTest : ::testing::Test
 
 TEST_F(PosixSemaphoreWrapperTest, Count0)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "PosixSemaphoreWrapperTest Count0");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     utils::Semaphore sem(m_name, 0);
 
     std::thread t1(f, m_name);
@@ -55,6 +61,12 @@ TEST_F(PosixSemaphoreWrapperTest, Count0)
 
 TEST_F(PosixSemaphoreWrapperTest, Count1)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "PosixSemaphoreWrapperTest Count1");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     utils::Semaphore sem(m_name, 1);
 
     std::thread t1(f, m_name);
@@ -65,6 +77,12 @@ TEST_F(PosixSemaphoreWrapperTest, Count1)
 
 TEST_F(PosixSemaphoreWrapperTest, Count2)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "PosixSemaphoreWrapperTest Count2");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     utils::Semaphore sem(m_name, 2);
 
     std::thread t1(f, m_name);

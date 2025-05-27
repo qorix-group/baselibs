@@ -24,12 +24,24 @@ namespace
 
 TEST(MachineImpl, instance)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "MachineImpl instance");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::os::Machine& obj = score::os::Machine::instance();
     ASSERT_TRUE(&obj);
 }
 
 TEST(MachineImpl, is_qemu)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "MachineImpl is_qemu");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
 #ifdef MACHINE_QEMU
     ASSERT_TRUE(score::os::Machine::instance().is_qemu());
 #else
@@ -39,6 +51,12 @@ TEST(MachineImpl, is_qemu)
 
 TEST(Machine, is_sctf)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Machine is_sctf");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     ASSERT_TRUE(setenv("SCTF", "TRUE", 1) == 0);
     ASSERT_TRUE(is_sctf());
     ASSERT_TRUE(unsetenv("SCTF") == 0);
@@ -46,6 +64,12 @@ TEST(Machine, is_sctf)
 
 TEST(Machine, is_sctf_false)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Machine is_sctf_false");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     ASSERT_FALSE(is_sctf());
 }
 

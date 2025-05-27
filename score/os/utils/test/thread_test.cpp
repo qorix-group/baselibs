@@ -68,6 +68,7 @@ class ThreadNameTest : public Test
 
 TEST_F(ThreadNameTest, SetNameSucceeds)
 {
+    RecordProperty("Description", "ThreadNameTest Set Name Succeeds");
     RecordProperty("ParentRequirement", "SCR-4976940");
     RecordProperty("ASIL", "B");
     RecordProperty("TestingTechnique", "T-REQ");
@@ -83,6 +84,7 @@ TEST_F(ThreadNameTest, SetNameSucceeds)
 
 TEST_F(ThreadNameTest, JthreadSetNameSucceeds)
 {
+    RecordProperty("Description", "ThreadNameTest Jthread Set Name Succeeds");
     RecordProperty("ParentRequirement", "SCR-4976940");
     RecordProperty("ASIL", "B");
     RecordProperty("TestingTechnique", "T-REQ");
@@ -99,6 +101,12 @@ TEST_F(ThreadNameTest, JthreadSetNameSucceeds)
 
 TEST_F(ThreadNameTest, SetNameFails)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "ThreadNameTest Set Name Fails");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const size_t name_length = 200U;
     std::string thread_name(name_length, 'a');
     EXPECT_NO_THROW(set_thread_name(thread_, thread_name));
@@ -106,6 +114,7 @@ TEST_F(ThreadNameTest, SetNameFails)
 
 TEST_F(ThreadNameTest, GetNameSucceeds)
 {
+    RecordProperty("Description", "ThreadNameTest Get Name Succeeds");
     RecordProperty("ParentRequirement", "SCR-4977102");
     RecordProperty("ASIL", "B");
     RecordProperty("TestingTechnique", "T-REQ");
@@ -115,6 +124,12 @@ TEST_F(ThreadNameTest, GetNameSucceeds)
 
 TEST(ThreadAffinityTest, SetAffinitySucceeds)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "ThreadAffinityTest Set Affinity Succeeds");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     EXPECT_TRUE(set_thread_affinity(0));
 }
 
