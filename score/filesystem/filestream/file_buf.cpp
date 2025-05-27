@@ -11,7 +11,7 @@ int StdioFileBuf::sync()
 {
     const auto parent_sync = StdioFilebufBase::sync();
 
-    if (!os::Unistd::instance().fsync(fd()).has_value())
+    if (!os::Unistd::instance().fsync(file_handle_).has_value())
     {
         return -1;
     }
