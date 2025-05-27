@@ -361,6 +361,15 @@ Path Path::Filename() const noexcept
     score::cpp::ignore = filename.erase(0U, position_of_filename);
     return filename;
 }
+std::optional<std::string_view> Path::FilenameView() const noexcept
+{
+    const auto position_of_filename = FilenamePosition();
+    if (position_of_filename == string_type::npos)
+    {
+        return std::nullopt;
+    }
+    return std::string_view{&Native().at(position_of_filename), Native().size() - position_of_filename};
+}
 
 std::size_t Path::FilenamePosition() const noexcept
 {
