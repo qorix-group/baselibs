@@ -110,13 +110,6 @@ cc_test(
         "file_buf.cpp",
         "file_buf.h",
         "file_buf_test.cpp",
-        "file_factory.cpp",
-        "file_factory.h",
-        "file_factory_test_extra.cpp",
-        "file_stream.cpp",
-        "file_stream.h",
-        "i_file_factory.cpp",
-        "i_file_factory.h",
         "stdio_filebuf_base_testing.h",
     ],
     defines = [

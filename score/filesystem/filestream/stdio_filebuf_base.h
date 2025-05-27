@@ -16,7 +16,7 @@
 #include <iosfwd>
 #include <iostream>
 
-// The usage of the pre-processor here is imperative to differentiate between
+// The usage is pre-processor here is imperative to differentiate between
 // GCC's libstdc++ and LLVM's libstdcxx.
 // coverity[autosar_cpp14_a16_0_1_violation]
 #if defined(__GLIBCXX__)  // We're using GCC's libstdc++

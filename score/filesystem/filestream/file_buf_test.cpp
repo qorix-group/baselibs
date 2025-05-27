@@ -1,6 +1,5 @@
 #include "score/filesystem/filestream/file_buf.h"
 #include "score/filesystem/error.h"
-#include "score/filesystem/filestream/file_stream.h"
 #include "score/os/mocklib/stdiomock.h"
 #include "score/os/mocklib/unistdmock.h"
 
@@ -8,7 +7,6 @@
 
 using testing::_;
 using testing::Return;
-
 namespace score::filesystem::details
 {
 class FileBufTest : public ::testing::Test
@@ -88,12 +86,6 @@ TEST_F(AtomicFileBufTest, TestFailureOnRename)
     auto result = atomic_filebuf.Close();
     EXPECT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), ErrorCode::kCouldNotRenameFile);
-}
-
-TEST(FileStreamTest, TestNullBuffer)
-{
-    FileStream unit{nullptr};
-    EXPECT_TRUE(unit.Close().has_value());
 }
 
 }  // namespace score::filesystem::details

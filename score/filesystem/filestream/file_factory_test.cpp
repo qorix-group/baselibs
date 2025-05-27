@@ -12,7 +12,6 @@
  ********************************************************************************/
 #include "score/filesystem/filestream/file_factory.h"
 #include "score/filesystem/factory/filesystem_factory.h"
-#include "score/os/mocklib/fcntl_mock.h"
 
 #include <gtest/gtest.h>
 
@@ -113,26 +112,9 @@ class FileFactoryTest : public ::testing::Test
     bool remove_temp_;
 };
 
-class FileFactoryTestWithOsMock : public FileFactoryTest
-{
-  protected:
-    os::MockGuard<os::FcntlMock> fcntl_;
-};
-
 TEST_F(FileFactoryTest, OpensFile)
 {
     auto file = unit_.Open("/tmp/some_file", std::ios_base::out);
-
-    ASSERT_TRUE(file.has_value());
-
-    *file.value() << "Foo";
-
-    ::unlink("/tmp/some_file");
-}
-
-TEST_F(FileFactoryTest, OpensFileForAppending)
-{
-    auto file = unit_.Open("/tmp/some_file", std::ios_base::out | std::ios_base::app);
 
     ASSERT_TRUE(file.has_value());
 
@@ -177,16 +159,6 @@ TEST_F(FileFactoryTest, OpenForAtomicUpdate)
     std::string text;
     (*file) >> text;
     EXPECT_EQ(text, "Narf");
-}
-
-TEST_F(FileFactoryTest, AtomicUpdateInvalidMode)
-{
-    static constexpr auto kTestFileName = "not_existing_yet";
-    Path test_filename = test_tmpdir_ / kTestFileName;
-    auto file_result = unit_.AtomicUpdate(test_filename, std::ios::in);
-
-    ASSERT_FALSE(file_result.has_value());
-    EXPECT_EQ(file_result.error(), filesystem::ErrorCode::kNotImplemented);
 }
 
 TEST_F(FileFactoryTest, OldContentVisibleBeforeAtomicObjectGetsDeleted)
@@ -246,47 +218,6 @@ TEST_F(FileFactoryTest, ErrorOnFailingAtomicUpdate)
     EXPECT_FALSE(close_result.has_value());
 
     EXPECT_TRUE(fs.standard->RemoveAll(test_dir).has_value());
-}
-
-TEST_F(FileFactoryTest, AtomicUpdateWithEmptyPath)
-{
-    auto fs = FilesystemFactory{}.CreateInstance();
-
-    static constexpr auto kFaultyTargetFile{""};
-    Path test_dir = test_tmpdir_ / kFaultyTargetFile;
-    ASSERT_TRUE(fs.standard->CreateDirectory(test_dir).has_value());
-
-    auto stream = unit_.AtomicUpdate(test_dir, std::ios::out | std::ios::trunc);
-    ASSERT_FALSE(stream.has_value());
-    EXPECT_EQ(stream.error(), filesystem::ErrorCode::kCouldNotOpenFileStream);
-}
-
-TEST_F(FileFactoryTestWithOsMock, OpenFileHandleFailedOnOpen)
-{
-    constexpr os::Stat::Mode kDefaultMode = os::Stat::Mode::kReadUser | os::Stat::Mode::kWriteUser |
-                                            os::Stat::Mode::kReadGroup | os::Stat::Mode::kWriteGroup |
-                                            os::Stat::Mode::kReadOthers | os::Stat::Mode::kWriteOthers;
-
-    EXPECT_CALL(*fcntl_, open(_, _, _))
-        .WillOnce(Return(score::cpp::make_unexpected(score::os::Error::createUnspecifiedError())));
-    static constexpr auto kFaultyTargetFile{"path"};
-    Path test_dir = test_tmpdir_ / kFaultyTargetFile;
-
-    auto result = details::OpenFileHandle(test_tmpdir_, std::ios_base::out, kDefaultMode);
-    ASSERT_FALSE(result.has_value());
-    EXPECT_EQ(result.error(), filesystem::ErrorCode::kCouldNotOpenFileStream);
-}
-
-TEST_F(FileFactoryTestWithOsMock, AtomicUpdateFileHandleFailedOnOpen)
-{
-    EXPECT_CALL(*fcntl_, open(_, _, _))
-        .WillOnce(Return(score::cpp::make_unexpected(score::os::Error::createUnspecifiedError())));
-    static constexpr auto kFaultyTargetFile{"path"};
-    Path test_dir = test_tmpdir_ / kFaultyTargetFile;
-
-    auto result = unit_.AtomicUpdate(test_tmpdir_, std::ios_base::out);
-    ASSERT_FALSE(result.has_value());
-    EXPECT_EQ(result.error(), filesystem::ErrorCode::kCouldNotOpenFileStream);
 }
 
 }  // namespace

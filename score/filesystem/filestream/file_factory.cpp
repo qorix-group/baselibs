@@ -19,8 +19,6 @@
 #include "score/os/stdio.h"
 #include "score/os/unistd.h"
 
-#include <score/assert.hpp>
-
 #include <charconv>
 #include <algorithm>
 #include <cstdint>
@@ -75,8 +73,22 @@ OpenFlags IosOpenModeToOpenFlags(const std::ios_base::openmode mode) noexcept
     return flags;
 }
 
+template <typename Buf, typename... Args>
+Result<std::unique_ptr<FileStream>> CreateFileStream(Args&&... args)
+{
+    Buf filebuf{std::forward<Args>(args)...};
+    if (!filebuf.is_open())
+    {
+        return MakeUnexpected(filesystem::ErrorCode::kCouldNotOpenFileStream);
+    }
+    else
+    {
+        return std::make_unique<details::FileStreamImpl<Buf>>(std::move(filebuf));
+    }
+}
+
 template <std::uint32_t NumDigits>
-std::string AppendRandomDigits(std::string str) noexcept
+Result<std::string> AppendRandomDigits(std::string str) noexcept
 {
     auto seed = std::hash<std::thread::id>{}(std::this_thread::get_id());
     // The usage of an unique seed per thread is paramount to avoid collisions,
@@ -102,16 +114,16 @@ std::string AppendRandomDigits(std::string str) noexcept
     std::array<char, NumDigits> random_number_buffer{};
     const auto to_chars_result =
         std::to_chars(random_number_buffer.begin(), random_number_buffer.end(), random_number, 16);
-    // By the algorithm construction, there is no chance that the buffer is smaller than the value that it will hold.
-    SCORE_LANGUAGE_FUTURECPP_ASSERT_PRD_MESSAGE(to_chars_result.ec == std::errc{}, "to_chars failed");
-    str = str.append(random_number_buffer.begin(), to_chars_result.ptr);
-    return str;
+    if (to_chars_result.ec == std::errc{})
+    {
+        str = str.append(random_number_buffer.begin(), to_chars_result.ptr);
+        return str;
+    }
+    else
+    {
+        return MakeUnexpected(filesystem::ErrorCode::kCouldNotOpenFileStream);
+    }
 }
-
-}  // namespace
-
-namespace details
-{
 
 Result<int> OpenFileHandle(const Path& path,
                            const std::ios_base::openmode mode,
@@ -130,12 +142,12 @@ Result<int> OpenFileHandle(const Path& path,
     }
 }
 
-}  // namespace details
+}  // namespace
 
 Result<std::unique_ptr<std::iostream>> FileFactory::Open(const Path& path, const std::ios_base::openmode mode)
 {
-    return details::OpenFileHandle(path, mode, kDefaultMode).and_then([mode](int file_handle) {
-        return details::CreateFileStream<details::StdioFileBuf>(file_handle, mode);
+    return OpenFileHandle(path, mode, kDefaultMode).and_then([mode](int file_handle) {
+        return CreateFileStream<details::StdioFileBuf>(file_handle, mode);
     });
 }
 
@@ -159,13 +171,18 @@ Result<std::unique_ptr<FileStream>> FileFactory::AtomicUpdate(const Path& path,
     temp_filename.reserve(filename_view.size() + kNumDigits + 1U);  // add 1 for the leading '.'
     temp_filename.push_back('.');
     temp_filename = temp_filename.append(filename_view.begin(), filename_view.end());
-    const auto rand_filename = AppendRandomDigits<kNumDigits>(std::move(temp_filename));
-    auto temp_path = path.ParentPath();
-    temp_path /= rand_filename;
-
-    if (auto file_handle = details::OpenFileHandle(temp_path, mode, kDefaultMode); file_handle.has_value())
+    auto rand_filename = AppendRandomDigits<kNumDigits>(std::move(temp_filename));
+    if (!rand_filename.has_value())
     {
-        return details::CreateFileStream<details::AtomicFileBuf>(*file_handle, mode, std::move(temp_path), path);
+        return MakeUnexpected<std::unique_ptr<FileStream>>(std::move(rand_filename).error());
+    }
+
+    auto temp_path = path.ParentPath();
+    temp_path /= *rand_filename;
+
+    if (auto file_handle = OpenFileHandle(temp_path, mode, kDefaultMode); file_handle.has_value())
+    {
+        return CreateFileStream<details::AtomicFileBuf>(*file_handle, mode, std::move(temp_path), path);
     }
     else
     {
