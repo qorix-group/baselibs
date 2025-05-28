@@ -64,12 +64,22 @@ class QnxUnistdImplFixture : public ::testing::Test
     score::cpp::pmr::unique_ptr<score::os::qnx::QnxUnistdImpl> unit_{};
 };
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Set groups pid returns Error If Pass Invalid Params");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(QnxUnistdImplFixture, SetgroupspidReturnsErrorIfPassInvalidParams)
 {
     const auto val = unit_->setgroupspid(-1, nullptr, 0);
     ASSERT_FALSE(val.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Set groups pid New Group Added");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(QnxUnistdImplFixture, SetgroupspidNewGroupAdded)
 {
     ForkAndExpectTrue([]() noexcept {
@@ -114,6 +124,11 @@ class QnxUnistdFixture : public ::testing::Test
 
 // This UT isn't applicable for linux,
 // reason: "Elevated privileges required for this test which are not available in Linux";
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Set uid Changes Uid If Pass Valid Id");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(QnxUnistdFixture, SetuidChangesUidIfPassValidId)
 {
     ASSERT_EQ(::getuid(), 0);
@@ -127,6 +142,11 @@ TEST_F(QnxUnistdFixture, SetuidChangesUidIfPassValidId)
 
 // This UT isn't applicable for linux,
 // reason: "Elevated privileges required for this test which are not available in Linux";
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Set Gid Sets Gid If Pass Valid Id");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(QnxUnistdFixture, SetGidSetsGidIfPassValidId)
 {
     ASSERT_EQ(::getuid(), 0);

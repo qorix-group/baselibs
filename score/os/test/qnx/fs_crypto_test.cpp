@@ -25,6 +25,11 @@ using ::testing::Return;
 namespace
 {
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Create Object Successful");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(FsCrypto, CreateObjectSuccessful)
 {
     auto fscrypto = score::os::qnx::FsCrypto::createFsCryptoInstance();
@@ -53,6 +58,11 @@ struct fsCryptoMockTest : public ::testing::Test
     std::shared_ptr<score::os::qnx::FsCrypto> fscrypto;
 };
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test fs_crypto_domain_remove Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoMockTest, Test_fs_crypto_domain_remove_success)
 {
 
@@ -66,6 +76,11 @@ TEST_F(fsCryptoMockTest, Test_fs_crypto_domain_remove_success)
     EXPECT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test fs_crypto_domain_remove Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoMockTest, Test_fs_crypto_remove_failure)
 {
 
@@ -79,6 +94,11 @@ TEST_F(fsCryptoMockTest, Test_fs_crypto_remove_failure)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test fs_crypto_domain_add Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoMockTest, Test_fs_crypto_domain_add_success)
 {
 
@@ -96,6 +116,11 @@ TEST_F(fsCryptoMockTest, Test_fs_crypto_domain_add_success)
     EXPECT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test fs_crypto_domain_add Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoMockTest, Test_fs_crypto_domain_add_failure)
 {
 
@@ -113,6 +138,11 @@ TEST_F(fsCryptoMockTest, Test_fs_crypto_domain_add_failure)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test fs_crypto_domain_query Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoMockTest, Test_fs_crypto_domain_query_success)
 {
     const char* path = "/persistent";
@@ -125,6 +155,11 @@ TEST_F(fsCryptoMockTest, Test_fs_crypto_domain_query_success)
     EXPECT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test fs_crypto_domain_query Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoMockTest, Test_fs_crypto_domain_query_failure)
 {
     const char* path = "/persistent";
@@ -137,6 +172,11 @@ TEST_F(fsCryptoMockTest, Test_fs_crypto_domain_query_failure)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test fs_crypto_domain_unlock Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoMockTest, Test_fs_crypto_domain_unlock_success)
 {
     const char* path = "/persistent";
@@ -151,6 +191,11 @@ TEST_F(fsCryptoMockTest, Test_fs_crypto_domain_unlock_success)
     EXPECT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test fs_crypto_domain_unlock Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoMockTest, Test_fs_crypto_domain_unlock_failure)
 {
     const char* path = "/persistent";
@@ -165,6 +210,11 @@ TEST_F(fsCryptoMockTest, Test_fs_crypto_domain_unlock_failure)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test fs_crypto_file_set_domain Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoMockTest, Test_fs_crypto_file_set_domain_success)
 {
     const char* path = "/persistent";
@@ -177,6 +227,11 @@ TEST_F(fsCryptoMockTest, Test_fs_crypto_file_set_domain_success)
     EXPECT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test fs_crypto_file_set_domain Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoMockTest, Test_fs_crypto_file_set_domain_failure)
 {
     const char* path = "/persistent";

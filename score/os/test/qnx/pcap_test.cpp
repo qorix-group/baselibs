@@ -72,17 +72,32 @@ struct PcapFixture : ::testing::Test
     pcap_t* good_pcap_{nullptr};
 };
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Open Live Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapOpenLiveSuccess)
 {
     GetMeADevice();
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Open Live Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapOpenLiveFailure)
 {
     auto result = pcap_->pcap_open_live("invalid_device", kSnapLenTooLarge, 1, kPacketBufferDelay, errbuf_.data());
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Open Dead Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapOpenDeadSuccess)
 {
     auto result = pcap_->pcap_open_dead(DLT_EN10MB, kSnapLenSmall);
@@ -90,6 +105,11 @@ TEST_F(PcapFixture, PcapOpenDeadSuccess)
     pcap_->pcap_close(result.value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Loop Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapLoopSuccess)
 {
     GetMeADevice();
@@ -97,6 +117,11 @@ TEST_F(PcapFixture, PcapLoopSuccess)
     EXPECT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Breakloop Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapBreakloopSuccess)
 {
     GetMeADevice();
@@ -104,6 +129,11 @@ TEST_F(PcapFixture, PcapBreakloopSuccess)
     EXPECT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Close Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapCloseSuccess)
 {
     GetMeADevice();
@@ -112,6 +142,11 @@ TEST_F(PcapFixture, PcapCloseSuccess)
     good_pcap_ = nullptr;
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Geterr Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapGeterrSuccess)
 {
     GetMeADevice();
@@ -119,24 +154,44 @@ TEST_F(PcapFixture, PcapGeterrSuccess)
     EXPECT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Breakloop Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapBreakloopFailure)
 {
     auto result = pcap_->pcap_breakloop(nullptr);
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Close Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapCloseFailure)
 {
     auto result = pcap_->pcap_close(nullptr);
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Geterr With Null Pcap");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapGeterrWithNullPcap)
 {
     auto result = pcap_->pcap_geterr(nullptr);
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Loop Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapLoopFailure)
 {
     GetMeADevice();
@@ -146,6 +201,11 @@ TEST_F(PcapFixture, PcapLoopFailure)
     good_pcap_ = nullptr;
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Compile Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapCompileSuccess)
 {
     GetMeADevice();
@@ -156,6 +216,11 @@ TEST_F(PcapFixture, PcapCompileSuccess)
     EXPECT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Compile Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapCompileFailure)
 {
     GetMeADevice();
@@ -166,6 +231,11 @@ TEST_F(PcapFixture, PcapCompileFailure)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Compile Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapCompileFailure2)
 {
     GetMeADevice();
@@ -175,6 +245,11 @@ TEST_F(PcapFixture, PcapCompileFailure2)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Compile Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapCompileFailure3)
 {
     GetMeADevice();
@@ -184,6 +259,11 @@ TEST_F(PcapFixture, PcapCompileFailure3)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Set Filter Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapSetFilterSuccess)
 {
     GetMeADevice();
@@ -196,6 +276,11 @@ TEST_F(PcapFixture, PcapSetFilterSuccess)
     EXPECT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Set Filter Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapSetFilterFailure)
 {
     GetMeADevice();
@@ -204,6 +289,11 @@ TEST_F(PcapFixture, PcapSetFilterFailure)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Set Filter Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapSetFilterFailure2)
 {
     GetMeADevice();
@@ -211,6 +301,11 @@ TEST_F(PcapFixture, PcapSetFilterFailure2)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Free Code Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapFreeCodeSuccess)
 {
     GetMeADevice();
@@ -224,6 +319,11 @@ TEST_F(PcapFixture, PcapFreeCodeSuccess)
     EXPECT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Free Code Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapFreeCodeFailure)
 {
     GetMeADevice();
@@ -231,6 +331,11 @@ TEST_F(PcapFixture, PcapFreeCodeFailure)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Dump Open Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapDumpOpenSuccess)
 {
     GetMeADevice();
@@ -239,6 +344,11 @@ TEST_F(PcapFixture, PcapDumpOpenSuccess)
     EXPECT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Dump Open Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapDumpOpenFailure)
 {
     GetMeADevice();
@@ -247,6 +357,11 @@ TEST_F(PcapFixture, PcapDumpOpenFailure)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Dump Open Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapDumpOpenFailure2)
 {
     GetMeADevice();
@@ -254,6 +369,11 @@ TEST_F(PcapFixture, PcapDumpOpenFailure2)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Dump Open Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapDumpOpenFailure3)
 {
     GetMeADevice();
@@ -262,6 +382,11 @@ TEST_F(PcapFixture, PcapDumpOpenFailure3)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Dump Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapDumpSuccess)
 {
     GetMeADevice();
@@ -286,6 +411,11 @@ TEST_F(PcapFixture, PcapDumpSuccess)
     EXPECT_TRUE(result1.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Dump Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapDumpFailure)
 {
     GetMeADevice();
@@ -305,6 +435,11 @@ TEST_F(PcapFixture, PcapDumpFailure)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Dump Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapDumpFailure2)
 {
     GetMeADevice();
@@ -320,6 +455,11 @@ TEST_F(PcapFixture, PcapDumpFailure2)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Dump Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapDumpFailure3)
 {
     GetMeADevice();
@@ -334,6 +474,11 @@ TEST_F(PcapFixture, PcapDumpFailure3)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Dump Close Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapDumpCloseSuccess)
 {
     GetMeADevice();
@@ -343,6 +488,11 @@ TEST_F(PcapFixture, PcapDumpCloseSuccess)
     EXPECT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pcap Dump Close Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PcapFixture, PcapDumpCloseFailure)
 {
     GetMeADevice();

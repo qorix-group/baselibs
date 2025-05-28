@@ -24,6 +24,11 @@ class NeutrinoImplFixture : public ::testing::Test
     NeutrinoImpl neutrino_;
 };
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Thread Ctl Test returns Error");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(NeutrinoImplFixture, ThreadCtlTestReturnsError)
 {
     std::int32_t cmd = 0xFFFFFFFF;
@@ -34,6 +39,11 @@ TEST_F(NeutrinoImplFixture, ThreadCtlTestReturnsError)
     EXPECT_EQ(val.error(), score::os::Error::Code::kInvalidArgument);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Thread Ctl Get Thread Nme");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(NeutrinoImplFixture, ThreadCtlGetThreadNme)
 {
     std::int32_t valid_cmd{_NTO_TCTL_NAME};
@@ -52,6 +62,11 @@ TEST_F(NeutrinoImplFixture, ThreadCtlGetThreadNme)
     EXPECT_STREQ(thread_name.name_buf, name_buffer);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Interrupt Attach And Detach Test");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(NeutrinoImplFixture, InterruptAttachAndDetachTest)
 {
     std::uint64_t timeout{0U};
@@ -74,6 +89,11 @@ TEST_F(NeutrinoImplFixture, InterruptAttachAndDetachTest)
     EXPECT_NE(ret, -1);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Channel Create Deprecated Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(NeutrinoImplFixture, ChannelCreateDeprecatedSuccess)
 {
     std::uint32_t valid_flags{0U};
@@ -82,6 +102,11 @@ TEST_F(NeutrinoImplFixture, ChannelCreateDeprecatedSuccess)
     ASSERT_GE(result, 0);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Channel Create Deprecated Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(NeutrinoImplFixture, ChannelCreateDeprecatedFailure)
 {
     const auto invalid_flags{std::numeric_limits<std::uint32_t>::max()};
@@ -91,12 +116,22 @@ TEST_F(NeutrinoImplFixture, ChannelCreateDeprecatedFailure)
     EXPECT_EQ(errno, ENOTSUP);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Channel Create Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(NeutrinoImplFixture, ChannelCreateSuccess)
 {
     const auto result = neutrino_.ChannelCreate(Neutrino::ChannelFlag::kDisconnect);
     ASSERT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Channel Create Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(NeutrinoImplFixture, ChannelCreateFailure)
 {
     const auto result =
@@ -105,6 +140,11 @@ TEST_F(NeutrinoImplFixture, ChannelCreateFailure)
     EXPECT_EQ(errno, ENOTSUP);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Clock Adjust Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(NeutrinoImplFixture, ClockAdjustSuccess)
 {
     clockid_t clockid{CLOCK_REALTIME};
@@ -121,6 +161,11 @@ TEST_F(NeutrinoImplFixture, ClockAdjustSuccess)
               tick_nsec);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Clock Adjust Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(NeutrinoImplFixture, ClockAdjust_Failure)
 {
     clockid_t invalid_clockid{-1};
@@ -132,6 +177,11 @@ TEST_F(NeutrinoImplFixture, ClockAdjust_Failure)
     EXPECT_EQ(result.error(), score::os::Error::Code::kInvalidArgument);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Timer Timeout Deprecated Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(NeutrinoImplFixture, TimerTimeoutDeprecatedSuccess)
 {
     clockid_t clockid{CLOCK_REALTIME};
@@ -146,6 +196,11 @@ TEST_F(NeutrinoImplFixture, TimerTimeoutDeprecatedSuccess)
     EXPECT_EQ(result.value(), 0);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Timer Timeout Deprecated Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(NeutrinoImplFixture, TimerTimeoutDeprecatedFailure)
 {
     clockid_t clockid{-1};
@@ -160,6 +215,11 @@ TEST_F(NeutrinoImplFixture, TimerTimeoutDeprecatedFailure)
     EXPECT_EQ(result.error(), score::os::Error::Code::kInvalidArgument);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Timer Timeout Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(NeutrinoImplFixture, TimerTimeoutSuccess)
 {
     std::chrono::milliseconds min_sleep{2};
@@ -174,6 +234,11 @@ TEST_F(NeutrinoImplFixture, TimerTimeoutSuccess)
     ASSERT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test TimerTimeout Otime Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(NeutrinoImplFixture, TimerTimeoutOtimeSuccess)
 {
     std::chrono::milliseconds min_sleep{2};
@@ -183,6 +248,11 @@ TEST_F(NeutrinoImplFixture, TimerTimeoutOtimeSuccess)
     ASSERT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test TimerTimeout Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(NeutrinoImplFixture, TimerTimeoutFailure)
 {
     std::chrono::milliseconds min_sleep{2};
@@ -193,6 +263,11 @@ TEST_F(NeutrinoImplFixture, TimerTimeoutFailure)
     EXPECT_EQ(result.error(), score::os::Error::Code::kInvalidArgument);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Clock Cycles Monotonicity");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(NeutrinoImplFixture, ClockCyclesMonotonicity)
 {
     const auto start = neutrino_.ClockCycles();
@@ -200,6 +275,11 @@ TEST_F(NeutrinoImplFixture, ClockCyclesMonotonicity)
     ASSERT_GE(end, start);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Clock Cycles Elapsed Time");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(NeutrinoImplFixture, ClockCyclesElapsedTime)
 {
     const auto start = neutrino_.ClockCycles();

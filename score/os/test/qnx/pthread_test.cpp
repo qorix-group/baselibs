@@ -17,6 +17,11 @@
 namespace
 {
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Get Name Fails When Buffer Size Too Big");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(PthreadNameTest, GetNameFailsWhenBufferSizeTooBig)
 {
     RecordProperty("ParentRequirement", "SCR-4977102");
@@ -33,6 +38,11 @@ TEST(PthreadNameTest, GetNameFailsWhenBufferSizeTooBig)
     ASSERT_FALSE(read_result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "PMR Default Shall Return Impl Instance");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(QnxPthreadTest, PMRDefaultShallReturnImplInstance)
 {
     score::cpp::pmr::memory_resource* memory_resource = score::cpp::pmr::get_default_resource();

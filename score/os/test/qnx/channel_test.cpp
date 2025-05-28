@@ -66,66 +66,121 @@ struct ChannelMockTest : ::testing::Test
     score::os::MockChannel channelmock;
 };
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message Receive");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelMockTest, MsgReceive)
 {
     EXPECT_CALL(channelmock, MsgReceive);
     score::os::Channel::instance().MsgReceive(invalid_id, no_msg, no_bytes, no_info);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message receive Pulse");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelMockTest, MsgReceivePulse)
 {
     EXPECT_CALL(channelmock, MsgReceivePulse);
     score::os::Channel::instance().MsgReceivePulse(invalid_id, no_msg, no_bytes, no_info);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message Reply");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelMockTest, MsgReply)
 {
     EXPECT_CALL(channelmock, MsgReply);
     score::os::Channel::instance().MsgReply(invalid_id, status, no_reply, no_bytes);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message Error");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelMockTest, MsgError)
 {
     EXPECT_CALL(channelmock, MsgError);
     score::os::Channel::instance().MsgError(invalid_id, error);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message Send");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelMockTest, MsgSend)
 {
     EXPECT_CALL(channelmock, MsgSend);
     score::os::Channel::instance().MsgSend(invalid_id, no_msg, no_bytes, no_reply, no_bytes);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message send Pulse");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelMockTest, MsgSendPulse)
 {
     EXPECT_CALL(channelmock, MsgSendPulse);
     score::os::Channel::instance().MsgSendPulse(invalid_id, calling_thread_priority, code, value);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message send Pulse Ptr");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelMockTest, MsgSendPulsePtr)
 {
     EXPECT_CALL(channelmock, MsgSendPulsePtr);
     score::os::Channel::instance().MsgSendPulsePtr(invalid_id, calling_thread_priority, code_ptr, value_ptr);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message Deliver Event");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelMockTest, MsgDeliverEvent)
 {
     EXPECT_CALL(channelmock, MsgDeliverEvent);
     score::os::Channel::instance().MsgDeliverEvent(invalid_id, no_event);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Connect Client Info");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelMockTest, ConnectClientInfo)
 {
     EXPECT_CALL(channelmock, ConnectClientInfo);
     score::os::Channel::instance().ConnectClientInfo(invalid_scoid, no_client_info, ngroups);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Connect Attach");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelMockTest, ConnectAttach)
 {
     EXPECT_CALL(channelmock, ConnectAttach);
     score::os::Channel::instance().ConnectAttach(kAttachId, kInvalidPid, invalid_id, kAttachIndex, kAttachFlags);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Connect Detach");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelMockTest, ConnectDetach)
 {
     EXPECT_CALL(channelmock, ConnectDetach);
@@ -134,6 +189,11 @@ TEST_F(ChannelMockTest, ConnectDetach)
 
 // Tests of the real stuff
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Cover Unhappy Paths");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(ChannelTest, CoverUnhappyPaths)
 {
     auto& channel = score::os::Channel::instance();
@@ -286,6 +346,11 @@ score::cpp::expected<bool, score::os::Error> NextServiceRequest(const name_attac
 
 }  // namespace
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Check Happy Flow");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(ChannelTest, CheckHappyFlow)
 {
     auto& channel = score::os::Channel::instance();
@@ -333,6 +398,11 @@ TEST(ChannelTest, CheckHappyFlow)
     EXPECT_TRUE(dispatch.name_detach(attach.value(), detach_flags));
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "PMR Default Shall Return Impl Instance");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(ChannelCreateInstance, PMRDefaultShallReturnImplInstance)
 {
     score::cpp::pmr::memory_resource* memory_resource = score::cpp::pmr::get_default_resource();

@@ -37,40 +37,75 @@ struct ProcMgrMockTest : ::testing::Test
     score::os::MockProcMgr procmgrmock;
 };
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Procmgr Ability");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ProcMgrMockTest, procmgr_ability)
 {
     EXPECT_CALL(procmgrmock, procmgr_ability(kCurrentPid, PROCMGR_AID_EOL));
     score::os::ProcMgr::instance().procmgr_ability(kCurrentPid, PROCMGR_AID_EOL);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Procmgr Subrange Fails");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(ProcMgrTest, procmgr_subrange_fails)
 {
     EXPECT_FALSE(score::os::ProcMgr::instance().procmgr_ability(kCurrentPid, PROCMGR_AID_EOL | PROCMGR_AOP_SUBRANGE));
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Procmgr Generic Invalid Pid Fails");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(ProcMgrTest, procmgr_generic_invalid_pid_fails)
 {
     EXPECT_FALSE(score::os::ProcMgr::instance().procmgr_ability(kInvalidPid, PROCMGR_AID_EOL));
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Procmgr Invalid Ability Fails");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(ProcMgrTest, procmgr_invalid_ability_fails)
 {
     EXPECT_FALSE(score::os::ProcMgr::instance().procmgr_ability(
         kCurrentPid, PROCMGR_ADN_ROOT | PROCMGR_AOP_ALLOW | PROCMGR_AID_PUBLIC_CHANNEL | PROCMGR_AID_UNCREATED));
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Procmgr Generic Succeeds");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(ProcMgrTest, procmgr_generic_succeeds)
 {
     EXPECT_TRUE(score::os::ProcMgr::instance().procmgr_ability(kCurrentPid,
                                                              PROCMGR_ADN_ROOT | PROCMGR_AOP_ALLOW | PROCMGR_AID_EOL));
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Procmgr Specific Succeeds");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(ProcMgrTest, procmgr_specific_succeeds)
 {
     EXPECT_TRUE(score::os::ProcMgr::instance().procmgr_ability(
         kCurrentPid, PROCMGR_ADN_ROOT | PROCMGR_AOP_ALLOW | PROCMGR_AID_PUBLIC_CHANNEL));
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Procmgr Ability Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(ProcMgrTest, procmgr_ability_success)
 {
     auto result = score::os::ProcMgr::instance().procmgr_ability(
@@ -83,6 +118,11 @@ TEST(ProcMgrTest, procmgr_ability_success)
     EXPECT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Procmgr Ability Failure");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(ProcMgrTest, procmgr_ability_failure)
 {
     auto result =
@@ -91,6 +131,11 @@ TEST(ProcMgrTest, procmgr_ability_failure)
     EXPECT_EQ(result.error(), score::os::Error::Code::kNoSuchProcess);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Procmgr Daemon Success");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(ProcMgrTest, procmgr_daemon_success)
 {
     auto result = score::os::ProcMgr::instance().procmgr_daemon(

@@ -34,6 +34,11 @@ class InoutTestFixture : public ::testing::Test
     uintptr_t address_{};
 };
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "In Test To Return No Error Ifpass Valid Address");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(InoutTestFixture, in8TestToReturnNoErrorIfpassValidAddress)
 {
     const auto val = unit_->in8(address_);
@@ -41,6 +46,11 @@ TEST_F(InoutTestFixture, in8TestToReturnNoErrorIfpassValidAddress)
     EXPECT_EQ(val.value(), 0x0);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "In returns No Error If Pass Valid Address");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(InoutTestFixture, in16ReturnsNoErrorIfPassValidAddress)
 {
     const auto val = unit_->in16(address_);
@@ -48,6 +58,11 @@ TEST_F(InoutTestFixture, in16ReturnsNoErrorIfPassValidAddress)
     EXPECT_EQ(val.value(), 0x0);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "In Return No Error If Pass Valid Address");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(InoutTestFixture, in32ReturnNoErrorIfPassValidAddress)
 {
     const auto val = unit_->in32(address_);
@@ -55,18 +70,33 @@ TEST_F(InoutTestFixture, in32ReturnNoErrorIfPassValidAddress)
     EXPECT_EQ(val.value(), 0x0);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Out Return No Error If Pass Valid Address");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(InoutTestFixture, out8ReturnNoErrorIfPassValidAddress)
 {
     const auto val = unit_->out8(address_, 0xAA);
     EXPECT_TRUE(val.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Out Return No Error If Pass Valid Address");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(InoutTestFixture, out16ReturnNoErrorIfPassValidAddress)
 {
     const auto val = unit_->out16(address_, 0xAA);
     EXPECT_TRUE(val.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Out Return No Error If Pass Valid Address");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(InoutTestFixture, out32ReturnNoErrorIfPassValidAddress)
 {
     const auto val = unit_->out32(address_, 0xAA);

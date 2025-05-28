@@ -77,12 +77,22 @@ class ChannelImplFixture : public ::testing::Test
     std::unique_ptr<score::os::Channel> unit_;
 };
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message receive returns Error If Invalid Ch Id");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, MsgReceiveReturnsErrorIfInvalidChId)
 {
     const auto result = unit_->MsgReceive(kInvalidId, kNoMsg, kNoBytes, kNoInfo);
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message receive returns Error If Invalid Ch Id");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, MsgReceivevReturnsErrorIfInvalidChId)
 {
     constexpr auto riov_size = 8;
@@ -93,12 +103,22 @@ TEST_F(ChannelImplFixture, MsgReceivevReturnsErrorIfInvalidChId)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message receive Pulse returns Error If Invalid Ch Id");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, MsgReceivePulseReturnsErrorIfInvalidChId)
 {
     const auto result = unit_->MsgReceivePulse(kInvalidId, kNoMsg, kNoBytes, kNoInfo);
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message reply returns Error If Invalid Rcv Id");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, MsgReplyReturnsErrorIfInvalidRcvId)
 {
     constexpr auto buff_size = 255;
@@ -109,6 +129,11 @@ TEST_F(ChannelImplFixture, MsgReplyReturnsErrorIfInvalidRcvId)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message reply returns Error If Invalid Rcv Id");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, MsgReplyvReturnsErrorIfInvalidRcvId)
 {
     constexpr auto riov_size = 8;
@@ -119,6 +144,11 @@ TEST_F(ChannelImplFixture, MsgReplyvReturnsErrorIfInvalidRcvId)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message Error returns Error If Invalid Rcv Id");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, MsgErrorReturnsErrorIfInvalidRcvId)
 {
     constexpr std::int32_t error = EOK;
@@ -126,6 +156,11 @@ TEST_F(ChannelImplFixture, MsgErrorReturnsErrorIfInvalidRcvId)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message send returns Error If Invalid Rcv Id");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, MsgSendReturnsErrorIfInvalidRcvId)
 {
     MessageData data{};
@@ -133,6 +168,11 @@ TEST_F(ChannelImplFixture, MsgSendReturnsErrorIfInvalidRcvId)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message Sendv returns Error If Invalid Rcv Id");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, MsgSendvReturnsErrorIfInvalidRcvId)
 {
     constexpr auto iov_size = 8;
@@ -144,6 +184,11 @@ TEST_F(ChannelImplFixture, MsgSendvReturnsErrorIfInvalidRcvId)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Set Iov Fills Predefined Msg Data");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, SetIovFillsPredefinedMsgData)
 {
     iov_t msg{};
@@ -156,6 +201,11 @@ TEST_F(ChannelImplFixture, SetIovFillsPredefinedMsgData)
     EXPECT_EQ(msg.iov_base, data_ptr);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Set Iov Const Fills Predefined Msg Data");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, SetIovConstFillsPredefinedMsgData)
 {
     iov_t msg{};
@@ -168,6 +218,11 @@ TEST_F(ChannelImplFixture, SetIovConstFillsPredefinedMsgData)
     EXPECT_EQ(msg.iov_base_const, data_ptr);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message send Pulse returns Error If Invalid Rcv Id");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, MsgSendPulseReturnsErrorIfInvalidRcvId)
 {
     constexpr std::int32_t calling_thread_priority{-1};
@@ -179,6 +234,11 @@ TEST_F(ChannelImplFixture, MsgSendPulseReturnsErrorIfInvalidRcvId)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message send Pulse Ptr returns Error If Invalid Rcv Id");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, MsgSendPulsePtrReturnsErrorIfInvalidRcvId)
 {
     constexpr std::int32_t calling_thread_priority{-1};
@@ -190,6 +250,11 @@ TEST_F(ChannelImplFixture, MsgSendPulsePtrReturnsErrorIfInvalidRcvId)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message Deliver Event returns Error If Invalid Rcv Id");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, MsgDeliverEventReturnsErrorIfInvalidRcvId)
 {
     constexpr sigevent* no_event{nullptr};
@@ -197,6 +262,11 @@ TEST_F(ChannelImplFixture, MsgDeliverEventReturnsErrorIfInvalidRcvId)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Connect Client Info returns Error If Non Existing Coid");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, ConnectClientInfoReturnsErrorIfNonExistingCoid)
 {
     constexpr int32_t non_existing_coid{std::numeric_limits<int32_t>::min()};
@@ -208,18 +278,33 @@ TEST_F(ChannelImplFixture, ConnectClientInfoReturnsErrorIfNonExistingCoid)
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Connect Attach returns Error If Invalid Input");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, ConnectAttachReturnsErrorIfInvalidInput)
 {
     const auto result = unit_->ConnectAttach(kAttachId, kInvalidPid, kInvalidId, kAttachIndex, kAttachFlags);
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Connect Detach returns Error If Invalid Rcv Id");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, ConnectDetachReturnsErrorIfInvalidRcvId)
 {
     const auto result = unit_->ConnectDetach(kInvalidId);
     EXPECT_FALSE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Connect Attach And Detatch Flow");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, ConnectAttachAndDetatchFlow)
 {
     const auto chid = ChannelCreate(kOpenFlags);
@@ -229,6 +314,11 @@ TEST_F(ChannelImplFixture, ConnectAttachAndDetatchFlow)
     EXPECT_TRUE(result.has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message Deliver Event Flow");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, MsgDeliverEventFlow)
 {
     // This test sends MsgDeliverEvent from main thread to client.
@@ -308,6 +398,11 @@ TEST_F(ChannelImplFixture, MsgDeliverEventFlow)
     EXPECT_TRUE(Detach(attach.value()));
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Message Flow: Send receive Reply");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ChannelImplFixture, MessageFlow_SendReceiveReply)
 {
     /*

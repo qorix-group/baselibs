@@ -33,6 +33,11 @@ struct PciTest : ::testing::Test
     std::uint8_t func_ = 0U;
 };
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pci Device Read Cmd Fails");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciTest, pci_device_read_cmd_fails)
 {
     pci_bdf_t bdf;
@@ -42,6 +47,11 @@ TEST_F(PciTest, pci_device_read_cmd_fails)
     ASSERT_FALSE(pci_.pci_device_read_cmd(bdf, &cmd).has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pci Device Read Cmd Succeed");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciTest, pci_device_read_cmd_succeed)
 {
     pci_cmd_t cmd;
@@ -50,6 +60,11 @@ TEST_F(PciTest, pci_device_read_cmd_succeed)
     ASSERT_TRUE(pci_.pci_device_read_cmd(bdf, &cmd).has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pci Device Attach Fails");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciTest, pci_device_attach_fails)
 {
     pci_bdf_t bdf;
@@ -58,6 +73,11 @@ TEST_F(PciTest, pci_device_attach_fails)
     ASSERT_FALSE(pci_.pci_device_attach(bdf, static_cast<pci_attachFlags_t>(0xff)).has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pci Device Read Ba Fails");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciTest, pci_device_read_ba_fails)
 {
     pci_devhdl_t hdl;
@@ -66,6 +86,11 @@ TEST_F(PciTest, pci_device_read_ba_fails)
     ASSERT_FALSE(pci_.pci_device_read_ba(hdl, nullptr, nullptr, static_cast<pci_reqType_t>(9)).has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pci Device Read Ba Succeed");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciTest, pci_device_read_ba_succeed)
 {
     pci_bdf_t bdf = pci_.pci_bdf(bus_, dev_, func_);
@@ -82,6 +107,11 @@ TEST_F(PciTest, pci_device_read_ba_succeed)
     ASSERT_EQ(pci_device_detach(hdl), PCI_ERR_OK);
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pci Device Cfg Rd Fails");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciTest, pci_device_cfg_rd32_fails)
 {
     pci_bdf_t bdf;
@@ -92,6 +122,11 @@ TEST_F(PciTest, pci_device_cfg_rd32_fails)
     ASSERT_FALSE(pci_.pci_device_cfg_rd32(bdf, offset, &val).has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pci Device Cfg Rd Succeed");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciTest, pci_device_cfg_rd32_succeed)
 {
     std::uint16_t offset{64U};
@@ -102,6 +137,11 @@ TEST_F(PciTest, pci_device_cfg_rd32_succeed)
     EXPECT_NO_THROW(score::os::qnx::Pci::instance());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pci Device Read Did Fails");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciTest, pci_device_read_did_fails)
 {
     pci_bdf_t bdf;
@@ -111,6 +151,11 @@ TEST_F(PciTest, pci_device_read_did_fails)
     ASSERT_FALSE(pci_.pci_device_read_did(bdf, &did).has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pci Device Read Did Succeed");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciTest, pci_device_read_did_succeed)
 {
     pci_did_t did;
@@ -119,6 +164,11 @@ TEST_F(PciTest, pci_device_read_did_succeed)
     ASSERT_TRUE(pci_.pci_device_read_did(bdf, &did).has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pci Device Read Vid Fails");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciTest, pci_device_read_vid_fails)
 {
     pci_bdf_t bdf;
@@ -128,6 +178,11 @@ TEST_F(PciTest, pci_device_read_vid_fails)
     ASSERT_FALSE(pci_.pci_device_read_vid(bdf, &vid).has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pci Device Read Vid Succeed");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciTest, pci_device_read_vid_succeed)
 {
     pci_vid_t vid;
@@ -136,6 +191,11 @@ TEST_F(PciTest, pci_device_read_vid_succeed)
     ASSERT_TRUE(pci_.pci_device_read_vid(bdf, &vid).has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pci Device Detach Succeed");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciTest, pci_device_detach_succeed)
 {
     pci_bdf_t bdf = pci_.pci_bdf(bus_, dev_, func_);
@@ -146,12 +206,22 @@ TEST_F(PciTest, pci_device_detach_succeed)
     ASSERT_TRUE(pci_.pci_device_detach(hdl).has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pci Device Detach Fails");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciTest, pci_device_detach_fails)
 {
     pci_devhdl_t hdl = static_cast<pci_devhdl_t>(0);  // Invalid handle
     EXPECT_FALSE(pci_.pci_device_detach(hdl).has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pci Device Find Succeed");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciTest, pci_device_find_succeed)
 {
     pci_vid_t vid = 0xFFFF;
@@ -160,6 +230,11 @@ TEST_F(PciTest, pci_device_find_succeed)
     EXPECT_TRUE(pci_.pci_device_find(0, vid, did, classcode).has_value());
 }
 
+RecordProperty("ParentRequirement", "SCR-46010294");
+RecordProperty("ASIL", "B");
+RecordProperty("Description", "Test Pci Device Find Fails");
+RecordProperty("TestingTechnique", "Interface test");
+RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciTest, pci_device_find_fails)
 {
     pci_vid_t vid = 0x1234;
