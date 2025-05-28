@@ -63,11 +63,26 @@ score::cpp::expected<bool, ::score::os::Error> IsEntryForUser(
 }  // namespace
 
 ::score::os::AccessControlList::AccessControlList(const score::os::Acl::FileDescriptor file_descriptor)
-    : IAccessControlList{}, acl_{}, file_descriptor_{file_descriptor}
+    : IAccessControlList{}, acl_{}, file_descriptor_{file_descriptor}, file_path_{}
 {
     auto& operating_system = ::score::os::Acl::instance();
-
     const auto result = operating_system.acl_get_fd(file_descriptor);
+    if (result.has_value())
+    {
+        acl_ = result.value(); /* LCOV_EXCL_BR_LINE: Branching is due to hidden exception handling */
+    }
+    else
+    {
+        /* Branching is due to hidden exception handling */
+        score::cpp::ignore = error_.emplace(result.error()); /* LCOV_EXCL_BR_LINE */
+    }
+}
+
+::score::os::AccessControlList::AccessControlList(const std::string file_path)
+    : IAccessControlList{}, acl_{}, file_descriptor_{}, file_path_{file_path}
+{
+    auto& operating_system = ::score::os::Acl::instance();
+    const auto result = operating_system.acl_get_file(file_path);
     if (result.has_value())
     {
         acl_ = result.value(); /* LCOV_EXCL_BR_LINE: Branching is due to hidden exception handling */

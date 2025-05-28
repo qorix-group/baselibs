@@ -31,6 +31,10 @@ class AclMock : public Acl
                 acl_get_fd,
                 (FileDescriptor),
                 (const, noexcept, override));
+    MOCK_METHOD((score::cpp::expected<AclCollection, score::os::Error>),
+                acl_get_file,
+                (std::string),
+                (const, noexcept, override));
     MOCK_METHOD((score::cpp::expected_blank<score::os::Error>),
                 acl_create_entry,
                 (AclCollection*, Entry*),

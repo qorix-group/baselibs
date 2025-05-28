@@ -40,6 +40,7 @@ class AclFixture : public Test
     uid_t user_identifier_{42};
     score::os::MockGuard<score::os::AclMock> os_mock_{};
     score::os::Acl::FileDescriptor file_descriptor_{17};
+    std::string file_path_{"/tmp/test_file"};
     score::os::AccessControlList unit_{file_descriptor_};
     score::cpp::expected_blank<score::os::Error> error_{score::cpp::make_unexpected(score::os::Error::createFromErrno())};
     score::cpp::expected_blank<score::os::Error> no_error_{};
@@ -240,6 +241,21 @@ TEST_F(AclFixture, FindUserIdsWithPermission_ErrorOnReadingAclFromFile)
     const auto result = unit.FindUserIdsWithPermission(::score::os::Acl::Permission::kWrite);
 
     // That finding users with specific permission returns an error
+    ASSERT_FALSE(result.has_value());
+}
+
+TEST_F(AclFixture, FindUserIdsWithPermission_ErrorOnReadingAclFromFilePath)
+{
+    // Given nothing
+    // Expecting that we get an error while reading ACL from a file
+    EXPECT_CALL(*os_mock_, acl_get_file(file_path_))
+        .WillOnce(Return(score::cpp::make_unexpected(score::os::Error::createFromErrno())));
+
+    // When creating our AccessControlList
+    score::os::AccessControlList unit{file_path_};
+    const auto result = unit.FindUserIdsWithPermission(::score::os::Acl::Permission::kWrite);
+
+    // That allowing users returns an error
     ASSERT_FALSE(result.has_value());
 }
 
@@ -503,6 +519,39 @@ const std::vector<std::tuple<bool, std::string, ::score::os::Acl::Permission, st
 
 INSTANTIATE_TEST_SUITE_P(FindUserPermissionWithAcl,
                          FindUsersWithPermissionParam,
+                         ::testing::ValuesIn(acl_user_permission_entries));
+
+class FindUsersWithPermissionParamFilePath
+    : public ::testing::TestWithParam<std::tuple<bool, std::string, ::score::os::Acl::Permission, std::vector<uid_t>>>
+{
+};
+
+TEST_P(FindUsersWithPermissionParamFilePath, FindUserIdsWithPermissionTestFilePath)
+{
+    score::os::AclMock os_mock_{};
+    std::string file_path{"/tmp/test_file"};
+    const auto expected_result = std::get<0>(GetParam());
+    std::string acl_text = std::get<1>(GetParam());
+    const auto permission = std::get<2>(GetParam());
+    std::vector<score::os::IAccessControlList::UserIdentifier> expected_user_list = std::get<3>(GetParam());
+
+    acl_t acl = ::acl_from_text(acl_text.c_str());
+    ASSERT_NE(acl, nullptr) << "Failed to create ACL from text";
+
+    EXPECT_CALL(os_mock_, acl_get_file(file_path)).WillOnce(Return(acl));
+
+    score::os::Acl::set_testing_instance(os_mock_);
+    score::os::AccessControlList unit{file_path};
+    score::os::Acl::restore_instance();
+
+    const auto result = unit.FindUserIdsWithPermission(permission);
+
+    ASSERT_EQ(result.has_value(), expected_result);
+    ASSERT_EQ(result.value(), expected_user_list);
+}
+
+INSTANTIATE_TEST_SUITE_P(FindUserPermissionWithAclFilePath,
+                         FindUsersWithPermissionParamFilePath,
                          ::testing::ValuesIn(acl_user_permission_entries));
 
 TEST_F(AclFixture, ErrorWhileCreatingACLEntry)
@@ -770,6 +819,91 @@ TEST(AclTest, AddRwPermissionForUser)
     ASSERT_NE(get_entry_result, -1);
     ASSERT_TRUE(found);
 
+    ::close(tempfile);
+}
+
+TEST(AclTest, AddRwPermissionForUserFilePath)
+{
+    // We need to use the current uid here as setting arbitrary uids seems to be prevented by the Bazel sandbox
+    const uid_t user_identifer{::getuid()};
+    std::string filename{};
+
+    const char* test_tmpdir = ::getenv("TEST_TMPDIR");
+    if (test_tmpdir != nullptr)
+    {
+        filename = test_tmpdir;
+    }
+    else
+    {
+        filename = "/tmp";
+    }
+
+    filename += "/acl-test-XXXXXX";
+
+    // Given a dummy temporary file with the default access permissions (0600) and no explicit permission set for
+    // the current user.
+    int tempfile = ::mkstemp(&filename[0]);
+
+    // (Verify that user is not existing as a user entry)
+    acl_t cur_acl = ::acl_get_file(filename.c_str(), ACL_TYPE_ACCESS);
+    ASSERT_NE(cur_acl, nullptr);
+
+    acl_entry_t entry;
+    int get_entry_result = ::acl_get_entry(cur_acl, ACL_FIRST_ENTRY, &entry);
+    while (get_entry_result == 1)
+    {
+        acl_tag_t tag_type{};
+        ASSERT_NE(-1, ::acl_get_tag_type(entry, &tag_type));
+        if (tag_type == ACL_USER)
+        {
+            void* qualifier = ::acl_get_qualifier(entry);
+            ASSERT_NE(nullptr, qualifier);
+            ASSERT_NE(user_identifer, *static_cast<uid_t*>(qualifier));
+            ::acl_free(qualifier);
+        }
+        get_entry_result = ::acl_get_entry(cur_acl, ACL_NEXT_ENTRY, &entry);
+    }
+    ASSERT_NE(get_entry_result, -1);
+    ::acl_free(cur_acl);
+
+    // when both read and write permissions are granted
+    score::os::AccessControlList access_control_list{tempfile};
+    auto allow_result = access_control_list.AllowUser(user_identifer, score::os::Acl::Permission::kRead);
+    ASSERT_TRUE(allow_result.has_value());
+    allow_result = access_control_list.AllowUser(user_identifer, score::os::Acl::Permission::kWrite);
+    ASSERT_TRUE(allow_result.has_value());
+
+    // then the user can be found in the ACL having rw rights
+    cur_acl = ::acl_get_fd(tempfile);
+    ASSERT_NE(cur_acl, nullptr);
+    bool found{false};
+    get_entry_result = ::acl_get_entry(cur_acl, ACL_FIRST_ENTRY, &entry);
+    while (get_entry_result == 1 && !found)
+    {
+        acl_tag_t tag_type{};
+        ASSERT_NE(-1, ::acl_get_tag_type(entry, &tag_type));
+        if (tag_type == ACL_USER)
+        {
+            void* qualifier = ::acl_get_qualifier(entry);
+            ASSERT_NE(nullptr, qualifier);
+            if (*static_cast<uid_t*>(qualifier) == user_identifer)
+            {
+                found = true;
+                acl_permset_t perms{};
+                ASSERT_NE(-1, ::acl_get_permset(entry, &perms));
+                ASSERT_EQ(1, ACL_GET_PERM(perms, ACL_READ));
+                ASSERT_EQ(1, ACL_GET_PERM(perms, ACL_WRITE));
+                ASSERT_EQ(0, ACL_GET_PERM(perms, ACL_EXECUTE));
+            }
+            ::acl_free(qualifier);
+        }
+        get_entry_result = ::acl_get_entry(cur_acl, ACL_NEXT_ENTRY, &entry);
+    }
+    ::acl_free(cur_acl);
+    ASSERT_NE(get_entry_result, -1);
+    ASSERT_TRUE(found);
+
+    ::unlink(filename.c_str());
     ::close(tempfile);
 }
 

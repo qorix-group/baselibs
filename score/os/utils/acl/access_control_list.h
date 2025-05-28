@@ -27,6 +27,7 @@ class AccessControlList : public IAccessControlList
 {
   public:
     explicit AccessControlList(const score::os::Acl::FileDescriptor);
+    explicit AccessControlList(const std::string);
     ~AccessControlList() override;
 
     AccessControlList(AccessControlList&&) noexcept = delete;
@@ -63,6 +64,7 @@ class AccessControlList : public IAccessControlList
     ::score::os::Acl::AclCollection acl_;
     score::cpp::optional<::score::os::Error> error_;
     ::score::os::Acl::FileDescriptor file_descriptor_;
+    std::string file_path_;
 };
 
 }  // namespace os

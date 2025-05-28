@@ -82,6 +82,7 @@ class Acl : public ObjectSeam<Acl>
 
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
     virtual score::cpp::expected<AclCollection, score::os::Error> acl_get_fd(const FileDescriptor) const noexcept = 0;
+    virtual score::cpp::expected<AclCollection, score::os::Error> acl_get_file(const std::string) const noexcept = 0;
     virtual score::cpp::expected_blank<score::os::Error> acl_create_entry(AclCollection* const, Entry* const) const noexcept = 0;
     virtual score::cpp::expected<score::cpp::optional<Entry>, score::os::Error> acl_get_entry(const AclCollection,
                                                                               const EntryIndex) const noexcept = 0;

@@ -38,6 +38,20 @@ score::cpp::expected<Acl::AclCollection, score::os::Error> AclInstance::acl_get_
     return acl;
 }
 
+/* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
+/* KW_SUPPRESS_START:AUTOSAR.MEMB.VIRTUAL.FINAL: Compiler warn suggests override */
+score::cpp::expected<Acl::AclCollection, score::os::Error> AclInstance::acl_get_file(const std::string file_path) const noexcept
+{
+    auto* const acl = ::acl_get_file(file_path.c_str(), ACL_TYPE_ACCESS);
+    if (acl == nullptr)
+    {
+        return score::cpp::make_unexpected(score::os::Error::createFromErrno());
+    }
+    return acl;
+}
+/* KW_SUPPRESS_END:AUTOSAR.MEMB.VIRTUAL.FINAL: Compiler warn suggests override */
+/* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
+
 /* KW_SUPPRESS_START:AUTOSAR.MEMB.VIRTUAL.FINAL: Compiler warn suggests override */
 /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 score::cpp::expected<score::cpp::optional<Acl::Entry>, score::os::Error> AclInstance::acl_get_entry(
