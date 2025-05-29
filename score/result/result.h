@@ -46,6 +46,9 @@ using Blank = score::cpp::blank;
 using ResultBlank = Result<Blank>;
 
 template <typename Code>
+// Overload of MakeUnexpected; the overloads have different signatures
+// and their first parameters are of different type
+// coverity[autosar_cpp14_a2_10_4_violation]
 auto MakeUnexpected(Code code, const std::string_view user_message = "") noexcept -> Unexpected
 {
     return Unexpected{MakeError(code, user_message)};
