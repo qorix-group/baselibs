@@ -28,13 +28,14 @@ struct PciSafetylTest : ::testing::Test
     std::uint8_t func = 0;
 };
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Pci Device Cfg Rd Fails");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciSafetylTest, pci_device_cfg_rd32_fails)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Pci Device Cfg Rd Fails");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     pci_bdf_t bdf;
     std::uint16_t offset{64};
     std::uint32_t val{0};
@@ -43,13 +44,14 @@ TEST_F(PciSafetylTest, pci_device_cfg_rd32_fails)
     ASSERT_FALSE(pci_.pci_device_cfg_rd32(bdf, offset, &val).has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Pci Device Read Did Fails");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciSafetylTest, pci_device_read_did_fails)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Pci Device Read Did Fails");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     pci_bdf_t bdf;
     pci_did_t did;
     std::memset(&bdf, 0xff, sizeof(pci_bdf_t));
@@ -57,13 +59,14 @@ TEST_F(PciSafetylTest, pci_device_read_did_fails)
     ASSERT_FALSE(pci_.pci_device_read_did(bdf, &did).has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Pci Device Read Vid Fails");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(PciSafetylTest, pci_device_read_vid_fails)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Pci Device Read Vid Fails");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     pci_bdf_t bdf;
     pci_vid_t vid;
     std::memset(&bdf, 0xff, sizeof(pci_bdf_t));

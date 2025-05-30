@@ -44,13 +44,14 @@ struct SysctlTestMock : ::testing::Test
     score::os::MockSysctl mock_sysctl;
 };
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function sysctl");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(SysctlTestMock, TestFunction_sysctl)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function sysctl");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const std::size_t RETURN_LENGTH = 100;
     std::int32_t sys_name[6] = {1, 2, 3, 4, 5, 6};
     auto& sys_name_ptr = sys_name;
@@ -83,13 +84,14 @@ TEST_F(SysctlTestMock, TestFunction_sysctl)
     ASSERT_FALSE(res.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function sysctlbyname");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(SysctlTestMock, TestFunction_sysctlbyname)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function sysctlbyname");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const std::size_t RETURN_LENGTH = 100;
     const char* sys_name = "some.dummy.parameter";
     std::size_t sys_len{RETURN_LENGTH};
@@ -119,13 +121,13 @@ struct SysctlImplTest : ::testing::Test
 
 constexpr std::string_view kSysName{"kern.clockrate"};
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function sysctl Success");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(SysctlImplTest, TestFunction_sysctl_Success)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function sysctl Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     std::array<std::int32_t, 2> sys_name = {
         CTL_KERN,
@@ -139,13 +141,14 @@ TEST_F(SysctlImplTest, TestFunction_sysctl_Success)
     ASSERT_GT(sys_len, 0);
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function sysctl Failure");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(SysctlImplTest, TestFunction_sysctl_Failure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function sysctl Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     std::array<std::int32_t, 6> sys_name = {1, 2, 3, 4, 5, 6};
     std::array<std::int8_t, 1> buf_small{};
 
@@ -153,13 +156,14 @@ TEST_F(SysctlImplTest, TestFunction_sysctl_Failure)
     ASSERT_FALSE(res.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function sysctlbyname Success");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(SysctlImplTest, TestFunction_sysctlbyname_Success)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function sysctlbyname Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     std::size_t sys_len{};
 
     auto res = instance_.sysctlbyname(kSysName.data(), nullptr, &sys_len, nullptr, 0);
@@ -171,13 +175,14 @@ TEST_F(SysctlImplTest, TestFunction_sysctlbyname_Success)
     ASSERT_GT(sys_len, 0);
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function sysctlbyname Failure");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(SysctlImplTest, TestFunction_sysctlbyname_Failure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function sysctlbyname Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     auto res = instance_.sysctlbyname("", nullptr, nullptr, nullptr, 0);
     ASSERT_FALSE(res.has_value());
 }

@@ -45,13 +45,14 @@ struct fsCryptoImplTest : public ::testing::Test
     std::unique_ptr<score::os::qnx::FsCrypto> fscrypto_ptr_;
 };
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function fs_crypto_domain_add Success");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_domain_add_Success)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function fs_crypto_domain_add Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const char* path = "/persistent";
     std::int32_t domain{6};
     std::int32_t type{FS_CRYPTO_TYPE_XTS};
@@ -62,13 +63,14 @@ TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_domain_add_Success)
     EXPECT_TRUE(res.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function fs_crypto_file_set_domain Success");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_set_domain_Success)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function fs_crypto_file_set_domain Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const char* path = "/persistent/test";
     std::int32_t domain{6};
     std::int32_t preply{0};
@@ -77,13 +79,13 @@ TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_set_domain_Success)
     EXPECT_TRUE(res.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function fs_crypto_domain_add Failure");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_domain_add_Failure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function fs_crypto_domain_add Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const std::size_t bytes_length = 64;
     const char* path = "/persistent/test";
@@ -96,13 +98,13 @@ TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_domain_add_Failure)
     EXPECT_FALSE(res.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function fs_crypto_domain_query Success");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_domain_query_Success)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function fs_crypto_domain_query Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const char* path = "/persistent";
     std::int32_t domain{6};
@@ -112,13 +114,13 @@ TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_domain_query_Success)
     EXPECT_TRUE(res.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function fs_crypto_domain_query Failure");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_domain_query_Failure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function fs_crypto_domain_query Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const char* path = "/persistent/test";
     std::int32_t domain{-1};
@@ -128,13 +130,14 @@ TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_domain_query_Failure)
     EXPECT_FALSE(res.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function fs_crypto_domain_unlock Success");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_domain_unlock_Success)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function fs_crypto_domain_unlock Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const char* path = "/persistent";
     std::int32_t domain{6};
     std::int32_t preply{0};
@@ -143,13 +146,14 @@ TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_domain_unlock_Success)
     EXPECT_TRUE(res.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function fs_crypto_domain_unlock Failure");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_domain_unlock_Failure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function fs_crypto_domain_unlock Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const char* path = "/persistent/test";
     std::int32_t domain{-1};
     std::int32_t length{5};
@@ -159,13 +163,14 @@ TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_domain_unlock_Failure)
     EXPECT_FALSE(res.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function fs_crypto_file_set_domain Failure");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_set_domain_Failure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function fs_crypto_file_set_domain Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const char* path = "/persistent/test";
     std::int32_t domain{-1};
     std::int32_t preply{0};
@@ -174,13 +179,13 @@ TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_set_domain_Failure)
     EXPECT_FALSE(res.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function fs_crypto_domain_remove Failure");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_domain_remove_Failure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function fs_crypto_domain_remove Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const char* path = "/persistent/test";
     std::int32_t domain{-1};
@@ -190,13 +195,13 @@ TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_domain_remove_Failure)
     EXPECT_FALSE(res.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function fs_crypto_domain_remove Success");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(fsCryptoImplTest, TestFunction_fs_crypto_domain_remove_Success)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function fs_crypto_domain_remove Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const char* path = "/persistent";
     std::int32_t domain{6};

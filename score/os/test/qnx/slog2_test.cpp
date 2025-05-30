@@ -31,13 +31,14 @@ class Slog2ImplFixture : public ::testing::Test
     std::unique_ptr<score::os::qnx::Slog2> unit_;
 };
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Slog Register returns Error If Set Num Buffers To Zero");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(Slog2ImplFixture, slog2_registerReturnsErrorIfSetNumBuffersToZero)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Slog Register returns Error If Set Num Buffers To Zero");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     slog2_buffer_set_config_t buffer_config{};
     slog2_buffer_t buffer_handle[2]{};
 
@@ -55,48 +56,52 @@ TEST_F(Slog2ImplFixture, slog2_registerReturnsErrorIfSetNumBuffersToZero)
     }
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Slog Set Verbosity Fails When Invalid Verbosity");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(Slog2ImplFixture, slog2SetVerbosityFailsWhenInvalidVerbosity)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Slog Set Verbosity Fails When Invalid Verbosity");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     constexpr uint8_t invalid_level = INT8_MAX;
     slog2_buffer_t buffer_handle{};
 
     EXPECT_EQ(-1, unit_->slog2_set_verbosity(buffer_handle, invalid_level));
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Slog C returns Error If Not Registered Slog");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(Slog2ImplFixture, slog2cReturnsErrorIfNotRegisteredSlog2)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Slog C returns Error If Not Registered Slog");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     slog2_buffer_t buffer_handle[1]{};
     EXPECT_FALSE(unit_->slog2c(buffer_handle[0], 0, SLOG2_INFO, "fails to log"));
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Slog F returns Error If Not Registered Slog");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(Slog2ImplFixture, slog2fReturnsErrorIfNotRegisteredSlog2)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Slog F returns Error If Not Registered Slog");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     slog2_buffer_t buffer_handle[1]{};
     EXPECT_FALSE(unit_->slog2f(buffer_handle[0], 0, SLOG2_INFO, "formmated: %s", "fails to log"));
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Register And Log Flow");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(Slog2ImplFixture, RegisterAndLogFlow)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Register And Log Flow");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     /*
         This test registers to buffer within slog2. Afterwards trying to log with different severity level
     */
@@ -141,13 +146,14 @@ TEST_F(Slog2ImplFixture, RegisterAndLogFlow)
     EXPECT_EQ(0, unit_->slog2_reset());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "PMR Default Shall Return Impl Instance");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(Slog2Test, PMRDefaultShallReturnImplInstance)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "PMR Default Shall Return Impl Instance");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::cpp::pmr::memory_resource* memory_resource = score::cpp::pmr::get_default_resource();
     const auto instance = score::os::qnx::Slog2::Default(memory_resource);
     ASSERT_TRUE(instance != nullptr);

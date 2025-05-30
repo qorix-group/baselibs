@@ -17,13 +17,14 @@
 namespace
 {
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Res Mgr Msg Write Fails");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(ResMgrTest, ResMgrMsgWriteFails)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Res Mgr Msg Write Fails");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::os::ResMgrImpl resmgr;
     resmgr_context_t ctp;
     memset(&ctp, 0, sizeof(resmgr_context_t));

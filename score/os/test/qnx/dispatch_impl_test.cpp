@@ -34,13 +34,14 @@ class DispatchImplFixture : public ::testing::Test
     std::unique_ptr<score::os::Dispatch> unit_;
 };
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Name Open Close Flow");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DispatchImplFixture, NameOpenCloseFlow)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Name Open Close Flow");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const char* const path = "tmp";
     constexpr std::uint32_t flags{0U};
     constexpr dispatch_t* no_dispatch{nullptr};
@@ -55,13 +56,14 @@ TEST_F(DispatchImplFixture, NameOpenCloseFlow)
     EXPECT_TRUE(unit_->name_detach(attach.value(), flags));
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Dispatch Unblock");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DispatchImplFixture, dispatch_unblock)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Dispatch Unblock");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     auto dpp = unit_->dispatch_create();
     ASSERT_TRUE(dpp);
 
@@ -83,13 +85,14 @@ TEST_F(DispatchImplFixture, dispatch_unblock)
     EXPECT_TRUE(unit_->dispatch_destroy(dpp.value()));
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Resmgr Detach returns Error If Pass Invalid Id");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DispatchImplFixture, resmgr_detachReturnsErrorIfPassInvalidId)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Resmgr Detach returns Error If Pass Invalid Id");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     auto dpp = unit_->dispatch_create();
     ASSERT_TRUE(dpp);
 
@@ -100,25 +103,27 @@ TEST_F(DispatchImplFixture, resmgr_detachReturnsErrorIfPassInvalidId)
     EXPECT_TRUE(unit_->dispatch_destroy(dpp.value()));
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Thread Pool Create Success");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DispatchImplFixture, thread_pool_create_success)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Thread Pool Create Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     thread_pool_attr_t pool_attr{};
     auto pool = unit_->thread_pool_create(&pool_attr, POOL_FLAG_EXIT_SELF);
     ASSERT_TRUE(pool.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Select Attach Success");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DispatchImplFixture, select_attach_success)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Select Attach Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     auto dpp = unit_->dispatch_create();
     ASSERT_TRUE(dpp);
 
@@ -135,13 +140,14 @@ TEST_F(DispatchImplFixture, select_attach_success)
     EXPECT_TRUE(unit_->dispatch_destroy(dpp.value()));
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Select Attach Frozen Context Failure");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DispatchImplFixture, select_attach_frozen_context_failure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Select Attach Frozen Context Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     constexpr std::int32_t no_chid{-1};
     auto dpp = unit_->dispatch_create_channel(no_chid, DISPATCH_FLAG_NOLOCK);
     ASSERT_TRUE(dpp);
@@ -165,13 +171,14 @@ TEST_F(DispatchImplFixture, select_attach_frozen_context_failure)
     unit_->dispatch_context_free(ctp.value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Select Detach Success");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DispatchImplFixture, select_detach_success)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Select Detach Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     auto dpp = unit_->dispatch_create();
     ASSERT_TRUE(dpp);
 
@@ -190,13 +197,14 @@ TEST_F(DispatchImplFixture, select_detach_success)
     EXPECT_TRUE(unit_->dispatch_destroy(dpp.value()));
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Select Detach Not Attached Fd Failure");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DispatchImplFixture, select_detach_not_attached_fd_failure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Select Detach Not Attached Fd Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     auto dpp = unit_->dispatch_create();
     ASSERT_TRUE(dpp);
 
@@ -209,13 +217,14 @@ TEST_F(DispatchImplFixture, select_detach_not_attached_fd_failure)
     EXPECT_TRUE(unit_->dispatch_destroy(dpp.value()));
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Pulse Attach Success");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DispatchImplFixture, pulse_attach_success)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Pulse Attach Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     auto dpp = unit_->dispatch_create();
     ASSERT_TRUE(dpp);
 
@@ -232,13 +241,14 @@ TEST_F(DispatchImplFixture, pulse_attach_success)
     EXPECT_TRUE(unit_->dispatch_destroy(dpp.value()));
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Pulse Attach Frozen Context Failure");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DispatchImplFixture, pulse_attach_frozen_context_failure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Pulse Attach Frozen Context Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     constexpr std::int32_t no_chid{-1};
     auto dpp = unit_->dispatch_create_channel(no_chid, DISPATCH_FLAG_NOLOCK);
     ASSERT_TRUE(dpp);
@@ -266,13 +276,14 @@ TEST_F(DispatchImplFixture, pulse_attach_frozen_context_failure)
     EXPECT_TRUE(unit_->dispatch_destroy(dpp.value()));
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Pulse Detach Success");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DispatchImplFixture, pulse_detach_success)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Pulse Detach Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     auto dpp = unit_->dispatch_create();
     ASSERT_TRUE(dpp);
 
@@ -291,13 +302,14 @@ TEST_F(DispatchImplFixture, pulse_detach_success)
     EXPECT_TRUE(unit_->dispatch_destroy(dpp.value()));
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Pulse Detach Not Attached Code Failure");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DispatchImplFixture, pulse_detach_not_attached_code_failure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Pulse Detach Not Attached Code Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     auto dpp = unit_->dispatch_create();
     ASSERT_TRUE(dpp);
 
@@ -311,13 +323,14 @@ TEST_F(DispatchImplFixture, pulse_detach_not_attached_code_failure)
     EXPECT_TRUE(unit_->dispatch_destroy(dpp.value()));
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Thread Pool Start Success");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DispatchImplFixture, thread_pool_start_success)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Thread Pool Start Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     thread_pool_attr_t pool_attr{};
     auto dpp = ::dispatch_create();
     ASSERT_TRUE(dpp);

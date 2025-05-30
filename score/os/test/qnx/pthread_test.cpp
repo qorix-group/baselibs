@@ -17,16 +17,14 @@
 namespace
 {
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Get Name Fails When Buffer Size Too Big");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(PthreadNameTest, GetNameFailsWhenBufferSizeTooBig)
 {
+
     RecordProperty("ParentRequirement", "SCR-4977102");
     RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Get Name Fails When Buffer Size Too Big");
     RecordProperty("TestingTechnique", "T-REQ");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const std::size_t size_too_big = static_cast<std::size_t>(std::numeric_limits<std::int32_t>::max()) + 1;
     char buffer[4096];  // fails to allocate buffer with `size_too_big` amount on stack. Follow up operation which
@@ -38,13 +36,14 @@ TEST(PthreadNameTest, GetNameFailsWhenBufferSizeTooBig)
     ASSERT_FALSE(read_result.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "PMR Default Shall Return Impl Instance");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(QnxPthreadTest, PMRDefaultShallReturnImplInstance)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "PMR Default Shall Return Impl Instance");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::cpp::pmr::memory_resource* memory_resource = score::cpp::pmr::get_default_resource();
     const auto instance = score::os::Pthread::Default(memory_resource);
     ASSERT_TRUE(instance != nullptr);

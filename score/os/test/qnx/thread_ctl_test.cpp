@@ -35,13 +35,14 @@ struct ThreadCtlTest : ::testing::Test
     std::unique_ptr<score::os::qnx::ThreadCtlImpl> thread_ctl_{};
 };
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Succeed Reading Current Thread Name");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ThreadCtlTest, succeed_reading_current_thread_name)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Succeed Reading Current Thread Name");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const pid_t pid{0};
     const int32_t tid{0};
     struct _thread_name tname = {};
@@ -52,13 +53,14 @@ TEST_F(ThreadCtlTest, succeed_reading_current_thread_name)
     EXPECT_TRUE(result.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Fails On Invalid Pid Tid Combination");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(ThreadCtlTest, fails_on_invalid_pid_tid_combination)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Fails On Invalid Pid Tid Combination");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const pid_t pid{1};
     const int32_t tid{0};
     struct _thread_name tname = {};

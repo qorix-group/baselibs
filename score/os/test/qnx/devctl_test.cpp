@@ -40,13 +40,14 @@ struct DevctlTestMock : ::testing::Test
     score::os::MockDevctl mock_devctl;
 };
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function Devctl");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DevctlTestMock, TestFunction_Devctl)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function Devctl");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     std::array<std::uint8_t, 3> dev_data{1, 2, 3};
     std::int32_t dev_info{};
     std::array<std::uint8_t, 3>* arg_ptr{};
@@ -69,13 +70,14 @@ TEST_F(DevctlTestMock, TestFunction_Devctl)
     ASSERT_FALSE(res.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Function Devctlv");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DevctlTestMock, TestFunction_Devctlv)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Function Devctlv");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     std::array<std::uint8_t, 3> vec_data_1{1, 2, 3};
     iovec s_vec[1];
     iovec r_vec{};
@@ -117,13 +119,14 @@ struct DevctlTestQnx : ::testing::Test
     const std::string kTestFilePath{"/tmp/devctl_unit_test_file"};
 };
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Devctl: Get Flags Success");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DevctlTestQnx, TestDevctl_GetFlags_Success)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Devctl: Get Flags Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const OpenFlag open_flags{OpenFlag::kReadOnly | OpenFlag::kNonBlocking | OpenFlag::kCreate};
     const ModeFlag mode_flags{ModeFlag::kReadUser | ModeFlag::kWriteUser};
     std::int32_t expect_flags_set{O_NONBLOCK};
@@ -140,13 +143,14 @@ TEST_F(DevctlTestQnx, TestDevctl_GetFlags_Success)
     ASSERT_TRUE(result_flags & expect_flags_set);
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Devctl:v Get Flags Success");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DevctlTestQnx, TestDevctlv_GetFlags_Success)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Devctl:v Get Flags Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const OpenFlag open_flags{OpenFlag::kReadOnly | OpenFlag::kNonBlocking | OpenFlag::kCreate};
     const ModeFlag mode_flags{ModeFlag::kReadUser | ModeFlag::kWriteUser};
     std::int32_t expect_flags_set{O_NONBLOCK};
@@ -171,13 +175,14 @@ TEST_F(DevctlTestQnx, TestDevctlv_GetFlags_Success)
     ASSERT_TRUE(result_flags & expect_flags_set);
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Devctl: Set Get Flags Success");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DevctlTestQnx, TestDevctl_SetGetFlags_Success)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Devctl: Set Get Flags Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const OpenFlag open_flags{OpenFlag::kReadOnly | OpenFlag::kNonBlocking | OpenFlag::kCreate};
     const ModeFlag mode_flags{ModeFlag::kReadUser | ModeFlag::kWriteUser};
     std::int32_t set_flags{O_APPEND | O_LARGEFILE};
@@ -198,36 +203,39 @@ TEST_F(DevctlTestQnx, TestDevctl_SetGetFlags_Success)
     ASSERT_EQ(result_flags, set_flags);
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Devctl: Set Flags Wrong Fd Fails");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DevctlTestQnx, TestDevctl_SetFlagsWrongFd_Fails)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Devctl: Set Flags Wrong Fd Fails");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     std::int32_t set_flags{O_APPEND | O_LARGEFILE};
     auto res_devctl = score::os::Devctl::instance().devctl(-1, DCMD_ALL_SETFLAGS, &set_flags, sizeof(set_flags), nullptr);
     ASSERT_FALSE(res_devctl.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Devctl:v Set Flags Wrong Fd Fails");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DevctlTestQnx, TestDevctlv_SetFlagsWrongFd_Fails)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Devctl:v Set Flags Wrong Fd Fails");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     auto res_devctl = score::os::Devctl::instance().devctlv(-1, DCMD_ALL_SETFLAGS, 0, 0, nullptr, nullptr, nullptr);
     ASSERT_FALSE(res_devctl.has_value());
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Test Devctl: Get Flags Nullptr Fails");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(DevctlTestQnx, TestDevctl_GetFlagsNullptr_Fails)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Devctl: Get Flags Nullptr Fails");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const OpenFlag open_flags{OpenFlag::kReadOnly | OpenFlag::kNonBlocking | OpenFlag::kCreate};
     const ModeFlag mode_flags{ModeFlag::kReadUser | ModeFlag::kWriteUser};
 

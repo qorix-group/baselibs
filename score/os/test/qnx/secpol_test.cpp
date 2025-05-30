@@ -23,13 +23,14 @@ namespace
 
 /// This \c instance() call is necessary for providing coverage of the instance method, we can remove it when we remove
 /// the instance function from the class
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Instance Call");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST(SecpolTest, InstanceCall)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Instance Call");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     // check whether instance() returns injection
     score::os::qnx::details::SecpolImpl mock{};
     score::os::qnx::Secpol::set_testing_instance(mock);
@@ -54,13 +55,14 @@ class SecpolFixture : public ::testing::Test
     std::unique_ptr<score::os::qnx::Secpol> unit_{nullptr};
 };
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Secpol Open Open Null Path");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(SecpolFixture, secpol_openOpenNullPath)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Secpol Open Open Null Path");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const char* const path{nullptr};
 
     auto handle = unit_->secpol_open(path, secpol_open_flags_e::SECPOL_USE_AS_DEFAULT);
@@ -69,13 +71,14 @@ TEST_F(SecpolFixture, secpol_openOpenNullPath)
     EXPECT_TRUE(unit_->secpol_close(handle.value()));
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Secpol Open Open Double Call Fails");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(SecpolFixture, secpol_openOpenDoubleCallFails)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Secpol Open Open Double Call Fails");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const char* const path{nullptr};
 
     auto handle = unit_->secpol_open(path, secpol_open_flags_e::SECPOL_USE_AS_DEFAULT);
@@ -87,13 +90,14 @@ TEST_F(SecpolFixture, secpol_openOpenDoubleCallFails)
     EXPECT_TRUE(unit_->secpol_close(handle.value()));
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Secpol Posix Spawnattr Settypeid");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(SecpolFixture, secpol_posix_spawnattr_settypeid)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Secpol Posix Spawnattr Settypeid");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     posix_spawnattr_t attr{};
     secpol_file_t* handle_null{nullptr};
     // positive case
@@ -103,13 +107,14 @@ TEST_F(SecpolFixture, secpol_posix_spawnattr_settypeid)
     EXPECT_FALSE(unit_->secpol_posix_spawnattr_settypeid(handle_null, nullptr, nullptr, SECPOL_TYPE_NAME));
 }
 
-RecordProperty("ParentRequirement", "SCR-46010294");
-RecordProperty("ASIL", "B");
-RecordProperty("Description", "Secpol Transition Type");
-RecordProperty("TestingTechnique", "Interface test");
-RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 TEST_F(SecpolFixture, secpol_transition_type)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Secpol Transition Type");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     secpol_file_t* handle{nullptr};
     const char* const name{nullptr};
     // positive case
