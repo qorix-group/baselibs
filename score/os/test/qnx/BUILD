@@ -1,3 +1,5 @@
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
 # *******************************************************************************
 # Copyright (c) 2025 Contributors to the Eclipse Foundation
 #
@@ -10,12 +12,53 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score-baselibs//third_party/itf:py_unittest_qnx_test.bzl", "py_unittest_qnx_test")
 
 package(
     default_visibility = [
         # "@ddad@score-baselibs//score/os/test/qnx:__subpackages__",
     ],
+)
+
+py_unittest_qnx_test(
+    name = "unit_tests_qnx",
+    excluded_tests_filter = [
+        # TODO: broken_link_j/Ticket-191733
+        "InoutTestFixture.in8TestToReturnNoErrorIfpassValidAddress",
+        "InoutTestFixture.in16ReturnsNoErrorIfPassValidAddress",
+        "InoutTestFixture.in32ReturnNoErrorIfPassValidAddress",
+        "QnxUnistdImplFixture.SetgroupspidNewGroupAdded",
+        "QnxUnistdImplFixture.SetgroupspidNewGroupAdded",
+    ],
+    test_cases = [
+        ":channel_test",
+        ":channel_impl_test",
+        ":devctl_test",
+        ":dispatch_test",
+        ":dispatch_impl_test",
+        ":iofunc_test",
+        ":neutrino_test",
+        ":pci_test",
+        ":pci_safety_test",
+        ":procmgr_test",
+        ":resmgr_test",
+        ":secpol_test",
+        ":slog2_test",
+        ":sysctl_test",
+        ":unistd_test",
+        ":pthread_test",
+        ":timer_test",
+        ":thread_ctl_test",
+        ":inout_test",
+        ":mman_test",
+        ":fs_crypto_test",
+        ":fs_crypto_impl_test",
+        ":pcap_test",
+    ],
+    test_suites = [
+        "@score-baselibs//score/os/utils/qnx/resource_manager:unit_tests_qnx",
+    ],
+    visibility = ["//platform/aas:__subpackages__"],
 )
 
 cc_test(
@@ -246,6 +289,7 @@ cc_test(
         "pci_safety_test.cpp",
     ],
     tags = ["manual"],
+    target_compatible_with = ["@platforms//os:qnx"],
     deps = [
         "@score-baselibs//score/os/qnx:pci_safety",
         "@googletest//:gtest_main",
@@ -293,6 +337,7 @@ cc_test(
         "manual",  # to disable using as host unit test in CI
         "unit",
     ],
+    target_compatible_with = ["@platforms//os:qnx"],
     deps = [
         "@score-baselibs//score/os:pthread",
         "@googletest//:gtest_main",

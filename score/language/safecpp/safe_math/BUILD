@@ -10,7 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test", "cc_unit_test_suites_for_host_and_qnx")
 load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
@@ -52,4 +52,21 @@ cc_gtest_unit_test(
         # "@ddad@score-baselibs//score/language/safecpp/safe_math:__pkg__",
     ],
     deps = [":error"],
+)
+
+cc_unit_test_suites_for_host_and_qnx(
+    name = "unit_tests",
+    cc_unit_tests = [
+        "@score-baselibs//score/language/safecpp/safe_math:error_test",
+        "@score-baselibs//score/language/safecpp/safe_math/details:floating_point_environment_test",
+        "@score-baselibs//score/language/safecpp/safe_math/details/absolute:unit_test",
+        "@score-baselibs//score/language/safecpp/safe_math/details/addition_subtraction:unit_test",
+        "@score-baselibs//score/language/safecpp/safe_math/details/cast:unit_test",
+        "@score-baselibs//score/language/safecpp/safe_math/details/comparison:unit_test",
+        "@score-baselibs//score/language/safecpp/safe_math/details/division:unit_test",
+        "@score-baselibs//score/language/safecpp/safe_math/details/multiplication:unit_test",
+        "@score-baselibs//score/language/safecpp/safe_math/details/negate:unit_test",
+        "@score-baselibs//score/language/safecpp/safe_math/details/type_traits:unit_test",
+    ],
+    visibility = ["@score-baselibs//score/language/safecpp:__pkg__"],
 )

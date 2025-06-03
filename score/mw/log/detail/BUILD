@@ -10,6 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+
 COMPILER_WARNING_FEATURES = [
     "treat_warnings_as_errors",
     "additional_warnings",
@@ -831,9 +833,9 @@ cc_test(
     ],
 )
 
-test_suite(
+cc_unit_test_suites_for_host_and_qnx(
     name = "unit_tests",
-    tests = [
+    cc_unit_tests = [
         ":circular_allocator_test",
         ":composite_recorder_test",
         ":dlt_argument_counter_test",
@@ -849,7 +851,14 @@ test_suite(
         ":slot_test",
         ":statistics_reporter_test",
         ":verbose_payload_test",
+    ],
+    test_suites_from_sub_packages = [
+        "@score-baselibs//score/mw/log/detail/file_logging:unit_tests",
+        "@score-baselibs//score/mw/log/detail/slog:unit_tests",
         "@score-baselibs//score/mw/log/detail/wait_free_stack:unit_tests",
     ],
-    visibility = ["@score-baselibs//score/mw/log:__pkg__"],
+    visibility = [
+        "@score-baselibs//score/mw/log:__pkg__",
+        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
+    ],
 )

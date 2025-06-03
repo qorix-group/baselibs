@@ -1,3 +1,5 @@
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+
 # *******************************************************************************
 # Copyright (c) 2025 Contributors to the Eclipse Foundation
 #
@@ -71,5 +73,16 @@ cc_library(
     visibility = [
         "//visibility:public", # platform_only
         # "@ddad//platform/aas:__subpackages__",
+    ],
+)
+
+cc_unit_test_suites_for_host_and_qnx(
+    name = "unit_test_suite",
+    cc_unit_tests = [
+        ":bit_manipulation_test",
+        ":bitmask_operators_test",
+    ],
+    visibility = [
+        "//visibility:public",
     ],
 )

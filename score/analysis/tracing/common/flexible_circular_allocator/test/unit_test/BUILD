@@ -10,6 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+
 cc_test(
     name = "flexible_circular_allocator_test",
     srcs = [
@@ -71,4 +73,14 @@ cc_test(
         "@score-baselibs//score/mw/log",
         "@googletest//:gtest_main",
     ],
+)
+
+cc_unit_test_suites_for_host_and_qnx(
+    name = "unit_tests",
+    cc_unit_tests = [
+        ":flexible_circular_allocator_test",
+        ":flexible_circular_allocator_factory_test",
+        ":lockless_flexible_circular_allocator_factory_test",
+    ],
+    visibility = ["@score-baselibs//score/analysis/tracing:__subpackages__"],
 )

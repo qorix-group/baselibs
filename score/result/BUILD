@@ -75,8 +75,10 @@ cc_unit_test_suites_for_host_and_qnx(
     cc_unit_tests = [
         ":tests",
     ],
-    test_suites_from_sub_packages = ["@score-baselibs//score/result/details/expected:unit_test_suite"],
+    test_suites_from_sub_packages = [
+        "@score-baselibs//score/result/details/expected:unit_test_suite",
+    ],
     visibility = [
-        # "@ddad@score-baselibs//score/result:__pkg__",
+        "//visibility:public",
     ],
 )

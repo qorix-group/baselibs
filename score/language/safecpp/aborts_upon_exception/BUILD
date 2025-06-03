@@ -10,6 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+
 cc_library(
     name = "abortsuponexception",
     srcs = ["aborts_upon_exception.cpp"],
@@ -57,4 +59,13 @@ cc_test(
         "@googletest//:gtest_main",
         "@score-baselibs//score/language/futurecpp",
     ],
+)
+
+cc_unit_test_suites_for_host_and_qnx(
+    name = "unit_tests",
+    cc_unit_tests = [
+        ":abortsuponexception_lib_test",
+        ":abortsuponexception_toolchain_test",
+    ],
+    visibility = ["@score-baselibs//score/language/safecpp:__pkg__"],
 )

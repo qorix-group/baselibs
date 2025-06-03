@@ -1,3 +1,5 @@
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
 # *******************************************************************************
 # Copyright (c) 2025 Contributors to the Eclipse Foundation
 #
@@ -10,7 +12,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score-baselibs//third_party/itf:py_unittest_qnx_test.bzl", "py_unittest_qnx_test")
 
 package(
     default_visibility = [
@@ -21,9 +23,23 @@ package(
 test_suite(
     name = "unit_tests",
     tests = [
-        "resource_manager_test",
-        "resource_test",
-        "static_c_wrappers_test",
+        ":resource_manager_test",
+        ":resource_test",
+        ":static_c_wrappers_test",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+)
+
+py_unittest_qnx_test(
+    name = "unit_tests_qnx",
+    test_cases = [
+        ":error_test",
+        ":resource_manager_test",
+        ":resource_test",
+        ":static_c_wrappers_test",
+        ":simple_read_function_test",
     ],
     visibility = [
         "//visibility:public",

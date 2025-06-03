@@ -33,6 +33,7 @@ cc_gtest_unit_test(
     # Required to know in code if the test is running under memcheck
     features = COMPILER_WARNING_FEATURES + ["memcheck_macro"],
     visibility = [
+        "@score-baselibs//score/language/safecpp/safe_math:__pkg__",
         # "@ddad@score-baselibs//score/language/safecpp/safe_math:__pkg__",
     ],
     deps = [

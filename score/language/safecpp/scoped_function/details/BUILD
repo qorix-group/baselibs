@@ -10,7 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test", "cc_unit_test_suites_for_host_and_qnx")
 load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
@@ -325,4 +325,21 @@ cc_gtest_unit_test(
         ":type_erasure_pointer",
         "@score-baselibs//score/language/futurecpp",
     ],
+)
+
+cc_unit_test_suites_for_host_and_qnx(
+    name = "unit_tests",
+    cc_unit_tests = [
+        "@score-baselibs//score/language/safecpp/scoped_function/details:allocator_aware_type_erasure_pointer_test",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:allocator_wrapper_test",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:function_wrapper_test",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:call_and_return_modified_test",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:is_callable_from_test",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:modify_return_type_test",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:modify_signature_test",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:scope_state_test",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:type_erasure_pointer_test",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:scoped_function_invoker_test",
+    ],
+    visibility = ["@score-baselibs//score/language/safecpp/scoped_function:__pkg__"],
 )

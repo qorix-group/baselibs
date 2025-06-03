@@ -10,6 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+
 COMPILER_WARNING_FEATURES = [
     "treat_warnings_as_errors",
     "additional_warnings",
@@ -267,9 +269,9 @@ filegroup(
     ],
 )
 
-test_suite(
+cc_unit_test_suites_for_host_and_qnx(
     name = "unit_tests",
-    tests = [
+    cc_unit_tests = [
         ":nvconfig_test",
         ":unit_test",
     ],

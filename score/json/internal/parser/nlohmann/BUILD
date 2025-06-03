@@ -10,6 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
 load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
@@ -73,5 +74,16 @@ cc_test(
         "@score-baselibs//score/json:json_impl",
         "@score-baselibs//score/json/internal/parser:number_parser_test_suite",
         "@googletest//:gtest_main",
+    ],
+)
+
+cc_unit_test_suites_for_host_and_qnx(
+    name = "unit_test_suite",
+    cc_unit_tests = [
+        ":nlohmann_parser_test",
+        ":number_parser_test",
+    ],
+    visibility = [
+        "@score-baselibs//score/json/internal/parser:__pkg__",
     ],
 )

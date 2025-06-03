@@ -25,6 +25,7 @@ cc_library(
         "//bazel/platforms:config_xpad_dnv": ["-lrt -lcap -lseccomp"],
         "//conditions:default": ["-lrt"],
     }),
+    target_compatible_with = ["@platforms//os:linux"],
     visibility = [
         "//ecu/xpad/ara:__subpackages__",
         "@score-baselibs//score/os/linux/utils/mocklib:__subpackages__",

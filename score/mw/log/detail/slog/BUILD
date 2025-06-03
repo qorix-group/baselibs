@@ -11,6 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("//score/mw:common_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score-baselibs//third_party/itf:py_unittest_qnx_test.bzl", "py_unittest_qnx_test")
 
 cc_library(
     name = "slog_backend",
@@ -76,12 +77,6 @@ cc_library(
     ],
 )
 
-test_suite(
-    name = "unit_tests",
-    tests = [],
-    visibility = ["//visibility:public"],
-)
-
 cc_test(
     name = "slog_backend_test",
     srcs = [
@@ -110,4 +105,18 @@ cc_test(
             "@score-baselibs//score/os/mocklib/qnx:slog2_mock",
         ],
     }),
+)
+
+py_unittest_qnx_test(
+    name = "unit_tests_qnx",
+    test_cases = [
+        ":slog_backend_test",
+    ],
+    visibility = ["@score-baselibs//score/mw/log/detail:__pkg__"],
+)
+
+test_suite(
+    name = "unit_tests_host",
+    tests = [],
+    visibility = ["//visibility:public"],
 )

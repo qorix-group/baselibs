@@ -11,13 +11,14 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score-baselibs//third_party/itf:py_unittest_qnx_test.bzl", "py_unittest_qnx_test")
 
 package(default_visibility = [
     # "@ddad@score-baselibs//score/os/test:__subpackages__",
 ])
 
 test_suite(
-    name = "unit_tests",
+    name = "unit_tests_host",
     tests = [
         ":acl_test",
         ":arpa_inet_test",
@@ -37,8 +38,7 @@ test_suite(
         ":memory_allocator_test",
         ":mount_test",
         ":net_if_test",
-        # FIXME: disabled for migration
-        # ":netdb_test",
+        # ":netdb_test", # TODO: broken_link_j/Ticket-194201
         ":objectseam_test",
         ":pthread_test",
         ":sched_mock_test",
@@ -50,11 +50,68 @@ test_suite(
         ":string_impl_test",
         ":sys_wait_impl_test",
         ":uname_test",
+        "@score-baselibs//score/os/test/linux:unit_tests_linux",
     ],
-    visibility = ["//platform/aas/lib:__pkg__"],
+    visibility = [
+        "//visibility:public",
+    ],
 )
 
-# FIXME: disabled for migration
+py_unittest_qnx_test(
+    name = "unit_tests_qnx",
+    test_cases = [
+        ":acl_test",
+        ":arpa_inet_test",
+        ":asil_qm_test",
+        ":capability_test",
+        ":cpuid_test",
+        ":dirent_test",
+        ":errno_test",
+        ":fcntl_test",
+        ":file_stream_test",
+        ":ftw_test",
+        ":getopt_test",
+        ":glob_test",
+        ":grp_test",
+        ":ifaddrs_test",
+        ":inotify_test",
+        ":ioctl_test",
+        ":libgen_test",
+        ":makedev_test",
+        ":memory_allocator_test",
+        ":mount_test",
+        ":mqueue_test",
+        ":net_if_test",
+        # ":netdb_test", # TODO: broken_link_j/Ticket-194201
+        ":objectseam_test",
+        ":pthread_test",
+        ":sched_mock_test",
+        ":sched_test",
+        ":select_test",
+        ":semaphore_test",
+        ":socket_test",
+        ":spawn_test",
+        ":stat_test",
+        ":statvfs_test",
+        ":stdio_test",
+        ":stdlib_impl_test",
+        ":string_impl_test",
+        ":string_test",
+        ":sys_poll_test",
+        ":sys_uio_test",
+        ":sys_wait_impl_test",
+        ":time_test",
+        ":uname_test",
+    ],
+    test_suites = [
+        "@score-baselibs//score/os/test/qnx:unit_tests_qnx",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+)
+
+# TODO: broken_link_j/Ticket-194201
 # cc_test(
 #     name = "netdb_test",
 #     srcs = ["netdb_test.cpp"],

@@ -10,7 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test", "cc_unit_test_suites_for_host_and_qnx")
 load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
@@ -113,4 +113,14 @@ cc_gtest_unit_test(
         "@score-baselibs//score/language/safecpp/scoped_function/details:testing_allocator",
         "@score-baselibs//score/language/futurecpp",
     ],
+)
+
+cc_unit_test_suites_for_host_and_qnx(
+    name = "unit_tests",
+    cc_unit_tests = [
+        "@score-baselibs//score/language/safecpp/scoped_function:scope_test",
+        "@score-baselibs//score/language/safecpp/scoped_function:scoped_function_test",
+    ],
+    test_suites_from_sub_packages = ["@score-baselibs//score/language/safecpp/scoped_function/details:unit_tests"],
+    visibility = ["@score-baselibs//score/language/safecpp:__pkg__"],
 )

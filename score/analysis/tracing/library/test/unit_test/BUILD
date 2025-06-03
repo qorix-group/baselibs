@@ -10,6 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+
 FEAT_COMPILER_WARNINGS_AS_ERRORS = [
     "additional_warnings",
     "strict_warnings",
@@ -51,5 +53,16 @@ cc_test(
     deps = [
         "@score-baselibs//score/analysis/tracing/library/generic_trace_api/error_code",
         "@googletest//:gtest_main",
+    ],
+)
+
+cc_unit_test_suites_for_host_and_qnx(
+    name = "unit_tests",
+    cc_unit_tests = [
+        ":generic_trace_api_stub_test",
+        ":error_code_test",
+    ],
+    visibility = [
+        "//visibility:public",
     ],
 )

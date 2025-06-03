@@ -10,15 +10,16 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
 load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 package(default_visibility = [
     # "@ddad@score-baselibs//score/os/utils/test:__subpackages__",
 ])
 
-test_suite(
+cc_unit_test_suites_for_host_and_qnx(
     name = "unit_tests",
-    tests = [
+    cc_unit_tests = [
         ":abortable_blocking_reader_test",
         ":detect_os_test",
         ":high_resolution_steady_clock_test",
@@ -31,8 +32,11 @@ test_suite(
         ":signal_test",
         ":spinlock_test",
         ":tcp_keep_alive_test",
+        ":thread_test",
         "@score-baselibs//score/os/utils/acl:unit_test",
         "@score-baselibs//score/os/utils/inotify:unit_test",
+    ],
+    test_suites_from_sub_packages = [
         "@score-baselibs//score/os/utils/interprocess:unit_tests",
     ],
     visibility = ["//platform/aas/lib:__pkg__"],

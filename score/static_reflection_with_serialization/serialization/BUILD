@@ -59,6 +59,7 @@ cc_test(
     features = _compiler_warning_features,
     tags = ["unit"],
     visibility = [
+        "@score-baselibs//score/mw/log/test:__pkg__",
         # "@ddad@score-baselibs//score/mw/log/test:__pkg__",
     ],
     deps = [
@@ -76,6 +77,7 @@ cc_test(
     features = _compiler_warning_features,
     tags = ["unit"],
     visibility = [
+        "@score-baselibs//score/mw/log/test:__pkg__",
         # "@ddad@score-baselibs//score/mw/log/test:__pkg__",
     ],
     deps = [

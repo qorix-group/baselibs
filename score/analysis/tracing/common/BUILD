@@ -10,6 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+
 cc_library(
     name = "generic_trace_api_types",
     srcs = [
@@ -93,5 +95,16 @@ cc_library(
     deps = [
         ":generic_trace_api_types",
         ":shared_memory_location",
+    ],
+)
+
+cc_unit_test_suites_for_host_and_qnx(
+    name = "unit_tests",
+    test_suites_from_sub_packages = [
+        "@score-baselibs//score/analysis/tracing/common/flexible_circular_allocator/test/unit_test:unit_tests",
+        "@score-baselibs//score/analysis/tracing/common/shared_list/test:unit_tests",
+    ],
+    visibility = [
+        "//visibility:public",
     ],
 )

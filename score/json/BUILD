@@ -11,6 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
 load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 string_flag(
@@ -153,18 +154,6 @@ cc_test(
     ],
 )
 
-test_suite(
-    name = "unit_tests",
-    tests = [
-        ":json_test",
-        ":json_writer_unit_test",  # workaround to include coverage for json_writer
-        "@score-baselibs//score/json/internal/model:unit_test",
-        "@score-baselibs//score/json/internal/parser:unit_tests",
-        "@score-baselibs//score/json/internal/writer/json_serialize:json_serialize_unit_test",  # workaround to include coverage for json_serialize
-    ],
-    visibility = ["//visibility:public"],
-)
-
 # This rule was moved from json/internal/writer/BUILD file due to incorrect functionality of coverage tool.
 # Was found a problem when unit_test_qnx didn't run tests from json_writer_test.cpp and json_serialize_test.cpp.
 # Solution was move json_writer_test.cpp file to the same directory with json_writer.cpp.
@@ -203,5 +192,22 @@ cc_test(
     deps = [
         ":json_serializer",
         "@googletest//:gtest_main",
+    ],
+)
+
+cc_unit_test_suites_for_host_and_qnx(
+    name = "unit_tests",
+    cc_unit_tests = [
+        ":json_test",
+        ":json_serializer_test",
+        ":json_writer_unit_test",  # workaround to include coverage for json_writer
+        "@score-baselibs//score/json/internal/model:unit_test",
+        "@score-baselibs//score/json/internal/writer/json_serialize:json_serialize_unit_test",  # workaround to include coverage for json_serialize
+    ],
+    test_suites_from_sub_packages = [
+        "@score-baselibs//score/json/internal/parser:unit_tests",
+    ],
+    visibility = [
+        "//visibility:public",
     ],
 )

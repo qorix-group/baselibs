@@ -10,6 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//bazel:unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+
 cc_test(
     name = "shared_list_test",
     srcs = [
@@ -29,4 +31,12 @@ cc_test(
         "@score-baselibs//score/analysis/tracing/common/shared_list",
         "@googletest//:gtest_main",
     ],
+)
+
+cc_unit_test_suites_for_host_and_qnx(
+    name = "unit_tests",
+    cc_unit_tests = [
+        ":shared_list_test",
+    ],
+    visibility = ["@score-baselibs//score/analysis/tracing:__subpackages__"],
 )
