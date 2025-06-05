@@ -270,7 +270,7 @@ as much as possible and that it works for all supported operating systems in a c
 Safety-critical operating systems document assumptions of use (AoU) in their safety manuals. The OS vendor describes
 which use cases of the software are certified and which are not. Users of the OS (developers, architects, integrators,
 etc.) have to ensure that the AoUs are fulfilled. OSAL is a central component in the overall architecture where OS AoUs
-can be implemented. 
+can be implemented.
 
 This does not mean, that all usage of OSAL is in accordance with the AoUs to your component. This is something the users
 of OSAL are required to check whenever they use an API. A good example is the use of the system call `open` with the
@@ -303,6 +303,10 @@ analysis. The following checklist is used for manual code analysis:
 
 To create a PR using this checklist, compare your own branch to the target branch on GitHub and
 append `?quick_pull=1&template=osal.md` to the URL.
+
+##### Test case derivation method and metadata
+
+FFI components does not have requirements, so to derive test case [Analysis of equivalence classes and boundary values](broken_link_cf/display/ESDF/Test+Method%3A+Analysis+of+equivalence+classes+and+boundary+values) is used. Main equivalence class, applicable form most of tests, is the division between error output and no error output, data for it is taken directly from QNX or POSIX documentation of APIs.
 
 <details><summary>Discarded Alternatives</summary>
 The following other options were considered, but ultimately discarded for below reasons:
