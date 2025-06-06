@@ -79,7 +79,7 @@ cc_library(
     deps = [
         ":configuration",
         ":configuration_interface",
-        "@score-baselibs//score/json:json_parser",
+        "@score-baselibs//score/json",
         "@score-baselibs//score/memory:split_string_view",
         "@score-baselibs//score/os:stdlib",
         "@score-baselibs//score/os:unistd",
@@ -204,7 +204,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     implementation_deps = [
-        "@score-baselibs//score/json:json_parser",
+        "@score-baselibs//score/json",
     ],
     tags = ["FFI"],
     visibility = [

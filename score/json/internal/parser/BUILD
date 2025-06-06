@@ -32,7 +32,7 @@ cc_library(
     visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
         "@score-baselibs//score/language/safecpp/coverage_termination_handler",
-        "@score-baselibs//score/json:json_impl",
+        "@score-baselibs//score/json",
         "@googletest//:gtest",
     ],
 )
@@ -48,7 +48,7 @@ cc_test(
     ],
     deps = [
         "@score-baselibs//score/language/safecpp/coverage_termination_handler",
-        "@score-baselibs//score/json:json_impl",
+        "@score-baselibs//score/json",
         "@googletest//:gtest_main",
     ],
 )
@@ -63,7 +63,7 @@ cc_library(
     visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
         "@score-baselibs//score/language/safecpp/coverage_termination_handler",
-        "@score-baselibs//score/json:json_impl",
+        "@score-baselibs//score/json",
         "@googletest//:gtest_main",
     ],
 )

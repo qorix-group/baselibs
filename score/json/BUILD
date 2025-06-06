@@ -50,7 +50,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
+        "@score-baselibs//score/json:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/filesystem/filestream",
@@ -61,7 +61,7 @@ cc_library(
 )
 
 cc_library(
-    name = "json_parser",
+    name = "json",
     srcs = [
         "json_parser.cpp",
         "json_writer.cpp",
@@ -94,7 +94,7 @@ cc_library(
         # "@ddad@score-baselibs//score/json:__subpackages__",
     ],
     deps = [
-        ":json_parser",
+        ":json",
         "@score-baselibs//score/static_reflection_with_serialization/visitor",
         "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
@@ -102,19 +102,17 @@ cc_library(
 )
 
 alias(
-    name = "json",
-    actual = ":json_parser",
+    name = "json_parser",
+    actual = ":json",
     visibility = [
-        "@score-baselibs//score/json:__subpackages__",
         # "@ddad@score-baselibs//score/json:__subpackages__",
     ],
 )
 
 alias(
     name = "json_impl",
-    actual = ":json_parser",
+    actual = ":json",
     visibility = [
-        "@score-baselibs//score/json:__subpackages__",
         # "@ddad@score-baselibs//score/json:__subpackages__",
     ],
 )
@@ -149,7 +147,7 @@ cc_test(
         # "@ddad@score-baselibs//score/json:__pkg__",
     ],
     deps = [
-        ":json_impl",
+        ":json",
         "@googletest//:gtest_main",
     ],
 )
@@ -174,7 +172,7 @@ cc_test(
     ],
     deps = [
         "@score-baselibs//score/filesystem:mock",
-        "@score-baselibs//score/json:json_impl",
+        "@score-baselibs//score/json",
         "@googletest//:gtest_main",
     ],
 )

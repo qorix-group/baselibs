@@ -27,7 +27,7 @@ cc_test(
     # It will not be accounted for unit test coverage as we do not add it here: `@score-baselibs//score/json:unit_tests`
     tags = ["unit"],
     deps = [
-        "@score-baselibs//score/json:json_parser",
+        "@score-baselibs//score/json",
         "@score-baselibs//score/os:unistd",
         "@score-baselibs//score/mw/log",
     ],
@@ -48,7 +48,7 @@ cc_test(
     # It will not be accounted for unit test coverage as we do not add it here: `@score-baselibs//score/json:unit_tests`
     tags = ["unit"],
     deps = [
-        "@score-baselibs//score/json:json_parser",
+        "@score-baselibs//score/json",
         "@score-baselibs//score/os:unistd",
         "@score-baselibs//score/mw/log",
     ],
@@ -68,7 +68,7 @@ cc_test(
     # It will not be accounted for unit test coverage as we do not add it here: `@score-baselibs//score/json:unit_tests`
     tags = ["unit"],
     deps = [
-        "@score-baselibs//score/json:json_parser",
+        "@score-baselibs//score/json",
         "@score-baselibs//score/os:unistd",
         "@score-baselibs//score/mw/log",
     ],

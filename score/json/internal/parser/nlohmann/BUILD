@@ -71,7 +71,7 @@ cc_test(
     deps = [
         ":nlohmann_parser",
         "@score-baselibs//score/language/safecpp/coverage_termination_handler",
-        "@score-baselibs//score/json:json_impl",
+        "@score-baselibs//score/json",
         "@score-baselibs//score/json/internal/parser:number_parser_test_suite",
         "@googletest//:gtest_main",
     ],
