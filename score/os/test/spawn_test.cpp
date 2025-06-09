@@ -285,6 +285,9 @@ TEST_F(SpawnTest, posix_spawnattr_getschedparam_success)
 TEST(SpawnImpl, posix_spawnattr_setschedparam_failure)
 {
     posix_spawnattr_t attr;
+    ASSERT_EQ(::posix_spawnattr_init(&attr), 0);
+    ASSERT_EQ(::posix_spawnattr_destroy(&attr), 0);
+
     struct sched_param set_param;
     set_param.sched_priority = 4;
     const auto set_result = score::os::Spawn::instance().posix_spawnattr_setschedparam(&attr, &set_param);
@@ -294,8 +297,10 @@ TEST(SpawnImpl, posix_spawnattr_setschedparam_failure)
 TEST(SpawnImpl, posix_spawnattr_getschedparam_failure)
 {
     posix_spawnattr_t attr;
+    ASSERT_EQ(::posix_spawnattr_init(&attr), 0);
+    ASSERT_EQ(::posix_spawnattr_destroy(&attr), 0);
+
     struct sched_param set_param;
-    set_param.sched_priority = 4;
     const auto set_result = score::os::Spawn::instance().posix_spawnattr_getschedparam(&attr, &set_param);
     ASSERT_FALSE(set_result.has_value());
 }
