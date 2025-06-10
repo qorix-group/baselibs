@@ -548,19 +548,25 @@ void Path::Parse(const string_type& path) noexcept
     {
         return;
     }
-    std::stringstream stringstream_path{path};
-    std::string path_part{};
-    if (path.front() == preferred_separator)
+
+    const auto starts_with_separator = (path.front() == preferred_separator);
+    if (starts_with_separator)
     {
         score::cpp::ignore = parts_.emplace_back(Path{string_type{preferred_separator}, false});
     }
+
+    std::stringstream stringstream_path{path};
+    std::string path_part{};
     AddPathPartToParts(stringstream_path, path_part);
     // At this point the parts_ array should contain the parts of the path separated by the preferred_separator,
     // or should contain at least by the preferred_separator itself.
     // LCOV_EXCL_BR_START caused by SCORE_LANGUAGE_FUTURECPP_ASSERT_PRD_MESSAGE
     SCORE_LANGUAGE_FUTURECPP_ASSERT_PRD_MESSAGE(parts_.size() != 0U, "At this point the parts_ array should contain at least one element.");
     // LCOV_EXCL_BR_STOP
-    if ((path.back() == preferred_separator) && ((parts_.size() > 1U) || (path.front() != preferred_separator)))
+
+    const auto is_multipart = (parts_.size() > 1U);
+    const auto ends_with_separator = (path.back() == preferred_separator);
+    if (ends_with_separator && (is_multipart || !starts_with_separator))
     {
         score::cpp::ignore = parts_.emplace_back(Path{"", false});
     }
