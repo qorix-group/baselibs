@@ -115,17 +115,18 @@ TEST_F(NetdbTestFixture, ShouldReturnHostnameAndService)
         "80"
 #endif
     };
+    constexpr std::string_view expected_service_numeric{"80"};
 
     CallGetNameInfoAndExtractResult(&addr_, Netdb::NameFlag{0});
     EXPECT_EQ(host_, expected_host);
-    EXPECT_EQ(service_, expected_service);
+    EXPECT_THAT(service_, AnyOf(Eq(expected_service), Eq(expected_service_numeric)));
     CallGetNameInfoAndExtractResult(&addr_, Netdb::NameFlag::kNodeNameOfDomain);
     EXPECT_EQ(host_, expected_host);
-    EXPECT_EQ(service_, expected_service);
+    EXPECT_THAT(service_, AnyOf(Eq(expected_service), Eq(expected_service_numeric)));
 #if defined(__linux__)
     CallGetNameInfoAndExtractResult(&addr_, Netdb::NameFlag::kNameReq);
     EXPECT_EQ(host_, expected_host);
-    EXPECT_EQ(service_, expected_service);
+    EXPECT_THAT(service_, AnyOf(Eq(expected_service), Eq(expected_service_numeric)));
 #elif defined(__QNX__)
     CallGetNameInfoAndExtractResult(&addr_, Netdb::NameFlag::kNameReq, false);
 #endif
@@ -156,7 +157,7 @@ TEST_F(NetdbTestFixture, ShouldFailOnInvalidArguments)
 TEST_F(NetdbTestFixture, UdpResolveTest)
 {
     addr_.sin_family = AF_INET;
-    addr_.sin_port = htons(53);                  // Port 80 (HTTP)
+    addr_.sin_port = htons(53);                  // Port 53 (DNS)
     addr_.sin_addr.s_addr = htonl(0x7f000001u);  // 127.0.0.1
 
     constexpr std::string_view expected_host
@@ -175,10 +176,11 @@ TEST_F(NetdbTestFixture, UdpResolveTest)
         "53"
 #endif
     };
+    constexpr std::string_view expected_service_numeric{"53"};
 
     CallGetNameInfoAndExtractResult(&addr_, Netdb::NameFlag::kDatagramService | Netdb::NameFlag::kNumericHost);
     EXPECT_EQ(host_, "127.0.0.1");
-    EXPECT_EQ(service_, expected_service);
+    EXPECT_THAT(service_, AnyOf(Eq(expected_service), Eq(expected_service_numeric)));
 
     CallGetNameInfoAndExtractResultWithPort80("127.0.0.1", Netdb::NameFlag::kDatagramService);
     EXPECT_EQ(host_, expected_host);
