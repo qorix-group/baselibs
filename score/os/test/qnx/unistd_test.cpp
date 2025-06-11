@@ -95,20 +95,24 @@ TEST_F(QnxUnistdImplFixture, SetgroupspidNewGroupAdded)
         }
 
         std::vector<gid_t> groups;
-        groups.resize(n_groups);
 
-        ::getgroups(n_groups, groups.data());  // fill groups with data
-        const gid_t supplied_group_id = *std::max_element(groups.begin(), groups.end()) + 1;
+        if (n_groups > 0)
+        {
+            groups.resize(n_groups);
+            ::getgroups(n_groups, groups.data());  // fill groups with data
+        }
+
+        const gid_t supplied_group_id = n_groups > 0 ? *std::max_element(groups.begin(), groups.end()) + 1 : 1;
         groups.push_back(supplied_group_id);
-        // set +1 group in addition to existings
+        // set +1 group in addition to existing
         const auto val = unistd_inst.setgroupspid(n_groups + 1, groups.data(), 0);
         if (val.has_value() == false)
         {
             return false;
         }
         // get updated amount of set groups
-        const auto new_n_groupds = ::getgroups(0, nullptr);
-        return new_n_groupds == (n_groups + 1);
+        const auto new_n_groups = ::getgroups(0, nullptr);
+        return new_n_groups == (n_groups + 1);
     });
 }
 

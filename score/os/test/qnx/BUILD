@@ -22,14 +22,6 @@ package(
 
 py_unittest_qnx_test(
     name = "unit_tests_qnx",
-    excluded_tests_filter = [
-        # TODO: broken_link_j/Ticket-191733
-        "InoutTestFixture.in8TestToReturnNoErrorIfpassValidAddress",
-        "InoutTestFixture.in16ReturnsNoErrorIfPassValidAddress",
-        "InoutTestFixture.in32ReturnNoErrorIfPassValidAddress",
-        "QnxUnistdImplFixture.SetgroupspidNewGroupAdded",
-        "QnxUnistdImplFixture.SetgroupspidNewGroupAdded",
-    ],
     test_cases = [
         ":channel_test",
         ":channel_impl_test",

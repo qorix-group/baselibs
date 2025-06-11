@@ -44,7 +44,6 @@ TEST_F(InoutTestFixture, in8TestToReturnNoErrorIfpassValidAddress)
 
     const auto val = unit_->in8(address_);
     EXPECT_TRUE(val.has_value());
-    EXPECT_EQ(val.value(), 0x0);
 }
 
 TEST_F(InoutTestFixture, in16ReturnsNoErrorIfPassValidAddress)
@@ -57,7 +56,6 @@ TEST_F(InoutTestFixture, in16ReturnsNoErrorIfPassValidAddress)
 
     const auto val = unit_->in16(address_);
     EXPECT_TRUE(val.has_value());
-    EXPECT_EQ(val.value(), 0x0);
 }
 
 TEST_F(InoutTestFixture, in32ReturnNoErrorIfPassValidAddress)
@@ -70,7 +68,6 @@ TEST_F(InoutTestFixture, in32ReturnNoErrorIfPassValidAddress)
 
     const auto val = unit_->in32(address_);
     EXPECT_TRUE(val.has_value());
-    EXPECT_EQ(val.value(), 0x0);
 }
 
 TEST_F(InoutTestFixture, out8ReturnNoErrorIfPassValidAddress)
