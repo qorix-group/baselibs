@@ -234,7 +234,8 @@ class PeriodicTaskFactory
      */
     template <class Clock, class CallableType, class... ArgumentTypes>
     [[deprecated(
-        "SPP_DEPRECATION: Performance Problem! Please use \'concurrency/timed_executor/periodic_task.h\'")]] static auto
+        "SPP_DEPRECATION: Performance Problem! Please use \'concurrency/timed_executor/periodic_task.h\' Note: "
+        "requires the usage of a ConcurrentTimedExecutor")]] static auto
     Make(score::cpp::pmr::memory_resource* memory_resource,
          typename Clock::time_point first_execution,
          typename Clock::duration interval,
@@ -266,7 +267,8 @@ class PeriodicTaskFactory
      */
     template <class Clock, class CallableType, class... ArgumentTypes>
     [[deprecated(
-        "SPP_DEPRECATION: Performance Problem! Please use \'concurrency/timed_executor/periodic_task.h\'")]] static auto
+        "SPP_DEPRECATION: Performance Problem! Please use \'concurrency/timed_executor/periodic_task.h\' Note: "
+        "requires the usage of a ConcurrentTimedExecutor")]] static auto
     MakeWithTaskResult(score::cpp::pmr::memory_resource* memory_resource,
                        typename Clock::time_point first_execution,
                        typename Clock::duration interval,
