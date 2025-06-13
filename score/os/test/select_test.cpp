@@ -28,6 +28,12 @@ using namespace ::testing;
 
 TEST(SelectTest, selectPass)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "SelectTest select Pass");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::os::SelectImpl select;
     fd_set fds;
     struct timeval tv;
@@ -41,6 +47,12 @@ TEST(SelectTest, selectPass)
 
 TEST(SelectTest, selectPassInstance)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "SelectTest select Pass Instance");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::os::Select& select = score::os::Select::instance();
     fd_set fds;
     struct timeval tv;

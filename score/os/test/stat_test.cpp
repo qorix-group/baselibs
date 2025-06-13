@@ -25,6 +25,12 @@ namespace test
 
 TEST(StatImpl, StatRegularFile)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl Stat Regular File");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     constexpr auto filename{"stat_file"};
     const auto fd = ::open(filename, O_CREAT | O_RDWR, 0644);
     EXPECT_NE(fd, -1);
@@ -40,6 +46,12 @@ TEST(StatImpl, StatRegularFile)
 
 TEST(StatImpl, StatSymbolicLink)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl Stat Symbolic Link");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     constexpr auto filename{"stat_file"};
     const auto fd = ::open(filename, O_CREAT | O_RDWR, 0644);
     EXPECT_NE(fd, -1);
@@ -54,6 +66,12 @@ TEST(StatImpl, StatSymbolicLink)
 
 TEST(StatImpl, StatNonExistentFile)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl Stat Non Existent File");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const char* non_existent_file = "nonexistent/file";
     struct StatBuffer buf;
     bool resolve_symlinks = true;
@@ -66,6 +84,12 @@ TEST(StatImpl, StatNonExistentFile)
 
 TEST(StatImpl, fstatSuccess)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl fstat Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     constexpr auto filename{"stat_file"};
     const auto fd = ::open(filename, O_CREAT | O_RDONLY, 0644);
     EXPECT_NE(fd, -1);
@@ -78,6 +102,12 @@ TEST(StatImpl, fstatSuccess)
 
 TEST(StatImpl, fstatFailure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl fstat Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto fd = -1;
     struct StatBuffer buf;
     EXPECT_FALSE(score::os::Stat::instance().fstat(fd, buf).has_value());
@@ -85,6 +115,12 @@ TEST(StatImpl, fstatFailure)
 
 TEST(StatImpl, MkdirFailure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl Mkdir Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const char* directory = "/hd/src";
     Stat::Mode mode = Stat::Mode::kUnknown;
 
@@ -98,6 +134,12 @@ TEST(StatImpl, MkdirFailure)
 
 TEST(StatImpl, MkdirSuccess)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl Mkdir Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const char* directory = "directory";
     Stat::Mode mode = Stat::Mode::kReadWriteExecUser;
 
@@ -112,6 +154,12 @@ TEST(StatImpl, MkdirSuccess)
 
 TEST(StatImpl, ChmodSuccess)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl Chmod Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     constexpr auto filename{"stat_test_file"};
     const auto fd = ::open(filename, O_CREAT | O_WRONLY, 0644);
     EXPECT_NE(fd, -1);
@@ -128,6 +176,12 @@ TEST(StatImpl, ChmodSuccess)
 
 TEST(StatImpl, ChmodFailure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl Chmod Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     constexpr auto filename{""};
     Stat::Mode mode = Stat::Mode::kUnknown;
 
@@ -137,6 +191,12 @@ TEST(StatImpl, ChmodFailure)
 
 TEST(StatImpl, FchmodSuccess)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl Fchmod Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     constexpr auto filename{"stat_test_file"};
     const auto fd = ::open(filename, O_CREAT | O_WRONLY, 0644);
     EXPECT_NE(fd, -1);
@@ -153,6 +213,12 @@ TEST(StatImpl, FchmodSuccess)
 
 TEST(StatImpl, FchmodFailure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl Fchmod Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     constexpr auto fd = -1;
 
     const auto result = score::os::Stat::instance().fchmod(fd, Stat::Mode::kReadWriteExecUser);
@@ -161,6 +227,12 @@ TEST(StatImpl, FchmodFailure)
 
 TEST(StatImpl, UmaskSuccess)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl Umask Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     using Mode = Stat::Mode;
     auto current_mode =
         Mode::kReadUser | Mode::kWriteUser | Mode::kExecUser | Mode::kReadGroup | Mode::kWriteGroup | Mode::kExecGroup;
@@ -190,12 +262,24 @@ TEST(StatImpl, UmaskSuccess)
 
 TEST(StatImpl, UmaskFailure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl Umask Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto result = score::os::Stat::instance().umask(Stat::Mode::kUnknown);
     EXPECT_TRUE(result.has_value());
 }
 
 TEST(StatImpl, FchmodatSuccess)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl Fchmodat Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const char* file_name = "my_directory";
     int fd = open(file_name, O_CREAT, S_IRWXU | S_IRWXG | S_IRWXO);
     EXPECT_NE(fd, -1);
@@ -209,6 +293,12 @@ TEST(StatImpl, FchmodatSuccess)
 
 TEST(StatImpl, FchmodatErrorNoFollowSymlinks)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl Fchmodat Error No Follow Symlinks");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     constexpr auto filename{"stat_test_file"};
     const auto fd = ::open(filename, O_CREAT | O_RDWR, 0644);
     EXPECT_NE(fd, -1);
@@ -222,12 +312,24 @@ TEST(StatImpl, FchmodatErrorNoFollowSymlinks)
 
 TEST(StatImpl, DefaultObjectAllocationIsNotNull)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl Default Object Allocation Is Not Null");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto result = score::os::Stat::Default();
     EXPECT_NE(result, nullptr);
 }
 
 TEST(StatImpl, PMRDefaultShallReturnImplInstance)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatImpl PMRDefault Shall Return Impl Instance");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::cpp::pmr::memory_resource* memory_resource = score::cpp::pmr::get_default_resource();
     const auto instance = score::os::Stat::Default(memory_resource);
     ASSERT_TRUE(instance != nullptr);

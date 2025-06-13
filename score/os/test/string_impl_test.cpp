@@ -25,6 +25,12 @@ namespace test
 
 TEST(StringImplTest, StrMemcpy)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StringImplTest Str Memcpy");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     StringImpl str;
     char str1[] = "mem1";
     char str2[] = "mem2";
@@ -34,12 +40,24 @@ TEST(StringImplTest, StrMemcpy)
 
 TEST(StringImplTest, StrStderr)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StringImplTest Str Stderr");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     StringImpl str;
     EXPECT_STREQ(str.strerror(EINVAL), "Invalid argument");
 }
 
 TEST(StringImplTest, StrMemset)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StringImplTest Str Memset");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     StringImpl str;
     char str1[20] = "Sample";
     str.memset(str1, '1', 6);

@@ -24,6 +24,12 @@ namespace
 
 TEST(FOpenTest, ReturnsValidFileDescriptor)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FOpenTest Returns Valid File Descriptor");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto filename{"test"};
     const auto mode{"w"};
     const auto result = score::os::Stdio::instance().fopen(filename, mode);
@@ -33,6 +39,12 @@ TEST(FOpenTest, ReturnsValidFileDescriptor)
 
 TEST(FOpenTest, ReturnsErrorWithWrongMode)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FOpenTest Returns Error With Wrong Mode");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto filename{"test"};
     const auto mode{"bs"};
     const auto result = score::os::Stdio::instance().fopen(filename, mode);
@@ -42,6 +54,12 @@ TEST(FOpenTest, ReturnsErrorWithWrongMode)
 
 TEST(FCloseTest, ReturnsBlankValueIfSuccessful)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FCloseTest Returns Blank Value If Successful");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto filename{"test"};
     const auto mode{"w"};
     const auto open_result = score::os::Stdio::instance().fopen(filename, mode);
@@ -53,6 +71,12 @@ TEST(FCloseTest, ReturnsBlankValueIfSuccessful)
 
 TEST(FCloseTest, ReturnsErrorWithInvalidFileDescriptor)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FCloseTest Returns Error With Invalid File Descriptor");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
 #if defined(GTEST_OS_LINUX)
     GTEST_SKIP() << "::fclose() is not POSIX compliant with glibc on Linux - any error causes an abort";
 #endif
@@ -65,6 +89,12 @@ TEST(FCloseTest, ReturnsErrorWithInvalidFileDescriptor)
 
 TEST(RemoveTest, ReturnsBlankValueIfSuccessful)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "RemoveTest Returns Blank Value If Successful");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto filename{"test"};
     const auto mode{"w"};
     const auto open_result = score::os::Stdio::instance().fopen(filename, mode);
@@ -79,6 +109,12 @@ TEST(RemoveTest, ReturnsBlankValueIfSuccessful)
 
 TEST(RemoveTest, ReturnsErrorIfFileDoesNotExist)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "RemoveTest Returns Error If File Does Not Exist");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto filename{"test-invalid-file"};
     const auto remove_result = score::os::Stdio::instance().remove(filename);
     ASSERT_FALSE(remove_result.has_value());
@@ -87,6 +123,12 @@ TEST(RemoveTest, ReturnsErrorIfFileDoesNotExist)
 
 TEST(RenameTest, ReturnsBlankValueIfSuccessful)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "RenameTest Returns Blank Value If Successful");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto filename{"test"};
     const auto mode{"w"};
     const auto open_result = score::os::Stdio::instance().fopen(filename, mode);
@@ -105,6 +147,12 @@ TEST(RenameTest, ReturnsBlankValueIfSuccessful)
 
 TEST(RenameTest, ReturnsErrorIfNameInvalid)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "RenameTest Returns Error If Name Invalid");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto filename{"invalid-test"};
     const auto new_filename{"invalid_test"};
     const auto rename_result = score::os::Stdio::instance().rename(filename, new_filename);
@@ -114,6 +162,12 @@ TEST(RenameTest, ReturnsErrorIfNameInvalid)
 
 TEST(POpenTest, ReturnsValidPipe)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "POpenTest Returns Valid Pipe");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto cmd{"echo 1"};
     const auto mode{"r"};
     const auto result = score::os::Stdio::instance().popen(cmd, mode);
@@ -130,6 +184,12 @@ TEST(POpenTest, ReturnsValidPipe)
 
 TEST(POpenTest, ReturnsErrorWithInvalidMode)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "POpenTest Returns Error With Invalid Mode");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto cmd{"echo 1"};
     const auto mode{"x"};
     const auto result = score::os::Stdio::instance().popen(cmd, mode);
@@ -139,6 +199,12 @@ TEST(POpenTest, ReturnsErrorWithInvalidMode)
 
 TEST(PCloseTest, ProvidesReturnCodeOfPipeCommand)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "PCloseTest Provides Return Code Of Pipe Command");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto cmd{"exit 1"};
     const auto mode{"r"};
     const auto open_result = score::os::Stdio::instance().popen(cmd, mode);
@@ -153,6 +219,12 @@ TEST(PCloseTest, ProvidesReturnCodeOfPipeCommand)
 
 TEST(FileNoTest, CanTranslateFileDescriptorOfStream)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FileNoTest Can Translate File Descriptor Of Stream");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto result = score::os::Stdio::instance().fileno(stdin);
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), STDIN_FILENO);
@@ -160,6 +232,12 @@ TEST(FileNoTest, CanTranslateFileDescriptorOfStream)
 
 TEST(FileNoTest, ReturnsErrorForInvalidFileStream)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FileNoTest Returns Error For Invalid File Stream");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
 #if defined(GTEST_OS_LINUX)
     GTEST_SKIP() << "::fileno() is not POSIX compliant with glibc on Linux - any error causes an abort";
 #endif

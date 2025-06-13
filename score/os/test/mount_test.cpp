@@ -23,6 +23,12 @@ namespace
 
 TEST(MountTest, MountTestMountFail)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "MountTest Mount Test Mount Fail");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     ::mkdir("/mnt/home", S_IRWXU | S_IRWXG | S_IRWXO);
 
     score::cpp::expected_blank<Error> result =
@@ -32,6 +38,12 @@ TEST(MountTest, MountTestMountFail)
 
 TEST(MountTest, MountTestUmountFail)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "MountTest Mount Test Umount Fail");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const char* dir = "/mnt/home";
     score::cpp::expected_blank<Error> result = score::os::Mount::instance().umount(dir);
     EXPECT_FALSE(result.has_value());
@@ -39,6 +51,12 @@ TEST(MountTest, MountTestUmountFail)
 
 TEST(MountTest, MountTestConvertFlag)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "MountTest Mount Test Convert Flag");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     ::mkdir("/mnt/home", S_IWUSR | S_IWGRP | S_IWOTH);
 
     score::cpp::expected_blank<Error> result =

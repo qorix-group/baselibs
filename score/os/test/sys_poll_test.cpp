@@ -40,6 +40,12 @@ class SysPollImplTest : public ::testing::Test
 
 TEST_F(SysPollImplTest, PollSucceeds)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "SysPollImplTest Poll Succeeds");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     struct pollfd fds[1];
     fds[0].fd = pipe_fd[0];
     fds[0].events = POLLIN;
@@ -54,6 +60,12 @@ TEST_F(SysPollImplTest, PollSucceeds)
 
 TEST_F(SysPollImplTest, PMRDefaultShallReturnImplInstance)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "SysPollImplTest PMRDefault Shall Return Impl Instance");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::cpp::pmr::memory_resource* memory_resource = score::cpp::pmr::get_default_resource();
     const auto instance = score::os::SysPoll::Default(memory_resource);
     ASSERT_TRUE(instance != nullptr);

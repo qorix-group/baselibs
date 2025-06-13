@@ -71,6 +71,12 @@ class FcntlImplTest : public ::testing::Test
 
 TEST_F(FcntlImplTest, KFileSetStatusFlagsFailsWithWrongCommand)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest KFile Set Status Flags Fails With Wrong Command");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto command{Fcntl::Command::kFileGetStatusFlags};
     const Fcntl::Open open_flags{};
     const auto fcntl_result = score::os::Fcntl::instance().fcntl(file_descriptor_, command, open_flags);
@@ -80,6 +86,12 @@ TEST_F(FcntlImplTest, KFileSetStatusFlagsFailsWithWrongCommand)
 
 TEST_F(FcntlImplTest, CommandKFileSetStatusFlagsSetsFlags)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest Command KFile Set Status Flags Sets Flags");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const Fcntl::Command command{Fcntl::Command::kFileSetStatusFlags};
     const auto open_flags{Fcntl::Open::kNonBlocking};
     const auto fcntl_result = score::os::Fcntl::instance().fcntl(file_descriptor_, command, open_flags);
@@ -92,6 +104,12 @@ TEST_F(FcntlImplTest, CommandKFileSetStatusFlagsSetsFlags)
 
 TEST_F(FcntlImplTest, CommandKFileSetStatusFlagsFailsWithInvalidFileDescriptor)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest Command KFile Set Status Flags Fails With Invalid File Descriptor");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     ::close(file_descriptor_);
 
     const auto command{Fcntl::Command::kFileSetStatusFlags};
@@ -103,6 +121,12 @@ TEST_F(FcntlImplTest, CommandKFileSetStatusFlagsFailsWithInvalidFileDescriptor)
 
 TEST_F(FcntlImplTest, KFileGetStatusFlagsFailsWithWrongCommand)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest KFile Get Status Flags Fails With Wrong Command");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto command{Fcntl::Command::kFileSetStatusFlags};
     const auto fcntl_result = score::os::Fcntl::instance().fcntl(file_descriptor_, command);
     ASSERT_FALSE(fcntl_result.has_value());
@@ -111,6 +135,12 @@ TEST_F(FcntlImplTest, KFileGetStatusFlagsFailsWithWrongCommand)
 
 TEST_F(FcntlImplTest, CommandKFileSetStatusFlagsGetsFlags)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest Command KFile Set Status Flags Gets Flags");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto command{Fcntl::Command::kFileGetStatusFlags};
     const auto fcntl_result = score::os::Fcntl::instance().fcntl(file_descriptor_, command);
     ASSERT_TRUE(fcntl_result.has_value());
@@ -122,6 +152,12 @@ TEST_F(FcntlImplTest, CommandKFileSetStatusFlagsGetsFlags)
 
 TEST_F(FcntlImplTest, CommandKFileGetStatusFlagsFailsWithInvalidFileDescriptor)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest Command KFile Get Status Flags Fails With Invalid File Descriptor");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     ::close(file_descriptor_);
 
     const auto command{Fcntl::Command::kFileGetStatusFlags};
@@ -132,6 +168,12 @@ TEST_F(FcntlImplTest, CommandKFileGetStatusFlagsFailsWithInvalidFileDescriptor)
 
 TEST_F(FcntlImplTest, OpenSucceeds)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest Open Succeeds");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto open_flags{Fcntl::Open::kReadOnly};
     const auto result = score::os::Fcntl::instance().open(filename_, open_flags);
     ASSERT_TRUE(result.has_value());
@@ -142,6 +184,12 @@ TEST_F(FcntlImplTest, OpenSucceeds)
 
 TEST_F(FcntlImplTest, OpenFailsWithInvalidPath)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest Open Fails With Invalid Path");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto open_flags{Fcntl::Open::kReadOnly};
     const auto invalid_filename{"invalid"};
     const auto result = score::os::Fcntl::instance().open(invalid_filename, open_flags);
@@ -151,6 +199,12 @@ TEST_F(FcntlImplTest, OpenFailsWithInvalidPath)
 
 TEST_F(FcntlImplTest, OpenWithModeSucceeds)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest Open With Mode Succeeds");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto open_flags{Fcntl::Open::kReadOnly | Fcntl::Open::kCreate | Fcntl::Open::kExclusive};
     const auto status_flags{Stat::Mode::kReadUser | Stat::Mode::kWriteUser};
     const auto new_filename{"test2"};
@@ -164,6 +218,12 @@ TEST_F(FcntlImplTest, OpenWithModeSucceeds)
 
 TEST_F(FcntlImplTest, OpenWithModeFailsWithInvalidPath)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest Open With Mode Fails With Invalid Path");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto open_flags{Fcntl::Open::kReadOnly | Fcntl::Open::kCreate | Fcntl::Open::kExclusive};
     const auto status_flags{Stat::Mode::kReadUser | Stat::Mode::kWriteUser};
     const auto result = score::os::Fcntl::instance().open(filename_, open_flags, status_flags);
@@ -173,6 +233,12 @@ TEST_F(FcntlImplTest, OpenWithModeFailsWithInvalidPath)
 
 TEST_F(FcntlImplTest, PosixFallocateSucceedsWithValidFileDescriptor)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest Posix Fallocate Succeeds With Valid File Descriptor");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const off_t offset{0};
     const off_t length{200};
     const auto result = score::os::Fcntl::instance().posix_fallocate(file_descriptor_, offset, length);
@@ -184,6 +250,12 @@ TEST_F(FcntlImplTest, PosixFallocateSucceedsWithValidFileDescriptor)
 
 TEST_F(FcntlImplTest, PosixFallocateFailsWithInvalidFileDescriptor)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest Posix Fallocate Fails With Invalid File Descriptor");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     ::close(file_descriptor_);
     const off_t offset{0};
     const off_t length{200};
@@ -194,6 +266,12 @@ TEST_F(FcntlImplTest, PosixFallocateFailsWithInvalidFileDescriptor)
 
 TEST_F(FcntlImplTest, FlockFailsWithInvalidFileDescriptor)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest Flock Fails With Invalid File Descriptor");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     ::close(file_descriptor_);
     const auto result = score::os::Fcntl::instance().flock(file_descriptor_, Fcntl::Operation::kLockShared);
     ASSERT_FALSE(result.has_value());
@@ -202,6 +280,12 @@ TEST_F(FcntlImplTest, FlockFailsWithInvalidFileDescriptor)
 
 TEST_F(FcntlImplTest, FlockFailsWithKUnLock)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest Flock Fails With KUn Lock");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     ::close(file_descriptor_);
     const auto result = score::os::Fcntl::instance().flock(file_descriptor_, Fcntl::Operation::kUnLock);
     ASSERT_FALSE(result.has_value());
@@ -210,12 +294,25 @@ TEST_F(FcntlImplTest, FlockFailsWithKUnLock)
 
 TEST_F(FcntlImplTest, FlockSucceedsWithValidFileDescriptor)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest Flock Succeeds With Valid File Descriptor");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto result = score::os::Fcntl::instance().flock(file_descriptor_, Fcntl::Operation::kLockShared);
     ASSERT_TRUE(result.has_value());
 }
 
 TEST_F(FcntlImplTest, FlockSucceedsWithValidFileDescriptorAndWithExclusiveUnLockCombination)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description",
+                   "FcntlImplTest Flock Succeeds With Valid File Descriptor And With Exclusive Un Lock Combination");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto result = score::os::Fcntl::instance().flock(file_descriptor_,
                                                          Fcntl::Operation::kLockExclusive | Fcntl::Operation::kLockNB);
     ASSERT_TRUE(result.has_value());
@@ -223,6 +320,12 @@ TEST_F(FcntlImplTest, FlockSucceedsWithValidFileDescriptorAndWithExclusiveUnLock
 
 TEST_F(FcntlImplTest, FlockFailsWhenTryToObtainExclusiveLockTwice)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest Flock Fails When Try To Obtain Exclusive Lock Twice");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     auto ret = fork();
     ASSERT_NE(ret, -1) << "Fork failed";
     if (ret == 0)
@@ -255,6 +358,12 @@ TEST_F(FcntlImplTest, FlockFailsWhenTryToObtainExclusiveLockTwice)
 
 TEST_F(FcntlImplTest, FlockFailsWhenTryToObtainExclusiveLockAndSharedLock)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest Flock Fails When Try To Obtain Exclusive Lock And Shared Lock");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     auto ret = fork();
     ASSERT_NE(ret, -1) << "Fork failed";
     if (ret == 0)
@@ -287,6 +396,12 @@ TEST_F(FcntlImplTest, FlockFailsWhenTryToObtainExclusiveLockAndSharedLock)
 
 TEST_F(FcntlImplTest, FlockSucceedsWhenTryToObtainSharedLockTwice)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FcntlImplTest Flock Succeeds When Try To Obtain Shared Lock Twice");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     auto ret = fork();
     ASSERT_NE(ret, -1) << "Fork failed";
     if (ret == 0)

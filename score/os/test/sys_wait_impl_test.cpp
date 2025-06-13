@@ -48,6 +48,12 @@ pid_t spawnProcess()
 
 TEST(SysWaitImplTest, Wait)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "SysWaitImplTest Wait");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::os::SysWaitImpl syswait;
     pid_t cpid = 0;
     int status = 0;
@@ -63,6 +69,12 @@ TEST(SysWaitImplTest, Wait)
 
 TEST(SysWaitImplTest, WaitFail)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "SysWaitImplTest Wait Fail");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::os::SysWait& syswait = score::os::SysWait::instance();
     int status;
     score::cpp::expected<pid_t, Error> err = syswait.wait(&status);
@@ -71,6 +83,12 @@ TEST(SysWaitImplTest, WaitFail)
 
 TEST(SysWaitImplTest, Waitpid)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "SysWaitImplTest Waitpid");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::os::SysWait& syswait = score::os::SysWait::instance();
     pid_t cpid = 0;
     int status = 0;
@@ -86,6 +104,12 @@ TEST(SysWaitImplTest, Waitpid)
 
 TEST(SysWaitImplTest, WaitpidFail)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "SysWaitImplTest Waitpid Fail");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::os::SysWaitImpl syswait;
     pid_t cpid = 0;
     int status = 0;

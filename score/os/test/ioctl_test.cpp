@@ -29,7 +29,7 @@ using ::testing::Return;
 
 TEST(IoctlTest, ReadNumberOfCharactorsWaitingToBeRead)
 {
-    RecordProperty("ParentRequirement", "SCR-576387");
+    RecordProperty("ParentRequirement", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "The operating system shall support ioctl");
     RecordProperty("TestingTechnique", "Requirements-based test");
@@ -50,7 +50,7 @@ TEST(IoctlTest, ReadNumberOfCharactorsWaitingToBeRead)
 
 TEST(IoctlTest, InvalidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-576387");
+    RecordProperty("ParentRequirement", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "The operating system shall support ioctl for invalid file descriptor");
     RecordProperty("TestingTechnique", "Requirements-based test");
@@ -74,7 +74,7 @@ struct IoctlMockTest : ::testing::Test
 
 TEST_F(IoctlMockTest, NoAdditionalArgument)
 {
-    RecordProperty("ParentRequirement", "SCR-576387");
+    RecordProperty("ParentRequirement", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "The operating system shall support ioctl");
     RecordProperty("TestingTechnique", "Requirements-based test");
@@ -86,7 +86,7 @@ TEST_F(IoctlMockTest, NoAdditionalArgument)
 
 TEST_F(IoctlMockTest, Integer)
 {
-    RecordProperty("ParentRequirement", "SCR-576387");
+    RecordProperty("ParentRequirement", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "The operating system shall support ioctl");
     RecordProperty("TestingTechnique", "Requirements-based test");
@@ -99,7 +99,7 @@ TEST_F(IoctlMockTest, Integer)
 
 TEST_F(IoctlMockTest, Pointer)
 {
-    RecordProperty("ParentRequirement", "SCR-576387");
+    RecordProperty("ParentRequirement", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "The operating system shall support ioctl");
     RecordProperty("TestingTechnique", "Requirements-based test");

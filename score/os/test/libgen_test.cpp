@@ -18,6 +18,12 @@
 
 TEST(LibgenImplTest, GetBaseName)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "LibgenImplTest Get Base Name");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     char input1[] = "usr";
     EXPECT_STREQ(score::os::Libgen::instance().base_name(input1), "usr");
 
@@ -30,6 +36,12 @@ TEST(LibgenImplTest, GetBaseName)
 
 TEST(LibgenImplTest, GetDirName)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "LibgenImplTest Get Dir Name");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     char input1[] = "/foo/bar";
     EXPECT_STREQ(score::os::Libgen::instance().dirname(input1), "/foo");
 
@@ -47,6 +59,12 @@ TEST(LibgenImplTest, GetDirName)
 
 TEST(LibgenTest, PMRDefaultShallReturnImplInstance)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "LibgenTest PMRDefault Shall Return Impl Instance");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::cpp::pmr::memory_resource* memory_resource = score::cpp::pmr::get_default_resource();
     const auto instance = score::os::Libgen::Default(memory_resource);
     ASSERT_TRUE(instance != nullptr);

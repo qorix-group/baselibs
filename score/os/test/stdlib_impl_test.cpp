@@ -26,18 +26,36 @@ namespace
 
 TEST(StdlibImpl, system_call)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StdlibImpl system_call");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto result = score::os::Stdlib::instance().system_call("ls /tmp");
     EXPECT_EQ(result, score::cpp::expected_blank<Error>{});
 }
 
 TEST(StdlibImpl, system_callFail)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StdlibImpl system_call Fail");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto result1 = score::os::Stdlib::Default()->system_call("d");
     ASSERT_FALSE(result1.has_value());
 }
 
 TEST(StdlibImpl, getenv)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StdlibImpl getenv");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     EXPECT_EQ(setenv("TEST_ENV", "TEST_VALUE", 0), 0);
     const auto env = score::os::Stdlib::instance().getenv("TEST_ENV");
     EXPECT_STREQ(env, "TEST_VALUE");
@@ -46,6 +64,12 @@ TEST(StdlibImpl, getenv)
 
 TEST(StdlibImpl, realpath)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StdlibImpl realpath");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     char resolved_path[20];
     auto res = score::os::Stdlib::instance().realpath("/usr/bin/grep", resolved_path);
     EXPECT_STREQ(res.value(), "/usr/bin/grep");
@@ -57,6 +81,9 @@ TEST(StdlibImpl, realpath)
 
 TEST(StdlibImpl, calloc_fail)
 {
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     RecordProperty("DerivationTechnique", "Analysis of requirements");
     RecordProperty("ParentRequirement", "SCR-109773");
     RecordProperty("ASIL", "B");
@@ -78,6 +105,12 @@ TEST(StdlibImpl, calloc_fail)
 
 TEST(StdlibImpl, calloc)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StdlibImpl calloc");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto size = 2;
     const auto result = score::os::Stdlib::instance().calloc(size, sizeof(uint16_t));
     ASSERT_TRUE(result.has_value());
@@ -93,6 +126,12 @@ TEST(StdlibImpl, calloc)
 
 TEST(StdlibImpl, free)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StdlibImpl free");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto size = 1;
     std::uint16_t* ptr = static_cast<std::uint16_t*>(::calloc(size, sizeof(uint16_t)));
     ASSERT_NE(ptr, nullptr);
@@ -102,6 +141,12 @@ TEST(StdlibImpl, free)
 
 TEST(StdlibImpl, mkstemp)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StdlibImpl mkstemp");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     char path[] = "/tmp/fileXXXXXX";
     auto fd = score::os::Stdlib::instance().mkstemp(path);
     ASSERT_FALSE(fd.value() == -1);
@@ -110,6 +155,12 @@ TEST(StdlibImpl, mkstemp)
 
 TEST(StdlibImpl, mkstempFail)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StdlibImpl mkstemp Fail");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     char path[] = "/tmp/fileXXXX";
     auto fd = score::os::Stdlib::instance().mkstemp(path);
     EXPECT_EQ(fd.error(), score::os::Error::createFromErrno(EINVAL));
@@ -117,6 +168,12 @@ TEST(StdlibImpl, mkstempFail)
 
 TEST(StdlibImpl, mkstemps)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StdlibImpl mkstemps");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     char path[] = "/tmp/fileXXXXXXsuffix";
     auto fd = score::os::Stdlib::instance().mkstemps(path, 6);
     ASSERT_FALSE(fd.value() == -1);
@@ -125,6 +182,12 @@ TEST(StdlibImpl, mkstemps)
 
 TEST(StdlibImpl, mkstempsFail)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StdlibImpl mkstemps Fail");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     char path[] = "/tmp/fileXXXXXX";
     auto fd = score::os::Stdlib::instance().mkstemps(path, 6);
     EXPECT_EQ(fd.error(), score::os::Error::createFromErrno(EINVAL));
@@ -132,6 +195,12 @@ TEST(StdlibImpl, mkstempsFail)
 
 TEST(StdlibTest, PMRDefaultShallReturnImplInstance)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StdlibTest PMRDefault Shall Return Impl Instance");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     score::cpp::pmr::memory_resource* memory_resource = score::cpp::pmr::get_default_resource();
     const auto instance = score::os::Stdlib::Default(memory_resource);
     ASSERT_TRUE(instance != nullptr);

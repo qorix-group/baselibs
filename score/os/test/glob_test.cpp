@@ -31,6 +31,12 @@ class FlagToIntegerTests : public ::testing::TestWithParam<std::tuple<Glob::Flag
 
 TEST_P(FlagToIntegerTests, ConvertFlag)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FlagToIntegerTests Convert Flag");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     auto flag = std::get<0>(GetParam());
     auto expected = std::get<1>(GetParam());
     auto result = internal::glob_helper::FlagToInteger(flag);
@@ -67,6 +73,12 @@ INSTANTIATE_TEST_SUITE_P(ConvertNonLinuxSpecificFlags,
 
 TEST(FlagToIntegerTests, MultipleFlagsConversion)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FlagToIntegerTests Multiple Flags Conversion");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     auto combinedFlags = Glob::Flag::kAppend | Glob::Flag::kNoCheck | Glob::Flag::kPeriod;
     Glob::FlagType expected = GLOB_APPEND | GLOB_NOCHECK | GLOB_PERIOD;
     EXPECT_EQ(internal::glob_helper::FlagToInteger(combinedFlags), expected);

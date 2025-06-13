@@ -23,6 +23,12 @@ namespace
 
 TEST(GetGrNam, ReturnsCorrectBuffer)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "GetGrNam Returns Correct Buffer");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto group_name{"root"};
     const auto result = Grp::instance().getgrnam(group_name);
     ASSERT_TRUE(result.has_value());
@@ -32,6 +38,12 @@ TEST(GetGrNam, ReturnsCorrectBuffer)
 
 TEST(GetGrNam, SecondCallDoesNotOverwriteBuffer)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "GetGrNam Second Call Does Not Overwrite Buffer");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto group_name_root{"root"};
     const auto result_root = Grp::instance().getgrnam(group_name_root);
 
@@ -59,6 +71,12 @@ TEST(GetGrNam, SecondCallDoesNotOverwriteBuffer)
 
 TEST(GetGrNam, ReturnsErrorWhenGroupUnknown)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "GetGrNam Returns Error When Group Unknown");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto group_name{"invalid"};
     const auto result = Grp::instance().getgrnam(group_name);
     ASSERT_FALSE(result.has_value());
@@ -67,6 +85,12 @@ TEST(GetGrNam, ReturnsErrorWhenGroupUnknown)
 
 TEST(GetGrNam, ReturnsErrorWhenGroupNameSizeBiggerThanSupported)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "GetGrNam Returns Error When Group Name Size Bigger Than Supported");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     const auto group_name{"VeryVeryVeryVeryGroup"};
     const auto result = Grp::instance().getgrnam(group_name);
     ASSERT_FALSE(result.has_value());

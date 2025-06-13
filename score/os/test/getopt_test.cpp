@@ -23,6 +23,12 @@ namespace
 
 TEST(GetOptTest, GetoptTestSuccess)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "GetOptTest Getopt Test Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     optind = 1;
     char program_name[] = "GetoptSuccess";
 
@@ -42,6 +48,12 @@ TEST(GetOptTest, GetoptTestSuccess)
 
 TEST(GetOptTest, GetOptLong)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "GetOptTest Get Opt Long");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     optind = 1;
     char program_name[] = "GetOptLong";
     char arg1[] = "-a";
@@ -80,6 +92,12 @@ TEST(GetOptTest, GetOptLong)
 
 TEST(GetOptTest, GetoptTestFailureUnknownOption)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "GetOptTest Getopt Test Failure Unknown Option");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     optind = 1;
     char program_name[] = "GetoptSuccess";
 
@@ -96,18 +114,36 @@ TEST(GetOptTest, GetoptTestFailureUnknownOption)
 
 TEST(GetOptTest, GetoptindTest)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "GetOptTest Getoptind Test");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     optind = 4;
     EXPECT_EQ(score::os::Getopt::instance().getoptind(), 4);
 }
 
 TEST(GetOptTest, GetopterrTest)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "GetOptTest Getopterr Test");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     opterr = 5;
     EXPECT_EQ(score::os::Getopt::instance().getopterr(), 5);
 }
 
 TEST(GetOptTest, GetoptoptTest)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "GetOptTest Getoptopt Test");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     optopt = 3;
     EXPECT_EQ(score::os::Getopt::instance().getoptopt(), 3);
 }

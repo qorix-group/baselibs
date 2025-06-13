@@ -25,6 +25,12 @@ namespace
 
 TEST(StatvfsTest, StatvfsSuccess)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatvfsTest Statvfs Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     char tmp_dir_template[] = "statvfs_test.XXXXXX";
     char* result = ::mkdtemp(tmp_dir_template);
     ASSERT_NE(result, nullptr);
@@ -52,6 +58,12 @@ TEST(StatvfsTest, StatvfsSuccess)
 
 TEST(StatvfsTest, StatvfsFailure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "StatvfsTest Statvfs Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     struct statvfs buf;
     std::string invalid_path = "/invalid/path";
 

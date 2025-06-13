@@ -36,6 +36,12 @@ struct FtwMockTest : ::testing::Test
 
 TEST_F(FtwMockTest, ftw)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FtwMockTest ftw");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     EXPECT_CALL(ftwmock, ftw);
     ftwmock.ftw("/invalid_path", nullptr, 0);
 }
@@ -49,6 +55,12 @@ std::int32_t walk(const char*, const struct stat*, std::int32_t)
 
 TEST(FtwTest, ftw_walk)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FtwTest ftw_walk");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     std::unique_ptr<score::os::Ftw> ftw_object = std::make_unique<score::os::FtwPosix>();
     constexpr auto dir_path = "/tmp/ftw_dir";
     mkdir(dir_path, 0755);
@@ -58,6 +70,12 @@ TEST(FtwTest, ftw_walk)
 
 TEST(FtwTest, ftw_fail)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "FtwTest ftw_fail");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     std::unique_ptr<score::os::Ftw> ftw_object = std::make_unique<score::os::FtwPosix>();
     constexpr auto dir_path = "/tmp/ftw_invalid_dir";
     EXPECT_EQ(ftw_object->ftw(dir_path, walk, kDepth).error(), score::os::Error::Code::kNoSuchFileOrDirectory);
