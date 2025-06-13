@@ -42,6 +42,11 @@ class DirentTest : public ::testing::Test
 
 TEST_F(DirentTest, ScanPositiveTest)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     RecordProperty("Description", "Scan shall return success for scan dir");
 
     auto result = unit.scandir(temp_dir_.c_str(), &namelist_, nullptr, nullptr);
@@ -57,6 +62,11 @@ TEST_F(DirentTest, ScanPositiveTest)
 
 TEST_F(DirentTest, ScanNegativeTest)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     RecordProperty("Description", "Scan shall return error for invalid path");
 
     auto proc_path = "invalid/path";
@@ -66,6 +76,11 @@ TEST_F(DirentTest, ScanNegativeTest)
 
 TEST_F(DirentTest, OpenDirSuccess)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     RecordProperty("Description", "Open dir shall return success for valid dir");
 
     auto result = unit.opendir(temp_dir_.c_str());
@@ -77,6 +92,11 @@ TEST_F(DirentTest, OpenDirSuccess)
 
 TEST_F(DirentTest, OpenDirFailure)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     RecordProperty("Description", "Open dir shall return error for invalid dir");
 
     auto result = unit.opendir("invalid/path");
@@ -85,15 +105,23 @@ TEST_F(DirentTest, OpenDirFailure)
 
 TEST_F(DirentTest, ReadDirSuccess)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     RecordProperty("Description", "Read dir shall return success for valid dir");
 
     DIR* dir_ptr = ::opendir(temp_dir_.c_str());
     ASSERT_NE(dir_ptr, nullptr);
+    ::closedir(dir_ptr);
 
     std::string sub_dir1 = temp_dir_ + "/subdir1";
     ASSERT_EQ(::mkdir(sub_dir1.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH), 0);
 
     score::cpp::expected<struct dirent*, score::os::Error> dirent_result;
+    dir_ptr = ::opendir(temp_dir_.c_str());
+    ASSERT_NE(dir_ptr, nullptr);
 
     while ((dirent_result = unit.readdir(dir_ptr)).has_value())
     {
@@ -111,6 +139,11 @@ TEST_F(DirentTest, ReadDirSuccess)
 
 TEST_F(DirentTest, ReadDirEnd)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     RecordProperty("Description", "Read dir shall return success for valid dir");
 
     DIR* dir_ptr = ::opendir(temp_dir_.c_str());
@@ -128,6 +161,11 @@ TEST_F(DirentTest, ReadDirEnd)
 
 TEST_F(DirentTest, CloseDirSuccess)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     RecordProperty("Description", "Close dir shall return success for valid dir");
 
     DIR* dir_ptr = ::opendir(temp_dir_.c_str());
@@ -139,6 +177,11 @@ TEST_F(DirentTest, CloseDirSuccess)
 
 TEST(Dirent, get_instance)
 {
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
     RecordProperty("Description", "Dirent shall provide instance functionality");
 
     EXPECT_NO_FATAL_FAILURE(Dirent::instance());
