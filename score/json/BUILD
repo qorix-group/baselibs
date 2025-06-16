@@ -79,6 +79,7 @@ cc_library(
         ":interface",
         "@score-baselibs//score/json/internal/parser",
         "@score-baselibs//score/json/internal/writer/json_serialize",
+        "@score-baselibs//score/quality/compiler_warnings",
     ],
 )
 

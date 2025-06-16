@@ -15,8 +15,13 @@
 #include "score/json/i_json_writer.h"
 #include "score/json/internal/model/error.h"
 #include "score/json/internal/writer/json_serialize/json_serialize.h"
+#include "score/quality/compiler_warnings/warnings.h"
 
+#include <charconv>
+#include <iomanip>
 #include <ios>
+#include <iostream>
+#include <locale>
 #include <sstream>
 
 namespace
@@ -37,6 +42,50 @@ score::ResultBlank ToFileInternal(const T& json_data,
     score::json::JsonSerialize serializer{**file};
     return serializer << json_data;
 }
+
+class OptimizedNumPut : public std::num_put<char>
+{
+  public:
+    using std::num_put<char>::num_put;
+
+  protected:
+    DISABLE_OVERLOADED_VIRTUAL
+    iter_type do_put(iter_type out, std::ios_base& str, char_type fill, long val) const override
+    {
+        return OptimizedPutForFloats(out, str, fill, val);
+    }
+
+    iter_type do_put(iter_type out, std::ios_base& str, char_type fill, unsigned long val) const override
+    {
+        return OptimizedPutForFloats(out, str, fill, val);
+    }
+
+  private:
+    template <typename T>
+    iter_type OptimizedPutForFloats(iter_type out, std::ios_base& str, char_type fill, T val) const
+    {
+        constexpr auto RESERVED_BUFFER_SIZE = 32;
+        std::ignore = str;
+
+        std::array<char, RESERVED_BUFFER_SIZE> formatted_number{};
+        auto result = std::to_chars(formatted_number.begin(), formatted_number.end(), val);
+        SCORE_LANGUAGE_FUTURECPP_ASSERT_PRD(result.ec == std::errc{});
+        std::ptrdiff_t size = result.ptr - formatted_number.data();
+
+        std::streamsize width = str.width();
+        if (width > size)
+        {
+            auto fill_count = width - size;
+            out = std::fill_n(out, fill_count, fill);
+        }
+
+        out = std::copy(formatted_number.begin(), formatted_number.begin() + size, out);
+
+        return out;
+    }
+};
+
+std::locale optimized_locale(std::locale(), new OptimizedNumPut());
 
 template <typename T>
 score::ResultBlank ToFileInternalAtomic(const T& json_data,
@@ -64,6 +113,7 @@ score::Result<std::string> ToBufferInternal(const T& json_data)
     // This line must be hit when the function is called. Since other parts of this function show line coverage,
     // this line must also be hit. Missing coverage is due to a bug in the coverage tool
     std::ostringstream string_stream{};  // LCOV_EXCL_LINE
+    string_stream.imbue(optimized_locale);
 
     score::json::JsonSerialize serializer{string_stream};
     serializer << json_data;
