@@ -258,10 +258,11 @@ TEST(JsonSerializerTest, UserProvidedSerialization)
 struct TypeWithOptionalValue
 {
     std::uint32_t mandatory_val{};
+    std::optional<std::uint32_t> never_ever_val{};
     std::optional<std::uint32_t> optional_val{};
 };
 
-STRUCT_VISITABLE(TypeWithOptionalValue, mandatory_val, optional_val)
+STRUCT_VISITABLE(TypeWithOptionalValue, mandatory_val, never_ever_val, optional_val)
 
 TEST(JsonSerializerTest, DeserializeOptionalFields)
 {
@@ -352,7 +353,7 @@ TEST(JsonSerializerTest, SerializingStructWithUnusedOptionalDoesntEmitField)
         "set to nullopt, the respective JSON attribute shall not be set at all");
 
     // Given an instance of a serializable struct with an optional field that is not set
-    TypeWithOptionalValue source{42, std::nullopt};
+    TypeWithOptionalValue source{42, std::nullopt, std::nullopt};
 
     // When serialized to JSON
     auto unit{ToJsonAny(source)};
@@ -543,7 +544,7 @@ TEST(JsonSerializerTest, SerializeOptionalValuesIfTheyContainAValue)
     RecordProperty("Description", "Verify that optional values are added as JSON object keys if they contain a value");
 
     // Given an instance of a serializable struct with an optional field that is set
-    TypeWithOptionalValue source{42, 43};
+    TypeWithOptionalValue source{42, std::nullopt, 43};
 
     // When serialized to JSON
     auto unit{ToJsonAny(source)};
