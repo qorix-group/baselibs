@@ -190,6 +190,7 @@ inline void JsonDeserializeStructImpl(DeserializeAsJson& visitor, Field& field, 
         if constexpr (IsOptional<score::cpp::remove_cvref_t<Field>>::value)
         {
             // Optional fields are not considered an error
+            JsonDeserializeStructImpl<T, FieldIndex + 1, Fields...>(visitor, fields...);
         }
         else
         {
