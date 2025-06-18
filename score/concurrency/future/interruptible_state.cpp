@@ -52,9 +52,10 @@ score::ResultBlank& score::concurrency::InterruptibleState<void>::GetValue() noe
 void score::concurrency::InterruptibleState<void>::AddContinuationCallback(ScopedContinuationCallback callback)
 {
     RegisterFuture();
-    std::lock_guard<std::mutex> lock{continuation_callback_mutex_};
-    if ((this->TestIfValueIsSet()) == true)
+    std::unique_lock<std::mutex> lock{continuation_callback_mutex_};
+    if (triggered_)
     {
+        lock.unlock();
         score::cpp::ignore = callback(value_);
     }
     else
@@ -65,7 +66,14 @@ void score::concurrency::InterruptibleState<void>::AddContinuationCallback(Scope
 
 void score::concurrency::InterruptibleState<void>::TriggerContinuations()
 {
-    std::lock_guard<std::mutex> lock{continuation_callback_mutex_};
+    {
+        // not dead code: Lock guard ensures thread-safe
+        // iteration over continuation_callbacks_ during callback execution
+        // coverity[autosar_cpp14_m0_1_3_violation]
+        // coverity[autosar_cpp14_m0_1_9_violation]
+        std::lock_guard<std::mutex> lock{continuation_callback_mutex_};
+        triggered_ = true;
+    }
     for (auto& callback : continuation_callbacks_)
     {
         score::cpp::ignore = callback(value_);

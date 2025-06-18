@@ -134,12 +134,10 @@ class InterruptibleState final : public score::concurrency::detail::TypedBaseInt
     void AddContinuationCallback(ScopedContinuationCallback callback)
     {
         RegisterFuture();
-        // not dead code: Lock guard ensures thread-safe
-        // access to continuation_callbacks_ and guards conditional callback execution
-        // coverity[autosar_cpp14_m0_1_9_violation]
-        [[maybe_unused]] std::lock_guard<std::mutex> lock{continuation_callback_mutex_};
-        if ((this->TestIfValueIsSet()) == true)
+        std::unique_lock<std::mutex> lock{continuation_callback_mutex_};
+        if (triggered_)
         {
+            lock.unlock();
             score::cpp::ignore = callback(value_);
         }
         else
@@ -158,10 +156,14 @@ class InterruptibleState final : public score::concurrency::detail::TypedBaseInt
     // coverity[autosar_cpp14_a0_1_3_violation]
     void TriggerContinuations()
     {
-        // not dead code: Lock guard ensures thread-safe
-        // iteration over continuation_callbacks_ during callback execution
-        // coverity[autosar_cpp14_m0_1_9_violation]
-        [[maybe_unused]] std::lock_guard<std::mutex> lock{continuation_callback_mutex_};
+        {
+            // not dead code: Lock guard ensures thread-safe
+            // iteration over continuation_callbacks_ during callback execution
+            // coverity[autosar_cpp14_m0_1_3_violation]
+            // coverity[autosar_cpp14_m0_1_9_violation]
+            std::lock_guard<std::mutex> lock{continuation_callback_mutex_};
+            triggered_ = true;
+        }
         for (auto& callback : continuation_callbacks_)
         {
             score::cpp::ignore = callback(value_);
@@ -177,6 +179,7 @@ class InterruptibleState final : public score::concurrency::detail::TypedBaseInt
     // intentional usage; may generate more instantiations, but is harmless
     // coverity[autosar_cpp14_a5_1_7_violation]
     std::vector<ScopedContinuationCallback> continuation_callbacks_{};
+    bool triggered_{false};
 };
 
 template <typename Value>
@@ -231,12 +234,10 @@ class InterruptibleState<Value&> final : public score::concurrency::detail::Type
     void AddContinuationCallback(ScopedContinuationCallback callback)
     {
         RegisterFuture();
-        // not dead code: Lock guard ensures thread-safe
-        // access to continuation_callbacks_ and guards conditional callback execution
-        // coverity[autosar_cpp14_m0_1_9_violation]
-        [[maybe_unused]] std::lock_guard<std::mutex> lock{continuation_callback_mutex_};
-        if ((this->TestIfValueIsSet()) == true)
+        std::unique_lock<std::mutex> lock{continuation_callback_mutex_};
+        if (triggered_)
         {
+            lock.unlock();
             score::cpp::ignore = callback(value_);
         }
         else
@@ -255,10 +256,14 @@ class InterruptibleState<Value&> final : public score::concurrency::detail::Type
     // coverity[autosar_cpp14_a0_1_3_violation]
     void TriggerContinuations()
     {
-        // not dead code: Lock guard ensures thread-safe
-        // iteration over continuation_callbacks_ during callback execution
-        // coverity[autosar_cpp14_m0_1_9_violation]
-        [[maybe_unused]] std::lock_guard<std::mutex> lock{continuation_callback_mutex_};
+        {
+            // not dead code: Lock guard ensures thread-safe
+            // iteration over continuation_callbacks_ during callback execution
+            // coverity[autosar_cpp14_m0_1_3_violation]
+            // coverity[autosar_cpp14_m0_1_9_violation]
+            std::lock_guard<std::mutex> lock{continuation_callback_mutex_};
+            triggered_ = true;
+        }
         for (auto& callback : continuation_callbacks_)
         {
             score::cpp::ignore = callback(value_);
@@ -272,6 +277,7 @@ class InterruptibleState<Value&> final : public score::concurrency::detail::Type
     std::mutex continuation_callback_mutex_{};
     safecpp::Scope<> scope_{};
     std::vector<ScopedContinuationCallback> continuation_callbacks_{};
+    bool triggered_{false};
 };
 
 template <>
@@ -306,6 +312,7 @@ class InterruptibleState<void> final : public score::concurrency::detail::TypedB
     // intentional usage; may generate more instantiations, but is harmless
     // coverity[autosar_cpp14_a5_1_7_violation]
     std::vector<ScopedContinuationCallback> continuation_callbacks_{};
+    bool triggered_{false};
 };
 
 }  // namespace concurrency

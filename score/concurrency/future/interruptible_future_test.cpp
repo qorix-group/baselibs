@@ -242,6 +242,43 @@ TYPED_TEST(InterruptibleFutureTest, GetReturnsErrorWhenStopRequested)
     EXPECT_EQ(expected.error(), Error::kStopRequested);
 }
 
+TYPED_TEST(InterruptibleFutureTest, NoDeadlockWhenTriggeringContinuationsOnFulfilledPromise)
+{
+    // Given a Future with a fulfilled promise
+    InterruptibleFutureTest<TypeParam>::SetPromise(this->promise_);
+
+    // When a continuation attaches another continuation
+    bool marker = false;
+    safecpp::Scope scope{};
+    this->future_.Then({scope, [this, &scope, &marker](const auto&) {
+                            this->future_.Then({scope, [&marker](const auto&) {
+                                                    marker = true;
+                                                }});
+                        }});
+
+    // Then both continuations are triggered
+    EXPECT_TRUE(marker);
+}
+
+TYPED_TEST(InterruptibleFutureTest, NoDeadlockWhenTriggeringContinuationsWhenFulfillingPromise)
+{
+    // Given a Future with a unfulfilled promise
+
+    // When a continuation attaches another continuation
+    bool marker = false;
+    safecpp::Scope scope{};
+    this->future_.Then({scope, [this, &scope, &marker](const auto&) {
+                            this->future_.Then({scope, [&marker](const auto&) {
+                                                    marker = true;
+                                                }});
+                        }});
+    // and promise is fulfilled
+    InterruptibleFutureTest<TypeParam>::SetPromise(this->promise_);
+
+    // Then both continuations are triggered
+    EXPECT_TRUE(marker);
+}
+
 }  // namespace
 }  // namespace concurrency
 }  // namespace score
