@@ -5,10 +5,12 @@
 use std::{thread, time::Duration};
 
 use log::{debug, error, info, trace, warn, LevelFilter};
-use mw_log::init_logging;
+use mw_log::MwLoggerBuilder;
 
 fn main() {
-    init_logging(LevelFilter::Debug);
+    MwLoggerBuilder::new()
+        .filter_level(LevelFilter::Debug)
+        .init::<false, true, true>();
 
     trace!("This is a trace log, and won't show at the current level");
     debug!("This is a debug log");
