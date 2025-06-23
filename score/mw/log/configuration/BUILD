@@ -83,7 +83,7 @@ cc_library(
         "@score-baselibs//score/memory:split_string_view",
         "@score-baselibs//score/os:stdlib",
         "@score-baselibs//score/os:unistd",
-        "@score-baselibs//score/os/utils:path",
+        "@score-baselibs//score/os/utils:os_path",
         "@score-baselibs//score/mw/log/detail:initialization_reporter",
         "@score-baselibs//score/mw/log/detail:types_and_errors",
     ],

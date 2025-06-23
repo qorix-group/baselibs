@@ -42,7 +42,7 @@ cc_library(
         "@score-baselibs//score/mw/log:recorder_interface",
         "@score-baselibs//score/mw/log/configuration:configuration_parser",
     ],
-    alwayslink = True,
+    linkstatic = True,
 )
 
 cc_library(

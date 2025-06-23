@@ -183,7 +183,7 @@ cc_test(
     ],
     deps = [
         "@score-baselibs//score/os/mocklib:unistd_mock",
-        "@score-baselibs//score/os/utils:path",
+        "@score-baselibs//score/os/utils:os_path",
         "@googletest//:gtest_main",
     ],
 )

@@ -169,7 +169,7 @@ cc_library(
 )
 
 cc_library(
-    name = "path",
+    name = "os_path",
     srcs = [
         "path.cpp",
         "path_impl.h",
