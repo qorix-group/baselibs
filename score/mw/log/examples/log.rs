@@ -4,7 +4,7 @@
 
 use std::{thread, time::Duration};
 
-use log::{debug, error, info, trace, warn, LevelFilter};
+use log::{fatal, debug, error, info, trace, warn, LevelFilter};
 use mw_log::MwLoggerBuilder;
 
 fn main() {
@@ -17,6 +17,7 @@ fn main() {
     info!("This is an info log");
     warn!("This is a warn log");
     error!("This is an error log");
+    fatal!("This is a fatal log");
 
     println!("\nRunning parallel logs\n");
 

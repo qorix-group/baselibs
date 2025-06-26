@@ -9,6 +9,6 @@ version = "0.1.0"
 edition = "2021"
 
 [workspace.dependencies]
-log = { version = "0.4", features = ["std"] }
+log = { git = "https://github.com/qorix-group/log.git", branch = "larsp_add_fatal_loglevel",features = ["std", "fatal"]}
 cc = "1.2.26"
 

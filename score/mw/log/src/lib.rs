@@ -16,8 +16,8 @@ use core::fmt::{ self, Write };
 use log::{Level, LevelFilter, Log, Metadata, Record};
 
 use crate::mw_log_ffi::{
-    mw_log_debug, mw_log_error, mw_log_info, mw_log_verbose, mw_log_warn,
-    mw_log_debug_additional, mw_log_error_additional, mw_log_info_additional, mw_log_verbose_additional, mw_log_warn_additional,
+    mw_log_debug, mw_log_error, mw_log_info, mw_log_verbose, mw_log_warn, mw_log_fatal,
+    mw_log_fatal_additional, mw_log_debug_additional, mw_log_error_additional, mw_log_info_additional, mw_log_verbose_additional, mw_log_warn_additional,
 };
 
 pub struct MwLoggerBuilder {
@@ -110,7 +110,7 @@ impl<const SHOW_MODULE: bool, const SHOW_FILE: bool, const SHOW_LINE: bool> Log
                    }
                    let _ = write!(info, "]");
                    match record.level() {
-                       //Level::Fatal => unsafe { mw_log_fatal_additonal(info.as_ptr() as *const _, message.as_ptr() as *const _) },
+                       Level::Fatal => unsafe { mw_log_fatal_additional(info.buf.as_ptr() as *const _, message.as_ptr() as *const _) },
                        Level::Error => unsafe { mw_log_error_additional(info.buf.as_ptr() as *const _, message.as_ptr() as *const _) },
                        Level::Warn => unsafe { mw_log_warn_additional(info.buf.as_ptr() as *const _, message.as_ptr() as *const _) },
                        Level::Info => unsafe { mw_log_info_additional(info.buf.as_ptr() as *const _, message.as_ptr() as *const _) },
@@ -119,7 +119,7 @@ impl<const SHOW_MODULE: bool, const SHOW_FILE: bool, const SHOW_LINE: bool> Log
                    }
                } else {
                    match record.level() {
-                       //Level::Fatal => unsafe { mw_log_fatal(message.as_ptr() as *const _) },
+                       Level::Fatal => unsafe { mw_log_fatal(message.as_ptr() as *const _) },
                        Level::Error => unsafe { mw_log_error(message.as_ptr() as *const _) },
                        Level::Warn => unsafe { mw_log_warn(message.as_ptr() as *const _) },
                        Level::Info => unsafe { mw_log_info(message.as_ptr() as *const _) },
