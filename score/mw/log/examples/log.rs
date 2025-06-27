@@ -8,13 +8,14 @@ use log::{debug, error, fatal, info, trace, warn, LevelFilter};
 use mw_log::MwLoggerBuilder;
 
 fn main() {
+    // This enables the MwLogger as a Logger for the log crate.
     MwLoggerBuilder::new()
         .filter_level(LevelFilter::Debug)
         .init::<false, true, true>();
 
     trace!("This is a trace log, and won't show at the current level");
     debug!("This is a debug log");
-    info!("This is an info log");
+    info!(context: "TST1", "This is an info log with context");
     warn!("This is a warn log");
     error!("This is an error log");
     fatal!("This is a fatal log");

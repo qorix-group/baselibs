@@ -45,6 +45,30 @@ extern "C" {
         LogVerbose() << message;
     }
 
+    void mw_log_fatal_context(const char* message, const char* context) {
+        LogFatal(context) << message;
+    }
+
+    void mw_log_error_context(const char* message, const char* context) {
+        LogError(context) << message;
+    }
+
+    void mw_log_warn_context(const char* message, const char* context) {
+        LogWarn(context) << message;
+    }
+
+    void mw_log_info_context(const char* message, const char* context) {
+        LogInfo(context) << message;
+    }
+
+    void mw_log_debug_context(const char* message, const char* context) {
+        LogDebug(context) << message;
+    }
+
+    void mw_log_verbose_context(const char* message, const char* context) {
+        LogVerbose(context) << message;
+    }
+
 
     void mw_log_fatal_additional(const char* info, const char* message) {
         LogFatal() << info << message;
@@ -68,6 +92,30 @@ extern "C" {
 
     void mw_log_verbose_additional(const char* info, const char* message) {
         LogVerbose() << info << message;
+    }
+
+    void mw_log_fatal_additional_context(const char* info, const char* message, const char* context) {
+        LogFatal(context) << info << message;
+    }
+
+    void mw_log_error_additional_context(const char* info, const char* message, const char* context) {
+        LogError(context) << info << message;
+    }
+
+    void mw_log_warn_additional_context(const char* info, const char* message, const char* context) {
+        LogWarn(context) << info << message;
+    }
+
+    void mw_log_info_additional_context(const char* info, const char* message, const char* context) {
+        LogInfo(context) << info << message;
+    }
+
+    void mw_log_debug_additional_context(const char* info, const char* message, const char* context) {
+        LogDebug(context) << info << message;
+    }
+
+    void mw_log_verbose_additional_context(const char* info, const char* message, const char* context) {
+        LogVerbose(context) << info << message;
     }
 }
 

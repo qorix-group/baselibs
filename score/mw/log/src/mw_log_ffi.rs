@@ -21,6 +21,13 @@ extern "C" {
     pub(crate) fn mw_log_debug(message: *const c_char);
     pub(crate) fn mw_log_verbose(message: *const c_char);
 
+    pub(crate) fn mw_log_fatal_context(message: *const c_char, context: *const c_char);
+    pub(crate) fn mw_log_error_context(message: *const c_char, context: *const c_char);
+    pub(crate) fn mw_log_warn_context(message: *const c_char, context: *const c_char);
+    pub(crate) fn mw_log_info_context(message: *const c_char, context: *const c_char);
+    pub(crate) fn mw_log_debug_context(message: *const c_char, context: *const c_char);
+    pub(crate) fn mw_log_verbose_context(message: *const c_char, context: *const c_char);
+
     #[allow(dead_code)]
     pub(crate) fn mw_log_fatal_additional(info: *const c_char, message: *const c_char);
     pub(crate) fn mw_log_error_additional(info: *const c_char, message: *const c_char);
@@ -28,4 +35,35 @@ extern "C" {
     pub(crate) fn mw_log_info_additional(info: *const c_char, message: *const c_char);
     pub(crate) fn mw_log_debug_additional(info: *const c_char, message: *const c_char);
     pub(crate) fn mw_log_verbose_additional(info: *const c_char, message: *const c_char);
+
+    pub(crate) fn mw_log_fatal_additional_context(
+        info: *const c_char,
+        message: *const c_char,
+        context: *const c_char,
+    );
+    pub(crate) fn mw_log_error_additional_context(
+        info: *const c_char,
+        message: *const c_char,
+        context: *const c_char,
+    );
+    pub(crate) fn mw_log_warn_additional_context(
+        info: *const c_char,
+        message: *const c_char,
+        context: *const c_char,
+    );
+    pub(crate) fn mw_log_info_additional_context(
+        info: *const c_char,
+        message: *const c_char,
+        context: *const c_char,
+    );
+    pub(crate) fn mw_log_debug_additional_context(
+        info: *const c_char,
+        message: *const c_char,
+        context: *const c_char,
+    );
+    pub(crate) fn mw_log_verbose_additional_context(
+        info: *const c_char,
+        message: *const c_char,
+        context: *const c_char,
+    );
 }

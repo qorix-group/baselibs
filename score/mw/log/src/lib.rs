@@ -13,9 +13,13 @@
 mod mw_log_ffi;
 
 use crate::mw_log_ffi::{
-    mw_log_debug, mw_log_debug_additional, mw_log_error, mw_log_error_additional, mw_log_fatal,
-    mw_log_fatal_additional, mw_log_info, mw_log_info_additional, mw_log_verbose,
-    mw_log_verbose_additional, mw_log_warn, mw_log_warn_additional,
+    mw_log_debug, mw_log_debug_additional, mw_log_debug_additional_context, mw_log_debug_context,
+    mw_log_error, mw_log_error_additional, mw_log_error_additional_context, mw_log_error_context,
+    mw_log_fatal, mw_log_fatal_additional, mw_log_fatal_additional_context, mw_log_fatal_context,
+    mw_log_info, mw_log_info_additional, mw_log_info_additional_context, mw_log_info_context,
+    mw_log_verbose, mw_log_verbose_additional, mw_log_verbose_additional_context,
+    mw_log_verbose_context, mw_log_warn, mw_log_warn_additional, mw_log_warn_additional_context,
+    mw_log_warn_context,
 };
 use core::fmt::{self, Write};
 use log::{Level, LevelFilter, Log, Metadata, Record};
@@ -116,52 +120,142 @@ impl<const SHOW_MODULE: bool, const SHOW_FILE: bool, const SHOW_LINE: bool> Log
                     }
                 }
                 let _ = write!(info, "]");
-                match record.level() {
-                    Level::Fatal => unsafe {
-                        mw_log_fatal_additional(
-                            info.buf.as_ptr() as *const _,
-                            c_message.as_ptr() as *const _,
-                        )
-                    },
-                    Level::Error => unsafe {
-                        mw_log_error_additional(
-                            info.buf.as_ptr() as *const _,
-                            c_message.as_ptr() as *const _,
-                        )
-                    },
-                    Level::Warn => unsafe {
-                        mw_log_warn_additional(
-                            info.buf.as_ptr() as *const _,
-                            c_message.as_ptr() as *const _,
-                        )
-                    },
-                    Level::Info => unsafe {
-                        mw_log_info_additional(
-                            info.buf.as_ptr() as *const _,
-                            c_message.as_ptr() as *const _,
-                        )
-                    },
-                    Level::Debug => unsafe {
-                        mw_log_debug_additional(
-                            info.buf.as_ptr() as *const _,
-                            c_message.as_ptr() as *const _,
-                        )
-                    },
-                    Level::Trace => unsafe {
-                        mw_log_verbose_additional(
-                            info.buf.as_ptr() as *const _,
-                            c_message.as_ptr() as *const _,
-                        )
-                    },
+                if let Some(context) = record.context_id() {
+                    let c_context = CString::new(context).unwrap();
+                    match record.level() {
+                        Level::Fatal => unsafe {
+                            mw_log_fatal_additional_context(
+                                info.buf.as_ptr() as *const _,
+                                c_message.as_ptr() as *const _,
+                                c_context.as_ptr() as *const _,
+                            )
+                        },
+                        Level::Error => unsafe {
+                            mw_log_error_additional_context(
+                                info.buf.as_ptr() as *const _,
+                                c_message.as_ptr() as *const _,
+                                c_context.as_ptr() as *const _,
+                            )
+                        },
+                        Level::Warn => unsafe {
+                            mw_log_warn_additional_context(
+                                info.buf.as_ptr() as *const _,
+                                c_message.as_ptr() as *const _,
+                                c_context.as_ptr() as *const _,
+                            )
+                        },
+                        Level::Info => unsafe {
+                            mw_log_info_additional_context(
+                                info.buf.as_ptr() as *const _,
+                                c_message.as_ptr() as *const _,
+                                c_context.as_ptr() as *const _,
+                            )
+                        },
+                        Level::Debug => unsafe {
+                            mw_log_debug_additional_context(
+                                info.buf.as_ptr() as *const _,
+                                c_message.as_ptr() as *const _,
+                                c_context.as_ptr() as *const _,
+                            )
+                        },
+                        Level::Trace => unsafe {
+                            mw_log_verbose_additional_context(
+                                info.buf.as_ptr() as *const _,
+                                c_message.as_ptr() as *const _,
+                                c_context.as_ptr() as *const _,
+                            )
+                        },
+                    }
+                } else {
+                    match record.level() {
+                        Level::Fatal => unsafe {
+                            mw_log_fatal_additional(
+                                info.buf.as_ptr() as *const _,
+                                c_message.as_ptr() as *const _,
+                            )
+                        },
+                        Level::Error => unsafe {
+                            mw_log_error_additional(
+                                info.buf.as_ptr() as *const _,
+                                c_message.as_ptr() as *const _,
+                            )
+                        },
+                        Level::Warn => unsafe {
+                            mw_log_warn_additional(
+                                info.buf.as_ptr() as *const _,
+                                c_message.as_ptr() as *const _,
+                            )
+                        },
+                        Level::Info => unsafe {
+                            mw_log_info_additional(
+                                info.buf.as_ptr() as *const _,
+                                c_message.as_ptr() as *const _,
+                            )
+                        },
+                        Level::Debug => unsafe {
+                            mw_log_debug_additional(
+                                info.buf.as_ptr() as *const _,
+                                c_message.as_ptr() as *const _,
+                            )
+                        },
+                        Level::Trace => unsafe {
+                            mw_log_verbose_additional(
+                                info.buf.as_ptr() as *const _,
+                                c_message.as_ptr() as *const _,
+                            )
+                        },
+                    }
                 }
             } else {
-                match record.level() {
-                    Level::Fatal => unsafe { mw_log_fatal(c_message.as_ptr() as *const _) },
-                    Level::Error => unsafe { mw_log_error(c_message.as_ptr() as *const _) },
-                    Level::Warn => unsafe { mw_log_warn(c_message.as_ptr() as *const _) },
-                    Level::Info => unsafe { mw_log_info(c_message.as_ptr() as *const _) },
-                    Level::Debug => unsafe { mw_log_debug(c_message.as_ptr() as *const _) },
-                    Level::Trace => unsafe { mw_log_verbose(c_message.as_ptr() as *const _) },
+                if let Some(context) = record.context_id() {
+                    let c_context = CString::new(context).unwrap();
+                    match record.level() {
+                        Level::Fatal => unsafe {
+                            mw_log_fatal_context(
+                                c_message.as_ptr() as *const _,
+                                c_context.as_ptr() as *const _,
+                            )
+                        },
+                        Level::Error => unsafe {
+                            mw_log_error_context(
+                                c_message.as_ptr() as *const _,
+                                c_context.as_ptr() as *const _,
+                            )
+                        },
+                        Level::Warn => unsafe {
+                            mw_log_warn_context(
+                                c_message.as_ptr() as *const _,
+                                c_context.as_ptr() as *const _,
+                            )
+                        },
+                        Level::Info => unsafe {
+                            mw_log_info_context(
+                                c_message.as_ptr() as *const _,
+                                c_context.as_ptr() as *const _,
+                            )
+                        },
+                        Level::Debug => unsafe {
+                            mw_log_debug_context(
+                                c_message.as_ptr() as *const _,
+                                c_context.as_ptr() as *const _,
+                            )
+                        },
+                        Level::Trace => unsafe {
+                            mw_log_verbose_context(
+                                c_message.as_ptr() as *const _,
+                                c_context.as_ptr() as *const _,
+                            )
+                        },
+                    }
+                } else {
+                    match record.level() {
+                        Level::Fatal => unsafe { mw_log_fatal(c_message.as_ptr() as *const _) },
+                        Level::Error => unsafe { mw_log_error(c_message.as_ptr() as *const _) },
+                        Level::Warn => unsafe { mw_log_warn(c_message.as_ptr() as *const _) },
+                        Level::Info => unsafe { mw_log_info(c_message.as_ptr() as *const _) },
+                        Level::Debug => unsafe { mw_log_debug(c_message.as_ptr() as *const _) },
+                        Level::Trace => unsafe { mw_log_verbose(c_message.as_ptr() as *const _) },
+                    }
                 }
             }
         }
