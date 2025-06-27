@@ -35,7 +35,6 @@ fn main() {
     println!("cargo:rustc-link-lib=dylib=stdlib");
     println!("cargo:rustc-link-lib=dylib=fcntl");
     println!("cargo:rustc-link-lib=dylib=split_string_view");
-    println!("cargo:rustc-link-lib=dylib=path");
     println!("cargo:rustc-link-lib=dylib=composite_recorder");
     println!("cargo:rustc-link-lib=dylib=json");
     println!("cargo:rustc-link-lib=dylib=file_output_backend");
@@ -51,7 +50,6 @@ fn main() {
     println!("cargo:rustc-link-lib=dylib=math");
     println!("cargo:rustc-link-lib=dylib=interface");
     println!("cargo:rustc-link-lib=dylib=os_path"); // modified to os_path due to identical name
-    println!("cargo:rustc-link-lib=dylib=path");
     println!("cargo:rustc-link-lib=dylib=initialization_reporter");
     println!("cargo:rustc-link-lib=dylib=errno");
     println!("cargo:rustc-link-lib=dylib=error");

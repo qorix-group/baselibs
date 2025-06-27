@@ -12,6 +12,8 @@
  ********************************************************************************/
 #include "score/mw/log/logging.h"
 #include "score/mw/log/configuration/configuration.h"
+#include "score/mw/log/logger.h"
+#include "score/mw/log/log_level.h"
 
 namespace score
 {
@@ -21,29 +23,6 @@ namespace log
 {
 
 extern "C" {
-    void mw_log_fatal(const char* message) {
-        LogFatal() << message;
-    }
-
-    void mw_log_error(const char* message) {
-        LogError() << message;
-    }
-
-    void mw_log_warn(const char* message) {
-        LogWarn() << message;
-    }
-
-    void mw_log_info(const char* message) {
-        LogInfo() << message;
-    }
-
-    void mw_log_debug(const char* message) {
-        LogDebug() << message;
-    }
-
-    void mw_log_verbose(const char* message) {
-        LogVerbose() << message;
-    }
 
     void mw_log_fatal_context(const char* message, const char* context) {
         LogFatal(context) << message;
@@ -69,31 +48,6 @@ extern "C" {
         LogVerbose(context) << message;
     }
 
-
-    void mw_log_fatal_additional(const char* info, const char* message) {
-        LogFatal() << info << message;
-    }
-
-    void mw_log_error_additional(const char* info, const char* message) {
-        LogError() << info << message;
-    }
-
-    void mw_log_warn_additional(const char* info, const char* message) {
-        LogWarn() << info << message;
-    }
-
-    void mw_log_info_additional(const char* info, const char* message) {
-        LogInfo() << info << message;
-    }
-
-    void mw_log_debug_additional(const char* info, const char* message) {
-        LogDebug() << info << message;
-    }
-
-    void mw_log_verbose_additional(const char* info, const char* message) {
-        LogVerbose() << info << message;
-    }
-
     void mw_log_fatal_additional_context(const char* info, const char* message, const char* context) {
         LogFatal(context) << info << message;
     }
@@ -116,6 +70,62 @@ extern "C" {
 
     void mw_log_verbose_additional_context(const char* info, const char* message, const char* context) {
         LogVerbose(context) << info << message;
+    }
+
+    Logger* mw_log_create_logger(const char* context) {
+	return &CreateLogger(context);
+    }
+
+    void mw_log_fatal_logger(const Logger* logger, const char* message) {
+        logger->LogFatal() << message;
+    }
+
+    void mw_log_error_logger(const Logger* logger, const char* message) {
+        logger->LogError() << message;
+    }
+
+    void mw_log_warn_logger(const Logger* logger, const char* message) {
+        logger->LogWarn() << message;
+    }
+
+    void mw_log_info_logger(const Logger* logger, const char* message) {
+        logger->LogInfo() << message;
+    }
+
+    void mw_log_debug_logger(const Logger* logger, const char* message) {
+        logger->LogDebug() << message;
+    }
+
+    void mw_log_verbose_logger(const Logger* logger, const char* message) {
+        logger->LogVerbose() << message;
+    }
+
+    void mw_log_fatal_logger_additional(const Logger* logger, const char* info, const char* message) {
+        logger->LogFatal() << info  << message;
+    }
+
+    void mw_log_error_logger_additional(const Logger* logger, const char* info, const char* message) {
+        logger->LogError() << info << message;
+    }
+
+    void mw_log_warn_logger_additional(const Logger* logger, const char* info, const char* message) {
+        logger->LogWarn() << info << message;
+    }
+
+    void mw_log_info_logger_additional(const Logger* logger, const char* info, const char* message) {
+        logger->LogInfo() << info << message;
+    }
+
+    void mw_log_debug_logger_additional(const Logger* logger, const char* info, const char* message) {
+        logger->LogDebug() << info << message;
+    }
+
+    void mw_log_verbose_logger_additional(const Logger* logger, const char* info, const char* message) {
+        logger->LogVerbose() << info << message;
+    }
+    // Returns the max log level as uint8_t
+    uint8_t mw_get_max_log_level() {
+        return static_cast<uint8_t>(score::mw::log::GetMaxLogLevelValue());
     }
 }
 

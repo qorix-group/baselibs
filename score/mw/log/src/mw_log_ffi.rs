@@ -12,14 +12,14 @@
  ********************************************************************************/
 use core::ffi::c_char;
 
+// This is just a fake Rust struct to store the class we get from c++ side
+// This type is empty.
+#[repr(C)]
+pub(crate) struct Logger {
+    _private: [u8; 0], // Opaque
+}
+
 extern "C" {
-    #[allow(dead_code)]
-    pub(crate) fn mw_log_fatal(message: *const c_char);
-    pub(crate) fn mw_log_error(message: *const c_char);
-    pub(crate) fn mw_log_warn(message: *const c_char);
-    pub(crate) fn mw_log_info(message: *const c_char);
-    pub(crate) fn mw_log_debug(message: *const c_char);
-    pub(crate) fn mw_log_verbose(message: *const c_char);
 
     pub(crate) fn mw_log_fatal_context(message: *const c_char, context: *const c_char);
     pub(crate) fn mw_log_error_context(message: *const c_char, context: *const c_char);
@@ -27,14 +27,6 @@ extern "C" {
     pub(crate) fn mw_log_info_context(message: *const c_char, context: *const c_char);
     pub(crate) fn mw_log_debug_context(message: *const c_char, context: *const c_char);
     pub(crate) fn mw_log_verbose_context(message: *const c_char, context: *const c_char);
-
-    #[allow(dead_code)]
-    pub(crate) fn mw_log_fatal_additional(info: *const c_char, message: *const c_char);
-    pub(crate) fn mw_log_error_additional(info: *const c_char, message: *const c_char);
-    pub(crate) fn mw_log_warn_additional(info: *const c_char, message: *const c_char);
-    pub(crate) fn mw_log_info_additional(info: *const c_char, message: *const c_char);
-    pub(crate) fn mw_log_debug_additional(info: *const c_char, message: *const c_char);
-    pub(crate) fn mw_log_verbose_additional(info: *const c_char, message: *const c_char);
 
     pub(crate) fn mw_log_fatal_additional_context(
         info: *const c_char,
@@ -66,4 +58,46 @@ extern "C" {
         message: *const c_char,
         context: *const c_char,
     );
+
+    pub(crate) fn mw_log_create_logger(context: *const c_char) -> *const Logger;
+
+    pub(crate) fn mw_log_fatal_logger(logger: *const Logger, message: *const c_char);
+    pub(crate) fn mw_log_error_logger(logger: *const Logger, message: *const c_char);
+    pub(crate) fn mw_log_warn_logger(logger: *const Logger, message: *const c_char);
+    pub(crate) fn mw_log_info_logger(logger: *const Logger, message: *const c_char);
+    pub(crate) fn mw_log_debug_logger(logger: *const Logger, message: *const c_char);
+    pub(crate) fn mw_log_verbose_logger(logger: *const Logger, message: *const c_char);
+
+    pub(crate) fn mw_log_fatal_logger_additional(
+        logger: *const Logger,
+        info: *const c_char,
+        message: *const c_char,
+    );
+    pub(crate) fn mw_log_error_logger_additional(
+        logger: *const Logger,
+        info: *const c_char,
+        message: *const c_char,
+    );
+    pub(crate) fn mw_log_warn_logger_additional(
+        logger: *const Logger,
+        info: *const c_char,
+        message: *const c_char,
+    );
+    pub(crate) fn mw_log_info_logger_additional(
+        logger: *const Logger,
+        info: *const c_char,
+        message: *const c_char,
+    );
+    pub(crate) fn mw_log_debug_logger_additional(
+        logger: *const Logger,
+        info: *const c_char,
+        message: *const c_char,
+    );
+    pub(crate) fn mw_log_verbose_logger_additional(
+        logger: *const Logger,
+        info: *const c_char,
+        message: *const c_char,
+    );
+    pub fn mw_get_max_log_level() -> u8;
+
 }

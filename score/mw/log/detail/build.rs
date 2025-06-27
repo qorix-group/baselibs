@@ -19,7 +19,7 @@
     println!("cargo:rerun-if-changed=build.rs");
 
     let out_dir = env::var("OUT_DIR").unwrap();
-    // Schreibe OUT_DIR in eine Datei, die mw_log lesen kann
+    // Write OUT_DIR in a file that mw_log can read
     let marker_path = Path::new(&out_dir).join("logging_identifier_outdir.txt");
     fs::write(&marker_path, &out_dir).unwrap();
 

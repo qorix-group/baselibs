@@ -4,19 +4,31 @@
 
 use std::{thread, time::Duration};
 
-use log::{debug, error, fatal, info, trace, warn, LevelFilter};
+use log::{debug, error, fatal, info, trace, warn};
 use mw_log::MwLoggerBuilder;
 
 fn main() {
-    // This enables the MwLogger as a Logger for the log crate.
+    // Example 1: Set up the default logger using the builder's convenience method
     MwLoggerBuilder::new()
-        .filter_level(LevelFilter::Debug)
-        .init::<false, true, true>();
+        .filter_max_level_from_cpp()
+        .set_as_default_logger::<false, true, true>();
+
+    // Example 2: Set up the default logger by building and calling set_default_logger separately
+    // Uncomment the following lines to use this method instead:
+    // let default_logger = MwLoggerBuilder::new()
+    //     .filter_max_level_from_cpp()
+    //     .build::<false, true, true>();
+    // mw_log::set_default_logger(default_logger);
+
+    let other_logger = MwLoggerBuilder::new()
+        .filter_max_level_from_cpp()
+        .context("TST2")
+        .build::<false, false, false>();
 
     trace!("This is a trace log, and won't show at the current level");
     debug!("This is a debug log");
     info!(context: "TST1", "This is an info log with context");
-    warn!("This is a warn log");
+    warn!(logger: other_logger, "This is a warn log with context through the specified logger");
     error!("This is an error log");
     fatal!("This is a fatal log");
 
