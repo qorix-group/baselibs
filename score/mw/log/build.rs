@@ -93,5 +93,4 @@ fn main() {
 
     // Rerun if the facade changed
     println!("cargo:rerun-if-changed=src/mw_log_ffi.cpp");
-
 }

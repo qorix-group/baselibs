@@ -4,7 +4,7 @@
 
 use std::{thread, time::Duration};
 
-use log::{fatal, debug, error, info, trace, warn, LevelFilter};
+use log::{debug, error, fatal, info, trace, warn, LevelFilter};
 use mw_log::MwLoggerBuilder;
 
 fn main() {
