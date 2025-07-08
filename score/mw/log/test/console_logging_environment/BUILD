@@ -17,7 +17,9 @@ cc_library(
     srcs = [
         "main.cpp",
     ],
-    visibility = ["//visibility:public"],
+    visibility = [
+        "//visibility:public",
+    ],
     deps = [
         ":console_logging_environment_lib",
     ],
