@@ -196,9 +196,54 @@ platform(
 )
 
 platform(
+    name = "arm64-qnx7-hardware",
+    constraint_values = [
+        "//bazel/platforms/environment:hardware",
+        "//bazel/platforms/qnx_version:qnx7",
+    ],
+    parents = [
+        "@swf_platforms//:arm64-qnx-adaptive",
+    ],
+)
+
+platform(
+    name = "arm64-qnx8-hardware",
+    constraint_values = [
+        "//bazel/platforms/environment:hardware",
+        "//bazel/platforms/qnx_version:qnx8",
+    ],
+    parents = [
+        "@swf_platforms//:arm64-qnx-adaptive",
+    ],
+)
+
+platform(
     name = "arm64-qnx-hardware",
     constraint_values = [
         "//bazel/platforms/environment:hardware",
+        "//bazel/platforms/qnx_version:qnx7",
+    ],
+    parents = [
+        "@swf_platforms//:arm64-qnx-adaptive",
+    ],
+)
+
+platform(
+    name = "arm64-qnx7-virtual",
+    constraint_values = [
+        "//bazel/platforms/environment:virtual",
+        "//bazel/platforms/qnx_version:qnx7",
+    ],
+    parents = [
+        "@swf_platforms//:arm64-qnx-adaptive",
+    ],
+)
+
+platform(
+    name = "arm64-qnx8-virtual",
+    constraint_values = [
+        "//bazel/platforms/environment:virtual",
+        "//bazel/platforms/qnx_version:qnx8",
     ],
     parents = [
         "@swf_platforms//:arm64-qnx-adaptive",
@@ -209,6 +254,7 @@ platform(
     name = "arm64-qnx-virtual",
     constraint_values = [
         "//bazel/platforms/environment:virtual",
+        "//bazel/platforms/qnx_version:qnx7",
     ],
     parents = [
         "@swf_platforms//:arm64-qnx-adaptive",
