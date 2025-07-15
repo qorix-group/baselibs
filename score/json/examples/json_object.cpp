@@ -44,7 +44,7 @@ int main()
     // Iterating over a dictionary elements with key and value
     for (const auto& element : obj)
     {
-        if (element.second.As<std::string>().has_value() == true)
+        if (element.second.As<std::string>().has_value())
         {
             score::mw::log::LogInfo() << element.first.GetAsStringView().data()                   // key
                                     << ": " << element.second.As<std::string>().value().get();  // value
@@ -59,7 +59,7 @@ int main()
         return -1;
     }
     const auto foo_value = foo->second.As<bool>();
-    if (foo_value.has_value() == true)
+    if (foo_value.has_value())
     {
         score::mw::log::LogInfo() << "key: " << foo_value.value();
     }

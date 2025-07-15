@@ -376,7 +376,7 @@ class JsonSerializer<std::string>
     {
         if (auto str = any.As<std::string>(); str.has_value())
         {
-            return std::move(str->get());
+            return str->get();
         }
         else
         {

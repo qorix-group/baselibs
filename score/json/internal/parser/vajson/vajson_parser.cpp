@@ -20,7 +20,7 @@ auto score::json::VajsonParser::FromFile(const score::cpp::string_view file_path
     if (json_data.HasValue() == true)
     {
         score::Result<score::json::Any> json_object = VajsonParser{json_data.Value()}.GetData();
-        if (json_object.has_value() == true)
+        if (json_object.has_value())
         {
             result = std::move(*json_object);
         }
@@ -38,7 +38,7 @@ auto score::json::VajsonParser::FromBuffer(const score::cpp::string_view buffer)
     // strings.)
     {
         auto json_object = VajsonParser{json_data.Value()}.GetData();
-        if (json_object.has_value() == true)
+        if (json_object.has_value())
         {
             result = std::move(*json_object);
         }
@@ -60,13 +60,27 @@ auto score::json::VajsonParser::GetData() noexcept -> score::Result<score::json:
 
 auto score::json::VajsonParser::OnNull() noexcept -> amsr::json::ParserResult
 {
-    score::cpp::ignore = Store(Null{});  // Error will be never returned.
+    auto result = Store(Null{});
+    if (!result.has_value())  // LCOV_EXCL_BR_LINE (Decision Coverage: Not reachable. Branch excluded from
+                              // coverage report. See comment below)
+    {
+        // Coverage: Not reachable. Line excluded from coverage report.
+        // This case never happens, because condition can't be fulfilled due to Store implementantion
+        return amsr::json::ParserResult::FromError(amsr::json::JsonErrc::kInvalidJson); /* LCOV_EXCL_LINE */
+    }
     return amsr::json::ParserState::kRunning;
 }
 
 auto score::json::VajsonParser::OnBool(bool value) noexcept -> amsr::json::ParserResult
 {
-    score::cpp::ignore = Store(value);  // Error will be never returned.
+    auto result = Store(value);
+    if (!result.has_value())  // LCOV_EXCL_BR_LINE (Decision Coverage: Not reachable. Branch excluded from
+                              // coverage report. See comment below)
+    {
+        // Coverage: Not reachable. Line excluded from coverage report.
+        // This case never happens, because condition can't be fulfilled due to Store implementantion
+        return amsr::json::ParserResult::FromError(amsr::json::JsonErrc::kInvalidJson); /* LCOV_EXCL_LINE */
+    }
     return amsr::json::ParserState::kRunning;
 }
 
@@ -82,7 +96,14 @@ auto score::json::VajsonParser::OnNumber(amsr::json::JsonNumber value) noexcept 
 
 auto score::json::VajsonParser::OnString(ara::core::StringView value) noexcept -> amsr::json::ParserResult
 {
-    score::cpp::ignore = Store(value.ToString());  // Error will be never returned.
+    auto result = Store(value.ToString());
+    if (!result.has_value())  // LCOV_EXCL_BR_LINE (Decision Coverage: Not reachable. Branch excluded from
+                              // coverage report. See comment below)
+    {
+        // Coverage: Not reachable. Line excluded from coverage report.
+        // This case never happens, because condition can't be fulfilled due to Store implementantion
+        return amsr::json::ParserResult::FromError(amsr::json::JsonErrc::kInvalidJson); /* LCOV_EXCL_LINE */
+    }
     return amsr::json::ParserState::kRunning;
 }
 
@@ -96,8 +117,8 @@ template <typename T>
 auto score::json::VajsonParser::StartContainer(T&& value) noexcept -> amsr::json::ParserResult
 {
     auto result = Store(std::forward<T>(value));
-    if (result.has_value() == false)  // LCOV_EXCL_BR_LINE (Decision Coverage: Not reachable. Branch excluded from
-                                      // coverage report. See comment below)
+    if (!result.has_value())  // LCOV_EXCL_BR_LINE (Decision Coverage: Not reachable. Branch excluded from
+                              // coverage report. See comment below)
     {
         // Coverage: Not reachable. Line excluded from coverage report.
         // This case never happens, because condition can't be fulfilled due to Store implementantion
@@ -114,7 +135,10 @@ auto score::json::VajsonParser::StartContainer(T&& value) noexcept -> amsr::json
 
 auto score::json::VajsonParser::EndContainer() noexcept -> amsr::json::ParserResult
 {
-    hierarchy_.pop();
+    if (!hierarchy_.empty())  // Check if the stack is not empty
+    {
+        hierarchy_.pop();
+    }
     return amsr::json::ParserState::kRunning;
 }
 

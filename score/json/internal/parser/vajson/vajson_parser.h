@@ -59,7 +59,7 @@ class VajsonParser final : private amsr::json::v2::Parser
         {
             Any* current_node = hierarchy_.top();
             auto current_node_list = current_node->As<score::json::List>();
-            if (current_node_list.has_value() == true)
+            if (current_node_list.has_value())
             {
                 // False positive, we are not forwarding a value to other functions.
                 // coverity[autosar_cpp14_a18_9_2_violation : FALSE]

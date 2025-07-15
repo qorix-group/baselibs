@@ -89,7 +89,7 @@ class JsonBuilder
             }
 
             auto result_list = TryToStoreAsList<T>(value, *current_node);
-            if (result_list.has_value() == true)
+            if (result_list.has_value())
             {
                 return result_list;
             }
@@ -102,8 +102,8 @@ class JsonBuilder
     auto StartContainer(T&& value) -> bool
     {
         auto result = Store(std::forward<T>(value));
-        if (result.has_value() == false)  // LCOV_EXCL_BR_LINE (Decision Coverage: Not reachable. Branch excluded from
-                                          // coverage report. See comment below)
+        if (!result.has_value())  // LCOV_EXCL_BR_LINE (Decision Coverage: Not reachable. Branch excluded from
+                                  // coverage report. See comment below)
         {
             // Coverage: Not reachable. Line excluded from coverage report.
             // This case never happens, because condition can't be fulfilled due to Store implementantion

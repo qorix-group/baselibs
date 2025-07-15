@@ -1,4 +1,4 @@
-load("@score-baselibs//bazel:unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+load("@score-baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
 
 # *******************************************************************************
 # Copyright (c) 2025 Contributors to the Eclipse Foundation

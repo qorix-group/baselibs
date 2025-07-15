@@ -74,25 +74,25 @@ int main()
     for (const auto& element : my_array_result.value().get())
     {
         const auto integer = element.As<std::int64_t>();
-        if (integer.has_value() == true)
+        if (integer.has_value())
         {
             score::mw::log::LogInfo() << integer.value();
         }
 
         const auto& message = element.As<std::string>();
-        if (message.has_value() == true)
+        if (message.has_value())
         {
             score::mw::log::LogInfo() << message.value().get();
         }
 
         const auto null = element.As<score::json::Null>();
-        if (null.has_value() == true)
+        if (null.has_value())
         {
             score::mw::log::LogInfo() << "Null";
         }
 
         const auto pi = element.As<float>();
-        if (pi.has_value() == true)
+        if (pi.has_value())
         {
             score::mw::log::LogInfo() << pi.value();
         }
