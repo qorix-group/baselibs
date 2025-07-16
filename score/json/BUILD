@@ -77,9 +77,9 @@ cc_library(
     visibility = LIB_JSON_VISIBILITY,
     deps = [
         ":interface",
+        "@score-baselibs//score/language/safecpp/safe_math",
         "@score-baselibs//score/json/internal/parser",
         "@score-baselibs//score/json/internal/writer/json_serialize",
-        "@score-baselibs//score/quality/compiler_warnings",
     ],
 )
 

@@ -12,17 +12,19 @@
  ********************************************************************************/
 
 #include "score/json/json_writer.h"
+#include "score/language/safecpp/safe_math/safe_math.h"
 #include "score/json/i_json_writer.h"
 #include "score/json/internal/model/error.h"
 #include "score/json/internal/writer/json_serialize/json_serialize.h"
-#include "score/quality/compiler_warnings/warnings.h"
 
-#include <charconv>
-#include <iomanip>
-#include <ios>
-#include <iostream>
+#include <algorithm>
+#include <array>
+#include <iterator>
+#include <limits>
 #include <locale>
 #include <sstream>
+#include <string_view>
+#include <type_traits>
 
 namespace
 {
@@ -32,15 +34,85 @@ score::ResultBlank ToFileInternal(const T& json_data,
                                 const score::cpp::string_view& file_path,
                                 score::filesystem::IFileFactory& file_factory)
 {
-    const std::string file_path_string{file_path.data()};
+    const std::string file_path_string{file_path.data(), file_path.size()};
     const auto file = file_factory.Open(file_path_string, std::ios::out | std::ios::trunc);
     if (!file.has_value())
     {
-        return score::MakeUnexpected(score::json::Error::kInvalidFilePath);
+        auto error = score::json::MakeError(score::json::Error::kInvalidFilePath, "Failed to open file");
+        return score::ResultBlank{score::unexpect, error};
     }
 
     score::json::JsonSerialize serializer{**file};
     return serializer << json_data;
+}
+
+template <class U>
+constexpr std::size_t max_dec_digits() noexcept
+{
+    U v = std::numeric_limits<U>::max();
+    std::size_t n = 1U;
+    while (v >= 10U)
+    {
+        v /= 10U;
+        ++n;
+    }
+    return n;
+}
+
+template <typename T>
+inline constexpr std::size_t kIntBufLen = max_dec_digits<std::make_unsigned_t<std::remove_cv_t<T>>>() + 1U;
+
+template <typename T>
+inline auto abs_magnitude_unsigned(T val) noexcept
+{
+    using U = std::make_unsigned_t<std::remove_cv_t<T>>;
+    static_assert(std::is_integral_v<T>, "integral only");
+    static_assert(std::is_integral_v<U>, "U must be integral");
+    static_assert(std::numeric_limits<U>::digits >= std::numeric_limits<std::remove_cv_t<T>>::digits,
+                  "U must represent full magnitude of T");
+
+    if constexpr (std::is_signed_v<T>)
+    {
+        const auto abs_val = score::safe_math::Abs(val);
+        const auto cast_res = score::safe_math::Cast<U>(abs_val);
+        SCORE_LANGUAGE_FUTURECPP_ASSERT_PRD_MESSAGE(cast_res.has_value(), "Safe cast failed in abs_magnitude_unsigned (signed)");
+        return cast_res.value();
+    }
+    else
+    {
+        const auto cast_res = score::safe_math::Cast<U>(val);
+        SCORE_LANGUAGE_FUTURECPP_ASSERT_PRD_MESSAGE(cast_res.has_value(), "Safe cast failed in abs_magnitude_unsigned (unsigned)");
+        return cast_res.value();
+    }
+}
+
+template <typename T, typename C>
+[[nodiscard]] std::string_view integer_to_chars(C& buffer, const T val) noexcept
+{
+    using U = std::make_unsigned_t<std::remove_cv_t<T>>;
+    static_assert(std::is_integral_v<T> && std::is_integral_v<U>, "integral only");
+    static_assert(!std::is_same_v<std::remove_cv_t<T>, bool>, "bool not supported");
+    static_assert(std::is_same_v<typename C::value_type, char>, "container must hold char");
+    static_assert(std::is_base_of_v<std::bidirectional_iterator_tag,
+                                    typename std::iterator_traits<typename C::iterator>::iterator_category>,
+                  "iterator must be bidirectional");
+    static_assert(std::numeric_limits<U>::digits >= std::numeric_limits<std::remove_cv_t<T>>::digits,
+                  "U must represent full magnitude of T");
+
+    const bool is_negative = (std::is_signed_v<T> && (val < 0));
+    U x = abs_magnitude_unsigned(val);
+
+    auto it = buffer.end();
+    do
+    {
+        const auto digit = static_cast<U>(x % static_cast<U>(10U));
+        *(--it) = static_cast<char>('0' + digit);
+        x /= 10U;
+    } while (x > static_cast<U>(0U));
+    if (is_negative)
+        *(--it) = '-';
+
+    return std::string_view(&*it, static_cast<std::size_t>(std::distance(it, buffer.end())));
 }
 
 class OptimizedNumPut : public std::num_put<char>
@@ -49,43 +121,39 @@ class OptimizedNumPut : public std::num_put<char>
     using std::num_put<char>::num_put;
 
   protected:
-    DISABLE_OVERLOADED_VIRTUAL
-    iter_type do_put(iter_type out, std::ios_base& str, char_type fill, long val) const override
-    {
-        return OptimizedPutForFloats(out, str, fill, val);
-    }
+    using std::num_put<char>::do_put;
 
-    iter_type do_put(iter_type out, std::ios_base& str, char_type fill, unsigned long val) const override
+    iter_type do_put(iter_type out, std::ios_base& s, char_type fill, long v) const override
     {
-        return OptimizedPutForFloats(out, str, fill, val);
+        return OptimizedPutForInts(out, s, fill, v);
+    }
+    iter_type do_put(iter_type out, std::ios_base& s, char_type fill, unsigned long v) const override
+    {
+        return OptimizedPutForInts(out, s, fill, v);
+    }
+    iter_type do_put(iter_type out, std::ios_base& s, char_type fill, long long v) const override
+    {
+        return OptimizedPutForInts(out, s, fill, v);
+    }
+    iter_type do_put(iter_type out, std::ios_base& s, char_type fill, unsigned long long v) const override
+    {
+        return OptimizedPutForInts(out, s, fill, v);
     }
 
   private:
     template <typename T>
-    iter_type OptimizedPutForFloats(iter_type out, std::ios_base& str, char_type fill, T val) const
+    iter_type OptimizedPutForInts(iter_type out, std::ios_base& str, char_type fill, T val) const
     {
-        constexpr auto RESERVED_BUFFER_SIZE = 32;
-        std::ignore = str;
+        std::array<char, kIntBufLen<T>> buf{};
+        const auto sv = integer_to_chars<T>(buf, val);
 
-        std::array<char, RESERVED_BUFFER_SIZE> formatted_number{};
-        auto result = std::to_chars(formatted_number.begin(), formatted_number.end(), val);
-        SCORE_LANGUAGE_FUTURECPP_ASSERT_PRD(result.ec == std::errc{});
-        std::ptrdiff_t size = result.ptr - formatted_number.data();
-
-        std::streamsize width = str.width();
-        if (width > size)
-        {
-            auto fill_count = width - size;
-            out = std::fill_n(out, fill_count, fill);
-        }
-
-        out = std::copy(formatted_number.begin(), formatted_number.begin() + size, out);
-
-        return out;
+        const auto width = static_cast<std::size_t>(str.width());
+        const auto n = sv.size();
+        if (width > n)
+            out = std::fill_n(out, width - n, fill);
+        return std::copy(sv.begin(), sv.end(), out);
     }
 };
-
-std::locale optimized_locale(std::locale(), new OptimizedNumPut());
 
 template <typename T>
 score::ResultBlank ToFileInternalAtomic(const T& json_data,
@@ -96,9 +164,9 @@ score::ResultBlank ToFileInternalAtomic(const T& json_data,
 {
     return file_factory.AtomicUpdate(std::string{file_path}, std::ios::out | std::ios::trunc, atomic_ownership)
         .transform_error([](auto err) noexcept {
-            return MakeError(score::json::Error::kInvalidFilePath, err.UserMessage());
+            return score::json::MakeError(score::json::Error::kInvalidFilePath, err.UserMessage());
         })
-        .and_then([&json_data](auto filestream) {
+        .and_then([&json_data](auto filestream) -> score::ResultBlank {
             score::json::JsonSerialize serializer{*filestream};
             auto serializer_result = serializer << json_data;
             return filestream->Close().and_then([serializer_result](auto) noexcept {
@@ -113,7 +181,8 @@ score::Result<std::string> ToBufferInternal(const T& json_data)
     // This line must be hit when the function is called. Since other parts of this function show line coverage,
     // this line must also be hit. Missing coverage is due to a bug in the coverage tool
     std::ostringstream string_stream{};  // LCOV_EXCL_LINE
-    string_stream.imbue(optimized_locale);
+    std::locale loc(std::locale(), new OptimizedNumPut());
+    string_stream.imbue(loc);
 
     score::json::JsonSerialize serializer{string_stream};
     serializer << json_data;

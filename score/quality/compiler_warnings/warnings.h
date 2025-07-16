@@ -29,7 +29,6 @@
 #define DISABLE_WARNING_OLD_STYLE_CAST                DISABLE_WARNING(-Wold-style-cast)
 #define DISABLE_WARNING_SHADOW                        DISABLE_WARNING(-Wshadow)
 #define DISABLE_WARNING_TYPE_LIMITS                   DISABLE_WARNING(-Wtype-limits)
-#define DISABLE_OVERLOADED_VIRTUAL                    DISABLE_WARNING(-Woverloaded-virtual)
 
 #if defined(__clang__)
 #define DISABLE_WARNING_SELF_ASSIGN_OVERLOADED        DISABLE_WARNING(-Wself-assign-overloaded)
@@ -51,7 +50,6 @@
 #define DISABLE_WARNING_OLD_STYLE_CAST
 #define DISABLE_WARNING_SHADOW
 #define DISABLE_WARNING_TYPE_LIMITS
-#define DISABLE_OVERLOADED_VIRTUAL
 #define DISABLE_WARNING_SELF_ASSIGN_OVERLOADED
 
 #endif

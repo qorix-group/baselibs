@@ -16,8 +16,12 @@
 
 #include <gtest/gtest.h>
 
+#include <array>
+#include <iterator>
+#include <limits>
 #include <memory>
 #include <sstream>
+#include <vector>
 
 namespace score
 {
@@ -197,6 +201,75 @@ TYPED_TEST(JsonWriterWriteToFileTest, ToSyncedFileResultsInError)
 
     EXPECT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), score::json::Error::kInvalidFilePath);
+}
+
+template <typename T>
+class JsonWriterIntegerTest : public ::testing::Test
+{
+};
+
+// NOTE: Only types supported by score::json::Any/Number are included here.
+// The Number variant currently supports: int, unsigned int, long, unsigned long.
+// Types such as long long and unsigned long long are NOT supported and cannot be tested.
+// This test suite covers all integral types exercised by our num_put overrides and accepted by the production JSON
+// implementation.
+using IntegralTypes = ::testing::Types<long, unsigned long>;
+TYPED_TEST_SUITE(JsonWriterIntegerTest, IntegralTypes, );
+
+TYPED_TEST(JsonWriterIntegerTest, FormatsIntegralValuesCorrectly)
+{
+    this->RecordProperty("Description", "Test integer formatting with type-specific values");
+
+    using T = TypeParam;
+
+    score::json::Object obj;
+
+    // Always add zero, a positive sample, and small positive corner cases.
+    obj["zero"] = score::json::Any{static_cast<T>(0)};
+    obj["positive"] = score::json::Any{static_cast<T>(12345)};
+    obj["p9"] = score::json::Any{static_cast<T>(9)};
+    obj["p10"] = score::json::Any{static_cast<T>(10)};
+    obj["p11"] = score::json::Any{static_cast<T>(11)};
+
+    // Add negative values only for signed types
+    if constexpr (std::numeric_limits<T>::is_signed)
+    {
+        obj["negative"] = score::json::Any{static_cast<T>(-12345)};
+        obj["min"] = score::json::Any{std::numeric_limits<T>::min()};
+        obj["m9"] = score::json::Any{static_cast<T>(-9)};
+        obj["m10"] = score::json::Any{static_cast<T>(-10)};
+        obj["m11"] = score::json::Any{static_cast<T>(-11)};
+    }
+
+    obj["max"] = score::json::Any{std::numeric_limits<T>::max()};
+
+    // Use the JsonWriter to serialize
+    score::json::JsonWriter writer;
+    auto result = writer.ToBuffer(obj);
+    ASSERT_TRUE(result.has_value());
+    const std::string json_str = *result;
+
+    // Verify all values are formatted correctly
+    EXPECT_NE(std::string::npos, json_str.find(std::string{"\"zero\": "} + std::to_string(static_cast<T>(0))));
+    EXPECT_NE(std::string::npos, json_str.find(std::string{"\"positive\": "} + std::to_string(static_cast<T>(12345))));
+
+    EXPECT_NE(std::string::npos, json_str.find(std::string{"\"p9\": "} + std::to_string(static_cast<T>(9))));
+    EXPECT_NE(std::string::npos, json_str.find(std::string{"\"p10\": "} + std::to_string(static_cast<T>(10))));
+    EXPECT_NE(std::string::npos, json_str.find(std::string{"\"p11\": "} + std::to_string(static_cast<T>(11))));
+
+    if constexpr (std::numeric_limits<T>::is_signed)
+    {
+        EXPECT_NE(std::string::npos,
+                  json_str.find(std::string{"\"negative\": "} + std::to_string(static_cast<T>(-12345))));
+        EXPECT_NE(std::string::npos,
+                  json_str.find(std::string{"\"min\": "} + std::to_string(std::numeric_limits<T>::min())));
+        EXPECT_NE(std::string::npos, json_str.find(std::string{"\"m9\": "} + std::to_string(static_cast<T>(-9))));
+        EXPECT_NE(std::string::npos, json_str.find(std::string{"\"m10\": "} + std::to_string(static_cast<T>(-10))));
+        EXPECT_NE(std::string::npos, json_str.find(std::string{"\"m11\": "} + std::to_string(static_cast<T>(-11))));
+    }
+
+    EXPECT_NE(std::string::npos,
+              json_str.find(std::string{"\"max\": "} + std::to_string(std::numeric_limits<T>::max())));
 }
 
 }  // namespace
