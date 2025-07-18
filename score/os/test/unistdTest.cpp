@@ -130,10 +130,10 @@ class UnistdFixture : public ::testing::Test
 
 TEST_F(UnistdFixture, CloseFileDescriptor)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Close File Descriptor");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     // Given some file
@@ -155,10 +155,10 @@ TEST_F(UnistdFixture, CloseFileDescriptor)
 
 TEST_F(UnistdFixture, UnlinkRemovesFile)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Unlink Removes File");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     // Given some file without a reference count
@@ -179,10 +179,10 @@ TEST_F(UnistdFixture, UnlinkRemovesFile)
 
 TEST_F(UnistdFixture, UnlinkReturnsErrorIfNonExistingPath)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Unlink Returns Error If Non Existing Path");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     // Given some non-existing file
@@ -196,10 +196,10 @@ TEST_F(UnistdFixture, UnlinkReturnsErrorIfNonExistingPath)
 
 TEST_F(UnistdFixture, PipeOpensWithoutError)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Pipe Opens Without Error");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     int32_t fds[2] = {};
@@ -214,10 +214,10 @@ TEST_F(UnistdFixture, PipeOpensWithoutError)
 
 TEST_F(UnistdFixture, DupReturnsErrorIfPassInvalidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Dup Returns Error If Pass Invalid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto val = unit_->dup(kInvalidFd);
@@ -226,10 +226,10 @@ TEST_F(UnistdFixture, DupReturnsErrorIfPassInvalidFd)
 
 TEST_F(UnistdFixture, DupReturnsNoErrorIfPassValidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Dup Returns No Error If Pass Valid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     std::int32_t fds = 1;
@@ -240,10 +240,10 @@ TEST_F(UnistdFixture, DupReturnsNoErrorIfPassValidFd)
 
 TEST_F(UnistdFixture, Dup2ReturnsErrorIfPassInvalidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Dup2Returns Error If Pass Invalid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto val = unit_->dup2(kInvalidFd, kInvalidFd);
@@ -252,10 +252,10 @@ TEST_F(UnistdFixture, Dup2ReturnsErrorIfPassInvalidFd)
 
 TEST_F(UnistdFixture, ReadReturnsErrorIfPassInvalidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Read Returns Error If Pass Invalid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr size_t buf_size = 32;
@@ -267,10 +267,10 @@ TEST_F(UnistdFixture, ReadReturnsErrorIfPassInvalidFd)
 
 TEST_F(UnistdFixture, PReadReturnsErrorIfPassInvalidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture PRead Returns Error If Pass Invalid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr size_t buf_size = 32;
@@ -282,10 +282,10 @@ TEST_F(UnistdFixture, PReadReturnsErrorIfPassInvalidFd)
 
 TEST_F(UnistdFixture, PReadReturnsNonErrorIfPassValidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture PRead Returns Non Error If Pass Valid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr size_t buf_size = 32;
@@ -302,10 +302,10 @@ TEST_F(UnistdFixture, PReadReturnsNonErrorIfPassValidFd)
 
 TEST_F(UnistdFixture, WriteReturnsErrorIfPassInvalidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Write Returns Error If Pass Invalid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr size_t buf_size = 32;
@@ -317,10 +317,10 @@ TEST_F(UnistdFixture, WriteReturnsErrorIfPassInvalidFd)
 
 TEST_F(UnistdFixture, PWriteReturnsNonErrorIfPassPassValidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture PWrite Returns Non Error If Pass Pass Valid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr size_t buf_size = 32;
@@ -337,10 +337,10 @@ TEST_F(UnistdFixture, PWriteReturnsNonErrorIfPassPassValidFd)
 
 TEST_F(UnistdFixture, PWriteReturnsErrorIfPassInvalidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture PWrite Returns Error If Pass Invalid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr size_t buf_size = 32;
@@ -352,10 +352,10 @@ TEST_F(UnistdFixture, PWriteReturnsErrorIfPassInvalidFd)
 
 TEST_F(UnistdFixture, LSeekReturnsErrorIfPassInvalidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture LSeek Returns Error If Pass Invalid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto val = unit_->lseek(kInvalidFd, 0, 0);
@@ -364,10 +364,10 @@ TEST_F(UnistdFixture, LSeekReturnsErrorIfPassInvalidFd)
 
 TEST_F(UnistdFixture, LSeekReturnsNonErrorIfPassValidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture LSeek Returns Non Error If Pass Valid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr auto path = "lseek_test_file";
@@ -382,10 +382,10 @@ TEST_F(UnistdFixture, LSeekReturnsNonErrorIfPassValidFd)
 
 TEST_F(UnistdFixture, FTruncateReturnsErrorIfPassInvalidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture FTruncate Returns Error If Pass Invalid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto val = unit_->ftruncate(-1, 0);
@@ -394,10 +394,10 @@ TEST_F(UnistdFixture, FTruncateReturnsErrorIfPassInvalidFd)
 
 TEST_F(UnistdFixture, FTruncateNonErrorIfPassValidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture FTruncate Non Error If Pass Valid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr auto path = "ftruncate_test_file";
@@ -411,10 +411,10 @@ TEST_F(UnistdFixture, FTruncateNonErrorIfPassValidFd)
 
 TEST_F(UnistdFixture, GetUiIdMatchSystemGetuid)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Get Ui Id Match System Getuid");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     EXPECT_EQ(unit_->getuid(), ::getuid());
@@ -422,10 +422,10 @@ TEST_F(UnistdFixture, GetUiIdMatchSystemGetuid)
 
 TEST_F(UnistdFixture, GetGidMatchSystemGetGid)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Get Gid Match System Get Gid");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     EXPECT_EQ(unit_->getgid(), ::getgid());
@@ -433,10 +433,10 @@ TEST_F(UnistdFixture, GetGidMatchSystemGetGid)
 
 TEST_F(UnistdFixture, GetPidMatchSystemGetPid)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Get Pid Match System Get Pid");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     EXPECT_EQ(unit_->getpid(), ::getpid());
@@ -444,10 +444,10 @@ TEST_F(UnistdFixture, GetPidMatchSystemGetPid)
 
 TEST_F(UnistdFixture, GetPpidMatchSystemGetPpid)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Get Ppid Match System Get Ppid");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     EXPECT_EQ(unit_->getppid(), ::getppid());
@@ -455,10 +455,10 @@ TEST_F(UnistdFixture, GetPpidMatchSystemGetPpid)
 
 TEST_F(UnistdFixture, SetuidNotChangesUidIfPassInvalidId)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Setuid Not Changes Uid If Pass Invalid Id");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     ForkAndExpectTrue([this]() noexcept {
@@ -473,10 +473,10 @@ TEST_F(UnistdFixture, SetuidNotChangesUidIfPassInvalidId)
 
 TEST_F(UnistdFixture, SetGidNotChangesGidIfPassInvalidId)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Set Gid Not Changes Gid If Pass Invalid Id");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     ForkAndExpectTrue([this]() noexcept {
@@ -493,10 +493,10 @@ TEST_F(UnistdFixture, SetGidNotChangesGidIfPassInvalidId)
 
 TEST_F(UnistdFixture, ReadLinkReturnsErrorIfPassEmptyPath)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Read Link Returns Error If Pass Empty Path");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     char buf[4096] = {};
@@ -508,10 +508,10 @@ TEST_F(UnistdFixture, ReadLinkReturnsErrorIfPassEmptyPath)
 // Test case for the readlink function
 TEST_F(UnistdFixture, ReadLinkReturnsNoErrorIfPassValidPath)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Read Link Returns No Error If Pass Valid Path");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const char* target = "/etc/passwd";
@@ -538,10 +538,10 @@ TEST_F(UnistdFixture, ReadLinkReturnsNoErrorIfPassValidPath)
 
 TEST_F(UnistdFixture, FSyncReturnsErrorIfPassInvalidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture FSync Returns Error If Pass Invalid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto val = unit_->fsync(-1);
@@ -550,10 +550,10 @@ TEST_F(UnistdFixture, FSyncReturnsErrorIfPassInvalidFd)
 
 TEST_F(UnistdFixture, FSyncReturnsNonErrorIfPassValidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture FSync Returns Non Error If Pass Valid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr auto path = "fsync_test_file";
@@ -567,10 +567,10 @@ TEST_F(UnistdFixture, FSyncReturnsNonErrorIfPassValidFd)
 
 TEST_F(UnistdFixture, FDataSyncReturnsNonErrorIfPassInvalidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture FData Sync Returns Non Error If Pass Invalid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto val = unit_->fdatasync(-1);
@@ -579,10 +579,10 @@ TEST_F(UnistdFixture, FDataSyncReturnsNonErrorIfPassInvalidFd)
 
 TEST_F(UnistdFixture, FDataSyncReturnsNonErrorIfPassValidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture FData Sync Returns Non Error If Pass Valid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr auto path = "fdata_sync_test_file";
@@ -596,10 +596,10 @@ TEST_F(UnistdFixture, FDataSyncReturnsNonErrorIfPassValidFd)
 
 TEST_F(UnistdFixture, NanosleepReturnsNonErrorIfPassValidSleepParam)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Nanosleep Returns Non Error If Pass Valid Sleep Param");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     timespec req{0, 10};
@@ -610,10 +610,10 @@ TEST_F(UnistdFixture, NanosleepReturnsNonErrorIfPassValidSleepParam)
 
 TEST_F(UnistdFixture, NanosleepReturnsErrorIfPassInvalidSleepParam)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Nanosleep Returns Error If Pass Invalid Sleep Param");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     timespec req{0, -10};
@@ -623,10 +623,10 @@ TEST_F(UnistdFixture, NanosleepReturnsErrorIfPassInvalidSleepParam)
 
 TEST_F(UnistdFixture, SysconfReturnsErrorIfPassInvalidParam)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Sysconf Returns Error If Pass Invalid Param");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto val = unit_->sysconf(kInvalidFd);
@@ -635,10 +635,10 @@ TEST_F(UnistdFixture, SysconfReturnsErrorIfPassInvalidParam)
 
 TEST_F(UnistdFixture, SysconfReturnsNonErrorIfPassValidParam)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Sysconf Returns Non Error If Pass Valid Param");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto val = unit_->sysconf(_SC_ARG_MAX);
@@ -647,10 +647,10 @@ TEST_F(UnistdFixture, SysconfReturnsNonErrorIfPassValidParam)
 
 TEST_F(UnistdFixture, LinkReturnsErrorIfPassEmptyPath)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Link Returns Error If Pass Empty Path");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto val = unit_->link("", "");
@@ -659,10 +659,10 @@ TEST_F(UnistdFixture, LinkReturnsErrorIfPassEmptyPath)
 
 TEST_F(UnistdFixture, LinkReturnsNonErrorIfPassValidPath)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Link Returns Non Error If Pass Valid Path");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr auto path = "link_test_file";
@@ -677,10 +677,10 @@ TEST_F(UnistdFixture, LinkReturnsNonErrorIfPassValidPath)
 
 TEST_F(UnistdFixture, SymlinkReturnsErrorIfPassEmptyPath)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Symlink Returns Error If Pass Empty Path");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto val = unit_->symlink("", "");
@@ -689,10 +689,10 @@ TEST_F(UnistdFixture, SymlinkReturnsErrorIfPassEmptyPath)
 
 TEST_F(UnistdFixture, SymlinkReturnsNonErrorIfPassValidPath)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Symlink Returns Non Error If Pass Valid Path");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr auto path_link = "symlink_test_file_link";
@@ -707,10 +707,10 @@ TEST_F(UnistdFixture, SymlinkReturnsNonErrorIfPassValidPath)
 
 TEST_F(UnistdFixture, ChdirReturnsErrorIfPassEmptyPath)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Chdir Returns Error If Pass Empty Path");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto val = unit_->chdir("");
@@ -719,10 +719,10 @@ TEST_F(UnistdFixture, ChdirReturnsErrorIfPassEmptyPath)
 
 TEST_F(UnistdFixture, ChdirReturnsNonErrorIfPassValidPath)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Chdir Returns Non Error If Pass Valid Path");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto val = unit_->chdir(".");
@@ -731,10 +731,10 @@ TEST_F(UnistdFixture, ChdirReturnsNonErrorIfPassValidPath)
 
 TEST_F(UnistdFixture, ChownReturnsErrorIfPassInvalidParams)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Chown Returns Error If Pass Invalid Params");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto val = unit_->chown("", 0, 0);
@@ -743,10 +743,10 @@ TEST_F(UnistdFixture, ChownReturnsErrorIfPassInvalidParams)
 
 TEST_F(UnistdFixture, ChownReturnsNonErrorIfPassValidParams)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Chown Returns Non Error If Pass Valid Params");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const OpenFileGuard file_guard{"chown_test_file", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR};
@@ -761,10 +761,10 @@ TEST_F(UnistdFixture, ChownReturnsNonErrorIfPassValidParams)
 
 TEST_F(UnistdFixture, GetcwdReturnsErrorIfPassNullBuffer)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Getcwd Returns Error If Pass Null Buffer");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     char buffer{};
@@ -774,10 +774,10 @@ TEST_F(UnistdFixture, GetcwdReturnsErrorIfPassNullBuffer)
 
 TEST_F(UnistdFixture, GetcwdReturnsNonErrorIfPassAllocatedBuffer)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Getcwd Returns Non Error If Pass Allocated Buffer");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     char buf[4096] = {};
@@ -787,10 +787,10 @@ TEST_F(UnistdFixture, GetcwdReturnsNonErrorIfPassAllocatedBuffer)
 
 TEST_F(UnistdFixture, AccessMatchesReadWriteAccessForExistingFile)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Access Matches Read Write Access For Existing File");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     // Given some file
@@ -815,10 +815,10 @@ TEST_F(UnistdFixture, AccessMatchesReadWriteAccessForExistingFile)
 
 TEST_F(UnistdFixture, AccessReturnsErrorIfPassNonExistingFile)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Access Returns Error If Pass Non Existing File");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     // Given some non existing file
@@ -841,10 +841,10 @@ TEST_F(UnistdFixture, AccessReturnsErrorIfPassNonExistingFile)
 
 TEST_F(UnistdFixture, AccessReturnsNonErrorForExistingFileWithReadWriteAccess)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Access Returns Non Error For Existing File With Read Write Access");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     // Given some file
@@ -869,10 +869,10 @@ TEST_F(UnistdFixture, AccessReturnsNonErrorForExistingFileWithReadWriteAccess)
 
 TEST_F(UnistdFixture, UnistdAccessReturnsErrorIfPassNonExistingFile)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Unistd Access Returns Error If Pass Non Existing File");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     // Given some non existing file
@@ -895,10 +895,10 @@ TEST_F(UnistdFixture, UnistdAccessReturnsErrorIfPassNonExistingFile)
 
 TEST_F(UnistdFixture, UnistdGettidReturnsPositiveTid)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Unistd Gettid Returns Positive Tid");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     EXPECT_GT(unit_->gettid(), 0);
@@ -906,10 +906,10 @@ TEST_F(UnistdFixture, UnistdGettidReturnsPositiveTid)
 
 TEST_F(UnistdFixture, UnistdAlarmSetsAndReportsPendingAlarm)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Unistd Alarm Sets And Reports Pending Alarm");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const std::uint32_t seconds = 10;
@@ -919,10 +919,10 @@ TEST_F(UnistdFixture, UnistdAlarmSetsAndReportsPendingAlarm)
 
 TEST_F(UnistdFixture, UnistdAlarmTriggersInExpectedTime)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Unistd Alarm Triggers In Expected Time");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const std::uint32_t seconds = 1;
@@ -941,10 +941,10 @@ TEST_F(UnistdFixture, UnistdAlarmTriggersInExpectedTime)
 
 TEST(Unistd, DefaultShallReturnImplInstance)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Unistd Default Shall Return Impl Instance");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto default_instance = score::os::Unistd::Default();
@@ -954,10 +954,10 @@ TEST(Unistd, DefaultShallReturnImplInstance)
 
 TEST_F(UnistdFixture, CloseReturnsErrIfPassInvalidParam)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Close Returns Err If Pass Invalid Param");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto val = unit_->close(kInvalidFd);
@@ -967,10 +967,10 @@ TEST_F(UnistdFixture, CloseReturnsErrIfPassInvalidParam)
 
 TEST_F(UnistdFixture, Dup2ReturnsNoErrorIfPassValidParam)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Dup2Returns No Error If Pass Valid Param");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     std::int32_t fds[2] = {1, 2};
@@ -987,10 +987,10 @@ TEST_F(UnistdFixture, Dup2ReturnsNoErrorIfPassValidParam)
 
 TEST_F(UnistdFixture, ReadReturnsNoErrorIfPassValidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Read Returns No Error If Pass Valid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     // first write something to the file
@@ -1030,10 +1030,10 @@ TEST_F(UnistdFixture, ReadReturnsNoErrorIfPassValidFd)
 
 TEST_F(UnistdFixture, WriteReturnNoErrorIfPassValidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Write Return No Error If Pass Valid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr auto path = "write_test_file";
@@ -1065,10 +1065,10 @@ TEST_F(UnistdFixture, WriteReturnNoErrorIfPassValidFd)
 
 TEST_F(UnistdFixture, SetuidReturnsErrorIfPassInvalidUid)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Setuid Returns Error If Pass Invalid Uid");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const uid_t uid_before_set = unit_->getuid();
@@ -1082,10 +1082,10 @@ TEST_F(UnistdFixture, SetuidReturnsErrorIfPassInvalidUid)
 
 TEST_F(UnistdFixture, SetuidReturnsNoErrorIfPassValidID)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Setuid Returns No Error If Pass Valid ID");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
 #if defined __QNX__
@@ -1102,10 +1102,10 @@ TEST_F(UnistdFixture, SetuidReturnsNoErrorIfPassValidID)
 
 TEST_F(UnistdFixture, WriteReturnNoErrorAndSyncIfPassValidFd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnistdFixture Write Return No Error And Sync If Pass Valid Fd");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr auto path = "write_test_file";
@@ -1138,10 +1138,10 @@ TEST_F(UnistdFixture, WriteReturnNoErrorAndSyncIfPassValidFd)
 
 TEST(Unistd, PMRDefaultShallReturnImplInstance)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Unistd PMRDefault Shall Return Impl Instance");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     score::cpp::pmr::memory_resource* memory_resource = score::cpp::pmr::get_default_resource();

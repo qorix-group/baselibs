@@ -48,10 +48,10 @@ pid_t spawnProcess()
 
 TEST(SysWaitImplTest, Wait)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SysWaitImplTest Wait");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     score::os::SysWaitImpl syswait;
@@ -69,10 +69,10 @@ TEST(SysWaitImplTest, Wait)
 
 TEST(SysWaitImplTest, WaitFail)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SysWaitImplTest Wait Fail");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     score::os::SysWait& syswait = score::os::SysWait::instance();
@@ -83,10 +83,10 @@ TEST(SysWaitImplTest, WaitFail)
 
 TEST(SysWaitImplTest, Waitpid)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SysWaitImplTest Waitpid");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     score::os::SysWait& syswait = score::os::SysWait::instance();
@@ -104,10 +104,10 @@ TEST(SysWaitImplTest, Waitpid)
 
 TEST(SysWaitImplTest, WaitpidFail)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SysWaitImplTest Waitpid Fail");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     score::os::SysWaitImpl syswait;

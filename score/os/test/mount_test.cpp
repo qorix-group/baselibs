@@ -23,10 +23,10 @@ namespace
 
 TEST(MountTest, MountTestMountFail)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "MountTest Mount Test Mount Fail");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     ::mkdir("/mnt/home", S_IRWXU | S_IRWXG | S_IRWXO);
@@ -38,10 +38,10 @@ TEST(MountTest, MountTestMountFail)
 
 TEST(MountTest, MountTestUmountFail)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "MountTest Mount Test Umount Fail");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const char* dir = "/mnt/home";
@@ -51,10 +51,10 @@ TEST(MountTest, MountTestUmountFail)
 
 TEST(MountTest, MountTestConvertFlag)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "MountTest Mount Test Convert Flag");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     ::mkdir("/mnt/home", S_IWUSR | S_IWGRP | S_IWOTH);

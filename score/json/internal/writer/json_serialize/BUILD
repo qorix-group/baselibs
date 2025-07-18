@@ -38,7 +38,6 @@ cc_test(
     tags = ["unit"],
     visibility = [
         "@score-baselibs//score/json:__pkg__",
-        # "@ddad@score-baselibs//score/json:__pkg__",
     ],
     deps = [
         ":json_serialize",

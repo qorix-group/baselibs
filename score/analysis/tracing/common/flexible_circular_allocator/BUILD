@@ -27,11 +27,10 @@ cc_library(
     ],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
-        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
         "flexible_circular_allocator_interface",
-        "@score-baselibs//score/analysis/tracing/common:generic_trace_api_types",
+        "@score-baselibs//score/analysis/tracing/common/interface_types:generic_trace_api_types",
         "@score-baselibs//score/analysis/tracing/library/generic_trace_api/error_code",
         "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
@@ -57,11 +56,10 @@ cc_library(
     tags = ["FUSA"],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
-        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
         "flexible_circular_allocator_interface",
-        "@score-baselibs//score/analysis/tracing/common:generic_trace_api_types",
+        "@score-baselibs//score/analysis/tracing/common/interface_types:generic_trace_api_types",
         "@score-baselibs//score/analysis/tracing/library/generic_trace_api/error_code",
         "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
@@ -84,10 +82,9 @@ cc_library(
     tags = ["FUSA"],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
-        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
-        "@score-baselibs//score/analysis/tracing/common:generic_trace_api_types",
+        "@score-baselibs//score/analysis/tracing/common/interface_types:generic_trace_api_types",
         "@score-baselibs//score/memory/shared:types",
         "@score-baselibs//score/mw/log",
     ],
@@ -105,7 +102,6 @@ cc_library(
     ],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
-        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
         "error_code",
@@ -127,7 +123,6 @@ cc_library(
     tags = ["FUSA"],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
-        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
         "error_code",
@@ -149,7 +144,6 @@ cc_library(
     tags = ["FUSA"],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
-        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
         "error_code",
@@ -173,7 +167,6 @@ cc_library(
     tags = ["FUSA"],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
-        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/result",

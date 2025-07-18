@@ -79,9 +79,9 @@ class IoFunc : public ObjectSeam<IoFunc>
                                                                            io_lseek_t* const msg,
                                                                            iofunc_ocb_t* const ocb) const noexcept = 0;
 
-    virtual score::cpp::expected_blank<std::int32_t> iofunc_client_info(resmgr_context_t* ctp,
-                                                                 std::int32_t ioflag,
-                                                                 struct _client_info* info) const noexcept = 0;
+    virtual score::cpp::expected_blank<std::int32_t> iofunc_client_info_ext(resmgr_context_t* ctp,
+                                                                     const std::int32_t ioflag,
+                                                                     struct _client_info** info) const noexcept = 0;
 
     virtual score::cpp::expected_blank<std::int32_t> iofunc_check_access(resmgr_context_t* ctp,
                                                                   const iofunc_attr_t* attr,
@@ -176,9 +176,9 @@ class IoFuncQnx final : public IoFunc
                                                                    io_lseek_t* const msg,
                                                                    iofunc_ocb_t* const ocb) const noexcept override;
 
-    score::cpp::expected_blank<std::int32_t> iofunc_client_info(resmgr_context_t* ctp,
-                                                         std::int32_t ioflag,
-                                                         struct _client_info* info) const noexcept override;
+    score::cpp::expected_blank<std::int32_t> iofunc_client_info_ext(resmgr_context_t* ctp,
+                                                             const std::int32_t ioflag,
+                                                             struct _client_info** info) const noexcept override;
 
     score::cpp::expected_blank<std::int32_t> iofunc_check_access(resmgr_context_t* ctp,
                                                           const iofunc_attr_t* attr,

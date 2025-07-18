@@ -36,10 +36,10 @@ struct FtwMockTest : ::testing::Test
 
 TEST_F(FtwMockTest, ftw)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "FtwMockTest ftw");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     EXPECT_CALL(ftwmock, ftw);
@@ -55,10 +55,10 @@ std::int32_t walk(const char*, const struct stat*, std::int32_t)
 
 TEST(FtwTest, ftw_walk)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "FtwTest ftw_walk");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     std::unique_ptr<score::os::Ftw> ftw_object = std::make_unique<score::os::FtwPosix>();
@@ -70,10 +70,10 @@ TEST(FtwTest, ftw_walk)
 
 TEST(FtwTest, ftw_fail)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "FtwTest ftw_fail");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     std::unique_ptr<score::os::Ftw> ftw_object = std::make_unique<score::os::FtwPosix>();

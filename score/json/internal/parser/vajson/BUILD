@@ -25,9 +25,9 @@ cc_library(
     }),
     visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
+        "//ecu/xpad/ara/vector:vajson",
         "@score-baselibs//score/json/internal/model",
         "@score-baselibs//score/result",
-        # "@ddad//ecu/xpad/ara/vector:vajson",
     ],
 )
 
@@ -39,7 +39,6 @@ cc_test(
     tags = ["unit"],
     visibility = [
         "@score-baselibs//score/json:__subpackages__",
-        # "@ddad@score-baselibs//score/json:__pkg__",
     ],
     deps = [
         "@score-baselibs//score/json/internal/parser:parser_test_suite",
@@ -56,7 +55,6 @@ cc_test(
     tags = ["unit"],
     visibility = [
         "@score-baselibs//score/json:__subpackages__",
-        # "@ddad@score-baselibs//score/json:__pkg__",
     ],
     deps = [
         ":vajson_parser",

@@ -63,6 +63,9 @@ TEST_F(FilesystemErrorTest, AllMessages)
     ASSERT_TRUE(ErrorMessageContains(ErrorCode::kCorruptedFileSystem, "Corrupted filesystem"));
     ASSERT_TRUE(ErrorMessageContains(ErrorCode::kCouldNotFormatPartition, "Could not format partition"));
     ASSERT_TRUE(ErrorMessageContains(ErrorCode::kCouldNotReadSymlink, "Could not read symlink"));
+    ASSERT_TRUE(ErrorMessageContains(ErrorCode::kFsyncFailed, "Could not issue file sync"));
+    ASSERT_TRUE(ErrorMessageContains(ErrorCode::kCouldNotRenameFile, "Could not rename file"));
+    ASSERT_TRUE(ErrorMessageContains(ErrorCode::kCloseFailed, "Close failed"));
     ASSERT_TRUE(ErrorMessageContains(ErrorCode::kNotImplemented, "Not implemented"));
 }
 

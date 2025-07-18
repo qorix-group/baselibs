@@ -332,9 +332,6 @@ score::ResultBlank ParseContextLogLevel(const score::json::Object& root,
     const auto context_config = GetElementAsRef<score::json::List>(root, kContextConfigsKey);
     if (context_config.has_value() == false)
     {
-        //  coverage: coverage shown by manual inspection.
-        //  Reasoning: building without code optimization (-O0) it is possible to set and hit the breakpoint.
-        //  See also: Ticket-34288
         /* KW_SUPPRESS_START:MISRA.LOGIC.OPERATOR.NOT_BOOL: false positive */
         return score::MakeUnexpected<score::Blank>(context_config.error());
         /* KW_SUPPRESS_END:MISRA.LOGIC.OPERATOR.NOT_BOOL*/
@@ -472,8 +469,8 @@ score::ResultBlank ParseDynamicDatarouterIdentifiers(const score::json::Object& 
     // Disabling clang-format to address Coverity warning: autosar_cpp14_a7_1_7_violation
     // clang-format off
     return GetElementAndThen<std::size_t>(
-        root, 
-        kDynamicDatarouterIdentifiersKey, 
+        root,
+        kDynamicDatarouterIdentifiersKey,
         [&config](const auto value) noexcept { config.SetDynamicDatarouterIdentifiers(static_cast<bool>(value)); }
     );
     // clang-format on
@@ -519,9 +516,6 @@ score::Result<Configuration> ParseAndUpdateConfiguration(const std::string& path
     const auto root_result = json_result.value().As<score::json::Object>();
     if (root_result.has_value() == false)
     {
-        //  coverage: coverage shown by manual inspection.
-        //  Reasoning: building without code optimization (-O0) it is possible to set and hit the breakpoint.
-        //  See also: Ticket-34288
         /* KW_SUPPRESS_START:MISRA.LOGIC.OPERATOR.NOT_BOOL: false positive */
         return score::MakeUnexpected<Configuration>(root_result.error());
         /* KW_SUPPRESS_END:MISRA.LOGIC.OPERATOR.NOT_BOOL*/

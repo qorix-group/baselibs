@@ -55,12 +55,10 @@ class WaitFreeStack
     /* KW_SUPPRESS_START: MISRA.USE.EXPANSION: False positive: it is not macro. */
   private:
     /* KW_SUPPRESS_END: MISRA.USE.EXPANSION */
-    /* KW_SUPPRESS_START: MISRA.MEMB.NOT_PRIVATE: false positive: it is private (Ticket-74585) */
     std::vector<score::cpp::optional<Element>> elements_;
     std::vector<std::atomic_int> elements_written_;
     AtomicIndex write_index_;
     AtomicBool capacity_full_;
-    /* KW_SUPPRESS_END: MISRA.MEMB.NOT_PRIVATE */
 };
 
 template <typename Element, template <class> class AtomicIndirectorType>

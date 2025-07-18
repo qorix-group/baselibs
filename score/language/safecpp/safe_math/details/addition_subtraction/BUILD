@@ -40,7 +40,6 @@ cc_gtest_unit_test(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "@score-baselibs//score/language/safecpp/safe_math:__pkg__",
-        # "@ddad@score-baselibs//score/language/safecpp/safe_math:__pkg__",
     ],
     deps = [
         ":addition_subtraction",

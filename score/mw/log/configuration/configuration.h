@@ -98,7 +98,6 @@ class Configuration final
     /* KW_SUPPRESS_START: MISRA.USE.EXPANSION: False positive: it is not macro. */
   private:
     /* KW_SUPPRESS_END: MISRA.USE.EXPANSION */
-    /* KW_SUPPRESS_START: MISRA.MEMB.NOT_PRIVATE: false positive: it is private (Ticket-74585)*/
     /* KW_SUPPRESS_START:MISRA.INIT.BRACES: false positive */
     /// \brief DLT ECU ID, four bytes max.
     LoggingIdentifier ecu_id_{"ECU1"};
@@ -145,7 +144,6 @@ class Configuration final
 
     /// \brief Toggle between dynamic datarouter identifiers.
     bool dynamic_datarouter_identifiers_{false};
-    /* KW_SUPPRESS_END: MISRA.MEMB.NOT_PRIVATE */
 };
 
 }  // namespace detail

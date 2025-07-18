@@ -39,7 +39,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/language/safecpp/scoped_function:move_only_scoped_function",
@@ -71,9 +70,6 @@ cc_gtest_unit_test(
     ],
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
-    ],
-    visibility = [
-        # "@ddad@score-baselibs//score/concurrency/future:__subpackages__",
     ],
     deps = [
         ":future",

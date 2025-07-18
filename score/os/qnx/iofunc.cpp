@@ -133,14 +133,12 @@ score::cpp::expected<std::int32_t, std::int32_t> score::os::IoFuncQnx::iofunc_ls
     return result;
 }
 
-[[deprecated(
-    "This API is deprecated and will be removed in next SPD, see  "
-    "broken_link_j/Ticket-185079")]] score::cpp::expected_blank<std::int32_t>
-score::os::IoFuncQnx::iofunc_client_info(resmgr_context_t* ctp,
-                                       std::int32_t ioflag,
-                                       struct _client_info* info) const noexcept
+score::cpp::expected_blank<std::int32_t> score::os::IoFuncQnx::iofunc_client_info_ext(resmgr_context_t* ctp,
+                                                                             const std::int32_t ioflag,
+                                                                             struct _client_info** info) const noexcept
 {
-    const std::int32_t result = ::iofunc_client_info(ctp, ioflag, info);
+    const std::int32_t result = ::iofunc_client_info_ext(ctp, ioflag, info, IOFUNC_CLIENTINFO_GETGROUPS);
+
     // LCOV_EXCL_BR_START (Creation of valid resmgr_context_t struct is not possible through unit tests)
     if (result != EOK) /* KW_SUPPRESS:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     {

@@ -29,7 +29,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/language/futurecpp",
@@ -43,9 +42,6 @@ cc_gtest_unit_test(
     ],
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
-    ],
-    visibility = [
-        # "@ddad@score-baselibs//score/concurrency/thread_load_tracking:__subpackages__",
     ],
     deps = [
         ":thread_load_tracking",

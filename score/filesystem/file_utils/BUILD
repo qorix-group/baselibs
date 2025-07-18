@@ -26,7 +26,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/filesystem:__subpackages__",
-        # "@ddad@score-baselibs//score/filesystem:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/filesystem:error",
@@ -38,6 +37,26 @@ cc_library(
         "@score-baselibs//score/os:stat",
         "@score-baselibs//score/os:stdlib",
         "@score-baselibs//score/result",
+    ],
+)
+
+cc_library(
+    name = "file_test_utils",
+    testonly = True,
+    srcs = [
+        "file_test_utils.cpp",
+    ],
+    hdrs = [
+        "file_test_utils.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    visibility = [
+        "//visibility:public", # platform_only
+        # "@ddad//platform/aas:__subpackages__",
+    ],
+    deps = [
+        "@score-baselibs//score/filesystem:error",
+        "@score-baselibs//score/filesystem:path",
     ],
 )
 
@@ -82,7 +101,6 @@ cc_test(
     tags = ["unit"],
     visibility = [
         "@score-baselibs//score/filesystem:__pkg__",
-        # "@ddad@score-baselibs//score/filesystem:__pkg__",
     ],
     deps = [
         ":file_utils",

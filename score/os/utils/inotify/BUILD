@@ -20,7 +20,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":inotify_watch_descriptor",
@@ -37,7 +36,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":inotify_event",
@@ -54,7 +52,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":inotify_event",
@@ -78,7 +75,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":inotify_instance",
@@ -94,7 +90,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":inotify_instance",
@@ -111,7 +106,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
 )
 
@@ -130,7 +124,6 @@ cc_test(
     ],
     visibility = [
         "@score-baselibs//score/os/utils/test:__pkg__",
-        # "@ddad@score-baselibs//score/os/utils/test:__pkg__",
     ],
     deps = [
         ":inotify_instance_impl",

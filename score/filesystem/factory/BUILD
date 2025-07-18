@@ -68,7 +68,6 @@ cc_test(
     tags = ["unit"],
     visibility = [
         "@score-baselibs//score/filesystem:__pkg__",
-        # "@ddad@score-baselibs//score/filesystem:__pkg__",
     ],
     deps = [
         ":factory",

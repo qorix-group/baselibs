@@ -31,7 +31,6 @@ cc_library(
         "@score-baselibs//score/os/linux/utils/mocklib:__subpackages__",
         "@score-baselibs//score/os/linux/utils/test:__subpackages__",
         "//platform/aas/pas/sysmon:__subpackages__",
-        # "@ddad@score-baselibs//score/os/linux/utils:__subpackages__",
     ],
     deps = select({
         "//bazel/platforms:config_xpad_dnv": [],

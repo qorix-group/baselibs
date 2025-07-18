@@ -10,7 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-package(default_visibility = ["//bazel/platforms:__subpackages__"])
+
+package(default_visibility = ["//visibility:public"])
 
 constraint_setting(name = "environment")
 

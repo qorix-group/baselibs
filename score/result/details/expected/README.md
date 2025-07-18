@@ -6,7 +6,7 @@ as close as possible with C++17 features.
 
 > [!CAUTION]
 > Currently, there are the following divergences from the standard:
-> 
+>
 > 1. Limitations to explicitness of constructors due to the smaller feature set of C++17
 > 2. Missing partial template specialization for `template <class E> expected<void, E>`
 > 3. Addition of `[[nodiscard]]` on all observers and monadic/equality operators (intentional divergence)
@@ -23,7 +23,7 @@ The following features are provided:
 - Conversion to std/score::cpp::optional with explicit error handling
 
 These extensions are explicitly not part of the `expected` type, to ease migration to a stdlib implementation once the
-project switches to C++20. 
+project switches to C++23.
 The extensions are written in a way, that they will continue to work with any implementation following the standard.
 
 ## Divergence from score::cpp::expected
@@ -34,7 +34,7 @@ Below we give a short overview of the divergences and why this implementation re
 ### Construction
 
 score::cpp::expected did not fully follow the standard with construction. Especially in-place construction was sometimes
-falling short of what the standard requires. This implementation follows the standard instead. 
+falling short of what the standard requires. This implementation follows the standard instead.
 
 ### Construction on Assignment
 

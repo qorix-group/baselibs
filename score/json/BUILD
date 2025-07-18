@@ -14,6 +14,8 @@ load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
 load("@score-baselibs//bazel:unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
 load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
+LIB_JSON_VISIBILITY = ["//visibility:public"]
+
 string_flag(
     name = "base_library",
     build_setting_default = "vajson",
@@ -72,10 +74,7 @@ cc_library(
         ":base_library_vajson": ["VAJSON"],
     }),
     tags = ["FUSA"],
-    visibility = [
-        "//visibility:public", # platform_only
-        # "@ddad@score-baselibs//score/json:__subpackages__",
-    ],
+    visibility = LIB_JSON_VISIBILITY,
     deps = [
         ":interface",
         "@score-baselibs//score/json/internal/parser",
@@ -91,7 +90,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad@score-baselibs//score/json:__subpackages__",
     ],
     deps = [
         ":json",
@@ -105,16 +103,14 @@ alias(
     name = "json_parser",
     actual = ":json",
     visibility = [
-        # "@ddad@score-baselibs//score/json:__subpackages__",
+        "//visibility:public", # platform_only
     ],
 )
 
 alias(
     name = "json_impl",
     actual = ":json",
-    visibility = [
-        # "@ddad@score-baselibs//score/json:__subpackages__",
-    ],
+    visibility = LIB_JSON_VISIBILITY,
 )
 
 cc_library(
@@ -125,10 +121,7 @@ cc_library(
         "i_json_writer_mock.h",
     ],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        "@score-baselibs//score/json:__subpackages__",
-        # "@ddad@score-baselibs//score/json:__subpackages__",
-    ],
+    visibility = LIB_JSON_VISIBILITY,
     deps = [
         ":interface",
         "@googletest//:gtest",
@@ -144,7 +137,6 @@ cc_test(
     tags = ["unit"],
     visibility = [
         "@score-baselibs//score/json:__pkg__",
-        # "@ddad@score-baselibs//score/json:__pkg__",
     ],
     deps = [
         ":json",
@@ -168,7 +160,6 @@ cc_test(
     tags = ["unit"],
     visibility = [
         "@score-baselibs//score/json:__pkg__",
-        # "@ddad@score-baselibs//score/json:__pkg__",
     ],
     deps = [
         "@score-baselibs//score/filesystem:mock",
@@ -184,9 +175,6 @@ cc_test(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["unit"],
-    visibility = [
-        # "@ddad@score-baselibs//score/json:__pkg__",
-    ],
     deps = [
         ":json_serializer",
         "@googletest//:gtest_main",

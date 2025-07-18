@@ -138,6 +138,46 @@ score::cpp::expected<std::int32_t, Error> NeutrinoImpl::TimerTimeout(
     return ret;
 }
 
+// This is intented, we don't force users to fill the otime parameter unless needed
+// NOLINTNEXTLINE(google-default-arguments): See above
+score::cpp::expected<std::int32_t, Error> NeutrinoImpl::TimerTimeout(
+    const Neutrino::ClockType clock_type,
+    const Neutrino::TimerTimeoutFlag flags,
+    const std::unique_ptr<SigEvent> signal_event,
+    const std::chrono::nanoseconds& ntime,
+    std::optional<std::chrono::nanoseconds> otime) const noexcept
+{
+    if (signal_event == nullptr)
+    {
+        return score::cpp::make_unexpected(Error::createUnspecifiedError());
+    }
+
+    const auto nano_in = static_cast<std::uint64_t>(ntime.count());
+    std::uint64_t nano_out{};
+    auto nano_time = otime.has_value() ? &nano_out : nullptr;
+    const auto& raw_signal_event = signal_event->GetSigevent();
+    const std::int32_t ret{::TimerTimeout(ClockTypeToNativeClock(clock_type),
+                                          // As clarified in Ticket-145671, TimerTimeout flags in bitmask are unsigned
+                                          // NOLINTNEXTLINE(cppcoreguidelines-narrowing-conversions): See above
+                                          static_cast<std::int32_t>(TimerTimeoutFlagToNativeFlag(flags)),
+                                          &raw_signal_event,
+                                          &nano_in,
+                                          nano_time)};
+    if (ret == -1)
+    {
+        return score::cpp::make_unexpected(Error::createFromErrno());
+    }
+
+    if (((static_cast<std::uint32_t>(flags) & static_cast<std::uint32_t>(Neutrino::TimerTimeoutFlag::kNanoSleep)) !=
+         0U) ||
+        ((static_cast<std::uint32_t>(flags) &
+          static_cast<std::uint32_t>(Neutrino::TimerTimeoutFlag::kTimerTolerance)) != 0U))
+    {
+        otime = std::chrono::nanoseconds{nano_out};
+    }
+    return ret;
+}
+
 clockid_t NeutrinoImpl::ClockTypeToNativeClock(const Neutrino::ClockType clock_type) const noexcept
 {
     clockid_t native_clock_type{-1};

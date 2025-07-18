@@ -14,7 +14,7 @@
 #define SCORE_ANALYSIS_TRACING_COMMON_FLEXIBLE_CIRCULAR_ALLOCATOR_H
 
 #include "score/analysis/tracing/common/flexible_circular_allocator/flexible_circular_allocator_interface.h"
-#include "score/analysis/tracing/common/types.h"
+#include "score/analysis/tracing/common/interface_types/types.h"
 #include "score/result/result.h"
 
 #include <cstddef>

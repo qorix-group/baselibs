@@ -1,18 +1,20 @@
 # JSON
 
 - [JSON](#json)
-    - [Usage](#usage)
-        - [Loading a JSON document from a file](#loading-a-json-document-from-a-file)
-        - [Accessing elements from a JSON object](#accessing-elements-from-a-json-object)
-        - [Accessing elements from a JSON list](#accessing-elements-from-a-json-list)
-        - [Accessing numbers from a JSON document](#accessing-numbers-from-a-json-document)
-        - [Accessing strings from a JSON document](#accessing-strings-from-a-json-document)
-        - [Simplified usage](#simplified-usage)
-        - [Declarative parsing of JSON data](#declarative-parsing-of-json-data)
-    - [Design](#design)
-    - [Constraints](#constraints)
-    - [Requirements](#requirements)
+  - [Usage](#usage)
+    - [Bazel target](#bazel-target)
+    - [Loading a JSON document from a file](#loading-a-json-document-from-a-file)
+    - [Accessing elements from a JSON object](#accessing-elements-from-a-json-object)
+    - [Accessing elements from a JSON list](#accessing-elements-from-a-json-list)
+    - [Accessing numbers from a JSON document](#accessing-numbers-from-a-json-document)
+    - [Accessing strings from a JSON document](#accessing-strings-from-a-json-document)
+    - [Simplified usage](#simplified-usage)
+    - [Declarative parsing of JSON data](#declarative-parsing-of-json-data)
+  - [Design](#design)
+  - [Constraints](#constraints)
+  - [Requirements](#requirements)
   - [Assumptions of Use](#assumptions-of-use)
+  - [Selecting base library](#selecting-base-library)
 
 This JSON library is designed as an abstraction layer which can switch to using
 other parsers/serializers under the hood. At the moment it uses vaJson from Vector for parsing,
@@ -25,6 +27,12 @@ Mid-Term goal is that all JSON usages within the platform are based on this
 abstraction and use-cases that are not yet covered are extended.
 
 ## Usage
+
+### Bazel target
+
+This library offers the Bazel target `//platform/aas/lib/json`, which is uniquely ASIL B certified. However, this certification is valid only when the target utilizes the vaJson parser from Vector, [selectable via a feature flag](#selecting-base-library).
+
+Additionally, there is [another](#declarative-parsing-of-json-data) Bazel target, `//platform/aas/lib/json:json_serializer`, which is **not** ASIL B certified.
 
 ### Loading a JSON document from a file
 

@@ -14,6 +14,7 @@
 #define SCORE_ANALYSIS_TRACING_COMMON_SHARED_LIST_H
 #include "score/analysis/tracing/common/flexible_circular_allocator/flexible_circular_allocator_interface.h"
 #include "score/analysis/tracing/library/generic_trace_api/error_code/error_code.h"
+#include "score/memory/shared/atomic_indirector.h"
 
 #include <cstdint>
 #include <list>
@@ -30,7 +31,7 @@ namespace shared
  *
  * @tparam T The type of the elements stored in the list.
  */
-template <typename T>
+template <typename T, template <class> class AtomicIndirectorType = memory::shared::AtomicIndirectorReal>
 class alignas(std::max_align_t) List
 {
   private:
@@ -139,9 +140,9 @@ class alignas(std::max_align_t) List
     }
 
     std::shared_ptr<IFlexibleCircularAllocator> flexible_allocator_;  ///< Allocator for shared memory.
-    std::ptrdiff_t head_offset_;                                      ///< Offset of the head node.
-    std::ptrdiff_t tail_offset_;                                      ///< Offset of the tail node.
-    std::size_t size_;                                                ///< Number of elements in the list.
+    std::atomic<std::ptrdiff_t> head_offset_;                         ///< Offset of the head node.
+    std::atomic<std::ptrdiff_t> tail_offset_;                         ///< Offset of the tail node.
+    std::atomic_size_t size_;                                         ///< Number of elements in the list.
 
   public:
     /**
@@ -332,7 +333,7 @@ class alignas(std::max_align_t) List
      */
     std::size_t size() const
     {
-        return size_;
+        return AtomicIndirectorType<std::size_t>::load(size_);
     }
 
     /**
@@ -342,7 +343,7 @@ class alignas(std::max_align_t) List
      */
     bool empty() const
     {
-        return size_ == 0U;
+        return AtomicIndirectorType<std::size_t>::load(size_) == 0U;
     }
 
     /**
@@ -350,16 +351,17 @@ class alignas(std::max_align_t) List
      */
     void clear()
     {
-        while (ResolveOffset(head_offset_) != nullptr)
+        while (ResolveOffset(AtomicIndirectorType<std::ptrdiff_t>::load(head_offset_)) != nullptr)
         {
-            Node* temp = ResolveOffset(head_offset_);
-            head_offset_ = ResolveOffset(head_offset_)->next;
+            Node* temp = ResolveOffset(AtomicIndirectorType<std::ptrdiff_t>::load(head_offset_));
+            AtomicIndirectorType<std::ptrdiff_t>::store(
+                head_offset_, ResolveOffset(AtomicIndirectorType<std::ptrdiff_t>::load(head_offset_))->next);
             DeallocateNode(temp);
         }
         flexible_allocator_.reset();
-        tail_offset_ = 0;
-        head_offset_ = 0;
-        size_ = 0U;
+        AtomicIndirectorType<std::ptrdiff_t>::store(tail_offset_, 0U);
+        AtomicIndirectorType<std::ptrdiff_t>::store(head_offset_, 0U);
+        AtomicIndirectorType<std::size_t>::store(size_, 0U);
     }
 
     /**
@@ -375,18 +377,21 @@ class alignas(std::max_align_t) List
         {
             return score::MakeUnexpected<Blank>(new_node.error());
         }
-        if (nullptr == ResolveOffset(tail_offset_))
+        if (nullptr == ResolveOffset(AtomicIndirectorType<std::ptrdiff_t>::load(tail_offset_)))
         {
-            tail_offset_ = CalculateOffset(new_node.value());
-            head_offset_ = tail_offset_;
+            AtomicIndirectorType<std::ptrdiff_t>::store(tail_offset_, CalculateOffset(new_node.value()));
+
+            AtomicIndirectorType<std::ptrdiff_t>::store(head_offset_,
+                                                        AtomicIndirectorType<std::ptrdiff_t>::load(tail_offset_));
         }
         else
         {
-            ResolveOffset(tail_offset_)->next = CalculateOffset(new_node.value());
-            new_node.value()->prev = tail_offset_;
-            tail_offset_ = CalculateOffset(new_node.value());
+            ResolveOffset(AtomicIndirectorType<std::ptrdiff_t>::load(tail_offset_))->next =
+                CalculateOffset(new_node.value());
+            new_node.value()->prev = AtomicIndirectorType<std::ptrdiff_t>::load(tail_offset_);
+            AtomicIndirectorType<std::ptrdiff_t>::store(tail_offset_, CalculateOffset(new_node.value()));
         }
-        ++size_;
+        AtomicIndirectorType<std::size_t>::fetch_add(size_, 1UL);
         return score::cpp::blank{};
     }
 
@@ -412,14 +417,14 @@ class alignas(std::max_align_t) List
      */
     score::Result<T> at(std::size_t index)
     {
-        if (index >= size_)
+        if (index >= AtomicIndirectorType<std::size_t>::load(size_))
         {
             return score::MakeUnexpected(ErrorCode::kIndexOutOfBoundsInSharedListRecoverable);
         }
 
         // No need to check against nullptr in the following line due to the check against the size
         // otherwise, it yields to unreachable code
-        Node* current = ResolveOffset(head_offset_);
+        Node* current = ResolveOffset(AtomicIndirectorType<std::ptrdiff_t>::load(head_offset_));
 
         for (std::size_t i = 0U; i < index; ++i)
         {
@@ -439,7 +444,7 @@ class alignas(std::max_align_t) List
      */
     iterator begin()
     {
-        return iterator(this, ResolveOffset(head_offset_));
+        return iterator(this, ResolveOffset(AtomicIndirectorType<std::ptrdiff_t>::load(head_offset_)));
     }
 
     /**

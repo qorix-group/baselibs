@@ -60,10 +60,24 @@ class NeutrinoImpl final : public Neutrino
     // Suppress "AUTOSAR C++14 M8-3-1" rule finding: "Parameters in an overriding virtual function shall either use the
     // same default arguments as the function they override, or else shall not specify any default arguments.”
     // Rationale: This is intented, we don't force users to fill the otime parameter unless needed
+    [[deprecated(
+        "SPP_DEPRECATION: Please use the latest overload of the \'TimerTimeout\'")]] score::cpp::expected<std::int32_t, Error>
+    TimerTimeout(const Neutrino::ClockType clock_type,
+                 const Neutrino::TimerTimeoutFlag flags,
+                 const struct sigevent* notify,
+                 const std::chrono::nanoseconds& ntime,
+                 // coverity[autosar_cpp14_m8_3_1_violation]
+                 std::optional<std::chrono::nanoseconds> otime = std::nullopt) const noexcept override;
+    // NOLINTEND(google-default-arguments)
+
+    // NOLINTBEGIN(google-default-arguments): See rationale below
+    // Suppress "AUTOSAR C++14 M8-3-1" rule finding: "Parameters in an overriding virtual function shall either use the
+    // same default arguments as the function they override, or else shall not specify any default arguments.”
+    // Rationale: This is intented, we don't force users to fill the otime parameter unless needed
     score::cpp::expected<std::int32_t, Error> TimerTimeout(
         const Neutrino::ClockType clock_type,
         const Neutrino::TimerTimeoutFlag flags,
-        const struct sigevent* notify,
+        const std::unique_ptr<SigEvent> signal_event,
         const std::chrono::nanoseconds& ntime,
         // coverity[autosar_cpp14_m8_3_1_violation]
         std::optional<std::chrono::nanoseconds> otime = std::nullopt) const noexcept override;

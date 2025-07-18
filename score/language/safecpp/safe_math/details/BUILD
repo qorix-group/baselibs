@@ -34,7 +34,6 @@ cc_gtest_unit_test(
     features = COMPILER_WARNING_FEATURES + ["memcheck_macro"],
     visibility = [
         "@score-baselibs//score/language/safecpp/safe_math:__pkg__",
-        # "@ddad@score-baselibs//score/language/safecpp/safe_math:__pkg__",
     ],
     deps = [
         ":floating_point_environment",

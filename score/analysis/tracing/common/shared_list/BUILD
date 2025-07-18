@@ -26,7 +26,6 @@ cc_library(
     tags = ["FUSA"],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
-        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/analysis/tracing/common/flexible_circular_allocator:flexible_circular_allocator_interface",

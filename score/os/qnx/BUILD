@@ -145,7 +145,6 @@ cc_library(
     visibility = [
         "@score-baselibs//score/os:__subpackages__",
         "//platform/aas/network/xnm:__subpackages__",
-        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os:errno",
@@ -186,6 +185,7 @@ cc_library(
         "@score-baselibs//score/bitmanipulation:bitmask_operators",
         "@score-baselibs//score/os:errno",
         "@score-baselibs//score/os:object_seam",
+        "@score-baselibs//score/os:sigevent",
     ],
 )
 
@@ -206,7 +206,6 @@ cc_library(
         "@score-baselibs//score/os/mocklib/qnx:__subpackages__",
         "@score-baselibs//score/os/test/qnx:__subpackages__",
         "//platform/aas/pas/hw_reg_res_mgrs:__subpackages__",
-        # "@ddad@score-baselibs//score/os/qnx:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os:errno",
@@ -230,7 +229,6 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "@score-baselibs//score/os:__subpackages__",
-        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os:errno",
@@ -255,7 +253,6 @@ cc_library(
     visibility = [
         "@score-baselibs//score/os:__subpackages__",
         "//platform/aas/pas/hw_reg_res_mgrs:__subpackages__",
-        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":types",
@@ -363,7 +360,6 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "@score-baselibs//score/os/qnx:__subpackages__",
-        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os:errno",
@@ -377,7 +373,6 @@ alias(
     actual = "slog2_impl",
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
 )
 
@@ -414,7 +409,6 @@ cc_library(
     visibility = [
         "@score-baselibs//score/os/mocklib/qnx:__pkg__",
         "//platform/aas/os/secpol/secpollog:__pkg__",
-        # "@ddad@score-baselibs//score/os/qnx:__pkg__",
     ],
     deps = [
         "@score-baselibs//score/os:errno",
@@ -477,10 +471,31 @@ cc_library(
     visibility = [
         "//platform/aas/intc/configure_persistency:__subpackages__",
         "@score-baselibs//score/os:__subpackages__",
-        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os:errno",
         "//third_party/fscrypto",
+    ],
+)
+
+cc_library(
+    name = "sigevent_qnx",
+    srcs = [
+        "sigevent_qnx.cpp",
+        "sigevent_qnx_impl.cpp",
+    ],
+    hdrs = [
+        "sigevent_qnx.h",
+        "sigevent_qnx_impl.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    target_compatible_with = ["@platforms//os:qnx"],
+    visibility = [
+        "@score-baselibs//score/analysis/tracing:__subpackages__",
+        "@score-baselibs//score/os:__subpackages__",
+    ],
+    deps = [
+        "@score-baselibs//score/os:sigevent",
     ],
 )

@@ -42,10 +42,10 @@ class SemaphoreTestFixture : public ::testing::Test
 // Positive test for sem_open()
 TEST_F(SemaphoreTestFixture, SuccessSemOpen)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SemaphoreTestFixture Success Sem Open");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto ret_open_create = unit_.sem_open(m_name_.c_str(),
@@ -65,10 +65,10 @@ TEST_F(SemaphoreTestFixture, SuccessSemOpen)
 // Negative test for sem_open()
 TEST_F(SemaphoreTestFixture, FailureSemOpen)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SemaphoreTestFixture Failure Sem Open");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const char* invalid_path = "/invalid_path";
@@ -79,10 +79,10 @@ TEST_F(SemaphoreTestFixture, FailureSemOpen)
 
 TEST_F(SemaphoreTestFixture, FailureSemOpenWithoutCreateFlag)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SemaphoreTestFixture Failure Sem Open Without Create Flag");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const char* invalid_path = "/invalid_path";
@@ -93,10 +93,10 @@ TEST_F(SemaphoreTestFixture, FailureSemOpenWithoutCreateFlag)
 // Positive test for sem_getvalue()
 TEST_F(SemaphoreTestFixture, SuccessGetValue)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SemaphoreTestFixture Success Get Value");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     std::int32_t sval;
@@ -114,10 +114,10 @@ TEST_F(SemaphoreTestFixture, SuccessGetValue)
 // Negative test for sem_post()
 TEST_F(SemaphoreTestFixture, FailureSemPost)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SemaphoreTestFixture Failure Sem Post");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto valid_sem =
@@ -135,10 +135,10 @@ TEST_F(SemaphoreTestFixture, FailureSemPost)
 // Positive test for sem_timedwait()
 TEST_F(SemaphoreTestFixture, SuccessTimedWait)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SemaphoreTestFixture Success Timed Wait");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     timespec abs_time{};
@@ -154,10 +154,10 @@ TEST_F(SemaphoreTestFixture, SuccessTimedWait)
 // Testing all modes in for Loop
 TEST_F(SemaphoreTestFixture, SuccessSemOpenAllModes)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SemaphoreTestFixture Success Sem Open All Modes");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     std::vector<score::os::Semaphore::ModeFlag> mode_vector = {Semaphore::ModeFlag::kReadUser,
@@ -183,10 +183,10 @@ TEST_F(SemaphoreTestFixture, SuccessSemOpenAllModes)
 // Positive test for sem_wait()
 TEST_F(SemaphoreTestFixture, SuccessSemWait)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SemaphoreTestFixture Success Sem Wait");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto sem = ::sem_open(m_name_.c_str(), O_CREAT, S_IRUSR, value_);
@@ -208,10 +208,10 @@ TEST_F(SemaphoreTestFixture, SuccessSemWait)
 // Positive test for sem_post()
 TEST_F(SemaphoreTestFixture, SuccessSemPost)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SemaphoreTestFixture Success Sem Post");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto sem = ::sem_open(m_name_.c_str(), O_CREAT, S_IRUSR, value_);
@@ -233,10 +233,10 @@ TEST_F(SemaphoreTestFixture, SuccessSemPost)
 // Positive Negative for sem_timedwait()
 TEST_F(SemaphoreTestFixture, SuccessTimedWaitFailure)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SemaphoreTestFixture Success Timed Wait Failure");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     timespec abs_time{0, -1};
@@ -249,10 +249,10 @@ TEST_F(SemaphoreTestFixture, SuccessTimedWaitFailure)
 
 TEST(Semaphore, get_instance)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Semaphore get_instance");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     EXPECT_NO_FATAL_FAILURE(Semaphore::instance());

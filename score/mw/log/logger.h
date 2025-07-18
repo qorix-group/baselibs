@@ -126,9 +126,7 @@ class Logger final
     /* KW_SUPPRESS_START: MISRA.USE.EXPANSION: False positive: it is not macro. */
   private:
     /* KW_SUPPRESS_END: MISRA.USE.EXPANSION */
-    /* KW_SUPPRESS_START: MISRA.MEMB.NOT_PRIVATE: false positive: it is private (Ticket-74585) */
     detail::LoggingIdentifier context_;
-    /* KW_SUPPRESS_END: MISRA.MEMB.NOT_PRIVATE */
 };
 
 score::mw::log::Logger& CreateLogger(const std::string_view context) noexcept;

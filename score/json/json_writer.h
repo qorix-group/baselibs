@@ -17,15 +17,23 @@
 #include "score/filesystem/filestream/file_factory.h"
 #include "score/json/i_json_writer.h"
 
+#include <string_view>
+
 namespace score
 {
 namespace json
 {
 
+enum class FileSyncMode
+{
+    kSynced,
+    kUnsynced,
+};
+
 class JsonWriter final : public IJsonWriter
 {
   public:
-    JsonWriter() noexcept = default;
+    explicit JsonWriter(FileSyncMode file_sync_mode = FileSyncMode::kSynced) noexcept;
     JsonWriter(const JsonWriter&) = delete;
     JsonWriter(JsonWriter&&) noexcept = delete;
     JsonWriter& operator=(const JsonWriter&) = delete;
@@ -41,6 +49,9 @@ class JsonWriter final : public IJsonWriter
 
     score::Result<std::string> ToBuffer(const score::json::Object& json_data) override;
     score::Result<std::string> ToBuffer(const score::json::List& json_data) override;
+
+  private:
+    FileSyncMode file_sync_mode_;
 };
 
 }  // namespace json

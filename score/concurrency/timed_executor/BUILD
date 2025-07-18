@@ -21,7 +21,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/concurrency:executor",
@@ -37,7 +36,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":timed_task",
@@ -50,9 +48,6 @@ cc_gtest_unit_test(
     srcs = ["periodic_task_test.cpp"],
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
-    ],
-    visibility = [
-        # "@ddad@score-baselibs//score/concurrency/timed_executor:__subpackages__",
     ],
     deps = [
         ":periodic_task",
@@ -69,7 +64,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":timed_task",
@@ -82,9 +76,6 @@ cc_gtest_unit_test(
     srcs = ["delayed_task_test.cpp"],
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
-    ],
-    visibility = [
-        # "@ddad@score-baselibs//score/concurrency/timed_executor:__subpackages__",
     ],
     deps = [
         ":delayed_task",
@@ -101,7 +92,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":delayed_task",
@@ -118,7 +108,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":timed_executor",
@@ -134,7 +123,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":timed_executor",
@@ -147,9 +135,6 @@ cc_gtest_unit_test(
     srcs = ["concurrent_timed_executor_test.cpp"],
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
-    ],
-    visibility = [
-        # "@ddad@score-baselibs//score/concurrency/timed_executor:__subpackages__",
     ],
     deps = [
         ":concurrent_timed_executor",

@@ -1,18 +1,18 @@
 {
-	"adp::perception::CrocStateTraceable": {
+	"score::pcp::CrocStateTraceable": {
 		"id": 8650814,
 		"ctxid": "CRoC",
 		"appid": "Plan",
 		"loglevel": 3
 	},
-	"adp::perception::obstacles::ObstaclesTraceable": {
+	"score::pcp::obstacles::ObstaclesTraceable": {
 		"id": 8650815,
 		"ctxid": "OBSF",
 		"appid": "Plan",
 		"loglevel": 3
 	},
-	"adp::planning::awa::DebugData": [],
-	"adp::planning::driving_tube::DiagnosticLogsData": {
+	"score::plg::awa::DebugData": [],
+	"score::plg::driving_tube::DiagnosticLogsData": {
 		"id": 8650817,
 		"ctxid": "DTNV",
 		"appid": "Plan",

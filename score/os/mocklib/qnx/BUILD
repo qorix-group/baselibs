@@ -141,7 +141,6 @@ cc_library(
     visibility = [
         "@score-baselibs//score/os:__subpackages__",
         "//platform/aas/pas/hw_reg_res_mgrs:__subpackages__",
-        # "@ddad@score-baselibs//score/os/mocklib/qnx:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os/qnx:resmgr",
@@ -262,6 +261,19 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@score-baselibs//score/os/qnx:fs_crypto",
+        "@googletest//:gtest",
+    ],
+)
+
+cc_library(
+    name = "sigevent_qnx_mock",
+    testonly = True,
+    srcs = ["sigevent_qnx_mock.cpp"],
+    hdrs = ["sigevent_qnx_mock.h"],
+    target_compatible_with = ["@platforms//os:qnx"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@score-baselibs//score/os/qnx:sigevent_qnx",
         "@googletest//:gtest",
     ],
 )

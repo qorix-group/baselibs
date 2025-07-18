@@ -157,10 +157,7 @@ score::cpp::span<const std::uint8_t> VerbosePayload::GetSpan() const noexcept
     using size_type = score::cpp::span<const std::uint8_t>::size_type;
     constexpr auto max_size = std::numeric_limits<const size_type>::max();
 
-    //  Suppress false positive issue: Ticket-35960
-    /* KW_SUPPRESS_START:VA_UNUSED.INIT: False positive */
     const auto span_size = static_cast<size_type>(std::min(static_cast<std::size_t>(max_size), buffer_.get().size()));
-    /* KW_SUPPRESS_END:VA_UNUSED.INIT */
 
     /* KW_SUPPRESS_START:AUTOSAR.CAST.REINTERPRET: Handling raw data in span */
     //  reinterpret_cast due to handling raw data:

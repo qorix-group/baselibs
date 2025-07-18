@@ -13,10 +13,6 @@
 load("@score-baselibs//bazel:unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
 load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
-package(default_visibility = [
-    # "@ddad@score-baselibs//score/os/utils/test:__subpackages__",
-])
-
 cc_unit_test_suites_for_host_and_qnx(
     name = "unit_tests",
     cc_unit_tests = [

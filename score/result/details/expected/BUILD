@@ -46,9 +46,6 @@ cc_gtest_unit_test(
         "test_type_traits_test.cpp",
     ],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/result/details/expected:__pkg__",
-    ],
     deps = [":test_type_traits"],
 )
 
@@ -65,9 +62,6 @@ cc_gtest_unit_test(
     ],
     features = COMPILER_WARNING_FEATURES + [
         "-aborts_upon_exception",
-    ],
-    visibility = [
-        # "@ddad@score-baselibs//score/result/details/expected:__pkg__",
     ],
     deps = [
         ":expected",
@@ -93,9 +87,6 @@ cc_gtest_unit_test(
     name = "extensions_test",
     srcs = ["extensions_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/result/details/expected:__pkg__",
-    ],
     deps = [
         ":extensions",
         ":test_types",

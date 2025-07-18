@@ -14,10 +14,10 @@
 #define GENERIC_TRACE_API_SHM_DATA_CHUNK_LIST_H
 
 #include "score/analysis/tracing/common/flexible_circular_allocator/custom_polymorphic_offset_ptr_allocator.h"
+#include "score/analysis/tracing/common/interface_types/shared_memory_chunk.h"
+#include "score/analysis/tracing/common/interface_types/shared_memory_location.h"
+#include "score/analysis/tracing/common/interface_types/types.h"
 #include "score/analysis/tracing/common/shared_list/shared_list.h"
-#include "score/analysis/tracing/common/shared_memory_chunk.h"
-#include "score/analysis/tracing/common/shared_memory_location.h"
-#include "score/analysis/tracing/common/types.h"
 #include "score/memory/shared/managed_memory_resource.h"
 #include "score/memory/shared/vector.h"
 #include "score/result/result.h"

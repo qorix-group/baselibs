@@ -30,9 +30,6 @@ cc_library(
     visibility = [
         "//platform/aas/ara/log:__pkg__",
         "@score-baselibs//score/mw/log:__pkg__",
-        # "@ddad//platform/aas/ara/log:__pkg__",
-        # "@ddad@score-baselibs//score/result:__pkg__",
-        # "@ddad@score-baselibs//score/mw/log:__pkg__",
     ],
 )
 
@@ -44,7 +41,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":error",
@@ -61,9 +57,6 @@ cc_gtest_unit_test(
         "result_test.cpp",
     ],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/result:__pkg__",
-    ],
     deps = [
         ":error",
         ":result",

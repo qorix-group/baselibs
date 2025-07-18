@@ -37,10 +37,10 @@ class UnameTest : public ::testing::Test
 
 TEST_F(UnameTest, GetUnameSuccess)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnameTest Get Uname Success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     EXPECT_CALL(unameMock, UnameWrapper(::testing::_)).WillOnce([](struct utsname* info) {
@@ -53,10 +53,10 @@ TEST_F(UnameTest, GetUnameSuccess)
 
 TEST_F(UnameTest, GetUnameFailure)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnameTest Get Uname Failure");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     EXPECT_CALL(unameMock, UnameWrapper(::testing::_)).WillOnce([](struct utsname* info) {
@@ -69,10 +69,10 @@ TEST_F(UnameTest, GetUnameFailure)
 
 TEST(UnameWrapperTest, Success)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "UnameWrapperTest Success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     // Prepare the expected behavior

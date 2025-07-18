@@ -27,9 +27,6 @@ cc_gtest_unit_test(
     name = "allocator_wrapper_test",
     srcs = ["allocator_wrapper_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
-    ],
     deps = [
         ":allocator_wrapper",
         ":testing_allocator",
@@ -68,9 +65,6 @@ cc_gtest_unit_test(
     name = "allocator_aware_type_erasure_pointer_test",
     srcs = ["allocator_aware_type_erasure_pointer_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
-    ],
     deps = [
         ":allocator_aware_type_erasure_pointer",
         ":instrumented_memory_resource",
@@ -96,9 +90,6 @@ cc_gtest_unit_test(
     name = "call_and_return_modified_test",
     srcs = ["call_and_return_modified_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
-    ],
     deps = [
         ":call_and_return_modified",
         "@score-baselibs//score/language/futurecpp",
@@ -123,9 +114,6 @@ cc_gtest_unit_test(
     name = "function_wrapper_test",
     srcs = ["function_wrapper_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
-    ],
     deps = [
         ":function_wrapper",
         "@score-baselibs//score/language/safecpp/scoped_function/details:instrumented_memory_resource",
@@ -172,9 +160,6 @@ cc_gtest_unit_test(
         "is_callable_from_with_wrong_modifiers_test.cpp",
     ],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
-    ],
     deps = [":is_callable_from"],
 )
 
@@ -192,9 +177,6 @@ cc_gtest_unit_test(
     name = "modify_return_type_test",
     srcs = ["modify_return_type_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
-    ],
     deps = [
         ":modify_return_type",
         "@score-baselibs//score/language/futurecpp",
@@ -218,9 +200,6 @@ cc_gtest_unit_test(
     name = "modify_signature_test",
     srcs = ["modify_signature_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
-    ],
     deps = [
         ":modify_signature",
         "@score-baselibs//score/language/futurecpp",
@@ -251,9 +230,6 @@ cc_gtest_unit_test(
     name = "scope_state_test",
     srcs = ["scope_state_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
-    ],
     deps = [
         ":scope_state",
         "@score-baselibs//score/language/safecpp/scoped_function/details:function_wrapper",
@@ -281,9 +257,6 @@ cc_gtest_unit_test(
         "scoped_function_invoker_test_scoped_function.h",
     ],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
-    ],
     deps = [
         ":allocator_aware_type_erasure_pointer",
         ":function_wrapper",
@@ -317,9 +290,6 @@ cc_gtest_unit_test(
     name = "type_erasure_pointer_test",
     srcs = ["type_erasure_pointer_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/language/safecpp/scoped_function/details:__pkg__",
-    ],
     deps = [
         ":instrumented_memory_resource",
         ":type_erasure_pointer",

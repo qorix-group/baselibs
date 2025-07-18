@@ -28,9 +28,6 @@ namespace log
 namespace detail
 {
 
-//  coverage: coverage false positive candidate
-//  Reasoning: class definition doesn't produce explicitly any code to be covered.
-//  See also: Ticket-35670
 class FileOutputBackend final : public Backend
 {
   public:

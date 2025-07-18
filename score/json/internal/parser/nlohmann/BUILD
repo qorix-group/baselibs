@@ -49,7 +49,6 @@ cc_test(
     tags = ["unit"],
     visibility = [
         "@score-baselibs//score/json:__subpackages__",
-        # "@ddad@score-baselibs//score/json:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/json/internal/parser:parser_test_suite",
@@ -66,7 +65,6 @@ cc_test(
     tags = ["unit"],
     visibility = [
         "@score-baselibs//score/json:__subpackages__",
-        # "@ddad@score-baselibs//score/json:__subpackages__",
     ],
     deps = [
         ":nlohmann_parser",

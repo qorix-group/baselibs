@@ -52,10 +52,8 @@ class LoggerContainer final /* KW_SUPPRESS:MISRA.ONEDEFRULE.VAR: False positive 
     Logger& InsertNewLogger(const std::string_view context) noexcept;
 
     score::cpp::optional<std::reference_wrapper<Logger>> FindExistingLogger(const std::string_view context) noexcept;
-    /* KW_SUPPRESS_START: MISRA.MEMB.NOT_PRIVATE: false positive: it is private (Ticket-74585) */
     detail::WaitFreeStack<Logger, memory::shared::AtomicIndirectorReal> stack_;
     Logger default_logger_;
-    /* KW_SUPPRESS_END: MISRA.MEMB.NOT_PRIVATE */
 };
 /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN*/
 

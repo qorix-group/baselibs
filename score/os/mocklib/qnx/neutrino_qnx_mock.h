@@ -56,6 +56,14 @@ class NeutrinoMock : public Neutrino
                  const std::chrono::nanoseconds& ntime,
                  std::optional<std::chrono::nanoseconds> otime),
                 (const, noexcept, override));
+    MOCK_METHOD((score::cpp::expected<std::int32_t, Error>),
+                TimerTimeout,
+                (const ClockType clock_type,
+                 const TimerTimeoutFlag flags,
+                 const std::unique_ptr<SigEvent> signal_event,
+                 const std::chrono::nanoseconds& ntime,
+                 std::optional<std::chrono::nanoseconds> otime),
+                (const, noexcept, override));
 };
 }  // namespace qnx
 }  // namespace os

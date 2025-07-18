@@ -28,8 +28,6 @@ cc_library(
     visibility = [
         "//platform/aas/ara/log:__subpackages__",
         "@score-baselibs//score/mw/log:__subpackages__",
-        # "@ddad//platform/aas/ara/log:__subpackages__",
-        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/memory/shared:atomic_indirector",
@@ -44,9 +42,6 @@ cc_test(
         "aborts_upon_exception",
     ],
     tags = ["unit"],
-    visibility = [
-        # "@ddad@score-baselibs//score/mw/log/detail/wait_free_stack:__pkg__",
-    ],
     deps = [
         ":wait_free_stack",
         "@score-baselibs//score/memory/shared:atomic_indirector_mock_binding",

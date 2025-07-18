@@ -485,7 +485,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os:ifaddrs",
@@ -501,7 +500,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os:capability",
@@ -514,9 +512,7 @@ cc_library(
     testonly = True,
     srcs = ["linuxschedmock.cpp"],
     hdrs = ["linuxschedmock.h"],
-    visibility = [
-        # "@ddad@score-baselibs//score/os/mocklib:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         "@score-baselibs//score/os/linux:linux_header",
         "@googletest//:gtest_main",
@@ -529,12 +525,21 @@ cc_library(
     testonly = True,
     srcs = ["glob_mock.cpp"],
     hdrs = ["glob_mock.h"],
-    visibility = [
-        "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         "@score-baselibs//score/os:glob",
+        "@googletest//:gtest",
+    ],
+)
+
+cc_library(
+    name = "sigevent_mock",
+    testonly = True,
+    srcs = ["sigevent_mock.cpp"],
+    hdrs = ["sigevent_mock.h"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@score-baselibs//score/os:sigevent",
         "@googletest//:gtest",
     ],
 )

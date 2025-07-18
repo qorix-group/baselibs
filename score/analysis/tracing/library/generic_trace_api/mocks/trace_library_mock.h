@@ -14,8 +14,8 @@
 #define SCORE_ANALYSIS_TRACING_LIBRARY_MOCK
 
 #include "gmock/gmock.h"
-#include "score/analysis/tracing/library/generic_trace_api/generic_trace_api.h"
-#include "score/analysis/tracing/library/generic_trace_api/i_trace_library.h"
+#include "score/analysis/tracing/library/interface/generic_trace_api.h"
+#include "score/analysis/tracing/library/interface/i_trace_library.h"
 
 namespace score
 {

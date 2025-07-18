@@ -88,7 +88,7 @@ TEST(Error, CorrectConstructionAndAssignmentGuarantees)
     static_assert(std::is_nothrow_move_constructible_v<Error>);
 }
 
-TEST(Error, RetreiveMessage)
+TEST(Error, RetrieveMessage)
 {
     // Given an constructed error with user message
     const score::result::Error unit{MyErrorCode::kFirstError, "We had a parsing failure"};
@@ -100,7 +100,7 @@ TEST(Error, RetreiveMessage)
     EXPECT_STREQ(message.data(), "First Error!");
 }
 
-TEST(Error, RetreiveUserMessage)
+TEST(Error, RetrieveUserMessage)
 {
     // Given an constructed error with user message
     const score::result::Error unit{MyErrorCode::kFirstError, "We had a parsing failure"};
@@ -112,7 +112,7 @@ TEST(Error, RetreiveUserMessage)
     EXPECT_STREQ(user_message.data(), "We had a parsing failure");
 }
 
-TEST(Error, RetreiveUserMessageWhenNotProvided)
+TEST(Error, RetrieveUserMessageWhenNotProvided)
 {
     // Given an constructed error with user message
     const score::result::Error unit{MyErrorCode::kFirstError};

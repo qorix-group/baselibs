@@ -75,7 +75,6 @@ cc_library(
         "//platform/aas/pas/crash_handler:__pkg__",
         "//platform/aas/pas/sysmon:__pkg__",
         "//platform/aas/pas/sysmon/library:__subpackages__",
-        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = select({
         "//bazel/platforms:config_xpad_dnv": [],

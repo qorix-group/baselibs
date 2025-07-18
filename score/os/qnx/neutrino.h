@@ -17,6 +17,7 @@
 #include "score/bitmanipulation/bitmask_operators.h"
 #include "score/os/ObjectSeam.h"
 #include "score/os/errno.h"
+#include "score/os/sigevent.h"
 #include <score/expected.hpp>
 
 #include <sys/neutrino.h>
@@ -121,12 +122,22 @@ class Neutrino : public ObjectSeam<Neutrino>
                  const std::uint64_t* ntime,
                  std::uint64_t* otime) const noexcept = 0;
 
+    [[deprecated("SPP_DEPRECATION: Please use the latest overload of the \'TimerTimeout\'")]]
+    // This is intented, we don't force users to fill the otime parameter unless needed
+    // NOLINTNEXTLINE(google-default-arguments): See above
+    virtual score::cpp::expected<std::int32_t, Error>
+    TimerTimeout(const ClockType clock_type,
+                 const TimerTimeoutFlag flags,
+                 const sigevent* notify,
+                 const std::chrono::nanoseconds& ntime,
+                 std::optional<std::chrono::nanoseconds> otime = std::nullopt) const noexcept = 0;
+
     // This is intented, we don't force users to fill the otime parameter unless needed
     // NOLINTNEXTLINE(google-default-arguments): See above
     virtual score::cpp::expected<std::int32_t, Error> TimerTimeout(
         const ClockType clock_type,
         const TimerTimeoutFlag flags,
-        const sigevent* notify,
+        const std::unique_ptr<SigEvent> signal_event,
         const std::chrono::nanoseconds& ntime,
         std::optional<std::chrono::nanoseconds> otime = std::nullopt) const noexcept = 0;
 

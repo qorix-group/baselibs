@@ -456,15 +456,15 @@ std::int32_t DispatchResourceManagerTest::io_open(resmgr_context_t* const ctp,
 
     iofunc.iofunc_attr_lock(&attr);
 
-    _client_info info{};
-    score::cpp::expected_blank<std::int32_t> status = iofunc.iofunc_client_info(ctp, 0, &info);
+    _client_info* pinfo{nullptr};
+    score::cpp::expected_blank<std::int32_t> status = iofunc.iofunc_client_info_ext(ctp, 0, &pinfo);
     if (!status.has_value())
     {
         iofunc.iofunc_attr_unlock(&attr);
         return status.error();
     }
 
-    status = iofunc.iofunc_open(ctp, msg, &attr, 0, &info);
+    status = iofunc.iofunc_open(ctp, msg, &attr, 0, pinfo);
     if (!status.has_value())
     {
         iofunc.iofunc_attr_unlock(&attr);

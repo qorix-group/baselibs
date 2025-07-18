@@ -21,7 +21,7 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/analysis/tracing/library/generic_trace_api:generic_trace_api_stub",
+        "@score-baselibs//score/analysis/tracing/library/generic_trace_api_stub",
         "@googletest//:gtest_main",
     ],
 )

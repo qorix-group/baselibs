@@ -24,21 +24,7 @@ namespace json
 
 auto JsonParser::FromFile(const score::cpp::string_view file_path) const noexcept -> score::Result<Any>
 {
-// Concrete Parser implementation is determined via a link seam. The implementations names differ, thus we have to use
-// the preprocessor here to select the correct one.
-// coverity[autosar_cpp14_a16_0_1_violation]
-#ifdef VAJSON
-    // NOLINTNEXTLINE(score-banned-function) Tolerated because JsonParser::FromFile is also on the banned function list
-    return VajsonParser::FromFile(file_path);
-// Concrete Parser implementation is determined via a link seam. The implementations names differ, thus we have to use
-// the preprocessor here to select the correct one.
-// coverity[autosar_cpp14_a16_0_1_violation]
-#else
     return NlohmannParser::FromFile(file_path);
-// Concrete Parser implementation is determined via a link seam. The implementations names differ, thus we have to use
-// the preprocessor here to select the correct one.
-// coverity[autosar_cpp14_a16_0_1_violation]
-#endif
 }
 
 auto JsonParser::FromBuffer(const score::cpp::string_view buffer) const noexcept -> score::Result<Any>

@@ -21,7 +21,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/language/safecpp/scoped_function/details:allocator_wrapper",
@@ -34,9 +33,6 @@ cc_gtest_unit_test(
     name = "scope_test",
     srcs = ["scope_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/language/safecpp/scoped_function:__pkg__",
-    ],
     deps = [
         ":copyable_scoped_function",
         ":move_only_scoped_function",
@@ -54,7 +50,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":scope",
@@ -77,7 +72,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":copyable_scoped_function",
@@ -102,9 +96,6 @@ cc_gtest_unit_test(
         "scoped_function_movability_test.cpp",
     ],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/language/safecpp/scoped_function:__pkg__",
-    ],
     deps = [
         ":copyable_scoped_function",
         ":move_only_scoped_function",

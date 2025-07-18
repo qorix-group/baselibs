@@ -32,9 +32,6 @@ cc_test(
     # on toolchain level so that unmistakably the linked abortsuponexception library gets tested
     features = ["throws_upon_exception"],
     tags = ["unit"],
-    visibility = [
-        # "@ddad@score-baselibs//score/language/safecpp/aborts_upon_exception:__pkg__",
-    ],
     deps = [
         ":abortsuponexception",
         "@score-baselibs//score/language/safecpp/coverage_termination_handler",
@@ -51,9 +48,6 @@ cc_test(
     ],
     features = ["aborts_upon_exception"],
     tags = ["unit"],
-    visibility = [
-        # "@ddad@score-baselibs//score/language/safecpp/aborts_upon_exception:__pkg__",
-    ],
     deps = [
         "@score-baselibs//score/language/safecpp/coverage_termination_handler",
         "@googletest//:gtest_main",

@@ -24,7 +24,6 @@ cc_library(
         "@score-baselibs//score/memory/shared:__pkg__",
         "@score-baselibs//score/memory/shared/test/sct:__pkg__",
         "@score-baselibs//score/os/utils/test:__pkg__",
-        # "@ddad@score-baselibs//score/os/utils/interprocess:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/language/futurecpp",
@@ -40,7 +39,6 @@ cc_library(
     visibility = [
         "@score-baselibs//score/concurrency:__pkg__",
         "@score-baselibs//score/os/utils/test:__pkg__",
-        # "@ddad@score-baselibs//score/os/utils/interprocess:__subpackages__",
     ],
     deps = [
         ":interprocess_mutex",
@@ -54,8 +52,8 @@ cc_library(
     hdrs = ["interprocess_notification.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
+        "@score-baselibs//score/analysis/tracing/test:__subpackages__",
         "//platform/aas/mw/com/test:__subpackages__",
-        # "@ddad@score-baselibs//score/os/utils/interprocess:__subpackages__",
     ],
     deps = [
         ":interprocess_conditional_variable",
@@ -73,7 +71,6 @@ cc_unit_test_suites_for_host_and_qnx(
     ],
     visibility = [
         "@score-baselibs//score/os/utils/test:__subpackages__",
-        # "@ddad@score-baselibs//score/os/utils:__subpackages__",
     ],
 )
 
@@ -81,9 +78,6 @@ cc_gtest_unit_test(
     name = "interprocess_conditional_variable_test",
     srcs = ["interprocess_conditional_variable_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/os/utils/interprocess:__subpackages__",
-    ],
     deps = [":interprocess_conditional_variable"],
 )
 
@@ -91,8 +85,5 @@ cc_gtest_unit_test(
     name = "interprocess_notification_test",
     srcs = ["interprocess_notification_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/os/utils/interprocess:__subpackages__",
-    ],
     deps = [":interprocess_notification"],
 )

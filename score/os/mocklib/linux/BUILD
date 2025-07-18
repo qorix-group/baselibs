@@ -18,7 +18,6 @@ cc_library(
     target_compatible_with = ["@platforms//os:linux"],
     visibility = [
         "//platform/aas/pas/sysmon:__subpackages__",
-        # "@ddad@score-baselibs//score/os/mocklib/linux:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os/linux:linux_header",

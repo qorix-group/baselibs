@@ -17,9 +17,6 @@ cc_gtest_unit_test(
     name = "intrusive_list_test",
     srcs = ["intrusive_list_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/containers:__subpackages__",
-    ],
     deps = [":intrusivelist"],
 )
 
@@ -27,9 +24,6 @@ cc_gtest_unit_test(
     name = "dynamic_array_test",
     srcs = ["dynamic_array_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/containers:__subpackages__",
-    ],
     deps = [
         ":dynamic_array",
         "@score-baselibs//score/memory/shared:fake_memory_resources",
@@ -46,7 +40,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad@score-baselibs//score/containers:__subpackages__",
     ],
     deps = ["@score-baselibs//score/language/futurecpp"],
 )
@@ -59,7 +52,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad@score-baselibs//score/containers:__subpackages__",
     ],
     deps = ["@score-baselibs//score/language/futurecpp"],
 )

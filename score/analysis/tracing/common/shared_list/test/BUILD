@@ -23,11 +23,10 @@ cc_test(
         "additional_warnings",
     ],
     tags = ["unit"],
-    visibility = [
-        # "@ddad@score-baselibs//score/analysis/tracing/common/shared_list:__subpackages__",
-    ],
     deps = [
+        "@score-baselibs//score/analysis/tracing/common/flexible_circular_allocator:lockless_flexible_circular_allocator",
         "@score-baselibs//score/analysis/tracing/common/flexible_circular_allocator/test/mocks:flexible_circular_allocator_mock",
+        "@score-baselibs//score/analysis/tracing/common/interface_types:shared_memory_location_helpers",
         "@score-baselibs//score/analysis/tracing/common/shared_list",
         "@googletest//:gtest_main",
     ],

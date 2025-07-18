@@ -92,6 +92,17 @@ struct IsOptional<T, std::enable_if_t<std::is_base_of_v<std::optional<typename T
 namespace serializer
 {
 
+/// Helper template to determine whether a type has a ToAny method
+template <typename T, typename = void>
+struct HasToAny : std::false_type
+{
+};
+
+template <typename T>
+struct HasToAny<T, std::void_t<decltype(std::declval<T>().ToAny())>> : std::true_type
+{
+};
+
 /// Data used during serialization of a struct.
 struct SerializeAsJson
 {
@@ -142,6 +153,17 @@ inline void visit_as_struct(SerializeAsJson& visitor, T&&, Fields&&... fields)
 namespace deserializer
 {
 
+/// Helper template to determine whether a type has a FromAny method
+template <typename T, typename = void>
+struct HasFromAny : std::false_type
+{
+};
+
+template <typename T>
+struct HasFromAny<T, std::void_t<decltype(T::FromAny(Any{}))>> : std::true_type
+{
+};
+
 /// Data used during deserialization of a struct.
 struct DeserializeAsJson
 {
@@ -172,7 +194,7 @@ inline void JsonDeserializeStructImpl(DeserializeAsJson& visitor, Field& field, 
     auto& obj = visitor.object.get();
     if (obj.count(field_name) > 0U)
     {
-        if (auto field_content = JsonSerializer<score::cpp::remove_cvref_t<Field>>::FromAny(std::move(obj.at(field_name))))
+        if (auto field_content = JsonSerializer<score::cpp::remove_cvref_t<Field>>::FromAny(std::move(obj[field_name])))
         {
             field = std::move(field_content).value();
             JsonDeserializeStructImpl<T, FieldIndex + 1, Fields...>(visitor, fields...);
@@ -245,10 +267,15 @@ class JsonSerializer
 /// the macro STRUCT_VISITABLE has to be used and all the attributes that shall be serializable or deserializable need
 /// to be passed. It then serializes and deserializes all attributes of the struct in the sequence of their appearance
 /// in the STRUCT_VISITABLE macro.
+///
+/// This specialization is only used if the visitable type does _not_ have ToAny and/or FromAny. If at least one of
+/// these methods is present, the general case is used which forwards the call to these methods of the type.
 template <typename T>
-class JsonSerializer<T,
-                     std::enable_if_t<detail::IsVisitableImpl<score::cpp::remove_cvref_t<T>>(
-                         common::visitor::struct_visitable<score::cpp::remove_cvref_t<T>>::fields)>>
+class JsonSerializer<
+    T,
+    std::enable_if_t<detail::IsVisitableImpl<score::cpp::remove_cvref_t<T>>(
+                         common::visitor::struct_visitable<score::cpp::remove_cvref_t<T>>::fields) &&
+                     !(detail::serializer::HasToAny<T>::value || detail::deserializer::HasFromAny<T>::value)>>
 {
   public:
     template <typename U>
@@ -263,7 +290,7 @@ class JsonSerializer<T,
     {
         if (auto obj = any.As<Object>())
         {
-            T result{};
+            T result;
             detail::deserializer::DeserializeAsJson deserialize_as_json{*obj, std::nullopt};
             common::visitor::visit(deserialize_as_json, result);
             if (!deserialize_as_json.error.has_value())

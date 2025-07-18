@@ -137,7 +137,7 @@ TEST_F(NonVerboseConfig, NvConfigReturnsExpectedValuesWithOtherFile)
 
     NvConfig nvc2(JSON_PATH_2());
     EXPECT_EQ(ReadResult::kOK, nvc2.parseFromJson());                                               // ok json results
-    EXPECT_EQ(8650816, nvc2.getDltMsgDesc("adp::planning::awa::DebugData")->GetIdMsgDescriptor());  // id value reading
+    EXPECT_EQ(8650816, nvc2.getDltMsgDesc("score::plg::awa::DebugData")->GetIdMsgDescriptor());  // id value reading
     EXPECT_EQ(
         3,
         static_cast<int>(nvc2.getDltMsgDesc("adp::logging::DynamicInsight")->GetLogLevel()));  // loglevel value reading
@@ -145,7 +145,7 @@ TEST_F(NonVerboseConfig, NvConfigReturnsExpectedValuesWithOtherFile)
               static_cast<int>(nvc2.getDltMsgDesc("score::logging::timesync::DltTimeSyncTimestamp")
                                    ->GetLogLevel()));  // loglevel value reading other example
     EXPECT_EQ(8650814,
-              nvc2.getDltMsgDesc("adp::perception::CrocStateTraceable")
+              nvc2.getDltMsgDesc("score::pcp::CrocStateTraceable")
                   ->GetIdMsgDescriptor());  // id value reading other example
     EXPECT_EQ(
         std::string_view{"Repr"},
@@ -153,11 +153,11 @@ TEST_F(NonVerboseConfig, NvConfigReturnsExpectedValuesWithOtherFile)
     EXPECT_EQ(std::string_view{"Fasi"},
               nvc2.getDltMsgDesc("score::sli::TsfBaseConfig")->GetAppId().GetStringView());  // appid value reading
     EXPECT_EQ(std::string_view{"DTNV"},
-              nvc2.getDltMsgDesc("adp::planning::driving_tube::DiagnosticLogsData")
+              nvc2.getDltMsgDesc("score::plg::driving_tube::DiagnosticLogsData")
                   ->GetCtxId()
                   .GetStringView());  // ctxid value reading other example
     EXPECT_EQ(std::string_view{"Plan"},
-              nvc2.getDltMsgDesc("adp::planning::driving_tube::DiagnosticLogsData")
+              nvc2.getDltMsgDesc("score::plg::driving_tube::DiagnosticLogsData")
                   ->GetAppId()
                   .GetStringView());  // appid value reading other example
 }

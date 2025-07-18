@@ -14,7 +14,7 @@ load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER
 load("@score-baselibs//third_party/itf:py_unittest_qnx_test.bzl", "py_unittest_qnx_test")
 
 package(default_visibility = [
-    # "@ddad@score-baselibs//score/os/test:__subpackages__",
+    "@score-baselibs//score/os/test:__subpackages__",
 ])
 
 test_suite(
@@ -44,6 +44,7 @@ test_suite(
         ":sched_mock_test",
         ":select_test",
         ":semaphore_test",
+        ":sigevent_test",
         ":socket_test",
         ":stdio_test",
         ":stdlib_impl_test",
@@ -89,6 +90,7 @@ py_unittest_qnx_test(
         ":sched_test",
         ":select_test",
         ":semaphore_test",
+        ":sigevent_test",
         ":socket_test",
         ":spawn_test",
         ":stat_test",
@@ -733,6 +735,20 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@score-baselibs//score/os:glob",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "sigevent_test",
+    srcs = ["sigevent_test.cpp"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = [
+        "manual",  # to disable using as host unit test in CI
+        "unit",
+    ],
+    deps = [
+        "@score-baselibs//score/os:sigevent",
         "@googletest//:gtest_main",
     ],
 )

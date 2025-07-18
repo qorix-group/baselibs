@@ -30,7 +30,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/mw/log:__subpackages__",
-        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/mw/log:shared_types",
@@ -52,7 +51,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/mw/log/detail:__pkg__",
-        # "@ddad@score-baselibs//score/mw/log/configuration:__pkg__",
     ],
     deps = [
         ":configuration",
@@ -74,7 +72,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/mw/log/detail:__pkg__",
-        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
         ":configuration",
@@ -100,7 +97,6 @@ cc_library(
         "@score-baselibs//score/mw/log/detail:__pkg__",
         "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
         "@score-baselibs//score/mw/log/detail/slog:__pkg__",
-        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
         ":configuration_interface",
@@ -116,7 +112,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "@score-baselibs//score/mw/log/detail:__pkg__",
-        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
         ":configuration_interface",
@@ -137,7 +132,6 @@ filegroup(
     ],
     visibility = [
         "@score-baselibs//score/mw/log:__pkg__",
-        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
 )
 
@@ -155,9 +149,6 @@ cc_test(
         "aborts_upon_exception",
     ],
     tags = ["unit"],
-    visibility = [
-        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
-    ],
     deps = [
         ":configuration_file_discoverer_mock",
         ":configuration_parser",
@@ -209,7 +200,7 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/mw/log:__subpackages__",
-        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
+        "//platform/aas/pas/logging:__subpackages__",
     ],
     deps = [
         ":nvconfig_interface",
@@ -240,9 +231,6 @@ cc_test(
         "aborts_upon_exception",
     ],
     tags = ["unit"],
-    visibility = [
-        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
-    ],
     deps = [
         ":nvconfig",
         "@googletest//:gtest_main",
@@ -265,7 +253,6 @@ filegroup(
     ],
     visibility = [
         "@score-baselibs//score/mw/log:__pkg__",
-        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
 )
 
@@ -277,6 +264,5 @@ cc_unit_test_suites_for_host_and_qnx(
     ],
     visibility = [
         "@score-baselibs//score/mw/log:__pkg__",
-        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
 )

@@ -42,9 +42,9 @@ class DirentTest : public ::testing::Test
 
 TEST_F(DirentTest, ScanPositiveTest)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     RecordProperty("Description", "Scan shall return success for scan dir");
@@ -62,9 +62,9 @@ TEST_F(DirentTest, ScanPositiveTest)
 
 TEST_F(DirentTest, ScanNegativeTest)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     RecordProperty("Description", "Scan shall return error for invalid path");
@@ -76,9 +76,9 @@ TEST_F(DirentTest, ScanNegativeTest)
 
 TEST_F(DirentTest, OpenDirSuccess)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     RecordProperty("Description", "Open dir shall return success for valid dir");
@@ -92,9 +92,9 @@ TEST_F(DirentTest, OpenDirSuccess)
 
 TEST_F(DirentTest, OpenDirFailure)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     RecordProperty("Description", "Open dir shall return error for invalid dir");
@@ -105,9 +105,9 @@ TEST_F(DirentTest, OpenDirFailure)
 
 TEST_F(DirentTest, ReadDirSuccess)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     RecordProperty("Description", "Read dir shall return success for valid dir");
@@ -139,9 +139,9 @@ TEST_F(DirentTest, ReadDirSuccess)
 
 TEST_F(DirentTest, ReadDirEnd)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     RecordProperty("Description", "Read dir shall return success for valid dir");
@@ -161,9 +161,9 @@ TEST_F(DirentTest, ReadDirEnd)
 
 TEST_F(DirentTest, CloseDirSuccess)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     RecordProperty("Description", "Close dir shall return success for valid dir");
@@ -177,9 +177,9 @@ TEST_F(DirentTest, CloseDirSuccess)
 
 TEST(Dirent, get_instance)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     RecordProperty("Description", "Dirent shall provide instance functionality");

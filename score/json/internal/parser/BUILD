@@ -44,7 +44,6 @@ cc_test(
     tags = ["unit"],
     visibility = [
         "@score-baselibs//score/json:__pkg__",
-        # "@ddad@score-baselibs//score/json:__pkg__",
     ],
     deps = [
         "@score-baselibs//score/language/safecpp/coverage_termination_handler",
@@ -79,6 +78,5 @@ cc_unit_test_suites_for_host_and_qnx(
     ],
     visibility = [
         "@score-baselibs//score/json:__pkg__",
-        # "@ddad@score-baselibs//score/json:__pkg__",
     ],
 )

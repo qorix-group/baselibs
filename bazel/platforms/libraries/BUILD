@@ -10,6 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+
 # Some targets might expect that a toolchain (or platform)
 # comes with specific libraries. If such a library would not
 # be available, the target could not build

@@ -62,9 +62,9 @@ void* thread_func(void*)
 TEST_F(PthreadNameTest, SetNameSucceeds)
 {
     RecordProperty("Description", "PthreadNameTest Set Name Succeeds");
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
-    RecordProperty("TestingTechnique", "T-REQ");
+    RecordProperty("TestType", "T-REQ");
 
     Pthread::instance().self();
 
@@ -76,9 +76,9 @@ TEST_F(PthreadNameTest, SetNameSucceeds)
 TEST_F(PthreadNameTest, GetNameSucceeds)
 {
     RecordProperty("Description", "PthreadNameTest Get Name Succeeds");
-    RecordProperty("ParentRequirement", "SCR-4977102");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
-    RecordProperty("TestingTechnique", "T-REQ");
+    RecordProperty("TestType", "T-REQ");
 
     EXPECT_EQ(::pthread_setname_np(pthread_self(), expected), 0);
     EXPECT_TRUE(Pthread::instance().getname_np(Pthread::instance().self(), actual, length).has_value());
@@ -88,9 +88,9 @@ TEST_F(PthreadNameTest, GetNameSucceeds)
 TEST_F(PthreadNameTest, GetCpuClockIdSucceeds)
 {
     RecordProperty("Description", "PthreadNameTest Get Cpu Clock Id Succeeds");
-    RecordProperty("ParentRequirement", "SCR-4977102");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
-    RecordProperty("TestingTechnique", "T-REQ");
+    RecordProperty("TestType", "T-REQ");
 
     clockid_t clock_id{};
     auto result = Pthread::instance().getcpuclockid(Pthread::instance().self(), &clock_id);
@@ -103,10 +103,10 @@ TEST_F(PthreadNameTest, GetCpuClockIdSucceeds)
 
 TEST_F(PthreadNameTest, GetCpuClockIdFails)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadNameTest Get Cpu Clock Id Fails");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     pthread_t thread;
@@ -129,9 +129,9 @@ TEST_F(PthreadNameTest, GetCpuClockIdFails)
 TEST_F(PthreadNameTest, SetNameFailsWhenNameTooLong)
 {
     RecordProperty("Description", "PthreadNameTest Set Name Fails When Name Too Long");
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
-    RecordProperty("TestingTechnique", "T-REQ");
+    RecordProperty("TestType", "T-REQ");
 
     std::array<char, length + 1U> name_too_long{};
     name_too_long.fill('1');
@@ -156,9 +156,9 @@ TEST_F(PthreadNameTest, SetNameFailsWhenNameTooLong)
 TEST_F(PthreadNameTest, GetNameFailsWhenBufferTooSmall)
 {
     RecordProperty("Description", "PthreadNameTest Get Name Fails When Buffer Too Small");
-    RecordProperty("ParentRequirement", "SCR-4977102");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
-    RecordProperty("TestingTechnique", "T-REQ");
+    RecordProperty("TestType", "T-REQ");
 
     const auto write_result = Pthread::instance().setname_np(Pthread::instance().self(), expected);
     ASSERT_TRUE(write_result.has_value());
@@ -180,10 +180,10 @@ TEST_F(PthreadNameTest, GetNameFailsWhenBufferTooSmall)
 
 TEST(PthreadTestingInstanceTest, RestoresOriginalAfterSettingTestingInstance)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadTestingInstanceTest Restores Original After Setting Testing Instance");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const Pthread* instance = &Pthread::instance();
@@ -218,10 +218,10 @@ class PthreadMockTest : public Test
 
 TEST_F(PthreadMockTest, SetNameCallsPOSIXAPI)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadMockTest Set Name Calls POSIXAPI");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     EXPECT_CALL(mock_pthread, setname_np);
@@ -230,10 +230,10 @@ TEST_F(PthreadMockTest, SetNameCallsPOSIXAPI)
 
 TEST_F(PthreadMockTest, GetNameCallsPOSIXAPI)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadMockTest Get Name Calls POSIXAPI");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     EXPECT_CALL(mock_pthread, getname_np);
@@ -242,10 +242,10 @@ TEST_F(PthreadMockTest, GetNameCallsPOSIXAPI)
 
 TEST(PthreadCondAttrTest, Init)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadCondAttrTest Init");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     pthread_condattr_t attr{};
@@ -255,10 +255,10 @@ TEST(PthreadCondAttrTest, Init)
 
 TEST(PthreadCondAttrTest, SetPSharedSetsNewAttribute)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadCondAttrTest Set PShared Sets New Attribute");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     pthread_condattr_t attr{};
@@ -273,10 +273,10 @@ TEST(PthreadCondAttrTest, SetPSharedSetsNewAttribute)
 
 TEST(PthreadCondAttrTest, SetPSharedFailsWhenNewAttributeUnknown)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadCondAttrTest Set PShared Fails When New Attribute Unknown");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     pthread_condattr_t attr{};
@@ -288,10 +288,10 @@ TEST(PthreadCondAttrTest, SetPSharedFailsWhenNewAttributeUnknown)
 
 TEST(PthreadCondAttrTest, Destroy)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadCondAttrTest Destroy");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     pthread_condattr_t attr{};
@@ -301,10 +301,10 @@ TEST(PthreadCondAttrTest, Destroy)
 
 TEST(PthreadCondTest, Init)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadCondTest Init");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     pthread_cond_t cond{};
@@ -315,10 +315,10 @@ TEST(PthreadCondTest, Init)
 
 TEST(PthreadCondTest, Destroy)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadCondTest Destroy");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     pthread_cond_t cond{};
@@ -328,10 +328,10 @@ TEST(PthreadCondTest, Destroy)
 
 TEST(PthreadMutexAttrTest, Init)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadMutexAttrTest Init");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     pthread_mutexattr_t attr{};
@@ -341,10 +341,10 @@ TEST(PthreadMutexAttrTest, Init)
 
 TEST(PthreadMutexAttrTest, SetPSharedSetsNewAttribute)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadMutexAttrTest Set PShared Sets New Attribute");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     pthread_mutexattr_t attr{};
@@ -359,10 +359,10 @@ TEST(PthreadMutexAttrTest, SetPSharedSetsNewAttribute)
 
 TEST(PthreadMutexAttrTest, SetPSharedFailsWhenNewAttributeUnknown)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadMutexAttrTest Set PShared Fails When New Attribute Unknown");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     pthread_mutexattr_t attr{};
@@ -374,10 +374,10 @@ TEST(PthreadMutexAttrTest, SetPSharedFailsWhenNewAttributeUnknown)
 
 TEST(PthreadMutexAttrTest, Destroy)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadMutexAttrTest Destroy");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     pthread_mutexattr_t attr{};
@@ -387,10 +387,10 @@ TEST(PthreadMutexAttrTest, Destroy)
 
 TEST(PthreadMutexTest, Init)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadMutexTest Init");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     pthread_mutex_t mutex{};
@@ -401,10 +401,10 @@ TEST(PthreadMutexTest, Init)
 
 TEST(PthreadMutexTest, Destroy)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadMutexTest Destroy");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     pthread_mutex_t mutex{};
@@ -414,10 +414,10 @@ TEST(PthreadMutexTest, Destroy)
 
 TEST(PthreadMutexTest, DestroyFailsIfMutexLockedByOtherThread)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadMutexTest Destroy Fails If Mutex Locked By Other Thread");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     // TSAN is rightly complaining that we try to destroy a locked mutex. But this behavior is the core of the test.
@@ -454,10 +454,10 @@ TEST(PthreadMutexTest, DestroyFailsIfMutexLockedByOtherThread)
 
 TEST(PthreadSchedParamTest, SetSchedParam)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadSchedParamTest Set Sched Param");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     std::promise<pthread_t> thread_id_promise{};
@@ -486,10 +486,10 @@ TEST(PthreadSchedParamTest, SetSchedParam)
 
 TEST(PthreadSchedParamTest, SetSchedParamFailsWithInvalidThread)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadSchedParamTest Set Sched Param Fails With Invalid Thread");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     std::promise<pthread_t> thread_id_promise{};
@@ -513,10 +513,10 @@ TEST(PthreadSchedParamTest, SetSchedParamFailsWithInvalidThread)
 
 TEST(PthreadSchedParamTest, GetSchedParam)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadSchedParamTest Get Sched Param");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     std::promise<pthread_t> thread_id_promise{};
@@ -553,10 +553,10 @@ TEST(PthreadSchedParamTest, GetSchedParam)
 
 TEST(PthreadSchedParamTest, GetSchedParamFailsWithJoinedThread)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "PthreadSchedParamTest Get Sched Param Fails With Joined Thread");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     std::promise<pthread_t> thread_id_promise{};

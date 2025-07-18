@@ -277,7 +277,7 @@ at user side to perform proper error handling and logging.
 By providing a Mixin (ErrorDomain) that translates the
 user defined error codes to user defined messages.
 All other logic (providing log messages, comperators)
-are then already implemente din the Error.</panel_attributes>
+are then already implemented in the Error.</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>

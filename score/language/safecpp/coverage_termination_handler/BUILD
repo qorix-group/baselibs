@@ -21,7 +21,6 @@ cc_library(
     linkopts = ["-lgcov"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = ["@score-baselibs//score/language/futurecpp"],
     alwayslink = True,

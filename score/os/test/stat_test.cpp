@@ -25,10 +25,10 @@ namespace test
 
 TEST(StatImpl, StatRegularFile)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl Stat Regular File");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr auto filename{"stat_file"};
@@ -46,10 +46,10 @@ TEST(StatImpl, StatRegularFile)
 
 TEST(StatImpl, StatSymbolicLink)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl Stat Symbolic Link");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr auto filename{"stat_file"};
@@ -66,10 +66,10 @@ TEST(StatImpl, StatSymbolicLink)
 
 TEST(StatImpl, StatNonExistentFile)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl Stat Non Existent File");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const char* non_existent_file = "nonexistent/file";
@@ -84,10 +84,10 @@ TEST(StatImpl, StatNonExistentFile)
 
 TEST(StatImpl, fstatSuccess)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl fstat Success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr auto filename{"stat_file"};
@@ -102,10 +102,10 @@ TEST(StatImpl, fstatSuccess)
 
 TEST(StatImpl, fstatFailure)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl fstat Failure");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto fd = -1;
@@ -115,10 +115,10 @@ TEST(StatImpl, fstatFailure)
 
 TEST(StatImpl, MkdirFailure)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl Mkdir Failure");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const char* directory = "/hd/src";
@@ -134,10 +134,10 @@ TEST(StatImpl, MkdirFailure)
 
 TEST(StatImpl, MkdirSuccess)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl Mkdir Success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const char* directory = "directory";
@@ -154,10 +154,10 @@ TEST(StatImpl, MkdirSuccess)
 
 TEST(StatImpl, ChmodSuccess)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl Chmod Success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr auto filename{"stat_test_file"};
@@ -176,10 +176,10 @@ TEST(StatImpl, ChmodSuccess)
 
 TEST(StatImpl, ChmodFailure)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl Chmod Failure");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr auto filename{""};
@@ -191,10 +191,10 @@ TEST(StatImpl, ChmodFailure)
 
 TEST(StatImpl, FchmodSuccess)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl Fchmod Success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr auto filename{"stat_test_file"};
@@ -213,10 +213,10 @@ TEST(StatImpl, FchmodSuccess)
 
 TEST(StatImpl, FchmodFailure)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl Fchmod Failure");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr auto fd = -1;
@@ -227,10 +227,10 @@ TEST(StatImpl, FchmodFailure)
 
 TEST(StatImpl, UmaskSuccess)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl Umask Success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     using Mode = Stat::Mode;
@@ -262,10 +262,10 @@ TEST(StatImpl, UmaskSuccess)
 
 TEST(StatImpl, UmaskFailure)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl Umask Failure");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto result = score::os::Stat::instance().umask(Stat::Mode::kUnknown);
@@ -274,10 +274,10 @@ TEST(StatImpl, UmaskFailure)
 
 TEST(StatImpl, FchmodatSuccess)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl Fchmodat Success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const char* file_name = "my_directory";
@@ -293,10 +293,10 @@ TEST(StatImpl, FchmodatSuccess)
 
 TEST(StatImpl, FchmodatErrorNoFollowSymlinks)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl Fchmodat Error No Follow Symlinks");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr auto filename{"stat_test_file"};
@@ -312,10 +312,10 @@ TEST(StatImpl, FchmodatErrorNoFollowSymlinks)
 
 TEST(StatImpl, DefaultObjectAllocationIsNotNull)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl Default Object Allocation Is Not Null");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto result = score::os::Stat::Default();
@@ -324,10 +324,10 @@ TEST(StatImpl, DefaultObjectAllocationIsNotNull)
 
 TEST(StatImpl, PMRDefaultShallReturnImplInstance)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StatImpl PMRDefault Shall Return Impl Instance");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     score::cpp::pmr::memory_resource* memory_resource = score::cpp::pmr::get_default_resource();

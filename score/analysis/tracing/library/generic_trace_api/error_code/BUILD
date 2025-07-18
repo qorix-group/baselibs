@@ -26,7 +26,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
-        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/result",

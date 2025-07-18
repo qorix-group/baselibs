@@ -29,9 +29,6 @@ cc_test(
         "unit",
     ],
     target_compatible_with = ["@platforms//os:linux"],
-    visibility = [
-        # "@ddad@score-baselibs//score/os/test/linux:__pkg__",
-    ],
     deps = [
         "@score-baselibs//score/os/linux",
         "@score-baselibs//score/os/linux:linux_header",
@@ -49,9 +46,6 @@ cc_test(
         "unit",
     ],
     target_compatible_with = ["@platforms//os:linux"],
-    visibility = [
-        # "@ddad@score-baselibs//score/os/test/linux:__pkg__",
-    ],
     deps = [
         "@score-baselibs//score/os:pthread",
         "@googletest//:gtest_main",

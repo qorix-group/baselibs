@@ -45,10 +45,10 @@ class TestableBase : public ObjectSeam<Object>
 
 TEST(ObjectSeamTest, CopyConstructor)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "ObjectSeamTest Copy Constructor");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     MockObject mock("Testing Copy");
@@ -62,10 +62,10 @@ TEST(ObjectSeamTest, CopyConstructor)
 
 TEST(ObjectSeamTest, MoveConstructor)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "ObjectSeamTest Move Constructor");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     MockObject mock("Testing Move");

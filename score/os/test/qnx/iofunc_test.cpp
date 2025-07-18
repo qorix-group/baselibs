@@ -404,12 +404,10 @@ TEST(IoFuncTest, iofunc_client_info_failure)
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     resmgr_context_t ctp{};
-    struct _client_info info
-    {
-    };
+    struct _client_info* pinfo{nullptr};
 
     auto& iofunc = score::os::IoFunc::instance();
-    const auto client_info_result = iofunc.iofunc_client_info(&ctp, 0, &info);
+    const auto client_info_result = iofunc.iofunc_client_info_ext(&ctp, 0, &pinfo);
 
     EXPECT_FALSE(client_info_result.has_value());
 }

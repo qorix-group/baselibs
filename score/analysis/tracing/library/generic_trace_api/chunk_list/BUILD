@@ -28,14 +28,13 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
-        # "@ddad@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
-        "@score-baselibs//score/analysis/tracing/common:generic_trace_api_types",
-        "@score-baselibs//score/analysis/tracing/common:shared_memory_chunk",
-        "@score-baselibs//score/analysis/tracing/common:shared_memory_location",
-        "@score-baselibs//score/analysis/tracing/common:shared_memory_location_helpers",
         "@score-baselibs//score/analysis/tracing/common/flexible_circular_allocator:lockless_flexible_circular_allocator_factory",
+        "@score-baselibs//score/analysis/tracing/common/interface_types:generic_trace_api_types",
+        "@score-baselibs//score/analysis/tracing/common/interface_types:shared_memory_chunk",
+        "@score-baselibs//score/analysis/tracing/common/interface_types:shared_memory_location",
+        "@score-baselibs//score/analysis/tracing/common/interface_types:shared_memory_location_helpers",
         "@score-baselibs//score/analysis/tracing/common/shared_list",
         "@score-baselibs//score/analysis/tracing/library/generic_trace_api/error_code",
         "@score-baselibs//score/memory/shared:types",

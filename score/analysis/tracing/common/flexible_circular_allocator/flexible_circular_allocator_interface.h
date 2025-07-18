@@ -13,7 +13,7 @@
 #ifndef SCORE_ANALYSIS_TRACING_COMMON_I_FLEXIBLE_CIRCULAR_ALLOCATOR_H
 #define SCORE_ANALYSIS_TRACING_COMMON_I_FLEXIBLE_CIRCULAR_ALLOCATOR_H
 
-#include "score/analysis/tracing/common/types.h"
+#include "score/analysis/tracing/common/interface_types/types.h"
 #include <cstdlib>
 
 namespace score

@@ -57,18 +57,3 @@ config_setting(
         "@score-baselibs//score/mw/log:__subpackages__",
     ],
 )
-
-bool_flag(
-    name = "enable_startup_phase_traces",
-    build_setting_default = True,
-)
-
-config_setting(
-    name = "config_enable_startup_phase_traces",
-    flag_values = {
-        ":enable_startup_phase_traces": "True",
-    },
-    visibility = [
-        "@score-baselibs//score/mw/log:__subpackages__",
-    ],
-)

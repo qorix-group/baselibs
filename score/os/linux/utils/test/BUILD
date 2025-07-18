@@ -25,9 +25,6 @@ cc_test(
         "network_interface_test.cpp",
     ],
     tags = ["unit"],
-    visibility = [
-        # "@ddad@score-baselibs//score/os/linux/utils/test:__subpackages__",
-    ],
     deps = [
         "@score-baselibs//score/os/linux/utils/mocklib:network_interface_mock",
         "@score-baselibs//score/os/mocklib:nonposixwrapper_mock",

@@ -16,7 +16,7 @@ load("@score-baselibs//third_party/itf:py_unittest_qnx_test.bzl", "py_unittest_q
 
 package(
     default_visibility = [
-        # "@ddad@score-baselibs//score/os/utils/qnx/resource_manager:__subpackages__",
+        "@score-baselibs//score/os/utils/qnx/resource_manager:__subpackages__",
     ],
 )
 
@@ -61,7 +61,6 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os:errno",
@@ -89,7 +88,6 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os/qnx:types",
@@ -111,7 +109,6 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":error",

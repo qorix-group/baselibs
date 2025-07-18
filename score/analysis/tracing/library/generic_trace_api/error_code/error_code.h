@@ -93,10 +93,10 @@ enum class ErrorCode : score::result::ErrorCode
     kFailedRegisterCachedShmObjectsFatal,  ///< Failed to register the cached SHM object registration requests (Fatal)
     kTraceJobAllocatorInitializationFailedFatal,  ///< TraceJobAllocator initialization failed (Fatal)
     kDaemonIsDisconnectedFatal,                   ///< Daemon is disconnected after successful connection (Fatal)
-
-    kGenericErrorRecoverable,  ///< Generic error (Recoverable)
-    kTerminalFatal,            ///< Terminal (Fatal)
-    kLastRecoverable           ///< to be used only for overflow check (Recoverable), no item below!!!
+    kFailedToProcessJobsFatal,                    ///< Failed to process Jobs (Fatal)
+    kGenericErrorRecoverable,                     ///< Generic error (Recoverable)
+    kTerminalFatal,                               ///< Terminal (Fatal)
+    kLastRecoverable  ///< to be used only for overflow check (Recoverable), no item below!!!
 };
 
 class GenericTraceAPIErrorDomain final : public score::result::ErrorDomain

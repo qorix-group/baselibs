@@ -193,6 +193,9 @@ std::string_view score::analysis::tracing::GenericTraceAPIErrorDomain::MessageFo
         case ErrorCode::kFailedRegisterCachedShmObjectsFatal:
             error_message = "Failed to register the cached SHM object registration requests";
             break;
+        case ErrorCode::kFailedToProcessJobsFatal:
+            error_message = "Failed to process Jobs";
+            break;
         case ErrorCode::kTraceJobAllocatorInitializationFailedFatal:
             error_message = "TraceJobAllocator initialization failed";
             break;
@@ -289,6 +292,7 @@ bool score::analysis::tracing::IsErrorRecoverable(const score::analysis::tracing
         case ErrorCode::kFailedRegisterCachedShmObjectsFatal:
         case ErrorCode::kTraceJobAllocatorInitializationFailedFatal:
         case ErrorCode::kDaemonIsDisconnectedFatal:
+        case ErrorCode::kFailedToProcessJobsFatal:
         default:
             error = false;
             break;

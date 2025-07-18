@@ -116,6 +116,10 @@ Fcntl::Open internal::fcntl_helper::IntegerToOpenFlag(const std::int32_t flags) 
     {
         fcntl_flags = fcntl_flags | Fcntl::Open::kDirectory;
     }
+    if ((bitwise_flags & static_cast<std::uint32_t>(O_APPEND)) == static_cast<std::uint32_t>(O_APPEND))
+    {
+        fcntl_flags = fcntl_flags | Fcntl::Open::kAppend;
+    }
 // Suppress "AUTOSAR C++14 A16-0-1" rule findings. This rule stated: "The pre-processor shall only be used for
 // unconditional and conditional file inclusion and include guards, and using the following directives: (1) #ifndef,
 // #ifdef, (3) #if, (4) #if defined, (5) #elif, (6) #else, (7) #define, (8) #endif, (9) #include.".
@@ -195,6 +199,10 @@ std::int32_t internal::fcntl_helper::OpenFlagToInteger(const Fcntl::Open flags) 
         /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         native_flags |= static_cast<std::uint32_t>(O_DIRECTORY);
         /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
+    }
+    if (static_cast<utype_openflag>(flags & Fcntl::Open::kAppend) != 0U)
+    {
+        native_flags |= static_cast<std::uint32_t>(O_APPEND);
     }
 // coverity[autosar_cpp14_a16_0_1_violation], see above rationale
 #ifdef __linux__

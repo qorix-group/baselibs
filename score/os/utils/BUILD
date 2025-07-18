@@ -92,7 +92,6 @@ cc_library(
         "@score-baselibs//score/mw/log:__subpackages__",
         "//platform/aas/pas/crash_reporter:__subpackages__",
         "//platform/aas/pas/logging:__subpackages__",
-        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":signal_headers",
@@ -146,7 +145,6 @@ cc_library(
         "//platform/aas/sysfunc/SafeCarTime/code/apps/TimeSyncValidationNonFFI/factory/impl:__pkg__",
         "//platform/aas/sysfunc/SafeCarTime/code/factory/impl:__pkg__",
         "//platform/aas/test/pas/perf_tests/tools/perf_apps:__pkg__",
-        # "@ddad@score-baselibs//score/os/utils:__pkg__",
     ],
 )
 
@@ -186,7 +184,6 @@ cc_library(
         "//platform/aas/mw/storage:__subpackages__",
         "//platform/aas/pas/logging:__subpackages__",
         "//platform/aas/sec/secured:__subpackages__",
-        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":path_header",

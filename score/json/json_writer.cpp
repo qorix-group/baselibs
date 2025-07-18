@@ -12,20 +12,23 @@
  ********************************************************************************/
 
 #include "score/json/json_writer.h"
+#include "score/json/i_json_writer.h"
 #include "score/json/internal/model/error.h"
 #include "score/json/internal/writer/json_serialize/json_serialize.h"
 
 #include <ios>
 #include <sstream>
+
 namespace
 {
+
 template <typename T>
 score::ResultBlank ToFileInternal(const T& json_data,
                                 const score::cpp::string_view& file_path,
-                                std::shared_ptr<score::filesystem::IFileFactory> file_factory)
+                                score::filesystem::IFileFactory& file_factory)
 {
     const std::string file_path_string{file_path.data()};
-    const auto file = file_factory->Open(file_path_string, std::ios::out | std::ios::trunc);
+    const auto file = file_factory.Open(file_path_string, std::ios::out | std::ios::trunc);
     if (!file.has_value())
     {
         return score::MakeUnexpected(score::json::Error::kInvalidFilePath);
@@ -33,6 +36,25 @@ score::ResultBlank ToFileInternal(const T& json_data,
 
     score::json::JsonSerialize serializer{**file};
     return serializer << json_data;
+}
+
+template <typename T>
+score::ResultBlank ToFileInternalAtomic(const T& json_data,
+                                      const std::string_view& file_path,
+                                      score::filesystem::IFileFactory& file_factory)
+
+{
+    return file_factory.AtomicUpdate(std::string{file_path}, std::ios::out | std::ios::trunc)
+        .transform_error([](auto err) noexcept {
+            return MakeError(score::json::Error::kInvalidFilePath, err.UserMessage());
+        })
+        .and_then([&json_data](auto filestream) {
+            score::json::JsonSerialize serializer{*filestream};
+            auto serializer_result = serializer << json_data;
+            return filestream->Close().and_then([serializer_result](auto) noexcept {
+                return serializer_result;
+            });
+        });
 }
 
 template <typename T>
@@ -49,18 +71,24 @@ score::Result<std::string> ToBufferInternal(const T& json_data)
 
 }  // namespace
 
+score::json::JsonWriter::JsonWriter(FileSyncMode file_sync_mode) noexcept : file_sync_mode_{file_sync_mode} {}
+
 score::ResultBlank score::json::JsonWriter::ToFile(const score::json::Object& json_data,
                                                const score::cpp::string_view& file_path,
                                                std::shared_ptr<score::filesystem::IFileFactory> file_factory)
 {
-    return ToFileInternal(json_data, file_path, file_factory);
+    return (file_sync_mode_ == FileSyncMode::kSynced)
+               ? ToFileInternalAtomic(json_data, std::string_view{file_path.begin(), file_path.size()}, *file_factory)
+               : ToFileInternal(json_data, file_path, *file_factory);
 }
 
 score::ResultBlank score::json::JsonWriter::ToFile(const score::json::List& json_data,
                                                const score::cpp::string_view& file_path,
                                                std::shared_ptr<score::filesystem::IFileFactory> file_factory)
 {
-    return ToFileInternal(json_data, file_path, file_factory);
+    return (file_sync_mode_ == FileSyncMode::kSynced)
+               ? ToFileInternalAtomic(json_data, std::string_view{file_path.begin(), file_path.size()}, *file_factory)
+               : ToFileInternal(json_data, file_path, *file_factory);
 }
 
 score::Result<std::string> score::json::JsonWriter::ToBuffer(const score::json::Object& json_data)

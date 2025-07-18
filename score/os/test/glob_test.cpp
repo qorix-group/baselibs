@@ -31,10 +31,10 @@ class FlagToIntegerTests : public ::testing::TestWithParam<std::tuple<Glob::Flag
 
 TEST_P(FlagToIntegerTests, ConvertFlag)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "FlagToIntegerTests Convert Flag");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     auto flag = std::get<0>(GetParam());
@@ -73,10 +73,10 @@ INSTANTIATE_TEST_SUITE_P(ConvertNonLinuxSpecificFlags,
 
 TEST(FlagToIntegerTests, MultipleFlagsConversion)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "FlagToIntegerTests Multiple Flags Conversion");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     auto combinedFlags = Glob::Flag::kAppend | Glob::Flag::kNoCheck | Glob::Flag::kPeriod;

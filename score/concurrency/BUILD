@@ -22,7 +22,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
 )
 
@@ -31,9 +30,6 @@ cc_gtest_unit_test(
     srcs = ["clock_test.cpp"],
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
-    ],
-    visibility = [
-        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
     ],
     deps = [
         ":clock",
@@ -50,7 +46,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
 )
 
@@ -61,8 +56,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
+        "//visibility:public",
     ],
     deps = [
         ":destruction_guard",
@@ -78,7 +72,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":clock",
@@ -92,9 +85,6 @@ cc_gtest_unit_test(
     srcs = ["condition_variable_test.cpp"],
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
-    ],
-    visibility = [
-        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
     ],
     deps = [
         ":clock",
@@ -110,7 +100,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":condition_variable",
@@ -123,9 +112,6 @@ cc_gtest_unit_test(
     srcs = ["interruptible_wait_test.cpp"],
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
-    ],
-    visibility = [
-        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
     ],
     deps = [
         ":interruptible_wait",
@@ -140,7 +126,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":destruction_guard",
@@ -155,9 +140,6 @@ cc_gtest_unit_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    visibility = [
-        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
-    ],
     deps = [
         ":notification",
     ],
@@ -171,7 +153,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":condition_variable",
@@ -196,7 +177,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":task_result",
@@ -214,7 +194,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/concurrency/future",
@@ -229,7 +208,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":shared_task_result",
@@ -247,7 +225,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":task_result_base",
@@ -267,9 +244,6 @@ cc_gtest_unit_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    visibility = [
-        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
-    ],
     deps = [
         ":executor",
         ":executor_mock",
@@ -286,7 +260,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":executor",
@@ -302,7 +275,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":condition_variable",
@@ -318,9 +290,6 @@ cc_gtest_unit_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    visibility = [
-        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
-    ],
     deps = [
         ":thread_pool",
         "@score-baselibs//score/concurrency:notification",
@@ -335,7 +304,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":condition_variable",
@@ -351,9 +319,6 @@ cc_gtest_unit_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    visibility = [
-        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
-    ],
     deps = [
         ":long_running_threads_container",
     ],
@@ -367,7 +332,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":executor",
@@ -381,9 +345,6 @@ cc_gtest_unit_test(
     srcs = ["periodic_task_test.cpp"],
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
-    ],
-    visibility = [
-        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
     ],
     deps = [
         ":clock",
@@ -401,7 +362,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":executor",
@@ -415,9 +375,6 @@ cc_gtest_unit_test(
     srcs = ["delayed_task_test.cpp"],
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
-    ],
-    visibility = [
-        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
     ],
     deps = [
         ":clock",
@@ -435,7 +392,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":notification",
@@ -458,9 +414,6 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     flaky = True,  # TODO: Remove flakiness (Ticket-178835)
-    visibility = [
-        # "@ddad@score-baselibs//score/concurrency:__subpackages__",
-    ],
     deps = [
         ":synchronized_queue",
         ":valgrind_on_host",

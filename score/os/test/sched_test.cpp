@@ -35,10 +35,10 @@ struct SchedImplTest : ::testing::Test
 
 TEST_F(SchedImplTest, sched_setparam_success)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedImplTest sched_setparam_success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     struct sched_param set_params;
@@ -52,10 +52,10 @@ TEST_F(SchedImplTest, sched_setparam_success)
 
 TEST_F(SchedImplTest, sched_getparam_success)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedImplTest sched_getparam_success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     struct sched_param set_params;
@@ -69,10 +69,10 @@ TEST_F(SchedImplTest, sched_getparam_success)
 
 TEST_F(SchedImplTest, sched_getparam_fails)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedImplTest sched_getparam_fails");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     ASSERT_FALSE(sched_.sched_getparam(kInvalidPid, nullptr).has_value());
@@ -80,10 +80,10 @@ TEST_F(SchedImplTest, sched_getparam_fails)
 
 TEST_F(SchedImplTest, sched_setscheduler_failure)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedImplTest sched_setscheduler_failure");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     struct sched_param param;
@@ -94,10 +94,10 @@ TEST_F(SchedImplTest, sched_setscheduler_failure)
 
 TEST_F(SchedImplTest, sched_setscheduler_success)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedImplTest sched_setscheduler_success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     struct sched_param params;
@@ -111,10 +111,10 @@ TEST_F(SchedImplTest, sched_setscheduler_success)
 
 TEST_F(SchedImplTest, sched_getscheduler_success)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedImplTest sched_getscheduler_success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     struct sched_param params;
@@ -128,10 +128,10 @@ TEST_F(SchedImplTest, sched_getscheduler_success)
 
 TEST_F(SchedImplTest, sched_getscheduler_fails)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedImplTest sched_getscheduler_fails");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     ASSERT_FALSE(sched_.sched_getscheduler(kInvalidPid).has_value());
@@ -139,10 +139,10 @@ TEST_F(SchedImplTest, sched_getscheduler_fails)
 
 TEST_F(SchedImplTest, sched_setparam_fails)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedImplTest sched_setparam_fails");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     ASSERT_FALSE(sched_.sched_setparam(kInvalidPid, nullptr).has_value());
@@ -150,10 +150,10 @@ TEST_F(SchedImplTest, sched_setparam_fails)
 
 TEST_F(SchedImplTest, sched_yield_success)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedImplTest sched_yield_success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     ASSERT_TRUE(sched_.sched_yield().has_value());
@@ -161,10 +161,10 @@ TEST_F(SchedImplTest, sched_yield_success)
 
 TEST_F(SchedImplTest, sched_rr_get_interval_success)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedImplTest sched_rr_get_interval_success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     struct timespec ts;
@@ -176,10 +176,10 @@ TEST_F(SchedImplTest, sched_rr_get_interval_success)
 
 TEST_F(SchedImplTest, sched_rr_get_interval_fails)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedImplTest sched_rr_get_interval_fails");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     ASSERT_FALSE(sched_.sched_rr_get_interval(kInvalidPid, nullptr).has_value());
@@ -187,10 +187,10 @@ TEST_F(SchedImplTest, sched_rr_get_interval_fails)
 
 TEST_F(SchedImplTest, sched_get_priority_max_success)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedImplTest sched_get_priority_max_success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto prio_max = sched_.sched_get_priority_max(kPolicy);
@@ -204,10 +204,10 @@ TEST_F(SchedImplTest, sched_get_priority_max_success)
 
 TEST_F(SchedImplTest, sched_get_priority_min_success)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedImplTest sched_get_priority_min_success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto prio_min = sched_.sched_get_priority_min(kPolicy);
@@ -221,10 +221,10 @@ TEST_F(SchedImplTest, sched_get_priority_min_success)
 
 TEST_F(SchedImplTest, sched_get_priority_min_fails)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedImplTest sched_get_priority_min_fails");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     ASSERT_FALSE(sched_.sched_get_priority_min(kInvalidPolicy).has_value());
@@ -232,10 +232,10 @@ TEST_F(SchedImplTest, sched_get_priority_min_fails)
 
 TEST_F(SchedImplTest, sched_get_priority_max_fails)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedImplTest sched_get_priority_max_fails");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     ASSERT_FALSE(sched_.sched_get_priority_max(kInvalidPolicy).has_value());
@@ -243,10 +243,10 @@ TEST_F(SchedImplTest, sched_get_priority_max_fails)
 
 TEST(SchedTest, CanGetInstance)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedTest Can Get Instance");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     EXPECT_NO_FATAL_FAILURE(Sched::instance());
@@ -255,10 +255,10 @@ TEST(SchedTest, CanGetInstance)
 #if defined(__QNX__)
 TEST_F(SchedImplTest, sched_get_priority_adjust_success)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "SchedImplTest sched_get_priority_adjust_success");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     constexpr std::int32_t priority = 3;

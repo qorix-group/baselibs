@@ -26,7 +26,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os:acl",
@@ -45,7 +44,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":acl",
@@ -60,7 +58,6 @@ cc_test(
     tags = ["unit"],
     visibility = [
         "@score-baselibs//score/os/utils/test:__pkg__",
-        # "@ddad@score-baselibs//score/os/utils:__subpackages__",
     ],
     deps = [
         ":acl",

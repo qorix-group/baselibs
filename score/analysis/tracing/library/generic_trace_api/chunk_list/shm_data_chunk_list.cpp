@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 #include "score/analysis/tracing/library/generic_trace_api/chunk_list/shm_data_chunk_list.h"
-#include "score/analysis/tracing/common/shared_memory_location_helpers.h"
+#include "score/analysis/tracing/common/interface_types/shared_memory_location_helpers.h"
 #include "score/analysis/tracing/library/generic_trace_api/error_code/error_code.h"
 #include <memory>
 

@@ -24,9 +24,6 @@ cc_test(
         "additional_warnings",
     ],
     tags = ["unit"],
-    visibility = [
-        # "@ddad@score-baselibs//score/bitmanipulation:__pkg__",
-    ],
     deps = [
         ":bitmanipulation",
         "@googletest//:gtest_main",
@@ -43,9 +40,6 @@ cc_test(
         "additional_warnings",
     ],
     tags = ["unit"],
-    visibility = [
-        # "@ddad@score-baselibs//score/bitmanipulation:__pkg__",
-    ],
     deps = [
         ":bitmask_operators",
         "@googletest//:gtest_main",
@@ -60,7 +54,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
 )
 
@@ -72,7 +65,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
 )
 

@@ -56,10 +56,10 @@ class AclTestFixture : public ::testing::Test
 
 TEST_F(AclTestFixture, CanAddGroupEntries)
 {
-    RecordProperty("ParentRequirement", "SCR-576374");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "ACL shall offer adding group entries");
-    RecordProperty("TestingTechnique", "Requirements-based test");
+    RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
 
     ASSERT_TRUE(unit_.acl_set_tag_type(entry_, ::score::os::Acl::Tag::kGroup).has_value());
@@ -104,10 +104,10 @@ TEST_F(AclTestFixture, CanAddGroupEntries)
 // Test to Set tag type to owning group
 TEST_F(AclTestFixture, SettingTagTokOwningGroup)
 {
-    RecordProperty("ParentRequirement", "SCR-576374");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "ACL shall offer adding tags to onwing group");
-    RecordProperty("TestingTechnique", "Requirements-based test");
+    RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
 
     ASSERT_TRUE(unit_.acl_set_tag_type(entry_, ::score::os::Acl::Tag::kOwningGroup).has_value());
@@ -117,10 +117,10 @@ TEST_F(AclTestFixture, SettingTagTokOwningGroup)
 // Test to Set tag type to MaximumAllowedPermissions and return ACL_MASK
 TEST_F(AclTestFixture, SettingTagTokMaximumAllowedPermissions)
 {
-    RecordProperty("ParentRequirement", "SCR-576374");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "ACL shall offer setting of maximum permission");
-    RecordProperty("TestingTechnique", "Requirements-based test");
+    RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
 
     ASSERT_TRUE(unit_.acl_set_tag_type(entry_, ::score::os::Acl::Tag::kMaximumAllowedPermissions).has_value());
@@ -130,10 +130,10 @@ TEST_F(AclTestFixture, SettingTagTokMaximumAllowedPermissions)
 // Test to Set tag type to kOther
 TEST_F(AclTestFixture, SettingTagTokOther)
 {
-    RecordProperty("ParentRequirement", "SCR-576374");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "ACL shall offer set tag type to kOther");
-    RecordProperty("TestingTechnique", "Requirements-based test");
+    RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
 
     ASSERT_TRUE(unit_.acl_set_tag_type(entry_, ::score::os::Acl::Tag::kOther).has_value());
@@ -143,10 +143,10 @@ TEST_F(AclTestFixture, SettingTagTokOther)
 // Test to Set tag type to kOwningUser and return ACL_USER_OBJ
 TEST_F(AclTestFixture, SettingTagTokOwningUser)
 {
-    RecordProperty("ParentRequirement", "SCR-576374");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "ACL shall offer set tag to kOwningUser");
-    RecordProperty("TestingTechnique", "Requirements-based test");
+    RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
 
     ASSERT_TRUE(unit_.acl_set_tag_type(entry_, ::score::os::Acl::Tag::kOwningUser).has_value());
@@ -156,10 +156,10 @@ TEST_F(AclTestFixture, SettingTagTokOwningUser)
 // Test to Set tag type to kGroup and return ACL_GROUP
 TEST_F(AclTestFixture, GettingTagaclgroup)
 {
-    RecordProperty("ParentRequirement", "SCR-576374");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "ACL shall offer set tag to kGroup");
-    RecordProperty("TestingTechnique", "Requirements-based test");
+    RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
 
     ASSERT_TRUE(unit_.acl_set_tag_type(entry_, ::score::os::Acl::Tag::kGroup).has_value());
@@ -169,10 +169,10 @@ TEST_F(AclTestFixture, GettingTagaclgroup)
 // Test to Get Qualifier to return error
 TEST_F(AclTestFixture, GetQualifierReturnErrorIfPassInvalidEntry)
 {
-    RecordProperty("ParentRequirement", "SCR-576374");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "ACL shall return error to get qualifier with default value");
-    RecordProperty("TestingTechnique", "Requirements-based test");
+    RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
 
     const auto val = unit_.acl_get_qualifier(entry_);
@@ -183,10 +183,10 @@ TEST_F(AclTestFixture, GetQualifierReturnErrorIfPassInvalidEntry)
 // Test to set qualifier to return error
 TEST_F(AclTestFixture, SetQualifierReturnErrorIfPassInvalidQualifier)
 {
-    RecordProperty("ParentRequirement", "SCR-576374");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "ACL shall return error if pass invalid qualifier");
-    RecordProperty("TestingTechnique", "Requirements-based test");
+    RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
 
     const auto val = unit_.acl_set_qualifier(entry_, nullptr);
@@ -197,10 +197,10 @@ TEST_F(AclTestFixture, SetQualifierReturnErrorIfPassInvalidQualifier)
 // Test acl_valid to return error
 TEST_F(AclTestFixture, AclValidToReturnErrorIfPassInvalidAcl)
 {
-    RecordProperty("ParentRequirement", "SCR-576374");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "ACL shall return error if pass invalid ACL");
-    RecordProperty("TestingTechnique", "Requirements-based test");
+    RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
 
     const auto val = unit_.acl_valid(acl_);
@@ -210,10 +210,10 @@ TEST_F(AclTestFixture, AclValidToReturnErrorIfPassInvalidAcl)
 
 TEST_F(AclTestFixture, AclToTextToReturnOkIfPassValidAcl)
 {
-    RecordProperty("ParentRequirement", "SCR-576374");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "ACL shall return error if pass invalid ACL");
-    RecordProperty("TestingTechnique", "Requirements-based test");
+    RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
 
     auto* result = ::acl_get_file(file_name, ACL_TYPE_ACCESS);
@@ -227,10 +227,10 @@ TEST_F(AclTestFixture, AclToTextToReturnOkIfPassValidAcl)
 
 TEST_F(AclTestFixture, AclToTextToReturnErrorIfPassInvalidAcl)
 {
-    RecordProperty("ParentRequirement", "SCR-576374");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "ACL shall return error if pass invalid ACL");
-    RecordProperty("TestingTechnique", "Requirements-based test");
+    RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
 
     auto* result = ::acl_get_file("", ACL_TYPE_ACCESS);
@@ -244,10 +244,10 @@ TEST_F(AclTestFixture, AclToTextToReturnErrorIfPassInvalidAcl)
 // Test to set fd return error if invalid parameters are passed
 TEST_F(AclTestFixture, AclSetFdToReturnErrorIfPassInvalidParam)
 {
-    RecordProperty("ParentRequirement", "SCR-576374");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "ACL shall return error if pass invalid param");
-    RecordProperty("TestingTechnique", "Requirements-based test");
+    RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
 
     const auto val = unit_.acl_set_fd(file_descriptor_, acl_);
@@ -258,10 +258,10 @@ TEST_F(AclTestFixture, AclSetFdToReturnErrorIfPassInvalidParam)
 // Test to Get Entry to return Error if an Invalid Index is passed
 TEST_F(AclTestFixture, AclGetEntryToReturnErrorIfPassInvalidIndex)
 {
-    RecordProperty("ParentRequirement", "SCR-576374");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description", "ACL shall return error if pass invalid index");
-    RecordProperty("TestingTechnique", "Requirements-based test");
+    RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
 
 #if defined(__QNX__)
@@ -274,11 +274,11 @@ TEST_F(AclTestFixture, AclGetEntryToReturnErrorIfPassInvalidIndex)
 
 TEST_F(AclTestFixture, AclGetPermissionTest)
 {
-    RecordProperty("ParentRequirement", "SCR-576374");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "QM");
     RecordProperty("Description",
                    "ACL shall true when the permission is present in the permissions set; false otherwise.");
-    RecordProperty("TestingTechnique", "Requirements-based test");
+    RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
 
     ASSERT_TRUE(unit_.acl_set_tag_type(entry_, ::score::os::Acl::Tag::kGroup).has_value());
@@ -303,6 +303,34 @@ TEST_F(AclTestFixture, AclGetPermissionTest)
     result = unit_.acl_get_perm(permissions, ::score::os::Acl::Permission::kWrite);
     ASSERT_TRUE(result.has_value());
     ASSERT_FALSE(result.value());
+}
+
+TEST_F(AclTestFixture, AclGetFilePositiveTest)
+{
+    RecordProperty("Verifies", "SCR-46010294");
+    RecordProperty("ASIL", "QM");
+    RecordProperty("Description", "ACL shall return correct acl for given filename if the file exists.");
+    RecordProperty("TestType", "Requirements-based test");
+    RecordProperty("DerivationTechnique", "Analysis of requirements");
+
+    const auto acl_result = unit_.acl_get_file(file_name);
+    ASSERT_TRUE(acl_result.has_value());
+
+    unit_.acl_free(acl_result.value());
+}
+
+TEST_F(AclTestFixture, AclGetFileNegativeTest)
+{
+    RecordProperty("Verifies", "SCR-46010294");
+    RecordProperty("ASIL", "QM");
+    RecordProperty("Description", "ACL shall return error if provided path is empty.");
+    RecordProperty("TestType", "Requirements-based test");
+    RecordProperty("DerivationTechnique", "Analysis of requirements");
+
+    const std::string filepath{""};
+    const auto acl_result = unit_.acl_get_file(filepath);
+    ASSERT_FALSE(acl_result.has_value());
+    EXPECT_EQ(acl_result.error(), score::os::Error::Code::kNoSuchFileOrDirectory);
 }
 
 }  // namespace

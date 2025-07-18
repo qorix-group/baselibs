@@ -15,9 +15,6 @@ load("@score-baselibs//bazel:unit_tests.bzl", "cc_gtest_unit_test", "cc_unit_tes
 cc_gtest_unit_test(
     name = "test_std_arithmetic_types",
     srcs = ["test_std_arithmetic_types.cpp"],
-    visibility = [
-        # "@ddad@score-baselibs//score/language/safecpp/test:__pkg__",
-    ],
 )
 
 cc_unit_test_suites_for_host_and_qnx(

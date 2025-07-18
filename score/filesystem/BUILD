@@ -21,8 +21,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
-        # "@ddad@score-baselibs//score/filesystem:__pkg__",
+        "//visibility:public",
     ],
     deps = [
         ":struct",
@@ -40,7 +39,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad@score-baselibs//score/filesystem:__pkg__",
     ],
     deps = [
         ":standard_filesystem_fake",
@@ -180,9 +178,6 @@ cc_test(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["unit"],
-    visibility = [
-        # "@ddad@score-baselibs//score/filesystem:__pkg__",
-    ],
     deps = [
         ":standard_filesystem",
         ":standard_filesystem_fake",
@@ -201,7 +196,8 @@ cc_unit_test_suites_for_host_and_qnx(
         "standard_filesystem_unit_test",
         "@score-baselibs//score/filesystem/factory:unit_test",
         "@score-baselibs//score/filesystem/file_utils:unit_test",
-        "@score-baselibs//score/filesystem/filestream:unit_test",
+        "@score-baselibs//score/filesystem/filestream:unit_test_basic",
+        "@score-baselibs//score/filesystem/filestream:unit_test_extra",
     ],
     visibility = [
         "//visibility:public",

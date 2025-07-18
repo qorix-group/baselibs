@@ -65,10 +65,8 @@ class NvConfig : public INvConfig
     /* KW_SUPPRESS_START: MISRA.USE.EXPANSION: False positive: it is not macro. */
   private:
     /* KW_SUPPRESS_END: MISRA.USE.EXPANSION */
-    /* KW_SUPPRESS_START: MISRA.MEMB.NOT_PRIVATE: false positive: it is private (Ticket-74585)*/
     const std::string json_path_;
     typemap_t typemap_;
-    /* KW_SUPPRESS_END: MISRA.MEMB.NOT_PRIVATE */
 };
 
 }  // namespace log

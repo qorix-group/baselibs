@@ -34,7 +34,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/mw/log/detail:__pkg__",
-        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":file_output_backend",
@@ -66,7 +65,6 @@ cc_library(
     visibility = [
         "@score-baselibs//score/mw/log/detail:__pkg__",
         "@score-baselibs//score/mw/log/detail/slog:__pkg__",
-        # "@ddad@score-baselibs//score/mw/log/detail:__subpackages__",
     ],
     deps = [
         ":file_output_backend",
@@ -114,7 +112,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/mw/log/detail:__pkg__",
-        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":file_recorder",
@@ -137,7 +134,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/mw/log/detail:__pkg__",
-        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":text_recorder",
@@ -221,9 +217,6 @@ cc_test(
         "aborts_upon_exception",
     ],
     tags = ["unit"],
-    visibility = [
-        # "@ddad@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
-    ],
     deps = [
         ":file_output_backend",
         ":file_output_backend_mocks",
@@ -268,9 +261,6 @@ cc_test(
         "aborts_upon_exception",
     ],
     tags = ["unit"],
-    visibility = [
-        # "@ddad@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
-    ],
     deps = [
         ":non_blocking_writer",
         "@score-baselibs//score/os/mocklib:unistd_mock",

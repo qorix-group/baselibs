@@ -20,8 +20,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "@score-baselibs//score/os/utils:__subpackages__",
-        # "@ddad@score-baselibs//score/os/utils:__subpackages__",
-        # "@ddad@score-baselibs//score/utils:__subpackages__",
     ],
 )
 
@@ -32,8 +30,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "@score-baselibs//score/os/utils:__subpackages__",
-        # "@ddad@score-baselibs//score/os/utils:__subpackages__",
-        # "@ddad@score-baselibs//score/utils:__subpackages__",
     ],
 )
 
@@ -44,8 +40,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "@score-baselibs//score/os/utils:__subpackages__",
-        # "@ddad@score-baselibs//score/os/utils:__subpackages__",
-        # "@ddad@score-baselibs//score/utils:__subpackages__",
     ],
 )
 
@@ -55,8 +49,7 @@ cc_library(
     hdrs = ["src/PayloadValidation.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
+        "//visibility:public",
     ],
 )
 
@@ -67,7 +60,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = ["@score-baselibs//score/language/futurecpp"],
 )
@@ -76,9 +68,6 @@ cc_gtest_unit_test(
     name = "pimpl_ptr_test",
     srcs = ["pimpl_ptr_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/utils:__subpackages__",
-    ],
     deps = [":pimpl_ptr"],
 )
 
@@ -86,9 +75,6 @@ cc_gtest_unit_test(
     name = "time_conversion_test",
     srcs = ["time_conversion.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/utils:__subpackages__",
-    ],
     deps = [":time_conversion"],
 )
 
@@ -96,9 +82,6 @@ cc_gtest_unit_test(
     name = "payloadvalidation_test",
     srcs = ["test/payloadvalidationtest.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/utils:__subpackages__",
-    ],
     deps = [":payloadvalidation"],
 )
 
@@ -106,9 +89,6 @@ cc_gtest_unit_test(
     name = "scoped_operation_test",
     srcs = ["test/scoped_operation_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        # "@ddad@score-baselibs//score/utils:__subpackages__",
-    ],
     deps = [":scoped_operation"],
 )
 

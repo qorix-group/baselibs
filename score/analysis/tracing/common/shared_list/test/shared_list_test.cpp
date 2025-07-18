@@ -11,11 +11,15 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 #include "score/analysis/tracing/common/shared_list/shared_list.h"
+#include "score/analysis/tracing/common/flexible_circular_allocator/lockless_flexible_circular_allocator.h"
 #include "score/analysis/tracing/common/flexible_circular_allocator/test/mocks/flexible_circular_allocator_mock.h"
+#include "score/analysis/tracing/common/interface_types/shared_memory_chunk.h"
+#include "score/analysis/tracing/common/interface_types/shared_memory_location.h"
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stdlib.h>
-
+#include <thread>
+using namespace score::memory::shared;
 using namespace score::analysis::tracing;
 using testing::_;
 using testing::Invoke;
@@ -252,4 +256,64 @@ TEST_F(SharedListFixture, IteratorDereferenceFailToAllocate)
 
     auto value = *iterator;
     score::cpp::ignore = value;
+}
+
+TEST_F(SharedListFixture, SharedMemoryChunk)
+{
+    using ShmChunkVector = shared::List<SharedMemoryChunk>;
+    static constexpr std::size_t kFlexibleAllocatorSize = 10000U;
+    std::shared_ptr<LocklessFlexibleCircularAllocator<AtomicIndirectorReal>> flexible_allocator;
+    std::unique_ptr<std::uint8_t[]> memory_pointer_;
+
+    memory_pointer_ = std::make_unique<std::uint8_t[]>(2 * kFlexibleAllocatorSize);
+    flexible_allocator = std::make_shared<LocklessFlexibleCircularAllocator<AtomicIndirectorReal>>(
+        memory_pointer_.get(), kFlexibleAllocatorSize);
+
+    void* const vector_shm_raw_pointer =
+        flexible_allocator->Allocate(sizeof(ShmChunkVector), alignof(std::max_align_t));
+    if (nullptr == vector_shm_raw_pointer)
+    {
+        std::cout << "ErrorCode::kNotEnoughMemoryRecoverable" << std::endl;
+    }
+
+    const auto vector = new (vector_shm_raw_pointer) ShmChunkVector(flexible_allocator);
+
+    std::thread allocator_thread = std::thread{[&]() {
+        for (std::uint8_t i = 0U; i < 60; i++)
+        {
+            auto emplace_result = vector->emplace_back(SharedMemoryChunk{SharedMemoryLocation{i, i}, i});
+            if (!emplace_result.has_value())
+            {
+                vector->clear();
+                score::cpp::ignore = flexible_allocator->Deallocate(vector_shm_raw_pointer, sizeof(ShmChunkVector));
+                std::cout << "ErrorCode::kNotEnoughMemoryRecoverable" << std::endl;
+            }
+        }
+    }};
+
+    std::thread deallocator_thread = std::thread{[&]() {
+        // need the sleep here as the shared list still not supporting concurrent execution yet.
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        const std::size_t elements_to_deallocate = vector->size();
+
+        for (std::size_t i = 0U; i < elements_to_deallocate; i++)
+        {
+            auto el = vector->at(i);
+            if (el.has_value())
+            {
+                std::cout << "Element number " << std::to_string(i)
+                          << " is : " << std::to_string(el.value().start_.offset_) << std::endl;
+            }
+        }
+        vector->clear();
+        flexible_allocator->Deallocate(vector, sizeof(vector));
+    }};
+
+    allocator_thread.join();
+    deallocator_thread.join();
+
+    memory_pointer_.reset();
+    flexible_allocator.reset();
+
+    ASSERT_EQ(true, true);
 }

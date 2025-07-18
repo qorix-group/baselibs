@@ -26,10 +26,10 @@ namespace
 
 TEST(StdlibImpl, system_call)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StdlibImpl system_call");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto result = score::os::Stdlib::instance().system_call("ls /tmp");
@@ -38,10 +38,10 @@ TEST(StdlibImpl, system_call)
 
 TEST(StdlibImpl, system_callFail)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StdlibImpl system_call Fail");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto result1 = score::os::Stdlib::Default()->system_call("d");
@@ -50,10 +50,10 @@ TEST(StdlibImpl, system_callFail)
 
 TEST(StdlibImpl, getenv)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StdlibImpl getenv");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     EXPECT_EQ(setenv("TEST_ENV", "TEST_VALUE", 0), 0);
@@ -64,10 +64,10 @@ TEST(StdlibImpl, getenv)
 
 TEST(StdlibImpl, realpath)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StdlibImpl realpath");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     char resolved_path[20];
@@ -81,11 +81,11 @@ TEST(StdlibImpl, realpath)
 
 TEST(StdlibImpl, calloc_fail)
 {
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     RecordProperty("DerivationTechnique", "Analysis of requirements");
-    RecordProperty("ParentRequirement", "SCR-109773");
+    RecordProperty("Verifies", "SCR-109773");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "This test verifies that an attempt to allocate more than the maximum amount of memory using "
@@ -105,10 +105,10 @@ TEST(StdlibImpl, calloc_fail)
 
 TEST(StdlibImpl, calloc)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StdlibImpl calloc");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto size = 2;
@@ -126,10 +126,10 @@ TEST(StdlibImpl, calloc)
 
 TEST(StdlibImpl, free)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StdlibImpl free");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const auto size = 1;
@@ -141,10 +141,10 @@ TEST(StdlibImpl, free)
 
 TEST(StdlibImpl, mkstemp)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StdlibImpl mkstemp");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     char path[] = "/tmp/fileXXXXXX";
@@ -155,10 +155,10 @@ TEST(StdlibImpl, mkstemp)
 
 TEST(StdlibImpl, mkstempFail)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StdlibImpl mkstemp Fail");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     char path[] = "/tmp/fileXXXX";
@@ -168,10 +168,10 @@ TEST(StdlibImpl, mkstempFail)
 
 TEST(StdlibImpl, mkstemps)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StdlibImpl mkstemps");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     char path[] = "/tmp/fileXXXXXXsuffix";
@@ -182,10 +182,10 @@ TEST(StdlibImpl, mkstemps)
 
 TEST(StdlibImpl, mkstempsFail)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StdlibImpl mkstemps Fail");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     char path[] = "/tmp/fileXXXXXX";
@@ -195,10 +195,10 @@ TEST(StdlibImpl, mkstempsFail)
 
 TEST(StdlibTest, PMRDefaultShallReturnImplInstance)
 {
-    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("Verifies", "SCR-46010294");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "StdlibTest PMRDefault Shall Return Impl Instance");
-    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     score::cpp::pmr::memory_resource* memory_resource = score::cpp::pmr::get_default_resource();

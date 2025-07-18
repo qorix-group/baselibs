@@ -21,16 +21,11 @@ cc_library(
     hdrs = [
         "slog_backend.h",
     ],
-    defines = select({
-        "@score-baselibs//score/mw/log/detail/flags:config_enable_startup_phase_traces": ["ENABLE_STARTUP_PHASE_TRACES"],
-        "//conditions:default": [],
-    }),
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "@score-baselibs//score/mw/log:__subpackages__",
-        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
         "@score-baselibs//score/os/qnx:slog2",
@@ -47,7 +42,6 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "@score-baselibs//score/mw/log:__subpackages__",
-        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
         ":slog_backend",
@@ -68,7 +62,6 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "@score-baselibs//score/mw/log:__subpackages__",
-        # "@ddad@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
         ":slog_backend",
@@ -88,10 +81,6 @@ cc_test(
     tags = [
         "manual",
         "unit",
-    ],
-    visibility = [
-        # "@ddad@score-baselibs//score/mw/log/detail:__pkg__",
-        # "@ddad@score-baselibs//score/mw/log/detail/slog:__pkg__",
     ],
     deps = [
         "@score-baselibs//score/mw/log/configuration",

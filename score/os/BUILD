@@ -26,7 +26,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/os:__subpackages__",
-        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":errno",
@@ -134,7 +133,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/os:__subpackages__",
-        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":errno",
@@ -195,7 +193,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/os:__subpackages__",
-        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":errno",
@@ -217,7 +214,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/os:__subpackages__",
-        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":errno",
@@ -240,6 +236,15 @@ cc_library(
     ],
 )
 
+alias(
+    name = "ifaddrs_mock",
+    actual = "@score-baselibs//score/os/mocklib:ifaddrs_mock",
+    visibility = [
+        ":__subpackages__",
+        "//platform/aas/network/xnm:__subpackages__",
+    ],
+)
+
 cc_library(
     name = "semaphore",
     srcs = [
@@ -257,6 +262,15 @@ cc_library(
         ":errno",
         ":object_seam",
         "@score-baselibs//score/bitmanipulation:bitmask_operators",
+    ],
+)
+
+alias(
+    name = "netdb_mock",
+    actual = "@score-baselibs//score/os/mocklib:netdb_mock",
+    visibility = [
+        ":__subpackages__",
+        "//platform/aas/network/xnm:__subpackages__",
     ],
 )
 
@@ -316,8 +330,10 @@ cc_library(
     hdrs = ["netdb.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
+        ":__subpackages__",
+        "@score-baselibs//score/analysis/tracing/daemon:__subpackages__",
         "@score-baselibs//score/os:__subpackages__",
-        # "@ddad@score-baselibs//score/os:__subpackages__",
+        "//platform/aas/network/xnm:__subpackages__",
     ],
     deps = [
         ":errno",
@@ -346,7 +362,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "@score-baselibs//score/os:__subpackages__",
-        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":errno",
@@ -385,7 +400,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "@score-baselibs//score/os:__subpackages__",
-        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":errno",
@@ -400,7 +414,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "@score-baselibs//score/os:__subpackages__",
-        # "@ddad@score-baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":errno",
@@ -519,6 +532,15 @@ cc_library(
         ":errno",
         ":object_seam",
         "@score-baselibs//score/bitmanipulation:bitmask_operators",
+    ],
+)
+
+alias(
+    name = "socket_mock",
+    actual = "@score-baselibs//score/os/mocklib:socket_mock",
+    visibility = [
+        ":__subpackages__",
+        "//platform/aas/pas/sysmon:__subpackages__",
     ],
 )
 
@@ -829,12 +851,52 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
-        # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
         ":errno",
         ":object_seam",
         "@score-baselibs//score/bitmanipulation:bitmask_operators",
         "@score-baselibs//score/language/futurecpp",
+    ],
+)
+
+cc_library(
+    name = "sigevent_error",
+    srcs = [
+        "sigevent_error.cpp",
+    ],
+    hdrs = [
+        "sigevent_error.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "//visibility:public", # platform_only
+    ],
+    deps = [
+        "@score-baselibs//score/result",
+    ],
+)
+
+cc_library(
+    name = "sigevent",
+    srcs = [
+        "sigevent.cpp",
+        "sigevent_impl.cpp",
+    ],
+    hdrs = [
+        "sigevent.h",
+        "sigevent_impl.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "//visibility:public", # platform_only
+    ],
+    deps = [
+        ":object_seam",
+        ":sigevent_error",
+        "@score-baselibs//score/result",
+        "@score-baselibs//score/mw/log",
     ],
 )

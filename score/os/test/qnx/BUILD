@@ -16,7 +16,7 @@ load("@score-baselibs//third_party/itf:py_unittest_qnx_test.bzl", "py_unittest_q
 
 package(
     default_visibility = [
-        # "@ddad@score-baselibs//score/os/test/qnx:__subpackages__",
+        "@score-baselibs//score/os/test/qnx:__subpackages__",
     ],
 )
 
@@ -31,7 +31,8 @@ py_unittest_qnx_test(
         ":iofunc_test",
         ":neutrino_test",
         ":pci_test",
-        ":pci_safety_test",
+        # TODO: To be fixed on Ticket-201117. Test not compatible with ARM64
+        # ":pci_safety_test",
         ":procmgr_test",
         ":resmgr_test",
         ":secpol_test",
@@ -46,6 +47,7 @@ py_unittest_qnx_test(
         ":fs_crypto_test",
         ":fs_crypto_impl_test",
         ":pcap_test",
+        ":sigevent_qnx_test",
     ],
     test_suites = [
         "@score-baselibs//score/os/utils/qnx/resource_manager:unit_tests_qnx",
@@ -188,6 +190,7 @@ cc_test(
         "@score-baselibs//score/os/qnx:channel",
         "@score-baselibs//score/os/qnx:dispatch",
         "@score-baselibs//score/os/qnx:neutrino",
+        "@score-baselibs//score/os/qnx:sigevent_qnx",
         "@googletest//:gtest_main",
     ],
 )
@@ -423,6 +426,21 @@ cc_test(
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
         "@score-baselibs//score/os/qnx:fs_crypto",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "sigevent_qnx_test",
+    srcs = ["sigevent_qnx_test.cpp"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = [
+        "manual",  # to disable using as host unit test in CI
+        "unit",
+    ],
+    target_compatible_with = ["@platforms//os:qnx"],
+    deps = [
+        "@score-baselibs//score/os/qnx:sigevent_qnx",
         "@googletest//:gtest_main",
     ],
 )

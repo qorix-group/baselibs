@@ -25,7 +25,7 @@ namespace result
 /// \brief Interface for user-defined error domains. The domains are used to translate user-defined error codes into
 /// human readable messages.
 ///
-/// \details For examples to see hwo you can provide your custom ErrorDomain please see respective error_test.cpp Unit
+/// \details For examples on how you can provide your custom ErrorDomain, please see respective error_test.cpp Unit
 /// Tests.
 class ErrorDomain
 {
