@@ -33,7 +33,7 @@ enum class FileSyncMode
 class JsonWriter final : public IJsonWriter
 {
   public:
-    explicit JsonWriter(FileSyncMode file_sync_mode = FileSyncMode::kSynced) noexcept;
+    explicit JsonWriter(FileSyncMode file_sync_mode = FileSyncMode::kUnsynced) noexcept;
     JsonWriter(const JsonWriter&) = delete;
     JsonWriter(JsonWriter&&) noexcept = delete;
     JsonWriter& operator=(const JsonWriter&) = delete;
