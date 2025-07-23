@@ -71,5 +71,9 @@ cc_unit_test_suites_for_host_and_qnx(
         "@score-baselibs//score/language/safecpp/safe_math/details/negate:unit_test",
         "@score-baselibs//score/language/safecpp/safe_math/details/type_traits:unit_test",
     ],
+    excluded_tests_filter = [
+        # TODO(Ticket-203919): qemu on ubuntu 20.04 without KVM incorrectly supports FPE
+        "FloatingPointEnvironmentTest.*",
+    ],
     visibility = ["@score-baselibs//score/language/safecpp:__pkg__"],
 )
