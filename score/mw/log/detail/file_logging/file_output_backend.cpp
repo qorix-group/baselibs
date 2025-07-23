@@ -56,9 +56,7 @@ score::cpp::optional<SlotHandle> FileOutputBackend::ReserveSlot() noexcept
         // coverity[autosar_cpp14_a4_7_1_violation]
         return SlotHandle{static_cast<SlotIndex>(slot.value())};
     }
-    /* KW_SUPPRESS_START:UNREACH.GEN: False positive: Code is reachable. */
     return {};
-    /* KW_SUPPRESS_END:UNREACH.GEN */
 }
 
 void FileOutputBackend::FlushSlot(const SlotHandle& slot) noexcept

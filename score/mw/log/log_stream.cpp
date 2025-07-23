@@ -36,12 +36,10 @@ LogStream::LogStream(Recorder& recorder,
                      Recorder& fallback_recorder,
                      const LogLevel log_level,
                      const std::string_view context_id) noexcept
-    /* KW_SUPPRESS_START:UNINIT.CTOR.MUST: False positive: recorder_ is initialized here. */
     : recorder_{recorder},
       fallback_recorder_{fallback_recorder},
       context_id_(context_id.data() == nullptr ? kDefaultContextInStream : context_id),
       log_level_{log_level}
-/* KW_SUPPRESS_END:UNINIT.CTOR.MUST */
 {
     // Construction fallback handled in log_stream_factory (using here CallRecorder, would give a false impression)
     slot_ = recorder_.StartRecord(context_id_.GetStringView(), log_level_);
@@ -49,7 +47,7 @@ LogStream::LogStream(Recorder& recorder,
 
 LogStream::~LogStream() noexcept
 {
-    if (slot_.has_value()) /* KW_SUPPRESS:MISRA.STMT.COND.NOT_BOOLEAN:False positive */
+    if (slot_.has_value())
     {
         CallOnRecorder(&Recorder::StopRecord, slot_.value());
     }
@@ -86,7 +84,7 @@ LogStream::LogStream(LogStream&& other) noexcept
 
 void LogStream::Flush() noexcept
 {
-    if (slot_.has_value()) /* KW_SUPPRESS:MISRA.STMT.COND.NOT_BOOLEAN:False positive */
+    if (slot_.has_value())
     {
         CallOnRecorder(&Recorder::StopRecord, slot_.value());
     }
@@ -187,8 +185,6 @@ LogStream& LogStream::Log(const LogBin16& value) noexcept
     return LogWithRecorder(value);
 }
 
-/* KW_SUPPRESS_START:MISRA.MEMB.NON_CONST: */
-/* False positive: LogStream shouldn't be considered as const. It's mandated by the ara::log API. */
 LogStream& LogStream::Log(const LogBin32& value) noexcept
 {
     return LogWithRecorder(value);
@@ -198,8 +194,6 @@ LogStream& LogStream::Log(const LogBin64& value) noexcept
 {
     return LogWithRecorder(value);
 }
-/* KW_SUPPRESS_END:MISRA.MEMB.NON_CONST */
-/* False positive: LogStream shouldn't be considered as const. It's mandated by the ara::log API. */
 
 LogStream& LogStream::Log(const LogSlog2Message& value) noexcept
 {
@@ -219,8 +213,6 @@ LogStream& LogStream::Log(const LogRawBuffer& value) noexcept
     }
     return LogWithRecorder(value);
 }
-/* KW_SUPPRESS_END:MISRA.VAR.NEEDS.CONST */
-/* False positive: LogStream shouldn't be considered as const. It's mandated by the ara::log API. */
 
 template <typename T>
 LogStream& LogStream::LogWithRecorder(const T value) noexcept

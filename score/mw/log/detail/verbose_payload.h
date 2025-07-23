@@ -30,10 +30,8 @@ namespace log
 namespace detail
 {
 
-/* KW_SUPPRESS_START:AUTOSAR.BUILTIN_NUMERIC:Char is the platform independent representation of a Byte */
 using Byte = char;
 using ByteVector = std::vector<Byte>;
-/* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC:Char is the platform independent representation of a Byte */
 
 using ReserveCallback = score::cpp::callback<std::size_t(score::cpp::span<Byte>)>;
 

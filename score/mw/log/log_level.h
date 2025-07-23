@@ -31,13 +31,7 @@ namespace log
 ///
 /// \details The severity of log messages will be used to filter if a message shall be further processed. This can be
 /// used by an end-user to filter messages and reduce performance implications due to extensive logging.
-/* KW_SUPPRESS_START: AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False positive. */
-/* KW_SUPPRESS_START: MISRA.VAR.HIDDEN: False positive: uint8_t doesn't hide anything. */
-/* KW_SUPPRESS_START: MISRA.ONEDEFRULE.VAR: False positive: uint8_t is not defined here. */
 enum class LogLevel : std::uint8_t
-/* KW_SUPPRESS_END: MISRA.ONEDEFRULE.VAR: False positive: uint8_t is not defined here. */
-/* KW_SUPPRESS_END: MISRA.VAR.HIDDEN: False positive: uint8_t doesn't hide anything. */
-/* KW_SUPPRESS_END: AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False positive. */
 {
     kOff = 0x00,
     kFatal = 0x01,

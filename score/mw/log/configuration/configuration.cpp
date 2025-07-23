@@ -35,9 +35,7 @@ std::string ToString(const std::string_view view)
 
 }  // namespace
 
-/* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: false positive */
 std::string_view Configuration::GetEcuId() const noexcept
-/* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: false positive */
 {
     return ecu_id_.GetStringView();
 }

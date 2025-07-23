@@ -29,8 +29,6 @@ namespace detail
 class IConfigurationFileDiscoverer
 {
   public:
-    /* KW_SUPPRESS_START: MISRA.MEMB.NOT_PRIVATE: constructors should be public */
-    /* KW_SUPPRESS_START: MISRA.VAR.HIDDEN: false positive, noexcept does not hide anything */
     IConfigurationFileDiscoverer() noexcept = default;
     IConfigurationFileDiscoverer(IConfigurationFileDiscoverer&&) noexcept = delete;
     IConfigurationFileDiscoverer(const IConfigurationFileDiscoverer&) noexcept = delete;
@@ -49,8 +47,6 @@ class IConfigurationFileDiscoverer
     /// 2. <cwd>/logging.json
     /// 3. <binary path>/../etc/logging.json
     virtual std::vector<std::string> FindConfigurationFiles() const noexcept = 0;
-    /* KW_SUPPRESS_END: MISRA.MEMB.NOT_PRIVATE */
-    /* KW_SUPPRESS_END: MISRA.VAR.HIDDEN */
 };
 
 }  // namespace detail

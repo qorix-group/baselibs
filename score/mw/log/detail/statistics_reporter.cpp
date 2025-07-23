@@ -69,7 +69,6 @@ void ReportStatisticsViaRecorder(Recorder& recorder,
 
 }  // namespace
 
-/* KW_SUPPRESS_START:UNINIT.CTOR.MUST: False positive: recorder_ is initialized here. */
 StatisticsReporter::StatisticsReporter(Recorder& recorder,
                                        const std::chrono::seconds report_interval,
                                        const std::size_t number_of_slots,
@@ -85,7 +84,6 @@ StatisticsReporter::StatisticsReporter(Recorder& recorder,
       currently_reporting_{}
 {
 }
-/* KW_SUPPRESS_END:UNINIT.CTOR.MUST */
 
 void StatisticsReporter::IncrementNoSlotAvailable() noexcept
 {

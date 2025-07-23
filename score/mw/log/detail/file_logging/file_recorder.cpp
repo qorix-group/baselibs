@@ -38,28 +38,21 @@ inline void LogData(const SlotHandle& slot, detail::Backend& backend, const T da
     auto& log_record = backend.GetLogRecord(slot);
     DltArgumentCounter counter{log_record.getLogEntry().num_of_args};
     auto& payload = log_record.getVerbosePayload();
-    std::ignore = counter.TryAddArgument(
-        /* KW_SUPPRESS_START: AUTOSAR.LAMBDA.REF_LIFETIME: Lambda is destroyed before captured references. */
-        [data, &payload]() {
-            const auto result = DLTFormat::Log(payload, data);
-            return result;
-        }
-        /* KW_SUPPRESS_END: AUTOSAR.LAMBDA.REF_LIFETIME */
-    );
+    std::ignore = counter.TryAddArgument([data, &payload]() {
+        const auto result = DLTFormat::Log(payload, data);
+        return result;
+    });
 }
 
 }  //  anonymous namespace
 
-/* KW_SUPPRESS_START:UNINIT.CTOR.MUST: False positive: members are initialized here. */
 FileRecorder::FileRecorder(const detail::Configuration& config, std::unique_ptr<detail::Backend> backend)
     : Recorder(),
       backend_(std::move(backend)),
       config_(config)  // LCOV_EXCL_BR_LINE: there are no branches to be covered, it is just pre-construction.
 {
 }
-/* KW_SUPPRESS_END:UNINIT.CTOR.MUST */
 
-/* KW_SUPPRESS_START:FUNCRET.GEN:False positive:Function returns a value. */
 score::cpp::optional<SlotHandle> FileRecorder::StartRecord(const std::string_view context_id,
                                                     const LogLevel log_level) noexcept
 {
@@ -83,7 +76,6 @@ score::cpp::optional<SlotHandle> FileRecorder::StartRecord(const std::string_vie
     }
     return slot_handle;
 }
-/* KW_SUPPRESS_END:FUNCRET.GEN */
 
 void FileRecorder::StopRecord(const SlotHandle& slot) noexcept
 {

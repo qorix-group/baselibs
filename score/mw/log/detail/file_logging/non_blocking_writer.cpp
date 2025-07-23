@@ -27,7 +27,6 @@ namespace detail
 
 std::size_t NonBlockingWriter::GetMaxChunkSize() noexcept
 {
-    /* KW_SUPPRESS_START:MISRA.USE.EXPANSION:Library defined macros */
 /// \brief Maximum number of bytes to be flushed in one call.
 /// For QNX The Max size of bytes to be written shall be less than SSIZE_MAX - sizeof(io_write_t)
 // coverity[autosar_cpp14_a16_0_1_violation]
@@ -40,7 +39,6 @@ std::size_t NonBlockingWriter::GetMaxChunkSize() noexcept
 // For QNX The Max size of bytes to be written shall be less than SSIZE_MAX - sizeof(io_write_t)
 // coverity[autosar_cpp14_a16_0_1_violation]
 #endif
-    /* KW_SUPPRESS_END:MISRA.USE.EXPANSION:Library defined macros */
     return kMaxChunkSizeSupportedByOs;
 }
 
@@ -93,10 +91,6 @@ score::cpp::expected<ssize_t, score::os::Error> NonBlockingWriter::InternalFlush
     if (number_of_flushed_bytes_ < buffer_size)
     {
         score::cpp::expected<ssize_t, score::os::Error> num_of_bytes_written{};
-        /* KW_SUPPRESS_START:UNINIT.STACK.MUST:False positive: num_of_bytes_written is initialized during
-         * construction above. */
-        /* KW_SUPPRESS_START:MISRA.PTR.ARITH: Needs ptr to access score::cpp::span elements*/
-        /* KW_SUPPRESS_START:UNINIT.STACK.MIGHT:False positive: num_of_bytes_written is value initialized. */
         // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) used on span which is an array
         // NOLINTBEGIN(score-banned-function) it is among safety headers.
         // Needs ptr to access score::cpp::span elements
@@ -104,18 +98,13 @@ score::cpp::expected<ssize_t, score::os::Error> NonBlockingWriter::InternalFlush
         num_of_bytes_written = unistd_->write(file_handle_, &(buffer_.data()[number_of_flushed_bytes_]), size_to_flush);
         // NOLINTEND(score-banned-function) it is among safety headers.
         // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic) used on span which is an array
-        /* KW_SUPPRESS_END:UNINIT.STACK.MIGHT */
-        /* KW_SUPPRESS_END:MISRA.PTR.ARITH */
-        /* KW_SUPPRESS_END:UNINIT.STACK.MUST */
         if (!num_of_bytes_written.has_value())
         {
             return score::cpp::make_unexpected(num_of_bytes_written.error());
         }
         else
         {
-            /* KW_SUPPRESS_START:UNINIT.STACK.MIGHT:False positive: num_of_bytes_written is value initialized. */
             number_of_flushed_bytes_ += static_cast<uint64_t>(num_of_bytes_written.value());
-            /* KW_SUPPRESS_END:UNINIT.STACK.MIGHT */
         }
     }
     return number_of_flushed_bytes_;

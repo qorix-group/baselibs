@@ -206,8 +206,6 @@ constexpr static bool LogStreamSupports() noexcept
 //             stream << YourAwesomeType.getSomething(); // custom logic on how to represent your type as Log-Message
 //             return stream;
 //          }
-/* KW_SUPPRESS_START:MISRA.VAR.NEEDS.CONST */
-/* False positive: LogStream shouldn't be considered as const. It's mandated by the ara::log API. */
 /// \public
 class LogStream final
 {
@@ -289,10 +287,7 @@ class LogStream final
     /// current contents to the Logging framework.
     void Flush() noexcept;
 
-    /* KW_SUPPRESS_START: MISRA.USE.EXPANSION: False positive: it is not macro. */
   private:
-    /* KW_SUPPRESS_END: MISRA.USE.EXPANSION */
-
     // We can't make the ctor public, the ctor intended to be private to avoid instance instantiation by the user
     // but it is needed internally by LogStreamFactory
     // coverity[autosar_cpp14_a11_3_1_violation]
@@ -347,21 +342,17 @@ class LogStream final
                                ArgsPassed&&... args) noexcept;
     // NOLINTEND(score-no-pointer-to-member): See above
 
-    /* KW_SUPPRESS_START: MISRA.MEMB.NOT_PRIVATE: False positive: it is private member. */
     Recorder& recorder_;
     Recorder& fallback_recorder_;
     score::cpp::optional<SlotHandle> slot_;
 
     detail::LoggingIdentifier context_id_;
     LogLevel log_level_;
-    /* KW_SUPPRESS_END: MISRA.MEMB.NOT_PRIVATE: False positive: it is private member. */
 };
-/* KW_SUPPRESS_END:MISRA.VAR.NEEDS.CONST */
 
 /// \brief Stream operator overload which enables logging to a `LogStream` rvalue.
 /// \public
 template <typename T>
-/* KW_SUPPRESS_START: AUTOSAR.OP.BINARY.RETVAL: False positive since this is the stream operator. */
 std::enable_if_t<not(IsCharArrayType<T>()), LogStream&> operator<<(LogStream&& out, T&& value) noexcept
 {
     /*
@@ -415,14 +406,10 @@ inline LogStream& operator<<(LogStream& out, long long value) noexcept
 // `using ara::log::score_ext::operator<<;`
 namespace score_ext
 {
-/* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: Templates from C++14 with clang format. */
 template <typename EnumerationT, std::enable_if_t<std::is_enum<EnumerationT>::value, bool> = true>
-/* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: Templates from C++14 with clang format. */
-/* KW_SUPPRESS_START: AUTOSAR.OP.BINARY.RETVAL: False positive since this is the stream operator. */
 /// \public
 // coverity[autosar_cpp14_a13_2_2_violation : FALSE] see above
 LogStream& operator<<(LogStream& out, EnumerationT enumvalue)
-/* KW_SUPPRESS_END: AUTOSAR.OP.BINARY.RETVAL: False positive since this is the stream operator. */
 {
     /*
     Deviation from Rule A5-2-2:

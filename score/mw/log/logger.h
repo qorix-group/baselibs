@@ -18,24 +18,18 @@
 #include <string_view>
 
 #include "score/mw/log/detail/logging_identifier.h"
-/* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE:False positive, namespace is single statement. */
+
 namespace score
-/* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE */
 {
 namespace mw
 {
 namespace log
 {
 
-/* KW_SUPPRESS_START:MISRA.ONEDEFRULE.VAR: false positives */
-/* KW_SUPPRESS:MISRA.INIT.BRACES:False Positive */
-
 /// \brief The logger creates LogStreams with a user-defined context.
 /// Implicitly generated assignment operators are NOT thread-safe.
 class Logger final
 {
-    /* KW_SUPPRESS_END:MISRA.INIT.BRACES:False Positive */
-    /* KW_SUPPRESS_END:MISRA.ONEDEFRULE.VAR*/
   public:
     /// \brief Constructs a Logger object with a given context. All subsequent calls to a log statement will be logged
     /// under the provided context.
@@ -43,7 +37,6 @@ class Logger final
     /// \thread-safe
     explicit Logger(const std::string_view context) noexcept;
 
-    /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN: */
     /* Reusing identifiers allowed to keep interface consistent betweeen the member functions in this class with the
      * free functions defined in logging.h. */
     /// \brief Creates a LogStream to log messages of criticality `Fatal` (highest).
@@ -119,13 +112,9 @@ class Logger final
     /// \details See also AUTOSAR_SWS_LogAndTrace R20-11, Section 8.3.2.7
     bool IsEnabled(const LogLevel) const noexcept;
 
-    /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN */
-
     std::string_view GetContext() const noexcept;
 
-    /* KW_SUPPRESS_START: MISRA.USE.EXPANSION: False positive: it is not macro. */
   private:
-    /* KW_SUPPRESS_END: MISRA.USE.EXPANSION */
     detail::LoggingIdentifier context_;
 };
 

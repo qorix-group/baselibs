@@ -82,14 +82,10 @@ class SlotHandle final
     // coverity[autosar_cpp14_a0_1_1_violation : FALSE]
     static constexpr std::size_t kMaxRecorders{4U};
 
-    /* KW_SUPPRESS_START: MISRA.USE.EXPANSION: False positive: it is not macro. */
   private:
-    /* KW_SUPPRESS_END: MISRA.USE.EXPANSION: False positive: it is not macro. */
-    /* KW_SUPPRESS_START: MISRA.MEMB.NOT_PRIVATE: False positive: it is private member. */
     std::array<SlotIndex, kMaxRecorders> recorder_to_slot_{};
     std::bitset<kMaxRecorders> recorder_slot_available_{};
     RecorderIdentifier selected_recorder_{};
-    /* KW_SUPPRESS_END: MISRA.MEMB.NOT_PRIVATE: False positive: it is private member. */
 };
 
 bool operator==(const SlotHandle::RecorderIdentifier& l_value, const SlotHandle::RecorderIdentifier& r_value) noexcept;

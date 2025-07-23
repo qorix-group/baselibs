@@ -31,15 +31,11 @@ namespace log
 namespace detail
 {
 
-/* KW_SUPPRESS_START: MISRA.LINKAGE.EXTERN: False positive: It's not declaration. */
-/* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: false positive */
 std::unique_ptr<Recorder> RecorderFactory::CreateRecorderFromLogMode(
     const LogMode& log_mode,
     const Configuration& config,
     score::cpp::pmr::unique_ptr<score::os::Fcntl> fcntl_instance,
     score::cpp::pmr::memory_resource* memory_resource) const noexcept
-/* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: false positive */
-/* KW_SUPPRESS_END: MISRA.LINKAGE.EXTERN: False positive: It's not declaration. */
 {
     if (memory_resource == nullptr)
     {
@@ -97,7 +93,6 @@ std::unique_ptr<Recorder> RecorderFactory::CreateRecorderFromLogMode(
     return recorder;
 }
 
-/* KW_SUPPRESS_START: MISRA.LINKAGE.EXTERN: False positive: It's not declaration. */
 /*
 Deviation from Rule A15-5-3:
 - The std::terminate() function shall not be called implicitly.
@@ -111,7 +106,6 @@ std::bad_variant_access can occur.
 std::unique_ptr<Recorder> RecorderFactory::CreateFromConfiguration(
     const std::unique_ptr<const ITargetConfigReader> config_reader,
     score::cpp::pmr::memory_resource* memory_resource) const noexcept
-/* KW_SUPPRESS_END: MISRA.LINKAGE.EXTERN: False positive: It's not declaration. */
 {
     if (memory_resource == nullptr)
     {
@@ -120,17 +114,13 @@ std::unique_ptr<Recorder> RecorderFactory::CreateFromConfiguration(
     }
     const auto result = config_reader->ReadConfig();
 
-    /* KW_SUPPRESS_START: MISRA.LOGIC.NOT_BOOL: False positive: It's correct boolean expression. */
     if (!result.has_value())
-    /* KW_SUPPRESS_END: MISRA.LOGIC.NOT_BOOL: False positive: It's correct boolean expression. */
     {
         ReportInitializationError(result.error(), "Failed to load configuration files. Fallback to console logging.");
         return CreateWithConsoleLoggingOnly(memory_resource);
     }
 
     std::vector<std::unique_ptr<Recorder>> recorders;
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
     std::ignore =
         std::for_each(result->GetLogMode().begin(),
                       result->GetLogMode().end(),
@@ -138,7 +128,6 @@ std::unique_ptr<Recorder> RecorderFactory::CreateFromConfiguration(
                           std::ignore = recorders.emplace_back(CreateRecorderFromLogMode(
                               log_mode, result.value(), score::os::Fcntl::Default(memory_resource), memory_resource));
                       });
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 
     if (recorders.empty())
     {
@@ -151,18 +140,12 @@ std::unique_ptr<Recorder> RecorderFactory::CreateFromConfiguration(
         return std::move(recorders[0]);
     }
 
-    /* KW_SUPPRESS_START: MISRA.LOGIC.OPERATOR.NOT_BOOL: False positive: No booleans here at all. */
-    /* KW_SUPPRESS_START: MISRA.COMMA: False positive: Comma used for constructor arguments. */
-    // Composite recorder is needed iff there are more than one activate recorder.
+    // Composite recorder is needed if there are more than one activate recorder.
     return std::make_unique<CompositeRecorder>(std::move(recorders));
-    /* KW_SUPPRESS_END: MISRA.COMMA: False positive: Comma used for constructor arguments. */
-    /* KW_SUPPRESS_END: MISRA.LOGIC.OPERATOR.NOT_BOOL: False positive: No booleans here at all. */
 }
 
-/* KW_SUPPRESS_START: MISRA.LINKAGE.EXTERN: False positive: It's not declaration. */
 std::unique_ptr<Recorder> RecorderFactory::CreateWithConsoleLoggingOnly(
     score::cpp::pmr::memory_resource* memory_resource) const noexcept
-/* KW_SUPPRESS_END: MISRA.LINKAGE.EXTERN: False positive: It's not declaration. */
 {
     if (memory_resource == nullptr)
     {
@@ -175,16 +158,12 @@ std::unique_ptr<Recorder> RecorderFactory::CreateWithConsoleLoggingOnly(
     return console_recorder_factory.CreateLogRecorder(config, memory_resource);
 }
 
-/* KW_SUPPRESS_START: MISRA.LINKAGE.EXTERN: False positive: It's not declaration. */
 std::unique_ptr<Recorder> RecorderFactory::CreateStub() const noexcept
-/* KW_SUPPRESS_END: MISRA.LINKAGE.EXTERN: False positive: It's not declaration. */
 {
     return std::make_unique<EmptyRecorder>();
 }
 
-/* KW_SUPPRESS_START: MISRA.LINKAGE.EXTERN: False positive: It's not declaration. */
 std::unique_ptr<score::mw::log::IRecorderFactory> CreateRecorderFactory() noexcept
-/* KW_SUPPRESS_END: MISRA.LINKAGE.EXTERN: False positive: It's not declaration. */
 {
     return std::make_unique<RecorderFactory>();
 }

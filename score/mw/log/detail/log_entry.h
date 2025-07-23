@@ -28,10 +28,8 @@ namespace log
 namespace detail
 {
 
-/* KW_SUPPRESS_START:AUTOSAR.BUILTIN_NUMERIC:Char is the platform independent representation of a Byte */
 using Byte = char;
 using ByteVector = std::vector<Byte>;
-/* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC:Char is the platform independent representation of a Byte */
 /*
 Deviation from Rule M11-0-1:
 - Member data in non-POD class types shall be private.
@@ -43,12 +41,10 @@ Justification:
 // coverity[autosar_cpp14_m11_0_1_violation]
 struct LogEntry
 {
-    /* KW_SUPPRESS_START:MISRA.INIT.BRACES:False positive: Braces are correctly placed. */
     // coverity[autosar_cpp14_m11_0_1_violation]
     LoggingIdentifier app_id{""};
     // coverity[autosar_cpp14_m11_0_1_violation]
     LoggingIdentifier ctx_id{""};
-    /* KW_SUPPRESS_END:MISRA.INIT.BRACES*/
     // coverity[autosar_cpp14_m11_0_1_violation]
     ByteVector payload{};
     // coverity[autosar_cpp14_m11_0_1_violation]
@@ -78,11 +74,6 @@ constexpr std::uint8_t GetLogLevelU8FromLogEntry(const LogEntry& entry)
     return static_cast<std::uint8_t>(entry.log_level);
 }
 
-/* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Design decision to use macros for STRUCT_VISITABLE */
-/* KW_SUPPRESS_START: AUTOSAR.STYLE.SINGLE_STMT_PER_LINE,MISRA.FUNC.UNUSEDPAR,MISRA.VAR.HIDDEN: */
-/* (1) False positive: Line contains a single statement. (2) No unused stuff. (3) Expected.*/
-/* KW_SUPPRESS_START: MISRA.FUNC.UNUSEDPAR.UNNAMED: False positive, parameters used by macro. */
-
 // NOLINTBEGIN(score-struct-usage-compliance) justified by design
 // Forward declaration for struct_visitable_impl is required for implementation
 // std::forward<T>(s) added due to CB-#10171555
@@ -109,9 +100,6 @@ STRUCT_VISITABLE(LogEntry,
                  //  header_buffer,
                  log_level)
 // NOLINTEND(score-struct-usage-compliance) justified by design
-/* KW_SUPPRESS_END: MISRA.FUNC.UNUSEDPAR.UNNAMED: False positive, parameters used by macro.. */
-/* KW_SUPPRESS_END: AUTOSAR.STYLE.SINGLE_STMT_PER_LINE,MISRA.FUNC.UNUSEDPAR,MISRA.VAR.HIDDEN */
-/* KW_SUPPRESS_END:MISRA.USE.EXPANSION */
 
 }  // namespace detail
 }  // namespace log

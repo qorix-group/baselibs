@@ -132,9 +132,7 @@ score::ResultBlank GetElementAndThen(const score::json::Object& obj,
     const auto parser_result = GetElementAs<T>(obj, key);
     if (parser_result.has_value() == false)
     {
-        /* KW_SUPPRESS_START:MISRA.LOGIC.OPERATOR.NOT_BOOL: false positive */
         return score::MakeUnexpected<score::Blank>(parser_result.error());
-        /* KW_SUPPRESS_END:MISRA.LOGIC.OPERATOR.NOT_BOOL*/
     }
 
     update(parser_result.value());
@@ -144,8 +142,6 @@ score::ResultBlank GetElementAndThen(const score::json::Object& obj,
 
 score::ResultBlank ParseEcuId(const score::json::Object& root, Configuration& config) noexcept
 {
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
     // Disabling clang-format to address Coverity warning: autosar_cpp14_a7_1_7_violation
     // clang-format off
     return GetElementAndThen<std::string_view>(
@@ -154,13 +150,10 @@ score::ResultBlank ParseEcuId(const score::json::Object& root, Configuration& co
         [&config](auto value) noexcept { config.SetEcuId(value); }
     );
     // clang-format on
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 }
 
 score::ResultBlank ParseAppId(const score::json::Object& root, Configuration& config) noexcept
 {
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
     // Disabling clang-format to address Coverity warning: autosar_cpp14_a7_1_7_violation
     // clang-format off
     return GetElementAndThen<std::string_view>(
@@ -169,13 +162,10 @@ score::ResultBlank ParseAppId(const score::json::Object& root, Configuration& co
         [&config](auto value) noexcept { config.SetAppId(value); }
     );
     // clang-format on
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 }
 
 score::ResultBlank ParseAppDescription(const score::json::Object& root, Configuration& config) noexcept
 {
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
     // Disabling clang-format to address Coverity warning: autosar_cpp14_a7_1_7_violation
     // clang-format off
     return GetElementAndThen<std::string_view>(
@@ -184,13 +174,10 @@ score::ResultBlank ParseAppDescription(const score::json::Object& root, Configur
         [&config](auto value) noexcept { config.SetAppDescription(value); }
     );
     // clang-format on
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 }
 
 score::ResultBlank ParseLogFilePath(const score::json::Object& root, Configuration& config) noexcept
 {
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
     // Disabling clang-format to address Coverity warning: autosar_cpp14_a7_1_7_violation
     // clang-format off
     return GetElementAndThen<std::string_view>(
@@ -199,7 +186,6 @@ score::ResultBlank ParseLogFilePath(const score::json::Object& root, Configurati
         [&config](auto value) noexcept { config.SetLogFilePath(value); }
     );
     // clang-format on
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 }
 
 /// \brief Returns the corresponding log mode of the string.
@@ -239,8 +225,6 @@ score::Result<std::unordered_set<LogMode>> LogModesFromString(const std::string_
 
 score::ResultBlank ParseLogMode(const score::json::Object& root, Configuration& config) noexcept
 {
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
     // Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
     // std::terminate() will not  implicitly be called from GetElementAndThen as it declared as noexcept.
     // coverity[autosar_cpp14_a15_5_3_violation]
@@ -251,7 +235,6 @@ score::ResultBlank ParseLogMode(const score::json::Object& root, Configuration& 
             config.SetLogMode(log_mode_result.value());  // LCOV_EXCL_BR_LINE: no branches here to be covered.
         }
     });
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 }
 
 /// \brief Returns the corresponding log level of the string.
@@ -279,9 +262,7 @@ class GetElementAsImpl<LogLevel>
         const auto string_result = GetElementAsImpl<std::string_view>::GetElementAs(obj, key);
         if (string_result.has_value() == false)
         {
-            /* KW_SUPPRESS_START:MISRA.LOGIC.OPERATOR.NOT_BOOL: false positive */
             return score::MakeUnexpected<LogLevel>(string_result.error());
-            /* KW_SUPPRESS_END:MISRA.LOGIC.OPERATOR.NOT_BOOL */
         }
 
         return LogLevelFromString(string_result.value());
@@ -290,8 +271,6 @@ class GetElementAsImpl<LogLevel>
 
 score::ResultBlank ParseLogLevel(const score::json::Object& root, Configuration& config) noexcept
 {
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
     // Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
     // std::terminate() will not  implicitly be called from GetElementAndThen as it declared as noexcept.
     // coverity[autosar_cpp14_a15_5_3_violation]
@@ -302,13 +281,10 @@ score::ResultBlank ParseLogLevel(const score::json::Object& root, Configuration&
             config.SetDefaultLogLevel(log_level_result.value());  // LCOV_EXCL_BR_LINE: no branches here to be covered.
         }
     });
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 }
 
 score::ResultBlank ParseLogLevelConsole(const score::json::Object& root, Configuration& config) noexcept
 {
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
     // Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
     // std::terminate() will not  implicitly be called from GetElementAndThen as it declared as noexcept.
     // coverity[autosar_cpp14_a15_5_3_violation]
@@ -319,7 +295,6 @@ score::ResultBlank ParseLogLevelConsole(const score::json::Object& root, Configu
             config.SetDefaultConsoleLogLevel(log_level_result.value());
         }
     });
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 }
 
 // Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
@@ -332,14 +307,11 @@ score::ResultBlank ParseContextLogLevel(const score::json::Object& root,
     const auto context_config = GetElementAsRef<score::json::List>(root, kContextConfigsKey);
     if (context_config.has_value() == false)
     {
-        /* KW_SUPPRESS_START:MISRA.LOGIC.OPERATOR.NOT_BOOL: false positive */
         return score::MakeUnexpected<score::Blank>(context_config.error());
-        /* KW_SUPPRESS_END:MISRA.LOGIC.OPERATOR.NOT_BOOL*/
     }
 
     auto context_config_map = config.GetContextLogLevel();
 
-    /* KW_SUPPRESS_START:UNREACH.GEN: False positive: Code is reachable. */
     for (const auto& context_item : context_config.value().get())
     {
         const auto context_result = context_item.As<score::json::Object>();
@@ -366,7 +338,6 @@ score::ResultBlank ParseContextLogLevel(const score::json::Object& root,
 
         context_config_map[LoggingIdentifier{context_name_result.value().get()}] = context_log_level_result.value();
     }
-    /* KW_SUPPRESS_END:UNREACH.GEN*/
     config.SetContextLogLevel(context_config_map);
 
     return {};
@@ -374,8 +345,6 @@ score::ResultBlank ParseContextLogLevel(const score::json::Object& root,
 
 score::ResultBlank ParseStackBufferSize(const score::json::Object& root, Configuration& config) noexcept
 {
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
     // Disabling clang-format to address Coverity warning: autosar_cpp14_a7_1_7_violation
     // clang-format off
     return GetElementAndThen<std::size_t>(
@@ -384,13 +353,10 @@ score::ResultBlank ParseStackBufferSize(const score::json::Object& root, Configu
         [&config](auto value) noexcept { config.SetStackBufferSize(value); }
     );
     // clang-format on
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 }
 
 score::ResultBlank ParseRingBufferSize(const score::json::Object& root, Configuration& config) noexcept
 {
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
     // Disabling clang-format to address Coverity warning: autosar_cpp14_a7_1_7_violation
     // clang-format off
     return GetElementAndThen<std::size_t>(
@@ -399,13 +365,10 @@ score::ResultBlank ParseRingBufferSize(const score::json::Object& root, Configur
         [&config](auto value) noexcept { config.SetRingBufferSize(value); }
     );
     // clang-format on
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 }
 
 score::ResultBlank ParseOverwriteOnFull(const score::json::Object& root, Configuration& config) noexcept
 {
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
     // Disabling clang-format to address Coverity warning: autosar_cpp14_a7_1_7_violation
     // clang-format off
     return GetElementAndThen<bool>(
@@ -414,13 +377,10 @@ score::ResultBlank ParseOverwriteOnFull(const score::json::Object& root, Configu
         [&config](auto value) noexcept { config.SetRingBufferOverwriteOnFull(value); }
     );
     // clang-format on
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 }
 
 score::ResultBlank ParseNumberOfSlots(const score::json::Object& root, Configuration& config) noexcept
 {
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
     // Disabling clang-format to address Coverity warning: autosar_cpp14_a7_1_7_violation
     // clang-format off
     return GetElementAndThen<std::size_t>(
@@ -429,13 +389,10 @@ score::ResultBlank ParseNumberOfSlots(const score::json::Object& root, Configura
         [&config](auto value) noexcept { config.SetNumberOfSlots(value); }
     );
     // clang-format on
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 }
 
 score::ResultBlank ParseSlotSizeBytes(const score::json::Object& root, Configuration& config) noexcept
 {
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
     // Disabling clang-format to address Coverity warning: autosar_cpp14_a7_1_7_violation
     // clang-format off
     return GetElementAndThen<std::size_t>(
@@ -444,13 +401,10 @@ score::ResultBlank ParseSlotSizeBytes(const score::json::Object& root, Configura
         [&config](auto value) noexcept { config.SetSlotSizeInBytes(value); }
     );
     // clang-format on
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 }
 
 score::ResultBlank ParseDatarouterUid(const score::json::Object& root, Configuration& config) noexcept
 {
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
     // Disabling clang-format to address Coverity warning: autosar_cpp14_a7_1_7_violation
     // clang-format off
     return GetElementAndThen<std::size_t>(
@@ -459,13 +413,10 @@ score::ResultBlank ParseDatarouterUid(const score::json::Object& root, Configura
         [&config](const auto value) noexcept { config.SetDataRouterUid(value); }
     );
     // clang-format on
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 }
 
 score::ResultBlank ParseDynamicDatarouterIdentifiers(const score::json::Object& root, Configuration& config) noexcept
 {
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
     // Disabling clang-format to address Coverity warning: autosar_cpp14_a7_1_7_violation
     // clang-format off
     return GetElementAndThen<std::size_t>(
@@ -474,7 +425,6 @@ score::ResultBlank ParseDynamicDatarouterIdentifiers(const score::json::Object& 
         [&config](const auto value) noexcept { config.SetDynamicDatarouterIdentifiers(static_cast<bool>(value)); }
     );
     // clang-format on
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 }
 
 void ParseConfigurationElements(const score::json::Object& root, const std::string& path, Configuration& config) noexcept
@@ -508,37 +458,26 @@ score::Result<Configuration> ParseAndUpdateConfiguration(const std::string& path
     const auto json_result = json_parser_obj.FromFile(path);
     if (json_result.has_value() == false)
     {
-        /* KW_SUPPRESS_START:MISRA.LOGIC.OPERATOR.NOT_BOOL: false positive */
         return score::MakeUnexpected<Configuration>(json_result.error());
-        /* KW_SUPPRESS_END:MISRA.LOGIC.OPERATOR.NOT_BOOL*/
     }
 
     const auto root_result = json_result.value().As<score::json::Object>();
     if (root_result.has_value() == false)
     {
-        /* KW_SUPPRESS_START:MISRA.LOGIC.OPERATOR.NOT_BOOL: false positive */
         return score::MakeUnexpected<Configuration>(root_result.error());
-        /* KW_SUPPRESS_END:MISRA.LOGIC.OPERATOR.NOT_BOOL*/
     }
 
     ParseConfigurationElements(root_result->get(), path, config);
-    /* KW_SUPPRESS_START:UNINIT.STACK.MUST: False positive */
     return config;
-    /* KW_SUPPRESS_END:UNINIT.STACK.MUST*/
 }
 
 }  // namespace
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
-/* KW_SUPPRESS_START:MISRA.VAR.NEEDS.CONST: False positive, const unique ptr can not be moved*/
 TargetConfigReader::TargetConfigReader(std::unique_ptr<IConfigurationFileDiscoverer> discoverer) noexcept
     : ITargetConfigReader{}, discoverer_(std::move(discoverer))
 {
 }
-/* KW_SUPPRESS_END:MISRA.VAR.NEEDS.CONST */
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN*/
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
 // Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
 // std::terminate() will not  implicitly be called from ReadConfig as it declared as noexcept
 // coverity[autosar_cpp14_a15_5_3_violation]
@@ -555,7 +494,6 @@ score::Result<Configuration> TargetConfigReader::ReadConfig() const noexcept
 
     // Update the config instance by iterating over the config_files
     // Each config file can overwrite the previous config files.
-    /* KW_SUPPRESS_START:UNREACH.GEN: False positive: Code is reachable. */
     for (const auto& config_file : config_files)
     {
         auto result = ParseAndUpdateConfiguration(config_file, config);
@@ -568,13 +506,9 @@ score::Result<Configuration> TargetConfigReader::ReadConfig() const noexcept
 
         config = std::move(result.value());
     }
-    /* KW_SUPPRESS_END:UNREACH.GEN */
 
-    /* KW_SUPPRESS_START:UNINIT.STACK.MUST: False positive, config is initalized */
     return config;
-    /* KW_SUPPRESS_END:UNINIT.STACK.MUST */
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN*/
 
 }  // namespace detail
 }  // namespace log

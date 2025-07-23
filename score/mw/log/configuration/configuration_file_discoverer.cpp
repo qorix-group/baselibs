@@ -29,16 +29,10 @@ namespace detail
 namespace
 {
 
-/* KW_SUPPRESS_START:AUTOSAR.ARRAY.CSTYLE: Tolerated to have constexpr array of chars */
-/* KW_SUPPRESS_START:MISRA.VAR.MIN.VIS: Constant is used only within the file*/
-/* KW_SUPPRESS_START:AUTOSAR.BUILTIN_NUMERIC: Tolerated, Char is used to construct array of chars*/
 static constexpr const std::string_view kGlobalConfigPath{"/etc/ecu_logging_config.json"};
 static constexpr const std::string_view kLocalEtcConfigPath{"etc/logging.json"};
 static constexpr const std::string_view kCwdConfigPath{"logging.json"};
 static constexpr const std::string_view kEnvironmentVariableConfig{"MW_LOG_CONFIG_FILE"};
-/* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC*/
-/* KW_SUPPRESS_END:MISRA.VAR.MIN.VIS*/
-/* KW_SUPPRESS_END:AUTOSAR.ARRAY.CSTYLE*/
 
 }  // namespace
 
@@ -102,17 +96,14 @@ score::cpp::optional<std::string> ConfigurationFileDiscoverer::FindLocalConfigFi
         return (candidate.has_value() == true) && (FileExists(candidate.value()) == true);
     });
 
-    /* KW_SUPPRESS_START:UNINIT.STACK.MUST:False positive: candidates data is initialised. */
     if (result != candidates.cend())
     {
         return *result;
     }
 
     return {};
-    /* KW_SUPPRESS_END:UNINIT.STACK.MUST */
 }
 
-/* KW_SUPPRESS_START:MISRA.STDLIB.ABORT: Used genenv from Stdlib-wrapper */
 score::cpp::optional<std::string> ConfigurationFileDiscoverer::FindEnvironmentConfigFile() const noexcept
 {
     const auto environmental_config_path = stdlib_->getenv(kEnvironmentVariableConfig.data());
@@ -126,7 +117,6 @@ score::cpp::optional<std::string> ConfigurationFileDiscoverer::FindEnvironmentCo
 
     return {};
 }
-/* KW_SUPPRESS_END:MISRA.STDLIB.ABORT: Used genenv from Stdlib-wrapper */
 
 score::cpp::optional<std::string> ConfigurationFileDiscoverer::GetConfigFileByExecutableLocation() const noexcept
 {

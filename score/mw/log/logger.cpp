@@ -33,14 +33,12 @@ namespace mw
 {
 namespace log
 {
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
+
 Logger::Logger(const std::string_view context) noexcept
     : context_(context.data() == nullptr ? GetDefaultContextId() : context)
 {
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN*/
 
-/* KW_SUPPRESS_START:FUNCRET.GEN:False positives:Functions return values. */
 log::LogStream Logger::LogFatal() const noexcept
 {
     return score::mw::log::detail::LogStreamFactory::GetStream(LogLevel::kFatal, context_.GetStringView());
@@ -71,8 +69,7 @@ log::LogStream Logger::LogVerbose() const noexcept
     return score::mw::log::detail::LogStreamFactory::GetStream(LogLevel::kVerbose, context_.GetStringView());
 }
 
-log::LogStream Logger::WithLevel(
-    const LogLevel log_level) const noexcept /* KW_SUPPRESS:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE.*/
+log::LogStream Logger::WithLevel(const LogLevel log_level) const noexcept
 {
     return score::mw::log::detail::LogStreamFactory::GetStream(log_level, context_.GetStringView());
 }
@@ -86,15 +83,11 @@ bool Logger::IsEnabled(const LogLevel log_level) const noexcept
 {
     return score::mw::log::detail::Runtime::GetRecorder().IsLogEnabled(log_level, context_.GetStringView());
 }
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
-/* KW_SUPPRESS_START:MISRA.MEMB.NON_STATIC:Non static memb*/
+
 std::string_view Logger::GetContext() const noexcept
 {
     return context_.GetStringView();
 }
-/* KW_SUPPRESS_END:MISRA.MEMB.NON_STATIC*/
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN*/
-/* KW_SUPPRESS_END:FUNCRET.GEN */
 
 score::mw::log::Logger& CreateLogger(const std::string_view context) noexcept
 {

@@ -39,8 +39,6 @@ namespace log
 /// Please be advised, if you plan to extend our logging API with your personal complex type, this header is _not_ the
 /// right place. The idea is that a `Recorder` only supports the basic types in C++. If you want to ensure that your
 /// custom complex type is loggable, please provide a custom overload of the operator<<(LogStream).
-/* KW_SUPPRESS_START:MISRA.MEMB.NOT_PRIVATE: Recorder provides interface */
-/* KW_SUPPRESS_START:MISRA.FUNC.VIRTUAL.UNUSEDPAR: False positive */
 class Recorder
 {
   public:
@@ -50,9 +48,6 @@ class Recorder
     /// memory).
     Recorder() = default;
     virtual ~Recorder();
-
-    /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN: */
-    /* Does not recognize noexcept keyword and reports hidden specifier */
     Recorder(const Recorder&) noexcept = delete;
     Recorder(Recorder&&) noexcept = delete;
     Recorder& operator=(const Recorder&) noexcept = delete;
@@ -116,10 +111,7 @@ class Recorder
     virtual void Log(const SlotHandle&, const LogSlog2Message) noexcept = 0;
 
     virtual bool IsLogEnabled(const LogLevel&, const std::string_view context) const noexcept = 0;
-    /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN */
 };
-/* KW_SUPPRESS_END:MISRA.MEMB.NOT_PRIVATE */
-/* KW_SUPPRESS_END:MISRA.FUNC.VIRTUAL.UNUSEDPAR */
 
 }  // namespace log
 }  // namespace mw

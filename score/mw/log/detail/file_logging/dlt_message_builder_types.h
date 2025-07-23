@@ -26,9 +26,6 @@ namespace log
 namespace detail
 {
 
-/* KW_SUPPRESS_START:MISRA.DEFINE.NOTGLOBAL: macro used together with struct definition */
-/* KW_SUPPRESS_START:MISRA.USE.DEFINE: False positive */
-/* KW_SUPPRESS_START:MISRA.ONEDEFRULE.VAR: macro used together with struct definition */
 // macro used together with struct definition
 // coverity[autosar_cpp14_a16_0_1_violation]
 #ifndef PACKED
@@ -39,11 +36,7 @@ namespace detail
 // macro used together with struct definition
 // coverity[autosar_cpp14_a16_0_1_violation]
 #endif
-/* KW_SUPPRESS_END:MISRA.ONEDEFRULE.VAR */
-/* KW_SUPPRESS_END:MISRA.USE.DEFINE */
-/* KW_SUPPRESS_END:MISRA.DEFINE.NOTGLOBAL */
 
-/* KW_SUPPRESS_START:MISRA.ONEDEFRULE.VAR: constexpr cannot be propagated through out of one translation unit */
 constexpr std::uint32_t kDltMsinVerb{0x01U};   /**< verbose */
 constexpr std::uint32_t kDltMsinMstpShift{1U}; /**< shift right offset to get mstp value */
 constexpr std::uint32_t kDltMsinMtinShift{4U}; /**< shift right offset to get mtin value */
@@ -81,7 +74,6 @@ constexpr std::size_t kDltHeaderSize = 22UL;
 constexpr std::size_t kDltStorageHeaderSize = 16UL;
 
 constexpr std::size_t kMaxDltHeaderSize = 512UL;
-/* KW_SUPPRESS_END:MISRA.ONEDEFRULE.VAR */
 
 // NOLINTBEGIN(score-banned-preprocessor-directives) needed to use PACKED attribute
 // needed to use PACKED attribute as GNU extension
@@ -104,7 +96,6 @@ constexpr std::size_t kMaxDltHeaderSize = 512UL;
 #endif
 // NOLINTEND(score-banned-preprocessor-directives) needed to use PACKED attribute
 
-/* KW_SUPPRESS_START: MISRA.USE.EXPANSION: Macro PACKED is tolerated by decision. */
 /**
  * The structure of the DLT standard header. This header is used in each DLT message.
  * Names of the members are following AUTOSAR specification field names.
@@ -155,7 +146,6 @@ struct DltVerboseHeader
     DltStandardHeaderExtra extra;
     DltExtendedHeader extended;
 } PACKED;
-/* KW_SUPPRESS_END: MISRA.USE.EXPANSION: Macro PACKED is tolerated by decision. */
 
 // needed to use PACKED attribute as GNU extension
 // coverity[autosar_cpp14_a16_0_1_violation]

@@ -61,9 +61,7 @@ void ForEachActiveSlot(const std::vector<std::unique_ptr<Recorder>>& recorders,
                        const SlotHandle composite_slot,
                        const RecorderWithSlotCallback callback) noexcept
 {
-    SlotHandle slot_for_recorder{}; /* KW_SUPPRESS:MISRA.VAR.NEEDS.CONST:False positive:Variable is modified. */
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
+    SlotHandle slot_for_recorder{};
     ForEachRecorder(recorders,
                     [&slot_for_recorder, &composite_slot, &callback](Recorder& recorder,
                                                                      const SlotHandle::RecorderIdentifier recorder_id) {
@@ -73,7 +71,6 @@ void ForEachActiveSlot(const std::vector<std::unique_ptr<Recorder>>& recorders,
                             callback(recorder, slot_for_recorder);
                         }
                     });
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 }
 
 template <typename T>
@@ -97,15 +94,11 @@ CompositeRecorder::CompositeRecorder(std::vector<std::unique_ptr<Recorder>> reco
     }
 }
 
-/* KW_SUPPRESS_START:MISRA.MEMB.NON_CONST: Base class function that is overrided is non-const. */
 score::cpp::optional<SlotHandle> CompositeRecorder::StartRecord(const std::string_view context_id,
                                                          const LogLevel log_level) noexcept
-/* KW_SUPPRESS_END:MISRA.MEMB.NON_CONST */
 {
-    SlotHandle composite_slot{}; /* KW_SUPPRESS:MISRA.VAR.NEEDS.CONST:False positive:Variable is modified. */
+    SlotHandle composite_slot{};
 
-    /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-    /* The lambda will be executed within this stack. Thus, all references are still valid */
     ForEachRecorder(recorders_,
                     [&context_id, &log_level, &composite_slot](Recorder& recorder,
                                                                const SlotHandle::RecorderIdentifier recorder_id) {
@@ -117,7 +110,6 @@ score::cpp::optional<SlotHandle> CompositeRecorder::StartRecord(const std::strin
                             //  are no branches to be covered.
                         }
                     });
-    /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
 
     return composite_slot;
 }
@@ -183,63 +175,52 @@ void CompositeRecorder::Log(const SlotHandle& composite_slot, const double arg) 
     LogForEachActiveSlot(recorders_, composite_slot, arg);
 }
 
-/* KW_SUPPRESS_START:MISRA.MEMB.NON_CONST: Base class function that is overrided is non-const. */
 void CompositeRecorder::Log(const SlotHandle& composite_slot, const std::string_view arg) noexcept
-/* KW_SUPPRESS_END:MISRA.MEMB.NON_CONST */
 {
     LogForEachActiveSlot(recorders_, composite_slot, arg);
 }
 
 void CompositeRecorder::Log(const SlotHandle& composite_slot, const LogHex8 arg) noexcept
-/* KW_SUPPRESS_END:MISRA.MEMB.NON_CONST */
 {
     LogForEachActiveSlot(recorders_, composite_slot, arg.value);
 }
 
 void CompositeRecorder::Log(const SlotHandle& composite_slot, const LogHex16 arg) noexcept
-/* KW_SUPPRESS_END:MISRA.MEMB.NON_CONST */
 {
     LogForEachActiveSlot(recorders_, composite_slot, arg.value);
 }
 
 void CompositeRecorder::Log(const SlotHandle& composite_slot, const LogHex32 arg) noexcept
-/* KW_SUPPRESS_END:MISRA.MEMB.NON_CONST */
 {
     LogForEachActiveSlot(recorders_, composite_slot, arg.value);
 }
 
 void CompositeRecorder::Log(const SlotHandle& composite_slot, const LogHex64 arg) noexcept
-/* KW_SUPPRESS_END:MISRA.MEMB.NON_CONST */
 {
     LogForEachActiveSlot(recorders_, composite_slot, arg.value);
 }
 
 void CompositeRecorder::Log(const SlotHandle& composite_slot, const LogBin8 arg) noexcept
-/* KW_SUPPRESS_END:MISRA.MEMB.NON_CONST */
 {
     LogForEachActiveSlot(recorders_, composite_slot, arg.value);
 }
 
 void CompositeRecorder::Log(const SlotHandle& composite_slot, const LogBin16 arg) noexcept
-/* KW_SUPPRESS_END:MISRA.MEMB.NON_CONST */
 {
     LogForEachActiveSlot(recorders_, composite_slot, arg.value);
 }
 
 void CompositeRecorder::Log(const SlotHandle& composite_slot, const LogBin32 arg) noexcept
-/* KW_SUPPRESS_END:MISRA.MEMB.NON_CONST */
 {
     LogForEachActiveSlot(recorders_, composite_slot, arg.value);
 }
 
 void CompositeRecorder::Log(const SlotHandle& composite_slot, const LogBin64 arg) noexcept
-/* KW_SUPPRESS_END:MISRA.MEMB.NON_CONST */
 {
     LogForEachActiveSlot(recorders_, composite_slot, arg.value);
 }
 
 void CompositeRecorder::Log(const SlotHandle& composite_slot, const LogRawBuffer arg) noexcept
-/* KW_SUPPRESS_END:MISRA.MEMB.NON_CONST */
 {
     LogForEachActiveSlot(recorders_, composite_slot, arg);
 }
@@ -258,15 +239,13 @@ bool CompositeRecorder::IsLogEnabled(const LogLevel& log_level, const std::strin
 {
     // Return true if at least one recorder is enabled.
 
-    bool is_log_enabled = false; /* KW_SUPPRESS:MISRA.VAR.NEEDS.CONST: False Positive */
+    bool is_log_enabled = false;
 
-    /* KW_SUPPRESS_START: AUTOSAR.LAMBDA.REF_LIFETIME: Lambda is destroyed before captured references. */
     ForEachRecorder(
         recorders_,
         [&is_log_enabled, log_level, context](const auto& recorder, const SlotHandle::RecorderIdentifier) noexcept {
             is_log_enabled = is_log_enabled || recorder.IsLogEnabled(log_level, context);
         });
-    /* KW_SUPPRESS_END: AUTOSAR.LAMBDA.REF_LIFETIME */
 
     return is_log_enabled;
 }

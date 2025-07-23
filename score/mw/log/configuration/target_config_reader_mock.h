@@ -29,13 +29,7 @@ namespace detail
 class TargetConfigReaderMock final : public ITargetConfigReader
 {
   public:
-    /* KW_SUPPRESS_START:AUTOSAR.MEMB.VIRTUAL.FINAL,AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: */
-    /* Not actual for mock class; Internal GTest Framework code caused the violation; */
-    /* KW_SUPPRESS_START:MISRA.FUNC.UNUSEDPAR.UNNAMED,MISRA.MEMB.NOT_PRIVATE,MISRA.USE.EXPANSION: */
-    /* Not actual for mock class; Internal GTest Framework code caused the violation; */
     MOCK_METHOD((score::Result<Configuration>), ReadConfig, (), (const, noexcept, override));
-    /* KW_SUPPRESS_END:AUTOSAR.MEMB.VIRTUAL.FINAL,AUTOSAR.STYLE.SINGLE_STMT_PER_LINE */
-    /* KW_SUPPRESS_END:MISRA.FUNC.UNUSEDPAR.UNNAMED,MISRA.MEMB.NOT_PRIVATE,MISRA.USE.EXPANSION */
 };
 
 }  // namespace detail

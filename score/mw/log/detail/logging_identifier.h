@@ -20,9 +20,7 @@
 #include <array>
 #include <functional>
 
-/* KW_SUPPRESS_START: AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False positive. */
 namespace score
-/* KW_SUPPRESS_END: AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False positive. */
 {
 namespace mw
 {
@@ -31,7 +29,6 @@ namespace log
 namespace detail
 {
 
-/* KW_SUPPRESS_START: MISRA.VAR.HIDDEN, MISRA.MEMB.NOT_PRIVATE: False positive noexcept */
 /// \brief Contains a 4 byte identifier that can be used for ECU, application or context identifiers.
 class LoggingIdentifier
 {
@@ -75,12 +72,7 @@ class LoggingIdentifier
     // coverity[autosar_cpp14_m11_0_1_violation]
     std::array<std::string_view::value_type, kMaxLength> data_{};
 };
-/* KW_SUPPRESS_END: MISRA.VAR.HIDDEN, MISRA.MEMB.NOT_PRIVATE */
 
-/* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Design decision to use macros for STRUCT_VISITABLE */
-/* KW_SUPPRESS_START: AUTOSAR.STYLE.SINGLE_STMT_PER_LINE,MISRA.FUNC.UNUSEDPAR,MISRA.VAR.HIDDEN: */
-/* (1) False positive: Line contains a single statement. (2) No unused stuff. (3) Expected.*/
-/* KW_SUPPRESS_START: MISRA.FUNC.UNUSEDPAR.UNNAMED: False positive, parameters used by macro. */
 // NOLINTBEGIN(score-struct-usage-compliance) justified by design
 // Forward declaration for struct_visitable_impl is required for implementation
 // std::forward<T>(s) added due to CB-#10171555
@@ -92,9 +84,6 @@ class LoggingIdentifier
 STRUCT_VISITABLE(LoggingIdentifier, data_)
 
 // NOLINTEND(score-struct-usage-compliance) justified by design
-/* KW_SUPPRESS_END: MISRA.FUNC.UNUSEDPAR.UNNAMED: False positive, parameters used by macro.. */
-/* KW_SUPPRESS_END: AUTOSAR.STYLE.SINGLE_STMT_PER_LINE,MISRA.FUNC.UNUSEDPAR,MISRA.VAR.HIDDEN */
-/* KW_SUPPRESS_END:MISRA.USE.EXPANSION */
 
 }  // namespace detail
 }  // namespace log

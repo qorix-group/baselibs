@@ -31,9 +31,7 @@ namespace detail
 namespace
 {
 constexpr auto SLOG_BUFFER_DEFAULT = 0;
-/* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Design decision to use macros for severity level definitions */
 constexpr auto SLOG_VERBOSITY_DEFAULT = SLOG2_DEBUG2;
-/* KW_SUPPRESS_END:MISRA.USE.EXPANSION */
 
 std::size_t CheckTheMaxCapacity(const std::size_t capacity) noexcept
 {

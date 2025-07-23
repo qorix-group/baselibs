@@ -73,14 +73,11 @@ class CircularAllocator final
             slot_index = claimed_sequence_;
             slot_index %= buffer_.capacity();
 
-            /* KW_SUPPRESS:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE:False positive */
             if (loop_limiter > max_number_of_loops)
             {
                 return {};
             }
-            /* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: Single compare exchange operation */
         } while (!buffer_.at(slot_index).TryUse());
-        /* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: */
 
         return slot_index;
     }
@@ -122,11 +119,8 @@ class CircularAllocator final
 
     // For the beginning this is still an std::vector with standard allocator. Once we refactor the IPC to DataRouter,
     // this data type will be directly placed in SharedMemory and a custom allocator will be added.
-    std::vector<Slot<T>> buffer_; /* KW_SUPPRESS:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE:False positive */
+    std::vector<Slot<T>> buffer_;
 };
-
-/* KW_SUPPRESS_END:MISRA.VAR.HIDDEN */
-/* KW_SUPPRESS_END:MISRA.ONEDEFRULE.VAR */
 
 }  // namespace detail
 }  // namespace log

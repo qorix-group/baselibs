@@ -21,13 +21,10 @@ namespace log
 namespace detail
 {
 
-/* KW_SUPPRESS_START:MISRA.MEMB.NON_STATIC: false positive since this is an overriden function */
-/* KW_SUPPRESS_START:FUNCRET.GEN:False positive:Function returns a value. */
 score::cpp::optional<SlotHandle> EmptyRecorder::StartRecord(const std::string_view, const LogLevel) noexcept
 {
     return {};
 }
-/* KW_SUPPRESS_END:FUNCRET.GEN */
 
 void EmptyRecorder::StopRecord(const SlotHandle&) noexcept {}
 
@@ -62,7 +59,6 @@ bool EmptyRecorder::IsLogEnabled(const LogLevel&, const std::string_view) const 
 {
     return false;
 }
-/* KW_SUPPRESS_END:MISRA.MEMB.NON_STATIC */
 
 }  // namespace detail
 }  // namespace log

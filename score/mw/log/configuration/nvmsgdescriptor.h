@@ -19,9 +19,7 @@
 #include <string>
 #include <unordered_map>
 
-/* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: false positive*/
 namespace score
-/* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE */
 {
 namespace mw
 {
@@ -34,10 +32,8 @@ class NvMsgDescriptor
 {
   private:
     uint32_t id_msg_descriptor_{};
-    /* KW_SUPPRESS_START:MISRA.INIT.BRACES: False positive. Constructor calls, not Array initializations */
     score::mw::log::detail::LoggingIdentifier appid_{"NULL"};
     score::mw::log::detail::LoggingIdentifier ctxid_{"NULL"};
-    /* KW_SUPPRESS_END:MISRA.INIT.BRACES: False positive. Constructor calls, not Array initializations */
     mw::log::LogLevel logLevel_{};
 
   public:

@@ -34,9 +34,7 @@ Logger& LoggerContainer::GetLogger(const std::string_view context) noexcept
     {
         return logger.value();
     }
-    /* KW_SUPPRESS_START:UNREACH.GEN:False positive, Code is reachable verified by UTs.*/
     return InsertNewLogger(context);
-    /* KW_SUPPRESS_END:UNREACH.GEN*/
 }
 
 Logger& LoggerContainer::InsertNewLogger(const std::string_view context) noexcept

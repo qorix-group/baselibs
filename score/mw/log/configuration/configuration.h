@@ -23,9 +23,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-/* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE:False positive: Namespace declaration */
 namespace score
-/* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE */
 {
 namespace mw
 {
@@ -95,16 +93,12 @@ class Configuration final
                            const std::string_view context,
                            const bool check_for_console = false) const noexcept;
 
-    /* KW_SUPPRESS_START: MISRA.USE.EXPANSION: False positive: it is not macro. */
   private:
-    /* KW_SUPPRESS_END: MISRA.USE.EXPANSION */
-    /* KW_SUPPRESS_START:MISRA.INIT.BRACES: false positive */
     /// \brief DLT ECU ID, four bytes max.
     LoggingIdentifier ecu_id_{"ECU1"};
 
     /// \brief DLT ECU ID, four bytes max.
     LoggingIdentifier app_id_{"NONE"};
-    /* KW_SUPPRESS_END:MISRA.INIT.BRACES */
 
     /// \brief Short description of the application.
     std::string app_description_{""};

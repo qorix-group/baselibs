@@ -21,9 +21,7 @@ namespace log
 namespace detail
 {
 
-/* KW_SUPPRESS_START:MISRA.OBJ.TYPE.IDENT:False positive: Signature matches that in declaration. */
 Backend::~Backend() = default;
-/* KW_SUPPRESS_END:MISRA.OBJ.TYPE.IDENT */
 
 }  // namespace detail
 }  // namespace log

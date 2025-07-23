@@ -36,7 +36,6 @@ namespace detail
 
 namespace
 {
-/* KW_SUPPRESS_START:MISRA.VAR.MIN.VIS:Static constants in anonymous namespace are tolerated. */
 constexpr size_t kNumberOfBitsInByte = 8U;
 constexpr size_t kTwoNibblesPerByte = 2U;
 constexpr size_t kReserveSpaceForSpace = 1U;
@@ -185,13 +184,11 @@ static void PutFormattedNumber(VerbosePayload& payload, const T data) noexcept
                 FormattingFunctionReturnCast(std::snprintf(buffer.data(), GetSpanSizeCasted(buffer), format, data));
 
             const std::size_t last_index = std::min(written, GetSpanSizeCasted(buffer) - 1U);
-            /* KW_SUPPRESS_START:MISRA.PTR.ARITH: */
             // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) used on span which is an array
             // False positive: Pointer arithmetic is used on span which is an array
             // coverity[autosar_cpp14_m5_0_15_violation]
             buffer.data()[last_index] = ' ';
             // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic) used on span which is an array
-            /* KW_SUPPRESS_END:MISRA.PTR.ARITH */
             return written;
         }
         else
@@ -204,7 +201,6 @@ static void PutFormattedNumber(VerbosePayload& payload, const T data) noexcept
 template <typename T>
 using is_formatting_supported = std::is_unsigned<T>;
 
-/* KW_SUPPRESS_START: MISRA.FUNC.UNUSEDPAR.UNNAMED: Unused variables needed for correct template deduction. */
 template <typename T, typename std::enable_if_t<is_formatting_supported<T>::value == false, bool> = true>
 // PutBinaryFormattedNumber is not static storage. function is used to log different types
 // coverity[autosar_cpp14_a2_10_4_violation]
@@ -213,7 +209,6 @@ void PutBinaryFormattedNumber(VerbosePayload&, const T) noexcept
     // empty function to satisfy compiler for unsupported types
     // no actions are expected here
 }
-/* KW_SUPPRESS_END: MISRA.FUNC.UNUSEDPAR.UNNAMED: Unused variables needed for correct template deduction. */
 
 template <typename T, typename std::enable_if_t<is_formatting_supported<T>::value, bool> = true>
 // PutBinaryFormattedNumber is not static storage. function is used to log different types
@@ -230,7 +225,6 @@ void PutBinaryFormattedNumber(VerbosePayload& payload, const T data) noexcept
                 constexpr auto number_of_bits = kNumberOfBitsInByte * sizeof(T);
                 const auto max_possible = std::min(number_of_bits, buffer_space);
                 std::size_t buffer_index = 0U;
-                /* KW_SUPPRESS_START: UNREACH.GEN: False positive: Code is reachable. */
                 // LCOV_EXCL_BR_START: The loop condition is always true because buffer_index starts at 0 and
                 // max_possible is always greater than 1 under this condition if (buffer_space > 1U). And there is no
                 // way to make it false. Therefore, we can safely suppress the coverage warning for this decision.
@@ -243,7 +237,6 @@ void PutBinaryFormattedNumber(VerbosePayload& payload, const T data) noexcept
                     // static_cast<std::int32_t> is needed to perform addition '0' char value to bool value from
                     // std::bitset static_cast<std::string::value_type> because this is the type of the content of our
                     // buffer
-                    /* KW_SUPPRESS_START: MISRA.PTR.ARITH: */
                     // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) used on span which is an array
                     // False positive: Pointer arithmetic is used on span which is an array
                     // bit [] access can only have 0 or 1 return value and even if offset by value of '0'
@@ -263,19 +256,15 @@ void PutBinaryFormattedNumber(VerbosePayload& payload, const T data) noexcept
                         // coverity[autosar_cpp14_m5_0_6_violation]
                         static_cast<std::int32_t>('0') + bits[bits.size() - 1U - buffer_index]);
                     // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic) used on span which is an array
-                    /* KW_SUPPRESS_END: MISRA.PTR.ARITH */
                     buffer_index++;
                 }
-                /* KW_SUPPRESS_END: UNREACH.GEN */
 
                 const std::size_t last_index = buffer_space - 1U;
-                /* KW_SUPPRESS_START:MISRA.PTR.ARITH: */
                 // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) used on span which is an array
                 // False positive: Pointer arithmetic is used on span which is an array
                 // coverity[autosar_cpp14_m5_0_15_violation]
                 buffer.data()[last_index] = ' ';
                 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic) used on span which is an array
-                /* KW_SUPPRESS_END:MISRA.PTR.ARITH */
                 return buffer_index + kReserveSpaceForSpace;
             }
             else
@@ -286,7 +275,6 @@ void PutBinaryFormattedNumber(VerbosePayload& payload, const T data) noexcept
         characters_used);
 }
 
-/* KW_SUPPRESS_START: MISRA.FUNC.UNUSEDPAR.UNNAMED: Unused variables needed for correct template deduction. */
 template <typename T, typename std::enable_if_t<is_formatting_supported<T>::value == false, bool> = true>
 // PutHexFormattedNumber is not static storage. function is used to split supported/unsupported types
 // coverity[autosar_cpp14_a2_10_4_violation]
@@ -295,7 +283,6 @@ void PutHexFormattedNumber(VerbosePayload&, const T) noexcept
     // empty function to satisfy compiler for unsupported types
     // no actions are expected here
 }
-/* KW_SUPPRESS_END: MISRA.FUNC.UNUSEDPAR.UNNAMED: Unused variables needed for correct template deduction. */
 
 template <typename T, typename std::enable_if_t<is_formatting_supported<T>::value, bool> = true>
 // PutHexFormattedNumber is not static storage. function is used to split supported/unsupported types
@@ -305,7 +292,6 @@ void PutHexFormattedNumber(VerbosePayload& payload, const T data) noexcept
     PutFormattedNumber<IntegerRepresentation::kHex>(payload, data);
 }
 
-/* KW_SUPPRESS_START: MISRA.FUNC.UNUSEDPAR.UNNAMED: Unused variables needed for correct template deduction. */
 template <typename T, typename std::enable_if_t<is_formatting_supported<T>::value == false, bool> = true>
 // PutOctalFormattedNumber is not static storage. function is used to split supported/unsupported types
 // coverity[autosar_cpp14_a2_10_4_violation]
@@ -314,7 +300,6 @@ void PutOctalFormattedNumber(VerbosePayload&, const T) noexcept
     // empty function to satisfy compiler for unsupported types
     // no actions are expected here
 }
-/* KW_SUPPRESS_END: MISRA.FUNC.UNUSEDPAR.UNNAMED: Unused variables needed for correct template deduction. */
 
 template <typename T, typename std::enable_if_t<is_formatting_supported<T>::value, bool> = true>
 // PutOctalFormattedNumber is not static storage. function is used to split supported/unsupported types
@@ -534,13 +519,11 @@ void score::mw::log::detail::TextFormat::Log(VerbosePayload& payload, const std:
                     // so calculating last_index is safe
                     // coverity[autosar_cpp14_a4_7_1_violation]
                     const std::size_t last_index = GetSpanSizeCasted(buffer) - 1U;
-                    /* KW_SUPPRESS_START:MISRA.PTR.ARITH: */
                     // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) used on span which is an array
                     // False positive: Pointer arithmetic is used on span which is an array
                     // coverity[autosar_cpp14_m5_0_15_violation]
                     buffer.data()[last_index] = ' ';
                     // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic) used on span which is an array
-                    /* KW_SUPPRESS_END:MISRA.PTR.ARITH */
                     return GetSpanSizeCasted(buffer);
                 }
                 return 0LU;  // LCOV_EXCL_LINE: Cannot be covered in unit tests as if (length > 0) is uncontrollable.

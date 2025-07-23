@@ -26,7 +26,6 @@ namespace log
 namespace detail
 {
 
-/* KW_SUPPRESS_START: MISRA.VAR.HIDDEN, MISRA.MEMB.NOT_PRIVATE: False positive noexcept */
 class LogRecord
 {
   public:
@@ -50,7 +49,6 @@ class LogRecord
     // Caution: contains a reference to logEntry_ internals.
     detail::VerbosePayload verbosePayload_;
 };
-/* KW_SUPPRESS_END: MISRA.VAR.HIDDEN, MISRA.MEMB.NOT_PRIVATE */
 
 }  // namespace detail
 }  // namespace log

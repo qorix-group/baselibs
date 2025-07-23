@@ -26,9 +26,6 @@ namespace mw
 namespace log
 {
 
-/* KW_SUPPRESS_START:MISRA.VAR.HIDDEN */
-/* False positive 'noexcept' is a keyword and not an identifier which could be hidden */
-/* KW_SUPPRESS_START:MISRA.MEMB.NOT_PRIVATE: False positive No members*/
 class IRecorderFactory
 {
   public:
@@ -57,8 +54,6 @@ class IRecorderFactory
 
     virtual ~IRecorderFactory() = default;
 };
-/* KW_SUPPRESS_END:MISRA.MEMB.NOT_PRIVATE:*/
-/* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:*/
 
 namespace detail
 {

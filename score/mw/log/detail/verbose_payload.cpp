@@ -114,19 +114,13 @@ void VerbosePayload::Put(const Byte* const data, const std::size_t length) noexc
 
     // data == nullptr is only problematic if length != 0
     const auto isPointerValid = data != nullptr;
-    /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Macro for assertion is tolerated by decision. */
-    /* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False positive: Line contains a single statement.*/
     if (isPointerValid == false)
     {
         return;
     }
-    /* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE */
-    /* KW_SUPPRESS_END:MISRA.USE.EXPANSION */
 
     std::ignore = this->Put(
-        /* KW_SUPPRESS_START:MISRA.VAR.NEEDS.CONST:False positive: dst_data is modified by std::copy. */
         [data](score::cpp::span<Byte> dst_data) {
-            /* KW_SUPPRESS_END:MISRA.VAR.NEEDS.CONST */
             if (dst_data.size() > static_cast<score::cpp::span<Byte>::size_type>(0))
             {
                 const score::cpp::span<const Byte> data_span{data, dst_data.size()};
@@ -137,10 +131,7 @@ void VerbosePayload::Put(const Byte* const data, const std::size_t length) noexc
         length);
 }
 
-/* KW_SUPPRESS_START:MISRA.MEMB.NON_CONST: */
-/* False positive:Function passes non-const reference to member variable to non-const object. */
 std::size_t VerbosePayload::Put(const ReserveCallback callback, const std::size_t reserve_size) noexcept
-/* KW_SUPPRESS_END:MISRA.MEMB.NON_CONST */
 {
     ReservedData reserved_data(buffer_.get(), reserve_size);
     const auto data = reserved_data.GetData();
@@ -159,14 +150,11 @@ score::cpp::span<const std::uint8_t> VerbosePayload::GetSpan() const noexcept
 
     const auto span_size = static_cast<size_type>(std::min(static_cast<std::size_t>(max_size), buffer_.get().size()));
 
-    /* KW_SUPPRESS_START:AUTOSAR.CAST.REINTERPRET: Handling raw data in span */
-    //  reinterpret_cast due to handling raw data:
     // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast) justification provided
     // reinterpret_cast due to handling raw data
     // coverity[autosar_cpp14_a5_2_4_violation]
     return {reinterpret_cast<const std::uint8_t*>(buffer_.get().data()), span_size};
     // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast) justification provided
-    /* KW_SUPPRESS_END:AUTOSAR.CAST.REINTERPRET */
 }
 
 void VerbosePayload::Reset() const noexcept

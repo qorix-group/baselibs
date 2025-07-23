@@ -31,13 +31,9 @@ namespace detail
 namespace
 {
 
-/* KW_SUPPRESS_START: AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False positive. */
 constexpr std::size_t kMaxHeaderSize = 512UL;
-/* KW_SUPPRESS_END: AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False positive. */
 
-/* KW_SUPPRESS_START: MISRA.FUNC.UNUSEDPAR: False positive. All parameters used. */
 void LogLevelToString(VerbosePayload& payload, const LogLevel level) noexcept
-/* KW_SUPPRESS_END: MISRA.FUNC.UNUSEDPAR: False positive. All parameters used. */
 {
     switch (level)
     {
@@ -77,7 +73,6 @@ inline std::uint32_t TimeStamp() noexcept
 
 }  // namespace
 
-/* KW_SUPPRESS_START: MISRA.LINKAGE.EXTERN: False positive. These are not declarations, these are definitions. */
 TextMessageBuilder::TextMessageBuilder(const std::string_view ecu_id) noexcept
     : IMessageBuilder(),
       header_payload_(kMaxHeaderSize, header_memory_),
@@ -86,9 +81,7 @@ TextMessageBuilder::TextMessageBuilder(const std::string_view ecu_id) noexcept
 {
 }
 
-/* KW_SUPPRESS_START: MISRA.MEMB.NON_STATIC: False positive. Method uses class fields. */
 void TextMessageBuilder::SetNextMessage(LogRecord& log_record) noexcept
-/* KW_SUPPRESS_END: MISRA.MEMB.NON_STATIC: False positive. Method uses class fields. */
 {
     log_record_ = log_record;
 
@@ -106,24 +99,16 @@ void TextMessageBuilder::SetNextMessage(LogRecord& log_record) noexcept
     parsing_phase_ = ParsingPhase::kHeader;
 }
 
-/* KW_SUPPRESS_START: AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False positive. */
-/* KW_SUPPRESS_START: MISRA.MEMB.NON_STATIC: False positive. Method uses class fields. */
 score::cpp::optional<score::cpp::span<const std::uint8_t>> TextMessageBuilder::GetNextSpan() noexcept
-/* KW_SUPPRESS_END: MISRA.MEMB.NON_STATIC: False positive. Method uses class fields. */
-/* KW_SUPPRESS_END: AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False positive. */
 {
-    /* KW_SUPPRESS_START: MISRA.LOGIC.NOT_BOOL: False positive. It returns boolean. */
     if (!log_record_.has_value())
-    /* KW_SUPPRESS_END: MISRA.LOGIC.NOT_BOOL: False positive. It returns boolean. */
     {
         return {};
     }
 
     score::cpp::optional<score::cpp::span<const std::uint8_t>> return_result = {};
 
-    /* KW_SUPPRESS_START:MISRA.VAR.MIN.VIS: False positive. Variable used across multiple switch cases. */
     detail::VerbosePayload& verbose_payload = log_record_.value().get().getVerbosePayload();
-    /* KW_SUPPRESS_END:MISRA.VAR.MIN.VIS */
     switch (parsing_phase_)  // LCOV_EXCL_BR_LINE: exclude the "default" branch.
     {
         case ParsingPhase::kHeader:
@@ -151,7 +136,6 @@ score::cpp::optional<score::cpp::span<const std::uint8_t>> TextMessageBuilder::G
     }
     return return_result;
 }
-/* KW_SUPPRESS_END: MISRA.LINKAGE.EXTERN: False positive. These are not declarations, these are definitions. */
 
 }  // namespace detail
 }  // namespace log

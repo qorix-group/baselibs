@@ -87,12 +87,10 @@ bool SlotHandle::IsRecorderActive(const RecorderIdentifier recorder) const noexc
 
 bool operator==(const SlotHandle& l_value, const SlotHandle& r_value) noexcept
 {
-    /* KW_SUPPRESS_START:MISRA.LOGIC.NOT_BOOL: All operands evaluate to boolean expressions */
     return (((l_value.selected_recorder_ == r_value.selected_recorder_) &&
              (std::equal(l_value.recorder_to_slot_.begin(),
                          l_value.recorder_to_slot_.end(),
                          r_value.recorder_to_slot_.begin()))) == true);
-    /* KW_SUPPRESS_END:MISRA.LOGIC.NOT_BOOL*/
 }
 
 bool operator!=(const SlotHandle& l_value, const SlotHandle& r_value) noexcept

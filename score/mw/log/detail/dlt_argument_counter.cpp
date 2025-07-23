@@ -24,12 +24,10 @@ namespace log
 namespace detail
 {
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN:False positive: Functions are declared in header file. */
 DltArgumentCounter::DltArgumentCounter(std::uint8_t& counter) noexcept : counter_(counter) {}
 
 AddArgumentResult DltArgumentCounter::TryAddArgument(add_argument_callback callback) noexcept
 {
-    /* KW_SUPPRESS_START:MISRA.VAR.NEEDS.CONST:False positive: constexpr used instead of const. */
     constexpr uint8_t MAX_COUNTER = std::numeric_limits<std::remove_reference<decltype(counter_)>::type>::max();
     if (counter_ == MAX_COUNTER)
     {

@@ -19,9 +19,7 @@
 
 #include <string_view>
 
-/* KW_SUPPRESS_START: AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False positive. */
 namespace score
-/* KW_SUPPRESS_END: AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False positive. */
 {
 namespace mw
 {

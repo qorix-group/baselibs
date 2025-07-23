@@ -20,7 +20,6 @@ namespace custom
 namespace type
 {
 
-/* KW_SUPPRESS_START:AUTOSAR.OP.BINARY.RETVAL: False positive: this is correct signature of operator<<. */
 score::mw::log::LogStream& operator<<(score::mw::log::LogStream& log_stream,
                                     const my::custom::type::MyCustomType& my_custom_type) noexcept
 {
@@ -28,7 +27,6 @@ score::mw::log::LogStream& operator<<(score::mw::log::LogStream& log_stream,
                << " , string_field : " << my_custom_type.string_field;
     return log_stream;
 }
-/* KW_SUPPRESS_END:AUTOSAR.OP.BINARY.RETVAL: False positive: this is correct signature of operator<<. */
 
 }  // namespace type
 }  // namespace custom

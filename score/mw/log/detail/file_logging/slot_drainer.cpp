@@ -23,7 +23,6 @@ namespace log
 namespace detail
 {
 
-/* KW_SUPPRESS_START:MISRA.OBJ.TYPE.IDENT: False Positive. Declaration has default values. */
 SlotDrainer::SlotDrainer(std::unique_ptr<IMessageBuilder> message_builder,
                          std::shared_ptr<CircularAllocator<LogRecord>> allocator,
                          const std::int32_t file_descriptor,
@@ -35,7 +34,6 @@ SlotDrainer::SlotDrainer(std::unique_ptr<IMessageBuilder> message_builder,
       limit_slots_in_one_cycle_(limit_slots_in_one_cycle)
 {
 }
-/* KW_SUPPRESS_END:MISRA.OBJ.TYPE.IDENT */
 
 bool SlotDrainer::MoreSpansAvailableAndLoaded() noexcept
 {

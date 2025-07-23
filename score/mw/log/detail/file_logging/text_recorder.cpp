@@ -34,24 +34,20 @@ inline void GenericLog(const SlotHandle& slot_handle, detail::Backend& backend, 
     auto& log_record = backend.GetLogRecord(slot_handle);
 
     detail::DltArgumentCounter counter{log_record.getLogEntry().num_of_args};
-    std::ignore = counter.TryAddArgument(
-        /* KW_SUPPRESS_START: AUTOSAR.LAMBDA.REF_LIFETIME: Lambda is destroyed before captured references. */
-        [data, &log_record]() noexcept {
-            if (log_record.getVerbosePayload()
-                    .RemainingCapacity() >  // LCOV_EXCL_BR_LINE: lcov complains about lots of uncovered branches, it is
-                                            // not convenient/related to this condition.
-                0U)
-            {
-                detail::TextFormat::Log(log_record.getVerbosePayload(), data);
-                return detail::AddArgumentResult::Added;
-            }
-            else
-            {
-                return detail::AddArgumentResult::NotAdded;
-            }
+    std::ignore = counter.TryAddArgument([data, &log_record]() noexcept {
+        if (log_record.getVerbosePayload()
+                .RemainingCapacity() >  // LCOV_EXCL_BR_LINE: lcov complains about lots of uncovered branches, it is
+                                        // not convenient/related to this condition.
+            0U)
+        {
+            detail::TextFormat::Log(log_record.getVerbosePayload(), data);
+            return detail::AddArgumentResult::Added;
         }
-        /* KW_SUPPRESS_END: AUTOSAR.LAMBDA.REF_LIFETIME */
-    );
+        else
+        {
+            return detail::AddArgumentResult::NotAdded;
+        }
+    });
 }
 
 inline void SlogGenericLog(const SlotHandle& slot_handle, detail::Backend& backend, const LogSlog2Message data) noexcept
@@ -72,11 +68,7 @@ inline void SlogGenericLog(const SlotHandle& slot_handle, detail::Backend& backe
 }  //  anonymous namespace
 
 TextRecorder::TextRecorder(const detail::Configuration& config,
-                           /* KW_SUPPRESS_START: MISRA.VAR.NEEDS.CONST: unique_ptr cannot be marked as const, because it
-                              is moved a few lines below. */
                            std::unique_ptr<detail::Backend> backend,
-                           /* KW_SUPPRESS_END: MISRA.VAR.NEEDS.CONST: unique_ptr cannot be marked as const, because it
-                              is moved a few lines below. */
                            const bool check_log_level_for_console) noexcept
     : Recorder(),
       backend_(std::move(backend)),
@@ -94,9 +86,7 @@ score::cpp::optional<SlotHandle> TextRecorder::StartRecord(const std::string_vie
     }
 
     auto slot_handle = backend_->ReserveSlot();
-    /* KW_SUPPRESS_START: MISRA.STMT.COND.NOT_BOOLEAN: It is correct boolean statement. */
     if (slot_handle.has_value())
-    /* KW_SUPPRESS_END: MISRA.STMT.COND.NOT_BOOLEAN: It is correct boolean statement. */
     {
         auto& payload = backend_->GetLogRecord(slot_handle.value());
         auto& log_entry = payload.getLogEntry();

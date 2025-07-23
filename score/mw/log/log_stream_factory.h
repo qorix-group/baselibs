@@ -39,11 +39,7 @@ class LogStreamFactory
     /// \param log_level The LogLevel the created stream shall use
     /// \param context_id The context id the created stream shall use
     /// \return A newly created LogStream which can be used to LogData
-    /* KW_SUPPRESS_START:MISRA.MEMB.NOT_PRIVATE: false positive, no class members */
-    /* KW_SUPPRESS_START:MISRA.OBJ.TYPE.IDENT: False positive */
     static LogStream GetStream(const LogLevel, const std::string_view context_id = "DFLT") noexcept;
-    /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN*/
-    /* KW_SUPPRESS_END:MISRA.MEMB.NOT_PRIVATE */
 };
 
 }  // namespace detail

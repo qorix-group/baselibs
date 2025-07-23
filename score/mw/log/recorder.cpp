@@ -19,9 +19,7 @@ namespace mw
 namespace log
 {
 
-/* KW_SUPPRESS_START:MISRA.OBJ.TYPE.IDENT:False positive: Signature matches that in declaration. */
 Recorder::~Recorder() = default;
-/* KW_SUPPRESS_END:MISRA.OBJ.TYPE.IDENT */
 
 }  // namespace log
 }  // namespace mw

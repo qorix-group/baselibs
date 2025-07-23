@@ -108,16 +108,12 @@ class TypeInfo
     {
         const auto is_type_string_bit_set = score::platform::CheckBit(underlying_type_, TYPE_STRING_BIT);
         const auto is_trace_info_bit_set = score::platform::CheckBit(underlying_type_, TRACE_INFO_BIT);
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Design decision to use macros for assertions */
-        /* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False positive: Line contains a single statement.*/
         //  LCOV_EXCL_START : can't achieve the other conditions because can't control the "underlying_type_" value.
         if ((is_type_string_bit_set || is_trace_info_bit_set) == false)
         {
             return {};
             //  LCOV_EXCL_STOP
         }
-        /* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE */
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION */
 
         static_assert(std::is_same<std::underlying_type<StringEncoding>::type, std::uint32_t>::value,
                       "Mismatching underlying type. Cast not valid.");
@@ -130,16 +126,12 @@ class TypeInfo
     {
         const auto is_type_unsigned_bit_set = score::platform::CheckBit(underlying_type_, TYPE_UNSIGNED_BIT);
         const auto is_type_signed_bit_set = score::platform::CheckBit(underlying_type_, TYPE_SIGNED_BIT);
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Design decision to use macros for assertions */
-        /* KW_SUPPRESS_START:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False positive: Line contains a single statement.*/
         //  LCOV_EXCL_START : can't achieve the other conditions because can't control the "underlying_type_" value.
         if ((is_type_unsigned_bit_set || is_type_signed_bit_set) == false)
         {
             return {};
             //  LCOV_EXCL_STOP
         }
-        /* KW_SUPPRESS_END:AUTOSAR.STYLE.SINGLE_STMT_PER_LINE */
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION */
 
         // Make sure the enum values match the values from the standard requirement PRS_Dlt_00783.
         static_assert(static_cast<std::uint8_t>(IntegerRepresentation::kBase10) == 0U,
@@ -162,7 +154,6 @@ class TypeInfo
     // \Requirement PRS_Dlt_00135
     std::uint32_t underlying_type_{};
 
-    /* KW_SUPPRESS_START:MISRA.CONV.INT.SIGN:False positive: Auto variable will be unsigned. */
     // \Requirement PRS_Dlt_00625
     // constexpr static auto VARIABLE_INFO_BIT = 11U; not supported in our implementation
     // constexpr static auto FIXED_POINT_BIT = 12U; not supported in our implementation
@@ -170,7 +161,6 @@ class TypeInfo
     constexpr static auto STRING_ENCODING_START = 15U;
     // \Requirement PRS_Dlt_00782
     constexpr static auto INTEGER_ENCODING_START = 15U;
-    /* KW_SUPPRESS_END:MISRA.CONV.INT.SIGN */
 };
 
 template <typename T>
@@ -253,9 +243,7 @@ ByteView ToByteView(const T& t)
     {
         // Yes, this is bad, but its what we want. We want to store the current plain memory
         // byte by byte in our buffer. Thus, this reinterpret cast is the only correct way to-do this.
-        /* KW_SUPPRESS_START:AUTOSAR.CAST.REINTERPRET:Needed to store current plain memory in logs */
         // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast) justified above
-        // reinterpret_cast needed to store current plain memory in logs
         // Deviation from Rule M4-5-1:
         // - Expressions with type bool shall not be used as operands to built-in operators other than
         // - the assignment operator =, the logical operators &&, ||, !, the equality operators == and !=, the unary &
@@ -267,7 +255,6 @@ ByteView ToByteView(const T& t)
         // coverity[autosar_cpp14_a5_2_4_violation]
         return ByteView{reinterpret_cast<const score::mw::log::detail::Byte*>(&t), sizeof(t)};
         // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast) justified above
-        /* KW_SUPPRESS_END:AUTOSAR.CAST.REINTERPRET */
     }
 }
 
@@ -276,21 +263,17 @@ void DoFor(F function, Args... args)
 {
     (function(ToByteView(args)), ...);
 }
-/* KW_SUPPRESS_END: MISRA.FUNC.UNUSEDPAR.UNNAMED: Unused variables needed for correct template deduction. */
 
 template <typename... T>
 score::mw::log::detail::AddArgumentResult Store(score::mw::log::detail::VerbosePayload& payload, T... data_for_payload)
 {
     if (WillMessageFit(payload, data_for_payload...) == true)
     {
-        /* KW_SUPPRESS_START:AUTOSAR.LAMBDA.REF_LIFETIME: */
-        /* The lambda will be executed within this stack. Thus, all references are still valid */
         DoFor(
             [&payload](const ByteView byte_view) {
                 payload.Put(byte_view.data(), static_cast<std::size_t>(byte_view.size()));
             },
             data_for_payload...);
-        /* KW_SUPPRESS_END:AUTOSAR.LAMBDA.REF_LIFETIME */
         return score::mw::log::detail::AddArgumentResult::Added;
     }
     return score::mw::log::detail::AddArgumentResult::NotAdded;
@@ -351,7 +334,6 @@ namespace log
 namespace detail
 {
 
-/* KW_SUPPRESS_START:MISRA.MEMB.NON_STATIC:False positive: Functions are already declared as static. */
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload, const bool data) noexcept
 {
     // \Requirement PRS_Dlt_00139
@@ -364,152 +346,118 @@ AddArgumentResult DLTFormat::Log(VerbosePayload& payload, const bool data) noexc
     }
 
     // \Requirement PRS_Dlt_00422
-    /* KW_SUPPRESS_START:MISRA.LOGIC.OPERATOR.NOT_BOOL: False positive: No non-logical operator used. */
     static_assert((sizeof(data) == 1UL) == true, "Bool is not of size one Byte");
-    /* KW_SUPPRESS_END:MISRA.LOGIC.OPERATOR.NOT_BOOL */
 
     // \Requirement PRS_Dlt_00369, PRS_Dlt_00423
     return Store(payload, type_info, data);
 }
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
+
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload,
                                  const std::uint8_t data,
                                  const IntegerRepresentation repr) noexcept
 {
     return LogData(payload, data, repr, TypeInfo::TYPE_UNSIGNED_BIT, TypeLength::k8Bit);
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN: */
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload,
                                  const std::uint16_t data,
                                  const IntegerRepresentation repr) noexcept
 {
     return LogData(payload, data, repr, TypeInfo::TYPE_UNSIGNED_BIT, TypeLength::k16Bit);
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN: */
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload,
                                  const std::uint32_t data,
                                  const IntegerRepresentation repr) noexcept
 {
     return LogData(payload, data, repr, TypeInfo::TYPE_UNSIGNED_BIT, TypeLength::k32Bit);
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN: */
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload,
                                  const std::uint64_t data,
                                  const IntegerRepresentation repr) noexcept
 {
     return LogData(payload, data, repr, TypeInfo::TYPE_UNSIGNED_BIT, TypeLength::k64Bit);
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN: */
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload,
                                  const std::int8_t data,
                                  const IntegerRepresentation repr) noexcept
 {
     return LogData(payload, data, repr, TypeInfo::TYPE_SIGNED_BIT, TypeLength::k8Bit);
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN: */
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload,
                                  const std::int16_t data,
                                  const IntegerRepresentation repr) noexcept
 {
     return LogData(payload, data, repr, TypeInfo::TYPE_SIGNED_BIT, TypeLength::k16Bit);
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN: */
-
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload,
                                  const std::int32_t data,
                                  const IntegerRepresentation repr) noexcept
 {
     return LogData(payload, data, repr, TypeInfo::TYPE_SIGNED_BIT, TypeLength::k32Bit);
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN: */
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload,
                                  const std::int64_t data,
                                  const IntegerRepresentation repr) noexcept
 {
     return LogData(payload, data, repr, TypeInfo::TYPE_SIGNED_BIT, TypeLength::k64Bit);
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN: */
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload, const LogHex8 data, const IntegerRepresentation repr) noexcept
 {
     return LogData(payload, data, repr, TypeInfo::TYPE_UNSIGNED_BIT, TypeLength::k8Bit);
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN: */
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload,
                                  const LogHex16 data,
                                  const IntegerRepresentation repr) noexcept
 {
     return LogData(payload, data, repr, TypeInfo::TYPE_UNSIGNED_BIT, TypeLength::k16Bit);
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN: */
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload,
                                  const LogHex32 data,
                                  const IntegerRepresentation repr) noexcept
 {
     return LogData(payload, data, repr, TypeInfo::TYPE_UNSIGNED_BIT, TypeLength::k32Bit);
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN: */
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload,
                                  const LogHex64 data,
                                  const IntegerRepresentation repr) noexcept
 {
     return LogData(payload, data, repr, TypeInfo::TYPE_UNSIGNED_BIT, TypeLength::k64Bit);
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN: */
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload, const LogBin8 data, const IntegerRepresentation repr) noexcept
 {
     return LogData(payload, data, repr, TypeInfo::TYPE_UNSIGNED_BIT, TypeLength::k8Bit);
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN: */
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload,
                                  const LogBin16 data,
                                  const IntegerRepresentation repr) noexcept
 {
     return LogData(payload, data, repr, TypeInfo::TYPE_UNSIGNED_BIT, TypeLength::k16Bit);
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN: */
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload,
                                  const LogBin32 data,
                                  const IntegerRepresentation repr) noexcept
 {
     return LogData(payload, data, repr, TypeInfo::TYPE_UNSIGNED_BIT, TypeLength::k32Bit);
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN: */
 
-/* KW_SUPPRESS_START:MISRA.LINKAGE.EXTERN: false positive since this a definition and not a declaration */
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload,
                                  const LogBin64 data,
                                  const IntegerRepresentation repr) noexcept
 {
     return LogData(payload, data, repr, TypeInfo::TYPE_UNSIGNED_BIT, TypeLength::k64Bit);
 }
-/* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN: */
 
 AddArgumentResult DLTFormat::Log(VerbosePayload& payload, const float data) noexcept
 {
@@ -625,7 +573,6 @@ AddArgumentResult DLTFormat::Log(VerbosePayload& payload, const LogRawBuffer dat
 
     return Store(payload, type_info, length_cropped, data_cropped);
 }
-/* KW_SUPPRESS_END:MISRA.MEMB.NON_STATIC */
 
 }  // namespace detail
 }  // namespace log

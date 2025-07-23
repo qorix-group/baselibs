@@ -31,11 +31,7 @@ std::unique_ptr<Recorder> FileRecorderFactory::CreateConcreteLogRecorder(const C
     {
         return std::make_unique<EmptyRecorder>();
     }
-    /* KW_SUPPRESS_START: MISRA.LOGIC.OPERATOR.NOT_BOOL: False positive: No booleans here at all. */
-    /* KW_SUPPRESS_START: MISRA.COMMA: False positive: Comma used for constructor arguments. */
     return std::make_unique<FileRecorder>(config, std::move(backend));
-    /* KW_SUPPRESS_END: MISRA.COMMA: False positive: Comma used for constructor arguments. */
-    /* KW_SUPPRESS_END: MISRA.LOGIC.OPERATOR.NOT_BOOL: False positive: No booleans here at all. */
 }
 
 std::unique_ptr<Backend> FileRecorderFactory::CreateFileLoggingBackend(
@@ -60,23 +56,19 @@ std::unique_ptr<Backend> FileRecorderFactory::CreateFileLoggingBackend(
     // coverity[autosar_cpp14_a0_1_1_violation]
     std::int32_t descriptor{};
 
-    if (descriptor_result.has_value()) /* KW_SUPPRESS:MISRA.STMT.COND.NOT_BOOLEAN: False positive */
+    if (descriptor_result.has_value())
     {
         descriptor = descriptor_result.value();
     }
     else
     {
-        /* KW_SUPPRESS_START: MISRA.LINKAGE.EXTERN: False positive: It's not declaration. */
         ReportInitializationError(Error::kLogFileCreationFailed, descriptor_result.error().ToString());
-        /* KW_SUPPRESS_END: MISRA.LINKAGE.EXTERN: False positive: It's not declaration. */
         return nullptr;
     }
 
-    /* KW_SUPPRESS_START: MISRA.LINKAGE.EXTERN: False positive: It's local variable. */
     auto message_builder = std::make_unique<DltMessageBuilder>(config.GetEcuId());
     auto allocator = std::make_unique<CircularAllocator<LogRecord>>(config.GetNumberOfSlots(),
                                                                     LogRecord{config.GetSlotSizeInBytes()});
-    /* KW_SUPPRESS_END: MISRA.LINKAGE.EXTERN: False positive: It's local variable. */
 
     return std::make_unique<FileOutputBackend>(std::move(message_builder),
                                                descriptor,
