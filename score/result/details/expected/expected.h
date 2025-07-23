@@ -361,7 +361,11 @@ class SPP_EXPECTED_NODISCARD expected : impl::base_expected
     // coverity[autosar_cpp14_a13_3_1_violation]
     constexpr expected& operator=(const unexpected<G>& other)
     {
-        std::ignore = storage_.template emplace<1>(other.error());
+        // Suppress "AUTOSAR C++14 A0-1-2" rule violatoin. The rule states "The value returned by a function having a
+        // non-void return type that is not an overloaded operator shall be used." We are not interested in the return
+        // and hence suppressed.
+        // coverity[autosar_cpp14_a0_1_2_violation]
+        storage_.template emplace<1>(other.error());
         return *this;
     }
 

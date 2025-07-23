@@ -85,7 +85,7 @@ auto expected_value_to_score_future_cpp_optional_or_else(const expected<T, E>& e
     }
     else
     {
-        std::invoke(error_handling, expected.error());
+        std::invoke(std::forward<F>(error_handling), expected.error());
         return score::cpp::nullopt;
     }
 }
@@ -99,15 +99,12 @@ auto expected_value_to_score_future_cpp_optional_or_else(expected<T, E>&& expect
     }
     else
     {
-        std::invoke(error_handling, std::move(expected).error());
+        std::invoke(std::forward<F>(error_handling), std::move(expected).error());
         return score::cpp::nullopt;
     }
 }
 
-template <typename T,
-          typename E,
-          typename F,
-          typename = std::enable_if_t<std::is_invocable_v<std::decay_t<F>, const E&>>>
+template <typename T, typename E, typename F, typename = std::enable_if_t<std::is_invocable_v<F, const E&>>>
 auto expected_value_to_optional_or_else(const expected<T, E>& expected, F&& error_handling) -> std::optional<T>
 {
     if (expected.has_value())
@@ -116,7 +113,7 @@ auto expected_value_to_optional_or_else(const expected<T, E>& expected, F&& erro
     }
     else
     {
-        std::invoke(error_handling, expected.error());
+        std::invoke(std::forward<F>(error_handling), expected.error());
         return std::nullopt;
     }
 }
@@ -130,7 +127,7 @@ auto expected_value_to_optional_or_else(expected<T, E>&& expected, F&& error_han
     }
     else
     {
-        std::invoke(error_handling, std::move(expected).error());
+        std::invoke(std::forward<F>(error_handling), std::move(expected).error());
         return std::nullopt;
     }
 }
