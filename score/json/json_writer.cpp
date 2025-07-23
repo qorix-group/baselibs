@@ -41,10 +41,11 @@ score::ResultBlank ToFileInternal(const T& json_data,
 template <typename T>
 score::ResultBlank ToFileInternalAtomic(const T& json_data,
                                       const std::string_view& file_path,
-                                      score::filesystem::IFileFactory& file_factory)
+                                      score::filesystem::IFileFactory& file_factory,
+                                      const score::filesystem::AtomicUpdateOwnershipFlags atomic_ownership)
 
 {
-    return file_factory.AtomicUpdate(std::string{file_path}, std::ios::out | std::ios::trunc)
+    return file_factory.AtomicUpdate(std::string{file_path}, std::ios::out | std::ios::trunc, atomic_ownership)
         .transform_error([](auto err) noexcept {
             return MakeError(score::json::Error::kInvalidFilePath, err.UserMessage());
         })
@@ -71,14 +72,19 @@ score::Result<std::string> ToBufferInternal(const T& json_data)
 
 }  // namespace
 
-score::json::JsonWriter::JsonWriter(FileSyncMode file_sync_mode) noexcept : file_sync_mode_{file_sync_mode} {}
+score::json::JsonWriter::JsonWriter(FileSyncMode file_sync_mode,
+                                  score::filesystem::AtomicUpdateOwnershipFlags ownership) noexcept
+    : file_sync_mode_{file_sync_mode}, atomic_ownership_{ownership}
+{
+}
 
 score::ResultBlank score::json::JsonWriter::ToFile(const score::json::Object& json_data,
                                                const score::cpp::string_view& file_path,
                                                std::shared_ptr<score::filesystem::IFileFactory> file_factory)
 {
     return (file_sync_mode_ == FileSyncMode::kSynced)
-               ? ToFileInternalAtomic(json_data, std::string_view{file_path.begin(), file_path.size()}, *file_factory)
+               ? ToFileInternalAtomic(
+                     json_data, std::string_view{file_path.begin(), file_path.size()}, *file_factory, atomic_ownership_)
                : ToFileInternal(json_data, file_path, *file_factory);
 }
 
@@ -87,7 +93,8 @@ score::ResultBlank score::json::JsonWriter::ToFile(const score::json::List& json
                                                std::shared_ptr<score::filesystem::IFileFactory> file_factory)
 {
     return (file_sync_mode_ == FileSyncMode::kSynced)
-               ? ToFileInternalAtomic(json_data, std::string_view{file_path.begin(), file_path.size()}, *file_factory)
+               ? ToFileInternalAtomic(
+                     json_data, std::string_view{file_path.begin(), file_path.size()}, *file_factory, atomic_ownership_)
                : ToFileInternal(json_data, file_path, *file_factory);
 }
 
