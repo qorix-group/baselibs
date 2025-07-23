@@ -18,6 +18,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stdlib.h>
+#include <string>
 #include <thread>
 using namespace score::memory::shared;
 using namespace score::analysis::tracing;
@@ -206,6 +207,42 @@ TEST_F(SharedListFixture, Iterators)
     for (auto it = list.begin(); it != list.end(); ++it, ++index)
     {
         EXPECT_EQ(*it, expected[index]);
+    }
+}
+
+TEST_F(SharedListFixture, ArrowOperatorAccessesMember)
+{
+    EXPECT_CALL(*flexible_allocator_mock_, Allocate(_, _))
+        .WillRepeatedly([](const std::size_t size, const std::size_t) {
+            auto allocated_memory = malloc(size);
+            return allocated_memory;
+        });
+
+    EXPECT_CALL(*flexible_allocator_mock_, Deallocate(_, _)).WillRepeatedly([](void* const address, const std::size_t) {
+        free(address);  // Simulate deallocation
+        return true;
+    });
+
+    struct TestData
+    {
+        int id;
+        std::string name;
+    };
+    shared::List<TestData> list(flexible_allocator_mock_);
+
+    list.push_back({1, "one"});
+    list.push_back({2, "two"});
+    list.push_back({3, "three"});
+
+    std::uint8_t expected_ids[] = {1, 2, 3};
+    std::string expected_name[] = {"one", "two", "three"};
+
+    size_t index = 0;
+
+    for (auto it = list.begin(); it != list.end(); ++it, ++index)
+    {
+        EXPECT_EQ(it->id, expected_ids[index]);
+        EXPECT_STREQ(it->name.c_str(), expected_name[index].c_str());
     }
 }
 
