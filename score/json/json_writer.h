@@ -51,8 +51,8 @@ class JsonWriter final : public IJsonWriter
      *  chown operations. As that's usually not the case, it's advised that, if the
      *  user has this use-case where the ownership will differ, then all processes
      *  involved into updating the file shall share the same extra group, and the
-     *  ownerhip flag should be set as `kUseCurrentProcessUID | kUseTargetFileGID`
-     *  (the default), such that even if there would be different UIDs, all processes
+     *  ownerhip flag should be set as `kUseCurrentProcessUID | kUseTargetFileGID`,
+     *  such that even if there would be different UIDs, all processes
      *  could still access the file through the shared group.
      *
      *  The `ownership` parameter is ignored when kUnsynced mode is used.
@@ -63,7 +63,7 @@ class JsonWriter final : public IJsonWriter
      */
     explicit JsonWriter(FileSyncMode file_sync_mode = FileSyncMode::kUnsynced,
                         const score::filesystem::AtomicUpdateOwnershipFlags ownership =
-                            score::filesystem::kUseCurrentProcessUID | score::filesystem::kUseTargetFileGID) noexcept;
+                            score::filesystem::kUseTargetFileUID | score::filesystem::kUseTargetFileGID) noexcept;
     JsonWriter(const JsonWriter&) = delete;
     JsonWriter(JsonWriter&&) noexcept = delete;
     JsonWriter& operator=(const JsonWriter&) = delete;
