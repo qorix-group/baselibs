@@ -320,23 +320,6 @@ constexpr bool IsFloatingPointValueContainedInOutputType(double input)
     return true;
 }
 
-template <typename Input>
-score::Result<bool> TryToBool(Input input)
-{
-    if (input == static_cast<Input>(0))
-    {
-        return false;
-    }
-    else if (input == static_cast<Input>(1))
-    {
-        return true;
-    }
-    else
-    {
-        return score::MakeUnexpected(score::json::Error::kWrongType);
-    }
-}
-
 }  // namespace
 
 template <typename Output, typename Input, class, class, class>

@@ -79,16 +79,6 @@ void ConstructDltExtendedHeader(score::mw::log::detail::DltExtendedHeader& exten
     std::ignore = std::copy(ctx_id.data_.begin(), ctx_id.data_.end(), extended_header.ctid.begin());
 }
 
-template <typename T>
-std::size_t GetBufferSizeCasted(T buffer_size) noexcept
-{
-    //  We only intend to use conversion function with human readable messages
-    //  plus final memory management method will be avoiding dynamic allocation
-    //  which limits maximum buffer size
-    static_assert(sizeof(T) <= sizeof(std::size_t), "Buffer size conversion error");
-    return static_cast<std::size_t>(buffer_size);
-}
-
 void ConstructStorageVerbosePacket(score::mw::log::detail::VerbosePayload& header_payload,
                                    const score::mw::log::detail::LogEntry& entry,
                                    const score::mw::log::detail::LoggingIdentifier& ecu,

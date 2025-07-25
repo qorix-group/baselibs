@@ -88,7 +88,7 @@ struct optional
 namespace details
 {
 template <typename S, typename T>
-static auto cast_to_source_serializable_data_span(const T* data, size_t size) -> score::cpp::span<const S>
+auto cast_to_source_serializable_data_span(const T* data, size_t size) -> score::cpp::span<const S>
 {
     static_assert(sizeof(S) == sizeof(T), "Size value does not match");
     /*
@@ -103,7 +103,7 @@ static auto cast_to_source_serializable_data_span(const T* data, size_t size) ->
                               static_cast<typename score::cpp::span<const S>::size_type>(size)};
 }
 template <typename S, typename T>
-static auto cast_to_destination_serializable_data_span(T* data, size_t size) -> score::cpp::span<S>
+auto cast_to_destination_serializable_data_span(T* data, size_t size) -> score::cpp::span<S>
 {
     static_assert(sizeof(S) == sizeof(T), "Size value does not match");
     /*
