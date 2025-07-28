@@ -55,7 +55,7 @@ The core implementation of the resource manager has the following dependencies w
    - score/os/qnx:dispatch
    - platform/aas/lib/os:errno
    - platform/aas/lib/result
-- BMW::Middleware Logging library to monitor and notify the system with a proper state for the resource manager.      
+- BMW::Middleware Logging library to monitor and notify the system with a proper state for the resource manager.
     - platform/aas/ara/log
 - QNX Standard Libraries for c/c++.
 
@@ -64,7 +64,7 @@ The following diagram represents behavior of the resource manager during the Run
 
 ![Resource Manager Core startup sequence diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/ddad_score/os/utils/qnx/resource_manager/detailed_design/ResourceManager_StartupSequenceDiagram.uxf?ref=625310cf30c6614b4bfeb26ab2df812618179c03)
 
-![Resource Manager Core runtime sequence diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/ddad_score/os/utils/qnx/resource_manager/detailed_design/ResourceManager_RuntimeSequenceDiagram.uxf?ref=625310cf30c6614b4bfeb26ab2df812618179c03)
+![Resource Manager Core runtime sequence diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/blob/master/score/os/utils/qnx/resource_manager/detailed_design/ResourceManager_RuntimeSequenceDiagram.puml)
 
 ![Resource Manager Core activity diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/ddad_score/os/utils/qnx/resource_manager/detailed_design/ResourceManager_ActivityDiagram.uxf?ref=625310cf30c6614b4bfeb26ab2df812618179c03)
 
