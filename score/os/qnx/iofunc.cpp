@@ -148,6 +148,20 @@ score::cpp::expected_blank<std::int32_t> score::os::IoFuncQnx::iofunc_client_inf
     return {};  // LCOV_EXCL_LINE (Creation of valid resmgr_context_t struct is not possible through unit tests)
 }
 
+score::cpp::expected_blank<std::int32_t> score::os::IoFuncQnx::iofunc_client_info_ext_free(
+    struct _client_info** info) const noexcept
+{
+    // LCOV_EXCL_BR_START (Creation of invalid _client_info struct is not possible through unit tests)
+    const std::int32_t result = ::iofunc_client_info_ext_free(info);
+    if (result != EOK) /* KW_SUPPRESS:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
+    {
+        // LCOV_EXCL_LINE (Creation of invalid _client_info struct is not possible through unit tests)
+        return score::cpp::make_unexpected(result);
+    }
+    // LCOV_EXCL_BR_STOP (Creation of invalid _client_info struct is not possible through unit tests)
+    return {};
+}
+
 score::cpp::expected_blank<std::int32_t> score::os::IoFuncQnx::iofunc_check_access(
     resmgr_context_t* ctp,
     const iofunc_attr_t* attr,

@@ -412,6 +412,22 @@ TEST(IoFuncTest, iofunc_client_info_failure)
     EXPECT_FALSE(client_info_result.has_value());
 }
 
+TEST(IoFuncTest, iofunc_client_info_free_success)
+{
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Iofunc client_info_free success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
+    struct _client_info* pinfo{nullptr};
+
+    auto& iofunc = score::os::IoFunc::instance();
+    const auto client_info_result = iofunc.iofunc_client_info_ext_free(&pinfo);
+
+    EXPECT_TRUE(client_info_result.has_value());
+}
+
 TEST(IoFuncTest, iofunc_check_access_failure_client_info_nullptr)
 {
     RecordProperty("ParentRequirement", "SCR-46010294");

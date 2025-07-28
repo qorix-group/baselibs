@@ -75,6 +75,11 @@ class MockIoFunc : public IoFunc
                 (const, noexcept, override));
 
     MOCK_METHOD((score::cpp::expected_blank<std::int32_t>),
+                iofunc_client_info_ext_free,
+                (struct _client_info * *info),
+                (const, noexcept, override));
+
+    MOCK_METHOD((score::cpp::expected_blank<std::int32_t>),
                 iofunc_check_access,
                 (resmgr_context_t * ctp, const iofunc_attr_t* attr, mode_t checkmode, const struct _client_info* info),
                 (const, noexcept, override));
