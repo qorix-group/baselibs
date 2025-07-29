@@ -15,40 +15,13 @@ package(default_visibility = ["//visibility:public"])
 
 constraint_setting(name = "tgt")
 
-constraint_setting(name = "ib_vip_diag_compiler")
-
-constraint_value(
-    name = "ib_vip_diag",
-    constraint_setting = ":ib_vip_diag_compiler",
-)
-
 constraint_value(
     name = "xpad",
     constraint_setting = ":tgt",
 )
 
 constraint_value(
-    name = "ib_vip",
-    constraint_setting = ":tgt",
-)
-
-constraint_value(
     name = "host",
-    constraint_setting = ":tgt",
-)
-
-constraint_value(
-    name = "adcamlow",
-    constraint_setting = ":tgt",
-)
-
-constraint_value(
-    name = "cvc",
-    constraint_setting = ":tgt",
-)
-
-constraint_value(
-    name = "cvc2",
     constraint_setting = ":tgt",
 )
 
@@ -64,20 +37,10 @@ constraint_value(
     constraint_setting = ":cpu",
 )
 
-constraint_value(
-    name = "eyeq5",
-    constraint_setting = ":cpu",
-)
-
 constraint_setting(name = "compiler")
 
 constraint_value(
     name = "gcc",
-    constraint_setting = ":compiler",
-)
-
-constraint_value(
-    name = "mingw",
     constraint_setting = ":compiler",
 )
 
@@ -90,53 +53,6 @@ xpad_dnv_constraints = xpad_constraints + [
     ":dnv",
 ]
 
-adcamlow_constraints = [
-    ":adcamlow",
-    ":aurix",
-]
-
-platform(
-    name = "ib_vip_target",
-    constraint_values = [
-        ":ib_vip",
-        ":aurix",
-    ],
-)
-
-platform(
-    name = "ib_vip_target_diag",
-    constraint_values = [
-        ":ib_vip_diag",
-    ],
-    parents = [
-        ":ib_vip_target",
-    ],
-)
-
-platform(
-    name = "ib_vip_host",
-    constraint_values = [
-        ":ib_vip",
-        "@platforms//cpu:x86_64",
-    ],
-)
-
-platform(
-    name = "cvc_host",
-    constraint_values = [
-        ":cvc",
-        "@platforms//cpu:x86_64",
-    ],
-)
-
-platform(
-    name = "cvc2_host",
-    constraint_values = [
-        ":cvc2",
-        "@platforms//cpu:x86_64",
-    ],
-)
-
 linux_constraints = [
     "@platforms//cpu:x86_64",
     "@platforms//os:linux",
@@ -144,11 +60,6 @@ linux_constraints = [
 
 osx_constraints = [
     "@platforms//cpu:x86_64",
-    "@platforms//os:osx",
-]
-
-osx_arm_constraints = [
-    "@platforms//cpu:arm64",
     "@platforms//os:osx",
 ]
 
@@ -200,31 +111,6 @@ config_setting(
 config_setting(
     name = "config_xpad",
     constraint_values = xpad_constraints,
-)
-
-platform(
-    name = "adcamlow-tasking-win",
-    constraint_values = [
-        ":adcamlow",
-        ":aurix",
-        "@platforms//cpu:x86_64",
-        "@platforms//os:windows",
-    ],
-)
-
-platform(
-    name = "adcamlow-tasking-linux",
-    constraint_values = [
-        ":adcamlow",
-        ":aurix",
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
-    ],
-)
-
-config_setting(
-    name = "config_adcamlow_aurix",
-    constraint_values = adcamlow_constraints,
 )
 
 host_constraints = [
@@ -309,115 +195,6 @@ platform(
     ],
 )
 
-platform(
-    name = "host_windows_x86_64_msvc",
-    constraint_values = [
-        "@bazel_tools//tools/cpp:msvc",
-    ],
-    parents = [":windows_host"],
-)
-
-platform(
-    name = "host_windows_x86_64_mingw",
-    constraint_values = ["@bazel_tools//tools/cpp:mingw"],
-    parents = [":windows_host"],
-)
-
-platform(
-    name = "cvc_target",
-    constraint_values = [
-        ":cvc",
-        ":aurix",
-    ],
-)
-
-platform(
-    name = "cvc2_target",
-    constraint_values = [
-        ":cvc2",
-        ":aurix",
-    ],
-)
-
-##
-# host platforms which have matlab installed
-platform(
-    name = "host_linux_matlab_2021b",
-    constraint_values = linux_constraints + ["@//bazel/platforms/matlab:2021b"],
-)
-
-platform(
-    name = "host_linux_matlab_2023b",
-    constraint_values = linux_constraints + ["@//bazel/platforms/matlab:2023b"],
-)
-
-platform(
-    name = "host_osx_matlab_2021b",
-    constraint_values = osx_constraints + ["@//bazel/platforms/matlab:2021b"],
-)
-
-platform(
-    name = "host_osx_matlab_2023b",
-    constraint_values = osx_constraints + ["@//bazel/platforms/matlab:2023b"],
-)
-
-platform(
-    name = "host_osx_arm_matlab_2021b",
-    constraint_values = osx_arm_constraints + ["@//bazel/platforms/matlab:2021b"],
-)
-
-platform(
-    name = "host_osx_arm_matlab_2023b",
-    constraint_values = osx_arm_constraints + ["@//bazel/platforms/matlab:2023b"],
-)
-
-platform(
-    name = "host_windows_matlab_2021b",
-    constraint_values = windows_constraints + ["@//bazel/platforms/matlab:2021b"],
-)
-
-platform(
-    name = "host_windows_matlab_2023b",
-    constraint_values = windows_constraints + ["@//bazel/platforms/matlab:2023b"],
-)
-
-platform(
-    name = "host_windows_matlab_2021b_mingw",
-    constraint_values = ["@bazel_tools//tools/cpp:mingw"],
-    parents = [":host_windows_matlab_2021b"],
-)
-
-platform(
-    name = "host_windows_matlab_2023b_mingw",
-    constraint_values = ["@bazel_tools//tools/cpp:mingw"],
-    parents = [":host_windows_matlab_2023b"],
-)
-
-platform(
-    name = "host_windows_matlab_2021b_clangcl",
-    constraint_values = ["@bazel_tools//tools/cpp:clang-cl"],
-    parents = [":host_windows_matlab_2021b"],
-)
-
-platform(
-    name = "host_windows_matlab_2023b_clangcl",
-    constraint_values = ["@bazel_tools//tools/cpp:clang-cl"],
-    parents = [":host_windows_matlab_2023b"],
-)
-
-platform(
-    name = "host_linux_matlab_2021b_clang",
-    constraint_values = ["@bazel_tools//tools/cpp:clang"],
-    parents = [":host_linux_matlab_2021b"],
-)
-
-platform(
-    name = "host_linux_matlab_2023b_clang",
-    constraint_values = ["@bazel_tools//tools/cpp:clang"],
-    parents = [":host_linux_matlab_2023b"],
-)
-
-# IPNext related Bazel platforms
 platform(
     name = "arm64-qnx-hardware",
     constraint_values = [
