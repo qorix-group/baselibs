@@ -181,9 +181,9 @@ void AbortableBlockingReader::Stop() noexcept
     stop_write_file_descriptor_ = {};
 }
 
-score::cpp::expected<score::cpp::span<std::uint8_t>, Error> AbortableBlockingReader::Read(
+score::cpp::expected<score::cpp::v1::span<std::uint8_t>, Error> AbortableBlockingReader::Read(
     const NonBlockingFileDescriptor& file_descriptor,
-    const score::cpp::span<std::uint8_t> buffer) noexcept
+    const score::cpp::v1::span<std::uint8_t> buffer) noexcept
 {
     std::shared_lock<std::shared_timed_mutex> lock{mutex_};
 
@@ -214,7 +214,7 @@ score::cpp::expected<score::cpp::span<std::uint8_t>, Error> AbortableBlockingRea
     {
         return score::cpp::make_unexpected(expected_length.error());
     }
-    return score::cpp::span<std::uint8_t>{buffer.data(), expected_length.value()};
+    return score::cpp::v1::span<std::uint8_t>{buffer.data(), expected_length.value()};
 }
 
 void AbortableBlockingReader::SignalStop() noexcept

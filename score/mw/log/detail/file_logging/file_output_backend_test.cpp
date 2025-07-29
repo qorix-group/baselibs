@@ -33,7 +33,7 @@ namespace detail
 namespace
 {
 
-using SpanData = score::cpp::span<const std::uint8_t>;
+using SpanData = score::cpp::v1::span<const std::uint8_t>;
 using OptionalSpan = score::cpp::optional<SpanData>;
 using ::testing::_;
 using ::testing::Exactly;

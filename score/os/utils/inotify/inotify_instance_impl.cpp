@@ -141,7 +141,7 @@ InotifyInstanceImpl::Read() noexcept
     {
         return score::cpp::make_unexpected(expected_event_buffer.error());
     }
-    const score::cpp::span<std::uint8_t> event_buffer{expected_event_buffer.value()};
+    const score::cpp::v1::span<std::uint8_t> event_buffer{expected_event_buffer.value()};
 
     score::cpp::static_vector<InotifyEvent, max_events> events{};
 

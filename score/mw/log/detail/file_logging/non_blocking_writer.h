@@ -53,7 +53,7 @@ class NonBlockingWriter final
     score::cpp::expected<Result, score::mw::log::detail::Error> FlushIntoFile() noexcept;
 
     /// \brief Method to Re initialize the current instance of the non blocking writer to be used to flush another span.
-    void SetSpan(const score::cpp::span<const std::uint8_t>& buffer) noexcept;
+    void SetSpan(const score::cpp::v1::span<const std::uint8_t>& buffer) noexcept;
 
     static std::size_t GetMaxChunkSize() noexcept;
 
@@ -65,8 +65,8 @@ class NonBlockingWriter final
     std::int32_t file_handle_;  // given file handle to write to it.
     uint64_t
         number_of_flushed_bytes_;  // last written byte location to be used to continue writing in other flush calls.
-    score::cpp::span<const std::uint8_t> buffer_;  // the sent buffer to flush data from it to the file.
-    Result buffer_flushed_;                 // Internal flag used to raise it once the whole buffer is flushed.
+    score::cpp::v1::span<const std::uint8_t> buffer_;  // the sent buffer to flush data from it to the file.
+    Result buffer_flushed_;                     // Internal flag used to raise it once the whole buffer is flushed.
     std::size_t max_chunk_size_;
 };
 

@@ -169,8 +169,8 @@ inline auto logger_type_info()
                     /* KW_SUPPRESS_START:MISRA.PTR.ARITH:Needed to get offset from this location */
                     // needed to copy data to the target location and arithmetic used to get offset from this location
                     // tolerated per design
-                    score::cpp::span<Byte> dataSpan{static_cast<Byte*>(data),
-                                             static_cast<typename score::cpp::span<Byte*>::size_type>(size)};
+                    score::cpp::v1::span<Byte> dataSpan{static_cast<Byte*>(data),
+                                                 static_cast<typename score::cpp::v1::span<Byte*>::size_type>(size)};
                     std::ignore = memcpy(dataSpan.subspan(sizeof(uint32_t)).data(), payload_.first, strsize);
                     /* KW_SUPPRESS_END:MISRA.PTR.ARITH:Needed to get offset from this location */
                 }

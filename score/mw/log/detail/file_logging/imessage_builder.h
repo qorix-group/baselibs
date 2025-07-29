@@ -38,7 +38,7 @@ class IMessageBuilder
 
     /// \brief Get next span for consecutive memory area for next part of message that is getting serialized
     /// \details Specific implementations may build and split message into different number of spans
-    virtual score::cpp::optional<score::cpp::span<const std::uint8_t>> GetNextSpan() noexcept = 0;
+    virtual score::cpp::optional<score::cpp::v1::span<const std::uint8_t>> GetNextSpan() noexcept = 0;
     /// \brief Set data for building next message
     /// \details Build header and payload from data contained in LogRecorder
     virtual void SetNextMessage(LogRecord&) noexcept = 0;

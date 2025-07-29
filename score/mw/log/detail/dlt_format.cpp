@@ -208,7 +208,7 @@ bool WillMessageFit(score::mw::log::detail::VerbosePayload& payload, T... messag
     return !payload.WillOverflow(size);
 }
 
-using ByteView = score::cpp::span<const score::mw::log::detail::Byte>;
+using ByteView = score::cpp::v1::span<const score::mw::log::detail::Byte>;
 
 template <typename T>
 ByteView ToByteView(const T& t)
