@@ -135,7 +135,15 @@ Result<std::tuple<os::Stat::Mode, uid_t, gid_t>> GetIdentityMetadata(const Path&
         // Suppress "AUTOSAR C++14 M5-0-21" rule findings. This rule declares: "Bitwise operators shall only be
         // applied to operands of unsigned underlying type."
         // Rationale: Macro does not affect the sign of the result
+        // Suppress "AUTOSAR C++14 M2-13-3" rule findings. This rule declares: "A “U” suffix shall be applied to all
+        // octal or hexadecimal integer literals of unsigned type."
+        // Suppress "AUTOSAR C++14 M5-0-4" rule findings. This rule declares: "An implicit integral conversion shall
+        // not change the signedness of the underlying type"
+        // Rationale: S_IFMT(integer), S_IFREG(integer) and StatBuffer.st_mode(u-integer) are defined in stat.h from
+        // infrastructure delivery and can't be modified by user
         // coverity[autosar_cpp14_m5_0_21_violation]
+        // coverity[autosar_cpp14_m2_13_3_violation]
+        // coverity[autosar_cpp14_m5_0_4_violation]
         if ((buffer.st_mode & S_IFMT) != S_IFREG)
         // NOLINTEND(hicpp-signed-bitwise): macro does not affect the sign of the result.
         {
@@ -146,12 +154,12 @@ Result<std::tuple<os::Stat::Mode, uid_t, gid_t>> GetIdentityMetadata(const Path&
         // Suppress "AUTOSAR C++14 A4-7-1" rule finding. This rule states: "An integer expression shall not lead to data
         // loss."
         // Rationale: QNX defined uid_t as uint32_t, so no data loss expected
-        // coverity[autosar_cpp14_a2_10_1_violation : FALSE]
+        // coverity[autosar_cpp14_a4_7_1_violation : FALSE]
         const auto uid = static_cast<uid_t>(buffer.st_uid);
         // Suppress "AUTOSAR C++14 A4-7-1" rule finding. This rule states: "An integer expression shall not lead to data
         // loss."
         // Rationale: QNX defined gid_t as uint32_t, so no data loss expected
-        // coverity[autosar_cpp14_a2_10_1_violation : FALSE]
+        // coverity[autosar_cpp14_a4_7_1_violation : FALSE]
         const auto gid = static_cast<gid_t>(buffer.st_gid);
 
         return std::make_tuple(mode, uid, gid);
