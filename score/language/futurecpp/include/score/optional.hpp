@@ -27,14 +27,14 @@ namespace score::cpp
 /// Dispatch type used to construct or assign an optional with an empty state.
 struct nullopt_t
 {
-    struct score_private_token
+    struct score_future_cpp_private_token
     {
     };
-    constexpr explicit nullopt_t(score_private_token, score_private_token) noexcept {}
+    constexpr explicit nullopt_t(score_future_cpp_private_token, score_future_cpp_private_token) noexcept {}
 };
 
-/// Instance of \a nullopt_t fur use with \a optional.
-constexpr nullopt_t nullopt{nullopt_t::score_private_token{}, nullopt_t::score_private_token{}};
+/// Instance of \a nullopt_t for use with \a optional.
+constexpr nullopt_t nullopt{nullopt_t::score_future_cpp_private_token{}, nullopt_t::score_future_cpp_private_token{}};
 
 /// \brief Is a wrapper for representing 'optional' (or 'nullable') objects who may not (yet) contain a valid value.
 ///
@@ -110,11 +110,11 @@ public:
     /// Using this constructor, an object is built, that contains the passed value.
     ///
     /// \param other The value to be placed into the newly built object.
-    template <typename U = value_type,
+    template <typename U = std::remove_cv_t<T>,
               typename = typename std::enable_if<!std::is_same<optional, score::cpp::remove_cvref_t<U>>::value &&
                                                  !std::is_same<in_place_t, score::cpp::remove_cvref_t<U>>::value &&
                                                  !is_expected<std::decay_t<U>>::value &&
-                                                 std::is_constructible<T, U&&>::value>::type>
+                                                 std::is_constructible<T, U>::value>::type>
     // NOLINTNEXTLINE(google-explicit-constructor) follows C++ Standard
     constexpr optional(U&& other) : null_state_{}, has_value_{false}
     {
@@ -128,6 +128,8 @@ public:
     /// \param other The optional to copy from.
     constexpr optional(const optional& other) : null_state_{}, has_value_{false}
     {
+        static_assert(std::is_copy_constructible<T>::value, "failed");
+
         if (other.has_value())
         {
             construct(other.data_);
@@ -142,6 +144,8 @@ public:
     constexpr optional(optional&& other) noexcept(std::is_nothrow_move_constructible<T>::value)
         : null_state_{}, has_value_{false}
     {
+        static_assert(std::is_move_constructible<T>::value, "failed");
+
         if (other.has_value())
         {
             construct(std::move(other.data_));
@@ -156,6 +160,8 @@ public:
     template <typename E>
     optional(const score::cpp::expected<value_type, E>& other) : null_state_{}, has_value_{false}
     {
+        static_assert(std::is_copy_constructible<T>::value, "failed");
+
         if (other.has_value())
         {
             construct(other.value());
@@ -170,6 +176,8 @@ public:
     template <typename E>
     optional(score::cpp::expected<value_type, E>&& other) : null_state_{}, has_value_{false}
     {
+        static_assert(std::is_move_constructible<T>::value, "failed");
+
         if (other.has_value())
         {
             construct(std::move(other).value());
@@ -201,30 +209,21 @@ public:
     /// Replaces contents of *this with the contents of the passed value.
     ///
     /// \param other The value to be placed into the newly built object.
-    template <typename U = value_type,
-              typename = typename std::enable_if<!std::is_same<optional, score::cpp::remove_cvref_t<U>>::value &&
-                                                 !is_expected<std::decay_t<U>>::value>::type>
+    template <
+        typename U = std::remove_cv_t<T>,
+        typename = typename std::enable_if<!std::is_same<optional, score::cpp::remove_cvref_t<U>>::value &&
+                                           std::is_constructible<T, U>::value && std::is_assignable<T&, U>::value &&
+                                           (!std::is_scalar<T>::value || !std::is_same<std::decay_t<U>, T>::value) &&
+                                           !is_expected<std::decay_t<U>>::value>::type>
     optional& operator=(U&& other)
     {
-        reset();
-        construct(std::forward<U>(other));
-        return *this;
-    }
-
-    /// \brief Assigns from another optional.
-    ///
-    /// Using this assignment operator, an optional is built containing a value if other.has_value else empty
-    ///
-    /// \param other Containing the value to be placed into the newly built object.
-    optional& operator=(const optional<value_type>& other)
-    {
-        if (this != &other)
+        if (this->has_value())
         {
-            reset();
-            if (other.has_value())
-            {
-                construct(other.value());
-            }
+            data_ = std::forward<U>(other);
+        }
+        else
+        {
+            construct(std::forward<U>(other));
         }
         return *this;
     }
@@ -234,16 +233,68 @@ public:
     /// Using this assignment operator, an optional is built containing a value if other.has_value else empty
     ///
     /// \param other Containing the value to be placed into the newly built object.
-    optional& operator=(optional<value_type>&& other) noexcept(
-        std::is_nothrow_move_assignable<T>::value&& std::is_nothrow_move_constructible<T>::value)
+    optional& operator=(const optional& other)
     {
-        if (this != &other)
+        // currently downstream code doesn't compile if `is_move_assignable` is checked. for now not an
+        // issue because our code currently always moves construct and doesn't implement the table from
+        // https://en.cppreference.com/w/cpp/utility/optional/operator%3D
+        // issue: broken_link_g/swh/amp/issues/385
+        static_assert(std::is_copy_constructible<T>::value /*&& std::is_copy_assignable<T>::value*/, "failed");
+
+        if (other.has_value())
+        {
+            if (this->has_value())
+            { // should be: data_ = *other;
+                if (this != &other)
+                {
+                    reset();
+                    construct(*other);
+                }
+            }
+            else
+            {
+                construct(*other);
+            }
+        }
+        else
         {
             reset();
-            if (other.has_value())
-            {
-                construct(std::move(other.value()));
+        }
+        return *this;
+    }
+
+    /// \brief Assigns from another optional.
+    ///
+    /// Using this assignment operator, an optional is built containing a value if other.has_value else empty
+    ///
+    /// \param other Containing the value to be placed into the newly built object.
+    optional& operator=(optional&& other) noexcept(
+        std::is_nothrow_move_assignable<T>::value&& std::is_nothrow_move_constructible<T>::value)
+    {
+        // currently downstream code doesn't compile if `is_move_assignable` is checked. for now not an
+        // issue because our code currently always moves construct and doesn't implement the table from
+        // https://en.cppreference.com/w/cpp/utility/optional/operator%3D
+        // issue: broken_link_g/swh/amp/issues/385
+        static_assert(std::is_move_constructible<T>::value /*&& std::is_move_assignable<T>::value*/, "failed");
+
+        if (other.has_value())
+        {
+            if (this->has_value())
+            { // should be: data_ = std::move(*other);
+                if (this != &other)
+                {
+                    reset();
+                    construct(std::move(*other));
+                }
             }
+            else
+            {
+                construct(std::move(*other));
+            }
+        }
+        else
+        {
+            reset();
         }
         return *this;
     }
@@ -256,6 +307,8 @@ public:
     template <typename E>
     optional& operator=(const score::cpp::expected<value_type, E>& other)
     {
+        static_assert(std::is_copy_constructible<T>::value && std::is_copy_assignable<T>::value, "failed");
+
         reset();
         if (other.has_value())
         {
@@ -272,6 +325,8 @@ public:
     template <typename E>
     optional& operator=(score::cpp::expected<value_type, E>&& other)
     {
+        static_assert(std::is_move_constructible<T>::value && std::is_move_assignable<T>::value, "failed");
+
         reset();
         if (other.has_value())
         {
@@ -556,18 +611,20 @@ private:
     template <class... Args>
     void construct(Args&&... args)
     {
-        score::cpp::detail::construct_at(&data_, std::forward<Args>(args)...);
+        score::cpp::detail::construct_at(std::addressof(data_), std::forward<Args>(args)...);
         has_value_ = true;
     }
 
     // For performances reason this class is not using `std::variant` but implementing the storage as a raw union. This
     // class takes care by code review to only read from the active member of the union. The union is only visible
     // internally and not exposed to the user API.
-    // coverity[misra_cpp_2023_rule_12_3_1_violation]
+    // coverity[misra_cpp_2023_rule_12_3_1_violation : SUPPRESS]
     union
     {
-        char null_state_; // NOLINT(readability-identifier-naming) keep `_` to make clear it is a member variable
-        value_type data_; // NOLINT(readability-identifier-naming) keep `_` to make clear it is a member variable
+        // NOLINTNEXTLINE(readability-identifier-naming) keep `_` to make clear it is a member variable
+        char null_state_;
+        // NOLINTNEXTLINE(readability-identifier-naming) keep `_` to make clear it is a member variable
+        std::remove_cv_t<value_type> data_;
     };
     bool has_value_;
 };
@@ -607,6 +664,150 @@ template <typename U>
 bool operator>=(const optional<U>& lhs, const optional<U>& rhs)
 {
     return !(lhs < rhs);
+}
+
+template <typename U>
+bool operator==(const optional<U>& lhs, score::cpp::nullopt_t)
+{
+    return !lhs.has_value();
+}
+
+template <typename U>
+bool operator==(score::cpp::nullopt_t, const optional<U>& rhs)
+{
+    return !rhs.has_value();
+}
+
+template <typename U>
+bool operator!=(const optional<U>& lhs, score::cpp::nullopt_t)
+{
+    return lhs.has_value();
+}
+
+template <typename U>
+bool operator!=(score::cpp::nullopt_t, const optional<U>& rhs)
+{
+    return rhs.has_value();
+}
+
+template <typename U>
+bool operator<(const score::cpp::optional<U>&, score::cpp::nullopt_t)
+{
+    return false;
+}
+
+template <typename U>
+bool operator<(score::cpp::nullopt_t, const score::cpp::optional<U>& rhs)
+{
+    return rhs.has_value();
+}
+
+template <typename U>
+bool operator<=(const score::cpp::optional<U>& lhs, score::cpp::nullopt_t)
+{
+    return !lhs.has_value();
+}
+
+template <typename U>
+bool operator<=(score::cpp::nullopt_t, const score::cpp::optional<U>&)
+{
+    return true;
+}
+
+template <typename U>
+bool operator>(const score::cpp::optional<U>& lhs, score::cpp::nullopt_t)
+{
+    return lhs.has_value();
+}
+
+template <typename U>
+bool operator>(score::cpp::nullopt_t, const score::cpp::optional<U>&)
+{
+    return false;
+}
+
+template <typename U>
+bool operator>=(const score::cpp::optional<U>&, score::cpp::nullopt_t)
+{
+    return true;
+}
+
+template <typename U>
+bool operator>=(score::cpp::nullopt_t, const score::cpp::optional<U>& rhs)
+{
+    return !rhs.has_value();
+}
+
+template <typename T, typename U>
+bool operator==(const optional<T>& lhs, const U& rhs)
+{
+    return lhs.has_value() ? (*lhs == rhs) : false;
+}
+
+template <typename T, typename U>
+bool operator==(const T& lhs, const optional<U>& rhs)
+{
+    return rhs.has_value() ? (lhs == *rhs) : false;
+}
+
+template <typename T, typename U>
+bool operator!=(const optional<T>& lhs, const U& rhs)
+{
+    return lhs.has_value() ? (*lhs != rhs) : true;
+}
+
+template <typename T, typename U>
+bool operator!=(const T& lhs, const optional<U>& rhs)
+{
+    return rhs.has_value() ? (lhs != *rhs) : true;
+}
+
+template <typename T, typename U>
+bool operator<(const optional<T>& lhs, const U& rhs)
+{
+    return lhs.has_value() ? (*lhs < rhs) : true;
+}
+
+template <typename T, typename U>
+bool operator<(const T& lhs, const optional<U>& rhs)
+{
+    return rhs.has_value() ? (lhs < *rhs) : false;
+}
+
+template <typename T, typename U>
+bool operator<=(const optional<T>& lhs, const U& rhs)
+{
+    return lhs.has_value() ? (*lhs <= rhs) : true;
+}
+
+template <typename T, typename U>
+bool operator<=(const T& lhs, const optional<U>& rhs)
+{
+    return rhs.has_value() ? (lhs <= *rhs) : false;
+}
+
+template <typename T, typename U>
+bool operator>(const optional<T>& lhs, const U& rhs)
+{
+    return lhs.has_value() ? (*lhs > rhs) : false;
+}
+
+template <typename T, typename U>
+bool operator>(const T& lhs, const optional<U>& rhs)
+{
+    return rhs.has_value() ? (lhs > *rhs) : true;
+}
+
+template <typename T, typename U>
+bool operator>=(const optional<T>& lhs, const U& rhs)
+{
+    return lhs.has_value() ? (*lhs >= rhs) : false;
+}
+
+template <typename T, typename U>
+bool operator>=(const T& lhs, const optional<U>& rhs)
+{
+    return rhs.has_value() ? (lhs >= *rhs) : true;
 }
 
 /// \brief Creates an optional object from its arguments

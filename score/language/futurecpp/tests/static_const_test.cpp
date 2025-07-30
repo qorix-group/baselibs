@@ -16,6 +16,8 @@
 namespace
 {
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40955959
 TEST(static_const, same_address_in_different_compilation_units)
 {
     EXPECT_EQ(score::cpp::static_const_test_type_instance_address(), &score::cpp::static_const_test_type_instance);

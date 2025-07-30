@@ -56,7 +56,7 @@ to_chars_result to_chars_base16_impl(char* first, char* last, const T value, con
     }
 
     const string_view digits{"0123456789abcdef"};
-    span<char> hex_string{first, buffer_len};
+    span<char> hex_string{first, static_cast<std::size_t>(buffer_len)};
 
     std::ptrdiff_t index_hex_string{0};
     if (signed_offset > 0)

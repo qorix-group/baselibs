@@ -33,69 +33,69 @@
 namespace score::cpp
 {
 
-inline double acos(double num) { return ::score_acos(num); }
-inline float acos(float num) { return ::score_acosf(num); }
+inline double acos(double num) { return ::score_future_cpp_acos(num); }
+inline float acos(float num) { return ::score_future_cpp_acosf(num); }
 
-inline double asin(double num) { return ::score_asin(num); }
-inline float asin(float num) { return ::score_asinf(num); }
+inline double asin(double num) { return ::score_future_cpp_asin(num); }
+inline float asin(float num) { return ::score_future_cpp_asinf(num); }
 
-inline double atan2(double y, double x) { return ::score_atan2(y, x); }
-inline float atan2(float y, float x) { return ::score_atan2f(y, x); }
+inline double atan2(double y, double x) { return ::score_future_cpp_atan2(y, x); }
+inline float atan2(float y, float x) { return ::score_future_cpp_atan2f(y, x); }
 
-inline double atan(double num) { return ::score_atan(num); }
-inline float atan(float num) { return ::score_atanf(num); }
+inline double atan(double num) { return ::score_future_cpp_atan(num); }
+inline float atan(float num) { return ::score_future_cpp_atanf(num); }
 
-inline double cos(double num) { return ::score_cos(num); }
-inline float cos(float num) { return ::score_cosf(num); }
+inline double cos(double num) { return ::score_future_cpp_cos(num); }
+inline float cos(float num) { return ::score_future_cpp_cosf(num); }
 
-inline double sin(double num) { return ::score_sin(num); }
-inline float sin(float num) { return ::score_sinf(num); }
+inline double sin(double num) { return ::score_future_cpp_sin(num); }
+inline float sin(float num) { return ::score_future_cpp_sinf(num); }
 
-inline double tan(double num) { return ::score_tan(num); }
-inline float tan(float num) { return ::score_tanf(num); }
+inline double tan(double num) { return ::score_future_cpp_tan(num); }
+inline float tan(float num) { return ::score_future_cpp_tanf(num); }
 
-inline double acosh(double num) { return ::score_acosh(num); }
-inline float acosh(float num) { return ::score_acoshf(num); }
+inline double acosh(double num) { return ::score_future_cpp_acosh(num); }
+inline float acosh(float num) { return ::score_future_cpp_acoshf(num); }
 
-inline double asinh(double num) { return ::score_asinh(num); }
-inline float asinh(float num) { return ::score_asinhf(num); }
+inline double asinh(double num) { return ::score_future_cpp_asinh(num); }
+inline float asinh(float num) { return ::score_future_cpp_asinhf(num); }
 
-inline double atanh(double num) { return ::score_atanh(num); }
-inline float atanh(float num) { return ::score_atanhf(num); }
+inline double atanh(double num) { return ::score_future_cpp_atanh(num); }
+inline float atanh(float num) { return ::score_future_cpp_atanhf(num); }
 
-inline double cosh(double num) { return ::score_cosh(num); }
-inline float cosh(float num) { return ::score_coshf(num); }
+inline double cosh(double num) { return ::score_future_cpp_cosh(num); }
+inline float cosh(float num) { return ::score_future_cpp_coshf(num); }
 
-inline double sinh(double num) { return ::score_sinh(num); }
-inline float sinh(float num) { return ::score_sinhf(num); }
+inline double sinh(double num) { return ::score_future_cpp_sinh(num); }
+inline float sinh(float num) { return ::score_future_cpp_sinhf(num); }
 
-inline double tanh(double num) { return ::score_tanh(num); }
-inline float tanh(float num) { return ::score_tanhf(num); }
+inline double tanh(double num) { return ::score_future_cpp_tanh(num); }
+inline float tanh(float num) { return ::score_future_cpp_tanhf(num); }
 
-inline int ilogb(double num) { return ::score_ilogb(num); }
-inline int ilogb(float num) { return ::score_ilogbf(num); }
+inline int ilogb(double num) { return ::score_future_cpp_ilogb(num); }
+inline int ilogb(float num) { return ::score_future_cpp_ilogbf(num); }
 
-inline double log10(double num) { return ::score_log10(num); }
-inline float log10(float num) { return ::score_log10f(num); }
+inline double log10(double num) { return ::score_future_cpp_log10(num); }
+inline float log10(float num) { return ::score_future_cpp_log10f(num); }
 
-inline double log1p(double num) { return ::score_log1p(num); }
-inline float log1p(float num) { return ::score_log1pf(num); }
+inline double log1p(double num) { return ::score_future_cpp_log1p(num); }
+inline float log1p(float num) { return ::score_future_cpp_log1pf(num); }
 
-inline double log2(double num) { return ::score_log2(num); }
-inline float log2(float num) { return ::score_log2f(num); }
+inline double log2(double num) { return ::score_future_cpp_log2(num); }
+inline float log2(float num) { return ::score_future_cpp_log2f(num); }
 
-inline double logb(double num) { return ::score_logb(num); }
-inline float logb(float num) { return ::score_logbf(num); }
+inline double logb(double num) { return ::score_future_cpp_logb(num); }
+inline float logb(float num) { return ::score_future_cpp_logbf(num); }
 
-inline double log(double num) { return ::score_log(num); }
-inline float log(float num) { return ::score_logf(num); }
+inline double log(double num) { return ::score_future_cpp_log(num); }
+inline float log(float num) { return ::score_future_cpp_logf(num); }
 
 inline double fmax(double x, double y)
 {
 #if defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::fmax_neon(x, y);
 #else
-    return ::score_fmax(x, y);
+    return ::score_future_cpp_fmax(x, y);
 #endif
 }
 inline float fmax(float x, float y)
@@ -103,7 +103,7 @@ inline float fmax(float x, float y)
 #if defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::fmax_neon(x, y);
 #else
-    return ::score_fmaxf(x, y);
+    return ::score_future_cpp_fmaxf(x, y);
 #endif
 }
 
@@ -112,7 +112,7 @@ inline double fmin(double x, double y)
 #if defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::fmin_neon(x, y);
 #else
-    return ::score_fmin(x, y);
+    return ::score_future_cpp_fmin(x, y);
 #endif
 }
 inline float fmin(float x, float y)
@@ -120,7 +120,7 @@ inline float fmin(float x, float y)
 #if defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::fmin_neon(x, y);
 #else
-    return ::score_fminf(x, y);
+    return ::score_future_cpp_fminf(x, y);
 #endif
 }
 
@@ -131,7 +131,7 @@ inline double ceil(double num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::ceil_neon(num);
 #else
-    return ::score_ceil(num);
+    return ::score_future_cpp_ceil(num);
 #endif
 }
 inline float ceil(float num)
@@ -141,7 +141,7 @@ inline float ceil(float num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::ceil_neon(num);
 #else
-    return ::score_ceilf(num);
+    return ::score_future_cpp_ceilf(num);
 #endif
 }
 
@@ -152,7 +152,7 @@ inline double floor(double num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::floor_neon(num);
 #else
-    return ::score_floor(num);
+    return ::score_future_cpp_floor(num);
 #endif
 }
 inline float floor(float num)
@@ -162,24 +162,24 @@ inline float floor(float num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::floor_neon(num);
 #else
-    return ::score_floorf(num);
+    return ::score_future_cpp_floorf(num);
 #endif
 }
 
-inline long lrint(double num) { return ::score_lrint(num); }
-inline long lrint(float num) { return ::score_lrintf(num); }
+inline long lrint(double num) { return ::score_future_cpp_lrint(num); }
+inline long lrint(float num) { return ::score_future_cpp_lrintf(num); }
 
-inline long lround(double num) { return ::score_lround(num); }
-inline long lround(float num) { return ::score_lroundf(num); }
+inline long lround(double num) { return ::score_future_cpp_lround(num); }
+inline long lround(float num) { return ::score_future_cpp_lroundf(num); }
 
-inline double nearbyint(double num) { return ::score_nearbyint(num); }
-inline float nearbyint(float num) { return ::score_nearbyintf(num); }
+inline double nearbyint(double num) { return ::score_future_cpp_nearbyint(num); }
+inline float nearbyint(float num) { return ::score_future_cpp_nearbyintf(num); }
 
-inline double nextafter(double from, double to) { return ::score_nextafter(from, to); }
-inline float nextafter(float from, float to) { return ::score_nextafterf(from, to); }
+inline double nextafter(double from, double to) { return ::score_future_cpp_nextafter(from, to); }
+inline float nextafter(float from, float to) { return ::score_future_cpp_nextafterf(from, to); }
 
-inline double nexttoward(double from, double to) { return ::score_nexttoward(from, to); }
-inline float nexttoward(float from, float to) { return ::score_nexttowardf(from, to); }
+inline double nexttoward(double from, double to) { return ::score_future_cpp_nexttoward(from, to); }
+inline float nexttoward(float from, float to) { return ::score_future_cpp_nexttowardf(from, to); }
 
 inline double rint(double num)
 {
@@ -188,7 +188,7 @@ inline double rint(double num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::rint_neon(num);
 #else
-    return ::score_rint(num);
+    return ::score_future_cpp_rint(num);
 #endif
 }
 inline float rint(float num)
@@ -198,7 +198,7 @@ inline float rint(float num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::rint_neon(num);
 #else
-    return ::score_rintf(num);
+    return ::score_future_cpp_rintf(num);
 #endif
 }
 
@@ -207,7 +207,7 @@ inline double round(double num)
 #if defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::round_neon(num);
 #else
-    return ::score_round(num);
+    return ::score_future_cpp_round(num);
 #endif
 }
 inline float round(float num)
@@ -215,7 +215,7 @@ inline float round(float num)
 #if defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::round_neon(num);
 #else
-    return ::score_roundf(num);
+    return ::score_future_cpp_roundf(num);
 #endif
 }
 
@@ -226,7 +226,7 @@ inline double trunc(double num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::trunc_neon(num);
 #else
-    return ::score_trunc(num);
+    return ::score_future_cpp_trunc(num);
 #endif
 }
 inline float trunc(float num)
@@ -236,35 +236,35 @@ inline float trunc(float num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::trunc_neon(num);
 #else
-    return ::score_truncf(num);
+    return ::score_future_cpp_truncf(num);
 #endif
 }
 
-inline double erfc(double num) { return ::score_erfc(num); }
-inline float erfc(float num) { return ::score_erfcf(num); }
+inline double erfc(double num) { return ::score_future_cpp_erfc(num); }
+inline float erfc(float num) { return ::score_future_cpp_erfcf(num); }
 
-inline double erf(double num) { return ::score_erf(num); }
-inline float erf(float num) { return ::score_erff(num); }
+inline double erf(double num) { return ::score_future_cpp_erf(num); }
+inline float erf(float num) { return ::score_future_cpp_erff(num); }
 
-inline double cbrt(double num) { return ::score_cbrt(num); }
-inline float cbrt(float num) { return ::score_cbrtf(num); }
+inline double cbrt(double num) { return ::score_future_cpp_cbrt(num); }
+inline float cbrt(float num) { return ::score_future_cpp_cbrtf(num); }
 
-inline double exp2(double num) { return ::score_exp2(num); }
-inline float exp2(float num) { return ::score_exp2f(num); }
+inline double exp2(double num) { return ::score_future_cpp_exp2(num); }
+inline float exp2(float num) { return ::score_future_cpp_exp2f(num); }
 
-inline double expm1(double num) { return ::score_expm1(num); }
-inline float expm1(float num) { return ::score_expm1f(num); }
+inline double expm1(double num) { return ::score_future_cpp_expm1(num); }
+inline float expm1(float num) { return ::score_future_cpp_expm1f(num); }
 
-inline double exp(double num) { return ::score_exp(num); }
-inline float exp(float num) { return ::score_expf(num); }
+inline double exp(double num) { return ::score_future_cpp_exp(num); }
+inline float exp(float num) { return ::score_future_cpp_expf(num); }
 template <typename Integer, typename std::enable_if_t<std::is_integral<Integer>::value, bool> = false>
 inline double exp(Integer num)
 {
     return score::cpp::exp(static_cast<double>(num));
 }
 
-inline double pow(double base, double exp) { return ::score_pow(base, exp); }
-inline float pow(float base, float exp) { return ::score_powf(base, exp); }
+inline double pow(double base, double exp) { return ::score_future_cpp_pow(base, exp); }
+inline float pow(float base, float exp) { return ::score_future_cpp_powf(base, exp); }
 
 inline double sqrt(double num)
 {
@@ -273,7 +273,7 @@ inline double sqrt(double num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::sqrt_neon(num);
 #else
-    return ::score_sqrt(num);
+    return ::score_future_cpp_sqrt(num);
 #endif
 }
 inline float sqrt(float num)
@@ -283,7 +283,7 @@ inline float sqrt(float num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::sqrt_neon(num);
 #else
-    return ::score_sqrtf(num);
+    return ::score_future_cpp_sqrtf(num);
 #endif
 }
 template <typename Integer, typename std::enable_if_t<std::is_integral<Integer>::value, bool> = false>
@@ -292,23 +292,23 @@ inline double sqrt(Integer num)
     return score::cpp::sqrt(static_cast<double>(num));
 }
 
-inline double lgamma(double num) { return ::score_lgamma(num); }
-inline float lgamma(float num) { return ::score_lgammaf(num); }
+inline double lgamma(double num) { return ::score_future_cpp_lgamma(num); }
+inline float lgamma(float num) { return ::score_future_cpp_lgammaf(num); }
 
-inline double tgamma(double num) { return ::score_tgamma(num); }
-inline float tgamma(float num) { return ::score_tgammaf(num); }
+inline double tgamma(double num) { return ::score_future_cpp_tgamma(num); }
+inline float tgamma(float num) { return ::score_future_cpp_tgammaf(num); }
 
-inline double fmod(double x, double y) { return ::score_fmod(x, y); }
-inline float fmod(float x, float y) { return ::score_fmodf(x, y); }
+inline double fmod(double x, double y) { return ::score_future_cpp_fmod(x, y); }
+inline float fmod(float x, float y) { return ::score_future_cpp_fmodf(x, y); }
 
-inline double modf(double num, double* iptr) { return ::score_modf(num, iptr); }
-inline float modf(float num, float* iptr) { return ::score_modff(num, iptr); }
+inline double modf(double num, double* iptr) { return ::score_future_cpp_modf(num, iptr); }
+inline float modf(float num, float* iptr) { return ::score_future_cpp_modff(num, iptr); }
 
-inline double remainder(double x, double y) { return ::score_remainder(x, y); }
-inline float remainder(float x, float y) { return ::score_remainderf(x, y); }
+inline double remainder(double x, double y) { return ::score_future_cpp_remainder(x, y); }
+inline float remainder(float x, float y) { return ::score_future_cpp_remainderf(x, y); }
 
-inline double remquo(double x, double y, int* quo) { return ::score_remquo(x, y, quo); }
-inline float remquo(float x, float y, int* quo) { return ::score_remquof(x, y, quo); }
+inline double remquo(double x, double y, int* quo) { return ::score_future_cpp_remquo(x, y, quo); }
+inline float remquo(float x, float y, int* quo) { return ::score_future_cpp_remquof(x, y, quo); }
 
 inline double copysign(double mag, double sgn)
 {
@@ -317,7 +317,7 @@ inline double copysign(double mag, double sgn)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::copysign_neon(mag, sgn);
 #else
-    return ::score_copysign(mag, sgn);
+    return ::score_future_cpp_copysign(mag, sgn);
 #endif
 }
 inline float copysign(float mag, float sgn)
@@ -327,7 +327,7 @@ inline float copysign(float mag, float sgn)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::copysign_neon(mag, sgn);
 #else
-    return ::score_copysignf(mag, sgn);
+    return ::score_future_cpp_copysignf(mag, sgn);
 #endif
 }
 
@@ -341,7 +341,7 @@ inline double abs(double num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::abs_neon(num);
 #else
-    return ::score_fabs(num);
+    return ::score_future_cpp_fabs(num);
 #endif
 }
 inline float abs(float num)
@@ -351,7 +351,7 @@ inline float abs(float num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::abs_neon(num);
 #else
-    return ::score_fabsf(num);
+    return ::score_future_cpp_fabsf(num);
 #endif
 }
 
@@ -362,7 +362,7 @@ inline double fabs(double arg)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::abs_neon(arg);
 #else
-    return ::score_fabs(arg);
+    return ::score_future_cpp_fabs(arg);
 #endif
 }
 inline float fabs(float arg)
@@ -372,36 +372,36 @@ inline float fabs(float arg)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::abs_neon(arg);
 #else
-    return ::score_fabsf(arg);
+    return ::score_future_cpp_fabsf(arg);
 #endif
 }
 
-inline double fdim(double x, double y) { return ::score_fdim(x, y); }
-inline float fdim(float x, float y) { return ::score_fdimf(x, y); }
+inline double fdim(double x, double y) { return ::score_future_cpp_fdim(x, y); }
+inline float fdim(float x, float y) { return ::score_future_cpp_fdimf(x, y); }
 
-inline double fma(double x, double y, double z) { return ::score_fma(x, y, z); }
-inline float fma(float x, float y, float z) { return ::score_fmaf(x, y, z); }
+inline double fma(double x, double y, double z) { return ::score_future_cpp_fma(x, y, z); }
+inline float fma(float x, float y, float z) { return ::score_future_cpp_fmaf(x, y, z); }
 
-inline double frexp(double num, int* exp) { return ::score_frexp(num, exp); }
-inline float frexp(float num, int* exp) { return ::score_frexpf(num, exp); }
+inline double frexp(double num, int* exp) { return ::score_future_cpp_frexp(num, exp); }
+inline float frexp(float num, int* exp) { return ::score_future_cpp_frexpf(num, exp); }
 
-inline double hypot(double x, double y) { return ::score_hypot(x, y); }
-inline float hypot(float x, float y) { return ::score_hypotf(x, y); }
+inline double hypot(double x, double y) { return ::score_future_cpp_hypot(x, y); }
+inline float hypot(float x, float y) { return ::score_future_cpp_hypotf(x, y); }
 
-inline double ldexp(double num, int exp) { return ::score_ldexp(num, exp); }
-inline float ldexp(float num, int exp) { return ::score_ldexpf(num, exp); }
+inline double ldexp(double num, int exp) { return ::score_future_cpp_ldexp(num, exp); }
+inline float ldexp(float num, int exp) { return ::score_future_cpp_ldexpf(num, exp); }
 
-inline double nan(const char* arg) { return ::score_nan(arg); }
-inline float nanf(const char* arg) { return ::score_nanf(arg); }
+inline double nan(const char* arg) { return ::score_future_cpp_nan(arg); }
+inline float nanf(const char* arg) { return ::score_future_cpp_nanf(arg); }
 
-inline double scalbln(double num, int exp) { return ::score_scalbln(num, exp); }
-inline float scalbln(float num, int exp) { return ::score_scalblnf(num, exp); }
+inline double scalbln(double num, int exp) { return ::score_future_cpp_scalbln(num, exp); }
+inline float scalbln(float num, int exp) { return ::score_future_cpp_scalblnf(num, exp); }
 
-inline double scalbn(double num, int exp) { return ::score_scalbn(num, exp); }
-inline float scalbn(float num, int exp) { return ::score_scalbnf(num, exp); }
+inline double scalbn(double num, int exp) { return ::score_future_cpp_scalbn(num, exp); }
+inline float scalbn(float num, int exp) { return ::score_future_cpp_scalbnf(num, exp); }
 
-inline int fpclassify(double num) { return ::score_fpclassify(num); }
-inline int fpclassify(float num) { return ::score_fpclassifyf(num); }
+inline int fpclassify(double num) { return ::score_future_cpp_fpclassify(num); }
+inline int fpclassify(float num) { return ::score_future_cpp_fpclassifyf(num); }
 
 template <typename T, typename std::enable_if_t<std::is_integral<T>::value, bool> = false>
 inline bool isfinite(T /*num*/)
@@ -415,7 +415,7 @@ inline bool isfinite(double num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::isfinite_neon(num);
 #else
-    return ::score_isfinite(num) != 0;
+    return ::score_future_cpp_isfinite(num) != 0;
 #endif
 }
 inline bool isfinite(float num)
@@ -425,7 +425,7 @@ inline bool isfinite(float num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::isfinite_neon(num);
 #else
-    return ::score_isfinitef(num) != 0;
+    return ::score_future_cpp_isfinitef(num) != 0;
 #endif
 }
 
@@ -436,7 +436,7 @@ inline bool isinf(double num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::isinf_neon(num);
 #else
-    return ::score_isinf(num) != 0;
+    return ::score_future_cpp_isinf(num) != 0;
 #endif
 }
 inline bool isinf(float num)
@@ -446,7 +446,7 @@ inline bool isinf(float num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::isinf_neon(num);
 #else
-    return ::score_isinff(num) != 0;
+    return ::score_future_cpp_isinff(num) != 0;
 #endif
 }
 
@@ -457,7 +457,7 @@ inline bool isnan(double num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::isnan_neon(num);
 #else
-    return ::score_isnan(num) != 0;
+    return ::score_future_cpp_isnan(num) != 0;
 #endif
 }
 inline bool isnan(float num)
@@ -467,7 +467,7 @@ inline bool isnan(float num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::isnan_neon(num);
 #else
-    return ::score_isnanf(num) != 0;
+    return ::score_future_cpp_isnanf(num) != 0;
 #endif
 }
 
@@ -478,7 +478,7 @@ inline bool isnormal(double num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::isnormal_neon(num);
 #else
-    return ::score_isnormal(num) != 0;
+    return ::score_future_cpp_isnormal(num) != 0;
 #endif
 }
 inline bool isnormal(float num)
@@ -488,7 +488,7 @@ inline bool isnormal(float num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::isnormal_neon(num);
 #else
-    return ::score_isnormalf(num) != 0;
+    return ::score_future_cpp_isnormalf(num) != 0;
 #endif
 }
 
@@ -504,7 +504,7 @@ inline bool signbit(double num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::signbit_neon(num);
 #else
-    return ::score_signbit(num) != 0;
+    return ::score_future_cpp_signbit(num) != 0;
 #endif
 }
 inline bool signbit(float num)
@@ -514,27 +514,27 @@ inline bool signbit(float num)
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
     return score::cpp::detail::signbit_neon(num);
 #else
-    return ::score_signbitf(num) != 0;
+    return ::score_future_cpp_signbitf(num) != 0;
 #endif
 }
 
-inline bool isgreater(double x, double y) { return ::score_isgreater(x, y) != 0; }
-inline bool isgreater(float x, float y) { return ::score_isgreaterf(x, y) != 0; }
+inline bool isgreater(double x, double y) { return ::score_future_cpp_isgreater(x, y) != 0; }
+inline bool isgreater(float x, float y) { return ::score_future_cpp_isgreaterf(x, y) != 0; }
 
-inline bool isgreaterequal(double x, double y) { return ::score_isgreaterequal(x, y) != 0; }
-inline bool isgreaterequal(float x, float y) { return ::score_isgreaterequalf(x, y) != 0; }
+inline bool isgreaterequal(double x, double y) { return ::score_future_cpp_isgreaterequal(x, y) != 0; }
+inline bool isgreaterequal(float x, float y) { return ::score_future_cpp_isgreaterequalf(x, y) != 0; }
 
-inline bool isless(double x, double y) { return ::score_isless(x, y) != 0; }
-inline bool isless(float x, float y) { return ::score_islessf(x, y) != 0; }
+inline bool isless(double x, double y) { return ::score_future_cpp_isless(x, y) != 0; }
+inline bool isless(float x, float y) { return ::score_future_cpp_islessf(x, y) != 0; }
 
-inline bool islessequal(double x, double y) { return ::score_islessequal(x, y) != 0; }
-inline bool islessequal(float x, float y) { return ::score_islessequalf(x, y) != 0; }
+inline bool islessequal(double x, double y) { return ::score_future_cpp_islessequal(x, y) != 0; }
+inline bool islessequal(float x, float y) { return ::score_future_cpp_islessequalf(x, y) != 0; }
 
-inline bool islessgreater(double x, double y) { return ::score_islessgreater(x, y) != 0; }
-inline bool islessgreater(float x, float y) { return ::score_islessgreaterf(x, y) != 0; }
+inline bool islessgreater(double x, double y) { return ::score_future_cpp_islessgreater(x, y) != 0; }
+inline bool islessgreater(float x, float y) { return ::score_future_cpp_islessgreaterf(x, y) != 0; }
 
-inline bool isunordered(double x, double y) { return ::score_isunordered(x, y) != 0; }
-inline bool isunordered(float x, float y) { return ::score_isunorderedf(x, y) != 0; }
+inline bool isunordered(double x, double y) { return ::score_future_cpp_isunordered(x, y) != 0; }
+inline bool isunordered(float x, float y) { return ::score_future_cpp_isunorderedf(x, y) != 0; }
 
 /// \brief Checks floats for equality.
 ///
@@ -587,7 +587,7 @@ constexpr T fmod_floored(const T value, const T m)
 {
     static_assert(std::is_floating_point<T>::value, "Type need to be floating point.");
     SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG(score::cpp::abs(m) > std::numeric_limits<T>::min());
-    return value - m * score::cpp::floor(value / m);
+    return value - (m * score::cpp::floor(value / m));
 }
 
 namespace math
@@ -659,7 +659,7 @@ constexpr T wrap_to_pi(const T angle)
     const T half = score::cpp::math::constants::half<T>();
     T multiple = angle / two_pi;
     multiple = score::cpp::floor(multiple + half);
-    return angle - two_pi * multiple;
+    return angle - (two_pi * multiple);
 }
 
 /// \brief Remaps angle to the interval [0, 2*pi) using a modulus operation.

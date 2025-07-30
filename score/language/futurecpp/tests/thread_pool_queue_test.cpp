@@ -33,6 +33,7 @@ struct element : score::cpp::detail::intrusive_forward_list_node
     std::int32_t v;
 };
 
+// NOTRACING
 TEST(thread_pool_queue_test, push_GivenNonEmptyQueue_ExpectValuePopped)
 {
     thread_pool_queue<element> queue{};
@@ -47,6 +48,7 @@ TEST(thread_pool_queue_test, push_GivenNonEmptyQueue_ExpectValuePopped)
     EXPECT_EQ(&v, popped_value);
 }
 
+// NOTRACING
 TEST(thread_pool_queue_test, try_to_push_GivenNonEmptyQueue_ExpectValuePopped)
 {
     thread_pool_queue<element> queue{};
@@ -61,6 +63,7 @@ TEST(thread_pool_queue_test, try_to_push_GivenNonEmptyQueue_ExpectValuePopped)
     EXPECT_EQ(&v, popped_value);
 }
 
+// NOTRACING
 TEST(thread_pool_queue_test, pop_GivenPopMayBlock_ExpectUnblockedWhenPush)
 {
     element v{42};
@@ -75,6 +78,7 @@ TEST(thread_pool_queue_test, pop_GivenPopMayBlock_ExpectUnblockedWhenPush)
     queue.push(v);
 }
 
+// NOTRACING
 TEST(thread_pool_queue_test, pop_GivenPopMayBlock_ExpectUnblockedWhenTryToPush)
 {
     element v{42};
@@ -92,6 +96,7 @@ TEST(thread_pool_queue_test, pop_GivenPopMayBlock_ExpectUnblockedWhenTryToPush)
     }
 }
 
+// NOTRACING
 TEST(thread_pool_queue_test, pop_GivenPopMayBlock_ExpectUnblockedWhenAbort)
 {
     thread_pool_queue<element> queue{};
@@ -101,6 +106,7 @@ TEST(thread_pool_queue_test, pop_GivenPopMayBlock_ExpectUnblockedWhenAbort)
     queue.abort();
 }
 
+// NOTRACING
 TEST(thread_pool_queue_test, try_to_pop_GivenEmptyQueue_ExpectNullptr)
 {
     thread_pool_queue<element> queue{};
@@ -108,6 +114,7 @@ TEST(thread_pool_queue_test, try_to_pop_GivenEmptyQueue_ExpectNullptr)
     EXPECT_EQ(queue.try_to_pop(), nullptr);
 }
 
+// NOTRACING
 TEST(thread_pool_queue_test, abort_GivenAbortOnEmptyQueueWasCalled_ExpectPopToNotBlockThread)
 {
     thread_pool_queue<element> queue{};
@@ -117,6 +124,7 @@ TEST(thread_pool_queue_test, abort_GivenAbortOnEmptyQueueWasCalled_ExpectPopToNo
     EXPECT_EQ(queue.pop(), nullptr);
 }
 
+// NOTRACING
 TEST(thread_pool_queue_test, abort_GivenAbortOnNonEmptyQueueWasCalled_ExpectPopToNotBlockThread)
 {
     element v{42};

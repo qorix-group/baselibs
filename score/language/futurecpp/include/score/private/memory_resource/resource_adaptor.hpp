@@ -83,8 +83,10 @@ using resource_adaptor_base_type = std::aligned_storage_t<alignof(std::max_align
 
 /// Wraps a C++11 Allocator type \tparam Alloc with a pmr::memory_resource interface.
 ///
+/// cppcoreguidelines-special-member-functions: Follows literally the C++ standard see
+/// https://en.cppreference.com/w/cpp/experimental/resource_adaptor.html for details.
 template <typename Alloc>
-class resource_adaptor_impl : public memory_resource
+class resource_adaptor_impl : public memory_resource // NOLINT(cppcoreguidelines-special-member-functions)
 {
 public:
     using allocator_type = Alloc;
@@ -95,9 +97,9 @@ public:
     resource_adaptor_impl(const resource_adaptor_impl&) = default;
     resource_adaptor_impl(resource_adaptor_impl&&) noexcept = default;
 
-    explicit resource_adaptor_impl(const Alloc& a) : allocator_(a) {}
+    explicit resource_adaptor_impl(const Alloc& a) : memory_resource{}, allocator_(a) {}
 
-    explicit resource_adaptor_impl(Alloc&& a) : allocator_(std::move(a)) {}
+    explicit resource_adaptor_impl(Alloc&& a) : memory_resource{}, allocator_(std::move(a)) {}
 
     resource_adaptor_impl& operator=(const resource_adaptor_impl&) = default;
 

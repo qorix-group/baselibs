@@ -71,7 +71,7 @@ struct reference_return_value_struct_type
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#8058382
-TEST(score_apply_test, simple_function_test)
+TEST(score_future_cpp_apply_test, simple_function_test)
 {
     using result_type_0_params = decltype(score::cpp::apply(simple_test_0, std::tuple<>{}));
     using result_type_1_params = decltype(score::cpp::apply(simple_test_1, std::tuple<std::int32_t>{}));
@@ -91,7 +91,7 @@ TEST(score_apply_test, simple_function_test)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#8058382
-TEST(score_apply_test, simple_functor_test)
+TEST(score_future_cpp_apply_test, simple_functor_test)
 {
     using result_type_0_params = decltype(score::cpp::apply(simple_functor_type{}, std::tuple<>{}));
     using result_type_1_params = decltype(score::cpp::apply(simple_functor_type{}, std::tuple<double>{}));
@@ -111,7 +111,7 @@ TEST(score_apply_test, simple_functor_test)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#8058382
-TEST(score_apply_test, complex_function_test)
+TEST(score_future_cpp_apply_test, complex_function_test)
 {
     const auto result_0_params = score::cpp::apply(complex_test_0, std::tuple<>{});
     const auto result_1_params = score::cpp::apply(complex_test_1, std::tuple<std::int32_t>{});
@@ -131,7 +131,7 @@ TEST(score_apply_test, complex_function_test)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#8058382
-TEST(score_apply_test, complex_functor_test)
+TEST(score_future_cpp_apply_test, complex_functor_test)
 {
     const auto result_0_params = score::cpp::apply(complex_functor_type{}, std::tuple<>{});
     const auto result_1_params = score::cpp::apply(complex_functor_type{}, std::tuple<double>{});
@@ -151,7 +151,7 @@ TEST(score_apply_test, complex_functor_test)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#8058382
-TEST(score_apply_test, template_functor_test)
+TEST(score_future_cpp_apply_test, template_functor_test)
 {
     const auto result_0_params = score::cpp::apply(template_functor_type{}, std::tuple<>{});
     const auto result_1_params = score::cpp::apply(template_functor_type{}, std::tuple<double>{});
@@ -171,7 +171,7 @@ TEST(score_apply_test, template_functor_test)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#8058382
-TEST(score_apply_test, forwarding_functor_test)
+TEST(score_future_cpp_apply_test, forwarding_functor_test)
 {
     forwarding_struct_type functor_ref;
     const auto& const_functor_ref = functor_ref;
@@ -199,7 +199,7 @@ TEST(score_apply_test, forwarding_functor_test)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#8058382
-TEST(score_apply_test, reference_return_value_test)
+TEST(score_future_cpp_apply_test, reference_return_value_test)
 {
     reference_return_value_struct_type functor;
     const auto& const_functor_ref = functor;

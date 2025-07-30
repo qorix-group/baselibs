@@ -19,6 +19,8 @@ namespace detail
 namespace
 {
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#39890557, CB-#40946023
 TEST(cpu_context_test, equality_GivenCpuContext_ExpectEqual)
 {
     cpu_context ctx{cpu_context::worker_count{1}};
@@ -27,6 +29,8 @@ TEST(cpu_context_test, equality_GivenCpuContext_ExpectEqual)
     EXPECT_FALSE(ctx.get_scheduler() != ctx.get_scheduler());
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#39890557, CB-#40946023
 TEST(cpu_context_test, equality_GivenTwoCpuContext_ExpectNotEqual)
 {
     cpu_context ctx1{cpu_context::worker_count{1}};
@@ -36,6 +40,8 @@ TEST(cpu_context_test, equality_GivenTwoCpuContext_ExpectNotEqual)
     EXPECT_FALSE(ctx1.get_scheduler() == ctx2.get_scheduler());
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946023
 TEST(cpu_context_test, max_concurrency_GivenCpuContext_ExpectMaxConcurrencyReturnsNumberOfThreads)
 {
     const cpu_context ctx1{cpu_context::worker_count{1}};
@@ -81,6 +87,8 @@ private:
     std::atomic<state>* state_;
 };
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#39890557, CB-#40946023
 TEST(cpu_context_test, start_GivenOperationStateStarted_ExpectSetValueIsCalledOnReceiverEventually)
 {
     std::atomic<receiver::state> state{};
@@ -97,6 +105,8 @@ TEST(cpu_context_test, start_GivenOperationStateStarted_ExpectSetValueIsCalledOn
     EXPECT_EQ(state, receiver::state::start);
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#39890557, CB-#40946023
 TEST(cpu_context_test, start_GivenThreadPoolTerminated_ExpectReceiverIsNotInStateInitial)
 {
     std::atomic<receiver::state> state{};
@@ -140,6 +150,8 @@ private:
     std::int32_t count_;
 };
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(cpu_context_test, set_value_GivenReceiver_ExpectCountIsIncrementedAndStateIsFinished)
 {
     std::atomic<counting_receiver::state> state{};
@@ -154,6 +166,8 @@ TEST(cpu_context_test, set_value_GivenReceiver_ExpectCountIsIncrementedAndStateI
     EXPECT_EQ(state, counting_receiver::state::finished);
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#39890557, CB-#40946837
 TEST(cpu_context_test, start_GivenOperationStateStarted_ExpectSetValueIsCalledOnCopyOfReceiver)
 {
     std::atomic<counting_receiver::state> state{};

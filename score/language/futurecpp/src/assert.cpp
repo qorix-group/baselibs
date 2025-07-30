@@ -53,7 +53,7 @@ void assertion_failed(const handler_parameters& param, assert_system_handler_tag
     // MISRA rule describes the following exception "The call to `abort` that occurs due to the macro expansion of
     // `assert` is not considered to be an explicit call, as it is not expected to be reachable. This function behaves
     // similar to `assert`.
-    // coverity[misra_cpp_2023_rule_18_5_2_violation]
+    // coverity[misra_cpp_2023_rule_18_5_2_violation : SUPPRESS]
     std::abort(); // LCOV_EXCL_LINE
                   // DEATH test does not cover std::abort--presumably because of DEATH test run in a subprocess
 }

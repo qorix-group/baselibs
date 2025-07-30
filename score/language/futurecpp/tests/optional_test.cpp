@@ -27,6 +27,9 @@ public:
     explicit non_default_ctor(int first, int second) : first_(first), second_(second) { ctor_counter++; }
     ~non_default_ctor() { dtor_counter++; }
     non_default_ctor(const non_default_ctor&) { ctor_counter++; }
+    non_default_ctor(non_default_ctor&&) { ctor_counter++; }
+    non_default_ctor& operator=(const non_default_ctor&) = default;
+    non_default_ctor& operator=(non_default_ctor&&) = default;
 
     static std::uint32_t count() { return ctor_counter - dtor_counter; }
     static std::uint32_t ctor_count() { return ctor_counter; }
@@ -221,8 +224,8 @@ TEST(optional, optional_assignment_from_copy_list)
 
     sut = {};
 
-    EXPECT_TRUE(sut.has_value());
-    EXPECT_TRUE(sut);
+    EXPECT_FALSE(sut.has_value());
+    EXPECT_FALSE(sut);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -231,12 +234,14 @@ TEST(optional, optional_self_assignment)
 {
     score::cpp::optional<int> sut{1};
 
-    sut = static_cast<const score::cpp::optional<int>&>(sut); // `static_cast` to silence self-assign compiler warning
+    auto& sut_ref = sut; // using an additional reference to silence warning for intentional self-assign
+
+    sut = sut_ref;
 
     ASSERT_TRUE(sut.has_value());
     EXPECT_EQ(sut.value(), 1);
 
-    sut = static_cast<score::cpp::optional<int>&&>(sut); // `static_cast` to silence self-move compiler warning
+    sut = std::move(sut_ref);
 
     ASSERT_TRUE(sut.has_value());
     EXPECT_EQ(sut.value(), 1);
@@ -404,8 +409,9 @@ TEST(optional, copy_assignment_deletion)
         EXPECT_EQ(6, non_default_ctor::ctor_count());
         EXPECT_EQ(2, non_default_ctor::dtor_count());
 
-        // delete value because of assignment of empty optional
+        // delete value because of move-assignment of empty optional
         fixture = score::cpp::optional<non_default_ctor>();
+        EXPECT_FALSE(fixture.has_value());
         EXPECT_EQ(3, non_default_ctor::count());
 
         // construct from value
@@ -418,11 +424,19 @@ TEST(optional, copy_assignment_deletion)
         EXPECT_EQ(4, non_default_ctor::count());
         EXPECT_EQ(7, non_default_ctor::ctor_count());
         EXPECT_EQ(3, non_default_ctor::dtor_count());
-        // we expect the value of fixture6 gets destructed.
-        // and a new value will be copy constructed inside fixture6.
+        // we expect that arg will be copy-assigned to the contained value inside fixture6.
         fixture6 = arg;
         EXPECT_EQ(4, non_default_ctor::count());
-        EXPECT_EQ(8, non_default_ctor::ctor_count());
+        EXPECT_EQ(7, non_default_ctor::ctor_count());
+        EXPECT_EQ(3, non_default_ctor::dtor_count());
+
+        // delete value because of copy-assignment of empty optional
+        ASSERT_TRUE(fixture6.has_value());
+        score::cpp::optional<non_default_ctor> empty;
+        fixture6 = empty;
+        EXPECT_FALSE(fixture6.has_value());
+        EXPECT_EQ(3, non_default_ctor::count());
+        EXPECT_EQ(7, non_default_ctor::ctor_count());
         EXPECT_EQ(4, non_default_ctor::dtor_count());
     }
 
@@ -1331,19 +1345,25 @@ TEST(optional, perfect_forward_converting_constructor)
     score::cpp::optional<forward_counter> fixture_1(std::move(value));
     EXPECT_EQ(1, fixture_1->move_constructor_calls());
     EXPECT_EQ(0, fixture_1->copy_constructor_calls());
+    EXPECT_EQ(0, fixture_1->move_assignment_calls());
+    EXPECT_EQ(0, fixture_1->copy_assignment_calls());
 
     score::cpp::optional<forward_counter> fixture_2(value);
     EXPECT_EQ(1, fixture_2->copy_constructor_calls());
     EXPECT_EQ(0, fixture_2->move_constructor_calls());
+    EXPECT_EQ(0, fixture_2->move_assignment_calls());
+    EXPECT_EQ(0, fixture_2->copy_assignment_calls());
 
     score::cpp::optional<forward_counter> fixture_3(forward_counter{});
     EXPECT_EQ(1, fixture_3->move_constructor_calls());
     EXPECT_EQ(0, fixture_3->copy_constructor_calls());
+    EXPECT_EQ(0, fixture_3->move_assignment_calls());
+    EXPECT_EQ(0, fixture_3->copy_assignment_calls());
 }
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#9337998
-TEST(optional, perfect_forward_converting_assignment)
+TEST(optional, perfect_forward_converting_assignment_to_empty_optional)
 {
     forward_counter value;
 
@@ -1351,16 +1371,106 @@ TEST(optional, perfect_forward_converting_assignment)
     fixture_1 = std::move(value);
     EXPECT_EQ(1, fixture_1->move_constructor_calls());
     EXPECT_EQ(0, fixture_1->copy_constructor_calls());
+    EXPECT_EQ(0, fixture_1->move_assignment_calls());
+    EXPECT_EQ(0, fixture_1->copy_assignment_calls());
 
     score::cpp::optional<forward_counter> fixture_2;
     fixture_2 = value;
     EXPECT_EQ(1, fixture_2->copy_constructor_calls());
     EXPECT_EQ(0, fixture_2->move_constructor_calls());
+    EXPECT_EQ(0, fixture_2->move_assignment_calls());
+    EXPECT_EQ(0, fixture_2->copy_assignment_calls());
 
     score::cpp::optional<forward_counter> fixture_3;
     fixture_3 = forward_counter{};
     EXPECT_EQ(1, fixture_3->move_constructor_calls());
     EXPECT_EQ(0, fixture_3->copy_constructor_calls());
+    EXPECT_EQ(0, fixture_3->move_assignment_calls());
+    EXPECT_EQ(0, fixture_3->copy_assignment_calls());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, perfect_forward_converting_assignment_to_nonempty_optional)
+{
+    forward_counter value;
+
+    score::cpp::optional<forward_counter> fixture_1{score::cpp::in_place};
+    fixture_1 = std::move(value);
+    EXPECT_EQ(1, fixture_1->move_assignment_calls());
+    EXPECT_EQ(0, fixture_1->move_constructor_calls());
+    EXPECT_EQ(0, fixture_1->copy_constructor_calls());
+    EXPECT_EQ(0, fixture_1->copy_assignment_calls());
+
+    score::cpp::optional<forward_counter> fixture_2{score::cpp::in_place};
+    fixture_2 = value;
+    EXPECT_EQ(1, fixture_2->copy_assignment_calls());
+    EXPECT_EQ(0, fixture_2->copy_constructor_calls());
+    EXPECT_EQ(0, fixture_2->move_constructor_calls());
+    EXPECT_EQ(0, fixture_2->move_assignment_calls());
+
+    score::cpp::optional<forward_counter> fixture_3{score::cpp::in_place};
+    fixture_3 = forward_counter{};
+    EXPECT_EQ(1, fixture_3->move_assignment_calls());
+    EXPECT_EQ(0, fixture_3->move_constructor_calls());
+    EXPECT_EQ(0, fixture_3->copy_constructor_calls());
+    EXPECT_EQ(0, fixture_3->copy_assignment_calls());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, perfect_forward_assignment_to_empty_optional)
+{
+    score::cpp::optional<forward_counter> value{score::cpp::in_place};
+
+    score::cpp::optional<forward_counter> fixture_1;
+    fixture_1 = std::move(value);
+    EXPECT_EQ(1, fixture_1->move_constructor_calls());
+    EXPECT_EQ(0, fixture_1->copy_constructor_calls());
+    EXPECT_EQ(0, fixture_1->move_assignment_calls());
+    EXPECT_EQ(0, fixture_1->copy_assignment_calls());
+
+    score::cpp::optional<forward_counter> fixture_2;
+    fixture_2 = value;
+    EXPECT_EQ(1, fixture_2->copy_constructor_calls());
+    EXPECT_EQ(0, fixture_2->move_constructor_calls());
+    EXPECT_EQ(0, fixture_2->move_assignment_calls());
+    EXPECT_EQ(0, fixture_2->copy_assignment_calls());
+
+    score::cpp::optional<forward_counter> fixture_3;
+    fixture_3 = score::cpp::optional<forward_counter>{score::cpp::in_place};
+    EXPECT_EQ(1, fixture_3->move_constructor_calls());
+    EXPECT_EQ(0, fixture_3->copy_constructor_calls());
+    EXPECT_EQ(0, fixture_3->move_assignment_calls());
+    EXPECT_EQ(0, fixture_3->copy_assignment_calls());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, perfect_forward_assignment_to_nonempty_optional)
+{
+    score::cpp::optional<forward_counter> value{score::cpp::in_place};
+
+    score::cpp::optional<forward_counter> fixture_1{score::cpp::in_place};
+    fixture_1 = std::move(value);
+    EXPECT_EQ(0, fixture_1->move_assignment_calls());
+    EXPECT_EQ(1, fixture_1->move_constructor_calls());
+    EXPECT_EQ(0, fixture_1->copy_constructor_calls());
+    EXPECT_EQ(0, fixture_1->copy_assignment_calls());
+
+    score::cpp::optional<forward_counter> fixture_2{score::cpp::in_place};
+    fixture_2 = value;
+    EXPECT_EQ(0, fixture_2->copy_assignment_calls());
+    EXPECT_EQ(0, fixture_2->move_assignment_calls());
+    EXPECT_EQ(1, fixture_2->copy_constructor_calls());
+    EXPECT_EQ(0, fixture_2->move_constructor_calls());
+
+    score::cpp::optional<forward_counter> fixture_3{score::cpp::in_place};
+    fixture_3 = score::cpp::optional<forward_counter>{score::cpp::in_place};
+    EXPECT_EQ(0, fixture_3->move_assignment_calls());
+    EXPECT_EQ(1, fixture_3->move_constructor_calls());
+    EXPECT_EQ(0, fixture_3->copy_constructor_calls());
+    EXPECT_EQ(0, fixture_3->copy_assignment_calls());
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -1495,6 +1605,182 @@ TEST(optional, comparison_operators_when_both_filled_and_equals)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#9337998
+TEST(optional, comparison_operators_when_lhs_nullopt_and_rhs_empty)
+{
+    score::cpp::optional<int32_t> fixture_rhs{};
+
+    EXPECT_TRUE(score::cpp::nullopt == fixture_rhs);
+    EXPECT_FALSE(score::cpp::nullopt != fixture_rhs);
+    EXPECT_FALSE(score::cpp::nullopt < fixture_rhs);
+    EXPECT_TRUE(score::cpp::nullopt <= fixture_rhs);
+    EXPECT_FALSE(score::cpp::nullopt > fixture_rhs);
+    EXPECT_TRUE(score::cpp::nullopt >= fixture_rhs);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, comparison_operators_when_lhs_nullopt_and_rhs_filled)
+{
+    score::cpp::optional<int32_t> fixture_rhs{7};
+
+    EXPECT_FALSE(score::cpp::nullopt == fixture_rhs);
+    EXPECT_TRUE(score::cpp::nullopt != fixture_rhs);
+    EXPECT_TRUE(score::cpp::nullopt < fixture_rhs);
+    EXPECT_TRUE(score::cpp::nullopt <= fixture_rhs);
+    EXPECT_FALSE(score::cpp::nullopt > fixture_rhs);
+    EXPECT_FALSE(score::cpp::nullopt >= fixture_rhs);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, comparison_operators_when_lhs_empty_and_rhs_nullopt)
+{
+    score::cpp::optional<int32_t> fixture_lhs{};
+
+    EXPECT_TRUE(fixture_lhs == score::cpp::nullopt);
+    EXPECT_FALSE(fixture_lhs != score::cpp::nullopt);
+    EXPECT_FALSE(fixture_lhs < score::cpp::nullopt);
+    EXPECT_TRUE(fixture_lhs <= score::cpp::nullopt);
+    EXPECT_FALSE(fixture_lhs > score::cpp::nullopt);
+    EXPECT_TRUE(fixture_lhs >= score::cpp::nullopt);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, comparison_operators_when_lhs_filled_and_rhs_nullopt)
+{
+    score::cpp::optional<int32_t> fixture_lhs{7};
+
+    EXPECT_FALSE(fixture_lhs == score::cpp::nullopt);
+    EXPECT_TRUE(fixture_lhs != score::cpp::nullopt);
+    EXPECT_FALSE(fixture_lhs < score::cpp::nullopt);
+    EXPECT_FALSE(fixture_lhs <= score::cpp::nullopt);
+    EXPECT_TRUE(fixture_lhs > score::cpp::nullopt);
+    EXPECT_TRUE(fixture_lhs >= score::cpp::nullopt);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, comparison_operators_when_lhs_empty_and_rhs_value)
+{
+    score::cpp::optional<int32_t> fixture_lhs{};
+    int32_t fixture_rhs{7};
+
+    EXPECT_FALSE(fixture_lhs == fixture_rhs);
+    EXPECT_TRUE(fixture_lhs != fixture_rhs);
+    EXPECT_TRUE(fixture_lhs < fixture_rhs);
+    EXPECT_TRUE(fixture_lhs <= fixture_rhs);
+    EXPECT_FALSE(fixture_lhs > fixture_rhs);
+    EXPECT_FALSE(fixture_lhs >= fixture_rhs);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, comparison_operators_when_lhs_filled_and_less_than_rhs_value)
+{
+    score::cpp::optional<int32_t> fixture_lhs{5};
+    int32_t fixture_rhs{7};
+
+    EXPECT_FALSE(fixture_lhs == fixture_rhs);
+    EXPECT_TRUE(fixture_lhs != fixture_rhs);
+    EXPECT_TRUE(fixture_lhs < fixture_rhs);
+    EXPECT_TRUE(fixture_lhs <= fixture_rhs);
+    EXPECT_FALSE(fixture_lhs > fixture_rhs);
+    EXPECT_FALSE(fixture_lhs >= fixture_rhs);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, comparison_operators_when_lhs_filled_and_greater_than_rhs_value)
+{
+    score::cpp::optional<int32_t> fixture_lhs{9};
+    int32_t fixture_rhs{7};
+
+    EXPECT_FALSE(fixture_lhs == fixture_rhs);
+    EXPECT_TRUE(fixture_lhs != fixture_rhs);
+    EXPECT_FALSE(fixture_lhs < fixture_rhs);
+    EXPECT_FALSE(fixture_lhs <= fixture_rhs);
+    EXPECT_TRUE(fixture_lhs > fixture_rhs);
+    EXPECT_TRUE(fixture_lhs >= fixture_rhs);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, comparison_operators_when_lhs_filled_and_equal_to_rhs_value)
+{
+    score::cpp::optional<int32_t> fixture_lhs{7};
+    int32_t fixture_rhs{7};
+
+    EXPECT_TRUE(fixture_lhs == fixture_rhs);
+    EXPECT_FALSE(fixture_lhs != fixture_rhs);
+    EXPECT_FALSE(fixture_lhs < fixture_rhs);
+    EXPECT_TRUE(fixture_lhs <= fixture_rhs);
+    EXPECT_FALSE(fixture_lhs > fixture_rhs);
+    EXPECT_TRUE(fixture_lhs >= fixture_rhs);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, comparison_operators_when_lhs_value_and_rhs_empty)
+{
+    int32_t fixture_lhs{7};
+    score::cpp::optional<int32_t> fixture_rhs{};
+
+    EXPECT_FALSE(fixture_lhs == fixture_rhs);
+    EXPECT_TRUE(fixture_lhs != fixture_rhs);
+    EXPECT_FALSE(fixture_lhs < fixture_rhs);
+    EXPECT_FALSE(fixture_lhs <= fixture_rhs);
+    EXPECT_TRUE(fixture_lhs > fixture_rhs);
+    EXPECT_TRUE(fixture_lhs >= fixture_rhs);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, comparison_operators_when_lhs_value_less_than_filled_rhs)
+{
+    int32_t fixture_lhs{5};
+    score::cpp::optional<int32_t> fixture_rhs{7};
+
+    EXPECT_FALSE(fixture_lhs == fixture_rhs);
+    EXPECT_TRUE(fixture_lhs != fixture_rhs);
+    EXPECT_TRUE(fixture_lhs < fixture_rhs);
+    EXPECT_TRUE(fixture_lhs <= fixture_rhs);
+    EXPECT_FALSE(fixture_lhs > fixture_rhs);
+    EXPECT_FALSE(fixture_lhs >= fixture_rhs);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, comparison_operators_when_lhs_value_greater_than_filled_rhs)
+{
+    int32_t fixture_lhs{9};
+    score::cpp::optional<int32_t> fixture_rhs{7};
+
+    EXPECT_FALSE(fixture_lhs == fixture_rhs);
+    EXPECT_TRUE(fixture_lhs != fixture_rhs);
+    EXPECT_FALSE(fixture_lhs < fixture_rhs);
+    EXPECT_FALSE(fixture_lhs <= fixture_rhs);
+    EXPECT_TRUE(fixture_lhs > fixture_rhs);
+    EXPECT_TRUE(fixture_lhs >= fixture_rhs);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, comparison_operators_when_lhs_value_equal_to_filled_rhs)
+{
+    int32_t fixture_lhs{7};
+    score::cpp::optional<int32_t> fixture_rhs{7};
+
+    EXPECT_TRUE(fixture_lhs == fixture_rhs);
+    EXPECT_FALSE(fixture_lhs != fixture_rhs);
+    EXPECT_FALSE(fixture_lhs < fixture_rhs);
+    EXPECT_TRUE(fixture_lhs <= fixture_rhs);
+    EXPECT_FALSE(fixture_lhs > fixture_rhs);
+    EXPECT_TRUE(fixture_lhs >= fixture_rhs);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
 TEST(optional, constructor_is_sufficiently_constrained)
 {
     struct overload_set
@@ -1505,6 +1791,68 @@ TEST(optional, constructor_is_sufficiently_constrained)
 
     EXPECT_EQ(overload_set::foo(1), 0);
     EXPECT_EQ(overload_set::foo("foo"), 1);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, const_braced_default_initialization)
+{
+    score::cpp::optional<const int> fixture{};
+    EXPECT_FALSE(fixture);
+    EXPECT_FALSE(fixture.has_value());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, const_initialization_with_value)
+{
+    score::cpp::optional<const int> fixture{23};
+    EXPECT_EQ(23, fixture.value());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, const_initialization_with_in_place)
+{
+    score::cpp::optional<const int> fixture{score::cpp::in_place, 23};
+    EXPECT_EQ(23, fixture.value());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, const_copy_construct)
+{
+    score::cpp::optional<const int> fixture{23};
+    score::cpp::optional<const int> copy{fixture};
+    EXPECT_EQ(23, copy.value());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, const_move_construct)
+{
+    score::cpp::optional<const int> fixture{23};
+    score::cpp::optional<const int> move{std::move(fixture)};
+    EXPECT_EQ(23, move.value());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, const_emplace)
+{
+    score::cpp::optional<const int> fixture{};
+    fixture.emplace(23);
+    EXPECT_EQ(23, fixture.value());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
+TEST(optional, const_reset)
+{
+    score::cpp::optional<const int> fixture{23};
+    EXPECT_EQ(23, fixture.value());
+    fixture.reset();
+    EXPECT_FALSE(fixture.has_value());
 }
 
 constexpr int some_value{999};
@@ -1630,6 +1978,19 @@ TEST(make_optional, copy_constructor)
     ASSERT_TRUE(result.has_value());
 
     EXPECT_EQ(result.value().value, expected_value);
+}
+
+/// @requirement CB-#9337998
+TEST(make_optional, creates_const_correct_optional)
+{
+    {
+        const auto result = score::cpp::make_optional<std::int32_t>(1001);
+        static_assert(std::is_same<const score::cpp::optional<std::int32_t>, decltype(result)>::value, "failed");
+    }
+    {
+        const auto result = score::cpp::make_optional<const std::int32_t>(1001);
+        static_assert(std::is_same<const score::cpp::optional<const std::int32_t>, decltype(result)>::value, "failed");
+    }
 }
 
 } // namespace

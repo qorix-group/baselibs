@@ -25,6 +25,7 @@ namespace detail
 namespace
 {
 
+// NOTRACING
 TEST(thread_pool_test, constructor_GivenNonPositiveWorkerCount_ExpectPreconditionViolated)
 {
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(thread_pool{thread_pool::worker_count{-10}});
@@ -32,6 +33,7 @@ TEST(thread_pool_test, constructor_GivenNonPositiveWorkerCount_ExpectPreconditio
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_NOT_VIOLATED(thread_pool{thread_pool::worker_count{10}});
 }
 
+// NOTRACING
 TEST(thread_pool_test, max_concurrency_GivenNumberOfWorkers_ExpectReturnNumberOfWorkers)
 {
     EXPECT_EQ(1, thread_pool{thread_pool::worker_count{1}}.max_concurrency());
@@ -57,6 +59,7 @@ private:
     score::cpp::latch& l_;
 };
 
+// NOTRACING
 TEST(thread_pool_test, push_GivenTasksArePushed_ExpectAllTasksToBeExecuted)
 {
     const std::size_t count{16};
@@ -115,6 +118,7 @@ private:
     std::atomic<state>* state_;
 };
 
+// NOTRACING
 TEST(thread_pool_test, push_GivenTaskIsPushed_ExpectStartCalledOnTaskEventually)
 {
     std::atomic<thread_pool_test_state_task::state> state{};
@@ -132,6 +136,7 @@ TEST(thread_pool_test, push_GivenTaskIsPushed_ExpectStartCalledOnTaskEventually)
     EXPECT_EQ(state, thread_pool_test_state_task::state::start);
 }
 
+// NOTRACING
 TEST(thread_pool_test, push_GivenTaskIsPushed_ExpectTaskIsNotInStateInitialWhenThreadPoolStops)
 {
     std::atomic<thread_pool_test_state_task::state> state{};

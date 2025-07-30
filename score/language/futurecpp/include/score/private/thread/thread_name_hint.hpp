@@ -25,6 +25,9 @@ namespace detail
 /// A thread constructed with `thread_name_hint` will have a desired name as if set by `pthread_setname_np()`.
 /// The restrictions from `pthread_setname_np` has to be followed. Otherwise the name is not set and no error is
 /// reported.
+// cppcoreguidelines-special-member-functions: Follows literally the C++ standard see https://wg21.link/p2019 for
+// details.
+// NOLINTNEXTLINE(cppcoreguidelines-special-member-functions)
 class thread_name_hint
 {
 public:

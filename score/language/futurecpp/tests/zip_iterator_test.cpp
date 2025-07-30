@@ -276,7 +276,7 @@ TYPED_TEST(general_zip_iterator_test, assigment_through_to_original_container)
 TYPED_TEST(general_zip_iterator_test, mixed_mutable_and_immutable_iterators_value_type)
 {
     const std::initializer_list<double> data{1.2, 3.4, 5.6};
-    score::cpp::span<const double> view(&*data.begin(), score::cpp::ssize(data));
+    score::cpp::span<const double> view(&*data.begin(), data.size());
     std::tuple_element_t<0U, TypeParam> container1{data};
     std::tuple_element_t<1U, TypeParam> container2{data};
 
@@ -293,7 +293,7 @@ TYPED_TEST(general_zip_iterator_test, mixed_mutable_and_immutable_iterators_valu
 TYPED_TEST(general_zip_iterator_test, mixed_mutable_and_immutable_iterators_reference_type)
 {
     const std::initializer_list<double> data{1.2, 3.4, 5.6};
-    score::cpp::span<const double> view(&*data.begin(), score::cpp::ssize(data));
+    score::cpp::span<const double> view(&*data.begin(), data.size());
     std::tuple_element_t<0U, TypeParam> container1{data};
     std::tuple_element_t<1U, TypeParam> container2{data};
 
@@ -312,7 +312,7 @@ TYPED_TEST(general_zip_iterator_test, mixed_mutable_and_immutable_iterators_refe
 TYPED_TEST(general_zip_iterator_test, mixed_mutable_and_immutable_iterators_pointer_type)
 {
     const std::initializer_list<double> data{1.2, 3.4, 5.6};
-    score::cpp::span<const double> view(&*data.begin(), score::cpp::ssize(data));
+    score::cpp::span<const double> view(&*data.begin(), data.size());
     std::tuple_element_t<0U, TypeParam> container1{data};
     std::tuple_element_t<1U, TypeParam> container2{data};
 
@@ -330,7 +330,7 @@ TYPED_TEST(general_zip_iterator_test, mixed_mutable_and_immutable_iterators_poin
 TYPED_TEST(general_zip_iterator_test, mixed_mutable_and_immutable_iterators_dereference)
 {
     const std::initializer_list<double> data{1.2, 3.4, 5.6};
-    score::cpp::span<const double> view(&*data.begin(), score::cpp::ssize(data));
+    score::cpp::span<const double> view(&*data.begin(), data.size());
     std::tuple_element_t<0U, TypeParam> container1{data};
     std::tuple_element_t<1U, TypeParam> container2{data};
 

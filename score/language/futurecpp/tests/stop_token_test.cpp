@@ -6,11 +6,12 @@
 #include <score/stop_token.hpp>
 #include <score/stop_token.hpp> // check include guard
 
+#include <score/jthread.hpp>
+
 #include <condition_variable>
 #include <future>
 #include <memory>
 #include <mutex>
-#include <thread>
 
 #include <gtest/gtest.h>
 
@@ -400,7 +401,7 @@ TEST(stop_callback, create_callback_and_request_stop_in_parallel)
     std::atomic<bool> was_executed{false};
     score::cpp::stop_source source{};
     auto token = source.get_token();
-    std::thread t{[token, &was_executed]() {
+    score::cpp::jthread t{[token, &was_executed]() {
         score::cpp::stop_callback unit{token, [&was_executed]() { was_executed = true; }};
         while (!was_executed)
         {
@@ -481,12 +482,12 @@ TEST(stop_callback, destructor_blocking_when_invoked_from_different_thread)
         }
     });
 
-    std::thread t{[&source]() { source.request_stop(); }};
+    score::cpp::jthread t{[&source]() { source.request_stop(); }};
 
     std::promise<void> p{};
     auto f = p.get_future();
 
-    std::thread t2{[unit = std::move(unit), &p, &start_destruction]() mutable {
+    score::cpp::jthread t2{[unit = std::move(unit), &p, &start_destruction]() mutable {
         while (!start_destruction)
         {
             std::this_thread::yield();
@@ -559,7 +560,7 @@ TEST(stop_callback, parallel_register_and_request_stop)
 
         std::promise<void> request_stop_started{};
         std::vector<std::unique_ptr<score::cpp::stop_callback>> callbacks{};
-        std::thread t{[&source, &callbacks, &request_stop_started, &num_invoked_callbacks]() {
+        score::cpp::jthread t{[&source, &callbacks, &request_stop_started, &num_invoked_callbacks]() {
             request_stop_started.get_future().wait();
             for (std::uint32_t counter = 0U; counter < 1'000U; ++counter)
             {
@@ -597,7 +598,7 @@ TEST(stop_callback, parallel_unregister_and_request_stop)
         }
 
         std::promise<void> request_stop_started{};
-        std::thread t{[&callbacks, &request_stop_started]() {
+        score::cpp::jthread t{[&callbacks, &request_stop_started]() {
             request_stop_started.get_future().wait();
             for (auto& callback : callbacks)
             {
@@ -667,7 +668,7 @@ TEST(stop_callback, register_and_unregister_after_request_stop_while_other_callb
     score::cpp::stop_callback third_callback{source.get_token(), blocking_function_upon_first_invocation};
 
     // then, in a separate thread, request the stop_state to stop which must block execution due to first_callback
-    std::thread stop_requester{[&source]() { source.request_stop(); }};
+    score::cpp::jthread stop_requester{[&source]() { source.request_stop(); }};
 
     // wait now in this thread until the blocking function blocks execution within the stop_requester thread
     blocking_function_data.callback_is_blocked.get_future().wait();
@@ -729,7 +730,7 @@ public:
                           std::mutex& outer_mutex)
         : max_num_iterations_{max_num_iterations}, stop_source_{stop_source}, outer_mutex_{outer_mutex}
     {
-        the_thread_ = std::thread{[this] {
+        the_thread_ = score::cpp::jthread{[this] {
             // see the comment in the actual test about why we need this loop within the thread and not outside of it
             for (std::uint64_t num_iteration = 0U; num_iteration < max_num_iterations_; ++num_iteration)
             {
@@ -815,7 +816,7 @@ private:
     const std::uint64_t max_num_iterations_;
     const score::cpp::stop_source& stop_source_;
     std::mutex& outer_mutex_;
-    std::thread the_thread_;
+    score::cpp::jthread the_thread_;
 };
 
 /// @brief Class creating a separate thread that repeatedly requests stop at stop_source after waiting for token_waiter.
@@ -831,7 +832,7 @@ public:
         , token_waiter_{token_waiter}
         , outer_mutex_{outer_mutex}
     {
-        the_thread_ = std::thread{[this] {
+        the_thread_ = score::cpp::jthread{[this] {
             // see the comment in the actual test about why we need this loop within the thread and not outside of it
             for (std::uint64_t num_iteration = 0U; num_iteration < max_num_iterations_; ++num_iteration)
             {
@@ -902,13 +903,13 @@ private:
     score::cpp::stop_source& stop_source_;
     token_waiter& token_waiter_;
     std::mutex& outer_mutex_;
-    std::thread the_thread_;
+    score::cpp::jthread the_thread_;
 };
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#9462172
 /// @note This test originates from a unit test in ddad_platform which discovered the data race in stop_callback.
-/// @note For further details, see broken_link_j/SWP-89170.
+/// @note For further details, see broken_link_j/Ticket-89170.
 TEST(stop_callback, parallel_stop_callback_usage_and_request_stop)
 {
     // Since the test below is a probabilistic one which verifies timing behaviour, we perform it plenty of times.

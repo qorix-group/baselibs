@@ -954,13 +954,6 @@ public:
     static constexpr size_type rank = Rank;
 
     ///
-    /// \brief Copy constructor
-    ///
-    /// \param rhs \ref multi_span_base
-    ///
-    constexpr multi_span_base(const multi_span_base& rhs) = default;
-
-    ///
     /// \brief Converting constructor from another multi_span_base
     ///
     /// \param rhs \ref multi_span_base
@@ -1089,13 +1082,6 @@ public:
     constexpr multi_span() : base_type() {}
 
     ///
-    /// \brief Copy constructor
-    ///
-    /// \param rhs \ref multi_span
-    ///
-    constexpr multi_span(const multi_span& rhs) = default;
-
-    ///
     /// \brief Converting constructor from another multi_span
     ///
     /// \param rhs \ref multi_span
@@ -1208,12 +1194,6 @@ public:
     /// \brief Constructs an empty multi_span_base whose data() == nullptr and size() == 0.
     ///
     constexpr multi_span() : base_type() {}
-    ///
-    /// \brief Copy constructor
-    ///
-    /// \param rhs \ref multi_span
-    ///
-    constexpr multi_span(const multi_span& rhs) = default;
 
     ///
     /// \brief Converting constructor from another multi_span

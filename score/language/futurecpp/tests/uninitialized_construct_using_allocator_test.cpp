@@ -19,6 +19,7 @@ namespace
 
 using trailing_archetype = score::cpp::pmr::vector<int>;
 
+// NOTRACING
 TEST(UninitializedConstructUsingAllocatorTest, WithLValue)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;
@@ -32,6 +33,7 @@ TEST(UninitializedConstructUsingAllocatorTest, WithLValue)
     result->~trailing_archetype();
 }
 
+// NOTRACING
 TEST(UninitializedConstructUsingAllocatorTest, WithRValue)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;

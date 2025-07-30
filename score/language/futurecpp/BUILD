@@ -21,6 +21,7 @@ cc_library(
     ],
     copts = ["-fno-builtin"],
     includes = ["include"],
+    tags = ["asil-b"],
 )
 
 cc_library(
@@ -195,6 +196,7 @@ cc_library(
         "include/score/zip_iterator.hpp",
     ],
     includes = ["include"],
+    tags = ["asil-b"],
     visibility = ["//visibility:public"],
     deps = [":math"],
 )

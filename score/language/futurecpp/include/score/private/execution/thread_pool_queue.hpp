@@ -70,7 +70,7 @@ public:
     {
         std::unique_lock<spin_mutex> lock{mutex_};
 
-        ready_.wait(lock, [&]() { return (!queue_.empty()) || abort_; });
+        ready_.wait(lock, [this]() { return (!queue_.empty()) || abort_; });
 
         if (abort_)
         {

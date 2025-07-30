@@ -14,6 +14,7 @@
 namespace
 {
 
+// NOTRACING
 TEST(spin_mutex_test, lock_GivenNotOwnedMutex_ExpectMutexOwnedAndAnotherThreadCannotAcquireTheMutex)
 {
     score::cpp::execution::detail::spin_mutex m{};
@@ -23,6 +24,7 @@ TEST(spin_mutex_test, lock_GivenNotOwnedMutex_ExpectMutexOwnedAndAnotherThreadCa
     score::cpp::jthread t{[&m]() { EXPECT_FALSE(m.try_lock()); }};
 }
 
+// NOTRACING
 TEST(spin_mutex_test, try_lock_GivenNotOwnedMutex_ExpectMutexOwnedAndAnotherThreadCannotAcquireTheMutex)
 {
     score::cpp::execution::detail::spin_mutex m{};
@@ -32,6 +34,7 @@ TEST(spin_mutex_test, try_lock_GivenNotOwnedMutex_ExpectMutexOwnedAndAnotherThre
     score::cpp::jthread t{[&m]() { EXPECT_FALSE(m.try_lock()); }};
 }
 
+// NOTRACING
 TEST(spin_mutex_test, lock_unlock_GivenParallelCountingThreads_ExpectCountIsIncrementOnlyByOneThreadAtATime)
 {
     score::cpp::latch l{3};

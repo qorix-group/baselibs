@@ -36,6 +36,8 @@ struct op_state
     action* a;
 };
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(start_test, start_GivenNonConstOperation_ExpectStartIsCalledOnOperation)
 {
     op_state::action a{op_state::action::init};
@@ -44,6 +46,8 @@ TEST(start_test, start_GivenNonConstOperation_ExpectStartIsCalledOnOperation)
     EXPECT_EQ(op_state::action::non_const_call, a);
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(start_test, start_GivenConstOperation_ExpectStartIsCalledOnOperation)
 {
     op_state::action a{op_state::action ::init};

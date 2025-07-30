@@ -30,6 +30,9 @@ struct contract_violation
 {
 };
 
+///
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#42723425
 TEST_F(assert_test_class, get_assertion_handler)
 {
     const auto handler = [](handler_parameters const& /*unused*/) {};
@@ -37,6 +40,9 @@ TEST_F(assert_test_class, get_assertion_handler)
     EXPECT_EQ(get_assertion_handler(), handler);
 }
 
+///
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#42723425
 TEST_F(assert_test_class, assertion_failed_invokes_active_handler)
 {
     const auto handler = [](handler_parameters const& param) {
@@ -55,6 +61,9 @@ TEST_F(assert_test_class, assertion_failed_invokes_active_handler)
                  contract_violation);
 }
 
+///
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#42723425
 TEST_F(assert_test_class, precondition_macro_behave_same_as_assert)
 {
     set_assertion_handler([](handler_parameters const&) { throw contract_violation{}; });
@@ -63,29 +72,46 @@ TEST_F(assert_test_class, precondition_macro_behave_same_as_assert)
     EXPECT_THROW(SCORE_LANGUAGE_FUTURECPP_PRECONDITION_PRD(false), contract_violation);
 }
 
+///
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#42723425
 TEST_F(assert_test_class, unreachable_macro_triggers_failing_assertion)
 {
     set_assertion_handler([](handler_parameters const&) { throw contract_violation{}; });
 
-#ifdef SCORE_LANGUAGE_FUTURECPP_ASSERT_LEVEL_PRODUCTION
-    EXPECT_NO_THROW(SCORE_LANGUAGE_FUTURECPP_UNREACHABLE());
-#else
     EXPECT_THROW(SCORE_LANGUAGE_FUTURECPP_UNREACHABLE(), contract_violation);
-#endif
 }
 
+///
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#42723425
 TEST_F(assert_test_class, get_user_data)
 {
     set_user_data(this); // Just a random, valid memory address is needed
     EXPECT_EQ(get_user_data(), this);
 }
 
+///
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#42723425
 TEST_F(assert_test_class, abort)
 {
     // In general we shouldn't use death test and instead the amp test support MACROs.
     // The recommended test pattern is to setup a special assertion handler which throws.
-    // But we have to at least test once the null handler and the final call to abort.
+    // But we have to at least test once the implicit defaulted null handler and the final call to abort.
     EXPECT_DEATH(SCORE_LANGUAGE_FUTURECPP_PRECONDITION_PRD(false), "");
+}
+
+///
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#42723425
+TEST_F(assert_test_class, set_nullptr_expect_abort)
+{
+    // In general we shouldn't use death test and instead the amp test support MACROs.
+    // The recommended test pattern is to setup a special assertion handler which throws.
+    // But we have to at least test once the explicit defaulted null handler and the final call to abort.
+    set_assertion_handler(nullptr);
+    EXPECT_DEATH(SCORE_LANGUAGE_FUTURECPP_PRECONDITION(false), "");
 }
 
 } // namespace

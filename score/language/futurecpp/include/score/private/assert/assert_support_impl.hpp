@@ -23,22 +23,22 @@ namespace detail
 /// @brief Sets an assertion handler that throws a contract_violation exception. It restores the previous
 /// assertion handler on destruction.
 ///
-class score_internal_throwing_assertion_handler
+class score_future_cpp_internal_throwing_assertion_handler
 {
 public:
     struct contract_violation
     {
     };
 
-    score_internal_throwing_assertion_handler() : previous_assertion_handler_{get_assertion_handler()}
+    score_future_cpp_internal_throwing_assertion_handler() : previous_assertion_handler_{get_assertion_handler()}
     {
         set_assertion_handler([](const handler_parameters&) { throw contract_violation{}; });
     }
-    score_internal_throwing_assertion_handler(const score_internal_throwing_assertion_handler&) = delete;
-    score_internal_throwing_assertion_handler& operator=(const score_internal_throwing_assertion_handler&) = delete;
-    score_internal_throwing_assertion_handler(score_internal_throwing_assertion_handler&&) = delete;
-    score_internal_throwing_assertion_handler& operator=(score_internal_throwing_assertion_handler&&) = delete;
-    ~score_internal_throwing_assertion_handler() noexcept { set_assertion_handler(previous_assertion_handler_); }
+    score_future_cpp_internal_throwing_assertion_handler(const score_future_cpp_internal_throwing_assertion_handler&) = delete;
+    score_future_cpp_internal_throwing_assertion_handler& operator=(const score_future_cpp_internal_throwing_assertion_handler&) = delete;
+    score_future_cpp_internal_throwing_assertion_handler(score_future_cpp_internal_throwing_assertion_handler&&) = delete;
+    score_future_cpp_internal_throwing_assertion_handler& operator=(score_future_cpp_internal_throwing_assertion_handler&&) = delete;
+    ~score_future_cpp_internal_throwing_assertion_handler() noexcept { set_assertion_handler(previous_assertion_handler_); }
 
 private:
     handler previous_assertion_handler_;
@@ -50,18 +50,18 @@ private:
 #define SCORE_LANGUAGE_FUTURECPP_TEST_CONTRACT_VIOLATED(statement, fail)                                                                    \
     do                                                                                                                 \
     {                                                                                                                  \
-        bool score_test_contract_violated{false};                                                                        \
+        bool score_future_cpp_test_contract_violated{false};                                                                        \
         try                                                                                                            \
         {                                                                                                              \
-            score::cpp::detail::score_internal_throwing_assertion_handler h{};                                                  \
+            score::cpp::detail::score_future_cpp_internal_throwing_assertion_handler h{};                                                  \
             statement;                                                                                                 \
         }                                                                                                              \
-        catch (const score::cpp::detail::score_internal_throwing_assertion_handler::contract_violation&)                        \
+        catch (const score::cpp::detail::score_future_cpp_internal_throwing_assertion_handler::contract_violation&)                        \
         {                                                                                                              \
             /* NOLINTNEXTLINE(bmw-no-exceptions) For testing we can use exceptions, just not in product code */        \
-            score_test_contract_violated = true;                                                                         \
+            score_future_cpp_test_contract_violated = true;                                                                         \
         }                                                                                                              \
-        if (!score_test_contract_violated)                                                                               \
+        if (!score_future_cpp_test_contract_violated)                                                                               \
         {                                                                                                              \
             fail() << "Contract not violated: " << #statement;                                                         \
         }                                                                                                              \
@@ -72,10 +72,10 @@ private:
     {                                                                                                                  \
         try                                                                                                            \
         {                                                                                                              \
-            score::cpp::detail::score_internal_throwing_assertion_handler h{};                                                  \
+            score::cpp::detail::score_future_cpp_internal_throwing_assertion_handler h{};                                                  \
             statement;                                                                                                 \
         }                                                                                                              \
-        catch (const score::cpp::detail::score_internal_throwing_assertion_handler::contract_violation&)                        \
+        catch (const score::cpp::detail::score_future_cpp_internal_throwing_assertion_handler::contract_violation&)                        \
         {                                                                                                              \
             /* NOLINTNEXTLINE(bmw-no-exceptions) For testing we can use exceptions, just not in product code */        \
             fail() << "Contract violated: " << #statement;                                                             \

@@ -61,17 +61,32 @@ TEST(MemoryTest, UniquePtr_DefaultConstructedDeleterInvocationViolatesContract)
 /// @requirement CB-#18781254
 TEST(MemoryTest, MakeShared_DefaultConstructsWithoutArguments)
 {
-    const auto x = score::cpp::pmr::make_shared<int>(score::cpp::pmr::new_delete_resource());
-    EXPECT_EQ(*x, 0);
+    {
+        const auto x = score::cpp::pmr::make_shared<int>(score::cpp::pmr::new_delete_resource());
+        EXPECT_EQ(*x, 0);
+    }
+    {
+        const auto x = score::cpp::pmr::make_shared<const int>(score::cpp::pmr::new_delete_resource());
+        static_assert(std::is_same<const std::shared_ptr<const int>, decltype(x)>::value, "failed");
+        EXPECT_EQ(*x, 0);
+    }
 }
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18781254
 TEST(MemoryTest, MakeShared_ConstructsWithArguments)
 {
-    const int expected{42};
-    const auto x = score::cpp::pmr::make_shared<int>(score::cpp::pmr::new_delete_resource(), expected);
-    EXPECT_EQ(*x, expected);
+    {
+        const int expected{42};
+        const auto x = score::cpp::pmr::make_shared<int>(score::cpp::pmr::new_delete_resource(), expected);
+        EXPECT_EQ(*x, expected);
+    }
+    {
+        const int expected{42};
+        const auto x = score::cpp::pmr::make_shared<const int>(score::cpp::pmr::new_delete_resource(), expected);
+        static_assert(std::is_same<const std::shared_ptr<const int>, decltype(x)>::value, "failed");
+        EXPECT_EQ(*x, expected);
+    }
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -79,6 +94,7 @@ TEST(MemoryTest, MakeShared_ConstructsWithArguments)
 TEST(MemoryTest, MakeShared_AllocatesWithMemoryResource)
 {
     EXPECT_THROW(score::cpp::pmr::make_shared<int>(score::cpp::pmr::null_memory_resource()), std::bad_alloc);
+    EXPECT_THROW(score::cpp::pmr::make_shared<const int>(score::cpp::pmr::null_memory_resource()), std::bad_alloc);
 }
 
 /// @testmethods TM_REQUIREMENT

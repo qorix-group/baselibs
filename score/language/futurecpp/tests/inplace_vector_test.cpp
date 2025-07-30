@@ -440,8 +440,8 @@ TEST(inplace_vector_test, move_self_assignment)
     std::array<std::int32_t, 1> destructor_tracker{{0}};
     score::cpp::inplace_vector<data, 2> vector{};
     vector.emplace_back(&destructor_tracker[0]);
-    vector =
-        static_cast<score::cpp::inplace_vector<data, 2>&&>(vector); // `static_cast` to silence self-assign compiler warning
+    auto& vector_reference = vector; // using an additional reference to silence warning for intentional self-assign
+    vector = std::move(vector_reference);
     EXPECT_EQ(0, vector[0].copy_constructs());
     EXPECT_EQ(0, vector[0].move_constructs());
     EXPECT_EQ(0, vector[0].copy_assignments());
@@ -1247,39 +1247,6 @@ TEST(inplace_vector_test, comparison_operators_when_both_are_empty)
     EXPECT_TRUE(vector_1 >= vector_2);
     EXPECT_FALSE(vector_1 < vector_2);
     EXPECT_TRUE(vector_1 <= vector_2);
-}
-
-/// @testmethods TM_REQUIREMENT
-/// @requirement CB-#17893146
-TEST(inplace_vector_test, comparison_operators_when_equals_but_different_max_size)
-{
-    score::cpp::inplace_vector<std::int32_t, 5U> vector_1;
-    vector_1.push_back(1);
-    vector_1.push_back(2);
-
-    score::cpp::inplace_vector<std::int32_t, 3U> vector_2;
-    vector_2.push_back(1);
-    vector_2.push_back(2);
-
-    EXPECT_TRUE(vector_1 == vector_2);
-    EXPECT_FALSE(vector_1 != vector_2);
-}
-
-/// @testmethods TM_REQUIREMENT
-/// @requirement CB-#17893146
-TEST(inplace_vector_test, comparison_operators_when_not_equals_and_different_max_size)
-{
-    score::cpp::inplace_vector<std::int32_t, 5U> vector_1;
-    vector_1.push_back(1);
-    vector_1.push_back(2);
-    vector_1.push_back(3);
-
-    score::cpp::inplace_vector<std::int32_t, 2U> vector_2;
-    vector_2.push_back(1);
-    vector_2.push_back(2);
-
-    EXPECT_FALSE(vector_1 == vector_2);
-    EXPECT_TRUE(vector_1 != vector_2);
 }
 
 /// @testmethods TM_REQUIREMENT

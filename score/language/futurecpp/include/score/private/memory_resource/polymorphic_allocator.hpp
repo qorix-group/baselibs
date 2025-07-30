@@ -25,9 +25,8 @@ namespace pmr
 
 /// A polymorphic allocator in the style of C++17 std::pmr::polymorphic_allocator.
 /// See https://en.cppreference.com/w/cpp/memory/polymorphic_allocator for details.
-// NOLINTNEXTLINE(cppcoreguidelines-special-member-functions) Follows literaly the C++ standard
 template <typename Tp = std::uint8_t>
-class polymorphic_allocator
+class polymorphic_allocator // NOLINT(cppcoreguidelines-special-member-functions) Follows literally the C++ standard
 {
 public:
     using value_type = Tp;

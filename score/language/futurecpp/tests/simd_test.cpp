@@ -648,7 +648,7 @@ TYPED_TEST(simd_fixture, Clamp)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, Clscore_WhenNoValidBoundaryInterval_ThenPreconditionViolated)
+TYPED_TEST(simd_fixture, Clscore_future_cpp_WhenNoValidBoundaryInterval_ThenPreconditionViolated)
 {
     const simd<TypeParam> one{TypeParam{1}};
     const simd<TypeParam> low{TypeParam{-1}};

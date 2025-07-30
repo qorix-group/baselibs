@@ -113,7 +113,8 @@ public:
     /// \param buffer_size the size of the initial buffer; cannot be greater than the number of bytes in \p buffer.
     /// \param upstream The upstream memory resource to use; must point to a valid memory resource.
     monotonic_buffer_resource(void* const buffer, const std::size_t buffer_size, memory_resource* const upstream)
-        : upstream_rsrc_{upstream}
+        : memory_resource{}
+        , upstream_rsrc_{upstream}
         , original_buffer_{static_cast<std::uint8_t*>(buffer)}
         , original_buffer_size_{(buffer != nullptr) ? buffer_size : compute_next_buffer_size(buffer_size)}
         , current_buffer_{original_buffer_}

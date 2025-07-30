@@ -37,6 +37,8 @@ struct scheduler
     std::int32_t v;
 };
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(schedule_test, schedule_GivenRValueSender_ExpectSchedulerSender)
 {
     scheduler sch{42};
@@ -45,6 +47,8 @@ TEST(schedule_test, schedule_GivenRValueSender_ExpectSchedulerSender)
     EXPECT_EQ(42, s.v);
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(schedule_test, schedule_GivenLValueSender_ExpectSchedulerSender)
 {
     scheduler sch{42};
@@ -53,6 +57,8 @@ TEST(schedule_test, schedule_GivenLValueSender_ExpectSchedulerSender)
     EXPECT_EQ(42, s.v);
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(schedule_test, schedule_GivenConstRValueSender_ExpectSchedulerSender)
 {
     const scheduler sch{42};
@@ -61,6 +67,8 @@ TEST(schedule_test, schedule_GivenConstRValueSender_ExpectSchedulerSender)
     EXPECT_EQ(42, s.v);
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(schedule_test, schedule_GivenConstLValueSender_ExpectSchedulerSender)
 {
     const scheduler sch{42};

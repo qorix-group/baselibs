@@ -142,11 +142,12 @@ public:
 
     /// \brief Advances the iterator.
     ///
+    /// \param lhs The iterator to be incremented.
     /// \param n The number of positions to increment the iterator.
     /// \return A copy of the iterator which is incremented.
-    circular_buffer_iterator operator+(const difference_type n) const
+    friend circular_buffer_iterator operator+(const circular_buffer_iterator& lhs, const difference_type n)
     {
-        circular_buffer_iterator ret{*this};
+        circular_buffer_iterator ret{lhs};
         return ret += n;
     }
 
@@ -162,11 +163,12 @@ public:
 
     /// \brief Decrements the iterator.
     ///
+    /// \param lhs The iterator to be incremented.
     /// \param n The number of positions to decrement the iterator.
     /// \return A copy of the iterator which is decremented.
-    circular_buffer_iterator operator-(const difference_type n) const
+    friend circular_buffer_iterator operator-(const circular_buffer_iterator& lhs, const difference_type n)
     {
-        circular_buffer_iterator ret{*this};
+        circular_buffer_iterator ret{lhs};
         return ret -= n;
     }
 

@@ -331,8 +331,9 @@ TEST(circular_buffer_test, move_assignment_on_identity)
 
     circular_buffer<data, 1U> source_vector;
     source_vector.emplace_back(&destructor_tracker[0]);
-    source_vector = static_cast<circular_buffer<data, 1U>&&>(
-        source_vector); // `static_cast` to silence self-assign compiler warning
+    auto& source_vector_reference =
+        source_vector; // using an additional reference to silence warning for intentional self-assign
+    source_vector = std::move(source_vector_reference);
     EXPECT_EQ(0, source_vector[0].copy_constructs());
     EXPECT_EQ(0, source_vector[0].move_constructs());
     EXPECT_EQ(0, source_vector[0].copy_assignments());

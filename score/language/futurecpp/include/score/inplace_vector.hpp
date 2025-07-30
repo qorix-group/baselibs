@@ -566,15 +566,15 @@ private:
 };
 
 /// \brief Mimics std::vector operator==
-template <typename T, std::size_t MaxSizeLhs, std::size_t MaxSizeRhs>
-inline bool operator==(const inplace_vector<T, MaxSizeLhs>& lhs, const inplace_vector<T, MaxSizeRhs>& rhs)
+template <typename T, std::size_t MaxSize>
+inline bool operator==(const inplace_vector<T, MaxSize>& lhs, const inplace_vector<T, MaxSize>& rhs)
 {
     return std::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 }
 
 /// \brief Mimics std::vector operator!=
-template <typename T, std::size_t MaxSizeLhs, std::size_t MaxSizeRhs>
-inline bool operator!=(const inplace_vector<T, MaxSizeLhs>& lhs, const inplace_vector<T, MaxSizeRhs>& rhs)
+template <typename T, std::size_t MaxSize>
+inline bool operator!=(const inplace_vector<T, MaxSize>& lhs, const inplace_vector<T, MaxSize>& rhs)
 {
     return !(lhs == rhs);
 }

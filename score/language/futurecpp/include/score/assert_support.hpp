@@ -2,7 +2,7 @@
 /// \file
 /// \copyright Copyright (C) 2020, Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
 ///
-/// \brief `score_test_support` adds macros for testing contract violations.
+/// \brief `score_future_cpp_test_support` adds macros for testing contract violations.
 ///
 ///  * `SCORE_LANGUAGE_FUTURECPP_{ASSERT|EXPECT}_CONTRACT_VIOLATED(statement)` tests that
 ///     the statement violates the contract.

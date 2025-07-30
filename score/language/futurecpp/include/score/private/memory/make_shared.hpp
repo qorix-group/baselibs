@@ -25,8 +25,8 @@ template <typename T, typename... Args>
 std::shared_ptr<T> make_shared(score::cpp::pmr::memory_resource* resource, Args&&... args)
 {
     SCORE_LANGUAGE_FUTURECPP_PRECONDITION(resource != nullptr);
-    score::cpp::pmr::polymorphic_allocator<T> allocator{resource};
-    return std::allocate_shared<T>(allocator, std::forward<Args>(args)...);
+    score::cpp::pmr::polymorphic_allocator<std::remove_cv_t<T>> allocator{resource};
+    return std::allocate_shared<std::remove_cv_t<T>>(allocator, std::forward<Args>(args)...);
 }
 
 } // namespace pmr

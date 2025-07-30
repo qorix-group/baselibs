@@ -391,7 +391,7 @@ private:
         // This function is called by `pthread_create` which takes a callable `void* foo(void*)`. This is a C-style
         // function where the argument has to be casted to the correct type again. The original pointer type is provided
         // by the template argument `T`.
-        // coverity[misra_cpp_2023_rule_12_3_1_violation]
+        // coverity[misra_cpp_2023_rule_8_2_6_violation : SUPPRESS]
         std::unique_ptr<T> invocable{static_cast<T*>(arg)}; // acquires ownership of *arg
 
         const score::cpp::pmr::string& thread_name{std::get<0U>(*invocable)};

@@ -35,6 +35,8 @@ struct receiver
     action* a{};
 };
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(set_stopped_test, set_stopped_GivenRValueReceiver_ExpectSetStoppedCalled)
 {
     receiver::action a{receiver::action::init};

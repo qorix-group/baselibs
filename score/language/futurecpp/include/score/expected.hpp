@@ -606,7 +606,7 @@ private:
     // For performances reason this class is not using `std::variant` but implementing the storage as a raw union. This
     // class takes care by code review to only read from the active member of the union. The union is only visible
     // internally and not exposed to the user API.
-    // coverity[misra_cpp_2023_rule_12_3_1_violation]
+    // coverity[misra_cpp_2023_rule_12_3_1_violation : SUPPRESS]
     union
     {
         /// Stored value.

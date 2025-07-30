@@ -24,14 +24,14 @@ inline namespace literals
 ///
 /// Implements: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p0330r8.html
 ///
-constexpr std::size_t operator"" _UZ(const unsigned long long int x) { return static_cast<std::size_t>(x); }
+constexpr std::size_t operator""_UZ(const unsigned long long int x) { return static_cast<std::size_t>(x); }
 
 ///
 /// \brief Type literal for std::ptrdiff_t
 ///
 /// Implements: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p0330r8.html
 ///
-constexpr std::ptrdiff_t operator"" _Z(const unsigned long long int x) { return static_cast<std::ptrdiff_t>(x); }
+constexpr std::ptrdiff_t operator""_Z(const unsigned long long int x) { return static_cast<std::ptrdiff_t>(x); }
 
 } // namespace literals
 

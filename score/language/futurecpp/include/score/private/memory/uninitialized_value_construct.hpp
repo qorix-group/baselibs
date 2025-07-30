@@ -19,7 +19,6 @@ namespace score::cpp
 template <typename ForwardIter, typename Size>
 ForwardIter uninitialized_value_construct_n(ForwardIter first, Size n)
 {
-    using value_type = typename std::iterator_traits<ForwardIter>::value_type;
     auto current = first;
     try
     {
@@ -32,6 +31,7 @@ ForwardIter uninitialized_value_construct_n(ForwardIter first, Size n)
     }
     catch (...)
     {
+        using value_type = typename std::iterator_traits<ForwardIter>::value_type;
         for (; first != current; ++first)
         {
             first->~value_type();

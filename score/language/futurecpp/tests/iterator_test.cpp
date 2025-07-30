@@ -17,6 +17,7 @@
 namespace
 {
 
+// NOTRACING
 TEST(iterator_test, CanConstuctIteratorAtBeginning)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -24,6 +25,7 @@ TEST(iterator_test, CanConstuctIteratorAtBeginning)
     EXPECT_EQ(iterator.current(), data.data());
 }
 
+// NOTRACING
 TEST(iterator_test, CanConstuctConstIteratorAtBeginning)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -31,6 +33,7 @@ TEST(iterator_test, CanConstuctConstIteratorAtBeginning)
     EXPECT_EQ(iterator.current(), data.data());
 }
 
+// NOTRACING
 TEST(iterator_test, CanConstuctIteratorAtEnd)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -38,6 +41,7 @@ TEST(iterator_test, CanConstuctIteratorAtEnd)
     EXPECT_EQ(iterator.current(), data.data() + data.size());
 }
 
+// NOTRACING
 TEST(iterator_test, CanConstuctConstIteratorAtEnd)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -45,6 +49,7 @@ TEST(iterator_test, CanConstuctConstIteratorAtEnd)
     EXPECT_EQ(iterator.current(), data.data() + data.size());
 }
 
+// NOTRACING
 TEST(iterator_test, CanCopyConstructIterator)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -53,6 +58,7 @@ TEST(iterator_test, CanCopyConstructIterator)
     EXPECT_EQ(iterator_lhs, iterator_rhs);
 }
 
+// NOTRACING
 TEST(iterator_test, CanCopyConstructConstIterator)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -61,6 +67,7 @@ TEST(iterator_test, CanCopyConstructConstIterator)
     EXPECT_EQ(iterator_lhs, iterator_rhs);
 }
 
+// NOTRACING
 TEST(iterator_test, CanMoveConstructIterator)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -69,6 +76,7 @@ TEST(iterator_test, CanMoveConstructIterator)
     EXPECT_EQ(moved_to_iterator.current(), data.data());
 }
 
+// NOTRACING
 TEST(iterator_test, CanMoveConstructConstIterator)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -77,6 +85,7 @@ TEST(iterator_test, CanMoveConstructConstIterator)
     EXPECT_EQ(moved_to_iterator.current(), data.data());
 }
 
+// NOTRACING
 TEST(iterator_test, CanCopyConstructConstIteratorFromIterator)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -85,6 +94,7 @@ TEST(iterator_test, CanCopyConstructConstIteratorFromIterator)
     EXPECT_EQ(copied_to_iterator.current(), data.data());
 }
 
+// NOTRACING
 TEST(iterator_test, CanMoveConstructConstIteratorFromIterator)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -93,6 +103,7 @@ TEST(iterator_test, CanMoveConstructConstIteratorFromIterator)
     EXPECT_EQ(moved_to_iterator.current(), data.data());
 }
 
+// NOTRACING
 TEST(iterator_test, CannotConstructIteratorFromConstIterator)
 {
     static_assert(!std::is_constructible<score::cpp::detail::iterator<std::array<std::uint8_t, 2>, false>,
@@ -100,6 +111,7 @@ TEST(iterator_test, CannotConstructIteratorFromConstIterator)
                   "It must be impossible to construct an iterator from a const iterator");
 }
 
+// NOTRACING
 TEST(iterator_test, CanCompareEqualityOfIterators)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -115,6 +127,7 @@ TEST(iterator_test, CanCompareEqualityOfIterators)
     EXPECT_FALSE(const_iterator == iterator);
 }
 
+// NOTRACING
 TEST(iterator_test, CanCompareInequalityOfIterators)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -130,6 +143,7 @@ TEST(iterator_test, CanCompareInequalityOfIterators)
     EXPECT_TRUE(const_iterator != iterator);
 }
 
+// NOTRACING
 TEST(iterator_test, CanCompareLessOperatorOfIterators)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -149,6 +163,7 @@ TEST(iterator_test, CanCompareLessOperatorOfIterators)
     EXPECT_TRUE(const_iterator < iterator);
 }
 
+// NOTRACING
 TEST(iterator_test, CanCompareLessEqualsOperatorOfIterators)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -170,6 +185,7 @@ TEST(iterator_test, CanCompareLessEqualsOperatorOfIterators)
     EXPECT_FALSE(iterator <= const_iterator);
 }
 
+// NOTRACING
 TEST(iterator_test, CanCompareGreaterOperatorOfIterators)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -189,6 +205,7 @@ TEST(iterator_test, CanCompareGreaterOperatorOfIterators)
     EXPECT_TRUE(const_iterator > iterator);
 }
 
+// NOTRACING
 TEST(iterator_test, CanCompareGreaterEqualsOperatorOfIterators)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -213,6 +230,7 @@ TEST(iterator_test, CanCompareGreaterEqualsOperatorOfIterators)
 int const_nonconst_overload(score::cpp::detail::iterator<std::array<std::uint8_t, 2>, false>) { return 1; }
 int const_nonconst_overload(score::cpp::detail::iterator<std::array<std::uint8_t, 2>, true>) { return 2; }
 
+// NOTRACING
 TEST(iterator_test, ConstNonConstOverloadResolutionWorks)
 {
     std::array<std::uint8_t, 2> data{0x01, 0x02};
@@ -222,6 +240,7 @@ TEST(iterator_test, ConstNonConstOverloadResolutionWorks)
     EXPECT_EQ(const_nonconst_overload(const_iterator), 2);
 }
 
+// NOTRACING
 TEST(iterator_test, IteratorTraitsProduceExpectedTypes)
 {
     using IteratorTraits = std::iterator_traits<score::cpp::detail::iterator<std::array<std::uint8_t, 2>, false>>;
@@ -240,6 +259,7 @@ TEST(iterator_test, IteratorTraitsProduceExpectedTypes)
                   "");
 }
 
+// NOTRACING
 TEST(iterator_test, iterator_when_mutable_container_non_const_type_mutable_iterator_non_const_iterator)
 {
     std::array<std::int32_t, 2> a{42, 72};
@@ -247,6 +267,7 @@ TEST(iterator_test, iterator_when_mutable_container_non_const_type_mutable_itera
     static_assert(std::is_same<std::int32_t&, decltype(*it)>::value, "Failed.");
 }
 
+// NOTRACING
 TEST(iterator_test, iterator_when_mutable_container_non_const_type_immutable_iterator_non_const_iterator)
 {
     std::array<std::int32_t, 2> a{42, 72};
@@ -254,6 +275,7 @@ TEST(iterator_test, iterator_when_mutable_container_non_const_type_immutable_ite
     static_assert(std::is_same<std::int32_t&, decltype(*it)>::value, "Failed.");
 }
 
+// NOTRACING
 TEST(iterator_test, iterator_when_mutable_container_non_const_type_mutable_iterator_const_iterator)
 {
     std::array<std::int32_t, 2> a{42, 72};
@@ -261,6 +283,7 @@ TEST(iterator_test, iterator_when_mutable_container_non_const_type_mutable_itera
     static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
 }
 
+// NOTRACING
 TEST(iterator_test, iterator_when_mutable_container_non_const_type_immutable_iterator_const_iterator)
 {
     std::array<std::int32_t, 2> a{42, 72};
@@ -268,6 +291,7 @@ TEST(iterator_test, iterator_when_mutable_container_non_const_type_immutable_ite
     static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
 }
 
+// NOTRACING
 TEST(iterator_test, iterator_when_mutable_container_const_type_mutable_iterator_non_const_iterator)
 {
     std::array<const std::int32_t, 2> a{42, 72};
@@ -275,6 +299,7 @@ TEST(iterator_test, iterator_when_mutable_container_const_type_mutable_iterator_
     static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
 }
 
+// NOTRACING
 TEST(iterator_test, iterator_when_mutable_container_const_type_immutable_iterator_non_const_iterator)
 {
     std::array<const std::int32_t, 2> a{42, 72};
@@ -282,6 +307,7 @@ TEST(iterator_test, iterator_when_mutable_container_const_type_immutable_iterato
     static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
 }
 
+// NOTRACING
 TEST(iterator_test, iterator_when_mutable_container_const_type_mutable_iterator_const_iterator)
 {
     std::array<const std::int32_t, 2> a{42, 72};
@@ -289,6 +315,7 @@ TEST(iterator_test, iterator_when_mutable_container_const_type_mutable_iterator_
     static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
 }
 
+// NOTRACING
 TEST(iterator_test, iterator_when_mutable_container_const_type_immutable_iterator_const_iterator)
 {
     std::array<const std::int32_t, 2> a{42, 72};
@@ -296,18 +323,21 @@ TEST(iterator_test, iterator_when_mutable_container_const_type_immutable_iterato
     static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
 }
 
+// NOTRACING
 TEST(iterator_test, iterator_when_immutable_container_non_const_type_mutable_iterator_non_const_iterator)
 { // Must not compile
   // const std::array<std::int32_t, 2> a{42, 72};
   // score::cpp::detail::iterator<std::remove_const_t<decltype(a)>, false> it{a, true};
 }
 
+// NOTRACING
 TEST(iterator_test, iterator_when_immutable_container_non_const_type_immutable_iterator_non_const_iterator)
 { // Must not compile
   // const std::array<std::int32_t, 2> a{42, 72};
   // const score::cpp::detail::iterator<std::remove_const_t<decltype(a)>, false> it{a, true};
 }
 
+// NOTRACING
 TEST(iterator_test, iterator_when_immutable_container_non_const_type_mutable_iterator_const_iterator)
 {
     const std::array<std::int32_t, 2> a{42, 72};
@@ -315,6 +345,7 @@ TEST(iterator_test, iterator_when_immutable_container_non_const_type_mutable_ite
     static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
 }
 
+// NOTRACING
 TEST(iterator_test, iterator_when_immutable_container_non_const_type_immutable_iterator_const_iterator)
 {
     const std::array<std::int32_t, 2> a{42, 72};
@@ -322,6 +353,7 @@ TEST(iterator_test, iterator_when_immutable_container_non_const_type_immutable_i
     static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
 }
 
+// NOTRACING
 TEST(iterator_test, iterator_when_immutable_container_const_type_mutable_iterator_non_const_iterator)
 {
     const std::array<const std::int32_t, 2> a{42, 72};
@@ -329,6 +361,7 @@ TEST(iterator_test, iterator_when_immutable_container_const_type_mutable_iterato
     static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
 }
 
+// NOTRACING
 TEST(iterator_test, iterator_when_immutable_container_const_type_immutable_iterator_non_const_iterator)
 {
     const std::array<const std::int32_t, 2> a{42, 72};
@@ -336,6 +369,7 @@ TEST(iterator_test, iterator_when_immutable_container_const_type_immutable_itera
     static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
 }
 
+// NOTRACING
 TEST(iterator_test, iterator_when_immutable_container_const_type_mutable_iterator_const_iterator)
 {
     const std::array<const std::int32_t, 2> a{42, 72};
@@ -343,6 +377,7 @@ TEST(iterator_test, iterator_when_immutable_container_const_type_mutable_iterato
     static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
 }
 
+// NOTRACING
 TEST(iterator_test, iterator_when_immutable_container_const_type_immutable_iterator_const_iterator)
 {
     const std::array<const std::int32_t, 2> a{42, 72};

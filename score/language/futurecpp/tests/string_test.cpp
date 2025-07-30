@@ -30,7 +30,7 @@ TEST(hash_test, use_hash_function_for_pmr_strings)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18679980
-TEST(score_pmr_string, use_std_hash_overload)
+TEST(score_future_cpp_pmr_string, use_std_hash_overload)
 {
     score::cpp::pmr::string my_key{"my_pmr_string_key", score::cpp::pmr::new_delete_resource()};
     score::cpp::pmr::unordered_map<score::cpp::pmr::string, bool> test_map{{{my_key, true}}, 1, score::cpp::pmr::new_delete_resource()};
@@ -39,7 +39,7 @@ TEST(score_pmr_string, use_std_hash_overload)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18679980
-TEST(score_pmr_u16string, use_std_hash_overload)
+TEST(score_future_cpp_pmr_u16string, use_std_hash_overload)
 {
     score::cpp::pmr::u16string my_key(u"my_pmr_u16string_key", score::cpp::pmr::new_delete_resource());
     score::cpp::pmr::unordered_map<score::cpp::pmr::u16string, bool> test_map{{{my_key, true}}, 1, score::cpp::pmr::new_delete_resource()};
@@ -48,7 +48,7 @@ TEST(score_pmr_u16string, use_std_hash_overload)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18679980
-TEST(score_pmr_u32string, use_std_hash_overload)
+TEST(score_future_cpp_pmr_u32string, use_std_hash_overload)
 {
     score::cpp::pmr::u32string my_key(U"my_pmr_u32string_key", score::cpp::pmr::new_delete_resource());
     score::cpp::pmr::unordered_map<score::cpp::pmr::u32string, bool> test_map{{{my_key, true}}, 1, score::cpp::pmr::new_delete_resource()};
@@ -57,7 +57,7 @@ TEST(score_pmr_u32string, use_std_hash_overload)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18679980
-TEST(score_pmr_wstring, use_std_hash_overload)
+TEST(score_future_cpp_pmr_wstring, use_std_hash_overload)
 {
     score::cpp::pmr::wstring my_key{L"my_pmr_string_key", score::cpp::pmr::new_delete_resource()};
     score::cpp::pmr::unordered_map<score::cpp::pmr::wstring, bool> test_map{{{my_key, true}}, 1, score::cpp::pmr::new_delete_resource()};

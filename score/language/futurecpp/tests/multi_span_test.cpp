@@ -977,6 +977,15 @@ protected:
 TYPED_TEST_SUITE(multi_span_fixture, ranks_of_interest, /*unused*/);
 
 ///
+/// \test Test: Default created copy-constructor multi_span is trivial copy-constructible
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18694884
+TYPED_TEST(multi_span_fixture, multi_span_copy_construct_is_trivial)
+{
+    static_assert(std::is_trivially_copy_constructible<score::cpp::multi_span<int, TypeParam::value>>::value, "");
+}
+
+///
 /// \test Test: Default constructor multi_span
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18694884
@@ -1097,6 +1106,9 @@ using multi_span_fixture_rank_equal_1 = multi_span_fixture<T>;
 using rank_of_one = ::testing::Types<std::integral_constant<std::size_t, 1>>;
 TYPED_TEST_SUITE(multi_span_fixture_rank_equal_1, rank_of_one, /*unused*/);
 
+///
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18694884
 TYPED_TEST(multi_span_fixture_rank_equal_1, multi_span_slice)
 {
     score::cpp::multi_span<int, 1> view = as_multi_span(this->make_bounds(), this->array_data_);

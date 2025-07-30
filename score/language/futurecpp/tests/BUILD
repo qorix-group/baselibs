@@ -78,6 +78,8 @@ googletest_tests = [
     srcs = ["%s.cpp" % f],
     copts = SCORE_LANGUAGE_FUTURECPP_TEST_COPTS,
     defines = SCORE_LANGUAGE_FUTURECPP_ASSERT_DEFINES,
+    tags = ["unit"],
+    visibility = ["//visibility:public"],
     deps = [
         "//score/language/futurecpp:futurecpp_internal",
         "@googletest//:gtest_main",
@@ -94,6 +96,8 @@ cc_test(
     ],
     copts = SCORE_LANGUAGE_FUTURECPP_TEST_COPTS,
     defines = SCORE_LANGUAGE_FUTURECPP_ASSERT_DEFINES,
+    tags = ["unit"],
+    visibility = ["//visibility:public"],
     deps = [
         "//score/language/futurecpp:futurecpp_internal",
         "@googletest//:gtest_main",
@@ -108,6 +112,8 @@ cc_test(
     ],
     copts = SCORE_LANGUAGE_FUTURECPP_TEST_COPTS,
     defines = SCORE_LANGUAGE_FUTURECPP_ASSERT_DEFINES,
+    tags = ["unit"],
+    visibility = ["//visibility:public"],
     deps = [
         "//score/language/futurecpp:futurecpp_internal",
         "@googletest//:gtest_main",

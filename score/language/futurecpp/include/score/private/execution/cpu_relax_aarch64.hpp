@@ -29,7 +29,7 @@ __attribute__((__always_inline__)) inline void cpu_relax(std::int32_t count) noe
     while (count-- > 0)
     {
         // `__asm__` stolen from file `target/qnx7/usr/include/aarch64/cpuinline.h` (QNX SDP) as agreed in
-        // broken_link_j/SWP-124589?focusedId=13199881&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-13199881
+        // broken_link_j/Ticket-124589?focusedId=13199881&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-13199881
         __asm__ __volatile__("yield" : : : "memory");
     }
 }

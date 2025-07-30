@@ -26,7 +26,6 @@ struct uninitialized_move_impl
     template <typename InputIter, typename ForwardIter>
     static ForwardIter move(InputIter first, InputIter last, ForwardIter first_destination)
     {
-        using value_type = typename std::iterator_traits<ForwardIter>::value_type;
         auto current = first_destination;
         try
         {
@@ -39,6 +38,7 @@ struct uninitialized_move_impl
         }
         catch (...)
         {
+            using value_type = typename std::iterator_traits<ForwardIter>::value_type;
             for (; first_destination != current; ++first_destination)
             {
                 first_destination->~value_type();
@@ -82,7 +82,6 @@ struct uninitialized_move_n_impl
     template <typename InputIter, typename Size, typename ForwardIter>
     static std::pair<InputIter, ForwardIter> move(InputIter first, Size n, ForwardIter first_destination)
     {
-        using value_type = typename std::iterator_traits<ForwardIter>::value_type;
         auto current = first_destination;
         try
         {
@@ -96,6 +95,7 @@ struct uninitialized_move_n_impl
         }
         catch (...)
         {
+            using value_type = typename std::iterator_traits<ForwardIter>::value_type;
             for (; first_destination != current; ++first_destination)
             {
                 first_destination->~value_type();

@@ -310,7 +310,7 @@ inline namespace literals
 {
 inline namespace string_view_literals
 {
-inline constexpr score::cpp::string_view operator"" _sv(const char* str, std::size_t len) noexcept { return {str, len}; }
+inline constexpr score::cpp::string_view operator""_sv(const char* str, std::size_t len) noexcept { return {str, len}; }
 } // namespace string_view_literals
 } // namespace literals
 

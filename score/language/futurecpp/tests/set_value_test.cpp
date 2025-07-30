@@ -35,6 +35,8 @@ struct receiver
     action* a{};
 };
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(set_value_test, set_value_GivenRValueReceiver_ExpectSetValueCalled)
 {
     receiver::action a{receiver::action::init};
@@ -73,6 +75,8 @@ struct receiver_args
     std::vector<category>* c{};
 };
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(set_value_test, set_value_GivenArgumentsWithDifferentValueCategories_ExpectsArgumentsPerfectlyForwarded)
 {
     std::vector<receiver_args::category> c{};

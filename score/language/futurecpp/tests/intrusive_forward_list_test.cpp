@@ -39,8 +39,10 @@ protected:
     intrusive_forward_list<element> list_{};
 };
 
+// NOTRACING
 TEST_F(given_empty_intrusive_forward_list, GivenDefaultConstructedList_ExpectEmptyList) { EXPECT_TRUE(list_.empty()); }
 
+// NOTRACING
 TEST_F(given_empty_intrusive_forward_list, GivenMovedList_ExpectEmptyList)
 {
     intrusive_forward_list<element> l{std::move(list_)};
@@ -48,6 +50,7 @@ TEST_F(given_empty_intrusive_forward_list, GivenMovedList_ExpectEmptyList)
     EXPECT_TRUE(list_.empty());
 }
 
+// NOTRACING
 TEST_F(given_empty_intrusive_forward_list, GivenMoveAssignedList_ExpectEmptyList)
 {
     intrusive_forward_list<element> l{};
@@ -56,29 +59,34 @@ TEST_F(given_empty_intrusive_forward_list, GivenMoveAssignedList_ExpectEmptyList
     EXPECT_TRUE(list_.empty());
 }
 
+// NOTRACING
 TEST_F(given_empty_intrusive_forward_list, GivenClear_ExpectEmptyList)
 {
     list_.clear();
     EXPECT_TRUE(list_.empty());
 }
 
+// NOTRACING
 TEST_F(given_empty_intrusive_forward_list, GivenPopFrontOnEmptyList_ExpectContractViolation)
 {
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(list_.pop_front());
 }
 
+// NOTRACING
 TEST_F(given_empty_intrusive_forward_list, GivenBackOnEmptyList_ExpectContractViolation)
 {
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(list_.back());
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(score::cpp::as_const(list_).back());
 }
 
+// NOTRACING
 TEST_F(given_empty_intrusive_forward_list, GivenFrontOnEmptyList_ExpectContractViolation)
 {
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(list_.front());
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(score::cpp::as_const(list_).front());
 }
 
+// NOTRACING
 TEST_F(given_empty_intrusive_forward_list, GivenPushAnElement_ExpectElementIsPartOfList)
 {
     list_.push_back(a_);
@@ -90,6 +98,7 @@ TEST_F(given_empty_intrusive_forward_list, GivenPushAnElement_ExpectElementIsPar
     EXPECT_EQ(&a_, &score::cpp::as_const(list_).back());
 }
 
+// NOTRACING
 TEST_F(given_empty_intrusive_forward_list, GivenPushAnElement_ExpectElementIsLinked)
 {
     EXPECT_FALSE(a_.is_linked());
@@ -99,6 +108,7 @@ TEST_F(given_empty_intrusive_forward_list, GivenPushAnElement_ExpectElementIsLin
     EXPECT_TRUE(a_.is_linked());
 }
 
+// NOTRACING
 TEST_F(given_empty_intrusive_forward_list, GivenSwapAndPushAnElementToThis_ExpectThisHasAnElementAndOtherIsEmpty)
 {
     intrusive_forward_list<element> other{};
@@ -114,6 +124,7 @@ TEST_F(given_empty_intrusive_forward_list, GivenSwapAndPushAnElementToThis_Expec
     EXPECT_EQ(&a_, &list_.front());
 }
 
+// NOTRACING
 TEST_F(given_empty_intrusive_forward_list, GivenSwapAndPushAnElementToOther_ExpectThisIsEmptyAndOtherHasAnElement)
 {
     intrusive_forward_list<element> other{};
@@ -135,6 +146,7 @@ protected:
     given_intrusive_forward_list_with_single_element() : given_empty_intrusive_forward_list{} { list_.push_back(a_); }
 };
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_single_element, GivenMoveAssignedList_ExpectBothListsEmpty)
 {
     intrusive_forward_list<element> l{};
@@ -147,18 +159,21 @@ TEST_F(given_intrusive_forward_list_with_single_element, GivenMoveAssignedList_E
     EXPECT_TRUE(list_.empty());
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_single_element, GivenMoveAssignedListToSelf_ExpectIdentity)
 {
     list_ = static_cast<intrusive_forward_list<element>&&>(list_);
     EXPECT_FALSE(list_.empty());
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_single_element, GivenPopOnSingleElementList_ExpectEmptyList)
 {
     list_.pop_front();
     EXPECT_TRUE(list_.empty());
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_single_element, GivenPop_ExpectElementIsUnlinked)
 {
     EXPECT_TRUE(a_.is_linked());
@@ -168,12 +183,14 @@ TEST_F(given_intrusive_forward_list_with_single_element, GivenPop_ExpectElementI
     EXPECT_FALSE(a_.is_linked());
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_single_element, GivenClear_ExpectEmptyList)
 {
     list_.clear();
     EXPECT_TRUE(list_.empty());
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_single_element, GivenClear_ExpectElementIsUnlinked)
 {
     EXPECT_TRUE(a_.is_linked());
@@ -183,6 +200,7 @@ TEST_F(given_intrusive_forward_list_with_single_element, GivenClear_ExpectElemen
     EXPECT_FALSE(a_.is_linked());
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_single_element, GivenClear_ExpectElementsCanBePushedAgain)
 {
     list_.clear();
@@ -194,11 +212,13 @@ TEST_F(given_intrusive_forward_list_with_single_element, GivenClear_ExpectElemen
     EXPECT_FALSE(list_.empty());
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_single_element, GivenPushElementTwice_ExpectContractViolation)
 {
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(list_.push_back(a_));
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_single_element, GivenPopAndPushElementAgain_ExpectElementIsAgainPartOfList)
 {
     list_.pop_front();
@@ -220,6 +240,7 @@ protected:
     }
 };
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_three_element, GivenMovedList_ExpectEmptyList)
 {
     intrusive_forward_list<element> l{std::move(list_)};
@@ -228,6 +249,7 @@ TEST_F(given_intrusive_forward_list_with_three_element, GivenMovedList_ExpectEmp
     EXPECT_TRUE(list_.empty());
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_three_element, GivenMoveAssignedList_ExpectEmptyList)
 {
     intrusive_forward_list<element> l{};
@@ -237,6 +259,7 @@ TEST_F(given_intrusive_forward_list_with_three_element, GivenMoveAssignedList_Ex
     EXPECT_TRUE(list_.empty());
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_three_element, GivenPopThreeElements_ExpectdEmptyList)
 {
     EXPECT_EQ(&a_, &list_.front());
@@ -254,6 +277,7 @@ TEST_F(given_intrusive_forward_list_with_three_element, GivenPopThreeElements_Ex
     EXPECT_TRUE(list_.empty());
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_three_element, GivenCopiedElementFromList_ExpectElementCanBePushedAgain)
 {
     element copy_of_a{list_.front()};
@@ -267,6 +291,7 @@ TEST_F(given_intrusive_forward_list_with_three_element, GivenCopiedElementFromLi
     list_.clear(); // we push a stack element so clear the list
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_three_element, GivenCopyAssignedElementFromList_ExpectElementCanBePushedAgain)
 {
     element copy_of_a{72};
@@ -281,6 +306,7 @@ TEST_F(given_intrusive_forward_list_with_three_element, GivenCopyAssignedElement
     list_.clear(); // we push a stack element so clear the list
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_three_element, GivenMovedElementFromList_ExpectElementCanBePushedAgain)
 {
     element copy_of_a{std::move(list_.front())};
@@ -294,6 +320,7 @@ TEST_F(given_intrusive_forward_list_with_three_element, GivenMovedElementFromLis
     list_.clear(); // we push a stack element so clear the list
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_three_element, GivenMoveAssignedElementFromList_ExpectElementCanBePushedAgain)
 {
     element copy_of_a{72};
@@ -308,6 +335,7 @@ TEST_F(given_intrusive_forward_list_with_three_element, GivenMoveAssignedElement
     list_.clear(); // we push a stack element so clear the list
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_three_element, GivenReferenceToElementFromList_ExpectContractViolation)
 {
     element& reference_to_a{list_.front()};
@@ -316,6 +344,7 @@ TEST_F(given_intrusive_forward_list_with_three_element, GivenReferenceToElementF
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(list_.push_back(reference_to_a));
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_three_element, GivenPushElementTwice_ExpectContractViolation)
 {
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(list_.push_back(a_));
@@ -323,6 +352,7 @@ TEST_F(given_intrusive_forward_list_with_three_element, GivenPushElementTwice_Ex
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(list_.push_back(c_));
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_three_element, GivenPopAndPushElementAgain_ExpectElementIsAgainPartOfList)
 {
     list_.pop_front();
@@ -341,6 +371,7 @@ TEST_F(given_intrusive_forward_list_with_three_element, GivenPopAndPushElementAg
     EXPECT_EQ(&c_, &list_.back());
 }
 
+// NOTRACING
 TEST_F(given_intrusive_forward_list_with_three_element, GivenSecondListAndPushElementsAgain_ExpectContractViolation)
 {
     intrusive_forward_list<element> another_list{};

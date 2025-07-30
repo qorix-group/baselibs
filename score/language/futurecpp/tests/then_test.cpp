@@ -90,6 +90,8 @@ struct category_receiver
     category* stopped;
 };
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(then_receiver, set_value_GivenVoidInvocable_ExpectCorrectValueCategory)
 {
     category invocable_action{category::init};
@@ -106,6 +108,8 @@ TEST(then_receiver, set_value_GivenVoidInvocable_ExpectCorrectValueCategory)
     EXPECT_EQ(set_stopped_action, category::init);
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(then_receiver, set_value_GivenNonVoidInvocable_ExpectCorrectValueCategory)
 {
     category set_value_action{category::init};
@@ -120,6 +124,8 @@ TEST(then_receiver, set_value_GivenNonVoidInvocable_ExpectCorrectValueCategory)
     EXPECT_EQ(set_stopped_action, category::init);
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(then_receiver, set_stopped_GivenReceiverIsStopped_ExpectInvocableNotCalled)
 {
     category invocable_action{category::init};
@@ -221,6 +227,8 @@ private:
     Invocable i_{};
 };
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(then, then_GivenCompositionWithNamedTemporaries_ExpectChainedResult)
 {
     auto s1 = then(inline_scheduler_sender{}, non_void_invocable{});
@@ -228,12 +236,16 @@ TEST(then, then_GivenCompositionWithNamedTemporaries_ExpectChainedResult)
     EXPECT_EQ(category::rvalue, get_result<category>(s2));
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(then, then_GivenCompositionWithNestedFunctionCalls_ExpectChainedResult)
 {
     auto s = then(then(inline_scheduler_sender{}, non_void_invocable{}), non_void_invocable{});
     EXPECT_EQ(category::rvalue, get_result<category>(s));
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(then, then_GivenCompositionWithNestedFunctionCallsAndNonCopyableInvocable_ExpectChainedResult)
 {
     auto s =
@@ -241,6 +253,8 @@ TEST(then, then_GivenCompositionWithNestedFunctionCallsAndNonCopyableInvocable_E
     EXPECT_EQ(category::rvalue, get_result<category>(std::move(s)));
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(then, then_GivenCompositionWithPipedNamedTemporaries_ExpectChainedResult)
 {
     auto s1 = then(non_void_invocable{});
@@ -249,12 +263,16 @@ TEST(then, then_GivenCompositionWithPipedNamedTemporaries_ExpectChainedResult)
     EXPECT_EQ(category::rvalue, get_result<category>(s3));
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(then, then_GivenCompositionWithPipe_ExpectChainedResult)
 {
     auto s = inline_scheduler_sender{} | then(non_void_invocable{}) | then(non_void_invocable{});
     EXPECT_EQ(category::rvalue, get_result<category>(s));
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(then, then_GivenCompositionWithPipeAndNonCopyableInvocable_ExpectChainedResult)
 {
     auto s =
@@ -286,6 +304,8 @@ struct argument_category
     }
 };
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(then, then_GivenInvocableReturnsLValue_ExpectArgumentIsPerfectlyForwarded)
 {
     auto s1 = then(inline_scheduler_sender{}, [c = category::lvalue]() mutable -> category& { return c; });
@@ -293,6 +313,8 @@ TEST(then, then_GivenInvocableReturnsLValue_ExpectArgumentIsPerfectlyForwarded)
     EXPECT_EQ(category::lvalue, get_result<category>(s2));
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(then, then_GivenInvocableReturnsConstLValue_ExpectArgumentIsPerfectlyForwarded)
 {
     auto s1 = then(inline_scheduler_sender{}, [c = category::const_lvalue]() -> const category& { return c; });
@@ -300,6 +322,8 @@ TEST(then, then_GivenInvocableReturnsConstLValue_ExpectArgumentIsPerfectlyForwar
     EXPECT_EQ(category::const_lvalue, get_result<category>(s2));
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(then, then_GivenInvocableReturnsRValue_ExpectArgumentIsPerfectlyForwarded)
 {
     auto s1 = then(inline_scheduler_sender{}, [c = category::rvalue]() mutable -> category&& { return std::move(c); });
@@ -307,6 +331,8 @@ TEST(then, then_GivenInvocableReturnsRValue_ExpectArgumentIsPerfectlyForwarded)
     EXPECT_EQ(category::rvalue, get_result<category>(s2));
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(then, then_GivenInvocableReturnsConstRValue_ExpectArgumentIsPerfectlyForwarded)
 {
     auto s1 =
@@ -315,6 +341,8 @@ TEST(then, then_GivenInvocableReturnsConstRValue_ExpectArgumentIsPerfectlyForwar
     EXPECT_EQ(category::const_rvalue, get_result<category>(s2));
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(then, then_GivenMultipleInvocationsOnSameSender_ExpectSameResultBecauseSenderIsCopied)
 {
     auto invocable = [v = 0]() mutable {

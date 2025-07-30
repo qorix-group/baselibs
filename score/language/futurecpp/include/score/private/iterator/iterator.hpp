@@ -169,11 +169,12 @@ public:
 
     /// \brief Advances the iterator.
     ///
+    /// \param lhs The iterator to be incremented.
     /// \param n The number of positions to increment the iterator.
     /// \return A copy of the iterator which is incremented.
-    iterator operator+(const difference_type n) const
+    friend iterator operator+(const iterator& lhs, const difference_type n)
     {
-        iterator ret{*this};
+        iterator ret{lhs};
         return ret += n;
     }
 
@@ -189,11 +190,12 @@ public:
 
     /// \brief Decrements the iterator.
     ///
+    /// \param lhs The iterator to be incremented.
     /// \param n The number of positions to decrement the iterator.
     /// \return A copy of the iterator which is decremented.
-    iterator operator-(const difference_type n) const
+    friend iterator operator-(const iterator& lhs, const difference_type n)
     {
-        iterator ret{*this};
+        iterator ret{lhs};
         return ret -= n;
     }
 

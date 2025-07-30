@@ -54,6 +54,13 @@ auto return_42 = []() { return 42; };
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#17505799
+TEST(move_only_function, given_default_constructed_expect_available_default_size_match)
+{
+    EXPECT_EQ(score::cpp::move_only_function<int()>::capacity_t::value, score::cpp::detail::default_capacity());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#17505799
 TEST(move_only_function, default_construction)
 {
     score::cpp::move_only_function<int()> f;

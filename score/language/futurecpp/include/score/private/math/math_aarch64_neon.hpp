@@ -192,7 +192,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_AARCH64_NEON_ALWAYS_INLINE dou
     {
         return vdupd_lane_f64(vsqrt_f64(vdup_n_f64(num)), 0);
     }
-    return ::score_sqrt(num);
+    return ::score_future_cpp_sqrt(num);
 }
 
 inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_AARCH64_NEON_ALWAYS_INLINE float sqrt_neon(float num)
@@ -202,7 +202,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_AARCH64_NEON_ALWAYS_INLINE flo
     {
         return vdups_lane_f32(vsqrt_f32(vdup_n_f32(num)), 0);
     }
-    return ::score_sqrtf(num);
+    return ::score_future_cpp_sqrtf(num);
 }
 
 } // namespace detail

@@ -54,6 +54,9 @@ class uninitialized_move_test_fixture : public ::testing::Test
 
 TYPED_TEST_SUITE(uninitialized_move_test_fixture, test_types, /*unused*/);
 
+///
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#42721376
 TYPED_TEST(uninitialized_move_test_fixture, when_no_exception)
 {
     std::vector<TypeParam> source(1);
@@ -76,6 +79,9 @@ class uninitialized_move_n_test_fixture : public ::testing::Test
 
 TYPED_TEST_SUITE(uninitialized_move_n_test_fixture, test_types, /*unused*/);
 
+///
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#42721376
 TYPED_TEST(uninitialized_move_n_test_fixture, when_no_exception)
 {
     std::vector<TypeParam> source(1);
@@ -117,6 +123,9 @@ struct throwing_test_type
     bool shall_throw;
 };
 
+///
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#42721376
 TEST(uninitialized_move_test, when_exception)
 {
     std::array<observer, 2> test_type_observer{};
@@ -139,6 +148,9 @@ TEST(uninitialized_move_test, when_exception)
     EXPECT_EQ(0, test_type_observer[1].dtor);
 }
 
+///
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#42721376
 TEST(uninitialized_move_n_test, when_exception)
 {
     std::array<observer, 2> test_type_observer{};

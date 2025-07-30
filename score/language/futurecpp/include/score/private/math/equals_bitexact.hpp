@@ -36,7 +36,7 @@ constexpr bool equals_bitexact(const T lhs, const T rhs) noexcept
     // Suppress "Floating point expression `lhs` is compared using operator `==`". The goal of this function is exactly
     // to provide a tooling-agnostic way to compare floating point values on exact equality. So similar to suppress
     // compiler warning also allow static code analysis
-    // coverity[misra_cpp_2023_dir_0_3_1_violation]
+    // coverity[misra_cpp_2023_dir_0_3_1_violation : SUPPRESS]
     return lhs == rhs;
 #if defined(__GNUC__) || defined(__clang__)
 #pragma GCC diagnostic pop

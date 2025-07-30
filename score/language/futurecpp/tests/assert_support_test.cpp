@@ -13,6 +13,7 @@ namespace
 
 void my_function(const int* const pointer) { SCORE_LANGUAGE_FUTURECPP_PRECONDITION(pointer != nullptr); }
 
+// NOTRACING
 TEST(assert_support_test, ContractViolated)
 {
     const int* const pointer{nullptr};
@@ -21,6 +22,7 @@ TEST(assert_support_test, ContractViolated)
     SCORE_LANGUAGE_FUTURECPP_ASSERT_CONTRACT_VIOLATED(my_function(pointer));
 }
 
+// NOTRACING
 TEST(assert_support_test, ContractNotViolated)
 {
     const int i{1};

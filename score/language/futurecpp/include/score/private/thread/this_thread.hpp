@@ -13,7 +13,7 @@
 #include <score/private/thread/thread.hpp>
 
 // Header part of safety qualification
-// https://bmwgroup.sharepoint.com/:b:/r/teams/SafeSoftwarePlatform/Freigegebene%20Dokumente/Ironman/safety/mpad/tuv/EZ_653_22_23_RL_2023_08_10_QOS_2_2_4.pdf?csf=1&web=1&e=FTMJRu
+// broken_link_s/:b:/r/teams/SafeSoftwarePlatform/Freigegebene%20Dokumente/Ironman/safety/mpad/tuv/EZ_653_22_23_RL_2023_08_10_QOS_2_2_4.pdf?csf=1&web=1&e=FTMJRu
 //{
 #include <pthread.h>
 #include <sched.h>

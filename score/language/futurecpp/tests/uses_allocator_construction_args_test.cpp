@@ -22,6 +22,7 @@ namespace
 using trailing_archetype = score::cpp::pmr::vector<int>;
 using leading_archetype = std::tuple<int>;
 
+// NOTRACING
 TEST(UsesAllocatorConstructionArgsTest, NonPairNoAllocatorConstructionWithLValue)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;
@@ -33,6 +34,7 @@ TEST(UsesAllocatorConstructionArgsTest, NonPairNoAllocatorConstructionWithLValue
     EXPECT_EQ(result, std::make_tuple(value));
 }
 
+// NOTRACING
 TEST(UsesAllocatorConstructionArgsTest, NonPairNoAllocatorConstructionWithRValue)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;
@@ -44,6 +46,7 @@ TEST(UsesAllocatorConstructionArgsTest, NonPairNoAllocatorConstructionWithRValue
     EXPECT_EQ(result, std::make_tuple(value));
 }
 
+// NOTRACING
 TEST(UsesAllocatorConstructionArgsTest, NonPairLeadingAllocatorConstructionWithLValue)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;
@@ -56,6 +59,7 @@ TEST(UsesAllocatorConstructionArgsTest, NonPairLeadingAllocatorConstructionWithL
     EXPECT_EQ(std::get<2>(result), value);
 }
 
+// NOTRACING
 TEST(UsesAllocatorConstructionArgsTest, NonPairLeadingAllocatorConstructionWithRValue)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;
@@ -68,6 +72,7 @@ TEST(UsesAllocatorConstructionArgsTest, NonPairLeadingAllocatorConstructionWithR
     EXPECT_EQ(std::get<2>(result), value);
 }
 
+// NOTRACING
 TEST(UsesAllocatorConstructionArgsTest, NonPairTrailingAllocatorConstructionWithLValue)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;
@@ -79,6 +84,7 @@ TEST(UsesAllocatorConstructionArgsTest, NonPairTrailingAllocatorConstructionWith
     EXPECT_EQ(result, std::make_tuple(value, pma));
 }
 
+// NOTRACING
 TEST(UsesAllocatorConstructionArgsTest, NonPairTrailingAllocatorConstructionWithRValue)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;
@@ -90,6 +96,7 @@ TEST(UsesAllocatorConstructionArgsTest, NonPairTrailingAllocatorConstructionWith
     EXPECT_EQ(result, std::make_tuple(value, pma));
 }
 
+// NOTRACING
 TEST(UsesAllocatorConstructionArgsTest, PairNoAllocatorConstructionWithLValue)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;
@@ -103,6 +110,7 @@ TEST(UsesAllocatorConstructionArgsTest, PairNoAllocatorConstructionWithLValue)
     EXPECT_EQ(std::get<2>(result), std::make_tuple(value2));
 }
 
+// NOTRACING
 TEST(UsesAllocatorConstructionArgsTest, PairNoAllocatorConstructionWithRValue)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;
@@ -117,6 +125,7 @@ TEST(UsesAllocatorConstructionArgsTest, PairNoAllocatorConstructionWithRValue)
     EXPECT_EQ(std::get<2>(result), std::make_tuple(value2));
 }
 
+// NOTRACING
 TEST(UsesAllocatorConstructionArgsTest, PairTrailingAllocatorDefaultConstruction)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;
@@ -129,6 +138,7 @@ TEST(UsesAllocatorConstructionArgsTest, PairTrailingAllocatorDefaultConstruction
     EXPECT_EQ(std::get<2>(result), std::make_tuple(pma));
 }
 
+// NOTRACING
 TEST(UsesAllocatorConstructionArgsTest, PairTrailingAllocatorConstructionWithLValue)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;
@@ -143,6 +153,7 @@ TEST(UsesAllocatorConstructionArgsTest, PairTrailingAllocatorConstructionWithLVa
     EXPECT_EQ(std::get<2>(result), std::make_tuple(value2, pma));
 }
 
+// NOTRACING
 TEST(UsesAllocatorConstructionArgsTest, PairTrailingAllocatorConstructionWithRValue)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;
@@ -157,6 +168,7 @@ TEST(UsesAllocatorConstructionArgsTest, PairTrailingAllocatorConstructionWithRVa
     EXPECT_EQ(std::get<2>(result), std::make_tuple(value2, pma));
 }
 
+// NOTRACING
 TEST(UsesAllocatorConstructionArgsTest, PairLeadingAllocatorConstructionWithLValue)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;
@@ -173,6 +185,7 @@ TEST(UsesAllocatorConstructionArgsTest, PairLeadingAllocatorConstructionWithLVal
     EXPECT_EQ(std::get<2>(std::get<2>(result)), value2);
 }
 
+// NOTRACING
 TEST(UsesAllocatorConstructionArgsTest, PairLeadingAllocatorConstructionWithRValue)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;
@@ -202,6 +215,7 @@ struct distinct_resource final : score::cpp::pmr::memory_resource
     bool do_is_equal(const memory_resource& other) const noexcept override { return &other == this; }
 };
 
+// NOTRACING
 TEST(UsesAllocatorConstructionArgsTest, PairTrailingAllocatorCopyConstruction)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;
@@ -219,6 +233,7 @@ TEST(UsesAllocatorConstructionArgsTest, PairTrailingAllocatorCopyConstruction)
     EXPECT_EQ(std::get<2>(result), std::forward_as_tuple(original.second, pma1));
 }
 
+// NOTRACING
 TEST(UsesAllocatorConstructionArgsTest, PairTrailingAllocatorMoveConstruction)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;
@@ -237,6 +252,7 @@ TEST(UsesAllocatorConstructionArgsTest, PairTrailingAllocatorMoveConstruction)
     EXPECT_EQ(std::get<2>(result), std::forward_as_tuple(expected.second, pma1));
 }
 
+// NOTRACING
 TEST(UsesAllocatorConstructionArgsTest, RecursivePairAllocatorConstruction)
 {
     using allocator_type = score::cpp::pmr::polymorphic_allocator<int>;

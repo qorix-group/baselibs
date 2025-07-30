@@ -48,20 +48,20 @@ struct assert_system_handler_tag
                                                           #cond,                                                       \
                                                           msg,                                                         \
                                                           score::cpp::get_user_data()},                                       \
-                                  score::cpp::detail::assert_system_handler_tag{});
+                                  score::cpp::detail::assert_system_handler_tag{})
 
 #define SCORE_LANGUAGE_FUTURECPP_INTERNAL_ASSERT_IMPL(cond, msg)                                                                            \
-    if (!(cond))                                                                                                       \
+    do                                                                                                                 \
     {                                                                                                                  \
-        SCORE_LANGUAGE_FUTURECPP_INTERNAL_SIGNAL_ASSERTION_FAILURE(cond, msg)                                                               \
-    }                                                                                                                  \
-    SCORE_LANGUAGE_FUTURECPP_INTERNAL_HELPER_DUMMY_FOR_SEMICOLON
+        if (!(cond))                                                                                                   \
+        {                                                                                                              \
+            SCORE_LANGUAGE_FUTURECPP_INTERNAL_SIGNAL_ASSERTION_FAILURE(cond, msg);                                                          \
+        }                                                                                                              \
+    } while (false)
 
 #define SCORE_LANGUAGE_FUTURECPP_INTERNAL_PRECONDITION_IMPL(x, msg) SCORE_LANGUAGE_FUTURECPP_INTERNAL_ASSERT_IMPL(x, msg)
 
-#define SCORE_LANGUAGE_FUTURECPP_INTERNAL_UNREACHABLE_IMPL(msg)                                                                             \
-    SCORE_LANGUAGE_FUTURECPP_INTERNAL_SIGNAL_ASSERTION_FAILURE(Unreachable_Code, msg)                                                       \
-    SCORE_LANGUAGE_FUTURECPP_INTERNAL_HELPER_DUMMY_FOR_SEMICOLON
-/// \endcond
+#define SCORE_LANGUAGE_FUTURECPP_INTERNAL_UNREACHABLE_IMPL(msg) SCORE_LANGUAGE_FUTURECPP_INTERNAL_SIGNAL_ASSERTION_FAILURE(Unreachable_Code, msg)
+  /// \endcond
 
 #endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_ASSERT_ASSERT_IMPL_HPP

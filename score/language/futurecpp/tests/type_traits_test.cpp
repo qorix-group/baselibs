@@ -511,6 +511,7 @@ TEST(is_hash_for, when_not_hash_for)
                   "Error: first type is hash for second type but shouldn't be");
 }
 
+// NOTRACING
 TEST(type_traits, input_iterator_category)
 {
     using it = std::istream_iterator<std::int32_t>;
@@ -521,6 +522,7 @@ TEST(type_traits, input_iterator_category)
     static_assert(!score::cpp::detail::is_random_access_iterator<it>::value, "failed");
 }
 
+// NOTRACING
 TEST(type_traits, forward_iterator_category)
 {
     using it = std::forward_list<std::int32_t>::iterator;
@@ -531,6 +533,7 @@ TEST(type_traits, forward_iterator_category)
     static_assert(!score::cpp::detail::is_random_access_iterator<it>::value, "failed");
 }
 
+// NOTRACING
 TEST(type_traits, bidirectional_iterator_category)
 {
     using it = std::list<std::int32_t>::iterator;
@@ -541,6 +544,7 @@ TEST(type_traits, bidirectional_iterator_category)
     static_assert(!score::cpp::detail::is_random_access_iterator<it>::value, "failed");
 }
 
+// NOTRACING
 TEST(type_traits, random_access_iterator_category)
 {
     using it = std::vector<std::int32_t>::iterator;

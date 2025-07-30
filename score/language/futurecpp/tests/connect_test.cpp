@@ -49,6 +49,8 @@ struct sender
     op_state connect(const receiver&&) const&& { return {category::const_rvalue, category::const_rvalue}; }
 };
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(connect_test, connect_GivenRValueSenderAndReceiver_ExpectConnectsSenderAndReceiverInAnOperationState)
 {
     sender s{};
@@ -58,6 +60,9 @@ TEST(connect_test, connect_GivenRValueSenderAndReceiver_ExpectConnectsSenderAndR
     EXPECT_EQ(op.sender, category::rvalue);
     EXPECT_EQ(op.receiver, category::rvalue);
 }
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(connect_test, connect_GivenLValueSenderAndReceiver_ExpectConnectsSenderAndReceiverInAnOperationState)
 {
     sender s{};
@@ -68,6 +73,8 @@ TEST(connect_test, connect_GivenLValueSenderAndReceiver_ExpectConnectsSenderAndR
     EXPECT_EQ(op.receiver, category::lvalue);
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(connect_test, connect_GivenConstRValueSenderAndReceiver_ExpectConnectsSenderAndReceiverInAnOperationState)
 {
     const sender s{};
@@ -78,6 +85,8 @@ TEST(connect_test, connect_GivenConstRValueSenderAndReceiver_ExpectConnectsSende
     EXPECT_EQ(op.receiver, category::const_rvalue);
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#40946837
 TEST(connect_test, connect_GivenConstLValueSenderAndReceiver_ExpectConnectsSenderAndReceiverInAnOperationState)
 {
     const sender s{};

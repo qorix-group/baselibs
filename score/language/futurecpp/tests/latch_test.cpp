@@ -7,8 +7,7 @@
 #include <score/latch.hpp> // check include guard
 
 #include <score/assert_support.hpp>
-
-#include <thread>
+#include <score/jthread.hpp>
 
 #include <gtest/gtest.h>
 
@@ -64,8 +63,8 @@ TEST(LatchTest, GivenCountIsThree_WhenCountDownByThreeThreads_ThenFinalCountIsZe
 
     auto count_down = [&] { latch.count_down(); };
 
-    std::thread t0{count_down};
-    std::thread t1{count_down};
+    score::cpp::jthread t0{count_down};
+    score::cpp::jthread t1{count_down};
 
     latch.count_down();
     latch.wait();
@@ -163,8 +162,8 @@ TEST(LatchTest, GivenCountIsThree_WhenArrivedByThreeThreads_ThenAllThreadsObserv
         EXPECT_TRUE(shared_state);
     };
 
-    std::thread t0{count_down};
-    std::thread t1{count_down};
+    score::cpp::jthread t0{count_down};
+    score::cpp::jthread t1{count_down};
 
     shared_state = true;
     latch.arrive_and_wait();

@@ -19,6 +19,7 @@
 namespace
 {
 
+// NOTRACING
 TEST(UninitializedValueConstructTest, WhenNoException)
 {
     struct test_type
@@ -75,6 +76,7 @@ struct test_type
 std::uint32_t test_type::count{};
 std::array<test_type::observer, 2> test_type::observe{};
 
+// NOTRACING
 TEST(UninitializedValueConstructTest, WhenException)
 {
     test_type::count = 0U;

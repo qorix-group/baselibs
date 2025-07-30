@@ -210,7 +210,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE dou
         _mm_store_sd(&r, v);
         return r;
     }
-    return ::score_sqrt(num);
+    return ::score_future_cpp_sqrt(num);
 }
 
 inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE float sqrt_sse42(float num)
@@ -223,7 +223,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE flo
         _mm_store_ss(&r, v);
         return r;
     }
-    return ::score_sqrtf(num);
+    return ::score_future_cpp_sqrtf(num);
 }
 
 } // namespace detail

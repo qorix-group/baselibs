@@ -1030,10 +1030,10 @@ TEST(math_test, ceil)
         EXPECT_FLOAT_EQ(std::ceil(0.5F), score::cpp::ceil(0.5F));
     }
     {
-        EXPECT_FLOAT_EQ(std::ceil(-0.5F), ::score_ceilf(-0.5F));
-        EXPECT_FLOAT_EQ(std::ceil(-0.0F), ::score_ceilf(-0.0F));
-        EXPECT_FLOAT_EQ(std::ceil(0.0F), ::score_ceilf(0.0F));
-        EXPECT_FLOAT_EQ(std::ceil(0.5F), ::score_ceilf(0.5F));
+        EXPECT_FLOAT_EQ(std::ceil(-0.5F), ::score_future_cpp_ceilf(-0.5F));
+        EXPECT_FLOAT_EQ(std::ceil(-0.0F), ::score_future_cpp_ceilf(-0.0F));
+        EXPECT_FLOAT_EQ(std::ceil(0.0F), ::score_future_cpp_ceilf(0.0F));
+        EXPECT_FLOAT_EQ(std::ceil(0.5F), ::score_future_cpp_ceilf(0.5F));
     }
     {
         EXPECT_DOUBLE_EQ(std::ceil(-0.5), score::cpp::ceil(-0.5));
@@ -1042,10 +1042,10 @@ TEST(math_test, ceil)
         EXPECT_DOUBLE_EQ(std::ceil(0.5), score::cpp::ceil(0.5));
     }
     {
-        EXPECT_DOUBLE_EQ(std::ceil(-0.5), ::score_ceil(-0.5));
-        EXPECT_DOUBLE_EQ(std::ceil(-0.0), ::score_ceil(-0.0));
-        EXPECT_DOUBLE_EQ(std::ceil(0.0), ::score_ceil(0.0));
-        EXPECT_DOUBLE_EQ(std::ceil(0.5), ::score_ceil(0.5));
+        EXPECT_DOUBLE_EQ(std::ceil(-0.5), ::score_future_cpp_ceil(-0.5));
+        EXPECT_DOUBLE_EQ(std::ceil(-0.0), ::score_future_cpp_ceil(-0.0));
+        EXPECT_DOUBLE_EQ(std::ceil(0.0), ::score_future_cpp_ceil(0.0));
+        EXPECT_DOUBLE_EQ(std::ceil(0.5), ::score_future_cpp_ceil(0.5));
     }
 }
 
@@ -1057,15 +1057,15 @@ TEST(math_test, ceil_inf)
         const float inf{std::numeric_limits<float>::infinity()};
         EXPECT_FLOAT_EQ(std::ceil(-inf), score::cpp::ceil(-inf));
         EXPECT_FLOAT_EQ(std::ceil(inf), score::cpp::ceil(inf));
-        EXPECT_FLOAT_EQ(std::ceil(-inf), ::score_ceilf(-inf));
-        EXPECT_FLOAT_EQ(std::ceil(inf), ::score_ceilf(inf));
+        EXPECT_FLOAT_EQ(std::ceil(-inf), ::score_future_cpp_ceilf(-inf));
+        EXPECT_FLOAT_EQ(std::ceil(inf), ::score_future_cpp_ceilf(inf));
     }
     {
         const double inf{std::numeric_limits<double>::infinity()};
         EXPECT_DOUBLE_EQ(std::ceil(-inf), score::cpp::ceil(-inf));
         EXPECT_DOUBLE_EQ(std::ceil(inf), score::cpp::ceil(inf));
-        EXPECT_DOUBLE_EQ(std::ceil(-inf), ::score_ceil(-inf));
-        EXPECT_DOUBLE_EQ(std::ceil(inf), ::score_ceil(inf));
+        EXPECT_DOUBLE_EQ(std::ceil(-inf), ::score_future_cpp_ceil(-inf));
+        EXPECT_DOUBLE_EQ(std::ceil(inf), ::score_future_cpp_ceil(inf));
     }
 }
 
@@ -1077,13 +1077,13 @@ TEST(math_test, ceil_nan)
         const float nan{std::numeric_limits<float>::quiet_NaN()};
         EXPECT_TRUE(std::isnan(std::ceil(nan)));
         EXPECT_TRUE(std::isnan(score::cpp::ceil(nan)));
-        EXPECT_TRUE(std::isnan(::score_ceilf(nan)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_ceilf(nan)));
     }
     {
         const double nan{std::numeric_limits<double>::quiet_NaN()};
         EXPECT_TRUE(std::isnan(std::ceil(nan)));
         EXPECT_TRUE(std::isnan(score::cpp::ceil(nan)));
-        EXPECT_TRUE(std::isnan(::score_ceil(nan)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_ceil(nan)));
     }
 }
 
@@ -1103,6 +1103,18 @@ TEST(math_test, floor)
         EXPECT_DOUBLE_EQ(std::floor(0.0), score::cpp::floor(0.0));
         EXPECT_DOUBLE_EQ(std::floor(0.5), score::cpp::floor(0.5));
     }
+    {
+        EXPECT_FLOAT_EQ(std::floor(-0.5F), ::score_future_cpp_floorf(-0.5F));
+        EXPECT_FLOAT_EQ(std::floor(-0.0F), ::score_future_cpp_floorf(-0.0F));
+        EXPECT_FLOAT_EQ(std::floor(0.0F), ::score_future_cpp_floorf(0.0F));
+        EXPECT_FLOAT_EQ(std::floor(0.5F), ::score_future_cpp_floorf(0.5F));
+    }
+    {
+        EXPECT_DOUBLE_EQ(std::floor(-0.5), ::score_future_cpp_floor(-0.5));
+        EXPECT_DOUBLE_EQ(std::floor(-0.0), ::score_future_cpp_floor(-0.0));
+        EXPECT_DOUBLE_EQ(std::floor(0.0), ::score_future_cpp_floor(0.0));
+        EXPECT_DOUBLE_EQ(std::floor(0.5), ::score_future_cpp_floor(0.5));
+    }
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -1113,11 +1125,15 @@ TEST(math_test, floor_inf)
         const float inf{std::numeric_limits<float>::infinity()};
         EXPECT_FLOAT_EQ(std::floor(-inf), score::cpp::floor(-inf));
         EXPECT_FLOAT_EQ(std::floor(inf), score::cpp::floor(inf));
+        EXPECT_FLOAT_EQ(std::floor(-inf), ::score_future_cpp_floorf(-inf));
+        EXPECT_FLOAT_EQ(std::floor(inf), ::score_future_cpp_floorf(inf));
     }
     {
         const double inf{std::numeric_limits<double>::infinity()};
         EXPECT_DOUBLE_EQ(std::floor(-inf), score::cpp::floor(-inf));
         EXPECT_DOUBLE_EQ(std::floor(inf), score::cpp::floor(inf));
+        EXPECT_DOUBLE_EQ(std::floor(-inf), ::score_future_cpp_floor(-inf));
+        EXPECT_DOUBLE_EQ(std::floor(inf), ::score_future_cpp_floor(inf));
     }
 }
 
@@ -1129,11 +1145,13 @@ TEST(math_test, floor_nan)
         const float nan{std::numeric_limits<float>::quiet_NaN()};
         EXPECT_TRUE(std::isnan(std::floor(nan)));
         EXPECT_TRUE(std::isnan(score::cpp::floor(nan)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_floorf(nan)));
     }
     {
         const double nan{std::numeric_limits<double>::quiet_NaN()};
         EXPECT_TRUE(std::isnan(std::floor(nan)));
         EXPECT_TRUE(std::isnan(score::cpp::floor(nan)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_floor(nan)));
     }
 }
 
@@ -1197,6 +1215,22 @@ TEST(math_test, rint)
         EXPECT_DOUBLE_EQ(std::rint(0.5), score::cpp::rint(0.5));
         EXPECT_DOUBLE_EQ(std::rint(0.9), score::cpp::rint(0.9));
     }
+    {
+        EXPECT_FLOAT_EQ(std::rint(-0.9F), ::score_future_cpp_rintf(-0.9F));
+        EXPECT_FLOAT_EQ(std::rint(-0.5F), ::score_future_cpp_rintf(-0.5F));
+        EXPECT_FLOAT_EQ(std::rint(-0.0F), ::score_future_cpp_rintf(-0.0F));
+        EXPECT_FLOAT_EQ(std::rint(0.0F), ::score_future_cpp_rintf(0.0F));
+        EXPECT_FLOAT_EQ(std::rint(0.5F), ::score_future_cpp_rintf(0.5F));
+        EXPECT_FLOAT_EQ(std::rint(0.9F), ::score_future_cpp_rintf(0.9F));
+    }
+    {
+        EXPECT_DOUBLE_EQ(std::rint(-0.9), ::score_future_cpp_rint(-0.9));
+        EXPECT_DOUBLE_EQ(std::rint(-0.5), ::score_future_cpp_rint(-0.5));
+        EXPECT_DOUBLE_EQ(std::rint(-0.0), ::score_future_cpp_rint(-0.0));
+        EXPECT_DOUBLE_EQ(std::rint(0.0), ::score_future_cpp_rint(0.0));
+        EXPECT_DOUBLE_EQ(std::rint(0.5), ::score_future_cpp_rint(0.5));
+        EXPECT_DOUBLE_EQ(std::rint(0.9), ::score_future_cpp_rint(0.9));
+    }
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -1207,11 +1241,15 @@ TEST(math_test, rint_inf)
         const float inf{std::numeric_limits<float>::infinity()};
         EXPECT_FLOAT_EQ(std::rint(-inf), score::cpp::rint(-inf));
         EXPECT_FLOAT_EQ(std::rint(inf), score::cpp::rint(inf));
+        EXPECT_FLOAT_EQ(std::rint(-inf), ::score_future_cpp_rintf(-inf));
+        EXPECT_FLOAT_EQ(std::rint(inf), ::score_future_cpp_rintf(inf));
     }
     {
         const double inf{std::numeric_limits<double>::infinity()};
         EXPECT_DOUBLE_EQ(std::rint(-inf), score::cpp::rint(-inf));
         EXPECT_DOUBLE_EQ(std::rint(inf), score::cpp::rint(inf));
+        EXPECT_DOUBLE_EQ(std::rint(-inf), ::score_future_cpp_rint(-inf));
+        EXPECT_DOUBLE_EQ(std::rint(inf), ::score_future_cpp_rint(inf));
     }
 }
 
@@ -1223,11 +1261,13 @@ TEST(math_test, rint_nan)
         const float nan{std::numeric_limits<float>::quiet_NaN()};
         EXPECT_TRUE(std::isnan(std::rint(nan)));
         EXPECT_TRUE(std::isnan(score::cpp::rint(nan)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_rintf(nan)));
     }
     {
         const double nan{std::numeric_limits<double>::quiet_NaN()};
         EXPECT_TRUE(std::isnan(std::rint(nan)));
         EXPECT_TRUE(std::isnan(score::cpp::rint(nan)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_rint(nan)));
     }
 }
 
@@ -1305,6 +1345,19 @@ TEST(math_test, trunc)
         EXPECT_DOUBLE_EQ(std::trunc(0.0), score::cpp::trunc(0.0));
         EXPECT_DOUBLE_EQ(std::trunc(0.5), score::cpp::trunc(0.5));
     }
+
+    {
+        EXPECT_FLOAT_EQ(std::trunc(-0.5F), ::score_future_cpp_truncf(-0.5F));
+        EXPECT_FLOAT_EQ(std::trunc(-0.0F), ::score_future_cpp_truncf(-0.0F));
+        EXPECT_FLOAT_EQ(std::trunc(0.0F), ::score_future_cpp_truncf(0.0F));
+        EXPECT_FLOAT_EQ(std::trunc(0.5F), ::score_future_cpp_truncf(0.5F));
+    }
+    {
+        EXPECT_DOUBLE_EQ(std::trunc(-0.5), ::score_future_cpp_trunc(-0.5));
+        EXPECT_DOUBLE_EQ(std::trunc(-0.0), ::score_future_cpp_trunc(-0.0));
+        EXPECT_DOUBLE_EQ(std::trunc(0.0), ::score_future_cpp_trunc(0.0));
+        EXPECT_DOUBLE_EQ(std::trunc(0.5), ::score_future_cpp_trunc(0.5));
+    }
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -1315,11 +1368,15 @@ TEST(math_test, trunc_inf)
         const float inf{std::numeric_limits<float>::infinity()};
         EXPECT_FLOAT_EQ(std::trunc(-inf), score::cpp::trunc(-inf));
         EXPECT_FLOAT_EQ(std::trunc(inf), score::cpp::trunc(inf));
+        EXPECT_FLOAT_EQ(std::trunc(-inf), ::score_future_cpp_truncf(-inf));
+        EXPECT_FLOAT_EQ(std::trunc(inf), ::score_future_cpp_truncf(inf));
     }
     {
         const double inf{std::numeric_limits<double>::infinity()};
         EXPECT_DOUBLE_EQ(std::trunc(-inf), score::cpp::trunc(-inf));
         EXPECT_DOUBLE_EQ(std::trunc(inf), score::cpp::trunc(inf));
+        EXPECT_DOUBLE_EQ(std::trunc(-inf), ::score_future_cpp_trunc(-inf));
+        EXPECT_DOUBLE_EQ(std::trunc(inf), ::score_future_cpp_trunc(inf));
     }
 }
 
@@ -1331,11 +1388,13 @@ TEST(math_test, trunc_nan)
         const float nan{std::numeric_limits<float>::quiet_NaN()};
         EXPECT_TRUE(std::isnan(std::trunc(nan)));
         EXPECT_TRUE(std::isnan(score::cpp::trunc(nan)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_truncf(nan)));
     }
     {
         const double nan{std::numeric_limits<double>::quiet_NaN()};
         EXPECT_TRUE(std::isnan(std::trunc(nan)));
         EXPECT_TRUE(std::isnan(score::cpp::trunc(nan)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_trunc(nan)));
     }
 }
 
@@ -1548,15 +1607,15 @@ TEST(math_test, modf)
 {
     {
         float std_result{};
-        float score_result{};
-        EXPECT_FLOAT_EQ(std::modf(-0.0F, &std_result), score::cpp::modf(-0.0F, &score_result));
-        EXPECT_FLOAT_EQ(std_result, score_result);
+        float score_future_cpp_result{};
+        EXPECT_FLOAT_EQ(std::modf(-0.0F, &std_result), score::cpp::modf(-0.0F, &score_future_cpp_result));
+        EXPECT_FLOAT_EQ(std_result, score_future_cpp_result);
     }
     {
         double std_result{};
-        double score_result{};
-        EXPECT_DOUBLE_EQ(std::modf(-0.0, &std_result), score::cpp::modf(-0.0, &score_result));
-        EXPECT_DOUBLE_EQ(std_result, score_result);
+        double score_future_cpp_result{};
+        EXPECT_DOUBLE_EQ(std::modf(-0.0, &std_result), score::cpp::modf(-0.0, &score_future_cpp_result));
+        EXPECT_DOUBLE_EQ(std_result, score_future_cpp_result);
     }
 }
 
@@ -1574,15 +1633,15 @@ TEST(math_test, remquo)
 {
     {
         int std_result{};
-        int score_result{};
-        EXPECT_FLOAT_EQ(std::remquo(0.1F, 0.2F, &std_result), score::cpp::remquo(0.1F, 0.2F, &score_result));
-        EXPECT_EQ(std_result, score_result);
+        int score_future_cpp_result{};
+        EXPECT_FLOAT_EQ(std::remquo(0.1F, 0.2F, &std_result), score::cpp::remquo(0.1F, 0.2F, &score_future_cpp_result));
+        EXPECT_EQ(std_result, score_future_cpp_result);
     }
     {
         int std_result{};
-        int score_result{};
-        EXPECT_DOUBLE_EQ(std::remquo(0.1, 0.2, &std_result), score::cpp::remquo(0.1, 0.2, &score_result));
-        EXPECT_EQ(std_result, score_result);
+        int score_future_cpp_result{};
+        EXPECT_DOUBLE_EQ(std::remquo(0.1, 0.2, &std_result), score::cpp::remquo(0.1, 0.2, &score_future_cpp_result));
+        EXPECT_EQ(std_result, score_future_cpp_result);
     }
 }
 
@@ -1602,6 +1661,18 @@ TEST(math_test, copysign)
         EXPECT_DOUBLE_EQ(std::copysign(-0.0, 1.0), score::cpp::copysign(-0.0, 1.0));
         EXPECT_DOUBLE_EQ(std::copysign(0.0, 1.0), score::cpp::copysign(0.0, 1.0));
     }
+    {
+        EXPECT_FLOAT_EQ(std::copysign(-0.0F, -1.0F), ::score_future_cpp_copysignf(-0.0F, -1.0F));
+        EXPECT_FLOAT_EQ(std::copysign(0.0F, -1.0F), ::score_future_cpp_copysignf(0.0F, -1.0F));
+        EXPECT_FLOAT_EQ(std::copysign(-0.0F, 1.0F), ::score_future_cpp_copysignf(-0.0F, 1.0F));
+        EXPECT_FLOAT_EQ(std::copysign(0.0F, 1.0F), ::score_future_cpp_copysignf(0.0F, 1.0F));
+    }
+    {
+        EXPECT_DOUBLE_EQ(std::copysign(-0.0, -1.0), ::score_future_cpp_copysign(-0.0, -1.0));
+        EXPECT_DOUBLE_EQ(std::copysign(0.0, -1.0), ::score_future_cpp_copysign(0.0, -1.0));
+        EXPECT_DOUBLE_EQ(std::copysign(-0.0, 1.0), ::score_future_cpp_copysign(-0.0, 1.0));
+        EXPECT_DOUBLE_EQ(std::copysign(0.0, 1.0), ::score_future_cpp_copysign(0.0, 1.0));
+    }
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -1616,6 +1687,13 @@ TEST(math_test, copysign_inf)
         EXPECT_FLOAT_EQ(std::copysign(inf, 0.0F), score::cpp::copysign(inf, 0.0F));
         EXPECT_FLOAT_EQ(std::copysign(inf, -inf), score::cpp::copysign(inf, -inf));
         EXPECT_FLOAT_EQ(std::copysign(inf, inf), score::cpp::copysign(inf, inf));
+
+        EXPECT_FLOAT_EQ(std::copysign(0.0F, -inf), ::score_future_cpp_copysignf(0.0F, -inf));
+        EXPECT_FLOAT_EQ(std::copysign(0.0F, inf), ::score_future_cpp_copysignf(0.0F, inf));
+        EXPECT_FLOAT_EQ(std::copysign(inf, -0.0F), ::score_future_cpp_copysignf(inf, -0.0F));
+        EXPECT_FLOAT_EQ(std::copysign(inf, 0.0F), ::score_future_cpp_copysignf(inf, 0.0F));
+        EXPECT_FLOAT_EQ(std::copysign(inf, -inf), ::score_future_cpp_copysignf(inf, -inf));
+        EXPECT_FLOAT_EQ(std::copysign(inf, inf), ::score_future_cpp_copysignf(inf, inf));
     }
     {
         const double inf{std::numeric_limits<double>::infinity()};
@@ -1625,6 +1703,13 @@ TEST(math_test, copysign_inf)
         EXPECT_DOUBLE_EQ(std::copysign(inf, 0.0), score::cpp::copysign(inf, 0.0));
         EXPECT_DOUBLE_EQ(std::copysign(inf, -inf), score::cpp::copysign(inf, -inf));
         EXPECT_DOUBLE_EQ(std::copysign(inf, inf), score::cpp::copysign(inf, inf));
+
+        EXPECT_DOUBLE_EQ(std::copysign(0.0, -inf), ::score_future_cpp_copysign(0.0, -inf));
+        EXPECT_DOUBLE_EQ(std::copysign(0.0, inf), ::score_future_cpp_copysign(0.0, inf));
+        EXPECT_DOUBLE_EQ(std::copysign(inf, -0.0), ::score_future_cpp_copysign(inf, -0.0));
+        EXPECT_DOUBLE_EQ(std::copysign(inf, 0.0), ::score_future_cpp_copysign(inf, 0.0));
+        EXPECT_DOUBLE_EQ(std::copysign(inf, -inf), ::score_future_cpp_copysign(inf, -inf));
+        EXPECT_DOUBLE_EQ(std::copysign(inf, inf), ::score_future_cpp_copysign(inf, inf));
     }
 }
 
@@ -1652,6 +1737,17 @@ TEST(math_test, copysign_nan)
         EXPECT_EQ(score::cpp::bit_cast<std::uint32_t>(-nan), score::cpp::bit_cast<std::uint32_t>(score::cpp::copysign(-nan, -0.0F)));
         EXPECT_EQ(score::cpp::bit_cast<std::uint32_t>(nan), score::cpp::bit_cast<std::uint32_t>(score::cpp::copysign(nan, 0.0F)));
         EXPECT_EQ(score::cpp::bit_cast<std::uint32_t>(-nan), score::cpp::bit_cast<std::uint32_t>(score::cpp::copysign(nan, -0.0F)));
+
+        EXPECT_FLOAT_EQ(std::copysign(0.0F, -nan), ::score_future_cpp_copysignf(0.0F, -nan));
+        EXPECT_FLOAT_EQ(std::copysign(0.0F, nan), ::score_future_cpp_copysignf(0.0F, nan));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_copysignf(nan, -0.0F)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_copysignf(nan, -nan)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_copysignf(nan, 0.0F)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_copysignf(nan, nan)));
+        EXPECT_EQ(score::cpp::bit_cast<std::uint32_t>(nan), score::cpp::bit_cast<std::uint32_t>(::score_future_cpp_copysignf(-nan, 0.0F)));
+        EXPECT_EQ(score::cpp::bit_cast<std::uint32_t>(-nan), score::cpp::bit_cast<std::uint32_t>(::score_future_cpp_copysignf(-nan, -0.0F)));
+        EXPECT_EQ(score::cpp::bit_cast<std::uint32_t>(nan), score::cpp::bit_cast<std::uint32_t>(::score_future_cpp_copysignf(nan, 0.0F)));
+        EXPECT_EQ(score::cpp::bit_cast<std::uint32_t>(-nan), score::cpp::bit_cast<std::uint32_t>(::score_future_cpp_copysignf(nan, -0.0F)));
     }
     {
         const double nan{std::numeric_limits<double>::quiet_NaN()};
@@ -1673,6 +1769,17 @@ TEST(math_test, copysign_nan)
         EXPECT_EQ(score::cpp::bit_cast<std::uint64_t>(-nan), score::cpp::bit_cast<std::uint64_t>(score::cpp::copysign(-nan, -0.0)));
         EXPECT_EQ(score::cpp::bit_cast<std::uint64_t>(nan), score::cpp::bit_cast<std::uint64_t>(score::cpp::copysign(nan, 0.0)));
         EXPECT_EQ(score::cpp::bit_cast<std::uint64_t>(-nan), score::cpp::bit_cast<std::uint64_t>(score::cpp::copysign(nan, -0.0)));
+
+        EXPECT_DOUBLE_EQ(std::copysign(0.0, -nan), ::score_future_cpp_copysign(0.0, -nan));
+        EXPECT_DOUBLE_EQ(std::copysign(0.0, nan), ::score_future_cpp_copysign(0.0, nan));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_copysign(nan, -0.0)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_copysign(nan, -nan)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_copysign(nan, 0.0)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_copysign(nan, nan)));
+        EXPECT_EQ(score::cpp::bit_cast<std::uint64_t>(nan), score::cpp::bit_cast<std::uint64_t>(::score_future_cpp_copysign(-nan, 0.0)));
+        EXPECT_EQ(score::cpp::bit_cast<std::uint64_t>(-nan), score::cpp::bit_cast<std::uint64_t>(::score_future_cpp_copysign(-nan, -0.0)));
+        EXPECT_EQ(score::cpp::bit_cast<std::uint64_t>(nan), score::cpp::bit_cast<std::uint64_t>(::score_future_cpp_copysign(nan, 0.0)));
+        EXPECT_EQ(score::cpp::bit_cast<std::uint64_t>(-nan), score::cpp::bit_cast<std::uint64_t>(::score_future_cpp_copysign(nan, -0.0)));
     }
 }
 
@@ -1779,10 +1886,17 @@ TEST(math_test, fabs)
         EXPECT_FLOAT_EQ(std::fabs(0.0F), score::cpp::fabs(0.0F));
         EXPECT_FLOAT_EQ(std::fabs(0.01F), score::cpp::fabs(-0.01F));
 
+        EXPECT_FLOAT_EQ(std::fabs(-0.01F), ::score_future_cpp_fabsf(-0.01F));
+        EXPECT_FLOAT_EQ(std::fabs(-0.0F), ::score_future_cpp_fabsf(-0.0F));
+        EXPECT_FLOAT_EQ(std::fabs(0.0F), ::score_future_cpp_fabsf(0.0F));
+        EXPECT_FLOAT_EQ(std::fabs(0.01F), ::score_future_cpp_fabsf(-0.01F));
+
         const float low{std::numeric_limits<float>::lowest()};
         EXPECT_FLOAT_EQ(std::fabs(low), score::cpp::fabs(low));
+        EXPECT_FLOAT_EQ(std::fabs(low), ::score_future_cpp_fabsf(low));
         const float high{std::numeric_limits<float>::max()};
         EXPECT_FLOAT_EQ(std::fabs(high), score::cpp::fabs(high));
+        EXPECT_FLOAT_EQ(std::fabs(high), ::score_future_cpp_fabsf(high));
     }
     {
         EXPECT_DOUBLE_EQ(std::fabs(-0.01), score::cpp::fabs(-0.01));
@@ -1790,10 +1904,17 @@ TEST(math_test, fabs)
         EXPECT_DOUBLE_EQ(std::fabs(0.0), score::cpp::fabs(0.0));
         EXPECT_DOUBLE_EQ(std::fabs(0.01), score::cpp::fabs(-0.01));
 
+        EXPECT_DOUBLE_EQ(std::fabs(-0.01), ::score_future_cpp_fabs(-0.01));
+        EXPECT_DOUBLE_EQ(std::fabs(-0.0), ::score_future_cpp_fabs(-0.0));
+        EXPECT_DOUBLE_EQ(std::fabs(0.0), ::score_future_cpp_fabs(0.0));
+        EXPECT_DOUBLE_EQ(std::fabs(0.01), ::score_future_cpp_fabs(-0.01));
+
         const double low{std::numeric_limits<double>::lowest()};
         EXPECT_DOUBLE_EQ(std::fabs(low), score::cpp::fabs(low));
+        EXPECT_DOUBLE_EQ(std::fabs(low), ::score_future_cpp_fabs(low));
         const double high{std::numeric_limits<double>::max()};
         EXPECT_DOUBLE_EQ(std::fabs(high), score::cpp::fabs(high));
+        EXPECT_DOUBLE_EQ(std::fabs(high), score_future_cpp_fabs(high));
     }
 }
 
@@ -1805,11 +1926,15 @@ TEST(math_test, fabs_denorm)
         const float denorm{std::numeric_limits<float>::denorm_min()};
         EXPECT_FLOAT_EQ(std::fabs(-denorm), score::cpp::fabs(-denorm));
         EXPECT_FLOAT_EQ(std::fabs(denorm), score::cpp::fabs(denorm));
+        EXPECT_FLOAT_EQ(std::fabs(-denorm), ::score_future_cpp_fabsf(-denorm));
+        EXPECT_FLOAT_EQ(std::fabs(denorm), ::score_future_cpp_fabsf(denorm));
     }
     {
         const double denorm{std::numeric_limits<double>::denorm_min()};
         EXPECT_DOUBLE_EQ(std::fabs(-denorm), score::cpp::fabs(-denorm));
         EXPECT_DOUBLE_EQ(std::fabs(denorm), score::cpp::fabs(denorm));
+        EXPECT_DOUBLE_EQ(std::fabs(-denorm), ::score_future_cpp_fabs(-denorm));
+        EXPECT_DOUBLE_EQ(std::fabs(denorm), ::score_future_cpp_fabs(denorm));
     }
 }
 
@@ -1821,11 +1946,15 @@ TEST(math_test, fabs_inf)
         const float inf{std::numeric_limits<float>::infinity()};
         EXPECT_FLOAT_EQ(std::fabs(-inf), score::cpp::fabs(-inf));
         EXPECT_FLOAT_EQ(std::fabs(inf), score::cpp::fabs(inf));
+        EXPECT_FLOAT_EQ(std::fabs(-inf), ::score_future_cpp_fabsf(-inf));
+        EXPECT_FLOAT_EQ(std::fabs(inf), ::score_future_cpp_fabsf(inf));
     }
     {
         const double inf{std::numeric_limits<double>::infinity()};
         EXPECT_DOUBLE_EQ(std::fabs(-inf), score::cpp::fabs(-inf));
         EXPECT_DOUBLE_EQ(std::fabs(inf), score::cpp::fabs(inf));
+        EXPECT_DOUBLE_EQ(std::fabs(-inf), ::score_future_cpp_fabs(-inf));
+        EXPECT_DOUBLE_EQ(std::fabs(inf), ::score_future_cpp_fabs(inf));
     }
 }
 
@@ -1837,19 +1966,25 @@ TEST(math_test, fabs_nan)
         const float nan{std::numeric_limits<float>::quiet_NaN()};
         EXPECT_TRUE(std::isnan(std::fabs(nan)));
         EXPECT_TRUE(std::isnan(score::cpp::fabs(nan)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_fabsf(nan)));
         EXPECT_TRUE(std::isnan(std::fabs(-nan)));
         EXPECT_TRUE(std::isnan(score::cpp::fabs(-nan)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_fabsf(-nan)));
         EXPECT_EQ(score::cpp::bit_cast<std::uint32_t>(nan), score::cpp::bit_cast<std::uint32_t>(std::fabs(-nan)));
         EXPECT_EQ(score::cpp::bit_cast<std::uint32_t>(nan), score::cpp::bit_cast<std::uint32_t>(score::cpp::fabs(-nan)));
+        EXPECT_EQ(score::cpp::bit_cast<std::uint32_t>(nan), score::cpp::bit_cast<std::uint32_t>(::score_future_cpp_fabsf(-nan)));
     }
     {
         const double nan{std::numeric_limits<double>::quiet_NaN()};
         EXPECT_TRUE(std::isnan(std::fabs(nan)));
         EXPECT_TRUE(std::isnan(score::cpp::fabs(nan)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_fabs(nan)));
         EXPECT_TRUE(std::isnan(std::fabs(-nan)));
         EXPECT_TRUE(std::isnan(score::cpp::fabs(-nan)));
+        EXPECT_TRUE(std::isnan(::score_future_cpp_fabs(-nan)));
         EXPECT_EQ(score::cpp::bit_cast<std::uint64_t>(nan), score::cpp::bit_cast<std::uint64_t>(std::fabs(-nan)));
         EXPECT_EQ(score::cpp::bit_cast<std::uint64_t>(nan), score::cpp::bit_cast<std::uint64_t>(score::cpp::fabs(-nan)));
+        EXPECT_EQ(score::cpp::bit_cast<std::uint64_t>(nan), score::cpp::bit_cast<std::uint64_t>(::score_future_cpp_fabs(-nan)));
     }
 }
 
@@ -1875,15 +2010,15 @@ TEST(math_test, frexp)
 {
     {
         int std_result{};
-        int score_result{};
-        EXPECT_FLOAT_EQ(std::frexp(1.1F, &std_result), score::cpp::frexp(1.1F, &score_result));
-        EXPECT_EQ(std_result, score_result);
+        int score_future_cpp_result{};
+        EXPECT_FLOAT_EQ(std::frexp(1.1F, &std_result), score::cpp::frexp(1.1F, &score_future_cpp_result));
+        EXPECT_EQ(std_result, score_future_cpp_result);
     }
     {
         int std_result{};
-        int score_result{};
-        EXPECT_DOUBLE_EQ(std::frexp(1.1, &std_result), score::cpp::frexp(1.1, &score_result));
-        EXPECT_EQ(std_result, score_result);
+        int score_future_cpp_result{};
+        EXPECT_DOUBLE_EQ(std::frexp(1.1, &std_result), score::cpp::frexp(1.1, &score_future_cpp_result));
+        EXPECT_EQ(std_result, score_future_cpp_result);
     }
 }
 
@@ -1941,8 +2076,13 @@ TEST(math_test, isfinite)
 {
     EXPECT_EQ(std::isfinite(0.0F), score::cpp::isfinite(0.0F));
     EXPECT_EQ(std::isfinite(-0.0F), score::cpp::isfinite(-0.0F));
+    EXPECT_EQ(std::isfinite(0.0F), ::score_future_cpp_isfinitef(0.0F) != 0);
+    EXPECT_EQ(std::isfinite(-0.0F), ::score_future_cpp_isfinitef(-0.0F) != 0);
+
     EXPECT_EQ(std::isfinite(0.0), score::cpp::isfinite(0.0));
     EXPECT_EQ(std::isfinite(-0.0), score::cpp::isfinite(-0.0));
+    EXPECT_EQ(std::isfinite(0.0), ::score_future_cpp_isfinite(0.0) != 0);
+    EXPECT_EQ(std::isfinite(-0.0), ::score_future_cpp_isfinite(-0.0) != 0);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -1965,15 +2105,19 @@ TEST(math_test, isfinite_nan)
         const float nan{std::numeric_limits<float>::quiet_NaN()};
         EXPECT_FALSE(score::cpp::isfinite(nan));
         EXPECT_FALSE(std::isfinite(nan));
+        EXPECT_EQ(::score_future_cpp_isfinitef(nan), 0);
         EXPECT_FALSE(score::cpp::isfinite(-nan));
         EXPECT_FALSE(std::isfinite(-nan));
+        EXPECT_EQ(::score_future_cpp_isfinitef(-nan), 0);
     }
     {
         const double nan{std::numeric_limits<double>::quiet_NaN()};
         EXPECT_FALSE(score::cpp::isfinite(nan));
         EXPECT_FALSE(std::isfinite(nan));
+        EXPECT_EQ(::score_future_cpp_isfinite(nan), 0);
         EXPECT_FALSE(score::cpp::isfinite(-nan));
         EXPECT_FALSE(std::isfinite(-nan));
+        EXPECT_EQ(::score_future_cpp_isfinite(-nan), 0);
     }
 }
 
@@ -2009,15 +2153,19 @@ TEST(math_test, isfinite_infinity)
         const float inf{std::numeric_limits<float>::infinity()};
         EXPECT_FALSE(score::cpp::isfinite(inf));
         EXPECT_FALSE(std::isfinite(inf));
+        EXPECT_EQ(::score_future_cpp_isfinitef(inf), 0);
         EXPECT_FALSE(score::cpp::isfinite(-inf));
         EXPECT_FALSE(std::isfinite(-inf));
+        EXPECT_EQ(::score_future_cpp_isfinitef(-inf), 0);
     }
     {
         const double inf{std::numeric_limits<double>::infinity()};
         EXPECT_FALSE(score::cpp::isfinite(inf));
         EXPECT_FALSE(std::isfinite(inf));
+        EXPECT_EQ(::score_future_cpp_isfinite(inf), 0);
         EXPECT_FALSE(score::cpp::isfinite(-inf));
         EXPECT_FALSE(std::isfinite(-inf));
+        EXPECT_EQ(::score_future_cpp_isfinite(-inf), 0);
     }
 }
 
@@ -2029,15 +2177,19 @@ TEST(math_test, isfinite_denorm)
         const float denorm{std::numeric_limits<float>::denorm_min()};
         EXPECT_TRUE(score::cpp::isfinite(denorm));
         EXPECT_TRUE(std::isfinite(denorm));
+        EXPECT_NE(::score_future_cpp_isfinitef(denorm), 0);
         EXPECT_TRUE(score::cpp::isfinite(-denorm));
         EXPECT_TRUE(std::isfinite(-denorm));
+        EXPECT_NE(::score_future_cpp_isfinitef(-denorm), 0);
     }
     {
         const double denorm{std::numeric_limits<double>::denorm_min()};
         EXPECT_TRUE(score::cpp::isfinite(denorm));
         EXPECT_TRUE(std::isfinite(denorm));
+        EXPECT_NE(::score_future_cpp_isfinite(denorm), 0);
         EXPECT_TRUE(score::cpp::isfinite(-denorm));
         EXPECT_TRUE(std::isfinite(-denorm));
+        EXPECT_NE(::score_future_cpp_isfinite(-denorm), 0);
     }
 }
 
@@ -2049,15 +2201,19 @@ TEST(math_test, isfinite_min)
         const float min{std::numeric_limits<float>::denorm_min()};
         EXPECT_TRUE(score::cpp::isfinite(min));
         EXPECT_TRUE(std::isfinite(min));
+        EXPECT_NE(::score_future_cpp_isfinitef(min), 0);
         EXPECT_TRUE(score::cpp::isfinite(-min));
         EXPECT_TRUE(std::isfinite(-min));
+        EXPECT_NE(::score_future_cpp_isfinitef(-min), 0);
     }
     {
         const double min{std::numeric_limits<double>::denorm_min()};
         EXPECT_TRUE(score::cpp::isfinite(min));
         EXPECT_TRUE(std::isfinite(min));
+        EXPECT_NE(::score_future_cpp_isfinite(min), 0);
         EXPECT_TRUE(score::cpp::isfinite(-min));
         EXPECT_TRUE(std::isfinite(-min));
+        EXPECT_NE(::score_future_cpp_isfinite(-min), 0);
     }
 }
 
@@ -2070,16 +2226,20 @@ TEST(math_test, isfinite_max)
         const float lowest{std::numeric_limits<float>::lowest()};
         EXPECT_TRUE(score::cpp::isfinite(max));
         EXPECT_TRUE(std::isfinite(max));
+        EXPECT_NE(::score_future_cpp_isfinitef(max), 0);
         EXPECT_TRUE(score::cpp::isfinite(lowest));
         EXPECT_TRUE(std::isfinite(lowest));
+        EXPECT_NE(::score_future_cpp_isfinite(lowest), 0);
     }
     {
         const double max{std::numeric_limits<double>::max()};
         const double lowest{std::numeric_limits<double>::lowest()};
         EXPECT_TRUE(score::cpp::isfinite(max));
         EXPECT_TRUE(std::isfinite(max));
+        EXPECT_NE(::score_future_cpp_isfinite(max), 0);
         EXPECT_TRUE(score::cpp::isfinite(lowest));
         EXPECT_TRUE(std::isfinite(lowest));
+        EXPECT_NE(::score_future_cpp_isfinite(lowest), 0);
     }
 }
 
@@ -2088,9 +2248,13 @@ TEST(math_test, isfinite_max)
 TEST(math_test, isinf)
 {
     EXPECT_EQ(std::isinf(0.0F), score::cpp::isinf(0.0F));
+    EXPECT_EQ(std::isinf(0.0F), ::score_future_cpp_isinff(0.0F) != 0);
     EXPECT_EQ(std::isinf(-0.0F), score::cpp::isinf(-0.0F));
+    EXPECT_EQ(std::isinf(-0.0F), ::score_future_cpp_isinff(-0.0F) != 0);
     EXPECT_EQ(std::isinf(0.0), score::cpp::isinf(0.0));
+    EXPECT_EQ(std::isinf(0.0), ::score_future_cpp_isinf(0.0) != 0);
     EXPECT_EQ(std::isinf(-0.0), score::cpp::isinf(-0.0));
+    EXPECT_EQ(std::isinf(-0.0), ::score_future_cpp_isinf(-0.0) != 0);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -2101,15 +2265,19 @@ TEST(math_test, isinf_nan)
         const float nan{std::numeric_limits<float>::quiet_NaN()};
         EXPECT_FALSE(score::cpp::isinf(nan));
         EXPECT_FALSE(std::isinf(nan));
+        EXPECT_EQ(::score_future_cpp_isinff(nan), 0);
         EXPECT_FALSE(score::cpp::isinf(-nan));
         EXPECT_FALSE(std::isinf(-nan));
+        EXPECT_EQ(::score_future_cpp_isinff(-nan), 0);
     }
     {
         const double nan{std::numeric_limits<double>::quiet_NaN()};
         EXPECT_FALSE(score::cpp::isinf(nan));
         EXPECT_FALSE(std::isinf(nan));
+        EXPECT_EQ(::score_future_cpp_isinf(nan), 0);
         EXPECT_FALSE(score::cpp::isinf(-nan));
         EXPECT_FALSE(std::isinf(-nan));
+        EXPECT_EQ(::score_future_cpp_isinf(-nan), 0);
     }
 }
 
@@ -2145,15 +2313,19 @@ TEST(math_test, isinf_inf)
         const float inf{std::numeric_limits<float>::infinity()};
         EXPECT_TRUE(score::cpp::isinf(inf));
         EXPECT_TRUE(std::isinf(inf));
+        EXPECT_NE(::score_future_cpp_isinff(inf), 0);
         EXPECT_TRUE(score::cpp::isinf(-inf));
         EXPECT_TRUE(std::isinf(-inf));
+        EXPECT_NE(::score_future_cpp_isinff(-inf), 0);
     }
     {
         const double inf{std::numeric_limits<double>::infinity()};
         EXPECT_TRUE(score::cpp::isinf(inf));
         EXPECT_TRUE(std::isinf(inf));
+        EXPECT_NE(::score_future_cpp_isinf(inf), 0);
         EXPECT_TRUE(score::cpp::isinf(-inf));
         EXPECT_TRUE(std::isinf(-inf));
+        EXPECT_NE(::score_future_cpp_isinf(-inf), 0);
     }
 }
 
@@ -2165,15 +2337,19 @@ TEST(math_test, isinf_denorm)
         const float denorm{std::numeric_limits<float>::denorm_min()};
         EXPECT_FALSE(score::cpp::isinf(denorm));
         EXPECT_FALSE(std::isinf(denorm));
+        EXPECT_EQ(::score_future_cpp_isinff(denorm), 0);
         EXPECT_FALSE(score::cpp::isinf(-denorm));
         EXPECT_FALSE(std::isinf(-denorm));
+        EXPECT_EQ(::score_future_cpp_isinff(-denorm), 0);
     }
     {
         const double denorm{std::numeric_limits<double>::denorm_min()};
         EXPECT_FALSE(score::cpp::isinf(denorm));
         EXPECT_FALSE(std::isinf(denorm));
+        EXPECT_EQ(::score_future_cpp_isinf(denorm), 0);
         EXPECT_FALSE(score::cpp::isinf(-denorm));
         EXPECT_FALSE(std::isinf(-denorm));
+        EXPECT_EQ(::score_future_cpp_isinf(-denorm), 0);
     }
 }
 
@@ -2186,16 +2362,20 @@ TEST(math_test, isinf_max)
         const float max{std::numeric_limits<float>::max()};
         EXPECT_FALSE(score::cpp::isinf(lowest));
         EXPECT_FALSE(std::isinf(lowest));
+        EXPECT_EQ(::score_future_cpp_isinff(lowest), 0);
         EXPECT_FALSE(score::cpp::isinf(max));
         EXPECT_FALSE(std::isinf(max));
+        EXPECT_EQ(::score_future_cpp_isinff(max), 0);
     }
     {
         const double lowest{std::numeric_limits<double>::lowest()};
         const double max{std::numeric_limits<double>::max()};
         EXPECT_FALSE(score::cpp::isinf(lowest));
         EXPECT_FALSE(std::isinf(lowest));
+        EXPECT_EQ(::score_future_cpp_isinf(lowest), 0);
         EXPECT_FALSE(score::cpp::isinf(max));
         EXPECT_FALSE(std::isinf(max));
+        EXPECT_EQ(::score_future_cpp_isinf(max), 0);
     }
 }
 
@@ -2207,15 +2387,19 @@ TEST(math_test, isinf_min)
         const float min{std::numeric_limits<float>::min()};
         EXPECT_FALSE(score::cpp::isinf(min));
         EXPECT_FALSE(std::isinf(min));
+        EXPECT_EQ(::score_future_cpp_isinff(min), 0);
         EXPECT_FALSE(score::cpp::isinf(-min));
         EXPECT_FALSE(std::isinf(-min));
+        EXPECT_EQ(::score_future_cpp_isinff(-min), 0);
     }
     {
         const double min{std::numeric_limits<double>::min()};
         EXPECT_FALSE(score::cpp::isinf(min));
         EXPECT_FALSE(std::isinf(min));
+        EXPECT_EQ(::score_future_cpp_isinf(min), 0);
         EXPECT_FALSE(score::cpp::isinf(-min));
         EXPECT_FALSE(std::isinf(-min));
+        EXPECT_EQ(::score_future_cpp_isinf(-min), 0);
     }
 }
 
@@ -2225,8 +2409,12 @@ TEST(math_test, isnan)
 {
     EXPECT_EQ(std::isnan(0.0F), score::cpp::isnan(0.0F));
     EXPECT_EQ(std::isnan(-0.0F), score::cpp::isnan(-0.0F));
+    EXPECT_NE(std::isnan(-0.0F), ::score_future_cpp_isnanf(-0.0F) == 0);
+    EXPECT_NE(std::isnan(0.0F), ::score_future_cpp_isnanf(0.0F) == 0);
     EXPECT_EQ(std::isnan(0.0), score::cpp::isnan(0.0));
     EXPECT_EQ(std::isnan(-0.0), score::cpp::isnan(-0.0));
+    EXPECT_NE(std::isnan(0.0), ::score_future_cpp_isnan(0.0) == 0);
+    EXPECT_NE(std::isnan(-0.0), ::score_future_cpp_isnan(-0.0) == 0);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -2237,15 +2425,19 @@ TEST(math_test, isnan_nan)
         const float nan{std::numeric_limits<float>::quiet_NaN()};
         EXPECT_TRUE(score::cpp::isnan(nan));
         EXPECT_TRUE(std::isnan(nan));
+        EXPECT_NE(::score_future_cpp_isnanf(nan), 0);
         EXPECT_TRUE(score::cpp::isnan(-nan));
         EXPECT_TRUE(std::isnan(-nan));
+        EXPECT_NE(::score_future_cpp_isnanf(-nan), 0);
     }
     {
         const double nan{std::numeric_limits<double>::quiet_NaN()};
         EXPECT_TRUE(score::cpp::isnan(nan));
         EXPECT_TRUE(std::isnan(nan));
+        EXPECT_NE(::score_future_cpp_isnan(nan), 0);
         EXPECT_TRUE(score::cpp::isnan(-nan));
         EXPECT_TRUE(std::isnan(-nan));
+        EXPECT_NE(::score_future_cpp_isnan(-nan), 0);
     }
 }
 
@@ -2281,15 +2473,19 @@ TEST(math_test, isnan_inf)
         const float inf{std::numeric_limits<float>::infinity()};
         EXPECT_FALSE(score::cpp::isnan(inf));
         EXPECT_FALSE(std::isnan(inf));
+        EXPECT_EQ(::score_future_cpp_isnanf(inf), 0);
         EXPECT_FALSE(score::cpp::isnan(-inf));
         EXPECT_FALSE(std::isnan(-inf));
+        EXPECT_EQ(::score_future_cpp_isnanf(-inf), 0);
     }
     {
         const double inf{std::numeric_limits<double>::infinity()};
         EXPECT_FALSE(score::cpp::isnan(inf));
         EXPECT_FALSE(std::isnan(inf));
+        EXPECT_EQ(::score_future_cpp_isnan(inf), 0);
         EXPECT_FALSE(score::cpp::isnan(-inf));
         EXPECT_FALSE(std::isnan(-inf));
+        EXPECT_EQ(::score_future_cpp_isnan(-inf), 0);
     }
 }
 
@@ -2301,15 +2497,19 @@ TEST(math_test, isnan_denorm)
         const float denorm{std::numeric_limits<float>::denorm_min()};
         EXPECT_FALSE(score::cpp::isnan(denorm));
         EXPECT_FALSE(std::isnan(denorm));
+        EXPECT_EQ(::score_future_cpp_isnanf(denorm), 0);
         EXPECT_FALSE(score::cpp::isnan(-denorm));
         EXPECT_FALSE(std::isnan(-denorm));
+        EXPECT_EQ(::score_future_cpp_isnanf(-denorm), 0);
     }
     {
         const double denorm{std::numeric_limits<double>::denorm_min()};
         EXPECT_FALSE(score::cpp::isnan(denorm));
         EXPECT_FALSE(std::isnan(denorm));
+        EXPECT_EQ(::score_future_cpp_isnan(denorm), 0);
         EXPECT_FALSE(score::cpp::isnan(-denorm));
         EXPECT_FALSE(std::isnan(-denorm));
+        EXPECT_EQ(::score_future_cpp_isnan(-denorm), 0);
     }
 }
 
@@ -2322,16 +2522,20 @@ TEST(math_test, isnan_max)
         const float max{std::numeric_limits<float>::max()};
         EXPECT_FALSE(score::cpp::isnan(lowest));
         EXPECT_FALSE(std::isnan(lowest));
+        EXPECT_EQ(::score_future_cpp_isnanf(lowest), 0);
         EXPECT_FALSE(score::cpp::isnan(max));
         EXPECT_FALSE(std::isnan(max));
+        EXPECT_EQ(::score_future_cpp_isnanf(max), 0);
     }
     {
         const double lowest{std::numeric_limits<double>::lowest()};
         const double max{std::numeric_limits<double>::max()};
         EXPECT_FALSE(score::cpp::isnan(lowest));
         EXPECT_FALSE(std::isnan(lowest));
+        EXPECT_EQ(::score_future_cpp_isnan(lowest), 0);
         EXPECT_FALSE(score::cpp::isnan(max));
         EXPECT_FALSE(std::isnan(max));
+        EXPECT_EQ(::score_future_cpp_isnan(max), 0);
     }
 }
 
@@ -2343,15 +2547,19 @@ TEST(math_test, isnan_min)
         const float min{std::numeric_limits<float>::min()};
         EXPECT_FALSE(score::cpp::isnan(min));
         EXPECT_FALSE(std::isnan(min));
+        EXPECT_EQ(::score_future_cpp_isnanf(min), 0);
         EXPECT_FALSE(score::cpp::isnan(-min));
         EXPECT_FALSE(std::isnan(-min));
+        EXPECT_EQ(::score_future_cpp_isnanf(-min), 0);
     }
     {
         const double min{std::numeric_limits<double>::min()};
         EXPECT_FALSE(score::cpp::isnan(min));
         EXPECT_FALSE(std::isnan(min));
+        EXPECT_EQ(::score_future_cpp_isnan(min), 0);
         EXPECT_FALSE(score::cpp::isnan(-min));
         EXPECT_FALSE(std::isnan(-min));
+        EXPECT_EQ(::score_future_cpp_isnan(-min), 0);
     }
 }
 
@@ -2361,8 +2569,13 @@ TEST(math_test, isnormal)
 {
     EXPECT_EQ(std::isnormal(0.0F), score::cpp::isnormal(0.0F));
     EXPECT_EQ(std::isnormal(-0.0F), score::cpp::isnormal(-0.0F));
+    EXPECT_EQ(std::isnormal(0.0F), ::score_future_cpp_isnormalf(0.0F) != 0);
+    EXPECT_EQ(std::isnormal(-0.0F), ::score_future_cpp_isnormalf(-0.0F) != 0);
+
     EXPECT_EQ(std::isnormal(0.0), score::cpp::isnormal(0.0));
     EXPECT_EQ(std::isnormal(-0.0), score::cpp::isnormal(-0.0));
+    EXPECT_EQ(std::isnormal(0.0), ::score_future_cpp_isnormal(0.0) != 0);
+    EXPECT_EQ(std::isnormal(-0.0), ::score_future_cpp_isnormal(-0.0) != 0);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -2373,15 +2586,18 @@ TEST(math_test, isnormal_nan)
         const float nan{std::numeric_limits<float>::quiet_NaN()};
         EXPECT_FALSE(score::cpp::isnormal(nan));
         EXPECT_FALSE(std::isnormal(nan));
+        EXPECT_EQ(::score_future_cpp_isnormalf(nan), 0);
         EXPECT_FALSE(score::cpp::isnormal(-nan));
-        EXPECT_FALSE(std::isnormal(-nan));
+        EXPECT_EQ(::score_future_cpp_isnormalf(-nan), 0);
     }
     {
         const double nan{std::numeric_limits<double>::quiet_NaN()};
         EXPECT_FALSE(score::cpp::isnormal(nan));
         EXPECT_FALSE(std::isnormal(nan));
+        EXPECT_EQ(::score_future_cpp_isnormal(nan), 0);
         EXPECT_FALSE(score::cpp::isnormal(-nan));
         EXPECT_FALSE(std::isnormal(-nan));
+        EXPECT_EQ(::score_future_cpp_isnormal(-nan), 0);
     }
 }
 
@@ -2417,15 +2633,19 @@ TEST(math_test, isnormal_inf)
         const float inf{std::numeric_limits<float>::infinity()};
         EXPECT_FALSE(score::cpp::isnormal(inf));
         EXPECT_FALSE(std::isnormal(inf));
+        EXPECT_EQ(::score_future_cpp_isnormalf(inf), 0);
         EXPECT_FALSE(score::cpp::isnormal(-inf));
         EXPECT_FALSE(std::isnormal(-inf));
+        EXPECT_EQ(::score_future_cpp_isnormalf(-inf), 0);
     }
     {
         const double inf{std::numeric_limits<double>::infinity()};
         EXPECT_FALSE(score::cpp::isnormal(inf));
         EXPECT_FALSE(std::isnormal(inf));
+        EXPECT_EQ(::score_future_cpp_isnormal(inf), 0);
         EXPECT_FALSE(score::cpp::isnormal(-inf));
         EXPECT_FALSE(std::isnormal(-inf));
+        EXPECT_EQ(::score_future_cpp_isnormal(-inf), 0);
     }
 }
 
@@ -2437,15 +2657,19 @@ TEST(math_test, isnormal_denorm)
         const float denorm{std::numeric_limits<float>::denorm_min()};
         EXPECT_FALSE(score::cpp::isnormal(denorm));
         EXPECT_FALSE(std::isnormal(denorm));
+        EXPECT_EQ(::score_future_cpp_isnormalf(denorm), 0);
         EXPECT_FALSE(score::cpp::isnormal(-denorm));
         EXPECT_FALSE(std::isnormal(-denorm));
+        EXPECT_EQ(::score_future_cpp_isnormalf(-denorm), 0);
     }
     {
         const double denorm{std::numeric_limits<double>::denorm_min()};
         EXPECT_FALSE(score::cpp::isnormal(denorm));
         EXPECT_FALSE(std::isnormal(denorm));
+        EXPECT_EQ(::score_future_cpp_isnormal(denorm), 0);
         EXPECT_FALSE(score::cpp::isnormal(-denorm));
         EXPECT_FALSE(std::isnormal(-denorm));
+        EXPECT_EQ(::score_future_cpp_isnormal(-denorm), 0);
     }
 }
 
@@ -2458,16 +2682,20 @@ TEST(math_test, isnormal_max)
         const float max{std::numeric_limits<float>::max()};
         EXPECT_TRUE(score::cpp::isnormal(lowest));
         EXPECT_TRUE(std::isnormal(lowest));
+        EXPECT_NE(::score_future_cpp_isnormalf(lowest), 0);
         EXPECT_TRUE(score::cpp::isnormal(max));
         EXPECT_TRUE(std::isnormal(max));
+        EXPECT_NE(::score_future_cpp_isnormalf(max), 0);
     }
     {
         const double lowest{std::numeric_limits<double>::lowest()};
         const double max{std::numeric_limits<double>::max()};
         EXPECT_TRUE(score::cpp::isnormal(lowest));
         EXPECT_TRUE(std::isnormal(lowest));
+        EXPECT_NE(::score_future_cpp_isnormal(lowest), 0);
         EXPECT_TRUE(score::cpp::isnormal(max));
         EXPECT_TRUE(std::isnormal(max));
+        EXPECT_NE(::score_future_cpp_isnormal(max), 0);
     }
 }
 
@@ -2479,15 +2707,19 @@ TEST(math_test, isnormal_min)
         const float min{std::numeric_limits<float>::min()};
         EXPECT_TRUE(score::cpp::isnormal(-min));
         EXPECT_TRUE(std::isnormal(-min));
+        EXPECT_NE(::score_future_cpp_isnormalf(-min), 0);
         EXPECT_TRUE(score::cpp::isnormal(min));
         EXPECT_TRUE(std::isnormal(min));
+        EXPECT_NE(::score_future_cpp_isnormalf(min), 0);
     }
     {
         const double min{std::numeric_limits<double>::min()};
         EXPECT_TRUE(score::cpp::isnormal(-min));
         EXPECT_TRUE(std::isnormal(-min));
+        EXPECT_NE(::score_future_cpp_isnormal(-min), 0);
         EXPECT_TRUE(score::cpp::isnormal(min));
         EXPECT_TRUE(std::isnormal(min));
+        EXPECT_NE(::score_future_cpp_isnormal(min), 0);
     }
 }
 
@@ -2497,8 +2729,13 @@ TEST(math_test, signbit)
 {
     EXPECT_EQ(std::signbit(0.0F), score::cpp::signbit(0.0F));
     EXPECT_EQ(std::signbit(-0.0F), score::cpp::signbit(-0.0F));
+    EXPECT_NE(std::signbit(0.0F), ::score_future_cpp_signbitf(0.0F) == 0);
+    EXPECT_EQ(std::signbit(-0.0F), ::score_future_cpp_signbitf(-0.0F) != 0);
+
     EXPECT_EQ(std::signbit(0.0), score::cpp::signbit(0.0));
     EXPECT_EQ(std::signbit(-0.0), score::cpp::signbit(-0.0));
+    EXPECT_NE(std::signbit(0.0), ::score_future_cpp_signbit(0.0) == 0);
+    EXPECT_EQ(std::signbit(-0.0), ::score_future_cpp_signbit(-0.0) != 0);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -2524,15 +2761,19 @@ TEST(math_test, signbit_nan)
         const float nan{std::numeric_limits<float>::quiet_NaN()};
         EXPECT_FALSE(score::cpp::signbit(nan));
         EXPECT_FALSE(std::signbit(nan));
+        EXPECT_EQ(::score_future_cpp_signbitf(nan), 0);
         EXPECT_TRUE(score::cpp::signbit(-nan));
         EXPECT_TRUE(std::signbit(-nan));
+        EXPECT_NE(::score_future_cpp_signbitf(-nan), 0);
     }
     {
         const double nan{std::numeric_limits<double>::quiet_NaN()};
         EXPECT_FALSE(score::cpp::signbit(nan));
         EXPECT_FALSE(std::signbit(nan));
+        EXPECT_EQ(::score_future_cpp_signbit(nan), 0);
         EXPECT_TRUE(score::cpp::signbit(-nan));
         EXPECT_TRUE(std::signbit(-nan));
+        EXPECT_NE(::score_future_cpp_signbit(-nan), 0);
     }
 }
 
@@ -2568,15 +2809,19 @@ TEST(math_test, signbit_inf)
         const float inf{std::numeric_limits<float>::infinity()};
         EXPECT_FALSE(score::cpp::signbit(inf));
         EXPECT_FALSE(std::signbit(inf));
+        EXPECT_EQ(::score_future_cpp_signbitf(inf), 0);
         EXPECT_TRUE(score::cpp::signbit(-inf));
         EXPECT_TRUE(std::signbit(-inf));
+        EXPECT_NE(::score_future_cpp_signbitf(-inf), 0);
     }
     {
         const double inf{std::numeric_limits<double>::infinity()};
         EXPECT_FALSE(score::cpp::signbit(inf));
         EXPECT_FALSE(std::signbit(inf));
+        EXPECT_EQ(::score_future_cpp_signbit(inf), 0);
         EXPECT_TRUE(score::cpp::signbit(-inf));
         EXPECT_TRUE(std::signbit(-inf));
+        EXPECT_NE(::score_future_cpp_signbit(-inf), 0);
     }
 }
 
@@ -2588,15 +2833,19 @@ TEST(math_test, signbit_denorm)
         const float denorm{std::numeric_limits<float>::denorm_min()};
         EXPECT_FALSE(score::cpp::signbit(denorm));
         EXPECT_FALSE(std::signbit(denorm));
+        EXPECT_EQ(::score_future_cpp_signbitf(denorm), 0);
         EXPECT_TRUE(score::cpp::signbit(-denorm));
         EXPECT_TRUE(std::signbit(-denorm));
+        EXPECT_NE(::score_future_cpp_signbitf(-denorm), 0);
     }
     {
         const double denorm{std::numeric_limits<double>::denorm_min()};
         EXPECT_FALSE(score::cpp::signbit(denorm));
         EXPECT_FALSE(std::signbit(denorm));
+        EXPECT_EQ(::score_future_cpp_signbit(denorm), 0);
         EXPECT_TRUE(score::cpp::signbit(-denorm));
         EXPECT_TRUE(std::signbit(-denorm));
+        EXPECT_NE(::score_future_cpp_signbit(-denorm), 0);
     }
 }
 
@@ -2609,16 +2858,20 @@ TEST(math_test, signbit_max)
         const float max{std::numeric_limits<float>::max()};
         EXPECT_FALSE(score::cpp::signbit(max));
         EXPECT_FALSE(std::signbit(max));
+        EXPECT_EQ(::score_future_cpp_signbitf(max), 0);
         EXPECT_TRUE(score::cpp::signbit(lowest));
         EXPECT_TRUE(std::signbit(lowest));
+        EXPECT_NE(::score_future_cpp_signbitf(lowest), 0);
     }
     {
         const double lowest{std::numeric_limits<double>::lowest()};
         const double max{std::numeric_limits<double>::max()};
         EXPECT_FALSE(score::cpp::signbit(max));
         EXPECT_FALSE(std::signbit(max));
+        EXPECT_EQ(::score_future_cpp_signbit(max), 0);
         EXPECT_TRUE(score::cpp::signbit(lowest));
         EXPECT_TRUE(std::signbit(lowest));
+        EXPECT_NE(::score_future_cpp_signbit(lowest), 0);
     }
 }
 
@@ -2630,15 +2883,19 @@ TEST(math_test, signbit_min)
         const float min{std::numeric_limits<float>::min()};
         EXPECT_FALSE(score::cpp::signbit(min));
         EXPECT_FALSE(std::signbit(min));
+        EXPECT_EQ(::score_future_cpp_signbitf(min), 0);
         EXPECT_TRUE(score::cpp::signbit(-min));
         EXPECT_TRUE(std::signbit(-min));
+        EXPECT_NE(::score_future_cpp_signbitf(-min), 0);
     }
     {
         const double min{std::numeric_limits<double>::min()};
         EXPECT_FALSE(score::cpp::signbit(min));
         EXPECT_FALSE(std::signbit(min));
+        EXPECT_EQ(::score_future_cpp_signbit(min), 0);
         EXPECT_TRUE(score::cpp::signbit(-min));
         EXPECT_TRUE(std::signbit(-min));
+        EXPECT_NE(::score_future_cpp_signbit(-min), 0);
     }
 }
 
