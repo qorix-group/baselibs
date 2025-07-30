@@ -214,7 +214,8 @@ score::cpp::expected<score::cpp::span<std::uint8_t>, Error> AbortableBlockingRea
     {
         return score::cpp::make_unexpected(expected_length.error());
     }
-    return score::cpp::span<std::uint8_t>{buffer.data(), expected_length.value()};
+    return score::cpp::span<std::uint8_t>{buffer.data(),
+                                   static_cast<score::cpp::span<std::uint8_t>::size_type>(expected_length.value())};
 }
 
 void AbortableBlockingReader::SignalStop() noexcept

@@ -184,18 +184,6 @@ TEST(MakeLogRawBufferTest, MakeBufferFromVector)
     EXPECT_TRUE(std::equal(log_raw_buffer.cbegin(), log_raw_buffer.cend(), std::begin(expected)));
 }
 
-TEST(MakeLogRawBufferTest, DieOnNegativeSpanSize)
-{
-    RecordProperty("ASIL", "B");
-    RecordProperty("Description", "Verify the in-ability of creating a negative sized span.");
-    RecordProperty("TestType", "Interface test");
-    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
-
-    const std::int32_t values[]{15, 16};
-    const score::cpp::span<const std::int32_t> span{values, -2};
-    EXPECT_DEATH(MakeLogRawBuffer(span), ".*");
-}
-
 }  // namespace
 
 }  // namespace log
