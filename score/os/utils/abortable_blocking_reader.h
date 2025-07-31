@@ -94,8 +94,8 @@ class AbortableBlockingReader
     /// \return error or the span of read data
     ///         Will return Error::Code::kOperationWasInterruptedBySignal if AbortableBlockingReader is destructed while
     ///         waiting for data.
-    score::cpp::expected<score::cpp::v1::span<std::uint8_t>, Error> Read(const NonBlockingFileDescriptor& file_descriptor,
-                                                           const score::cpp::v1::span<std::uint8_t> buffer) noexcept;
+    score::cpp::expected<score::cpp::span<std::uint8_t>, Error> Read(const NonBlockingFileDescriptor& file_descriptor,
+                                                       const score::cpp::span<std::uint8_t> buffer) noexcept;
 
   private:
     std::shared_ptr<Fcntl> fcntl_;

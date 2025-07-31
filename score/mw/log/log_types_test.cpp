@@ -150,12 +150,12 @@ TEST(MakeLogRawBufferTest, MakeBufferFromIntegerStdArray)
 TEST(MakeLogRawBufferTest, MakeBufferFromSpan)
 {
     RecordProperty("ASIL", "B");
-    RecordProperty("Description", "Verify the ability of creating a buffer from score::cpp::v1::span.");
+    RecordProperty("Description", "Verify the ability of creating a buffer from score::cpp::span.");
     RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const std::int32_t values[]{15, 16};
-    const score::cpp::v1::span<const std::int32_t> span{values, 2};
+    const score::cpp::span<const std::int32_t> span{values, 2};
     LogRawBuffer log_raw_buffer{MakeLogRawBuffer(span)};
     ASSERT_EQ(log_raw_buffer.size(), sizeof(values));
 #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
@@ -192,7 +192,7 @@ TEST(MakeLogRawBufferTest, DieOnNegativeSpanSize)
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     const std::int32_t values[]{15, 16};
-    const score::cpp::v1::span<const std::int32_t> span{values, -2};
+    const score::cpp::span<const std::int32_t> span{values, -2};
     EXPECT_DEATH(MakeLogRawBuffer(span), ".*");
 }
 

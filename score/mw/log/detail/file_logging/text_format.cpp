@@ -50,7 +50,7 @@ std::size_t GetBufferSizeCasted(T buffer_size) noexcept
     return static_cast<std::size_t>(buffer_size);
 }
 
-std::size_t GetSpanSizeCasted(const score::cpp::v1::span<Byte> buffer) noexcept
+std::size_t GetSpanSizeCasted(const score::cpp::span<Byte> buffer) noexcept
 {
     return GetBufferSizeCasted(buffer.size());
 }
@@ -173,7 +173,7 @@ struct GetFormatSpecifier<const std::int64_t, IntegerRepresentation::kDecimal>
 template <IntegerRepresentation I, typename T>
 static void PutFormattedNumber(VerbosePayload& payload, const T data) noexcept
 {
-    std::ignore = payload.Put([data](const score::cpp::v1::span<Byte> buffer) noexcept {
+    std::ignore = payload.Put([data](const score::cpp::span<Byte> buffer) noexcept {
         const auto buffer_space = GetSpanSizeCasted(buffer);
         if (buffer_space > 0U)  // LCOV_EXCL_BR_LINE: lcov complains about lots of uncovered branches here, it is not
                                 // convenient/related to this condition.
@@ -217,7 +217,7 @@ void PutBinaryFormattedNumber(VerbosePayload& payload, const T data) noexcept
 {
     constexpr auto characters_used = kNumberOfBitsInByte * sizeof(T) + kReserveSpaceForSpace;
     std::ignore = payload.Put(
-        [data](const score::cpp::v1::span<Byte> buffer) noexcept {
+        [data](const score::cpp::span<Byte> buffer) noexcept {
             const auto buffer_space = GetSpanSizeCasted(buffer);
             if (buffer_space > 1U)  // LCOV_EXCL_BR_LINE: lcov complains about lots of uncovered branches here, it is
                                     // not convenient/related to this condition.
@@ -323,7 +323,7 @@ std::size_t FormattingFunctionReturnCast(const std::int32_t i) noexcept
 void TextFormat::PutFormattedTime(VerbosePayload& payload) noexcept
 {
     const auto time_point = std::chrono::system_clock::now();
-    std::ignore = payload.Put([time_point](const score::cpp::v1::span<Byte> buffer) noexcept {
+    std::ignore = payload.Put([time_point](const score::cpp::span<Byte> buffer) noexcept {
         std::size_t total = 0U;
         const auto now = std::chrono::system_clock::to_time_t(time_point);
         struct tm time_structure_buffer{};
@@ -506,7 +506,7 @@ void score::mw::log::detail::TextFormat::Log(VerbosePayload& payload, const std:
         const std::size_t data_length = data.size() + kReserveSpaceForSpace;
 
         std::ignore = payload.Put(
-            [data](const score::cpp::v1::span<Byte> buffer) {
+            [data](const score::cpp::span<Byte> buffer) {
                 const std::size_t length = std::min(data.size(), GetSpanSizeCasted(buffer));
                 if (length > 0U)  // LCOV_EXCL_BR_LINE: Cannot be covered in unit tests as 'data.size() > 0' and buffer
                                   // size is uncontrollable.
@@ -542,7 +542,7 @@ void score::mw::log::detail::TextFormat::Log(VerbosePayload& payload, const LogR
     if (max_string_len > 0U)
     {
         std::ignore = payload.Put(
-            [&data](const score::cpp::v1::span<Byte> buffer) noexcept {
+            [&data](const score::cpp::span<Byte> buffer) noexcept {
                 if (buffer.size() == 0)
                 {
                     return 0L;

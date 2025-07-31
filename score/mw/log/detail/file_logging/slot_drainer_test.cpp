@@ -35,7 +35,7 @@ using ::testing::_;
 using ::testing::Exactly;
 using ::testing::Return;
 
-using SpanData = score::cpp::v1::span<const std::uint8_t>;
+using SpanData = score::cpp::span<const std::uint8_t>;
 using OptionalSpan = score::cpp::optional<SpanData>;
 
 constexpr std::uint32_t kLimitSlotsInOneCycle{32};
@@ -86,7 +86,7 @@ TEST_F(SlotDrainerFixture, TestOneWriteFileFailurePath)
     EXPECT_CALL(*raw_message_builder_mock_, GetNextSpan)
         .WillOnce(Return(OptionalSpan{}))  //  first unitialized
         .WillOnce(
-            Return(score::cpp::v1::span<const std::uint8_t>(data_table_, sizeof(data_table_))));  //  actual data to be written
+            Return(score::cpp::span<const std::uint8_t>(data_table_, sizeof(data_table_))));  //  actual data to be written
 
     EXPECT_CALL(*raw_message_builder_mock_, SetNextMessage(_)).Times(Exactly(1));
 
@@ -115,7 +115,7 @@ TEST_F(SlotDrainerFixture, IncompleteWriteFileShouldMakeFlushSpansReturnWouldBlo
     EXPECT_CALL(*raw_message_builder_mock_, GetNextSpan)
         .WillOnce(Return(OptionalSpan{}))  //  first unitialized
         .WillOnce(
-            Return(score::cpp::v1::span<const std::uint8_t>(data_table_, sizeof(data_table_))));  //  actual data to be written
+            Return(score::cpp::span<const std::uint8_t>(data_table_, sizeof(data_table_))));  //  actual data to be written
 
     EXPECT_CALL(*raw_message_builder_mock_, SetNextMessage(_)).Times(Exactly(1));
 
@@ -150,9 +150,9 @@ TEST_F(SlotDrainerFixture, TestOneSlotOneSpan)
     EXPECT_CALL(*raw_message_builder_mock_, GetNextSpan)
         .WillOnce(Return(OptionalSpan{}))  //  first unitialized
         .WillOnce(
-            Return(score::cpp::v1::span<const std::uint8_t>(data_table_, sizeof(data_table_))))  //  actual data to be written
-        .WillOnce(Return(OptionalSpan{}))                                                 //  spans depleted in a slot
-        .WillOnce(Return(OptionalSpan{}));                                                //  spans depleted in a slot
+            Return(score::cpp::span<const std::uint8_t>(data_table_, sizeof(data_table_))))  //  actual data to be written
+        .WillOnce(Return(OptionalSpan{}))                                             //  spans depleted in a slot
+        .WillOnce(Return(OptionalSpan{}));                                            //  spans depleted in a slot
 
     EXPECT_CALL(*raw_message_builder_mock_, SetNextMessage(_)).Times(Exactly(1));
 

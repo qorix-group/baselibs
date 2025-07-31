@@ -33,7 +33,7 @@ namespace detail
 using Byte = char;
 using ByteVector = std::vector<Byte>;
 
-using ReserveCallback = score::cpp::callback<std::size_t(score::cpp::v1::span<Byte>)>;
+using ReserveCallback = score::cpp::callback<std::size_t(score::cpp::span<Byte>)>;
 
 /// \brief Abstracts the usage of our underlying buffer for memory safety reasons.
 ///
@@ -69,7 +69,7 @@ class VerbosePayload final
     /// \return Number of bytes written
     std::size_t Put(const ReserveCallback callback, const std::size_t reserve_size = 0UL) noexcept;
 
-    score::cpp::v1::span<const std::uint8_t> GetSpan() const noexcept;
+    score::cpp::span<const std::uint8_t> GetSpan() const noexcept;
 
     /// \brief Clear buffer for next cycle operation
     ///

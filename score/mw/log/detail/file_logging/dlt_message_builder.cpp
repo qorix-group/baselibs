@@ -101,7 +101,7 @@ void ConstructStorageVerbosePacket(score::mw::log::detail::VerbosePayload& heade
     score::mw::log::detail::DltStorageHeader storage_header{};
     ConstructDltStorageHeader(storage_header, svp_time.sec, svp_time.ms);
 
-    std::ignore = header_payload.Put([&storage_header](const score::cpp::v1::span<score::mw::log::detail::Byte> destination) {
+    std::ignore = header_payload.Put([&storage_header](const score::cpp::span<score::mw::log::detail::Byte> destination) {
         const auto destination_size = static_cast<std::size_t>(destination.size());
         const auto copy_size = std::min(destination_size, sizeof(storage_header));
         // NOLINTNEXTLINE(score-banned-function) memcpy is needed here
@@ -115,7 +115,7 @@ void ConstructStorageVerbosePacket(score::mw::log::detail::VerbosePayload& heade
 
     ConstructDltExtendedHeader(dlt_header.extended, entry.log_level, entry.num_of_args, entry.app_id, entry.ctx_id);
 
-    std::ignore = header_payload.Put([&dlt_header](const score::cpp::v1::span<score::mw::log::detail::Byte> destination) {
+    std::ignore = header_payload.Put([&dlt_header](const score::cpp::span<score::mw::log::detail::Byte> destination) {
         const auto copy_size = std::min(static_cast<std::size_t>(destination.size()), sizeof(dlt_header));
         // NOLINTNEXTLINE(score-banned-function) memcpy is needed here
         std::ignore = std::memcpy(destination.data(), &dlt_header, copy_size);
@@ -196,14 +196,14 @@ void DltMessageBuilder::SetNextMessage(LogRecord& log_record) noexcept
                                   score::mw::log::detail::SVPTime{timestamp, seconds, microsecs});
 }
 
-score::cpp::optional<score::cpp::v1::span<const std::uint8_t>> DltMessageBuilder::GetNextSpan() noexcept
+score::cpp::optional<score::cpp::span<const std::uint8_t>> DltMessageBuilder::GetNextSpan() noexcept
 {
     if (!log_record_.has_value())
     {
         return {};
     }
 
-    score::cpp::optional<score::cpp::v1::span<const std::uint8_t>> return_result = {};
+    score::cpp::optional<score::cpp::span<const std::uint8_t>> return_result = {};
 
     detail::VerbosePayload& verbose_payload = log_record_.value().get().getVerbosePayload();
     switch (parsing_phase_)  // LCOV_EXCL_BR_LINE: exclude the "default" branch.

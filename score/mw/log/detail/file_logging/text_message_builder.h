@@ -29,7 +29,7 @@ class TextMessageBuilder : public IMessageBuilder
   public:
     explicit TextMessageBuilder(const std::string_view ecu_id) noexcept;
 
-    score::cpp::optional<score::cpp::v1::span<const std::uint8_t>> GetNextSpan() noexcept override;
+    score::cpp::optional<score::cpp::span<const std::uint8_t>> GetNextSpan() noexcept override;
 
     void SetNextMessage(LogRecord& log_record) noexcept override;
 

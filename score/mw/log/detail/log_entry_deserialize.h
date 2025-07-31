@@ -34,7 +34,7 @@ namespace log_entry_deserialization
 struct SerializedVectorData
 {
     // coverity[autosar_cpp14_m11_0_1_violation]
-    score::cpp::v1::span<const uint8_t> data;
+    score::cpp::span<const uint8_t> data;
 };
 
 /*
@@ -76,7 +76,7 @@ struct LogEntryDeserializationReflection
     // coverity[autosar_cpp14_m11_0_1_violation]
     score::mw::log::LogLevel log_level{score::mw::log::LogLevel::kOff};
 
-    score::cpp::v1::span<const std::uint8_t> GetPayload() const noexcept
+    score::cpp::span<const std::uint8_t> GetPayload() const noexcept
     {
         return serialized_vector_data.data;
     }

@@ -55,7 +55,7 @@ NonBlockingWriter::NonBlockingWriter(const int32_t fileHandle,
 {
 }
 
-void NonBlockingWriter::SetSpan(const score::cpp::v1::span<const std::uint8_t>& buffer) noexcept
+void NonBlockingWriter::SetSpan(const score::cpp::span<const std::uint8_t>& buffer) noexcept
 {
     buffer_flushed_ = Result::kWouldBlock;
     number_of_flushed_bytes_ = 0U;

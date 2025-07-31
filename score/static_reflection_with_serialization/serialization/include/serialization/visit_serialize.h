@@ -88,7 +88,7 @@ struct optional
 namespace details
 {
 template <typename S, typename T>
-auto cast_to_source_serializable_data_span(const T* data, size_t size) -> score::cpp::v1::span<const S>
+auto cast_to_source_serializable_data_span(const T* data, size_t size) -> score::cpp::span<const S>
 {
     static_assert(sizeof(S) == sizeof(T), "Size value does not match");
     /*
@@ -99,11 +99,11 @@ auto cast_to_source_serializable_data_span(const T* data, size_t size) -> score:
             - cast needed to fulfill basic purpose of serialization to convert user types to stream of bytes
     */
     // coverity[autosar_cpp14_m5_2_8_violation]
-    return score::cpp::v1::span<const S>{static_cast<const S*>(static_cast<const void*>(data)),
-                                  static_cast<typename score::cpp::v1::span<const S>::size_type>(size)};
+    return score::cpp::span<const S>{static_cast<const S*>(static_cast<const void*>(data)),
+                              static_cast<typename score::cpp::span<const S>::size_type>(size)};
 }
 template <typename S, typename T>
-auto cast_to_destination_serializable_data_span(T* data, size_t size) -> score::cpp::v1::span<S>
+auto cast_to_destination_serializable_data_span(T* data, size_t size) -> score::cpp::span<S>
 {
     static_assert(sizeof(S) == sizeof(T), "Size value does not match");
     /*
@@ -114,8 +114,8 @@ auto cast_to_destination_serializable_data_span(T* data, size_t size) -> score::
             - cast needed to fulfill basic purpose of serialization to convert user types to stream of bytes
     */
     // coverity[autosar_cpp14_m5_2_8_violation]
-    return score::cpp::v1::span<S>{static_cast<S*>(static_cast<void*>(data)),
-                            static_cast<typename score::cpp::v1::span<const S>::size_type>(size)};
+    return score::cpp::span<S>{static_cast<S*>(static_cast<void*>(data)),
+                        static_cast<typename score::cpp::span<const S>::size_type>(size)};
 }
 }  //  namespace details
 
@@ -179,8 +179,8 @@ class serializer_helper
         /* KW_SUPPRESS_START:MISRA.PTR.ARITH:Needed to get offset from this location */
         // reinterpret cast need to cast to different pointer type
         // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) same as KW
-        score::cpp::v1::span<std::uint8_t> dataSpan{
-            base_, static_cast<typename score::cpp::v1::span<std::uint8_t* const>::size_type>(maxSize_)};
+        score::cpp::span<std::uint8_t> dataSpan{base_,
+                                         static_cast<typename score::cpp::span<std::uint8_t* const>::size_type>(maxSize_)};
         /*
                 Deviation from Rule A5-2-4:
                 - reinterpret_cast shall not be used.
@@ -190,7 +190,7 @@ class serializer_helper
         */
         // coverity[autosar_cpp14_a5_2_4_violation]
         return reinterpret_cast<T*>(  // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast) jusified
-            dataSpan.subspan(static_cast<typename score::cpp::v1::span<std::uint8_t* const>::size_type>(size)).data());
+            dataSpan.subspan(static_cast<typename score::cpp::span<std::uint8_t* const>::size_type>(size)).data());
         // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic) same as KW
         /* KW_SUPPRESS_END:MISRA.PTR.ARITH:Needed to get offset from this location */
     }
@@ -246,8 +246,8 @@ class deserializer_helper
         /* KW_SUPPRESS_START:MISRA.PTR.ARITH:Needed to get offset from this location */
         /* KW_SUPPRESS_START: AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False positive. */
         // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) justified
-        score::cpp::v1::span<const std::uint8_t> dataSpan{
-            base_, static_cast<typename score::cpp::v1::span<const std::uint8_t* const>::size_type>(maxSize_)};
+        score::cpp::span<const std::uint8_t> dataSpan{
+            base_, static_cast<typename score::cpp::span<const std::uint8_t* const>::size_type>(maxSize_)};
         /*
                 Deviation from Rule A5-2-4:
                 - reinterpret_cast shall not be used.
@@ -257,7 +257,7 @@ class deserializer_helper
         */
         // coverity[autosar_cpp14_a5_2_4_violation]
         return reinterpret_cast<T*>(  // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast) justified
-            dataSpan.subspan(static_cast<typename score::cpp::v1::span<std::uint8_t* const>::size_type>(size)).data());
+            dataSpan.subspan(static_cast<typename score::cpp::span<std::uint8_t* const>::size_type>(size)).data());
         // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic) justified
         /* KW_SUPPRESS_END: AUTOSAR.STYLE.SINGLE_STMT_PER_LINE: False positive. */
         /* KW_SUPPRESS_END:MISRA.PTR.ARITH:Needed to get offset from this location */
@@ -640,8 +640,7 @@ inline void serialize(const std::vector<T>& t, serializer_helper<A>& a, vector_s
             a.template address<S>(static_cast<typename A::offset_t>(offset + sizeof(subsize_s_t)));
         if (n > 0UL)
         {  //  prevents some warnings for a sanity about accessing zero sized container
-            auto destination =
-                score::cpp::v1::span<S>{string_size_location, static_cast<typename score::cpp::v1::span<S>::size_type>(n)};
+            auto destination = score::cpp::span<S>{string_size_location, static_cast<typename score::cpp::span<S>::size_type>(n)};
             const auto source = details::cast_to_source_serializable_data_span<S>(t.data(), n);
             std::ignore = std::copy(source.begin(), source.end(), destination.begin());
         }
@@ -739,8 +738,8 @@ inline void deserialize(const vector_serialized<A, S>& serial, deserializer_help
     {
         //  const cast to suggest that source data shall not be modified
         //  static cast to conform with score::cpp::span type
-        const auto source = score::cpp::v1::span<const S>{const_cast<const S*>(vector_contents_address),
-                                                   static_cast<typename score::cpp::v1::span<S>::size_type>(n)};
+        const auto source = score::cpp::span<const S>{const_cast<const S*>(vector_contents_address),
+                                               static_cast<typename score::cpp::span<S>::size_type>(n)};
         const auto destination = details::cast_to_destination_serializable_data_span<S>(t.data(), n);
         std::ignore = std::copy(source.begin(), source.end(), destination.begin());
     }

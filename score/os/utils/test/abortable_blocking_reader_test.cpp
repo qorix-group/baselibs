@@ -524,7 +524,7 @@ TEST_F(AbortableBlockingReaderTest, CanOnlyCallReadIfMarkedValid)
     AbortableBlockingReader reader{fcntl_mock_, syspoll_mock_, unistd_mock_};
     ASSERT_FALSE(reader.IsValid());
 
-    const auto result = reader.Read(file_descriptor_1_, score::cpp::v1::span<std::uint8_t>{});
+    const auto result = reader.Read(file_descriptor_1_, score::cpp::span<std::uint8_t>{});
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), Error::Code::kOperationNotPermitted);
 }

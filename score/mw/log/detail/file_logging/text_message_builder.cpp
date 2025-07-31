@@ -99,14 +99,14 @@ void TextMessageBuilder::SetNextMessage(LogRecord& log_record) noexcept
     parsing_phase_ = ParsingPhase::kHeader;
 }
 
-score::cpp::optional<score::cpp::v1::span<const std::uint8_t>> TextMessageBuilder::GetNextSpan() noexcept
+score::cpp::optional<score::cpp::span<const std::uint8_t>> TextMessageBuilder::GetNextSpan() noexcept
 {
     if (!log_record_.has_value())
     {
         return {};
     }
 
-    score::cpp::optional<score::cpp::v1::span<const std::uint8_t>> return_result = {};
+    score::cpp::optional<score::cpp::span<const std::uint8_t>> return_result = {};
 
     detail::VerbosePayload& verbose_payload = log_record_.value().get().getVerbosePayload();
     switch (parsing_phase_)  // LCOV_EXCL_BR_LINE: exclude the "default" branch.

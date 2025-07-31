@@ -79,7 +79,7 @@ class ReservedData
         total_used_ = helper::HandleAddOverflow(total_used_, use_size);
     }
 
-    score::cpp::v1::span<Byte> GetData() const noexcept
+    score::cpp::span<Byte> GetData() const noexcept
     {
         const auto buffer_index = old_size_ + total_used_;
         if ((buffer_index < buffer_.size()) && (reserved_ > total_used_))  // LCOV_EXCL_BR_LINE : false positive
@@ -87,9 +87,9 @@ class ReservedData
             //  reserved_ is limited at construction time and total_used_ is derived from it and shall be always
             //  smaller:
             const auto diff = helper::ClampTo<std::int32_t>(reserved_ - total_used_);
-            return {&buffer_[buffer_index], static_cast<score::cpp::v1::span<Byte>::size_type>(diff)};
+            return {&buffer_[buffer_index], static_cast<score::cpp::span<Byte>::size_type>(diff)};
         }
-        return {nullptr, static_cast<score::cpp::v1::span<Byte>::size_type>(0)};
+        return {nullptr, static_cast<score::cpp::span<Byte>::size_type>(0)};
     }
 
   private:
@@ -120,10 +120,10 @@ void VerbosePayload::Put(const Byte* const data, const std::size_t length) noexc
     }
 
     std::ignore = this->Put(
-        [data](score::cpp::v1::span<Byte> dst_data) {
-            if (dst_data.size() > static_cast<score::cpp::v1::span<Byte>::size_type>(0))
+        [data](score::cpp::span<Byte> dst_data) {
+            if (dst_data.size() > static_cast<score::cpp::span<Byte>::size_type>(0))
             {
-                const score::cpp::v1::span<const Byte> data_span{data, dst_data.size()};
+                const score::cpp::span<const Byte> data_span{data, dst_data.size()};
                 std::ignore = std::copy(data_span.begin(), data_span.end(), dst_data.begin());
             }
             return dst_data.size();
@@ -142,10 +142,10 @@ std::size_t VerbosePayload::Put(const ReserveCallback callback, const std::size_
     return new_written_data_size;
 }
 
-score::cpp::v1::span<const std::uint8_t> VerbosePayload::GetSpan() const noexcept
+score::cpp::span<const std::uint8_t> VerbosePayload::GetSpan() const noexcept
 {
     //  Checking for sign overflow. Limit data to maximum possible span size:
-    using size_type = score::cpp::v1::span<const std::uint8_t>::size_type;
+    using size_type = score::cpp::span<const std::uint8_t>::size_type;
     constexpr auto max_size = std::numeric_limits<const size_type>::max();
 
     const auto span_size = static_cast<size_type>(std::min(static_cast<std::size_t>(max_size), buffer_.get().size()));
