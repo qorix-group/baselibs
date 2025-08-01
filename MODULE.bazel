@@ -29,7 +29,7 @@ gcc.extra_features(
     ],
 )
 gcc.warning_flags(
-    minimal_warnings = ["-Wall", "-Wno-error=deprecated-declarations"],
+    minimal_warnings = ["-Wall", "-Wno-error=deprecated-declarations", "-Wno-error=narrowing"],
     strict_warnings = ["-Wextra", "-Wpedantic"],
 )
 use_repo(gcc, "gcc_toolchain", "gcc_toolchain_gcc")
