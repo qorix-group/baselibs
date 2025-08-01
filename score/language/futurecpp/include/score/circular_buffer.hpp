@@ -10,6 +10,7 @@
 
 #include <score/private/container/circular_buffer_iterator.hpp> // IWYU pragma: export
 #include <score/private/memory/uninitialized_move.hpp>
+#include <score/private/utility/ignore.hpp>
 #include <score/assert.hpp>
 #include <score/utility.hpp>
 
@@ -295,7 +296,7 @@ public:
 
         if ((first - begin()) <= (end() - last))
         {
-            std::move_backward(begin(), first, last);
+            score::cpp::ignore = std::move_backward(begin(), first, last);
             for (typename iterator::difference_type i{0}; i < diff; ++i)
             {
                 pop_front();
@@ -303,7 +304,7 @@ public:
         }
         else
         {
-            std::move(last, end(), first);
+            score::cpp::ignore = std::move(last, end(), first);
             for (typename iterator::difference_type i{0}; i < diff; ++i)
             {
                 pop_back();

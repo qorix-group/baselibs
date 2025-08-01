@@ -13,6 +13,7 @@
 #include <score/private/execution/thread_pool_worker_count.hpp>
 #include <score/private/thread/thread_name_hint.hpp>
 #include <score/private/thread/thread_stack_size_hint.hpp>
+#include <score/private/utility/ignore.hpp>
 #include <score/assert.hpp>
 #include <score/jthread.hpp>
 #include <score/latch.hpp>
@@ -96,8 +97,8 @@ public:
         for (std::uint32_t i{0U}; i < worker_count_; ++i)
         {
             // NOLINTNEXTLINE(performance-unnecessary-value-param)
-            threads_.emplace_back(
-                stack_size, name, [this, index = i](const score::cpp::stop_token token) { work(token, index); });
+            static_cast<void>(threads_.emplace_back(
+                stack_size, name, [this, index = i](const score::cpp::stop_token token) { work(token, index); }));
         }
 
         SCORE_LANGUAGE_FUTURECPP_ASSERT_DBG(worker_count_ == queues_.size());
@@ -116,7 +117,7 @@ public:
     {
         for (auto& t : threads_)
         {
-            t.request_stop();
+            score::cpp::ignore = t.request_stop();
         }
         for (auto& q : queues_)
         {

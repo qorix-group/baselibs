@@ -11,6 +11,7 @@
 #define SCORE_LANGUAGE_FUTURECPP_PRIVATE_THREAD_THIS_THREAD_HPP
 
 #include <score/private/thread/thread.hpp>
+#include <score/private/utility/ignore.hpp>
 
 // Header part of safety qualification
 // broken_link_s/:b:/r/teams/SafeSoftwarePlatform/Freigegebene%20Dokumente/Ironman/safety/mpad/tuv/EZ_653_22_23_RL_2023_08_10_QOS_2_2_4.pdf?csf=1&web=1&e=FTMJRu
@@ -30,7 +31,7 @@ namespace this_thread
 inline score::cpp::thread::id get_id() noexcept { return ::pthread_self(); }
 
 /// \brief Provides a hint to the implementation to reschedule the execution of threads, allowing other threads to run
-inline void yield() noexcept { ::sched_yield(); }
+inline void yield() noexcept { score::cpp::ignore = ::sched_yield(); }
 
 } // namespace this_thread
 } // namespace score::cpp

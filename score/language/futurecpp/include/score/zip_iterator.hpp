@@ -71,13 +71,13 @@ public:
     template <typename... Us, typename = std::enable_if_t<!is_forwarding_ref_overload<zipped_tuple_like<Us...>>::value>>
     zipped_tuple_like& operator=(const zipped_tuple_like<Us...>& other)
     {
-        Base::operator=(static_cast<const std::tuple<Us...>&>(other));
+        score::cpp::ignore = Base::operator=(static_cast<const std::tuple<Us...>&>(other));
         return *this;
     }
     template <typename... Us, typename = std::enable_if_t<!is_forwarding_ref_overload<zipped_tuple_like<Us...>>::value>>
     zipped_tuple_like& operator=(zipped_tuple_like<Us...>&& other)
     {
-        Base::operator=(static_cast<std::tuple<Us...>&&>(std::move(other)));
+        score::cpp::ignore = Base::operator=(static_cast<std::tuple<Us...>&&>(std::move(other)));
         return *this;
     }
 

@@ -8,6 +8,8 @@
 #ifndef SCORE_LANGUAGE_FUTURECPP_PRIVATE_BIT_BIT_CAST_HPP
 #define SCORE_LANGUAGE_FUTURECPP_PRIVATE_BIT_BIT_CAST_HPP
 
+#include <score/private/utility/ignore.hpp>
+
 #include <cstring>
 #include <type_traits>
 
@@ -30,7 +32,7 @@ inline To bit_cast(const From& from) noexcept
     static_assert(std::is_trivially_copyable<From>::value, "bit_cast requires source type to be trivially copyable");
 
     To to;
-    std::memcpy(&to, &from, sizeof(to));
+    score::cpp::ignore = std::memcpy(&to, &from, sizeof(to));
     return to;
 }
 

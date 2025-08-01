@@ -218,7 +218,7 @@ public:
     {
         if (joinable())
         {
-            request_stop();
+            score::cpp::ignore = request_stop();
             join();
         }
         stop_source_ = std::move(other.stop_source_);
@@ -243,7 +243,7 @@ public:
     {
         if (joinable())
         {
-            request_stop();
+            score::cpp::ignore = request_stop();
             join();
         }
     }

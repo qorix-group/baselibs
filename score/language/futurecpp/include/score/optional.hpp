@@ -14,6 +14,7 @@
 #include <score/private/type_traits/is_expected.hpp>
 #include <score/private/type_traits/is_optional.hpp>
 #include <score/private/type_traits/remove_cvref.hpp>
+#include <score/private/utility/ignore.hpp>
 #include <score/private/utility/in_place_t.hpp> // IWYU pragma: export
 #include <initializer_list>
 #include <type_traits>
@@ -611,7 +612,7 @@ private:
     template <class... Args>
     void construct(Args&&... args)
     {
-        score::cpp::detail::construct_at(std::addressof(data_), std::forward<Args>(args)...);
+        score::cpp::ignore = score::cpp::detail::construct_at(std::addressof(data_), std::forward<Args>(args)...);
         has_value_ = true;
     }
 

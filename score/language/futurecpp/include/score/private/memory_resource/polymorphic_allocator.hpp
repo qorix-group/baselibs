@@ -12,6 +12,7 @@
 
 #include <score/private/memory/uninitialized_construct_using_allocator.hpp>
 #include <score/private/memory_resource/memory_resource.hpp>
+#include <score/private/utility/ignore.hpp>
 #include <score/assert.hpp>
 
 #include <cstddef>
@@ -90,7 +91,7 @@ public:
     template <typename U, typename... Args>
     void construct(U* p, Args&&... args)
     {
-        score::cpp::detail::uninitialized_construct_using_allocator(p, *this, std::forward<Args>(args)...);
+        score::cpp::ignore = score::cpp::detail::uninitialized_construct_using_allocator(p, *this, std::forward<Args>(args)...);
     }
 
     memory_resource* resource() const { return resource_; }

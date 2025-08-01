@@ -11,6 +11,7 @@
 #define SCORE_LANGUAGE_FUTURECPP_PRIVATE_MEMORY_RESOURCE_RESOURCE_ADAPTOR_HPP
 
 #include <score/private/memory_resource/memory_resource.hpp>
+#include <score/private/utility/ignore.hpp>
 #include <score/assert.hpp>
 
 #include <algorithm>
@@ -58,7 +59,7 @@ establish_extended_alignment(void* orig_ptr, std::size_t bytes, std::size_t tota
     void* ret = std::align(alignment, bytes, ptr, remaining_size);
     SCORE_LANGUAGE_FUTURECPP_ASSERT(ret != nullptr);
     // store orig_ptr in the memory immediately preceding the object
-    std::memcpy(static_cast<char*>(ret) - sizeof(void*), &orig_ptr, sizeof(void*));
+    score::cpp::ignore = std::memcpy(static_cast<char*>(ret) - sizeof(void*), &orig_ptr, sizeof(void*));
     return ret;
 }
 
@@ -70,7 +71,7 @@ inline void* retrieve_unaligned_pointer(void* aligned_ptr)
     // the original pointer value returned by the underlying allocator is stored in the memory
     // immediately preceding the object
     void* orig_ptr;
-    std::memcpy(&orig_ptr, static_cast<char*>(aligned_ptr) - sizeof(void*), sizeof(void*));
+    score::cpp::ignore = std::memcpy(&orig_ptr, static_cast<char*>(aligned_ptr) - sizeof(void*), sizeof(void*));
     return orig_ptr;
 }
 
