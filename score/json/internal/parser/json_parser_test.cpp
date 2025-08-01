@@ -50,11 +50,12 @@ void json_verify(const score::json::Any& parsed_json)
 
 TEST(JsonParserTest, FromBuffer)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "::score::json::JsonParser::FromBuffer");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Parsing json object using FromBuffer(), cf. RFC-8259 section 9");
-    RecordProperty("TestType", "Requirements-based test");
-    RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     json::JsonParser json_parser{};
     auto result = json_parser.FromBuffer(JSON_INPUT);
@@ -64,13 +65,14 @@ TEST(JsonParserTest, FromBuffer)
 
 TEST(JsonParserTest, ViaLiteral)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "::score::json::operator\"\"_json");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Parsing json object using "
                    "_json operator, cf. RFC-8259 section 9");
-    RecordProperty("TestType", "Requirements-based test");
-    RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     auto parsed_json = JSON_INPUT ""_json;
     json_verify(parsed_json);
@@ -78,24 +80,24 @@ TEST(JsonParserTest, ViaLiteral)
 
 TEST(JsonParserTest, ViaErrorLiteral)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
-    RecordProperty("Description",
-                   "Parsing invalid json object using "
-                   "_json operator causes failure, cf. RFC-8259 section 9");
+    RecordProperty("Description", "Parsing invalid json object using _json operator, cf. RFC-8259 section 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
 
     EXPECT_EXIT(JSON_ERROR_INPUT ""_json, ::testing::KilledBySignal(SIGABRT), "");
 }
 
 TEST(JsonParserTest, FromFileSuceess)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "::score::json::JsonParser::FromFile");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Parsing json object from file path, cf. RFC-8259 section 9");
-    RecordProperty("TestType", "Requirements-based test");
-    RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     const std::string file_path = std::tmpnam(nullptr);
     std::ofstream file(file_path);
@@ -113,11 +115,12 @@ TEST(JsonParserTest, FromFileSuceess)
 
 TEST(JsonParserTest, FromFileParseError)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Parsing invalid json object from file path causes failure, cf. RFC-8259 section 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
 
     const std::string file_path = std::tmpnam(nullptr);
     std::ofstream file(file_path);

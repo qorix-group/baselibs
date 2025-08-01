@@ -95,12 +95,13 @@ TYPED_TEST_SUITE_P(NumberTest);
 
 TYPED_TEST_P(NumberTest, WhenParsingABoolStoredInAJsonThenParsingIsSuccessfulAndCorrectValueIsReturned)
 {
-    this->RecordProperty("Verifies", "SCR-5310867");
+    this->RecordProperty("Verifies", "5310867");
     this->RecordProperty("ASIL", "B");
     this->RecordProperty("Description",
                          "Test the limits, over-limit and under-limit of bool data-type, cf. RFC-8259 section 9");
     this->RecordProperty("TestType", "Requirements-based test");
-    this->RecordProperty("DerivationTechnique", "Analysis of requirements");
+    this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Priority", "3");
 
     // Given a simple JSON buffer and parsing it
     auto root = TypeParam::FromBuffer(buffer_json);
@@ -118,12 +119,13 @@ TYPED_TEST_P(NumberTest, WhenParsingABoolStoredInAJsonThenParsingIsSuccessfulAnd
 
 TYPED_TEST_P(NumberTest, WhenParsingAUint8StoredInAJsonThenParsingIsSuccessfulAndCorrectValueIsReturned)
 {
-    this->RecordProperty("Verifies", "SCR-5310867");
+    this->RecordProperty("Verifies", "5310867");
     this->RecordProperty("ASIL", "B");
     this->RecordProperty("Description",
-                         "Test the limits, over-limit and under-limit of bool data-type, cf. RFC-8259 section 9");
+                         "Test the limits, over-limit and under-limit of uint8 data-type, cf. RFC-8259 section 9");
     this->RecordProperty("TestType", "Requirements-based test");
-    this->RecordProperty("DerivationTechnique", "Analysis of requirements");
+    this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Priority", "3");
 
     // Given a simple JSON buffer and parsing it
     auto root = TypeParam::FromBuffer(buffer_json);
@@ -141,12 +143,13 @@ TYPED_TEST_P(NumberTest, WhenParsingAUint8StoredInAJsonThenParsingIsSuccessfulAn
 
 TYPED_TEST_P(NumberTest, WhenParsingAUint16StoredInAJsonThenParsingIsSuccessfulAndCorrectValueIsReturned)
 {
-    this->RecordProperty("Verifies", "SCR-5310867");
+    this->RecordProperty("Verifies", "5310867");
     this->RecordProperty("ASIL", "B");
     this->RecordProperty("Description",
-                         "Test the limits, over-limit and under-limit of bool data-type, cf. RFC-8259 section 9");
+                         "Test the limits, over-limit and under-limit of uint16 data-type, cf. RFC-8259 section 9");
     this->RecordProperty("TestType", "Requirements-based test");
-    this->RecordProperty("DerivationTechnique", "Analysis of requirements");
+    this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Priority", "3");
 
     // Given a simple JSON buffer and parsing it
     auto root = TypeParam::FromBuffer(buffer_json);
@@ -164,12 +167,13 @@ TYPED_TEST_P(NumberTest, WhenParsingAUint16StoredInAJsonThenParsingIsSuccessfulA
 
 TYPED_TEST_P(NumberTest, WhenParsingAUint32StoredInAJsonThenParsingIsSuccessfulAndCorrectValueIsReturned)
 {
-    this->RecordProperty("Verifies", "SCR-5310867");
+    this->RecordProperty("Verifies", "5310867");
     this->RecordProperty("ASIL", "B");
     this->RecordProperty("Description",
-                         "Test the limits, over-limit and under-limit of bool data-type, cf. RFC-8259 section 9");
+                         "Test the limits, over-limit and under-limit of uint32 data-type, cf. RFC-8259 section 9");
     this->RecordProperty("TestType", "Requirements-based test");
-    this->RecordProperty("DerivationTechnique", "Analysis of requirements");
+    this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Priority", "3");
 
     // Given a simple JSON buffer and parsing it
     auto root = TypeParam::FromBuffer(buffer_json);
@@ -187,12 +191,13 @@ TYPED_TEST_P(NumberTest, WhenParsingAUint32StoredInAJsonThenParsingIsSuccessfulA
 
 TYPED_TEST_P(NumberTest, WhenParsingAUint64StoredInAJsonThenParsingIsSuccessfulAndCorrectValueIsReturned)
 {
-    this->RecordProperty("Verifies", "SCR-5310867");
+    this->RecordProperty("Verifies", "5310867");
     this->RecordProperty("ASIL", "B");
     this->RecordProperty("Description",
-                         "Test the limits, over-limit and under-limit of bool data-type, cf. RFC-8259 section 9");
+                         "Test the limits, over-limit and under-limit of uint64 data-type, cf. RFC-8259 section 9");
     this->RecordProperty("TestType", "Requirements-based test");
-    this->RecordProperty("DerivationTechnique", "Analysis of requirements");
+    this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Priority", "3");
 
     // Given a simple JSON buffer and parsing it
     auto root = TypeParam::FromBuffer(buffer_json);
@@ -210,12 +215,13 @@ TYPED_TEST_P(NumberTest, WhenParsingAUint64StoredInAJsonThenParsingIsSuccessfulA
 
 TYPED_TEST_P(NumberTest, WhenParsingAInt8StoredInAJsonThenParsingIsSuccessfulAndCorrectValueIsReturned)
 {
-    this->RecordProperty("Verifies", "SCR-5310867");
+    this->RecordProperty("Verifies", "5310867");
     this->RecordProperty("ASIL", "B");
     this->RecordProperty("Description",
-                         "Test the limits, over-limit and under-limit of bool data-type, cf. RFC-8259 section 9");
+                         "Test the limits, over-limit and under-limit of int8 data-type, cf. RFC-8259 section 9");
     this->RecordProperty("TestType", "Requirements-based test");
-    this->RecordProperty("DerivationTechnique", "Analysis of requirements");
+    this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Priority", "3");
 
     // Given a simple JSON buffer and parsing it
     auto root = TypeParam::FromBuffer(buffer_json);
@@ -233,12 +239,13 @@ TYPED_TEST_P(NumberTest, WhenParsingAInt8StoredInAJsonThenParsingIsSuccessfulAnd
 
 TYPED_TEST_P(NumberTest, WhenParsingAInt16StoredInAJsonThenParsingIsSuccessfulAndCorrectValueIsReturned)
 {
-    this->RecordProperty("Verifies", "SCR-5310867");
+    this->RecordProperty("Verifies", "5310867");
     this->RecordProperty("ASIL", "B");
     this->RecordProperty("Description",
-                         "Test the limits, over-limit and under-limit of bool data-type, cf. RFC-8259 section 9");
+                         "Test the limits, over-limit and under-limit of int16 data-type, cf. RFC-8259 section 9");
     this->RecordProperty("TestType", "Requirements-based test");
-    this->RecordProperty("DerivationTechnique", "Analysis of requirements");
+    this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Priority", "3");
 
     // Given a simple JSON buffer and parsing it
     auto root = TypeParam::FromBuffer(buffer_json);
@@ -256,12 +263,13 @@ TYPED_TEST_P(NumberTest, WhenParsingAInt16StoredInAJsonThenParsingIsSuccessfulAn
 
 TYPED_TEST_P(NumberTest, WhenParsingAInt32StoredInAJsonThenParsingIsSuccessfulAndCorrectValueIsReturned)
 {
-    this->RecordProperty("Verifies", "SCR-5310867");
+    this->RecordProperty("Verifies", "5310867");
     this->RecordProperty("ASIL", "B");
     this->RecordProperty("Description",
-                         "Test the limits, over-limit and under-limit of bool data-type, cf. RFC-8259 section 9");
+                         "Test the limits, over-limit and under-limit of int32 data-type, cf. RFC-8259 section 9");
     this->RecordProperty("TestType", "Requirements-based test");
-    this->RecordProperty("DerivationTechnique", "Analysis of requirements");
+    this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Priority", "3");
 
     // Given a simple JSON buffer and parsing it
     auto root = TypeParam::FromBuffer(buffer_json);
@@ -279,12 +287,13 @@ TYPED_TEST_P(NumberTest, WhenParsingAInt32StoredInAJsonThenParsingIsSuccessfulAn
 
 TYPED_TEST_P(NumberTest, WhenParsingAInt64StoredInAJsonThenParsingIsSuccessfulAndCorrectValueIsReturned)
 {
-    this->RecordProperty("Verifies", "SCR-5310867");
+    this->RecordProperty("Verifies", "5310867");
     this->RecordProperty("ASIL", "B");
     this->RecordProperty("Description",
-                         "Test the limits, over-limit and under-limit of bool data-type, cf. RFC-8259 section 9");
+                         "Test the limits, over-limit and under-limit of int64 data-type, cf. RFC-8259 section 9");
     this->RecordProperty("TestType", "Requirements-based test");
-    this->RecordProperty("DerivationTechnique", "Analysis of requirements");
+    this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Priority", "3");
 
     // Given a simple JSON buffer and parsing it
     auto root = TypeParam::FromBuffer(buffer_json);
@@ -301,12 +310,13 @@ TYPED_TEST_P(NumberTest, WhenParsingAInt64StoredInAJsonThenParsingIsSuccessfulAn
 }
 TYPED_TEST_P(NumberTest, WhenParsingAFloatStoredInAJsonThenParsingIsSuccessfulAndCorrectValueIsReturned)
 {
-    this->RecordProperty("Verifies", "SCR-5310867");
+    this->RecordProperty("Verifies", "5310867");
     this->RecordProperty("ASIL", "B");
     this->RecordProperty("Description",
-                         "Test the limits, over-limit and under-limit of bool data-type, cf. RFC-8259 section 9");
+                         "Test the limits, over-limit and under-limit of float data-type, cf. RFC-8259 section 9");
     this->RecordProperty("TestType", "Requirements-based test");
-    this->RecordProperty("DerivationTechnique", "Analysis of requirements");
+    this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Priority", "3");
 
     // Given a simple JSON buffer and parsing it
     auto root = TypeParam::FromBuffer(buffer_json);
@@ -324,12 +334,13 @@ TYPED_TEST_P(NumberTest, WhenParsingAFloatStoredInAJsonThenParsingIsSuccessfulAn
 
 TYPED_TEST_P(NumberTest, WhenParsingADoubleStoredInAJsonThenParsingIsSuccessfulAndCorrectValueIsReturned)
 {
-    this->RecordProperty("Verifies", "SCR-5310867");
+    this->RecordProperty("Verifies", "5310867");
     this->RecordProperty("ASIL", "B");
     this->RecordProperty("Description",
-                         "Test the limits, over-limit and under-limit of bool data-type, cf. RFC-8259 section 9");
+                         "Test the limits, over-limit and under-limit of double data-type, cf. RFC-8259 section 9");
     this->RecordProperty("TestType", "Requirements-based test");
-    this->RecordProperty("DerivationTechnique", "Analysis of requirements");
+    this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Priority", "3");
 
     // Given a simple JSON buffer and parsing it
     auto root = TypeParam::FromBuffer(buffer_json);

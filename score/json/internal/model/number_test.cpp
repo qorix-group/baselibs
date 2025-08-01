@@ -84,10 +84,12 @@ void TestFromUnsignedToAnyOtherType(bool uint8_ok,
 
 TEST(Number, FromUint8ToAnyOtherType)
 {
+    RecordProperty("Verifies", "::score::json::Number::As");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Tests conversion of uint8 max value to different data types.");
-    RecordProperty("TestType", "Verification of the control flow and data flow");
-    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     TestFromUnsignedToAnyOtherType<uint8_t>(true,   // uint8
                                             true,   // uint16
@@ -102,12 +104,14 @@ TEST(Number, FromUint8ToAnyOtherType)
     );
 }
 
-TEST(NumberTest, FromUint16ToAnyOtherType)
+TEST(Number, FromUint16ToAnyOtherType)
 {
+    RecordProperty("Verifies", "::score::json::Number::As");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Tests conversion of uint16 max value to different data types.");
-    RecordProperty("TestType", "Verification of the control flow and data flow");
-    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     TestFromUnsignedToAnyOtherType<uint16_t>(false,  // uint8
                                              true,   // uint16
@@ -124,10 +128,12 @@ TEST(NumberTest, FromUint16ToAnyOtherType)
 
 TEST(Number, FromUint32ToAnyOtherType)
 {
+    RecordProperty("Verifies", "::score::json::Number::As");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Tests conversion of uint32 max value to different data types.");
-    RecordProperty("TestType", "Verification of the control flow and data flow");
-    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     TestFromUnsignedToAnyOtherType<uint32_t>(false,  // uint8
                                              false,  // uint16
@@ -144,10 +150,12 @@ TEST(Number, FromUint32ToAnyOtherType)
 
 TEST(Number, FromUint64ToAnyOtherType)
 {
+    RecordProperty("Verifies", "::score::json::Number::As");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Tests conversion of uint64 max value to different data types.");
-    RecordProperty("TestType", "Verification of the control flow and data flow");
-    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     TestFromUnsignedToAnyOtherType<uint64_t>(false,  // uint8
                                              false,  // uint16
@@ -221,10 +229,12 @@ void TestFromSignedToAnyOtherType(bool int8_ok,
 
 TEST(Number, FromInt8ToAnyOtherType)
 {
+    RecordProperty("Verifies", "::score::json::Number::As");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Tests conversion of int8 different values to different data types.");
-    RecordProperty("TestType", "Verification of the control flow and data flow");
-    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     TestFromSignedToAnyOtherType<std::int8_t>(true,  // int8
                                               true,  // int16
@@ -237,10 +247,12 @@ TEST(Number, FromInt8ToAnyOtherType)
 
 TEST(Number, FromInt16ToAnyOtherType)
 {
+    RecordProperty("Verifies", "::score::json::Number::As");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Tests conversion of int16 different values to different data types.");
-    RecordProperty("TestType", "Verification of the control flow and data flow");
-    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     TestFromSignedToAnyOtherType<std::int16_t>(false,  // int8
                                                true,   // int16
@@ -253,10 +265,12 @@ TEST(Number, FromInt16ToAnyOtherType)
 
 TEST(Number, FromInt32ToAnyOtherType)
 {
+    RecordProperty("Verifies", "::score::json::Number::As");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Tests conversion of int32 different values to different data types.");
-    RecordProperty("TestType", "Verification of the control flow and data flow");
-    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     TestFromSignedToAnyOtherType<std::int32_t>(false,  // int8
                                                false,  // int16
@@ -269,10 +283,12 @@ TEST(Number, FromInt32ToAnyOtherType)
 
 TEST(Number, FromInt64ToAnyOtherType)
 {
+    RecordProperty("Verifies", "::score::json::Number::As");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Tests conversion of int64 different values to different data types.");
-    RecordProperty("TestType", "Verification of the control flow and data flow");
-    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     TestFromSignedToAnyOtherType<std::int64_t>(false,  // int8
                                                false,  // int16
@@ -583,20 +599,24 @@ void TestFloatingPointValues(FloatingPoint maximum_integer)
 
 TEST(Number, FromFloatToAnyOtherType)
 {
+    RecordProperty("Verifies", "::score::json::Number::As");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Tests conversion of float values to different data types.");
-    RecordProperty("TestType", "Verification of the control flow and data flow");
-    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     TestFloatingPointValues<float>(GetMaximumIntegerInFloat());
 }
 
 TEST(Number, FromDoubleToAnyOtherType)
 {
+    RecordProperty("Verifies", "::score::json::Number::As");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Tests conversion of double values to different data types.");
-    RecordProperty("TestType", "Verification of the control flow and data flow");
-    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     TestFloatingPointValues<double>(GetMaximumIntegerInDouble());
 }
@@ -609,10 +629,12 @@ void TestEqualOperator(T1 lhs, T2 rhs, bool result)
 
 TEST(Number, CheckEqualOperator)
 {
+    RecordProperty("Verifies", "::score::json::Number::operator==");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Tests the equal comparator of Number.");
-    RecordProperty("TestType", "Verification of the control flow and data flow");
-    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
     {
         uint64_t content = 42;
         uint64_t wrong_content = 43;

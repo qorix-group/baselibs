@@ -27,10 +27,12 @@ using ::testing::Ne;
 
 TEST(Error, CanMakeError)
 {
+    RecordProperty("Verifies", "::score::json::MakeError");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Use MakeError() to create Error instance.");
-    RecordProperty("TestType", "Requirements-based test");
-    RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     score::result::Error error = score::json::MakeError(Error::kParsingError);
 
@@ -39,10 +41,12 @@ TEST(Error, CanMakeError)
 
 TEST(Error, CanMakeErrorWithUserMessage)
 {
+    RecordProperty("Verifies", "::score::json::MakeError");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Use MakeError() with error message to create Error instance.");
-    RecordProperty("TestType", "Requirements-based test");
-    RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     std::string_view userMessage{"User message"};
     score::result::Error error = score::json::MakeError(Error::kUnknownError, userMessage);
@@ -52,10 +56,12 @@ TEST(Error, CanMakeErrorWithUserMessage)
 
 TEST(Error, CanGetMessageForWrongType)
 {
+    RecordProperty("Verifies", "::score::result::Error::Message");
     RecordProperty("ASIL", "B");
-    RecordProperty("Description", "Get error message from WrongType error .");
-    RecordProperty("TestType", "Requirements-based test");
-    RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Description", "Get error message from WrongType error.");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     score::result::Error error = score::json::MakeError(Error::kWrongType);
 
@@ -66,10 +72,12 @@ TEST(Error, CanGetMessageForWrongType)
 
 TEST(Error, CanGetMessageForKeyNotFound)
 {
+    RecordProperty("Verifies", "::score::result::Error::Message");
     RecordProperty("ASIL", "B");
-    RecordProperty("Description", "Get error message from KeyNotFound error .");
-    RecordProperty("TestType", "Requirements-based test");
-    RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Description", "Get error message from KeyNotFound error.");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     score::result::Error error = score::json::MakeError(Error::kKeyNotFound);
 
@@ -80,10 +88,12 @@ TEST(Error, CanGetMessageForKeyNotFound)
 
 TEST(Error, CanGetMessageForParsingError)
 {
+    RecordProperty("Verifies", "::score::result::Error::Message");
     RecordProperty("ASIL", "B");
-    RecordProperty("Description", "Get error message from ParsingError error .");
-    RecordProperty("TestType", "Requirements-based test");
-    RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Description", "Get error message from ParsingError error.");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     score::result::Error error = score::json::MakeError(Error::kParsingError);
 
@@ -94,10 +104,12 @@ TEST(Error, CanGetMessageForParsingError)
 
 TEST(Error, CanGetMessageForInvalidFilePath)
 {
+    RecordProperty("Verifies", "::score::result::Error::Message");
     RecordProperty("ASIL", "B");
-    RecordProperty("Description", "Get error message from InvalidFilePath error .");
-    RecordProperty("TestType", "Requirements-based test");
-    RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Description", "Get error message from InvalidFilePath error.");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     score::result::Error error = score::json::MakeError(Error::kInvalidFilePath);
 
@@ -108,10 +120,12 @@ TEST(Error, CanGetMessageForInvalidFilePath)
 
 TEST(Error, CanGetMessageForUnknownError)
 {
+    RecordProperty("Verifies", "::score::result::Error::Message");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Get error message from UnknownError.");
-    RecordProperty("TestType", "Requirements-based test");
-    RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     score::result::Error error = score::json::MakeError(Error::kUnknownError);
 
@@ -122,10 +136,12 @@ TEST(Error, CanGetMessageForUnknownError)
 
 TEST(Error, CanGetMessageForUndefinedError)
 {
+    RecordProperty("Verifies", "::score::result::Error::Message");
     RecordProperty("ASIL", "B");
-    RecordProperty("Description", "Get error message from UndefinedError .");
-    RecordProperty("TestType", "Requirements-based test");
-    RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Description", "Get error message from UndefinedError.");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
 
     score::result::Error error = score::json::MakeError(static_cast<Error>(-1));
 

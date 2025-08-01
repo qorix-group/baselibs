@@ -109,10 +109,12 @@ TYPED_TEST_SUITE(JsonWriterWriteToFileTest, JsonSampleTypes, );
 
 TYPED_TEST(JsonWriterWriteToFileTest, ToBuffer)
 {
+    this->RecordProperty("Verifies", "::score::json::JsonWriter::ToBuffer");
     this->RecordProperty("ASIL", "B");
     this->RecordProperty("Description", "writing json to string buffer, cf. RFC-8259 section 4, 5 and 9");
-    this->RecordProperty("TestType", "Verification of the control flow and data flow");
-    this->RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+    this->RecordProperty("TestType", "Interface test");
+    this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Priority", "3");
 
     typename TestFixture::SampleJson json;
     score::json::JsonWriter writer{};
@@ -123,10 +125,12 @@ TYPED_TEST(JsonWriterWriteToFileTest, ToBuffer)
 
 TYPED_TEST(JsonWriterWriteToFileTest, ToFile)
 {
+    this->RecordProperty("Verifies", "::score::json::JsonWriter::ToFile");
     this->RecordProperty("ASIL", "B");
-    this->RecordProperty("Description", "writing json to valid file path");
-    this->RecordProperty("TestType", "Verification of the control flow and data flow");
-    this->RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+    this->RecordProperty("Description", "writing json to string buffer, cf. RFC-8259 section 4, 5 and 9");
+    this->RecordProperty("TestType", "Interface test");
+    this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Priority", "3");
 
     typename TestFixture::SampleJson json;
 
@@ -140,10 +144,12 @@ TYPED_TEST(JsonWriterWriteToFileTest, ToFile)
 
 TYPED_TEST(JsonWriterWriteToFileTest, ToUnsyncedFile)
 {
+    this->RecordProperty("Verifies", "::score::json::JsonWriter::ToFile");
     this->RecordProperty("ASIL", "B");
-    this->RecordProperty("Description", "writing json to valid file path");
-    this->RecordProperty("TestType", "Verification of the control flow and data flow");
+    this->RecordProperty("Description", "writing json to string buffer, cf. RFC-8259 section 4, 5 and 9");
+    this->RecordProperty("TestType", "Interface test");
     this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Priority", "3");
 
     typename TestFixture::SampleJson json;
 
@@ -156,10 +162,12 @@ TYPED_TEST(JsonWriterWriteToFileTest, ToUnsyncedFile)
 
 TYPED_TEST(JsonWriterWriteToFileTest, ToSyncedFile)
 {
+    this->RecordProperty("Verifies", "::score::json::JsonWriter::ToFile");
     this->RecordProperty("ASIL", "B");
-    this->RecordProperty("Description", "writing json to valid file path");
-    this->RecordProperty("TestType", "Verification of the control flow and data flow");
+    this->RecordProperty("Description", "writing json to string buffer, cf. RFC-8259 section 4, 5 and 9");
+    this->RecordProperty("TestType", "Interface test");
     this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Priority", "3");
 
     typename TestFixture::SampleJson json;
 
@@ -173,10 +181,12 @@ TYPED_TEST(JsonWriterWriteToFileTest, ToSyncedFile)
 
 TYPED_TEST(JsonWriterWriteToFileTest, ToUnsyncedFileResultsInError)
 {
+    this->RecordProperty("Verifies", "5310867");
     this->RecordProperty("ASIL", "B");
-    this->RecordProperty("Description", "writing json to valid file path");
-    this->RecordProperty("TestType", "Verification of the control flow and data flow");
-    this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Description", "Invalid file path returns error when writing unsynced file");
+    this->RecordProperty("TestType", "Requirements-based test");
+    this->RecordProperty("DerivationTechnique", "Analysis of requirements");
+    this->RecordProperty("Priority", "3");
 
     typename TestFixture::SampleJson json;
 
@@ -193,10 +203,12 @@ TYPED_TEST(JsonWriterWriteToFileTest, ToUnsyncedFileResultsInError)
 
 TYPED_TEST(JsonWriterWriteToFileTest, ToSyncedFileResultsInError)
 {
+    this->RecordProperty("Verifies", "5310867");
     this->RecordProperty("ASIL", "B");
-    this->RecordProperty("Description", "writing json to valid file path");
-    this->RecordProperty("TestType", "Verification of the control flow and data flow");
-    this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Description", "Invalid file path returns error when writing with atomic update");
+    this->RecordProperty("TestType", "Requirements-based test");
+    this->RecordProperty("DerivationTechnique", "Analysis of requirements");
+    this->RecordProperty("Priority", "3");
 
     typename TestFixture::SampleJson json;
 

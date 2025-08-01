@@ -25,11 +25,12 @@ namespace
 
 TEST(Any, CanDefaultConstruct)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Empty-constructed json objects have null value, cf. RFC-8259 section 3 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     // Given Any with no specific value
     Any unit{};
 
@@ -42,11 +43,12 @@ TEST(Any, CanDefaultConstruct)
 
 TEST(Any, CanConstructFromBool)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Bool-constructed json objects have bool value, cf. RFC-8259 section 3 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "1");
 
     // Given Any with a specific value
     Any unit{true};
@@ -60,11 +62,12 @@ TEST(Any, CanConstructFromBool)
 
 TEST(Any, CanConstructFromFloat)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Float-constructed json objects have float value, cf. RFC-8259 section 3, 6, and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     // Given Any with a specific value
     Any unit{4.2F};
 
@@ -77,12 +80,13 @@ TEST(Any, CanConstructFromFloat)
 
 TEST(Any, CanConstructFromFloatNumber)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Float-number-constructed json objects have float value, cf. RFC-8259 section 3, 6, and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     // Given Any with a specific value
     Any unit{Number{4.2F}};
 
@@ -95,11 +99,12 @@ TEST(Any, CanConstructFromFloatNumber)
 
 TEST(Any, CanConstructFromUint64)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Int64-constructed json objects have int64 value, cf. RFC-8259 section 3, 6, and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     // Given Any with a specific value
     Any unit{std::uint64_t{42}};
 
@@ -112,12 +117,13 @@ TEST(Any, CanConstructFromUint64)
 
 TEST(Any, CanConstructFromIntegralNumber)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Integral-number-constructed json objects have int value, cf. RFC-8259 section 3, 6, and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     // Given Any with a specific value
     Any unit{Number{42UL}};
 
@@ -130,11 +136,12 @@ TEST(Any, CanConstructFromIntegralNumber)
 
 TEST(Any, CanConstructFromString)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "String-constructed json objects have string value, cf. RFC-8259 section 3, 7 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     Any unit{std::string{"foo"}};
 
     const auto value = unit.As<std::string>();
@@ -144,11 +151,12 @@ TEST(Any, CanConstructFromString)
 
 TEST(Any, CanConstructFromNull)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Null-constructed json objects have null value, cf. RFC-8259 section 3 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     Any unit{Null{}};
 
     const auto value = unit.As<Null>();
@@ -158,11 +166,12 @@ TEST(Any, CanConstructFromNull)
 
 TEST(Any, CanConstructFromObject)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Object-constructed json objects have object value, cf. RFC-8259 section 3, 4 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     Any unit{Object{}};
 
     const auto value = unit.As<Object>();
@@ -172,11 +181,12 @@ TEST(Any, CanConstructFromObject)
 
 TEST(Any, CanConstructFromList)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "List-constructed json objects have list value, cf. RFC-8259 section 3 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     Any unit{List{}};
 
     const auto value = unit.As<List>();
@@ -186,11 +196,12 @@ TEST(Any, CanConstructFromList)
 
 TEST(Any, CanAssignBool)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Bool-assigned json objects have bool value, cf. RFC-8259 section 3 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     // Given Any with no specific value
     Any unit{};
 
@@ -206,11 +217,12 @@ TEST(Any, CanAssignBool)
 
 TEST(Any, CanAssignFloat)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Float-assigned json objects have float value, cf. RFC-8259 section 3, 6 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     Any unit{};
 
     unit = 4.2F;
@@ -222,12 +234,13 @@ TEST(Any, CanAssignFloat)
 
 TEST(Any, CanAssignFloatNumber)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Float-number-assigned json objects have float value, cf. RFC-8259 section 3, 6 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     Any unit{};
 
     unit = Number{4.2F};
@@ -239,11 +252,12 @@ TEST(Any, CanAssignFloatNumber)
 
 TEST(Any, CanAssignUint64)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Int64-assigned json objects have int64 value, cf. RFC-8259 section 3, 6 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     Any unit{};
 
     unit = std::uint64_t{42};
@@ -255,12 +269,13 @@ TEST(Any, CanAssignUint64)
 
 TEST(Any, CanAssignUint64Number)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Int64-number-assigned json objects have int64 value, cf. RFC-8259 section 3, 6 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     Any unit{};
 
     unit = Number{42UL};
@@ -272,11 +287,12 @@ TEST(Any, CanAssignUint64Number)
 
 TEST(Any, CanAssignString)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "String-assigned json objects have string value, cf. RFC-8259 section 3, 7 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     Any unit{};
 
     unit = std::string{"foo"};
@@ -288,11 +304,12 @@ TEST(Any, CanAssignString)
 
 TEST(Any, CanAssignNull)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Null-assigned json objects have null value, cf. RFC-8259 section 3 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     Any unit{true};
 
     unit = Null{};
@@ -304,11 +321,12 @@ TEST(Any, CanAssignNull)
 
 TEST(Any, CanAssignObject)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Object-assigned json objects have object value, cf. RFC-8259 section 3, 4 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     Any unit{};
 
     unit = Object{};
@@ -320,11 +338,12 @@ TEST(Any, CanAssignObject)
 
 TEST(Any, CanAssignList)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "List-assigned json objects have list value, cf. RFC-8259 section 3 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
     Any unit{};
 
     unit = List{};
@@ -336,11 +355,12 @@ TEST(Any, CanAssignList)
 
 TEST(Any, CanRetrieveNumberForBool)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Bool-constructed json objects have numerical value, cf. RFC-8259 section 3 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
 
     Any unit{false};
 
@@ -353,11 +373,12 @@ TEST(Any, CanRetrieveNumberForBool)
 
 TEST(Any, CanNotRetrieveWronglyTypedValue)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "list json object can't be converted to string, cf. RFC-8259 section 3 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
 
     // Given Any with a specific value
     Any unit{List{}};
@@ -372,11 +393,12 @@ TEST(Any, CanNotRetrieveWronglyTypedValue)
 
 TEST(Any, CanNotRetrieveWronglyTypedReference)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "bool json object can't be converted to list, cf. RFC-8259 section 3 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
 
     // Given Any with a specific value
     Any unit{bool{}};
@@ -391,12 +413,13 @@ TEST(Any, CanNotRetrieveWronglyTypedReference)
 
 TEST(Any, CanNotRetrieveWronglyTypedValueConst)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "const list json object can't be converted to const bool object, cf. RFC-8259 section 3 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
 
     // Given Any with a specific value
     const Any unit{List{}};
@@ -411,13 +434,14 @@ TEST(Any, CanNotRetrieveWronglyTypedValueConst)
 
 TEST(Any, CanNotRetrieveWronglyTypedReferenceConst)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "const bool json object can't be converted to const list object, cf. RFC-8259 "
                    "section 3 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
 
     // Given Any with a specific value
     const Any unit{bool{}};
@@ -432,12 +456,13 @@ TEST(Any, CanNotRetrieveWronglyTypedReferenceConst)
 
 TEST(Any, CanAccessStringAsAmpStringView)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "String-constructed json objects can be accessed as string_view, cf. RFC-8259 section 3, 7 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
 
     Any unit{std::string{"foo"}};
 
@@ -448,12 +473,13 @@ TEST(Any, CanAccessStringAsAmpStringView)
 
 TEST(Any, CanAccessStringAsStdStringView)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "String-constructed json objects can be accessed as string_view, cf. RFC-8259 section 3, 7 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
 
     Any unit{std::string{"foo"}};
 
@@ -464,13 +490,14 @@ TEST(Any, CanAccessStringAsStdStringView)
 
 TEST(Any, CanNotRetrieveWronglyTypedAmpStringView)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty(
         "Description",
         "non String-constructed json objects can not be accessed as string_view, cf. RFC-8259 section 3, 7 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
 
     // Given Any with a specific value
     Any unit{List{}};
@@ -485,13 +512,14 @@ TEST(Any, CanNotRetrieveWronglyTypedAmpStringView)
 
 TEST(Any, CanNotRetrieveWronglyTypedStdStringView)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty(
         "Description",
         "non String-constructed json objects can not be accessed as string_view, cf. RFC-8259 section 3, 7 and 9");
     RecordProperty("TestType", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("Priority", "3");
 
     // Given Any with a specific value
     Any unit{List{}};
@@ -514,8 +542,10 @@ TEST(Any, CheckEqualOperator)
 {
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Tests the equal comparator of Any.");
-    RecordProperty("TestType", "Verification of the control flow and data flow");
-    RecordProperty("DerivationTechnique", "Error guessing based on knowledge or experience");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("Verifies", "::score::json::Any::operator==");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
     {
         std::string content = "content";
         std::string wrong_content = "wrong_content";
@@ -573,6 +603,13 @@ TEST(Any, CheckEqualOperator)
 
 TEST(Any, CloneBool)
 {
+    RecordProperty("Verifies", "::score::json::Any::CloneByValue");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "CloneByValue preserves boolean value equality");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
+
     // Given a Any object holing a boolean
     Any unit{true};
 
@@ -585,6 +622,13 @@ TEST(Any, CloneBool)
 
 TEST(Any, CloneNumber)
 {
+    RecordProperty("Verifies", "::score::json::Any::CloneByValue");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "CloneByValue preserves numeric value equality");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
+
     // Given a Any object holing a number
     Any unit{std::uint16_t{42U}};
 
@@ -597,6 +641,13 @@ TEST(Any, CloneNumber)
 
 TEST(Any, CloneNull)
 {
+    RecordProperty("Verifies", "::score::json::Any::CloneByValue");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "CloneByValue preserves null value equality");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
+
     // Given a Any object holing nothing
     Any unit{};
 
@@ -609,6 +660,13 @@ TEST(Any, CloneNull)
 
 TEST(Any, CloneString)
 {
+    RecordProperty("Verifies", "::score::json::Any::CloneByValue");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "CloneByValue preserves string value equality");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "2");
+
     // Given a Any object holing a string
     Any unit{std::string{"foo"}};
 
@@ -621,6 +679,13 @@ TEST(Any, CloneString)
 
 TEST(Any, CloneObject)
 {
+    RecordProperty("Verifies", "::score::json::Any::CloneByValue");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "CloneByValue preserves object value equality");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
+
     // Given a Any object holing a json::Object
     Object object;
     object["number_field"] = Any{42U};
@@ -636,6 +701,13 @@ TEST(Any, CloneObject)
 
 TEST(Any, CloneList)
 {
+    RecordProperty("Verifies", "::score::json::Any::CloneByValue");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "CloneByValue preserves list value equality");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    RecordProperty("Priority", "3");
+
     // Given a Any object holing a List
     List list{};
     list.push_back(Any{42U});
