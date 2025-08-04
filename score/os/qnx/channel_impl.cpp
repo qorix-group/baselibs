@@ -165,7 +165,15 @@ void ChannelImpl::SetIov(iov_t* const msg, void* const addr, const size_t len) c
     /* KW_SUPPRESS_START:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
     // Cast is happening outside our code domain
     // coverity[autosar_cpp14_a5_2_2_violation]
+#if defined(__clang__)
+#pragma clang diagnostic push
+// FIXME: @codeowners please add justification here (cf. platform/aas/intc/typedmemd/code/io_handler/typedmemoryio.cpp)
+#pragma clang diagnostic warning "-Wc99-extensions"
+#endif
     SETIOV(msg, addr, len);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
     /* KW_SUPPRESS_END:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
 }
 
@@ -173,8 +181,16 @@ void ChannelImpl::SetIov(iov_t* const msg, void* const addr, const size_t len) c
 // coverity[autosar_cpp14_a8_4_10_violation]
 void ChannelImpl::SetIovConst(iov_t* const msg, const void* const addr, const size_t len) const noexcept
 {
-    /* KW_SUPPRESS_START:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
+/* KW_SUPPRESS_START:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
+#if defined(__clang__)
+#pragma clang diagnostic push
+// FIXME: @codeowners please add justification here (cf. platform/aas/intc/typedmemd/code/io_handler/typedmemoryio.cpp)
+#pragma clang diagnostic warning "-Wc99-extensions"
+#endif
     SETIOV_CONST(msg, addr, len);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
     /* KW_SUPPRESS_END:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
 }
 
