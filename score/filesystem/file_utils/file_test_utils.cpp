@@ -33,9 +33,7 @@ Result<Path> FileTestUtils::GetTempDirectory()
         // We're using pure POSIX here since the stdc++ filesystem lib doesn't seem to exist on the target toolchain,
         // and we're testing our filesystem library here which makes it brittle to use other parts of itself to test
         // it.
-        struct ::stat statbuf
-        {
-        };
+        struct ::stat statbuf{};
         if (::stat("/persistent", &statbuf) == 0)  // If "/persistent" exists...
         {
             if (statbuf.st_mode & S_IFDIR)  // ...and is a directory

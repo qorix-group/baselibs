@@ -36,9 +36,7 @@ TEST(StatvfsTest, StatvfsSuccess)
     ASSERT_NE(result, nullptr);
 
     std::string temp_dir_ = result;
-    struct statvfs buf
-    {
-    };
+    struct statvfs buf{};
     std::string temp_file = temp_dir_ + "/testfile";
 
     std::ofstream file(temp_file);

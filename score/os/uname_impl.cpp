@@ -24,9 +24,7 @@ std::int32_t UnameImpl::UnameWrapper(struct utsname* info)
 
 ::score::cpp::optional<SystemInfo> UnameImpl::GetUname()
 {
-    struct utsname sysinfo
-    {
-    };
+    struct utsname sysinfo{};
     std::int32_t success = UnameWrapper(&sysinfo);
 
     score::cpp::optional<SystemInfo> returnValue{};

@@ -57,9 +57,7 @@ TEST(TimeImplTest, ClockGetTimeSuccess)
     RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
-    struct timespec get_time
-    {
-    };
+    struct timespec get_time{};
 
     const auto result = Time::instance().clock_gettime(CLOCK_REALTIME, &get_time);
     EXPECT_TRUE(result.has_value());
@@ -78,9 +76,7 @@ TEST(TimeImplTest, GettimeFailsWithInvalidClockId)
     RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
-    struct timespec get_time
-    {
-    };
+    struct timespec get_time{};
     constexpr auto kInvalidClockId{-1};
 
     const auto result = Time::instance().clock_gettime(kInvalidClockId, &get_time);
@@ -121,9 +117,7 @@ TEST(TimeImplTest, ClockGetResSuccess)
     RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
-    struct timespec get_res
-    {
-    };
+    struct timespec get_res{};
 
     const auto result = Time::instance().clock_getres(CLOCK_REALTIME, &get_res);
     EXPECT_TRUE(result.has_value());
@@ -142,9 +136,7 @@ TEST(TimeImplTest, ClockGetResFailsWithInvalidClockId)
     RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
-    struct timespec get_res
-    {
-    };
+    struct timespec get_res{};
     constexpr auto kInvalidClockId{-1};
 
     const auto result = Time::instance().clock_getres(kInvalidClockId, &get_res);

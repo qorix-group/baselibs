@@ -30,7 +30,7 @@ class Slot
 {
   public:
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init): false positive, this constructor delegates to another one
-    Slot() : Slot(T{}){};
+    Slot() : Slot(T{}) {};
     explicit Slot(const T& initialValue) : data_{initialValue}, in_use_{false} {}
 
     ~Slot() = default;

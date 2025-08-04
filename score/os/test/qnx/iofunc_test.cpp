@@ -440,9 +440,7 @@ TEST(IoFuncTest, iofunc_check_access_success)
 
     resmgr_context_t ctp{};
     iofunc_attr_t attr{};
-    struct _client_info info
-    {
-    };
+    struct _client_info info{};
 
     // Client as a root
     info.cred.euid = 0;

@@ -35,7 +35,7 @@ class PadLinuxCapTest : public ::testing::Test
     {
         ProcessCapabilities::set_testing_instance(linuxcapmock_);
     }
-    virtual void TearDown() override{};
+    virtual void TearDown() override {};
 
     ProcessCapabilitiesMock linuxcapmock_;
 };

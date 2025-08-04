@@ -30,7 +30,7 @@ class VariantComparator
 {
   public:
     explicit VariantComparator(const Number& lhs) : lhs_(lhs) {}
-    template <typename T, std::enable_if_t<(!std::is_same_v<T, float>)&&(!std::is_same_v<T, double>), bool> = true>
+    template <typename T, std::enable_if_t<(!std::is_same_v<T, float>) && (!std::is_same_v<T, double>), bool> = true>
     bool operator()(const T& rhs) const noexcept
     {
         // LCOV_EXCL_BR_START Failed branch is unreachable since types are compared before

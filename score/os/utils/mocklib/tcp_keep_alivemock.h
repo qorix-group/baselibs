@@ -27,7 +27,7 @@ class TcpKeepAliveMocK
   private:
     static TcpKeepAliveMocK* instance_;
 
-    TcpKeepAliveMocK(){};
+    TcpKeepAliveMocK() {};
 
     static void cleanUp()
     {

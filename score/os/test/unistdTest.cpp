@@ -48,9 +48,7 @@ class OpenFileGuard
     {
         fd_ = ::open(path.c_str(), open_flags, access);
 
-        struct stat buffer
-        {
-        };
+        struct stat buffer{};
         stat_ = stat(path.c_str(), &buffer);  // file exists == 0
     }
 
@@ -140,9 +138,7 @@ TEST_F(UnistdFixture, CloseFileDescriptor)
     constexpr auto path = "close_test_file";
     const auto fd = ::open(path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
 
-    struct stat buffer
-    {
-    };
+    struct stat buffer{};
     ASSERT_EQ(stat(path, &buffer), 0);  // file exists
     ASSERT_TRUE(IsValidFd(fd));
 
@@ -164,9 +160,7 @@ TEST_F(UnistdFixture, UnlinkRemovesFile)
     // Given some file without a reference count
     constexpr auto path = "unlink_test_file";
     const auto fd = ::open(path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-    struct stat buffer
-    {
-    };
+    struct stat buffer{};
     ASSERT_EQ(stat(path, &buffer), 0);  // file exists
     close(fd);
 
@@ -824,9 +818,7 @@ TEST_F(UnistdFixture, AccessReturnsErrorIfPassNonExistingFile)
     // Given some non existing file
     constexpr auto path = "non_existing_file";
 
-    struct stat buffer
-    {
-    };
+    struct stat buffer{};
     ASSERT_NE(stat(path, &buffer), 0);  // file does not exist
 
     // access with F_OK should fail
@@ -878,9 +870,7 @@ TEST_F(UnistdFixture, UnistdAccessReturnsErrorIfPassNonExistingFile)
     // Given some non existing file
     constexpr auto path = "non_existent_file";
 
-    struct stat buffer
-    {
-    };
+    struct stat buffer{};
     ASSERT_NE(stat(path, &buffer), 0);  // file does not exist
 
     // access with kExists should fail
@@ -998,9 +988,7 @@ TEST_F(UnistdFixture, ReadReturnsNoErrorIfPassValidFd)
     constexpr auto path = "read_test_file";
     const auto fd_write = ::open(path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
 
-    struct stat write_buffer
-    {
-    };
+    struct stat write_buffer{};
     ASSERT_EQ(stat(path, &write_buffer), 0);  // file exists
 
     constexpr size_t buf_size = 32;
@@ -1013,9 +1001,7 @@ TEST_F(UnistdFixture, ReadReturnsNoErrorIfPassValidFd)
 
     // Now open the same file to read the content written earlier
     const auto fd_read = ::open(path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-    struct stat read_buffer
-    {
-    };
+    struct stat read_buffer{};
     ASSERT_EQ(stat(path, &read_buffer), 0);  // file exists
 
     char read_value[buf_size] = {};
@@ -1039,9 +1025,7 @@ TEST_F(UnistdFixture, WriteReturnNoErrorIfPassValidFd)
     constexpr auto path = "write_test_file";
     const auto fd_write = ::open(path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
 
-    struct stat write_buffer
-    {
-    };
+    struct stat write_buffer{};
     ASSERT_EQ(stat(path, &write_buffer), 0);
 
     constexpr size_t buf_size = 32;
@@ -1111,9 +1095,7 @@ TEST_F(UnistdFixture, WriteReturnNoErrorAndSyncIfPassValidFd)
     constexpr auto path = "write_test_file";
     const auto fd_write = ::open(path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
 
-    struct stat write_buffer
-    {
-    };
+    struct stat write_buffer{};
     ASSERT_EQ(stat(path, &write_buffer), 0);
 
     constexpr size_t buf_size = 32;

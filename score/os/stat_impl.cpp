@@ -28,9 +28,7 @@ score::cpp::expected_blank<Error> StatImpl::stat(const char* const file,
                                           struct StatBuffer& buf,
                                           const bool resolve_symlinks) const noexcept
 {
-    struct stat native_buffer
-    {
-    };
+    struct stat native_buffer{};
     int result = 0;
 
     if (resolve_symlinks)
@@ -53,9 +51,7 @@ score::cpp::expected_blank<Error> StatImpl::stat(const char* const file,
 
 score::cpp::expected_blank<Error> StatImpl::fstat(const std::int32_t fd, struct StatBuffer& buf) const noexcept
 {
-    struct stat native_buffer
-    {
-    };
+    struct stat native_buffer{};
     if (::fstat(fd, &native_buffer) == -1)
     {
         return score::cpp::make_unexpected(score::os::Error::createFromErrno());

@@ -77,9 +77,8 @@ class InterruptibleConditionalVariableBasic
         typename CV = ConditionVariable,
         typename MU = Mutex,
         std::enable_if_t<(!std::is_lvalue_reference<CV>::value) && (!std::is_lvalue_reference<MU>::value), bool> = true>
-    InterruptibleConditionalVariableBasic() noexcept(
-        std::is_nothrow_default_constructible<Mutex>::value&&
-            std::is_nothrow_default_constructible<ConditionVariable>::value)
+    InterruptibleConditionalVariableBasic() noexcept(std::is_nothrow_default_constructible<Mutex>::value &&
+                                                     std::is_nothrow_default_constructible<ConditionVariable>::value)
         : internal_mutex_{}, internal_condition_variable_{}, entry_counter_{0u}
     {
     }

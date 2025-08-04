@@ -58,7 +58,7 @@ class Semaphore ::SemaphorePrivate
             // NOLINTNEXTLINE(score-no-exceptions) The throw is needed for this implementation.
             throw std::runtime_error("Cannot open semaphore");
         } /* KW_SUPPRESS_END:AUTOSAR.CAST.CSTYLE:Cast is happening outside our code domain */
-    }     /* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN:PIMPL model obscures the implementation */
+    } /* KW_SUPPRESS_END:MISRA.LINKAGE.EXTERN:PIMPL model obscures the implementation */
 
     ~SemaphorePrivate()
     { /* KW_SUPPRESS:MISRA.LINKAGE.EXTERN:PIMPL model obscures the implementation */

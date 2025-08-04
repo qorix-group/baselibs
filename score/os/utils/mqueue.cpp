@@ -33,9 +33,7 @@ namespace os
 class MQueue::MQueuePrivate
 {
     /* KW_SUPPRESS_START:AUTOSAR.CTOR.NSDMI_INIT_LIST:False positive - all values are set in constructor */
-    struct mq_attr m_attr
-    {
-    };
+    struct mq_attr m_attr{};
     std::int32_t m_fd{};
     std::size_t m_id{};
     std::string m_name{};
@@ -425,9 +423,7 @@ score::cpp::expected<std::uint32_t, Error> MQueue::MQueuePrivate::get_mq_st_mode
 {
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Methods MQueue::MQueuePrivate::get_mq_st_mode and MQueue::get_mq_st_mode belong
      * to different classes and can easily be differentiated */
-    struct score::os::StatBuffer f_stat
-    {
-    };
+    struct score::os::StatBuffer f_stat{};
     const auto fstatRet = score::os::Stat::instance().fstat(m_fd, f_stat);
     if (!fstatRet.has_value())
     {

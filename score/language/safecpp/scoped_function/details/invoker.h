@@ -77,8 +77,7 @@ class CallOperatorInterface<ReturnTypeT(Args...) const noexcept>
 // namespace declarations and extern "C" declarations.".
 // Rationale: This class is declared within non-global namespace.
 template <template <bool, class> class BaseInvoker,
-          template <class>
-          class Interface,
+          template <class> class Interface,
           class Container,
           class FunctionType,
           class = std::enable_if_t<std::is_base_of_v<CallOperatorInterface<FunctionType>, Interface<FunctionType>>>>
@@ -87,8 +86,7 @@ template <template <bool, class> class BaseInvoker,
 class Invoker;
 
 template <template <bool, class> class BaseInvoker,
-          template <class>
-          class Interface,
+          template <class> class Interface,
           class Container,
           class ReturnTypeT,
           class... Args>
@@ -112,8 +110,7 @@ class Invoker<BaseInvoker, Interface, Container, ReturnTypeT(Args...)> : public 
 // namespace declarations and extern "C" declarations.".
 // Rationale: This class is declared within non-global namespace.
 template <template <bool, class> class BaseInvoker,
-          template <class>
-          class Interface,
+          template <class> class Interface,
           class Container,
           class ReturnTypeT,
           class... Args>
@@ -133,8 +130,7 @@ class Invoker<BaseInvoker, Interface, Container, ReturnTypeT(Args...) const>
 };
 
 template <template <bool, class> class BaseInvoker,
-          template <class>
-          class Interface,
+          template <class> class Interface,
           class Container,
           class ReturnTypeT,
           class... Args>
@@ -156,8 +152,7 @@ class Invoker<BaseInvoker, Interface, Container, ReturnTypeT(Args...) noexcept>
 // namespace declarations and extern "C" declarations.".
 // Rationale: This class is declared within non-global namespace.
 template <template <bool, class> class BaseInvoker,
-          template <class>
-          class Interface,
+          template <class> class Interface,
           class Container,
           class ReturnTypeT,
           class... Args>

@@ -64,8 +64,8 @@ class NotificationBasic
         typename CV = ConditionVariable,
         typename MU = Mutex,
         std::enable_if_t<(!std::is_lvalue_reference<CV>::value) && (!std::is_lvalue_reference<MU>::value), bool> = true>
-    NotificationBasic() noexcept(std::is_nothrow_default_constructible<Mutex>::value&&
-                                     std::is_nothrow_default_constructible<ConditionVariable>::value)
+    NotificationBasic() noexcept(std::is_nothrow_default_constructible<Mutex>::value &&
+                                 std::is_nothrow_default_constructible<ConditionVariable>::value)
         : mutex_{}, conditional_variable_{}, notified_yet_{false}, entry_counter_{0u}
     {
     }

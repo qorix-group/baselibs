@@ -103,8 +103,7 @@ class Signal
     [[deprecated("SPP_DEPRECATION: Please use CamelCase API. Removed in SP25-07-A450. (Ticket-61833)")]]
     /* KW_SUPPRESS_START:MISRA.MEMB.NOT_PRIVATE: sigfillset is not a member variable, it is a method */
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    virtual std::int32_t
-    sigfillset(sigset_t* set) = 0;
+    virtual std::int32_t sigfillset(sigset_t* set) = 0;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
     /* KW_SUPPRESS_END:MISRA.MEMB.NOT_PRIVATE: sigfillset is not a member variable, it is a method */
 
@@ -117,8 +116,7 @@ class Signal
     [[deprecated("SPP_DEPRECATION: Please use CamelCase API. Removed in SP25-07-A450. (Ticket-61833)")]]
     /* KW_SUPPRESS_START:MISRA.MEMB.NOT_PRIVATE: sigemptyset is not a member variable, it is a method */
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    virtual std::int32_t
-    sigemptyset(sigset_t* set) const = 0;
+    virtual std::int32_t sigemptyset(sigset_t* set) const = 0;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
     /* KW_SUPPRESS_END:MISRA.MEMB.NOT_PRIVATE: sigemptyset is not a member variable, it is a method */
 
@@ -131,8 +129,7 @@ class Signal
     [[deprecated("SPP_DEPRECATION: Please use CamelCase API. Removed in SP25-07-A450. (Ticket-61833)")]]
     /* KW_SUPPRESS_START:MISRA.MEMB.NOT_PRIVATE: sigwait is not a member variable, it is a method */
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    virtual std::int32_t
-    sigwait(const sigset_t* set, std::int32_t* sig) = 0;
+    virtual std::int32_t sigwait(const sigset_t* set, std::int32_t* sig) = 0;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
     /* KW_SUPPRESS_END:MISRA.MEMB.NOT_PRIVATE: sigwait is not a member variable, it is a method */
 
@@ -145,8 +142,7 @@ class Signal
     [[deprecated("SPP_DEPRECATION: Please use CamelCase API. Removed in SP25-07-A450. (Ticket-61833)")]]
     /* KW_SUPPRESS_START:MISRA.MEMB.NOT_PRIVATE: sigaddset is not a member variable, it is a method */
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    virtual std::int32_t
-    sigaddset(sigset_t* set, const std::int32_t signo) = 0;
+    virtual std::int32_t sigaddset(sigset_t* set, const std::int32_t signo) = 0;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
     /* KW_SUPPRESS_END:MISRA.MEMB.NOT_PRIVATE: sigaddset is not a member variable, it is a method */
 
@@ -159,8 +155,7 @@ class Signal
     [[deprecated("SPP_DEPRECATION: Please use CamelCase API. Removed in SP25-07-A450. (Ticket-61833)")]]
     /* KW_SUPPRESS_START:MISRA.MEMB.NOT_PRIVATE: pthread_sigmask is not a member variable, it is a method */
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    virtual std::int32_t
-    pthread_sigmask(sigset_t& signals) const = 0;
+    virtual std::int32_t pthread_sigmask(sigset_t& signals) const = 0;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
     /* KW_SUPPRESS_END:MISRA.MEMB.NOT_PRIVATE: pthread_sigmask is not a member variable, it is a method */
 
@@ -180,8 +175,7 @@ class Signal
     [[deprecated("SPP_DEPRECATION: Please use CamelCase API. Removed in SP25-07-A450. (Ticket-61833)")]]
     /* KW_SUPPRESS_START:MISRA.MEMB.NOT_PRIVATE: pthread_sigmask is not a member variable, it is a method */
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    virtual std::int32_t
-    pthread_sigmask(const std::int32_t how, const sigset_t* set, sigset_t* oldset) const = 0;
+    virtual std::int32_t pthread_sigmask(const std::int32_t how, const sigset_t* set, sigset_t* oldset) const = 0;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
     /* KW_SUPPRESS_END:MISRA.MEMB.NOT_PRIVATE: pthread_sigmask is not a member variable, it is a method */
 
@@ -196,8 +190,7 @@ class Signal
     [[deprecated("SPP_DEPRECATION: Please use CamelCase API. Removed in SP25-07-A450. (Ticket-61833)")]]
     /* KW_SUPPRESS_START:MISRA.MEMB.NOT_PRIVATE: sigaction is not a member variable, it is a method */
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    virtual std::int32_t
-    sigaction(const std::int32_t sig, const struct sigaction* act, struct sigaction* oact) = 0;
+    virtual std::int32_t sigaction(const std::int32_t sig, const struct sigaction* act, struct sigaction* oact) = 0;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
     /* KW_SUPPRESS_END:MISRA.MEMB.NOT_PRIVATE: sigaction is not a member variable, it is a method */
 
@@ -212,8 +205,7 @@ class Signal
     [[deprecated("SPP_DEPRECATION: Please use CamelCase API. Removed in SP25-07-A450. (Ticket-61833)")]]
     /* KW_SUPPRESS_START:MISRA.MEMB.NOT_PRIVATE: kill is not a member variable, it is a method */
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    virtual std::int32_t
-    kill(const pid_t pid, const std::int32_t sig) = 0;
+    virtual std::int32_t kill(const pid_t pid, const std::int32_t sig) = 0;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
     /* KW_SUPPRESS_END:MISRA.MEMB.NOT_PRIVATE: kill is not a member variable, it is a method */
 
@@ -229,8 +221,7 @@ class Signal
     /* KW_SUPPRESS_START:MISRA.MEMB.NOT_PRIVATE: signal is not a member variable, it is a method */
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
     /* KW_SUPPRESS_START:MISRA.STDLIB.WRONGNAME:Signal is used to keep wrapper function signature */
-    virtual Sighandler*
-    signal(const std::int32_t sig, Sighandler handler) = 0;
+    virtual Sighandler* signal(const std::int32_t sig, Sighandler handler) = 0;
     /* KW_SUPPRESS_END:MISRA.STDLIB.WRONGNAME:Signal is used to keep wrapper function signature */
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
     /* KW_SUPPRESS_END:MISRA.MEMB.NOT_PRIVATE: signal is not a member variable, it is a method */

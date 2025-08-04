@@ -270,7 +270,7 @@ TEST_F(DispatchMockTest, message_attach)
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     std::int32_t (*const noHandler)(
-        message_context_t * ctp, std::int32_t code, std::uint32_t flags, void* handle) noexcept {nullptr};
+        message_context_t* ctp, std::int32_t code, std::uint32_t flags, void* handle) noexcept {nullptr};
     EXPECT_CALL(dispatchmock, message_attach);
     score::os::Dispatch::instance().message_attach(
         kNoDispatch, noAttr, kPrivateMessageTypeFirst, kPrivateMessageTypeLast, noHandler, noHandle);

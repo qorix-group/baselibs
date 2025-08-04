@@ -49,9 +49,7 @@ TEST_F(NeutrinoImplFixture, ThreadCtlGetThreadNme)
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     std::int32_t valid_cmd{_NTO_TCTL_NAME};
-    struct _thread_name thread_name
-    {
-    };
+    struct _thread_name thread_name{};
     thread_name.new_name_len = -1;
     void* data = &thread_name;
     const auto result = neutrino_.ThreadCtl(valid_cmd, data);

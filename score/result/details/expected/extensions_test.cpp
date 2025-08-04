@@ -180,7 +180,7 @@ TEST(ExtensionsTest, ConvertToAmpOptionalWhenExpectedRValueRefHasValue)
     score::details::expected<NothrowMoveOnlyType, ErrorType> expected{value};
 
     // Expect the operator to not be called
-    testing::MockFunction<void(ErrorType &&)> on_error{};
+    testing::MockFunction<void(ErrorType&&)> on_error{};
     EXPECT_CALL(on_error, Call(testing::_)).Times(0);
 
     // When converting it to an optional
@@ -199,7 +199,7 @@ TEST(ExtensionsTest, OnConversionToAmpOptionalCallInvocableWhenExpectedLValueRef
     score::details::expected<ValueType, NothrowMoveOnlyType> expected{unexpect, value};
 
     // Expect the operator to not be called
-    testing::MockFunction<void(NothrowMoveOnlyType &&)> on_error{};
+    testing::MockFunction<void(NothrowMoveOnlyType&&)> on_error{};
     EXPECT_CALL(on_error, Call(::testing::_)).WillOnce([value](NothrowMoveOnlyType&& error) {
         EXPECT_EQ(error.value_, value);
     });
@@ -254,7 +254,7 @@ TEST(ExtensionsTest, ConvertToStdOptionalWhenExpectedRValueRefHasValue)
     score::details::expected<NothrowMoveOnlyType, ErrorType> expected{value};
 
     // Expect the operator to not be called
-    testing::MockFunction<void(ErrorType &&)> on_error{};
+    testing::MockFunction<void(ErrorType&&)> on_error{};
     EXPECT_CALL(on_error, Call(testing::_)).Times(0);
 
     // When converting it to an optional
@@ -273,7 +273,7 @@ TEST(ExtensionsTest, OnConversionToStdOptionalCallInvocableWhenExpectedLValueRef
     score::details::expected<ValueType, NothrowMoveOnlyType> expected{unexpect, value};
 
     // Expect the operator to not be called
-    testing::MockFunction<void(NothrowMoveOnlyType &&)> on_error{};
+    testing::MockFunction<void(NothrowMoveOnlyType&&)> on_error{};
     EXPECT_CALL(on_error, Call(::testing::_)).WillOnce([value](NothrowMoveOnlyType&& error) {
         EXPECT_EQ(error.value_, value);
     });

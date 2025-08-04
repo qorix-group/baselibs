@@ -326,9 +326,7 @@ void TextFormat::PutFormattedTime(VerbosePayload& payload) noexcept
     std::ignore = payload.Put([time_point](const score::cpp::v1::span<Byte> buffer) noexcept {
         std::size_t total = 0U;
         const auto now = std::chrono::system_clock::to_time_t(time_point);
-        struct tm time_structure_buffer
-        {
-        };
+        struct tm time_structure_buffer{};
         const struct tm* const time_structure =
             localtime_r(&now, &time_structure_buffer);  // LCOV_EXCL_BR_LINE: there are no branches to be covered.
 

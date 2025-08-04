@@ -99,16 +99,14 @@ TEST_F(NetdbTestFixture, ShouldReturnHostnameAndService)
     addr_.sin_port = htons(80);                  // Port 80 (HTTP)
     addr_.sin_addr.s_addr = htonl(0x7f000001u);  // 127.0.0.1
 
-    constexpr std::string_view expected_host
-    {
+    constexpr std::string_view expected_host{
 #if defined(__linux__)
         "localhost"
 #elif defined(__QNX__)
         "127.0.0.1"
 #endif
     };
-    constexpr std::string_view expected_service
-    {
+    constexpr std::string_view expected_service{
 #if defined(__linux__)
         "http"
 #elif defined(__QNX__)
@@ -160,16 +158,14 @@ TEST_F(NetdbTestFixture, UdpResolveTest)
     addr_.sin_port = htons(53);                  // Port 53 (DNS)
     addr_.sin_addr.s_addr = htonl(0x7f000001u);  // 127.0.0.1
 
-    constexpr std::string_view expected_host
-    {
+    constexpr std::string_view expected_host{
 #if defined(__linux__)
         "localhost"
 #elif defined(__QNX__)
         "127.0.0.1"
 #endif
     };
-    constexpr std::string_view expected_service
-    {
+    constexpr std::string_view expected_service{
 #if defined(__linux__)
         "domain"
 #elif defined(__QNX__)

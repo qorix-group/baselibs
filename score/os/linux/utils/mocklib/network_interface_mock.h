@@ -27,7 +27,7 @@ class LinuxNetworkInterfaceMock
 {
   public:
     LinuxNetworkInterfaceMock();
-    ~LinuxNetworkInterfaceMock(){};
+    ~LinuxNetworkInterfaceMock() {};
 
     MOCK_METHOD(bool, bFillInterfaceInformation, (network_settings&));
     MOCK_METHOD(bool,

@@ -134,7 +134,8 @@ class FunctionWrapperImpl : public details::Invoker<details::FunctionWrapperInvo
     using details::Invoker<details::FunctionWrapperInvoker,
                            FunctionWrapper,
                            FunctionWrapperImpl<Callable, FunctionType>,
-                           FunctionType>::operator();
+                           FunctionType>::
+    operator();
 
   private:
     // Suppres "AUTOSAR C++14 A11-3-1" rule finding: "Friend declarations shall not be used.".

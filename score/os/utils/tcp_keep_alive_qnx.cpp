@@ -29,9 +29,7 @@ bool score::os::TcpKeepAlive(int sockfd)
     }
 
     // Variable to set number of seconds to wait between the keepalive probes.
-    struct timeval tv
-    {
-    };
+    struct timeval tv{};
     tv.tv_sec = 2;
     // Setting the amount of time in seconds between keepalive probes
     const auto setsockopt_ret2 =

@@ -108,7 +108,7 @@ TEST(ExpectedTest, AndThenRValueRefWillCallFunctionIfHasValue)
     expected<CopyableType, ErrorType> unit{wrapped};
 
     // Expect the monadic operator to be called with the value
-    testing::MockFunction<expected<CopyableType, ErrorType>(CopyableType &&)> monad{};
+    testing::MockFunction<expected<CopyableType, ErrorType>(CopyableType&&)> monad{};
     const std::int32_t monad_value{64};
     EXPECT_CALL(monad, Call(std::move(wrapped)))
         .WillOnce(::testing::Return(expected<CopyableType, ErrorType>{monad_value}));
@@ -129,7 +129,7 @@ TEST(ExpectedTest, AndThenRValueRefWillReturnReboundErrorIfHasNoValue)
     expected<ValueType, CopyableType> unit{unexpect, wrapped};
 
     // Expect the monadic operator to be called with the value
-    testing::MockFunction<expected<CopyableType, CompatibleCopyableType>(ValueType &&)> monad{};
+    testing::MockFunction<expected<CopyableType, CompatibleCopyableType>(ValueType&&)> monad{};
     EXPECT_CALL(monad, Call(testing::_)).Times(0);
 
     // When calling and_then
@@ -268,7 +268,7 @@ TEST(ExpectedTest, OrElseRValueRefWillCallFunctionIfHasNoValue)
     expected<ValueType, CopyableType> unit{unexpect, wrapped};
 
     // Expect the monadic operator to be called with the error
-    testing::MockFunction<expected<ValueType, CopyableType>(CopyableType &&)> monad{};
+    testing::MockFunction<expected<ValueType, CopyableType>(CopyableType&&)> monad{};
     const std::int32_t monad_value{64};
     EXPECT_CALL(monad, Call(std::move(wrapped)))
         .WillOnce(::testing::Return(expected<ValueType, CopyableType>{unexpect, monad_value}));
@@ -289,7 +289,7 @@ TEST(ExpectedTest, OrElseRValueRefWillReturnReboundValueIfHasValue)
     expected<CopyableType, ErrorType> unit{wrapped};
 
     // Expect the monadic operator to not be called
-    testing::MockFunction<expected<CompatibleCopyableType, ErrorType>(ErrorType &&)> monad{};
+    testing::MockFunction<expected<CompatibleCopyableType, ErrorType>(ErrorType&&)> monad{};
     EXPECT_CALL(monad, Call(testing::_)).Times(0);
 
     // When calling or_else
@@ -426,7 +426,7 @@ TEST(ExpectedTest, TransformRValueRefWillCallFunctionIfHasValue)
     expected<CopyableType, ErrorType> unit{wrapped};
 
     // Expect the monadic operator to be called with the value
-    testing::MockFunction<CompatibleCopyableType(CopyableType &&)> monad{};
+    testing::MockFunction<CompatibleCopyableType(CopyableType&&)> monad{};
     const std::int32_t monad_value{64};
     EXPECT_CALL(monad, Call(std::move(wrapped)))
         .WillOnce(::testing::Return(CompatibleCopyableType{CopyableType{monad_value}}));
@@ -447,7 +447,7 @@ TEST(ExpectedTest, TransformRValueRefWillReturnReboundErrorIfHasNoValue)
     expected<CopyableType, CopyableType> unit{unexpect, wrapped};
 
     // Expect the monadic operator to not be called
-    testing::MockFunction<CompatibleCopyableType(CopyableType &&)> monad{};
+    testing::MockFunction<CompatibleCopyableType(CopyableType&&)> monad{};
     EXPECT_CALL(monad, Call(testing::_)).Times(0);
 
     // When calling transform
@@ -584,7 +584,7 @@ TEST(ExpectedTest, TransformErrorRValueRefWillCallFunctionIfHasValue)
     expected<ValueType, CopyableType> unit{unexpect, wrapped};
 
     // Expect the monadic operator to be called with the error
-    testing::MockFunction<CompatibleCopyableType(CopyableType &&)> monad{};
+    testing::MockFunction<CompatibleCopyableType(CopyableType&&)> monad{};
     const std::int32_t monad_value{64};
     EXPECT_CALL(monad, Call(std::move(wrapped)))
         .WillOnce(::testing::Return(CompatibleCopyableType{CopyableType{monad_value}}));
@@ -605,7 +605,7 @@ TEST(ExpectedTest, TransformErrorRValueRefWillReturnReboundValueIfHasValue)
     expected<CopyableType, CopyableType> unit{wrapped};
 
     // Expect the monadic operator to not be called
-    testing::MockFunction<CompatibleCopyableType(CopyableType &&)> monad{};
+    testing::MockFunction<CompatibleCopyableType(CopyableType&&)> monad{};
     EXPECT_CALL(monad, Call(testing::_)).Times(0);
 
     // When calling transform_error
