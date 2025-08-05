@@ -147,6 +147,34 @@ TEST_F(NeutrinoImplFixture, ChannelCreateFailure)
     EXPECT_EQ(errno, ENOTSUP);
 }
 
+TEST_F(NeutrinoImplFixture, ChannelDestroySuccess)
+{
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Channel Destroy Success");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
+    const auto channel_id = neutrino_.ChannelCreate(Neutrino::ChannelFlag::kDisconnect);
+    ASSERT_TRUE(channel_id.has_value());
+
+    const auto destroy_result = neutrino_.ChannelDestroy(channel_id.value());
+    ASSERT_TRUE(destroy_result.has_value());
+}
+
+TEST_F(NeutrinoImplFixture, ChannelDestroyFailure)
+{
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Channel Destroy Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
+    const std::int32_t failed_channel_id = 0;
+    const auto destroy_result = neutrino_.ChannelDestroy(failed_channel_id);
+    ASSERT_FALSE(destroy_result.has_value());
+}
+
 TEST_F(NeutrinoImplFixture, ClockAdjustSuccess)
 {
     RecordProperty("ParentRequirement", "SCR-46010294");

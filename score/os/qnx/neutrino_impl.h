@@ -42,6 +42,8 @@ class NeutrinoImpl final : public Neutrino
 
     score::cpp::expected<std::int32_t, Error> ChannelCreate(const Neutrino::ChannelFlag flags) const noexcept override;
 
+    score::cpp::expected<std::int32_t, Error> ChannelDestroy(const std::int32_t channel_id) const noexcept override;
+
     score::cpp::expected<std::int32_t, Error> ClockAdjust(clockid_t id,
                                                    const _clockadjust* _new,
                                                    _clockadjust* old) const noexcept override;

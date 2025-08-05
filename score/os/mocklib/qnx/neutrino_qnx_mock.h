@@ -39,6 +39,10 @@ class NeutrinoMock : public Neutrino
     MOCK_METHOD((std::int32_t), ChannelCreate, (std::uint32_t flags), (const, noexcept, override));
     MOCK_METHOD((score::cpp::expected<std::int32_t, Error>), ChannelCreate, (ChannelFlag flags), (const, noexcept, override));
     MOCK_METHOD((score::cpp::expected<std::int32_t, Error>),
+                ChannelDestroy,
+                (const std::int32_t channel_id),
+                (const, noexcept, override));
+    MOCK_METHOD((score::cpp::expected<std::int32_t, Error>),
                 ClockAdjust,
                 (clockid_t id, const _clockadjust* _new, _clockadjust* old),
                 (const, noexcept, override));

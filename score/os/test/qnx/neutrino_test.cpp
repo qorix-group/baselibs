@@ -174,3 +174,15 @@ TEST_F(NeutrinoMockTest, ChannelCreate)
     EXPECT_CALL(*neutrino_mock_ptr, ChannelCreate(flags));
     neutrino_ptr->ChannelCreate(flags);
 }
+
+TEST_F(NeutrinoMockTest, ChannelDestroy)
+{
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Channel Destroy");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+    const auto dummy_channel_id = 0;
+    EXPECT_CALL(*neutrino_mock_ptr, ChannelDestroy(dummy_channel_id));
+    neutrino_ptr->ChannelDestroy(dummy_channel_id);
+}

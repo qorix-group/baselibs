@@ -73,6 +73,16 @@ score::cpp::expected<std::int32_t, Error> NeutrinoImpl::ChannelCreate(const Neut
     return created_channel_id;
 }
 
+score::cpp::expected<std::int32_t, Error> NeutrinoImpl::ChannelDestroy(const std::int32_t channel_id) const noexcept
+{
+    const std::int32_t destroy_result = ::ChannelDestroy(channel_id);
+    if (destroy_result == -1)
+    {
+        return score::cpp::make_unexpected(score::os::Error::createFromErrno());
+    }
+    return destroy_result;
+}
+
 score::cpp::expected<std::int32_t, Error> NeutrinoImpl::ClockAdjust(clockid_t id,
                                                              const _clockadjust* _new,
                                                              _clockadjust* old) const noexcept
