@@ -133,10 +133,10 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score-baselibs//score/analysis/tracing/daemon/code/plugin/ipc_trace/utils:__pkg__",
-        "@score-baselibs//score/analysis/tracing/daemon/code/plugin/utils:__pkg__",
         "@score-baselibs//score/analysis/tracing/library/generic_trace_api/trace_job_allocator:__pkg__",
         "@score-baselibs//score/analysis/tracing/library/test/unit_test:__pkg__",
+        "@score-baselibs//score/analysis/tracing/plugin/ipc_trace_plugin/ipc_trace/utils:__pkg__",
+        "@score-baselibs//score/analysis/tracing/plugin/ipc_trace_plugin/utils:__pkg__",
         "@score-baselibs//score/os/utils:__pkg__",
         "@score-baselibs//score/os/utils/test:__pkg__",
         "@score-baselibs//score/mw/log/detail/data_router/shared_memory:__pkg__",
