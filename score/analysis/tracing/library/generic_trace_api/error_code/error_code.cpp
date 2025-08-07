@@ -199,7 +199,7 @@ std::string_view score::analysis::tracing::GenericTraceAPIErrorDomain::MessageFo
         case ErrorCode::kTraceJobAllocatorInitializationFailedFatal:
             error_message = "TraceJobAllocator initialization failed";
             break;
-        case ErrorCode::kDaemonIsDisconnectedFatal:
+        case ErrorCode::kDaemonIsDisconnectedRecoverable:
             error_message = "Daemon is disconnected";
             break;
         case ErrorCode::kGenericErrorRecoverable:
@@ -262,6 +262,7 @@ bool score::analysis::tracing::IsErrorRecoverable(const score::analysis::tracing
         case ErrorCode::kSharedMemoryObjectAlreadyRegisteredRecoverable:
         case ErrorCode::kNoSpaceLeftForAllocationRecoverable:
         case ErrorCode::kIndexOutOfBoundsInSharedListRecoverable:
+        case ErrorCode::kDaemonIsDisconnectedRecoverable:
             error = true;
             break;
         case ErrorCode::kDaemonNotConnectedFatal:
@@ -291,7 +292,6 @@ bool score::analysis::tracing::IsErrorRecoverable(const score::analysis::tracing
         case ErrorCode::kFailedRegisterCachedClientsFatal:
         case ErrorCode::kFailedRegisterCachedShmObjectsFatal:
         case ErrorCode::kTraceJobAllocatorInitializationFailedFatal:
-        case ErrorCode::kDaemonIsDisconnectedFatal:
         case ErrorCode::kFailedToProcessJobsFatal:
         default:
             error = false;

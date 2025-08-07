@@ -92,7 +92,7 @@ enum class ErrorCode : score::result::ErrorCode
     kFailedRegisterCachedClientsFatal,     ///< Failed to register the cached client registration requests (Fatal)
     kFailedRegisterCachedShmObjectsFatal,  ///< Failed to register the cached SHM object registration requests (Fatal)
     kTraceJobAllocatorInitializationFailedFatal,  ///< TraceJobAllocator initialization failed (Fatal)
-    kDaemonIsDisconnectedFatal,                   ///< Daemon is disconnected after successful connection (Fatal)
+    kDaemonIsDisconnectedRecoverable,             ///< Daemon is disconnected after successful connection (Recoverable)
     kFailedToProcessJobsFatal,                    ///< Failed to process Jobs (Fatal)
     kGenericErrorRecoverable,                     ///< Generic error (Recoverable)
     kTerminalFatal,                               ///< Terminal (Fatal)
