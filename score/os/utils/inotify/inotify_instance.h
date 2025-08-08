@@ -18,7 +18,8 @@
 
 #include <score/expected.hpp>
 #include <score/static_vector.hpp>
-#include <score/string_view.hpp>
+
+#include <string_view>
 
 namespace score
 {
@@ -65,7 +66,7 @@ class InotifyInstance
      * @param event_mask The mask of events to watch for
      * @return Descriptor to identify the watch and its associated events
      */
-    virtual score::cpp::expected<InotifyWatchDescriptor, Error> AddWatch(score::cpp::string_view pathname,
+    virtual score::cpp::expected<InotifyWatchDescriptor, Error> AddWatch(std::string_view pathname,
                                                                   Inotify::EventMask event_mask) noexcept = 0;
 
     /**

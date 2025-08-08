@@ -90,7 +90,7 @@ class InotifyInstanceImpl : public InotifyInstance
      * @param event_mask The mask of events to watch for
      * @return Descriptor to identify the watch and its associated events
      */
-    score::cpp::expected<InotifyWatchDescriptor, Error> AddWatch(score::cpp::string_view pathname,
+    score::cpp::expected<InotifyWatchDescriptor, Error> AddWatch(std::string_view pathname,
                                                           Inotify::EventMask event_mask) noexcept override;
 
     /**
