@@ -34,7 +34,16 @@ class ScopedFunctionInvoker<NoExcept, ReturnType(Args...)>
     [[nodiscard]] static CallableType<ScopedFunction> ActualInvoker() noexcept
     {
         return [](ScopedFunction& base_scoped_function, Args... args) noexcept(NoExcept) -> ReturnType {
+            // LCOV_EXCL_EXCEPTION_BR_START False Positive:
+            // 1. The return statement inside the following if statement is covered as the report shows - this implies
+            // that the "true" path was taken
+            // 2. Test cases exist which test all possible combinations:
+            //      Scope State and Callable ok
+            //      Scope State Empty, Callable Ok
+            //      Scope State ok, Callable Empty
+            //      Scope State Empty, Callable Empty
             if ((base_scoped_function.scope_state_ == nullptr) || (base_scoped_function.callable_ == nullptr))
+            // LCOV_EXCL_EXCEPTION_BR_STOP
             {
                 return {};
             }
