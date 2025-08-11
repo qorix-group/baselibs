@@ -23,7 +23,6 @@ namespace os
 class SignalImpl : public Signal
 {
   public:
-    /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN - Correct. See base class for justification */
     std::int32_t pthread_sigmask(sigset_t& signals) const override;
 
     std::int32_t pthread_sigmask(const std::int32_t how, const sigset_t* set, sigset_t* oldset) const override;
@@ -38,16 +37,9 @@ class SignalImpl : public Signal
 
     std::int32_t kill(const pid_t pid, const std::int32_t sig) override;
 
-    /* KW_SUPPRESS_START:MISRA.STDLIB.WRONGNAME - Tolerated, name matches POSIX function name by design. This */
-    /* function is in its own namespace which avoids wrongly calling upon it. This function is deprecated and */
-    /* will be removed */
     Sighandler* signal(const std::int32_t sig, Sighandler handler) override;
-    /* KW_SUPPRESS_END:MISRA.STDLIB.WRONGNAME - Tolerated, name matches POSIX function name by design. This */
-    /* function is in its own namespace which avoids wrongly calling upon it. This function is deprecated and */
-    /* will be removed */
 
     std::int32_t sigaction(const std::int32_t sig, const struct sigaction* act, struct sigaction* oact) override;
-    /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN - Correct. See base class for justification */
 
     std::int32_t add_termination_signal(sigset_t& add_signal) override;
 
