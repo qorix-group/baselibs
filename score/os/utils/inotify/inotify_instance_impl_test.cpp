@@ -439,7 +439,7 @@ TEST_F(InotifyInstanceImplTest, EventNameContainsOnlyFileName)
 
     EXPECT_EQ(events.size(), 1U);
     const auto& event = events[0];
-    EXPECT_EQ(event.GetName(), score::cpp::string_view{test_filename});
+    EXPECT_EQ(event.GetName(), std::string_view{test_filename});
 }
 
 TEST_F(InotifyInstanceImplTest, ReadReturnsEventWhenWatchTriggersForInCreate)
@@ -461,7 +461,7 @@ TEST_F(InotifyInstanceImplTest, ReadReturnsEventWhenWatchTriggersForInCreate)
     const auto& event = events[0];
     EXPECT_EQ(event.GetWatchDescriptor(), watch);
     EXPECT_EQ(event.GetMask(), InotifyEvent::ReadMask::kInCreate);
-    EXPECT_EQ(event.GetName(), score::cpp::string_view{test_filename});
+    EXPECT_EQ(event.GetName(), std::string_view{test_filename});
 }
 
 TEST_F(InotifyInstanceImplTest, ReadReturnsEventWhenWatchTriggersForInDelete)
@@ -485,7 +485,7 @@ TEST_F(InotifyInstanceImplTest, ReadReturnsEventWhenWatchTriggersForInDelete)
     const auto& event = events[0];
     EXPECT_EQ(event.GetWatchDescriptor(), watch);
     EXPECT_EQ(event.GetMask(), InotifyEvent::ReadMask::kInDelete);
-    EXPECT_EQ(event.GetName(), score::cpp::string_view{test_filename});
+    EXPECT_EQ(event.GetName(), std::string_view{test_filename});
 }
 
 TEST_F(InotifyInstanceImplTest, ReadReturnsEventsWhenWatchTriggersForMultipleEvents)
@@ -509,12 +509,12 @@ TEST_F(InotifyInstanceImplTest, ReadReturnsEventsWhenWatchTriggersForMultipleEve
     const auto& event1 = events[0];
     EXPECT_EQ(event1.GetWatchDescriptor(), watch);
     EXPECT_EQ(event1.GetMask(), InotifyEvent::ReadMask::kInCreate);
-    EXPECT_EQ(event1.GetName(), score::cpp::string_view{test_filename});
+    EXPECT_EQ(event1.GetName(), std::string_view{test_filename});
 
     const auto& event2 = events[1];
     EXPECT_EQ(event2.GetWatchDescriptor(), watch);
     EXPECT_EQ(event2.GetMask(), InotifyEvent::ReadMask::kInMovedTo);
-    EXPECT_EQ(event2.GetName(), score::cpp::string_view{test_moved_filename});
+    EXPECT_EQ(event2.GetName(), std::string_view{test_moved_filename});
 }
 
 }  // namespace

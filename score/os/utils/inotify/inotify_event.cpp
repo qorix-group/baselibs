@@ -22,11 +22,9 @@ InotifyEvent::InotifyEvent(const struct ::inotify_event& event)
 {
     if (event.len > 0U)
     {
-        // clang-format off
         // Event.name is a null-terminated string stored in a flexible array, and string_view can safely reference it.
         // NOLINTNEXTLINE(hicpp-no-array-decay, cppcoreguidelines-pro-bounds-array-to-pointer-decay) see comment above
-        score::cpp::string_view name_view{event.name};
-        // clang-format on
+        std::string_view name_view{event.name};
         name_ = score::cpp::static_vector<char, NAME_MAX + 1>{name_view.begin(), name_view.end()};
         name_.push_back('\0');
     }
@@ -47,9 +45,9 @@ std::uint32_t InotifyEvent::GetCookie() const noexcept
     return cookie_;
 }
 
-score::cpp::string_view InotifyEvent::GetName() const noexcept
+std::string_view InotifyEvent::GetName() const noexcept
 {
-    return score::cpp::string_view{name_.data()};
+    return std::string_view{name_.data()};
 }
 
 InotifyEvent::ReadMask InotifyEvent::IntegerToReadMask(const std::uint32_t native_event_mask) noexcept

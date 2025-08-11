@@ -45,7 +45,7 @@ class InotifyEventViewTest : public ::testing::Test
 
     static constexpr auto name_{"some_relative_path"};
     static constexpr auto null_termination_length_{1};
-    static constexpr auto buffer_length_{sizeof(struct inotify_event) + score::cpp::string_view{name_}.size() +
+    static constexpr auto buffer_length_{sizeof(struct inotify_event) + std::string_view{name_}.size() +
                                          null_termination_length_};
 
     alignas(struct inotify_event) std::array<std::uint8_t, buffer_length_> raw_buffer_;
@@ -73,7 +73,7 @@ TEST_F(InotifyEventViewTest, CanAccessCookie)
 TEST_F(InotifyEventViewTest, CanAccessName)
 {
     InotifyEvent view{*inotify_event};
-    EXPECT_EQ(view.GetName(), score::cpp::string_view{name_});
+    EXPECT_EQ(view.GetName(), std::string_view{name_});
 }
 
 TEST_F(InotifyEventViewTest, TranslatesInAccessCorrectly)
@@ -128,11 +128,11 @@ TEST_F(InotifyEventViewTest, TranslatesInQOverflowCorrectly)
 TEST_F(InotifyEventViewTest, ConstructorDoesNotInitializeNameWhenLengthIsZero)
 {
     InotifyEvent view1{*inotify_event};
-    EXPECT_EQ(view1.GetName(), score::cpp::string_view(name_));
+    EXPECT_EQ(view1.GetName(), std::string_view(name_));
 
     inotify_event->len = 0U;
     InotifyEvent view2{*inotify_event};
-    EXPECT_EQ(view1.GetName(), score::cpp::string_view(name_));
+    EXPECT_EQ(view1.GetName(), std::string_view(name_));
 }
 
 TEST_F(InotifyEventViewTest, ComparisonWithDifferentWatchDescriptor)

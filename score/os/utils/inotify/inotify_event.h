@@ -19,12 +19,12 @@
 #include "score/os/inotify.h"
 
 #include <score/static_vector.hpp>
-#include <score/string_view.hpp>
 
 #include <sys/inotify.h>
 
 #include <climits>
 #include <cstdint>
+#include <string_view>
 
 namespace score
 {
@@ -54,7 +54,7 @@ class InotifyEvent
 
     [[nodiscard]] std::uint32_t GetCookie() const noexcept;
 
-    [[nodiscard]] score::cpp::string_view GetName() const noexcept;
+    [[nodiscard]] std::string_view GetName() const noexcept;
 
   private:
     InotifyWatchDescriptor watch_descriptor_;
