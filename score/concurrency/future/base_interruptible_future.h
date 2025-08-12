@@ -234,11 +234,9 @@ class BaseInterruptibleFuture
                                                          Callback>,
                                    std::negation<detail::IsScoped<Callback>>>,
                                bool> = true>
-    [[deprecated(
-        "SPP_DEPRECATION: Use overload with scoped function instead. Removed in SP25-07-480. (Ticket-141243")]] score::cpp::
-        expected_blank<Error>
-        // coverity[autosar_cpp14_a13_3_1_violation] see above; overload resolution prevents call ambiguity
-        Then(Callback&& callback)
+    [[deprecated("SPP_DEPRECATION: Use overload with scoped function instead. (Ticket-141243")]] score::cpp::expected_blank<Error>
+    // coverity[autosar_cpp14_a13_3_1_violation] see above; overload resolution prevents call ambiguity
+    Then(Callback&& callback)
     {
         if (state_ptr_ == nullptr)
         {

@@ -91,10 +91,8 @@ class SharedTaskResult : public TaskResultBase
                                                        safecpp::Scope<>,
                                                        Callback>,
                                bool> = true>
-    [[deprecated(
-        "SPP_DEPRECATION: Use overload with scoped function instead. Removed in SP25-07-480. (Ticket-141243")]] score::cpp::
-        expected_blank<Error>
-        Then(Callback callback) noexcept
+    [[deprecated("SPP_DEPRECATION: Use overload with scoped function instead. (Ticket-141243")]] score::cpp::expected_blank<Error>
+    Then(Callback callback) noexcept
     {
         return future_.Then(std::forward<Callback>(callback));
     }
