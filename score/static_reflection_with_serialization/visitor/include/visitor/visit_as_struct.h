@@ -216,7 +216,7 @@ using struct_visitable = decltype(get_struct_visitable<T>());
         {                                                                                                              \
             constexpr std::array<const char*, fields> names =                                                          \
                 ::score::common::visitor::detail::tuple_to_array(TUPLE_OF_NAMES);                                        \
-            return names[i];                                                                                           \
+            return (i < fields ? names[i] : nullptr);                                                                  \
         }                                                                                                              \
         template <typename V, typename T>                                                                              \
         static auto visit(V&& v, T&& s)                                                                                \
