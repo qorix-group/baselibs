@@ -16,6 +16,7 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
+#include <cstring>
 #include <string>
 #include <type_traits>
 
@@ -311,4 +312,15 @@ TEST(struct_visitor, TemplatedStructShallNotContainTrailingWhitespace)
     // GCC inserts a trailing whitespace for templated structs in __PRETTY__FUNCTION__.
     // The visitor shall strip the trailing whitespace.
     EXPECT_EQ(visit(test_visitor2_t{}, TemplateStructDefaultSize{}), "TemplatedStruct<297>");
+}
+
+TEST(struct_visitor_utils, TupleToArrayTest)
+{
+    const std::array<std::string, 4> reference = {"1", "2", "3", "4"};
+    const auto result =
+        ::score::common::visitor::detail::tuple_to_array(::score::common::visitor::detail::pack_values("1", "2", "3", "4"));
+    EXPECT_EQ(result.size(), reference.size());
+    EXPECT_TRUE(std::equal(result.begin(), result.end(), reference.begin(), [](const char* s1, const std::string s2) {
+        return std::strcmp(s1, s2.c_str()) == 0;
+    }));
 }
