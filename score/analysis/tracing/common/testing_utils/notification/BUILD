@@ -7,4 +7,7 @@ cc_library(
         "additional_warnings",
     ],
     visibility = ["//visibility:public"],
+    deps = [
+        "@googletest//:gtest_main",
+    ],
 )
