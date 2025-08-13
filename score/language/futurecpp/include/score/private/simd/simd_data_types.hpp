@@ -327,6 +327,9 @@ public:
     /// \brief Applies "logical and" to each element.
     ///
     /// [parallel] 9.9.1 1
+    ///
+    /// \note This operator is not short-circuiting and always evaluating lhs and rhs.
+    /// \note the order of evaluation of the operands is unspecified in versions prior to C++17.
     friend simd_mask SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator&&(const simd_mask<T, Abi>& lhs,
                                                        const simd_mask<T, Abi>& rhs) noexcept
     {
@@ -337,6 +340,9 @@ public:
     /// \brief Applies "logical or" to each element.
     ///
     /// [parallel] 9.9.1 1
+    ///
+    /// \note This operator is not short-circuiting and always evaluating lhs and rhs.
+    /// \note the order of evaluation of the operands is unspecified in versions prior to C++17.
     friend simd_mask SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator||(const simd_mask& lhs, const simd_mask& rhs) noexcept
     {
         using type = typename impl::type;
