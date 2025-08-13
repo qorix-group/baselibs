@@ -439,23 +439,35 @@ score::cpp::expected<std::int32_t, Error> SpawnImpl::posix_spawnattr_setstackmax
 score::cpp::expected<std::int32_t, Error> SpawnImpl::posix_spawnattr_getnode(const posix_spawnattr_t* attrp,
                                                                       std::uint32_t* node_p) const noexcept
 {
+#if (_NTO_VERSION <= 710)
     const std::int32_t result = ::posix_spawnattr_getnode(attrp, node_p);
     if (result != 0)
     {
         return score::cpp::make_unexpected(Error::createFromErrno());
     }
     return result;
+#else
+    (void)attrp;
+    (void)node_p;
+    return score::cpp::make_unexpected(Error::createFromErrno(ENOTSUP));
+#endif
 }
 
 score::cpp::expected<std::int32_t, Error> SpawnImpl::posix_spawnattr_setnode(posix_spawnattr_t* attrp,
                                                                       std::uint32_t node) const noexcept
 {
+#if (_NTO_VERSION <= 710)
     const std::int32_t result = ::posix_spawnattr_setnode(attrp, node);
     if (result != 0)
     {
         return score::cpp::make_unexpected(Error::createFromErrno());
     }
     return result;
+#else
+    (void)attrp;
+    (void)node;
+    return score::cpp::make_unexpected(Error::createFromErrno(ENOTSUP));
+#endif
 }
 
 score::cpp::expected<std::int32_t, Error> SpawnImpl::posix_spawnattr_getcred(const posix_spawnattr_t* attrp,
