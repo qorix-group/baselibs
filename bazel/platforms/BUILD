@@ -196,6 +196,16 @@ platform(
 )
 
 platform(
+    name = "x86_64-qnx7",
+    constraint_values = [
+        "//bazel/platforms/qnx_version:qnx7",
+    ],
+    parents = [
+        "@swf_platforms//:x86_64-qnx-adaptive",
+    ],
+)
+
+platform(
     name = "arm64-qnx7-hardware",
     constraint_values = [
         "//bazel/platforms/environment:hardware",
