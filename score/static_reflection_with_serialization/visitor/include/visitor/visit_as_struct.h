@@ -11,10 +11,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 // NOLINT(score-header-guard) False positive - Include guard provided
-/* KW_SUPPRESS_START:MISRA.INCGUARD: False positive - Include guard provided */
 #ifndef COMMON_VISITOR_INCLUDE_VISITOR_VISIT_AS_STRUCT_H
 #define COMMON_VISITOR_INCLUDE_VISITOR_VISIT_AS_STRUCT_H
-/* KW_SUPPRESS_END:MISRA.INCGUARD: False positive - Include guard provided */
 
 #include <array>
 #include <cstdint>
@@ -48,12 +46,10 @@ using no_cref_t = std::remove_const_t<std::remove_reference_t<T>>;
 /// ```                                                                                ^
 ///                                             trailing whitespace to be removed above^
 
-/* KW_SUPPRESS_START:AUTOSAR.ARRAY.CSTYLE: Array is safe to use when dealing with compile time constructs */
 // NOLINTBEGIN(cppcoreguidelines-avoid-c-arrays) Array is safe to use when dealing with compile time constructs
 template <std::size_t N>
 constexpr inline std::size_t strip_trailing_spaces(const char (&pretty_name)[N], std::size_t begin, std::size_t end)
 // NOLINTEND(cppcoreguidelines-avoid-c-arrays) Array is safe to use when dealing with compile time constructs
-/* KW_SUPPRESS_END:AUTOSAR.ARRAY.CSTYLE: Array is safe to use when dealing with compile time constructs */
 {
     if ((end == 0UL) || (end > N))
     {
@@ -85,9 +81,7 @@ constexpr inline std::size_t strip_trailing_spaces(const char (&pretty_name)[N],
 }
 
 template <std::size_t N>
-/* KW_SUPPRESS_START:AUTOSAR.ARRAY.CSTYLE: Array is safe to use when dealing with compile time constructs */
 constexpr inline std::pair<std::size_t, std::size_t> visitor_extract_type_span(const char (&pretty_name)[N])
-/* KW_SUPPRESS_END:AUTOSAR.ARRAY.CSTYLE: Array is safe to use when dealing with compile time constructs */
 {
     // ============== COMMON_ARGUMENTATION ==============
     // The FALSE case for the below 'for' loop are already tested with 'extract_type' test case in test_detail.cpp
@@ -117,9 +111,7 @@ constexpr inline std::pair<std::size_t, std::size_t> visitor_extract_type_span(c
 }
 
 template <typename Output, std::size_t N>
-/* KW_SUPPRESS_START:AUTOSAR.ARRAY.CSTYLE: Array is safe to use when dealing with compile time constructs */
 constexpr inline Output visitor_extract_type(const char (&pretty_name)[N])
-/* KW_SUPPRESS_END:AUTOSAR.ARRAY.CSTYLE: Array is safe to use when dealing with compile time constructs */
 {
     auto pair = visitor_extract_type_span(pretty_name);
     return {&pretty_name[pair.first], &pretty_name[pair.second]};
@@ -193,8 +185,6 @@ using struct_visitable = decltype(get_struct_visitable<T>());
 
 }  // namespace score
 
-/* KW_SUPPRESS_START:MISRA.USE.DEFINE: Macros are used to access field names */
-/* KW_SUPPRESS_START:MISRA.DEFINE.NOPARS: Macros are used to concatenate names and can't use parenthesis */
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage) Macros are used to access field names
 // Macros are used to access field names
 // Macros are used to concatenate names and can't use parenthesis
@@ -216,7 +206,11 @@ using struct_visitable = decltype(get_struct_visitable<T>());
         {                                                                                                              \
             constexpr std::array<const char*, fields> names =                                                          \
                 ::score::common::visitor::detail::tuple_to_array(TUPLE_OF_NAMES);                                        \
+            /* NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index) Index is evaluated in macros and thus    \
+             * not given for user to control. */                                                                       \
             return (i < fields ? names[i] : nullptr);                                                                  \
+            /* NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index) Index is evaluated in macros and thus not  \
+             * given for user to control. */                                                                           \
         }                                                                                                              \
         template <typename V, typename T>                                                                              \
         static auto visit(V&& v, T&& s)                                                                                \
@@ -242,7 +236,6 @@ using struct_visitable = decltype(get_struct_visitable<T>());
 // coverity[autosar_cpp14_m16_0_6_violation]
 #define STRUCT_TRACEABLE(...) STRUCT_VISITABLE(__VA_ARGS__)
 
-/* KW_SUPPRESS_START:MISRA.DEFINE.SHARP.MANY: Macros are used to access field names and must use multiple '#'  */
 // Macro of Field names
 // used to pass field names and can't use parenthesis
 // coverity[autosar_cpp14_a16_0_1_violation]
@@ -6524,7 +6517,6 @@ using struct_visitable = decltype(get_struct_visitable<T>());
 // coverity[autosar_cpp14_m16_0_6_violation]
 #define STRUCT_VISITABLE1(S, F1) \
     STRUCT_VISITABLE_FULL_DEFINITION(S, ::score::common::visitor::detail::pack_values(#F1), s.F1)
-/* KW_SUPPRESS_END:MISRA.DEFINE.SHARP.MANY: Macros are used to access field names and must use multiple '#'  */
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 // Macros for pass number of Arguments.
@@ -6684,14 +6676,10 @@ using struct_visitable = decltype(get_struct_visitable<T>());
 #define DDAD_CONCATENATE(A, B) DDAD_CONCATENATE2(A, B)
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-/* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Design decision to use macros for applying visitor pattern */
 // Macros for Concatenation.
 // Macros are used to concatenate names and can't use parenthesis
 // coverity[autosar_cpp14_a16_0_1_violation]
 // coverity[autosar_cpp14_m16_0_6_violation]
 #define STRUCT_VISITABLE(S, ...) DDAD_CONCATENATE(STRUCT_VISITABLE, COUNT_VARARGS(__VA_ARGS__))(S, __VA_ARGS__)
-/* KW_SUPPRESS_END:MISRA.USE.EXPANSION */
-/* KW_SUPPRESS_END:MISRA.DEFINE.NOPARS: Macros are used to concatenate names and can't use parenthesis */
-/* KW_SUPPRESS_END:MISRA.USE.DEFINE: Macros are used to access field names */
 
 #endif  // COMMON_VISITOR_INCLUDE_VISITOR_VISIT_AS_STRUCT_H
