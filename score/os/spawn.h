@@ -20,10 +20,6 @@
 
 #include <spawn.h>
 
-#if defined(__QNX__)
-#include <sys/nto_version.h>
-#endif  //__QNX__
-
 namespace score
 {
 namespace os

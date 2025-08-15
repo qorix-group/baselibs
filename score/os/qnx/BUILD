@@ -475,12 +475,7 @@ cc_library(
     deps = [
         "@score-baselibs//score/os:errno",
         "//third_party/fscrypto",
-    ] + select({
-        "//bazel/platforms/qnx_version:qnx8": [
-            "//third_party/qcrypto",
-        ],
-        "//conditions:default": [],
-    }),
+    ],
 )
 
 cc_library(
