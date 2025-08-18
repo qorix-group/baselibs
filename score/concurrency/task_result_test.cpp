@@ -165,13 +165,6 @@ class TaskResultContinuationTest : public ::testing::Test
         EXPECT_EQ(this->invoked_, n);
     }
 
-    void PrepareForContinuation(typename T::TaskType& task_result)
-    {
-        task_result.Then([this](score::Result<int>) noexcept {
-            this->invoked_++;
-        });
-    }
-
     void PrepareForScopedContinuation(typename T::TaskType& task_result)
     {
         task_result.Then(
@@ -192,29 +185,12 @@ typedef ::testing::Types<TaskResultType, SharedTaskResultType> TestTypes;
 
 TYPED_TEST_SUITE(TaskResultContinuationTest, TestTypes, /* unused */);
 
-TYPED_TEST(TaskResultContinuationTest, TaskResultContinuationExecutedWhenStateIsReady)
-{
-    auto task_result = this->Make();
-    this->PrepareForContinuation(task_result);
-    this->promise_.SetValue(42);
-    this->ExpectCallNTimes(1);
-}
-
 TYPED_TEST(TaskResultContinuationTest, TaskResultScopedContinuationExecutedWhenStateIsReady)
 {
     auto task_result = this->Make();
     this->PrepareForScopedContinuation(task_result);
     this->promise_.SetValue(42);
     this->ExpectCallNTimes(1);
-}
-
-TYPED_TEST(TaskResultContinuationTest, TaskResultContinuationCanBeExecutedMultipleTimes)
-{
-    auto task_result = this->Make();
-    this->PrepareForContinuation(task_result);
-    this->PrepareForContinuation(task_result);
-    this->promise_.SetValue(42);
-    this->ExpectCallNTimes(2);
 }
 
 TYPED_TEST(TaskResultContinuationTest, TaskResultScopedContinuationCanBeExecutedMultipleTimes)
@@ -226,27 +202,12 @@ TYPED_TEST(TaskResultContinuationTest, TaskResultScopedContinuationCanBeExecuted
     this->ExpectCallNTimes(2);
 }
 
-TYPED_TEST(TaskResultContinuationTest, TaskResultContinuationIsExecutedWhenResultIsError)
-{
-    auto task_result = this->Make();
-    this->PrepareForContinuation(task_result);
-    this->promise_.SetError(Error::kNoState);
-    this->ExpectCallNTimes(1);
-}
-
 TYPED_TEST(TaskResultContinuationTest, TaskResultScopedContinuationIsExecutedWhenResultIsError)
 {
     auto task_result = this->Make();
     this->PrepareForScopedContinuation(task_result);
     this->promise_.SetError(Error::kNoState);
     this->ExpectCallNTimes(1);
-}
-
-TYPED_TEST(TaskResultContinuationTest, TaskResultContinuationIsNotExecutedWhenNoResultIsReady)
-{
-    auto task_result = this->Make();
-    this->PrepareForContinuation(task_result);
-    this->ExpectCallNTimes(0);
 }
 
 TYPED_TEST(TaskResultContinuationTest, TaskResultScopedContinuationIsNotExecutedWhenNoResultIsReady)

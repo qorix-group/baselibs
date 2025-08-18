@@ -227,34 +227,6 @@ class BaseInterruptibleFuture
         return {};
     }
 
-    template <typename Callback,
-              std::enable_if_t<std::conjunction_v<
-                                   std::is_constructible<typename InterruptibleState<Value>::ScopedContinuationCallback,
-                                                         safecpp::Scope<>,
-                                                         Callback>,
-                                   std::negation<detail::IsScoped<Callback>>>,
-                               bool> = true>
-    [[deprecated("SPP_DEPRECATION: Use overload with scoped function instead. (Ticket-141243")]] score::cpp::expected_blank<Error>
-    // coverity[autosar_cpp14_a13_3_1_violation] see above; overload resolution prevents call ambiguity
-    Then(Callback&& callback)
-    {
-        if (state_ptr_ == nullptr)
-        {
-            // Suppress "AUTOSAR C++14 A5-1-4" rule finding: "A lambda expression object shall not outlive any of its
-            // reference-captured objects.".
-            // Predicate "callback" is passed by move-semantic to CallContinuationWithoutState(), all dangling
-            // references that this predicate can capture is the awareness and responsibility of a caller
-            // coverity[autosar_cpp14_a5_1_4_violation]
-            CallContinuationWithoutState(std::forward<Callback>(callback));
-            return score::cpp::make_unexpected(Error::kNoState);
-        }
-
-        typename InterruptibleState<Value>::ScopedContinuationCallback scoped_callback{
-            state_ptr_->GetScope(), std::forward<Callback>(callback)};
-        state_ptr_->AddContinuationCallback(std::move(scoped_callback));
-        return {};
-    }
-
   protected:
     explicit BaseInterruptibleFuture(std::shared_ptr<InterruptibleState<Value>> state_ptr) noexcept
         : state_ptr_{std::move(state_ptr)}

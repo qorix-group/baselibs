@@ -82,13 +82,6 @@ class BaseInterruptibleFutureTest : public BaseInterruptibleFutureTestBase<T>
         EXPECT_EQ(actual_value_expected.value().get().GetValue(), expected_value_);
     }
 
-    void PrepareContinuationCallback()
-    {
-        this->future_->Then([this](score::Result<T>&) noexcept {
-            this->invoked_++;
-        });
-    }
-
     void PrepareScopedContinuationCallback()
     {
         safecpp::MoveOnlyScopedFunction<void(score::Result<T>&)> scoped_callback{scope_,
@@ -118,13 +111,6 @@ class BaseInterruptibleFutureTest<testing::MoveOnlyType> : public BaseInterrupti
     {
         ASSERT_TRUE(actual_value_expected.has_value());
         EXPECT_EQ(actual_value_expected.value().get().GetValue(), expected_value_);
-    }
-
-    void PrepareContinuationCallback()
-    {
-        this->future_->Then([this](score::Result<testing::MoveOnlyType>&) noexcept {
-            this->invoked_++;
-        });
     }
 
     void PrepareScopedContinuationCallback()
@@ -157,13 +143,6 @@ class BaseInterruptibleFutureTest<T&> : public BaseInterruptibleFutureTestBase<T
         EXPECT_EQ(actual_value_expected.value().get().GetValue(), expected_value_);
     }
 
-    void PrepareContinuationCallback()
-    {
-        this->future_->Then([this](score::Result<std::reference_wrapper<T>>) noexcept {
-            this->invoked_++;
-        });
-    }
-
     void PrepareScopedContinuationCallback()
     {
         safecpp::MoveOnlyScopedFunction<void(score::Result<std::reference_wrapper<T>>&)> scoped_callback{
@@ -191,13 +170,6 @@ class BaseInterruptibleFutureTest<void> : public BaseInterruptibleFutureTestBase
     void ExpectCorrectValue(const score::ResultBlank& actual_value_expected) const noexcept
     {
         EXPECT_TRUE(actual_value_expected.has_value());
-    }
-
-    void PrepareContinuationCallback()
-    {
-        this->future_->Then([this](score::ResultBlank) noexcept {
-            this->invoked_++;
-        });
     }
 
     void PrepareScopedContinuationCallback()
@@ -540,29 +512,11 @@ TYPED_TEST(BaseInterruptibleFutureTest, NotAbortedIfOneCopyIsStillAlive)
     this->ExpectCallbackNotInvoked();
 }
 
-TYPED_TEST(BaseInterruptibleFutureTest, ContinuationExecutedOnceStateBecomesReady)
-{
-    BaseInterruptibleFutureTest<TypeParam>::PrepareContinuationCallback();
-
-    BaseInterruptibleFutureTest<TypeParam>::SetPromise(this->promise_);
-
-    this->ExpectCallbackInvokedNTimes(1);
-}
-
 TYPED_TEST(BaseInterruptibleFutureTest, ScopedContinuationExecutedOnceStateBecomesReady)
 {
     BaseInterruptibleFutureTest<TypeParam>::PrepareScopedContinuationCallback();
 
     BaseInterruptibleFutureTest<TypeParam>::SetPromise(this->promise_);
-
-    this->ExpectCallbackInvokedNTimes(1);
-}
-
-TYPED_TEST(BaseInterruptibleFutureTest, ContinuationExecutedStateAlreadyReady)
-{
-    BaseInterruptibleFutureTest<TypeParam>::SetPromise(this->promise_);
-
-    BaseInterruptibleFutureTest<TypeParam>::PrepareContinuationCallback();
 
     this->ExpectCallbackInvokedNTimes(1);
 }
@@ -576,32 +530,12 @@ TYPED_TEST(BaseInterruptibleFutureTest, ScopedContinuationExecutedStateAlreadyRe
     this->ExpectCallbackInvokedNTimes(1);
 }
 
-TYPED_TEST(BaseInterruptibleFutureTest, MultipleContinuationsExecutedOnceStateBecomesReady)
-{
-    BaseInterruptibleFutureTest<TypeParam>::PrepareContinuationCallback();
-    BaseInterruptibleFutureTest<TypeParam>::PrepareContinuationCallback();
-
-    BaseInterruptibleFutureTest<TypeParam>::SetPromise(this->promise_);
-
-    this->ExpectCallbackInvokedNTimes(2);
-}
-
 TYPED_TEST(BaseInterruptibleFutureTest, MultipleScopedContinuationsExecutedOnceStateBecomesReady)
 {
     BaseInterruptibleFutureTest<TypeParam>::PrepareScopedContinuationCallback();
     BaseInterruptibleFutureTest<TypeParam>::PrepareScopedContinuationCallback();
 
     BaseInterruptibleFutureTest<TypeParam>::SetPromise(this->promise_);
-
-    this->ExpectCallbackInvokedNTimes(2);
-}
-
-TYPED_TEST(BaseInterruptibleFutureTest, MultipleContinuationsExecutedWhenStateAlreadyReady)
-{
-    BaseInterruptibleFutureTest<TypeParam>::SetPromise(this->promise_);
-
-    BaseInterruptibleFutureTest<TypeParam>::PrepareContinuationCallback();
-    BaseInterruptibleFutureTest<TypeParam>::PrepareContinuationCallback();
 
     this->ExpectCallbackInvokedNTimes(2);
 }
@@ -614,22 +548,6 @@ TYPED_TEST(BaseInterruptibleFutureTest, MultipleScopedContinuationsExecutedWhenS
     BaseInterruptibleFutureTest<TypeParam>::PrepareScopedContinuationCallback();
 
     this->ExpectCallbackInvokedNTimes(2);
-}
-
-TYPED_TEST(BaseInterruptibleFutureTest, ContinuationWithoutStateExecutesWithError)
-{
-    std::promise<void> promise{};
-    BaseInterruptibleFuture<TypeParam> future_without_state{};
-    const auto call_result = future_without_state.Then([&promise](auto& result) {
-        ASSERT_FALSE(result.has_value());
-        EXPECT_EQ(result.error(), Error::kNoState);
-        promise.set_value();
-    });
-    ASSERT_FALSE(call_result.has_value());
-    EXPECT_EQ(call_result.error(), Error::kNoState);
-
-    // Make sure that the handler is called
-    promise.get_future().wait();
 }
 
 TYPED_TEST(BaseInterruptibleFutureTest, ScopedContinuationWithoutStateExecutesWithError)
@@ -649,42 +567,6 @@ TYPED_TEST(BaseInterruptibleFutureTest, ScopedContinuationWithoutStateExecutesWi
     EXPECT_EQ(call_result.error(), Error::kNoState);
 
     promise.get_future().wait();
-}
-
-TYPED_TEST(BaseInterruptibleFutureTest, ContinuationWithCyclicDependencyWillNotLeadToMemoryLeaksWhenAValueWasSet)
-{
-    std::weak_ptr<int> destruction_checker{};
-    {
-        auto destruction_trigger = std::make_shared<int>();
-        destruction_checker = destruction_trigger;
-        auto promise = std::make_shared<InterruptiblePromise<TypeParam>>();
-        auto expected_future = promise->GetInterruptibleFuture();
-        ASSERT_TRUE(expected_future.has_value());
-
-        auto future = std::move(expected_future.value());
-        future.Then([promise, destruction_trigger](auto&) noexcept {});
-        BaseInterruptibleFutureTest<TypeParam>::SetPromise(*promise);
-    }
-
-    EXPECT_TRUE(destruction_checker.expired());
-}
-
-TYPED_TEST(BaseInterruptibleFutureTest, ContinuationWithCyclicDependencyWillNotLeadToMemoryLeaksWhenAnErrorWasSet)
-{
-    std::weak_ptr<int> destruction_checker{};
-    {
-        auto destruction_trigger = std::make_shared<int>();
-        destruction_checker = destruction_trigger;
-        auto promise = std::make_shared<InterruptiblePromise<TypeParam>>();
-        auto expected_future = promise->GetInterruptibleFuture();
-        ASSERT_TRUE(expected_future.has_value());
-
-        auto future = std::move(expected_future.value());
-        future.Then([promise, destruction_trigger](auto&) noexcept {});
-        promise->SetError(Error::kFutureAlreadyRetrieved);
-    }
-
-    EXPECT_TRUE(destruction_checker.expired());
 }
 
 TYPED_TEST(BaseInterruptibleFutureTest, CallAndIgnoreResultExecutesFunctionWithoutUsingReturnValue)
