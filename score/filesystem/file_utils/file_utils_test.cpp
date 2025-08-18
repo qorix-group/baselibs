@@ -431,55 +431,6 @@ TEST_F(FileUtilsTest, ChangeGroup_checkNokChmodByGID)
     ASSERT_EQ(static_cast<ErrorCode>(*result.error()), ErrorCode::kCouldNotChangeGroup);
 }
 
-TEST_F(FileUtilsTest, CreateTmpFileName_ok)
-{
-    const int validFileDescriptor = 42;
-    EXPECT_CALL(*stdlib_mock_, mkstemp(_)).WillOnce(Return(validFileDescriptor));
-    EXPECT_CALL(*unistd_mock_, unlink(_)).WillOnce(Return(os_no_error));
-    EXPECT_CALL(*unistd_mock_, close(_)).WillOnce(Return(os_no_error));
-
-    const auto result = unit_.CreateTmpFileName();
-
-    ASSERT_TRUE(result.has_value());
-    EXPECT_THAT(result.value().Native(), StartsWith("/tmp/"));
-}
-
-TEST_F(FileUtilsTest, CreateTmpFileName_failed_mkstemp)
-{
-    const score::cpp::expected<int, score::os::Error> os_eexist = score::cpp::make_unexpected(os::Error::createFromErrno(EEXIST));
-    EXPECT_CALL(*stdlib_mock_, mkstemp(_)).WillOnce(Return(os_eexist));
-    EXPECT_CALL(*unistd_mock_, unlink(_)).Times(0);
-    EXPECT_CALL(*unistd_mock_, close(_)).Times(0);
-
-    const auto result = unit_.CreateTmpFileName();
-
-    ASSERT_FALSE(result.has_value());
-}
-
-TEST_F(FileUtilsTest, CreateTmpFileName_failed_unlink)
-{
-    const int validFileDescriptor = 42;
-    EXPECT_CALL(*stdlib_mock_, mkstemp(_)).WillOnce(Return(validFileDescriptor));
-    EXPECT_CALL(*unistd_mock_, unlink(_)).WillOnce(Return(os_eio));
-    EXPECT_CALL(*unistd_mock_, close(_)).Times(0);
-
-    const auto result = unit_.CreateTmpFileName();
-
-    ASSERT_FALSE(result.has_value());
-}
-
-TEST_F(FileUtilsTest, CreateTmpFileName_failed_close)
-{
-    const int validFileDescriptor = 42;
-    EXPECT_CALL(*stdlib_mock_, mkstemp(_)).WillOnce(Return(validFileDescriptor));
-    EXPECT_CALL(*unistd_mock_, unlink(_)).WillOnce(Return(os_no_error));
-    EXPECT_CALL(*unistd_mock_, close(_)).WillOnce(Return(os_eio));
-
-    const auto result = unit_.CreateTmpFileName();
-
-    ASSERT_FALSE(result.has_value());
-}
-
 TEST_F(FileUtilsTest, SyncDirectory_ok)
 {
     const std::int32_t directoryDescriptor = 42;

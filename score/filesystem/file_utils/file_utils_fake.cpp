@@ -40,7 +40,6 @@ FileUtilsFake::FileUtilsFake(IStandardFilesystem& standard_filesystem, IFileFact
     ON_CALL(*this, RepairFileSystem(_)).WillByDefault(Return(error));
     ON_CALL(*this, CreateDirectory(_, _)).WillByDefault(Invoke(&file_utils_, &FileUtils::CreateDirectory));
     ON_CALL(*this, CreateDirectories(_, _)).WillByDefault(Invoke(&file_utils_, &FileUtils::CreateDirectories));
-    ON_CALL(*this, CreateTmpFileName()).WillByDefault(Return(error));
     ON_CALL(*this, OpenUniqueFile(_, _)).WillByDefault(Return(ByMove(error)));
     ON_CALL(*this, FileContentsAreIdentical(_, _))
         .WillByDefault(Invoke(&file_utils_, &FileUtils::FileContentsAreIdentical));

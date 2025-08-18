@@ -218,31 +218,6 @@ Result<bool> FileUtils::ValidateGroup(const Path& path, const std::string& group
     return groupResult.value().gid == status.st_gid;
 }
 
-Result<Path> FileUtils::CreateTmpFileName() const noexcept
-{
-    /* KW_SUPPRESS_START:AUTOSAR.BUILTIN_NUMERIC: Buffer holds char values */
-    std::array<char, sizeof("/tmp/TmpFile-XXXXXX")> nameBuff = {{"/tmp/TmpFile-XXXXXX"}};
-    /* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC: Buffer holds char values */
-    const auto mkstemp_result = score::os::Stdlib::instance().mkstemp(nameBuff.data());
-    if (!mkstemp_result.has_value())
-    {
-        return MakeUnexpected(ErrorCode::kCouldNotGenerateTmpName, "Failed mkstemp");
-    }
-    if (!score::os::Unistd::instance().unlink(nameBuff.data()).has_value())
-    {
-        return MakeUnexpected(ErrorCode::kCouldNotGenerateTmpName, "Failed unlink");
-    }
-    const auto fileDescriptor = mkstemp_result.value();
-    // The reason for banning is, because its error-prone to use. One should use abstractions e.g. provided by
-    // the C++ standard library. Since this library exactly is such abstraction, we can use the OS function.
-    // NOLINTNEXTLINE(score-banned-function): See above
-    if (!score::os::Unistd::instance().close(fileDescriptor).has_value())
-    {
-        return MakeUnexpected(ErrorCode::kCouldNotGenerateTmpName, "Failed close");
-    }
-    return Path{nameBuff.data()};
-}
-
 Result<std::pair<std::unique_ptr<std::iostream>, Path>> FileUtils::OpenUniqueFile(const Path& path,
                                                                                   std::ios_base::openmode mode) const
 {

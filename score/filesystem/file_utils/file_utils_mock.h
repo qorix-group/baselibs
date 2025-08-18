@@ -31,7 +31,6 @@ class FileUtilsMock : public IFileUtils
     MOCK_METHOD(ResultBlank, RepairFileSystem, (const Path&), (const, noexcept, override));
     MOCK_METHOD(ResultBlank, CreateDirectory, (const Path&, const score::os::Stat::Mode), (const, noexcept, override));
     MOCK_METHOD(ResultBlank, CreateDirectories, (const Path&, const score::os::Stat::Mode), (const, noexcept, override));
-    MOCK_METHOD(Result<Path>, CreateTmpFileName, (), (const, noexcept, override));
     MOCK_METHOD((Result<std::pair<std::unique_ptr<std::iostream>, Path>>),
                 OpenUniqueFile,
                 (const Path&, std::ios_base::openmode),

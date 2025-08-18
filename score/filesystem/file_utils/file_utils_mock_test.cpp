@@ -30,7 +30,6 @@ TEST(FileUtilsMock, CheckReturnValues)
     EXPECT_EQ(ResultBlank{}, unit.CheckFileSystem({}));
     EXPECT_EQ(ResultBlank{}, unit.CreateDirectory({}, {}));
     EXPECT_EQ(ResultBlank{}, unit.CreateDirectories({}, {}));
-    EXPECT_EQ(Result<Path>{}, unit.CreateTmpFileName());
     EXPECT_EQ(Result<bool>{}, unit.FileContentsAreIdentical({}, {}));
     EXPECT_EQ(ResultBlank{}, unit.FormatPartition({}));
     EXPECT_EQ(bool{}, unit.IsQnxCompatible({}));

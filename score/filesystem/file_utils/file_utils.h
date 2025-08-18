@@ -36,8 +36,6 @@ class FileUtils final : public IFileUtils
     ResultBlank RepairFileSystem(const Path& partition) const noexcept override;
     ResultBlank CreateDirectory(const Path& path, const score::os::Stat::Mode perms) const noexcept override;
     ResultBlank CreateDirectories(const Path& path, const score::os::Stat::Mode perms) const noexcept override;
-    [[deprecated("SPP_DEPRECATION: Use OpenUniqueFile to avoid race conditions. (Ticket-124714)")]] Result<Path>
-    CreateTmpFileName() const noexcept override;
     Result<std::pair<std::unique_ptr<std::iostream>, Path>> OpenUniqueFile(const Path& path,
                                                                            std::ios_base::openmode mode) const override;
     Result<bool> FileContentsAreIdentical(const Path& path1, const Path& path2) const noexcept override;

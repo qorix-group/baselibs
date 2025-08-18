@@ -67,9 +67,6 @@ class IFileUtils : public os::ObjectSeam<IFileUtils>
     /// \details If the perms parameter is not required then use IStandardFilesystem::CreateDirectories.
     virtual ResultBlank CreateDirectories(const Path& path, const score::os::Stat::Mode perms) const noexcept = 0;
 
-    /// \brief Returns unique temporary filename (/tmp/...).
-    virtual Result<Path> CreateTmpFileName() const noexcept = 0;
-
     /// \brief Returns an iostream to a file with a unique filename ending opened with the specified mode.
     virtual Result<std::pair<std::unique_ptr<std::iostream>, Path>> OpenUniqueFile(
         const Path& path,
