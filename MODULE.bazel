@@ -97,3 +97,24 @@ deb(
 bazel_dep(name = "nlohmann_json", version = "3.11.3")
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
 bazel_dep(name = "platforms", version = "0.0.11")
+
+# Rust rules for Bazel
+bazel_dep(name = "rules_rust", version = "0.56.0")
+
+# Module deps
+rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+rust.toolchain(
+    edition = "2021",
+    versions = ["1.85.0"],
+)
+
+crate = use_extension("@rules_rust//crate_universe:extensions.bzl", "crate")
+crate.from_cargo(
+    name = "crates",
+    cargo_lockfile = "//:Cargo.lock",
+    manifests = [
+        "//:Cargo.toml",
+        "//score/mw/log:Cargo.toml",
+    ],
+)
+use_repo(crate, "crates")

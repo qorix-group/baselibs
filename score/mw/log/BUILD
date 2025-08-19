@@ -11,6 +11,55 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("@score-baselibs//bazel:unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+load("@rules_rust//cargo:defs.bzl", "cargo_build_script")
+load("@rules_rust//rust:defs.bzl", "rust_library", "rust_binary")
+load("@crates//:defs.bzl", "aliases", "all_crate_deps")
+
+rust_library(
+    name = "libmw_log_rust",
+    srcs = glob(["src/**/*.rs"]),
+    crate_name = "mw_log",
+    edition = "2021",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":build_script",
+        ":libmw_log_ffi",
+        "@score-baselibs//score/mw/log/detail:recorder_factory",
+        "@score-baselibs//score/json:json_serializer",
+    ] + all_crate_deps(
+        normal = True,
+    ),
+)
+
+cargo_build_script(
+    name = "build_script",
+    srcs = ["build.rs"],
+    edition = "2021",
+    deps = all_crate_deps(
+        build = True,
+    ),
+)
+
+rust_binary(
+    name = "log_example",
+    srcs = ["examples/log.rs"],
+    edition = "2021",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":libmw_log_rust",
+    ] + all_crate_deps(
+        normal = True,
+    ),
+)
+
+cc_library(
+    name = "libmw_log_ffi",
+    srcs = ["src/mw_log_ffi.cpp"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":log",
+    ],
+)
 
 COMPILER_WARNING_FEATURES = [
     "treat_warnings_as_errors",
