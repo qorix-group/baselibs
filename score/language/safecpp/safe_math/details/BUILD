@@ -22,6 +22,7 @@ cc_library(
     visibility = ["@score-baselibs//score/language/safecpp/safe_math/details:__subpackages__"],
     deps = [
         "@score-baselibs//score/language/safecpp/safe_math:error",
+        "@score-baselibs//score/language/safecpp/safe_math/details/comparison",
         "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
     ],

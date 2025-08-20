@@ -12,6 +12,7 @@
  ********************************************************************************/
 #include "score/language/safecpp/safe_math/details/floating_point_environment.h"
 
+#include "score/language/safecpp/safe_math/details/comparison/comparison.h"
 #include "score/language/safecpp/safe_math/error.h"
 
 #include <score/utility.hpp>
@@ -61,7 +62,8 @@ score::ResultBlank score::safe_math::details::FloatingPointEnvironment::Test() c
         constexpr auto exceptions = FE_ALL_EXCEPT;
 // coverity[autosar_cpp14_a16_0_1_violation]
 #endif
-        static_assert(exceptions <= std::numeric_limits<int>::max(), "exceptions exceeds max int value");
+        // Before we can check if exceptions is bigger than int, we need to make sure that
+        static_assert(CmpLessEqual(exceptions, std::numeric_limits<int>::max()), "exceptions exceeds max int value");
         // Depending on the implementation, "exceptions" may be promoted to an unsigned integer. Therefore, converting
         // from unsigned to signed will result in data loss if the value exceeds the maximum signed value.
         // This statement is checked at compile time.
