@@ -21,7 +21,7 @@ namespace analysis
 namespace tracing
 {
 
-constexpr std::uint8_t kMaxRetries = 20u;
+constexpr std::uint8_t kMaxRetries = 200u;
 constexpr std::uint32_t kInvalidAddressValue = 0xFFFFFFFFUL;
 
 template <template <class> class AtomicIndirectorType>
@@ -113,13 +113,13 @@ void* LocklessFlexibleCircularAllocator<AtomicIndirectorType>::Allocate(const st
         ListQueue old_queue = list_queue_.load();
         ListQueue new_list = old_queue;
         new_list.head = GetListQueueNextHead();
-        list_entry_element_index = new_list.head;
 
         if (AtomicIndirectorType<ListQueue>::compare_exchange_strong(
                 list_queue_, old_queue, new_list, std::memory_order_seq_cst) == true)
         {
             // It's intended to cover the for loop condition decisions and carry no functional harm
             // coverity[autosar_cpp14_m6_5_3_violation]
+            list_entry_element_index = new_list.head;
             retries = kMaxRetries;
         }
 
@@ -136,8 +136,8 @@ void* LocklessFlexibleCircularAllocator<AtomicIndirectorType>::Allocate(const st
     // coverity[autosar_cpp14_a4_7_1_violation]
     if (total_size_ - buffer_queue_.load().head <= static_cast<uint32_t>(aligned_size))
     {
-        gap_address_.store(buffer_queue_.load().head);
         wrap_around_.store(true);
+        gap_address_.store(buffer_queue_.load().head);
     }
     // Suppress "AUTOSAR C++14 A4-7-1" rule finding. This rule states: "An integer expression shall
     // not lead to data loss.".
@@ -238,8 +238,7 @@ bool LocklessFlexibleCircularAllocator<AtomicIndirectorType>::IsRequestedBlockAt
 template <template <class> class AtomicIndirectorType>
 void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::IterateBlocksToDeallocate()
 {
-    std::uint32_t init_tail = buffer_queue_.load().tail;
-
+    auto init_tail = buffer_queue_.load().tail;
     while (init_tail != buffer_queue_.load().head)
     {
         // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) : tolerated for algorithm
@@ -257,7 +256,8 @@ void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::IterateBlocksToDea
         }
         // list_entry_offset is always set internally via controlled allocation paths, making invalid
         // indices impossible during normal operation.
-        if (ValidateListEntryIndex(current_block->list_entry_offset))  // LCOV_EXCL_BR_LINE not testable
+        auto index = current_block->list_entry_offset;
+        if (ValidateListEntryIndex(index))  // LCOV_EXCL_BR_LINE not testable
         // see comment above.
         {
             if ((AtomicIndirectorType<ListEntry>::load(
@@ -320,7 +320,6 @@ bool LocklessFlexibleCircularAllocator<AtomicIndirectorType>::Deallocate(void* c
     // coverity[autosar_cpp14_m5_2_8_violation]
     meta = reinterpret_cast<BufferBlock*>(static_cast<uint8_t*>(addr) - sizeof(BufferBlock));
     // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast): tolerated for algorithm
-
     if (buffer_queue_.load().tail == gap_address_)
     {
         ResetBufferQueuTail();
@@ -432,26 +431,20 @@ uint8_t* LocklessFlexibleCircularAllocator<AtomicIndirectorType>::AllocateWithWr
     std::uint32_t list_entry_element_index)
 {
     uint8_t* allocated_address = nullptr;
-    auto offset = buffer_queue_.load().head;
+    BufferQueue new_queue{};
     for (uint8_t retries = 0u; retries < kMaxRetries; retries++)
     {
         auto old_queue = buffer_queue_.load();
-        BufferQueue new_queue = old_queue;
-        new_queue.head = 0u;  // just skip gap size, no need to include
-        if (AtomicIndirectorType<BufferQueue>::compare_exchange_strong(
-                buffer_queue_, old_queue, new_queue, std::memory_order_seq_cst) == true)
+        new_queue = old_queue;
+        new_queue.head = static_cast<uint32_t>(aligned_size);
+        if (old_queue.head + aligned_size >= total_size_)
         {
-            // It's intended to cover the for loop condition decisions and carry no functional harm
-            // coverity[autosar_cpp14_m6_5_3_violation]
-            retries = kMaxRetries;
+            new_queue.head = aligned_size;  // Wrap to beginning + allocation size
         }
-    }
-
-    for (uint8_t retries = 0u; retries < kMaxRetries; retries++)
-    {
-        auto old_queue = buffer_queue_.load();
-        BufferQueue new_queue = old_queue;
-        new_queue.head = (new_queue.head + static_cast<uint32_t>(aligned_size));
+        else
+        {
+            new_queue.head = old_queue.head + aligned_size;
+        }
 
         if (AtomicIndirectorType<BufferQueue>::compare_exchange_strong(
                 buffer_queue_, old_queue, new_queue, std::memory_order_seq_cst) == true)
@@ -462,17 +455,18 @@ uint8_t* LocklessFlexibleCircularAllocator<AtomicIndirectorType>::AllocateWithWr
         }
     }
     // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast): tolerated for algorithm
+    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic): tolerated for algorithm
     // coverity[autosar_cpp14_a5_2_4_violation]
     // coverity[autosar_cpp14_m5_2_8_violation]
-    auto block_meta_data = reinterpret_cast<BufferBlock*>(base_address_);
-    // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast): tolerated for algorithm
+    auto block_meta_data =
+        reinterpret_cast<BufferBlock*>(static_cast<uint8_t*>(base_address_) + new_queue.head - aligned_size);
     block_meta_data->list_entry_offset = list_entry_element_index;
     block_meta_data->block_length = static_cast<uint32_t>(aligned_size);
-    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic): tolerated for algorithm
     // coverity[autosar_cpp14_m5_0_15_violation]
     // coverity[autosar_cpp14_m5_2_8_violation]
-    allocated_address = static_cast<uint8_t*>(base_address_) + sizeof(BufferBlock);
+    allocated_address = static_cast<uint8_t*>(base_address_) + new_queue.head - aligned_size + sizeof(BufferBlock);
     // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic): tolerated for algorithm
+    // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast): tolerated for algorithm
     if (aligned_size > std::numeric_limits<std::uint16_t>::max())
     {
         // Return early if aligned_size exceeds the maximum value representable by std::uint32_t,
@@ -485,7 +479,7 @@ uint8_t* LocklessFlexibleCircularAllocator<AtomicIndirectorType>::AllocateWithWr
         auto list_entry_new = list_entry_old;
         list_entry_new.flags = static_cast<std::uint8_t>(ListEntryFlag::kInUse);
         list_entry_new.length = static_cast<std::uint16_t>(aligned_size);
-        list_entry_new.offset = (static_cast<std::uint32_t>(aligned_size) + offset);
+        list_entry_new.offset = (static_cast<std::uint32_t>(aligned_size) + new_queue.head - aligned_size);
         if (AtomicIndirectorType<ListEntry>::compare_exchange_strong(
                 list_array_.at(static_cast<size_t>(list_entry_element_index)),
                 list_entry_old,
@@ -506,16 +500,17 @@ uint8_t* LocklessFlexibleCircularAllocator<AtomicIndirectorType>::AllocateWithNo
     std::uint32_t list_entry_element_index)
 {
     uint8_t* allocated_address = nullptr;
-    auto offset = buffer_queue_.load().head;
+    auto offset = 0u;
+
     for (uint8_t retries = 0u; retries < kMaxRetries; retries++)
     {
         auto old_queue = buffer_queue_.load();
         BufferQueue new_queue = old_queue;
-        new_queue.head = new_queue.head + static_cast<std::uint32_t>(aligned_size);
+        new_queue.head = buffer_queue_.load().head + static_cast<std::uint32_t>(aligned_size);
         if (AtomicIndirectorType<BufferQueue>::compare_exchange_strong(
                 buffer_queue_, old_queue, new_queue, std::memory_order_seq_cst) == true)
         {
-            offset = old_queue.head;
+            offset = new_queue.head - aligned_size;
             // It's intended to cover the for loop condition decisions and carry no functional harm
             // coverity[autosar_cpp14_m6_5_3_violation]
             retries = kMaxRetries;
@@ -526,6 +521,7 @@ uint8_t* LocklessFlexibleCircularAllocator<AtomicIndirectorType>::AllocateWithNo
     // coverity[autosar_cpp14_a5_2_4_violation]
     // coverity[autosar_cpp14_m5_0_15_violation]
     // coverity[autosar_cpp14_m5_2_8_violation]
+
     auto block_meta_data = reinterpret_cast<BufferBlock*>(static_cast<uint8_t*>(base_address_) + offset);
     block_meta_data->list_entry_offset = list_entry_element_index;
     block_meta_data->block_length = static_cast<std::uint32_t>(aligned_size);
