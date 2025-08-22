@@ -2038,7 +2038,7 @@ TEST_F(SymlinkStatusFixture, BufferTooSmall)
     const auto result = unit_.ReadSymlink("foo/bar");
 
     EXPECT_FALSE(result.has_value());
-    EXPECT_THAT(result.error().UserMessage().data(), HasSubstr("buffer is too small"));
+    EXPECT_THAT(result.error().UserMessage(), HasSubstr("buffer is too small"));
 }
 
 using CreateDirectorySymlinkFixture = FilesystemFixtureWithoutMocks;

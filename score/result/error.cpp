@@ -30,7 +30,7 @@ std::ostream& score::result::operator<<(std::ostream& out, const score::result::
     if (!value.UserMessage().empty())
     {
         out << " with message ";
-        out << value.UserMessage().data();
+        out << value.UserMessage();
     }
     return out;
 }

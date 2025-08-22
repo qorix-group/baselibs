@@ -737,7 +737,7 @@ TEST_F(FileUtilsTest_FileContentsAreIdentical, FailedIsRegilarFileForPath1)
 
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), ErrorCode::kCouldNotCompareFiles);
-    EXPECT_STREQ(result.error().UserMessage().data(), "Failed to check file1 existence");
+    EXPECT_EQ(result.error().UserMessage(), "Failed to check file1 existence");
 }
 
 TEST_F(FileUtilsTest_FileContentsAreIdentical, FailedIsRegilarFileForPath2)
@@ -749,7 +749,7 @@ TEST_F(FileUtilsTest_FileContentsAreIdentical, FailedIsRegilarFileForPath2)
 
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), ErrorCode::kCouldNotCompareFiles);
-    EXPECT_STREQ(result.error().UserMessage().data(), "Failed to check file2 existence");
+    EXPECT_EQ(result.error().UserMessage(), "Failed to check file2 existence");
 }
 
 TEST_F(FileUtilsTest_FileContentsAreIdentical, Path1DoesntExist)
@@ -760,7 +760,7 @@ TEST_F(FileUtilsTest_FileContentsAreIdentical, Path1DoesntExist)
 
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), ErrorCode::kCouldNotCompareFiles);
-    EXPECT_STREQ(result.error().UserMessage().data(), "File1 does not exist or is not a regular file");
+    EXPECT_EQ(result.error().UserMessage(), "File1 does not exist or is not a regular file");
 }
 
 TEST_F(FileUtilsTest_FileContentsAreIdentical, Path2DoesntExist)
@@ -772,7 +772,7 @@ TEST_F(FileUtilsTest_FileContentsAreIdentical, Path2DoesntExist)
 
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), ErrorCode::kCouldNotCompareFiles);
-    EXPECT_STREQ(result.error().UserMessage().data(), "File2 does not exist or is not a regular file");
+    EXPECT_EQ(result.error().UserMessage(), "File2 does not exist or is not a regular file");
 }
 
 TEST_F(FileUtilsTest_FileContentsAreIdentical, File1_Bad)
@@ -785,7 +785,7 @@ TEST_F(FileUtilsTest_FileContentsAreIdentical, File1_Bad)
 
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), ErrorCode::kCouldNotCompareFiles);
-    EXPECT_STREQ(result.error().UserMessage().data(), "Failed to open file1");
+    EXPECT_EQ(result.error().UserMessage(), "Failed to open file1");
 }
 
 TEST_F(FileUtilsTest_FileContentsAreIdentical, File1_NullPtr)
@@ -798,7 +798,7 @@ TEST_F(FileUtilsTest_FileContentsAreIdentical, File1_NullPtr)
 
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), ErrorCode::kCouldNotCompareFiles);
-    EXPECT_STREQ(result.error().UserMessage().data(), "Failed to open file1");
+    EXPECT_EQ(result.error().UserMessage(), "Failed to open file1");
 }
 
 TEST_F(FileUtilsTest_FileContentsAreIdentical, File1_Error)
@@ -811,7 +811,7 @@ TEST_F(FileUtilsTest_FileContentsAreIdentical, File1_Error)
 
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), ErrorCode::kCouldNotCompareFiles);
-    EXPECT_STREQ(result.error().UserMessage().data(), "Failed to open file1");
+    EXPECT_EQ(result.error().UserMessage(), "Failed to open file1");
 }
 
 TEST_F(FileUtilsTest_FileContentsAreIdentical, File2_Bad)
@@ -825,7 +825,7 @@ TEST_F(FileUtilsTest_FileContentsAreIdentical, File2_Bad)
 
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), ErrorCode::kCouldNotCompareFiles);
-    EXPECT_STREQ(result.error().UserMessage().data(), "Failed to open file2");
+    EXPECT_EQ(result.error().UserMessage(), "Failed to open file2");
 }
 
 TEST_F(FileUtilsTest_FileContentsAreIdentical, File2_NullPtr)
@@ -839,7 +839,7 @@ TEST_F(FileUtilsTest_FileContentsAreIdentical, File2_NullPtr)
 
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), ErrorCode::kCouldNotCompareFiles);
-    EXPECT_STREQ(result.error().UserMessage().data(), "Failed to open file2");
+    EXPECT_EQ(result.error().UserMessage(), "Failed to open file2");
 }
 
 TEST_F(FileUtilsTest_FileContentsAreIdentical, File2_Error)
@@ -853,7 +853,7 @@ TEST_F(FileUtilsTest_FileContentsAreIdentical, File2_Error)
 
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), ErrorCode::kCouldNotCompareFiles);
-    EXPECT_STREQ(result.error().UserMessage().data(), "Failed to open file2");
+    EXPECT_EQ(result.error().UserMessage(), "Failed to open file2");
 }
 
 TEST_F(FileUtilsTest, CheckFileSystem_ok)

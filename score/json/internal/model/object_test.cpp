@@ -275,7 +275,7 @@ TEST_F(AttributeGettersTest, CascadingAccessErrorCase)
 
     const auto width = GetAttribute<std::uint64_t>(size, "width");
     EXPECT_FALSE(widget.has_value());
-    ASSERT_EQ(std::string(width.error().UserMessage().data()), "Key was not found on the object");
+    ASSERT_EQ(width.error().UserMessage(), "Key was not found on the object");
 }
 
 }  // namespace
