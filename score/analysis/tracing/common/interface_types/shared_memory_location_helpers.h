@@ -13,7 +13,7 @@
 #ifndef AAS_ANALYSIS_TRACING_COMMON_SHARED_MEMORY_LOCATION_HELPERS_H
 #define AAS_ANALYSIS_TRACING_COMMON_SHARED_MEMORY_LOCATION_HELPERS_H
 
-#include "score/analysis/tracing/library/generic_trace_api/error_code/error_code.h"
+#include "score/analysis/tracing/generic_trace_library/interface_types/error_code/error_code.h"
 #include "shared_memory_chunk.h"
 #include "shared_memory_location.h"
 #include "types.h"

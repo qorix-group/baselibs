@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 #include "score/analysis/tracing/common/flexible_circular_allocator/flexible_circular_allocator.h"
-#include "score/analysis/tracing/library/generic_trace_api/error_code/error_code.h"
+#include "score/analysis/tracing/generic_trace_library/interface_types/error_code/error_code.h"
 
 #include <numeric>
 namespace score

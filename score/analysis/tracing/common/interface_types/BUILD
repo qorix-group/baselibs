@@ -1,3 +1,5 @@
+# *******************************************************************************
+# Copyright (c) 2025 Contributors to the Eclipse Foundation
 #
 # See the NOTICE file(s) distributed with this work for additional
 # information regarding copyright ownership.
@@ -67,7 +69,7 @@ cc_library(
         ":generic_trace_api_types",
         ":shared_memory_chunk",
         ":shared_memory_location",
-        "@score-baselibs//score/analysis/tracing/library/generic_trace_api/error_code",
+        "@score-baselibs//score/analysis/tracing/generic_trace_library/interface_types/error_code",
     ],
 )
 

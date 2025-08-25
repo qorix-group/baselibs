@@ -11,24 +11,17 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 cc_library(
-    name = "shared_list",
-    srcs = [
-        "shared_list.cpp",
-    ],
-    hdrs = [
-        "shared_list.h",
-    ],
+    name = "trace_library_mock",
+    srcs = ["trace_library_mock.cpp"],
+    hdrs = ["trace_library_mock.h"],
     features = [
         "treat_warnings_as_errors",
         "strict_warnings",
         "additional_warnings",
     ],
-    tags = ["FUSA"],
-    visibility = [
-        "@score-baselibs//score/analysis:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/analysis/tracing/common/flexible_circular_allocator:flexible_circular_allocator_interface",
-        "@score-baselibs//score/analysis/tracing/generic_trace_library/interface_types/error_code",
+        "@score-baselibs//score/analysis/tracing/generic_trace_library/stub_implementation",
+        "@googletest//:gtest_main",
     ],
 )
