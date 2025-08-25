@@ -921,9 +921,22 @@ TEST_F(UnistdFixture, UnistdAlarmTriggersInExpectedTime)
     static bool triggered = false;
 
     score::os::SignalImpl sig{};
-    sig.signal(SIGALRM, [](int) {
+    struct sigaction sig_handler;
+    struct sigaction old_sigaction;
+    sig_handler.sa_handler = [](int) {
         triggered = true;
-    });
+    };
+    // Need to fully initialize otherwise memchecker complains
+    sig_handler.sa_flags = 0;
+    sigset_t sig_set{};
+    sig_handler.sa_mask = sig_set;
+    old_sigaction.sa_mask = sig_set;
+    old_sigaction.sa_flags = 0;
+    old_sigaction.sa_handler = SIG_DFL;
+
+    auto val = sig.SigAction(SIGALRM, sig_handler, old_sigaction);
+    EXPECT_TRUE(val.has_value());
+
     EXPECT_EQ(unit_->alarm(seconds), 0);
     std::this_thread::sleep_for(std::chrono::seconds{seconds} + std::chrono::milliseconds{100});
     EXPECT_TRUE(triggered);
