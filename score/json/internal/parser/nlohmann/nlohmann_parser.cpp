@@ -28,7 +28,7 @@
 #include <string>
 #include <type_traits>
 
-auto score::json::NlohmannParser::FromFile(const score::cpp::string_view file_path) -> score::Result<score::json::Any>
+auto score::json::NlohmannParser::FromFile(const std::string_view file_path) -> score::Result<score::json::Any>
 {
     score::Result<score::json::Any> result = MakeUnexpected(Error::kParsingError);
     // read from file

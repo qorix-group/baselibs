@@ -18,6 +18,10 @@
 #include "score/json/internal/model/object.h"
 #include "score/result/result.h"
 
+#include <score/string_view.hpp>
+
+#include <string_view>
+
 namespace score
 {
 namespace json
@@ -26,7 +30,7 @@ namespace json
 class IJsonParser
 {
   public:
-    virtual score::Result<Any> FromFile(const score::cpp::string_view file_path) const noexcept = 0;
+    virtual score::Result<Any> FromFile(const std::string_view file_path) const noexcept = 0;
     virtual score::Result<Any> FromBuffer(const score::cpp::string_view buffer) const noexcept = 0;
     IJsonParser() noexcept = default;
     IJsonParser(const IJsonParser&) = delete;

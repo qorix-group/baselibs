@@ -12,7 +12,7 @@
  ********************************************************************************/
 #include "score/json/internal/parser/vajson/vajson_parser.h"
 
-auto score::json::VajsonParser::FromFile(const score::cpp::string_view file_path) -> score::Result<score::json::Any>
+auto score::json::VajsonParser::FromFile(const std::string_view file_path) -> score::Result<score::json::Any>
 {
     score::Result<score::json::Any> result = MakeUnexpected(Error::kParsingError);
     // NOLINTNEXTLINE(score-banned-function) Tolerated because JsonParser::FromFile is also on the banned function list

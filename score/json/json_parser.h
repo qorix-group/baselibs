@@ -21,6 +21,8 @@
 
 #include "score/string_view.hpp"
 
+#include <string_view>
+
 namespace score
 {
 namespace json
@@ -32,7 +34,7 @@ class JsonParser : public IJsonParser
     /// \brief Parses the underlying file and creates a tree of JSON data
     /// \param file_path The path to the file that shall be parsed
     /// \return root to the tree of JSON data, error on error
-    score::Result<Any> FromFile(const score::cpp::string_view file_path) const noexcept override;
+    score::Result<Any> FromFile(const std::string_view file_path) const noexcept override;
 
     /// \brief Parses the underlying buffer and creates a tree of JSON data
     /// \param buffer The string_view that shall be parsed

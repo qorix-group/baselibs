@@ -75,7 +75,7 @@ score::json::JsonWriter --> score::json::JsonSerialize : use
 
 
 interface score::json::IJsonParser {
-  +FromFile(file_path: score::cpp::string_view): score::Result<Any>
+  +FromFile(file_path: std::string_view): score::Result<Any>
   +FromBuffer(buffer: score::cpp::string_view): score::Result<Any>
 }
 
@@ -84,7 +84,7 @@ score::json::IJsonParser --> score::Result : use
 
 
 class score::json::JsonParser {
-  +FromFile(file_path: score::cpp::string_view): score::Result<Any>
+  +FromFile(file_path: std::string_view): score::Result<Any>
   +FromBuffer(buffer: score::cpp::string_view): score::Result<Any>
 }
 
@@ -123,7 +123,7 @@ amsr::json::v2::Parser <|-- score::json::VajsonParser
 
 
 class score::json::VajsonParser #LightSteelBlue {
-  {static}+FromFile(file_path: score::cpp::string_view): score::Result<Any>
+  {static}+FromFile(file_path: std::string_view): score::Result<Any>
   {static}+FromBuffer(buffer: score::cpp::string_view): score::Result<Any>
 }
 
@@ -137,7 +137,7 @@ score::json::VajsonParser --> amsr::json::JsonData : use
 
 
 class score::json::NlohmannParser #LightSteelBlue {
-  {static}+FromFile(file_path: score::cpp::string_view): score::Result<Any>
+  {static}+FromFile(file_path: std::string_view): score::Result<Any>
   {static}+FromBuffer(buffer: score::cpp::string_view): score::Result<Any>
 }
 

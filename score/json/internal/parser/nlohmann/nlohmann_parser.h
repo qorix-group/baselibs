@@ -30,7 +30,7 @@ class NlohmannParser
     /// \brief Constructs a data-tree from a JSON file
     /// \param file_path The JSON file to read
     /// \return Any as root of the tree, nullptr on error
-    static auto FromFile(const score::cpp::string_view file_path) -> score::Result<Any>;
+    static auto FromFile(const std::string_view file_path) -> score::Result<Any>;
 
     /// \brief Constructs a data-tree from a string containing JSON
     /// \param buffer The string_view containing JSON

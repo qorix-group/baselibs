@@ -22,7 +22,7 @@ namespace score
 namespace json
 {
 
-auto JsonParser::FromFile(const score::cpp::string_view file_path) const noexcept -> score::Result<Any>
+auto JsonParser::FromFile(const std::string_view file_path) const noexcept -> score::Result<Any>
 {
     return NlohmannParser::FromFile(file_path);
 }
