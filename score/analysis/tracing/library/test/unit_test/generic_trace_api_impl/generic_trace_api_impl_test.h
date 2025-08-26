@@ -4,7 +4,7 @@
 #include "score/analysis/tracing/library/interface/generic_trace_api.h"
 #include "score/language/safecpp/scoped_function/scope.h"
 
-#include "score/analysis/tracing/common/testing_utils/notification/notification_helper.h"
+#include "score/analysis/tracing/common/testing_utils/notification/promise_notifier.h"
 #include "score/analysis/tracing/library/test/unit_test/mocks/mock_daemon_communicator.h"
 #include "score/analysis/tracing/library/test/unit_test/mocks/mock_memory_validator.h"
 #include "score/analysis/tracing/library/test/unit_test/mocks/mock_object_factory.h"

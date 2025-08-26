@@ -62,7 +62,7 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
-        "@score-baselibs//score/analysis/tracing/common/testing_utils/notification:notification_helper",
+        "@score-baselibs//score/analysis/tracing/common/testing_utils/notification:promise_notifier",
         "@score-baselibs//score/analysis/tracing/library/generic_trace_api:object_factory",
         "@score-baselibs//score/analysis/tracing/library/generic_trace_api/daemon_communicator",
         "@score-baselibs//score/language/safecpp/scoped_function:move_only_scoped_function",

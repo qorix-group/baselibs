@@ -6,7 +6,7 @@
 ///
 
 #include "score/analysis/tracing/library/generic_trace_api/daemon_communicator/impl/daemon_communicator.h"
-#include "score/analysis/tracing/common/testing_utils/notification/notification_helper.h"
+#include "score/analysis/tracing/common/testing_utils/notification/promise_notifier.h"
 #include "score/analysis/tracing/library/generic_trace_api/error_code/error_code.h"
 #include "score/analysis/tracing/library/generic_trace_api/object_factory.h"
 #include "score/analysis/tracing/plugin/ipc_trace_plugin/interface/daemon_communication_response.h"
@@ -80,7 +80,7 @@ class DaemonCommunicatorFixture : public ::testing::Test
                                                                     std::move(mock_unistd_),
                                                                     stop_source_.get_token());
         // wait for a little to give time for the daemon crash detector thread to be alive
-        ASSERT_TRUE(deamon_thread_notification_.WaitForNotificationWithTimeout(std::chrono::milliseconds{100}));
+        ASSERT_TRUE(deamon_thread_started_.WaitForNotificationWithTimeout(std::chrono::milliseconds{100}));
     }
 
     void HandleDaemonCrashDetectorThread()
@@ -90,7 +90,7 @@ class DaemonCommunicatorFixture : public ::testing::Test
             .WillOnce(Return(channel_id_));
         EXPECT_CALL(*mock_unistd_, getpid()).WillRepeatedly(Return(valid_process_id_));
         EXPECT_CALL(*channel_mock_raw_ptr_, ConnectAttach).WillOnce(Invoke([this]() {
-            deamon_thread_notification_.Notify();
+            this->deamon_thread_started_.Notify();
             return connection_id_;
         }));
         EXPECT_CALL(*channel_mock_raw_ptr_, MsgReceivePulse)
@@ -115,7 +115,7 @@ class DaemonCommunicatorFixture : public ::testing::Test
         EXPECT_CALL(*channel_mock_raw_ptr_, ConnectDetach);
 
         EXPECT_CALL(*neutrino_mock_raw_ptr_, ChannelDestroy(_)).WillOnce(Invoke([this](int32_t) {
-            deamon_thread_notification_.Notify();
+            this->deamon_thread_finished_.Notify();
             return EOK;
         }));
     }
@@ -227,7 +227,8 @@ class DaemonCommunicatorFixture : public ::testing::Test
     std::mutex mutex_;
     std::condition_variable condition_variable_;
     bool received_shutdown_request_;
-    NotificationHelper deamon_thread_notification_;
+    PromiseNotifier deamon_thread_started_;
+    PromiseNotifier deamon_thread_finished_;
 };
 
 TEST_F(DaemonCommunicatorFixture, RegisterSharedMemoryObjectDaemonNotConnected)
@@ -265,7 +266,7 @@ TEST_F(DaemonCommunicatorFixture, ConnectFailedForInvalidDaemonConnectionID)
 
     ShutdownDaemonCrashDetectorThread();
     // waiting deamon thread to finish and call CleanupCrashDetectorThread
-    ASSERT_TRUE(deamon_thread_notification_.WaitForNotificationWithTimeout(std::chrono::milliseconds{30}));
+    ASSERT_TRUE(deamon_thread_finished_.WaitForNotificationWithTimeout(std::chrono::milliseconds{30}));
     const auto connect_result = daemon_communicator_->Connect();
     EXPECT_FALSE(connect_result.has_value());
     EXPECT_EQ(connect_result.error(), ErrorCode::kDaemonTerminationDetectionFailedFatal);
@@ -677,7 +678,7 @@ TEST_F(DaemonCommunicatorFixture, CreateChannelToDetectDaemonTerminationFailed)
 {
     EXPECT_CALL(*neutrino_mock_raw_ptr_, ChannelCreate(score::os::qnx::Neutrino::ChannelFlag::kConnectionIdDisconnect))
         .WillOnce(Invoke([this]() {
-            deamon_thread_notification_.Notify();
+            deamon_thread_started_.Notify();
             return score::cpp::make_unexpected(score::os::Error::createFromErrno());
         }));
     daemon_communicator_ = std::make_unique<DaemonCommunicator>(std::move(dispatch_mock_),
@@ -687,7 +688,7 @@ TEST_F(DaemonCommunicatorFixture, CreateChannelToDetectDaemonTerminationFailed)
                                                                 std::move(mock_unistd_),
                                                                 stop_source_.get_token());
     // wait for a little to give time for the daemon crash detector thread to be alive
-    ASSERT_TRUE(deamon_thread_notification_.WaitForNotificationWithTimeout(std::chrono::milliseconds{100}));
+    ASSERT_TRUE(deamon_thread_started_.WaitForNotificationWithTimeout(std::chrono::milliseconds{100}));
 
     const auto connect_result = daemon_communicator_->Connect();
     EXPECT_FALSE(connect_result.has_value());
@@ -699,7 +700,7 @@ TEST_F(DaemonCommunicatorFixture, ConnectAttachToDetectDaemonTerminationFailed)
         .WillOnce(Return(channel_id_));
     EXPECT_CALL(*mock_unistd_, getpid()).WillRepeatedly(Return(valid_process_id_));
     EXPECT_CALL(*channel_mock_raw_ptr_, ConnectAttach).WillOnce(Invoke([this]() {
-        deamon_thread_notification_.Notify();
+        deamon_thread_started_.Notify();
         return score::cpp::make_unexpected(score::os::Error::createFromErrno());
     }));
     daemon_communicator_ = std::make_unique<DaemonCommunicator>(std::move(dispatch_mock_),
@@ -709,7 +710,7 @@ TEST_F(DaemonCommunicatorFixture, ConnectAttachToDetectDaemonTerminationFailed)
                                                                 std::move(mock_unistd_),
                                                                 stop_source_.get_token());
     // wait for a little to give time for the daemon crash detector thread to be alive
-    ASSERT_TRUE(deamon_thread_notification_.WaitForNotificationWithTimeout(std::chrono::milliseconds{100}));
+    ASSERT_TRUE(deamon_thread_started_.WaitForNotificationWithTimeout(std::chrono::milliseconds{100}));
 
     const auto connect_result = daemon_communicator_->Connect();
     EXPECT_FALSE(connect_result.has_value());
@@ -739,7 +740,7 @@ TEST_F(DaemonCommunicatorFixture, ReceivePulseFailedAndStopTokenRequested)
     EXPECT_CALL(*channel_mock_raw_ptr_, ConnectDetach);
 
     EXPECT_CALL(*neutrino_mock_raw_ptr_, ChannelDestroy(_)).WillOnce(Invoke([this](int32_t) {
-        deamon_thread_notification_.Notify();
+        deamon_thread_started_.Notify();
         return EOK;
     }));
 
@@ -750,7 +751,7 @@ TEST_F(DaemonCommunicatorFixture, ReceivePulseFailedAndStopTokenRequested)
                                                                 std::move(mock_unistd_),
                                                                 stop_source_.get_token());
     // wait for a little to give time for the daemon crash detector thread to be alive
-    ASSERT_TRUE(deamon_thread_notification_.WaitForNotificationWithTimeout(std::chrono::milliseconds{300}));
+    ASSERT_TRUE(deamon_thread_started_.WaitForNotificationWithTimeout(std::chrono::milliseconds{300}));
 
     const auto connect_result = daemon_communicator_->Connect();
     EXPECT_FALSE(connect_result.has_value());
@@ -781,7 +782,7 @@ TEST_F(DaemonCommunicatorFixture, ReceiveUnexpectedPulseAndStopTokenRequested)
     EXPECT_CALL(*channel_mock_raw_ptr_, ConnectDetach);
 
     EXPECT_CALL(*neutrino_mock_raw_ptr_, ChannelDestroy(_)).WillOnce(Invoke([this](int32_t) {
-        deamon_thread_notification_.Notify();
+        deamon_thread_finished_.Notify();
         return EOK;
     }));
     daemon_communicator_ = std::make_unique<DaemonCommunicator>(std::move(dispatch_mock_),
@@ -791,7 +792,7 @@ TEST_F(DaemonCommunicatorFixture, ReceiveUnexpectedPulseAndStopTokenRequested)
                                                                 std::move(mock_unistd_),
                                                                 stop_source_.get_token());
     // wait for a little to give time for the daemon crash detector thread to be alive
-    ASSERT_TRUE(deamon_thread_notification_.WaitForNotificationWithTimeout(std::chrono::milliseconds{300}));
+    ASSERT_TRUE(deamon_thread_finished_.WaitForNotificationWithTimeout(std::chrono::milliseconds{300}));
 
     const auto connect_result = daemon_communicator_->Connect();
     EXPECT_FALSE(connect_result.has_value());
@@ -805,7 +806,7 @@ TEST_F(DaemonCommunicatorFixture, ReceiveDaemonCrashPulse)
         .WillOnce(Return(channel_id_));
     EXPECT_CALL(*mock_unistd_, getpid()).WillRepeatedly(Return(valid_process_id_));
     EXPECT_CALL(*channel_mock_raw_ptr_, ConnectAttach).WillOnce(Invoke([this]() {
-        deamon_thread_notification_.Notify();
+        deamon_thread_started_.Notify();
         return connection_id_;
     }));
 
@@ -843,7 +844,7 @@ TEST_F(DaemonCommunicatorFixture, ReceiveDaemonCrashPulse)
     EXPECT_CALL(*channel_mock_raw_ptr_, ConnectDetach);
 
     EXPECT_CALL(*neutrino_mock_raw_ptr_, ChannelDestroy(_)).WillOnce(Invoke([this](int32_t) {
-        deamon_thread_notification_.Notify();
+        deamon_thread_finished_.Notify();
         return EOK;
     }));
     ExpectConnection();
@@ -863,7 +864,7 @@ TEST_F(DaemonCommunicatorFixture, ReceiveDaemonCrashPulse)
     });
 
     // wait for a little to give time for the daemon crash detector thread to be alive
-    ASSERT_TRUE(deamon_thread_notification_.WaitForNotificationWithTimeout(std::chrono::milliseconds{50}));
+    ASSERT_TRUE(deamon_thread_started_.WaitForNotificationWithTimeout(std::chrono::milliseconds{50}));
     // Should connect normally
     const auto connect_result = daemon_communicator_->Connect();
     EXPECT_TRUE(connect_result.has_value());
@@ -876,6 +877,7 @@ TEST_F(DaemonCommunicatorFixture, ReceiveDaemonCrashPulse)
         condition_variable_.notify_one();
     }
     EXPECT_EQ(callback_future.wait_for(std::chrono::milliseconds(100)), std::future_status::ready);
+    deamon_thread_finished_.WaitForNotificationWithTimeout(std::chrono::milliseconds{30});
 }
 
 TEST_F(DaemonCommunicatorFixture, ReceiveDaemonCrashPulseWithoutSubscribeCallback)
@@ -887,7 +889,7 @@ TEST_F(DaemonCommunicatorFixture, ReceiveDaemonCrashPulseWithoutSubscribeCallbac
         .WillOnce(Return(channel_id_));
     EXPECT_CALL(*mock_unistd_, getpid()).WillRepeatedly(Return(valid_process_id_));
     EXPECT_CALL(*channel_mock_raw_ptr_, ConnectAttach).WillOnce(Invoke([this]() {
-        deamon_thread_notification_.Notify();
+        deamon_thread_started_.Notify();
         return connection_id_;
     }));
 
@@ -938,7 +940,9 @@ TEST_F(DaemonCommunicatorFixture, ReceiveDaemonCrashPulseWithoutSubscribeCallbac
                                                                 std::move(neutrino_mock_),
                                                                 std::move(mock_unistd_),
                                                                 stop_source_.get_token());
-    ASSERT_TRUE(deamon_thread_notification_.WaitForNotificationWithTimeout(std::chrono::milliseconds{100}));
+
+    // wait for a little to give time for the daemon crash detector thread to be alive
+    ASSERT_TRUE(deamon_thread_started_.WaitForNotificationWithTimeout(std::chrono::milliseconds{30}));
     // Should connect normally
     const auto connect_result = daemon_communicator_->Connect();
     EXPECT_TRUE(connect_result.has_value());
@@ -963,7 +967,7 @@ TEST_F(DaemonCommunicatorFixture, ReceiveNotificationOfAnotherConnectedProcessCr
         .WillOnce(Return(channel_id_));
     EXPECT_CALL(*mock_unistd_, getpid()).WillRepeatedly(Return(valid_process_id_));
     EXPECT_CALL(*channel_mock_raw_ptr_, ConnectAttach).WillOnce(Invoke([this]() {
-        deamon_thread_notification_.Notify();
+        deamon_thread_started_.Notify();
         return connection_id_;
     }));
 
@@ -999,7 +1003,7 @@ TEST_F(DaemonCommunicatorFixture, ReceiveNotificationOfAnotherConnectedProcessCr
     EXPECT_CALL(*channel_mock_raw_ptr_, ConnectDetach);
 
     EXPECT_CALL(*neutrino_mock_raw_ptr_, ChannelDestroy(_)).WillOnce(Invoke([this](int32_t) {
-        deamon_thread_notification_.Notify();
+        deamon_thread_finished_.Notify();
         return EOK;
     }));
     ExpectConnection();
@@ -1010,7 +1014,7 @@ TEST_F(DaemonCommunicatorFixture, ReceiveNotificationOfAnotherConnectedProcessCr
                                                                 std::move(mock_unistd_),
                                                                 stop_source_.get_token());
     // wait for a little to give time for the daemon crash detector thread to be alive
-    ASSERT_TRUE(deamon_thread_notification_.WaitForNotificationWithTimeout(std::chrono::milliseconds{300}));
+    ASSERT_TRUE(deamon_thread_started_.WaitForNotificationWithTimeout(std::chrono::milliseconds{300}));
 
     // After while another process (not the daemon) would crash
     {
@@ -1023,7 +1027,7 @@ TEST_F(DaemonCommunicatorFixture, ReceiveNotificationOfAnotherConnectedProcessCr
     CheckConnection();
 
     ShutdownDaemonCrashDetectorThread();
-    ASSERT_TRUE(deamon_thread_notification_.WaitForNotificationWithTimeout(std::chrono::milliseconds{100}));
+    ASSERT_TRUE(deamon_thread_finished_.WaitForNotificationWithTimeout(std::chrono::milliseconds{100}));
 }
 
 TEST_F(DaemonCommunicatorFixture, CleanUpCrashDetectorThreadInCaseOfInvalidChannelID)
@@ -1051,7 +1055,7 @@ TEST_F(DaemonCommunicatorFixture, CleanUpCrashDetectorThreadInCaseOfInvalidChann
                 return 0;
             }));
     EXPECT_CALL(*channel_mock_raw_ptr_, ConnectDetach).WillOnce(Invoke([this]() {
-        deamon_thread_notification_.Notify();
+        deamon_thread_finished_.Notify();
         return score::cpp::blank{};
     }));
     daemon_communicator_ = std::make_unique<DaemonCommunicator>(std::move(dispatch_mock_),
@@ -1061,7 +1065,7 @@ TEST_F(DaemonCommunicatorFixture, CleanUpCrashDetectorThreadInCaseOfInvalidChann
                                                                 std::move(mock_unistd_),
                                                                 stop_source_.get_token());
     // wait for a little to give time for the daemon crash detector thread to be alive
-    ASSERT_TRUE(deamon_thread_notification_.WaitForNotificationWithTimeout(std::chrono::milliseconds{2 * 300}));
+    ASSERT_TRUE(deamon_thread_finished_.WaitForNotificationWithTimeout(std::chrono::milliseconds{2 * 300}));
 
     const auto connect_result = daemon_communicator_->Connect();
     EXPECT_FALSE(connect_result.has_value());
@@ -1085,7 +1089,7 @@ TEST_F(DaemonCommunicatorFixture, CleanUpCrashDetectorThreadInCaseOfInvalidConne
                 if (receive_pulse_count > 10)
                 {
                     stop_source_.request_stop();
-                    deamon_thread_notification_.Notify();
+                    deamon_thread_finished_.Notify();
                 }
                 auto input_pulse = reinterpret_cast<struct _pulse*>(pulse);
                 input_pulse->code = unexpected_pulse_code;
@@ -1101,7 +1105,7 @@ TEST_F(DaemonCommunicatorFixture, CleanUpCrashDetectorThreadInCaseOfInvalidConne
                                                                 std::move(mock_unistd_),
                                                                 stop_source_.get_token());
     // wait for a little to give time for the daemon crash detector thread to be alive
-    ASSERT_TRUE(deamon_thread_notification_.WaitForNotificationWithTimeout(std::chrono::milliseconds{300}));
+    ASSERT_TRUE(deamon_thread_finished_.WaitForNotificationWithTimeout(std::chrono::milliseconds{300}));
 
     const auto connect_result = daemon_communicator_->Connect();
     EXPECT_FALSE(connect_result.has_value());

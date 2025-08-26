@@ -17,7 +17,7 @@ cc_library(
     ],
     features = FEAT_COMPILER_WARNINGS_AS_ERRORS,
     deps = [
-        "@score-baselibs//score/analysis/tracing/common/testing_utils/notification:notification_helper",
+        "@score-baselibs//score/analysis/tracing/common/testing_utils/notification:promise_notifier",
         "@score-baselibs//score/analysis/tracing/library/generic_trace_api",
         "@score-baselibs//score/analysis/tracing/library/test/unit_test/mocks:daemon_communicator_mock",
         "@score-baselibs//score/analysis/tracing/library/test/unit_test/mocks:memory_validator_mock",
