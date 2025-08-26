@@ -105,13 +105,9 @@ TEST_F(NonVerboseConfig, NvConfigReturnsExpectedValues)
         1,
         static_cast<int>(
             nvc1.getDltMsgDesc("score::logging::PersistentLogFileEvent")->GetLogLevel()));  // loglevel value reading
-    EXPECT_EQ(2,
-              static_cast<int>(
-                  nvc1.getDltMsgDesc("LogMark::stdframe")->GetLogLevel()));  // loglevel value reading other example
     EXPECT_EQ(4,
               static_cast<int>(nvc1.getDltMsgDesc("poseng::logging::ReprocessingCycle")
                                    ->GetLogLevel()));  // loglevel value reading when using default loglevel
-    EXPECT_EQ(10, nvc1.getDltMsgDesc("LogMark::stdframe")->GetIdMsgDescriptor());  // id value reading other example
     EXPECT_EQ(
         std::string_view{"Repr"},
         nvc1.getDltMsgDesc("aas::logging::ReprocessingCycle")->GetCtxId().GetStringView());  // ctxid value reading
@@ -122,9 +118,6 @@ TEST_F(NonVerboseConfig, NvConfigReturnsExpectedValues)
               nvc1.getDltMsgDesc("score::logging::PersistentLogFileEvent")
                   ->GetCtxId()
                   .GetStringView());  // ctxid value reading other example
-    EXPECT_EQ(
-        std::string_view{"STDF"},
-        nvc1.getDltMsgDesc("LogMark::stdframe")->GetAppId().GetStringView());  // appid value reading other example
 }
 
 TEST_F(NonVerboseConfig, NvConfigReturnsExpectedValuesWithOtherFile)

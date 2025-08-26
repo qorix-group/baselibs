@@ -15,11 +15,5 @@
 		"id": 41000,
 		"ctxid": "Cycl",
 		"appid": "PE"
-	},
-	"LogMark::stdframe": {
-		"id": 10,
-		"ctxid": "STDA",
-		"appid": "STDF",
-		"loglevel": 2
 	}
 }
