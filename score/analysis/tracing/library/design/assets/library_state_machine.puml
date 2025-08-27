@@ -1,0 +1,44 @@
+@startuml
+skinparam StateBackgroundColor #F0F8FF
+skinparam StateBorderColor #2E8B57
+skinparam StateArrowColor #2E8B57
+skinparam NoteBackgroundColor #F5F5DC
+skinparam NoteBorderColor #2E8B57
+
+title Generic Trace Library State Machine
+State "kLibraryInitialized" as kLibraryInitialized
+
+[*] --> kLibraryInitialized : Client invoke GTL
+
+note right of kLibraryInitialized
+  GTL constructs:
+  - trace_job_container
+  - trace_job_processor
+  - daemon_communicator
+  - trace_job_allocator
+  - create tmd
+  - worker thread
+end note
+
+kLibraryInitialized --> kLibraryHibernate : Start worker thread.
+
+kLibraryInitialized --> kLibraryTerminated : worker thread\ndid not started.
+
+note left of kLibraryHibernate
+  - Worker thread tries to connect to LtpmBackend
+  - Register clients & shmObjects
+end note
+
+kLibraryHibernate --> kTracing : LtpmBackend Connected
+
+kTracing --> kLibraryHibernate : LtpmBackend\ndisconnected
+
+kLibraryHibernate --> kLibraryHibernate : Wait for LtpmBackend\nto be connected
+
+kLibraryHibernate --> kLibraryTerminated : stop token\nrequested
+
+kTracing --> kLibraryTerminated : stop token\nrequested
+
+kLibraryTerminated --> [*]
+
+@enduml

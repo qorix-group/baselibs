@@ -1,0 +1,115 @@
+@startuml start_worker_thread
+skinparam sequenceMessageAlign center
+[-> WorkerThread: spawn thread
+activate WorkerThread
+note over WorkerThread: state==kNotInitialized
+loop no stop requested
+    alt TryDaemonConnection == success
+        WorkerThread -> WorkerThread: break
+    end
+    WorkerThread -> WorkerThread: sleep(kDaemonConnectionRetrySleepTime)
+    |||
+end
+
+alt stop requested
+    |||
+    WorkerThread -> WorkerThread: set global_error=kDaemonNotAvailableFatal
+    WorkerThread ->[: exit
+    |||
+end
+
+note over WorkerThread: state=kDaemonInitialized
+
+group RegisterLtpmDaemonClients
+    loop for all registered local clients
+
+        WorkerThread -> ClientContainer: get client
+        activate ClientContainer
+        ClientContainer --> WorkerThread: return client
+        deactivate ClientContainer
+
+        WorkerThread -> DaemonCommunicator: RegisterClient(client)
+        activate DaemonCommunicator
+        DaemonCommunicator --> WorkerThread: return ltpm_answer
+        deactivate DaemonCommunicator
+
+        alt ltpm_answer == success
+            WorkerThread -> WorkerThread: Add client with ltpm_answer
+        else ltpm_answer == error
+            WorkerThread -> WorkerThread: set pending_error for client
+        |||
+        end
+        |||
+    end
+
+    alt stop requested
+        |||
+        WorkerThread -> WorkerThread: set global_error=kFailedRegisterCachedClientsFatal
+        WorkerThread ->[: exit
+        |||
+    end
+end
+
+group RegisterLtpmDaemonShmObjectHandles
+    loop for all registered shm registered area
+
+        WorkerThread -> ShmObjectHandleContainer: get shm handle
+        activate ShmObjectHandleContainer
+        ShmObjectHandleContainer --> WorkerThread: return shm_handle
+        deactivate ShmObjectHandleContainer
+
+        WorkerThread -> DaemonCommunicator: RegisterSharedMemoryObject(shm_handle)
+        activate DaemonCommunicator
+        DaemonCommunicator --> WorkerThread: return ltpm_answer
+        deactivate DaemonCommunicator
+
+        alt ltpm_answer == success
+            WorkerThread -> WorkerThread: Update shm_handle with ltpm_answer
+        else ltpm_answer == error
+            WorkerThread -> WorkerThread: print error msg and set global_error=kFailedRegisterCachedShmObjectsFatal
+            WorkerThread ->[: exit
+        |||
+        end
+        |||
+    end
+
+    alt stop requested
+        |||
+        WorkerThread -> WorkerThread: set global_error=kFailedRegisterCachedShmObjectsFatal
+        WorkerThread ->[: exit
+        |||
+    end
+end
+
+alt create_tmd_result_ == error
+    |||
+    note over WorkerThread: state=kGenericError
+    WorkerThread -> WorkerThread: set global_error=create_tmd_result_.error()
+    WorkerThread ->[: exit
+    |||
+end
+WorkerThread -> DaemonCommunicator: RegisterSharedMemoryObject(tmd)
+activate DaemonCommunicator
+DaemonCommunicator --> WorkerThread: return ltpm_answer
+deactivate DaemonCommunicator
+alt ltpm_answer == error
+    |||
+    note over WorkerThread: state=kGenericError
+    WorkerThread -> WorkerThread: set global_error=register_tmd.error()
+    WorkerThread ->[: exit
+    |||
+end
+
+alt trace_job_allocator_result_ == error
+    |||
+    note over WorkerThread: state=kGenericError
+    WorkerThread -> WorkerThread: set global_error=kTraceJobAllocatorInitializationFailedFatal
+    WorkerThread ->[: exit
+    |||
+end
+
+WorkerThread -> WorkerThread: trace_job_allocator_ = std::move(trace_job_allocator_result_.value())
+
+note over WorkerThread: state=kInitialized
+
+@enduml

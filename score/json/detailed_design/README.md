@@ -2,7 +2,7 @@
 
 You can find the design as below:
 
-![Class diagram](broken_link_k/swh/safe-posix-platform/platform/aas/lib/json/detailed_design/class_diagram.puml)
+![Class diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/platform/aas/lib/json/detailed_design/class_diagram.puml)
 
 The main idea is to split the library into two parts, one user facing and one
 implementation detail which can be swapped out if necessary.

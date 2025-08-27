@@ -7,7 +7,7 @@ a runtime decision for the user which parallel context shall be used.
 
 The following prose text describes the [Structural View](./structural_view.uxf).
 
-![Structural View](broken_link_k/swh/ddad_score/concurrency/design/structural_view.uxf)
+![Structural View](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/ddad_score/concurrency/design/structural_view.uxf)
 
 ## Tasks
 

@@ -1,0 +1,281 @@
+<diagram program="umletino" version="15.1"><zoom_level>8</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>0</x><y>0</y><w>696</w><h>408</h></coordinates><panel_attributes>GenericTraceAPIImpl
+--
+using TraceClientId = std::uint8_t
+using TraceContextId = std::uint32_t
+using TraceDoneCBType = score::cpp::callback&lt;void(TraceContextId)&gt;
+--
++RegisterClient(const char* client_description) : score::result&lt;TraceClientId&gt;
+
++RegisterShmObject(const TraceClientId client, const char* shm_object_path) : score::result&lt;ShmObjectHandle&gt;
++RegisterShmObject(const TraceClientId client, int shm_object_fd) : score::result&lt;ShmObjectHandle&gt;
+
++UnregisterShmObject(const TraceClientId client, ShmObjectHandle) : score::result&lt;Blank&gt;
+
++RegisterTraceCallDoneCB(const TraceClientId client, TraceDoneCBType trace_done_cb) : score::result&lt;Blank&gt;
+
++Trace(const TraceClientId client, const MetaInfoVariants::type&amp; meta_info, ShmDataChunkList data, TraceContextId context_id) : score::result&lt;Blank&gt;
++Trace(const TraceClientId client, const MetaInfoVariants::type&amp; meta_info, LocalDataChunkList data) : score::result&lt;Blank&gt;
+--
+std::atomic&lt;LibraryState&gt; state_;
+std::unique_ptr&lt;score::cpp::jthread&gt; worker_thread_;
+SharedResourcePointer trace_metadata_memory_resource_;
+
+AtomicPoolContainer&lt;ClientIdElement, kClientIdContainerSize&gt; client_id_container_;
+AtomicPoolContainer&lt;ShmHandleTranslation, kShmHandleTranslationContainerSize&gt; shm_handle_container_;
+
+mutable std::condition_variable library_initialized_condition_;
+mutable std::condition_variable daemon_initialized_condition_;
+mutable std::mutex library_init_mutex_;
+mutable std::mutex daemon_init_mutex_;
+
+std::array&lt;char, kMaxSizeForTmdSharedMemoryPath&gt; trace_meta_data_shared_memory_path_;
+std::unique_ptr&lt;score::os::Unistd&gt; unistd_impl_;
+ShmObjectHandle trace_meta_data_memory_handle_;
+std::uint8_t max_number_of_retries_;
+score::cpp::stop_token stop_token_;
+
+fontsize=12
+bg=white
+fg=black</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>688</x><y>88</y><w>104</w><h>32</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes><additional_attributes>10;10;110;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>720</x><y>128</y><w>448</w><h>232</h></coordinates><panel_attributes>ObjectFactory
+--
++ ObjectFactory(std::unique_ptr&lt;score::mw::time::HWLoggerTime::Factory&gt; logger_time_factory,
+                               std::unique_ptr&lt;IDaemonCommunicatorFactory&gt; communicator_factory,
+                               std::unique_ptr&lt;IShmRingBuffer&gt; shm_ring_bufferr);
+
++ CreateDaemonCommunicator() : Result&lt;unique_ptr&lt;IDaemonCommunicator&gt;&gt;;
++ CreateTraceJobAllocator(TraceJobContainer&amp; container,
+                                            ResourcePointer memory_resource,
+                                            ShmObjectHandle handle) : Result&lt;unique_ptr&lt;ITraceJobAllocator&gt;&gt;
++ CreateTraceJobProcessor(
+        TraceJobContainer&amp; container,
+        TraceJobDeallocator deallocator_function,
+	score::cpp::stop_token&amp; stop_token) : std::unique_ptr&lt;ITraceJobProcessor&gt;
+--
+std::unique_ptr&lt;score::mw::time::HWLoggerTime::Factory&gt; logger_time_factory_;
+std::unique_ptr&lt;IDaemonCommunicatorFactory&gt; communicator_factory_;
+mutable std::unique_ptr&lt;IShmRingBuffer&gt; shm_ring_buffer_;
+--
+Responsibilities
+Create the objects needed by the library
+
+fontsize=12
+bg=white
+fg=black</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>776</x><y>80</y><w>80</w><h>24</h></coordinates><panel_attributes>/IObjectFactory/
+
+fontsize=12
+bg=white
+fg=black</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>808</x><y>96</y><w>24</w><h>48</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;40</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>480</y><w>472</w><h>320</h></coordinates><panel_attributes>DaemonCommunicator
+--
++ DaemonCommunicator(
+        std::unique_ptr&lt;const os::Dispatch&gt; dispatch,
+        std::unique_ptr&lt;const os::Channel&gt; channel,
+        std::unique_ptr&lt;const os::qnx::MmanQnx&gt; mman,
+        std::unique_ptr&lt;const os::qnx::Neutrino&gt; neutrino);
+
++ Connect() : ResultBlank
++ SubscribeToDaemonTerminationNotification(DaemonTerminationCallback) : void
++ RegisterSharedMemoryObject(const std::int32_t file_descriptor) : RegisterSharedMemoryObjectResult
++ RegisterSharedMemoryObject(const std::string&amp; path) : RegisterSharedMemoryObjectResult
+
++ RegisterClient(const BindingType&amp; binding_type,
+                                        const std::string&amp; app_instance_identifier) : RegisterClientResult
+
++ UnregisterSharedMemoryObject(const ShmObjectHandle handle) : ResultBlank
+--
+pid_t daemon_process_id_;
+std::int32_t channel_id_;
+std::unique_ptr&lt;const os::Dispatch&gt; dispatch_;
+std::unique_ptr&lt;const os::Channel&gt; channel_;
+std::unique_ptr&lt;const os::qnx::MmanQnx&gt; mman_;
+std::unique_ptr&lt;const os::qnx::Neutrino&gt; neutrino_;
+--
+Responsibilities
+Communicate with the IPC backend for all (un)registration requests.
+The communication is done via QNX message passing
+
+fontsize=12
+bg=white
+fg=black</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>88</x><y>440</y><w>120</w><h>24</h></coordinates><panel_attributes>/IDaemonCommunicator/
+
+fontsize=12
+bg=white
+fg=black</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>112</x><y>400</y><w>32</w><h>56</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>112</x><y>456</y><w>24</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;30</additional_attributes></element><element><id>UMLClass</id><coordinates><x>528</x><y>456</y><w>120</w><h>24</h></coordinates><panel_attributes>/ITraceJobAllocator/
+
+fontsize=12
+bg=white
+fg=black</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>528</x><y>512</y><w>424</w><h>400</h></coordinates><panel_attributes>TraceJobAllocator
+--
++ TraceJobAllocator(TraceJobContainer&amp; container,
+                                 ResourcePointer tmd_memory_resource,
+                                 ShmObjectHandle handle,
+                                 std::shared_ptr&lt;IFlexibleCircularAllocator&gt; flexible_allocator,
+                                 std::unique_ptr&lt;IShmRingBuffer&gt; ring_buffer,
+                                 LoggerTime logger_time);
+
++ AllocateShmJob(const TraceClientId client,
+                              const MetaInfoVariants::type&amp; meta_info,
+                              const BindingType binding_type,
+                              const std::string&amp; app_instance_id,
+                              ShmDataChunkList&amp; data,
+                              TraceContextId context_id) : TraceResult
++ AllocateLocalJob(const TraceClientId client,
+                                const MetaInfoVariants::type&amp; meta_info,
+                                const BindingType binding_type,
+                                const std::string&amp; app_instance_id,
+                                LocalDataChunkList&amp; data) : TraceResult;
+
++ DeallocateJob(SharedMemoryLocation chunk_list, TraceJobType job_type) : TraceResult
++ IsLoggerTimeAvailable() : bool ;
+--
+TraceJobContainer&amp; container_;
+ResourcePointer trace_metadata_memory_resource_;
+ShmObjectHandle trace_metadata_memory_handle_;
+std::uint32_t job_id_;
+std::shared_ptr&lt;IFlexibleCircularAllocator&gt; flexible_allocator_;
+LoggerTime logger_time_;
+bool logger_time_available_;
+--
+Responsibilities
+Do all logic necessary to prepare a trace job and put it in the ring buffer queue
+
+fontsize=12
+bg=white
+fg=black</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>848</x><y>456</y><w>120</w><h>24</h></coordinates><panel_attributes>/ITraceJobContainer/
+
+fontsize=12
+bg=white
+fg=black</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>976</x><y>728</y><w>360</w><h>200</h></coordinates><panel_attributes>TraceJobContainer
+--
++ Add(TraceJobContainerElement element): bool;
++ GetReadyElement() : AtomicRingBuffer&lt;TraceJobContainerElement, kTraceJobContainerSize&gt;::AtomicRingBufferResult;
+ReleaseReadyElement() : bool;
+    std::size_t Size() noexcept;
+    std::size_t GetEmptyElementsCount() noexcept;
+    bool IsFreeAt(std::size_t index) const noexcept;
+--
+AtomicRingBuffer&lt;TraceJobContainerElement, kTraceJobContainerSize&gt; container_;
+--
+Responsibilities
+Keep track of which client added which jobs to the ring buffer queue
+
+fontsize=12
+bg=white
+fg=black</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>976</x><y>512</y><w>360</w><h>176</h></coordinates><panel_attributes>TraceJobProcessor
+--
++TraceJobProcessor(TraceJobContainer&amp; container,
+                                  TraceJobDeallocator deallocator_function,
+				   const score::cpp::stop_token&amp; stop_token)
+
++ SaveCallback(TraceClientId client_id,
+                          TraceDoneCallBackType callback) : ResultBlank
+
++ ProcessJobs(const score::cpp::stop_token&amp;stop_token) : ResultBlank
++ CleanPendingJobs(const score::cpp::stop_token&amp; stop_token): ResultBlank
+--
+std::unordered_map&lt;TraceClientId, TraceDoneCallBackType&gt; callback_map_;
+--
+Responsibilities
+Trigger the callbacks when a job has been completed
+
+fontsize=12
+bg=white
+fg=black</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>976</x><y>416</y><w>120</w><h>24</h></coordinates><panel_attributes>/ITraceJobProcessor/
+
+fontsize=12
+bg=white
+fg=black</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>472</y><w>24</w><h>56</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>400</y><w>32</w><h>72</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>776</x><y>352</y><w>64</w><h>176</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;Creates&gt;&gt;</panel_attributes><additional_attributes>10;200;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>248</x><y>328</y><w>488</w><h>168</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;Creates&gt;&gt;</panel_attributes><additional_attributes>10;190;10;150;570;150;570;10;590;10</additional_attributes></element><element><id>Relation</id><coordinates><x>984</x><y>432</y><w>24</w><h>96</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>672</x><y>400</y><w>320</w><h>48</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes><additional_attributes>10;10;10;30;380;30</additional_attributes></element><element><id>Relation</id><coordinates><x>1128</x><y>352</y><w>64</w><h>176</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;Creates&gt;&gt;</panel_attributes><additional_attributes>10;200;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>656</x><y>400</y><w>208</w><h>96</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes><additional_attributes>10;10;10;90;240;90</additional_attributes></element><element><id>Relation</id><coordinates><x>952</x><y>472</y><w>40</w><h>280</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;330;30;330</additional_attributes></element><element><id>Relation</id><coordinates><x>872</x><y>904</y><w>120</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;Uses&gt;&gt;</panel_attributes><additional_attributes>130;30;10;30;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1104</x><y>680</y><w>56</w><h>64</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;Uses&gt;&gt;</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>496</x><y>400</y><w>40</w><h>600</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes><additional_attributes>10;10;10;720;30;720</additional_attributes></element><element><id>Relation</id><coordinates><x>464</x><y>400</y><w>48</w><h>448</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes><additional_attributes>30;10;30;530;10;530</additional_attributes></element><element><id>UMLClass</id><coordinates><x>520</x><y>968</y><w>432</w><h>376</h></coordinates><panel_attributes>ShmObjectHandleContainer
+--
++ RegisterLocalShmObjectHandle(const std::int32_t shm_object_fd)
+      : Result&lt;ShmObjectHandleElementRef&gt;;
+
++ RegisterLocalShmObjectHandle(const std::string&amp; shm_object_path)
+      : Result&lt;ShmObjectHandleElementRef&gt;;
+
++ DeregisterLocalShmObject(const ShmObjectHandle handle);
+
++ IsShmObjectAlreadyRegistered(const std::string&amp; shm_object_path) : bool;
++ IsShmObjectAlreadyRegistered(const std::int32_t shm_object_fd) bool;
+
++ GetLtpmDaemonRegisteredShmObjectHandle(const ShmObjectHandle handle)
+       : Result&lt;ShmObjectHandle&gt;
++ FindIf(const std::function&lt;bool(const ShmObjectHandleElement&amp;)&gt;&amp; predicate)
+       : OptionalShmObjectHandleElementConstRef;
++ FindIf(const std::function&lt;bool(const ShmObjectHandleElement&amp;)&gt;&amp; predicate)
+       : OptionalShmObjectHandleElementRef;
+
++ Release(ShmObjectHandleElementRef shm_object_handle_element);
+
++ Size() : std::size_t
+
++ operator[](const std::size_t index) : ShmObjectHandleElementConstRef;
++ operator[](const std::size_t index) : ShmObjectHandleElementRef;
+--
+ShmObjectHandle next_shm_object_handle_{0};
+ShmObjectHandleAtomicContainer container_;
+--
+Responsibilities
+Keep track of association between the local and remote ShmHandles
+
+fontsize=12
+bg=white
+fg=black</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>816</y><w>472</w><h>208</h></coordinates><panel_attributes>ClientIdContainer
+--
++ GetTraceClientId (const BindingType binding,
+                                   const AppIdType) : std::optional&lt;TraceClientId&gt;;
+
++ GetTraceClientById(const TraceClientId trace_client_id) : OptionalClientIdElementConstRef
++ RegisterLocalTraceClient(const BindingType binding,
+                                                 const AppIdType&amp; app_instance_identifier) : Result&lt;ClientIdElementRef&gt;;
++ GetLocalTraceClientId(const TraceClientId ltpm_registered_trace_client_id) : Result&lt;TraceClientId&gt;;
++ Size() :  std::size_t;
++ operator[](const std::size_t index) : ClientIdElementConstRef
++ operator[](const std::size_t index) : ClientIdElementRef
+--
+TraceClientId next_local_id_{0U};
+AtomicContainer&lt;ClientIdElement, kClientIdContainerSize&gt;
+--
+Responsibilities
+Keep track of association between the local and remote TraceClientIDs
+
+fontsize=12
+bg=white
+fg=black</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>512</x><y>400</y><w>536</w><h>616</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes><additional_attributes>10;10;10;690;640;690;640;750</additional_attributes></element><element><id>UMLClass</id><coordinates><x>984</x><y>1056</y><w>352</w><h>104</h></coordinates><panel_attributes>MemoryValidator
+--
++ IsSharedMemoryTyped(const std::int32_t file_descriptor): Result&lt;bool&gt;;
++ IsSharedMemoryTyped(const std::string&amp; path): Result&lt;bool&gt;;
+--
+- std::unique_ptr&lt;const os::qnx::MmanQnx&gt; mman_;
+--
+Responsibilities
+Checks that passed shared memory is in typed memory
+
+fontsize=12
+bg=white
+fg=black</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>984</x><y>1000</y><w>120</w><h>24</h></coordinates><panel_attributes>/IMemoryValidator/
+
+fontsize=12
+bg=white
+fg=black</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1016</x><y>1016</y><w>24</w><h>56</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>464</x><y>664</y><w>528</w><h>296</h></coordinates><panel_attributes>lt=&lt;.
+
+&lt;&lt;Uses&gt;&gt;</panel_attributes><additional_attributes>10;350;630;350;630;10;640;10</additional_attributes></element></diagram>

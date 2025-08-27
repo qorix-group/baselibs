@@ -1,0 +1,66 @@
+@startuml trace_library_usage_sequence
+skinparam sequenceMessageAlign center
+participant GenericTraceAPI
+participant TraceJobAllocator
+participant RingBuffer
+participant FlexibleAllocator
+participant LocalChunkList as "LocalDataChunkList& \n (local_data)"  
+
+GenericTraceAPI -> TraceJobAllocator: AllocateLocalJob(meta_info,\n local_data)
+TraceJobAllocator -> RingBuffer: GetEmptyElement()
+RingBuffer --> TraceJobAllocator: return rb_element
+alt rb_element == error
+    TraceJobAllocator --> GenericTraceAPI: return error 
+else rb_element == valid element
+    
+    /' Allocate MetaInfo '/
+    alt AraComMetaInfo is provided
+        TraceJobAllocator --> GenericTraceAPI: return error\n kNoMetaInfoProvidedRecoverable
+    else AraComMetaInfo is not provided
+        TraceJobAllocator -> TraceJobAllocator: Create local struct \nwith meta_info data
+        TraceJobAllocator -> TraceJobAllocator: Create data chunk with meta_info\nchunk = LocalDataChunk\n{meta_info, sizeof(meta_info)}
+        TraceJobAllocator -> LocalChunkList: AppendFront(chunk)
+        LocalChunkList --> TraceJobAllocator: return
+    end
+    |||
+
+    /' Allocate Timestamp '/
+    alt HW Timer is initialized successfully
+        TraceJobAllocator -> LoggerTime: Now()
+        LoggerTime --> TraceJobAllocator: return plp_time_point
+        TraceJobAllocator -> TraceJobAllocator: mw::time::hwloggertime::serialize2plp(plp_time_point) 
+    else HW Timer is not initialized successfully
+        TraceJobAllocator --> TraceJobAllocator: timestamp field is set with zeroes\n return 0
+    end
+    TraceJobAllocator -> TraceJobAllocator: Copy plp_time_point to address_time
+    TraceJobAllocator -> TraceJobAllocator: chunk = LocalMemoryChunk\n{meta_info_ptr, sizeof(meta_info)}
+    TraceJobAllocator -> LocalChunkList: AppendFront(chunk)
+    LocalChunkList --> TraceJobAllocator: return
+    
+
+
+    /' Save to TMD'/
+    TraceJobAllocator -> LocalChunkList: SaveToSharedMemory
+    LocalChunkList -> LocalChunkList: Copies the chunk list itself \nas, the meta_info, \n timestamp and IPC data \nto the TMD area. 
+    LocalChunkList --> TraceJobAllocator: return location_in_tmd
+    alt location_in_tmd==error
+        TraceJobAllocator -> TraceJobAllocator: Update rb_element with status kInvalid
+        TraceJobAllocator --> GenericTraceAPI: return error
+    else location_in_tmd==valid
+        TraceJobAllocator -> TraceJobAllocator: Update rb_element with location_in_tmd\n and client info
+        TraceJobAllocator -> TraceJobAllocator: Update rb_element to kReady
+        TraceJobAllocator -> TraceJobContainer: Add rb_element, client info and location_in_tmd to container
+        TraceJobContainer --> TraceJobAllocator: return result
+        alt result == error
+            TraceJobAllocator -> TraceJobAllocator: Get pointer to the vector with chunk_list
+            TraceJobAllocator -> TraceJobAllocator: Release vector memory
+            TraceJobAllocator -> TraceJobAllocator: Update rb_element with status kInvalid
+            TraceJobAllocator --> GenericTraceAPI: return error
+        else result == success
+            TraceJobAllocator -> TraceJobAllocator: Increment job_id
+            TraceJobAllocator -> GenericTraceAPI: return success
+        end
+    end
+end
+
+@enduml

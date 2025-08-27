@@ -1,0 +1,124 @@
+@startuml IpcTracing_backend_termination_detection
+
+participant GenericTraceApiImpl
+participant WorkerThread
+participant ObjectFactory
+participant TraceJobProcessor
+participant DaemonCommunicator
+participant DaemonCrashDetectorThread
+participant Neutrino
+participant IpcTracingBackend
+
+== In Construction ==
+activate GenericTraceApiImpl
+activate ObjectFactory
+activate Neutrino
+activate IpcTracingBackend
+activate TraceJobProcessor
+
+
+GenericTraceApiImpl -> ObjectFactory : CreateDaemonCommunicator()
+  ObjectFactory -> DaemonCommunicator: construct DaemonCommunicator
+    activate DaemonCommunicator
+
+    DaemonCommunicator -> DaemonCrashDetectorThread: spawn crash detector thread
+    activate DaemonCrashDetectorThread
+    DaemonCrashDetectorThread -> Neutrino: ChannelCreate()
+    Neutrino --> DaemonCrashDetectorThread: Channel ID
+
+    DaemonCrashDetectorThread -> Neutrino: ConnectAttach()
+    Neutrino --> DaemonCrashDetectorThread: Connection ID
+
+    ObjectFactory -> GenericTraceApiImpl : DaemonCommunicator instance
+
+
+GenericTraceApiImpl -> DaemonCommunicator: SubscribeToDaemonTerminationNotification(callback)
+DaemonCommunicator -> DaemonCommunicator: store daemon_terminated_callback_
+
+
+GenericTraceApiImpl-> WorkerThread: spawn thread
+  activate WorkerThread
+
+== Daemon is running ==
+
+DaemonCrashDetectorThread -> Neutrino: Pulse (WAITING POINT)
+deactivate DaemonCrashDetectorThread
+
+note over IpcTracingBackend
+- Daemon Is terminated here
+- Neutrino system is notified and unblock the pulse wait
+endnote
+
+IpcTracingBackend --> Neutrino
+deactivate IpcTracingBackend
+Neutrino -> DaemonCrashDetectorThread: Result Pulse (_PULSE_CODE_COIDDEATH)
+activate DaemonCrashDetectorThread
+
+alt Pulse from terminated daemon
+== Daemon Termination is detected ==
+    DaemonCrashDetectorThread -> GenericTraceApiImpl: daemon_terminated_callback_()
+    GenericTraceApiImpl -> WorkerThread : invalidate the global state 
+    note over WorkerThread
+    state = kDaemonDisconnected
+    endnote
+    
+    WorkerThread -> TraceJobProcessor : CleanPendingJobs()
+    activate TraceJobProcessor
+    TraceJobProcessor -> WorkerThread
+    deactivate TraceJobProcessor
+    deactivate WorkerThread
+
+    DaemonCrashDetectorThread -> DaemonCrashDetectorThread: CleanupCrashDetectorThread()
+    DaemonCrashDetectorThread -> Neutrino: ConnectDetach()
+    DaemonCrashDetectorThread -> Neutrino: ChannelDestroy()
+    deactivate DaemonCrashDetectorThread
+    note over DaemonCrashDetectorThread
+      terminated
+    endnote
+    deactivate GenericTraceApiImpl
+    deactivate ObjectFactory
+    deactivate TraceJobProcessor
+    deactivate DaemonCommunicator
+
+else Pulse from DaemonCommunicator destructor
+== Library Instance is terminating before detecting and daemon termination ==
+
+    -> GenericTraceApiImpl : termination request
+    activate GenericTraceApiImpl
+    activate WorkerThread
+    activate ObjectFactory
+    activate TraceJobProcessor
+    activate DaemonCommunicator
+    note over DaemonCrashDetectorThread
+        Thread is still waiting pulse
+     endnote
+
+    'request stop taken to stop the worker thread'
+    'worker thread start cleaning up the resources then destruct the daemon communicator instance'
+    GenericTraceApiImpl -> WorkerThread : exit the processing loop
+
+    note over WorkerThread
+        stop_token is requested
+    endnote
+    WorkerThread -> DaemonCommunicator : destructor
+    DaemonCommunicator -> DaemonCrashDetectorThread: Pulse (kPulseCodeStopThread)
+
+    activate DaemonCrashDetectorThread
+    deactivate WorkerThread
+    note over DaemonCrashDetectorThread
+        stop_token is requested
+    endnote
+
+  DaemonCrashDetectorThread -> DaemonCrashDetectorThread: CleanupCrashDetectorThread()
+  DaemonCrashDetectorThread -> Neutrino: ConnectDetach()
+  DaemonCrashDetectorThread -> Neutrino: ChannelDestroy()
+  DaemonCrashDetectorThread -> DaemonCommunicator: terminated is done
+  deactivate DaemonCrashDetectorThread
+  deactivate DaemonCommunicator
+  deactivate ObjectFactory
+  deactivate TraceJobProcessor
+  deactivate GenericTraceApiImpl
+
+end
+
+@enduml

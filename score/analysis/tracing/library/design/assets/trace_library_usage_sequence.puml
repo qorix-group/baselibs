@@ -1,0 +1,249 @@
+@startuml trace_library_usage_sequence
+skinparam sequenceMessageAlign center
+actor Client
+
+/' RegisterClient flow '/
+
+Client -> GenericTraceAPI: RegisterClient(client_info)
+alt client_info is valid && no global error is set
+    GenericTraceAPI -> ClientContainer: GetTraceClientId(client_info)
+    ClientContainer --> GenericTraceAPI: return container_answer
+    alt container_answer not empty
+        note over GenericTraceAPI
+        A client with the same client_info
+        was already registered locally
+        end note
+        GenericTraceAPI --> Client: return local_client_id
+    else container_answer is empty
+        GenericTraceAPI -> ClientContainer: RegisterLocalTraceClient(client_info)
+        ClientContainer --> GenericTraceAPI: return local_client_ref
+        alt local_client_ref == error
+            GenericTraceAPI --> Client: return error
+            |||
+        else local_client_ref == success
+            opt if library is in state kInitialized or kDaemonInititalized
+                GenericTraceAPI -> DaemonCommunicator: RegisterClient(client_info)
+                DaemonCommunicator --> GenericTraceAPI: return remote_client_id
+                alt remote_client_id == error
+                    GenericTraceAPI --> Client: return error
+                else
+                    GenericTraceAPI -> GenericTraceAPI: update local_client_ref with\n remote_client id
+                end
+            end
+        end
+        GenericTraceAPI --> Client: return local_client
+    end
+else
+    GenericTraceAPI --> Client: return error
+end
+|||
+|||
+
+/' RegisterShmObject flow '/
+Client -> GenericTraceAPI: RegisterShmObject(local_client, shm_object)
+alt shm_object is valid and no global error is set
+    GenericTraceAPI -> ClientContainer: GetTraceClientById(local_client)
+    ClientContainer --> GenericTraceAPI: return container_answer
+    alt container_answer is empty
+        GenericTraceAPI --> Client: return kClientNotFoundRecoverable
+        |||
+    else container_answer == client exists
+        GenericTraceAPI -> ShmObjectHandleContainer: IsShmObjectAlreadyRegistered(shm_object)
+        ShmObjectHandleContainer --> GenericTraceAPI: return answer
+    alt answer == true
+        GenericTraceAPI -> Client: return error
+        |||
+        else answer == false
+            GenericTraceAPI -> MemoryValidator: IsSharedMemoryTyped(shm_object)
+            MemoryValidator --> GenericTraceAPI: return answer
+            alt answer == error
+                GenericTraceAPI --> Client: return error
+            else
+                GenericTraceAPI -> ShmObjectHandleContainer :RegisterLocalShmObjectHandle(shm_object)
+                ShmObjectHandleContainer --> GenericTraceAPI: return local_handle_ref
+                alt local_handle_ref == error
+                    GenericTraceAPI --> Client: return error
+                |||
+                else local_handle_ref == valid local_handle_ref
+                    |||
+                    opt if library is in state kInitialized or kDaemonInititalized
+                        GenericTraceAPI -> DaemonCommunicator: RegisterSharedMemoryObject(shm_object)
+                        DaemonCommunicator --> GenericTraceAPI: return remote_shm_handle
+                        alt remote_shm_handle == error
+                            GenericTraceAPI --> Client: return error
+                        else
+                            GenericTraceAPI -> GenericTraceAPI: update local_handle_ref with\n remote_shm_handle
+                        end
+                        |||
+                    end
+                    |||
+                    GenericTraceAPI --> Client: return local_handle
+                    |||
+                end
+            end
+        end
+    end
+else
+    GenericTraceAPI --> Client: return error
+end
+|||
+|||
+
+/' RegisterTraceDoneCB flow '/
+Client -> GenericTraceAPI: RegisterTraceDoneCB(local_client, cb)
+alt cb is not empty and no global error is set
+    GenericTraceAPI -> ClientContainer: GetTraceClientById(local_client)
+    ClientContainer --> GenericTraceAPI: return container_answer
+    alt container_answer is empty
+        GenericTraceAPI --> Client: return kClientNotFoundRecoverable
+        |||
+    else container_answer == client exists
+        alt trace_job_processor is not available or library in failure
+            note over GenericTraceAPI
+            if processor is not availble then
+            the WorkerThread stopped.
+            Tracing is no longer possible.
+            end note
+            GenericTraceAPI --> Client: return error kTerminalFatal
+        else trace_job_processor is available && Library not in failure
+            GenericTraceAPI -> TraceJobProcessor: SaveCallback(cb, local_client)
+                TraceJobProcessor -> TraceJobProcessor: check cb is not nullptr\n && local_client does not have\nalready a registered cb
+            alt processor checks did not pass
+                TraceJobProcessor -> GenericTraceAPI: return error
+                GenericTraceAPI --> Client: return error
+
+            else processor checks passed
+                TraceJobProcessor -> TraceJobProcessor: map cb to local_client
+                TraceJobProcessor -> GenericTraceAPI: return success
+                GenericTraceAPI --> Client: return success
+            end
+        end
+    end
+else
+    GenericTraceAPI --> Client: return error
+end
+|||
+
+/' local Trace() flow '/
+rnote over Client #LightBlue
+Simplified sequence of Trace() with local data
+See tracing sequence for full explanation
+endrnote
+
+Client -> GenericTraceAPI: Trace(local_client, data)
+alt no gloabl error is set
+    GenericTraceAPI -> ClientContainer: GetTraceClientById(local_client)
+    ClientContainer --> GenericTraceAPI: return container_answer
+    alt container_answer is empty
+        GenericTraceAPI --> Client: return kClientNotFoundRecoverable
+        |||
+    else container_answer == client exists
+
+
+        alt Library is in state kInitialized
+        GenericTraceAPI -> GenericTraceAPI: check in container_answer if\n remote_client is registered
+            alt remote_client was NOT registered
+                GenericTraceAPI --> Client: return kClientFailedToRegisterFatal
+            else remote_client was registered
+                GenericTraceAPI -> TraceJobAllocator: AllocateLocalJob(meta_info, local_data)
+                TraceJobAllocator -> TraceJobAllocator: Perform needed logic
+                TraceJobAllocator --> GenericTraceAPI: return result
+                GenericTraceAPI --> Client: return result (pass or fail)
+            end
+        |||
+        else Library not ready yet
+            |||
+            GenericTraceAPI --> Client: return kDaemonNotConnectedRecoverable
+        end
+    end
+else
+    GenericTraceAPI --> Client: return error
+end
+|||
+
+/' shared memory Trace() flow '/
+rnote over Client #LightBlue
+Simplified sequence of Trace()
+with data in shared memory
+See tracing sequence for full explanation
+endrnote
+
+Client -> GenericTraceAPI: Trace(local_client, shm_data)
+alt no gloabl error is set
+    GenericTraceAPI -> ClientContainer: GetTraceClientById(local_client)
+    ClientContainer --> GenericTraceAPI: return container_answer
+    alt container_answer is empty
+        GenericTraceAPI --> Client: return kClientNotFoundRecoverable
+        |||
+    else container_answer == client exists
+
+            alt Library is in state kInitialized
+                GenericTraceAPI -> GenericTraceAPI: check in container_answer if\n remote_client is registered
+                alt remote_client was NOT registered
+                    GenericTraceAPI --> Client: return kClientFailedToRegisterFatal
+                    |||
+                else remote_client was registered
+
+                loop for all chunks is shm_data
+                    note right Client
+                    We need to replace the local handles
+                    with the handles
+                    that are registered in the IPC backend
+                    end note
+                    GenericTraceAPI -> ShmObjectHandleContainer: GetLtpmDaemonRegisteredShmObjectHandle(chunk)
+                    ShmObjectHandleContainer --> GenericTraceAPI: return remote_shm_handle_answer
+                        alt remote_shm_handle_answer == error
+                            GenericTraceAPI --> Client: return error
+                        else remote_shm_handle_answer == success
+                            GenericTraceAPI -> GenericTraceAPI: update chunk with remote_shm_handle
+                        end
+            end
+            end
+            GenericTraceAPI -> TraceJobAllocator: AllocateShmJob(meta_info, shm_data)
+            TraceJobAllocator -> TraceJobAllocator: Perform needed logic
+            TraceJobAllocator --> GenericTraceAPI: return result
+            GenericTraceAPI --> Client: return result (pass or fail)
+            |||
+            else Library not ready yet
+                |||
+                GenericTraceAPI --> Client: return kDaemonNotConnectedRecoverable
+            end
+    end
+else
+    GenericTraceAPI --> Client: return error
+end
+
+|||
+
+/' UnregisterShmObject() flow '/
+Client -> GenericTraceAPI: UnregisterShmObject(client_id, shm_handle)
+alt no gloabl error is set
+    GenericTraceAPI -> ClientContainer: GetTraceClientById(local_client)
+    ClientContainer --> GenericTraceAPI: return container_answer
+    alt container_answer is empty
+        GenericTraceAPI --> Client: return kClientNotFoundRecoverable
+        |||
+    else container_answer == client exists
+        alt library is kInitialized or kDaemonInititalized
+            GenericTraceAPI -> ShmObjectHandleContainer: Find(shm_handle)
+            ShmObjectHandleContainer --> GenericTraceAPI: return shm_handle_ref
+            opt shm_handle_ref exists
+                GenericTraceAPI -> DaemonCommunicator: UnregisterSharedMemoryObject(shm_handle)
+                DaemonCommunicator --> GenericTraceAPI: return ltpm_answer
+                alt ltpm_answer == error
+                    GenericTraceAPI -> Client: return error
+                else ltpm_answer == success
+                    GenericTraceAPI -> GenericTraceAPI: Invalidate shm_handle_ref in container
+                    GenericTraceAPI -> ShmObjectHandleContainer: Release(element)
+                end
+            end
+        else library is kNotInitialized
+            GenericTraceAPI -> ShmObjectHandleContainer: DeregisterLocalShmObject(shm_handle)
+        end
+        GenericTraceAPI -> Client: return success
+    end
+else
+    GenericTraceAPI --> Client: return error
+end
+
+@enduml
