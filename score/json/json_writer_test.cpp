@@ -95,7 +95,7 @@ class JsonWriterWriteToFileTest : public ::testing::Test
     std::string WriteToFile(const Json& json, std::string_view path, FileSyncMode type, OpenArgs&&... open_args)
     {
         score::json::JsonWriter writer{type};
-        score::cpp::string_view path_view{path.data(), path.size()};
+        std::string_view path_view{path};
         auto result = writer.ToFile(json, path_view, file_factory_fake, std::forward<OpenArgs>(open_args)...);
 
         EXPECT_EQ(result.has_value(), true);
@@ -194,7 +194,7 @@ TYPED_TEST(JsonWriterWriteToFileTest, ToUnsyncedFileResultsInError)
         .WillOnce(Return(ByMove(score::MakeUnexpected(score::json::Error::kInvalidFilePath))));
 
     score::json::JsonWriter writer{FileSyncMode::kUnsynced};
-    score::cpp::string_view path_view{"/foo/foo.json"};
+    std::string_view path_view{"/foo/foo.json"};
     auto result = writer.ToFile(json, path_view, this->file_factory_fake);
 
     EXPECT_FALSE(result.has_value());
@@ -216,7 +216,7 @@ TYPED_TEST(JsonWriterWriteToFileTest, ToSyncedFileResultsInError)
         .WillOnce(Return(ByMove(score::MakeUnexpected(score::json::Error::kInvalidFilePath))));
 
     score::json::JsonWriter writer{FileSyncMode::kSynced};
-    score::cpp::string_view path_view{"/foo/foo.json"};
+    std::string_view path_view{"/foo/foo.json"};
     auto result = writer.ToFile(json, path_view, this->file_factory_fake);
 
     EXPECT_FALSE(result.has_value());

@@ -38,7 +38,7 @@ namespace
 
 template <typename T>
 score::ResultBlank ToFileInternal(const T& json_data,
-                                const score::cpp::string_view& file_path,
+                                const std::string_view& file_path,
                                 score::filesystem::IFileFactory& file_factory)
 {
     const std::string file_path_string{file_path.data(), file_path.size()};
@@ -225,7 +225,7 @@ score::json::JsonWriter::JsonWriter(FileSyncMode file_sync_mode,
 }
 
 score::ResultBlank score::json::JsonWriter::ToFile(const score::json::Object& json_data,
-                                               const score::cpp::string_view& file_path,
+                                               const std::string_view& file_path,
                                                std::shared_ptr<score::filesystem::IFileFactory> file_factory)
 {
     return (file_sync_mode_ == FileSyncMode::kSynced)
@@ -235,7 +235,7 @@ score::ResultBlank score::json::JsonWriter::ToFile(const score::json::Object& js
 }
 
 score::ResultBlank score::json::JsonWriter::ToFile(const score::json::List& json_data,
-                                               const score::cpp::string_view& file_path,
+                                               const std::string_view& file_path,
                                                std::shared_ptr<score::filesystem::IFileFactory> file_factory)
 {
     return (file_sync_mode_ == FileSyncMode::kSynced)
@@ -245,7 +245,7 @@ score::ResultBlank score::json::JsonWriter::ToFile(const score::json::List& json
 }
 
 score::ResultBlank score::json::JsonWriter::ToFile(const score::json::Any& json_data,
-                                               const score::cpp::string_view& file_path,
+                                               const std::string_view& file_path,
                                                std::shared_ptr<score::filesystem::IFileFactory> file_factory)
 {
     return (file_sync_mode_ == FileSyncMode::kSynced)
