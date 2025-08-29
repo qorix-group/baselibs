@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 #include "score/mw/log/detail/file_logging/text_format.h"
+#include "score/mw/log/detail/verbose_payload.h"
 
 #include "gtest/gtest.h"
 
