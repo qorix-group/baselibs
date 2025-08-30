@@ -87,7 +87,7 @@ TEST_F(RuntimeFixture, CanRetrieveFallbackRecorder)
     const auto& recorder = Runtime::GetFallbackRecorder();
 
     // Then we receive a text recorder if KConsole enabled, otherwise empty recorder
-    EXPECT_TRUE(IsRecorderOfType<ConsoleRecorderType>(recorder));
+    EXPECT_TRUE(IsRecorderOfType<EmptyRecorder>(recorder));
 }
 
 TEST_F(RuntimeFixture, DefaultRecorderShallBeReturned)

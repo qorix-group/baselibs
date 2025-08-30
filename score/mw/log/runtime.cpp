@@ -87,18 +87,12 @@ score::mw::log::Recorder& Runtime::GetFallbackRecorder() noexcept
     - Static and thread-local objects shall be constant-initialized.
     Justification:
     - This is intentional to apply singleton pattern,
-      and 'recorder' is safely initialized on first use and is thread-safe due to C++11 static initialization
-    guarantees.
+      and 'empty_recorder' is safely initialized on first use and is thread-safe due to C++11 static initialization
+      guarantees.
     */
     // coverity[autosar_cpp14_a3_3_2_violation]
-    static std::unique_ptr<Recorder> recorder{
-        CreateRecorderFactory()->CreateWithConsoleLoggingOnly(score::cpp::pmr::get_default_resource())};
-    /*
-        In case of memory allocation this will cause dereference of a nullptr which will lead to panic.
-        this is accepted behavior because it can only fail once in the first call i.e fail in initialization is
-       accepted.
-    */
-    return *recorder;
+    static EmptyRecorder empty_recorder{};
+    return empty_recorder;
 }
 
 score::mw::log::LoggerContainer& Runtime::GetLoggerContainer() noexcept
