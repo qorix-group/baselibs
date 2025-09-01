@@ -300,7 +300,7 @@ score::mw::log::detail::AddArgumentResult TryStore(score::mw::log::detail::Verbo
     // Check that adding 1 won't overflow the uint16_t.
     const auto length_incl_null = helper::ClampAddNullTerminator(length_cropped);
 
-    const std::string_view data_cropped(data.data(), length_cropped);
+    const std::string_view data_cropped{data.substr(0U, length_cropped)};
     return Store(payload, type_info, length_incl_null, data_cropped, '\0');
 }
 

@@ -87,7 +87,7 @@ INvConfig::ReadResult HandleParseResult(const score::json::Object& parse_result,
         }
 
         auto object_name = result_iterator.first.GetAsStringView();
-        typemap[object_name.data()] =
+        typemap[{object_name.data(), object_name.size()}] =
             GetMsgDescriptor(id.value(), object_array_value, object_appid_iterator, object_ctxid_iterator);
     }
     return INvConfig::ReadResult::kOK;
