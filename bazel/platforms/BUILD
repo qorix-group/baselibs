@@ -11,6 +11,18 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
+load(
+    "//bazel/platforms:variables.bzl",
+    "host_gcc8_constraints",
+    "host_gcc9_constraints",
+    "linux_constraints",
+    "osx_constraints",
+    "wasm32_constraints",
+    "windows_constraints",
+    "xpad_constraints",
+    "xpad_dnv_constraints",
+)
+
 package(default_visibility = ["//visibility:public"])
 
 constraint_setting(name = "tgt")
@@ -43,35 +55,6 @@ constraint_value(
     name = "gcc",
     constraint_setting = ":compiler",
 )
-
-xpad_constraints = [
-    ":xpad",
-    "//bazel/platforms/libraries:systemd",
-]
-
-xpad_dnv_constraints = xpad_constraints + [
-    ":dnv",
-]
-
-linux_constraints = [
-    "@platforms//cpu:x86_64",
-    "@platforms//os:linux",
-]
-
-osx_constraints = [
-    "@platforms//cpu:x86_64",
-    "@platforms//os:osx",
-]
-
-windows_constraints = [
-    "@platforms//cpu:x86_64",
-    "@platforms//os:windows",
-]
-
-wasm32_constraints = [
-    "@platforms//cpu:wasm32",
-    "@platforms//os:none",
-]
 
 platform(
     name = "linux_host",
@@ -113,16 +96,6 @@ config_setting(
     constraint_values = xpad_constraints,
 )
 
-host_constraints = [
-    ":host",
-]
-
-host_gcc8_constraints = host_constraints + [
-    ":gcc",
-    "@platforms//cpu:x86_64",
-    "@platforms//os:linux",
-]
-
 platform(
     name = "host_gcc8",
     constraint_values = host_gcc8_constraints,
@@ -132,13 +105,6 @@ config_setting(
     name = "config_host_gcc8",
     constraint_values = host_gcc8_constraints,
 )
-
-host_gcc9_constraints = host_constraints + [
-    "@bazel_tools//tools/cpp:gcc",
-    "@platforms//cpu:x86_64",
-    "@platforms//os:linux",
-    "//bazel/platforms/libraries:systemd",
-]
 
 platform(
     name = "host_gcc9",

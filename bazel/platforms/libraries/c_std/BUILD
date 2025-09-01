@@ -27,5 +27,6 @@ constraint_value(
     visibility = [
         "//bazel/platforms:__subpackages__",
         "//bazel/toolchains:__subpackages__",
+        # "@ddad//bazel/platforms/libraries/c_std:__subpackages__",
     ],
 )
