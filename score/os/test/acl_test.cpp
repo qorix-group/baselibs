@@ -89,6 +89,18 @@ TEST_F(AclTestFixture, CanAddGroupEntries)
 
     std::string acl_text{text, static_cast<std::size_t>(len)};
     ::acl_free(text);
+
+    // Replace all occurrences of \040 with a space
+    std::string escape_seq = "\\040";
+    std::string replacement = " ";
+
+    size_t pos = 0;
+    while ((pos = acl_text.find(escape_seq, pos)) != std::string::npos)
+    {
+        acl_text.replace(pos, escape_seq.length(), replacement);
+        pos += replacement.length();  // Move past the replacement
+    }
+
     auto* const group = ::getgrgid(group_identifier);
 
     std::stringstream expected{};
