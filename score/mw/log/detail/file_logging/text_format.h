@@ -495,30 +495,8 @@ class TextFormat
             const std::size_t data_length = data.size() + kReserveSpaceForSpace;
 
             std::ignore = payload.Put(
-                [data](const score::cpp::span<Byte> buffer) {
-                    const std::size_t length = std::min(data.size(), GetSpanSizeCasted(buffer));
-                    if (length > 0U)  // LCOV_EXCL_BR_LINE: Cannot be covered in unit tests as 'data.size() > 0' and
-                                      // buffer size is uncontrollable.
-                    {
-                        auto destination_it = std::copy_n(data.begin(), length, buffer.begin());
-                        auto return_length = length;
-                        if (destination_it != buffer.end())
-                        {
-                            *destination_it = ' ';
-                            return_length += 1UL;
-                        }
-                        else
-                        {
-                            std::advance(destination_it, -1L);
-                            if (destination_it >= buffer.begin())
-                            {
-                                *destination_it = ' ';
-                            }
-                        }
-                        return return_length;
-                    }
-                    return 0LU;  // LCOV_EXCL_LINE: Cannot be covered in unit tests as if (length > 0) is
-                                 // uncontrollable.
+                [data](score::cpp::span<Byte> buffer) {
+                    return PutLogStringViewData(data, buffer);
                 },
                 data_length);
         }
@@ -533,36 +511,7 @@ class TextFormat
         {
             std::ignore = payload.Put(
                 [&data](const score::cpp::span<Byte> buffer) noexcept {
-                    if (buffer.size() == 0)
-                    {
-                        return 0L;
-                    }
-                    const auto destination_begin_reference = buffer.begin();
-                    const auto destination_end_reference = buffer.end();
-                    auto destination_iterator = destination_begin_reference;
-                    std::ignore = std::for_each(
-                        data.begin(),
-                        data.end(),
-                        [&destination_iterator, destination_end_reference = buffer.end()](const auto input) {
-                            if (destination_iterator != destination_end_reference)
-                            {
-                                std::array<char, 3> temporary_formatting_buffer{};
-                                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg) safe to use std::snprintf
-                                std::ignore = std::snprintf(temporary_formatting_buffer.begin(),
-                                                            temporary_formatting_buffer.size(),
-                                                            "%02hhx",
-                                                            input);
-                                //  Take first two characters from temporary formatting buffer:
-                                destination_iterator =
-                                    std::copy_n(temporary_formatting_buffer.begin(), 2, destination_iterator);
-                            }
-                        });
-                    if (destination_iterator != destination_end_reference)
-                    {
-                        constexpr std::array<char, 1UL> kSpace({' '});
-                        destination_iterator = std::copy(kSpace.begin(), kSpace.end(), destination_iterator);
-                    }
-                    return std::distance(destination_begin_reference, destination_iterator);
+                    return PutLogRawBufferData(data, buffer);
                 },
                 max_string_len + kReserveSpaceForSpace);
         }
@@ -572,29 +521,9 @@ class TextFormat
     static void PutFormattedTime(PT& payload) noexcept
     {
         const auto time_point = std::chrono::system_clock::now();
-        std::ignore = payload.Put([time_point](const score::cpp::span<Byte> buffer) noexcept {
-            std::size_t total = 0U;
-            const auto now = std::chrono::system_clock::to_time_t(time_point);
-            struct tm time_structure_buffer{};
-            const struct tm* const time_structure =
-                localtime_r(&now, &time_structure_buffer);  // LCOV_EXCL_BR_LINE: there are no branches to be covered.
-
-            if (nullptr != time_structure)  // LCOV_EXCL_BR_LINE: "nullptr" condition can't be controlled via test case.
-            {
-                const std::size_t buffer_space = GetSpanSizeCasted(buffer);
-
-                std::stringstream ss_time_str;
-                ss_time_str << std::put_time(&time_structure_buffer, "%Y/%m/%d %H:%M:%S.");
-                const std::string& time_str = ss_time_str.str();
-
-                if (buffer_space > time_str.length())
-                {
-                    std::ignore = std::copy(time_str.begin(), time_str.end(), buffer.begin());
-                    total = time_str.length();
-                }
-            }
-
-            return total;
+        const auto now = std::chrono::system_clock::to_time_t(time_point);
+        std::ignore = payload.Put([now](const score::cpp::span<Byte> buffer) noexcept {
+            return PutFormattedTimeData(now, buffer);
         });
 
         const auto time_elapsed =
@@ -608,6 +537,13 @@ class TextFormat
     }
 
   private:
+    //  Returns number of bytes that were placed in the buffer
+    static std::size_t PutLogStringViewData(const std::string_view data, score::cpp::span<Byte> buffer) noexcept;
+    //  Returns number of bytes that were placed in the buffer
+    static std::size_t PutLogRawBufferData(const LogRawBuffer& data, score::cpp::span<Byte> buffer) noexcept;
+    //  Returns number of bytes that were placed in the buffer
+    static std::size_t PutFormattedTimeData(const std::time_t& time_point, score::cpp::span<Byte> buffer) noexcept;
+
     static constexpr size_t kTwoNibblesPerByte = 2U;
     static constexpr size_t kReserveSpaceForSpace = 1U;
 };
