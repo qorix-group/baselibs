@@ -21,12 +21,10 @@
 #include "score/span.hpp"
 
 #include <algorithm>
-#include <array>
 #include <bitset>
 #include <chrono>
 #include <cstdint>
 #include <cstring>
-#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string_view>
@@ -505,6 +503,7 @@ class TextFormat
     template <typename PT>
     static void Log(PT& payload, const LogRawBuffer data) noexcept
     {
+        static constexpr size_t kTwoNibblesPerByte = 2U;
         const auto max_string_len = kTwoNibblesPerByte * GetBufferSizeCasted(data.size());
 
         if (max_string_len > 0U)
@@ -544,7 +543,6 @@ class TextFormat
     //  Returns number of bytes that were placed in the buffer
     static std::size_t PutFormattedTimeData(const std::time_t& time_point, score::cpp::span<Byte> buffer) noexcept;
 
-    static constexpr size_t kTwoNibblesPerByte = 2U;
     static constexpr size_t kReserveSpaceForSpace = 1U;
 };
 

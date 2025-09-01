@@ -12,6 +12,9 @@
  ********************************************************************************/
 #include "score/mw/log/detail/file_logging/text_format.h"
 
+#include <array>
+#include <iomanip>
+
 namespace score
 {
 namespace mw
@@ -64,9 +67,9 @@ std::size_t TextFormat::PutLogStringViewData(const std::string_view data, score:
 
 std::size_t TextFormat::PutLogRawBufferData(const LogRawBuffer& data, score::cpp::span<Byte> buffer) noexcept
 {
-    if (buffer.size() == 0)
+    if (buffer.size() == 0UL)
     {
-        return 0L;
+        return 0UL;
     }
     const auto destination_begin_reference = buffer.begin();
     const auto destination_end_reference = buffer.end();

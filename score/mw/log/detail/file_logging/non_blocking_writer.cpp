@@ -48,7 +48,7 @@ NonBlockingWriter::NonBlockingWriter(const int32_t fileHandle,
     : unistd_{std::move(unistd)},
       file_handle_(fileHandle),
       number_of_flushed_bytes_{0U},
-      buffer_{nullptr, 0},
+      buffer_{nullptr, 0UL},
       buffer_flushed_{Result::kWouldBlock},
       max_chunk_size_(std::min(max_chunk_size, GetMaxChunkSize()))
 
