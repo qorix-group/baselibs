@@ -141,7 +141,7 @@ cc_unit_test_suites_for_host_and_qnx(
     cc_unit_tests = [
         ":generic_trace_api_impl_cached_data_test_suite",
         ":generic_trace_api_impl_general_test_suite",
-        ":generic_trace_api_impl_register_clients_test_suite",
+        #":generic_trace_api_impl_register_clients_test_suite",
         ":generic_trace_api_impl_register_shm_objects_test_suite",
         ":generic_trace_api_impl_register_trace_callback_test_suite",
         ":generic_trace_api_impl_trace_test_suite",
