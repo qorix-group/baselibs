@@ -48,6 +48,7 @@ py_unittest_qnx_test(
         ":fs_crypto_impl_test",
         ":pcap_test",
         ":sigevent_qnx_test",
+        ":qnx_version_test",
     ],
     test_suites = [
         "@score-baselibs//score/os/utils/qnx/resource_manager:unit_tests_qnx",
@@ -441,6 +442,23 @@ cc_test(
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
         "@score-baselibs//score/os/qnx:sigevent_qnx",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "qnx_version_test",
+    srcs = [
+        "qnx_version_test.cpp",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = [
+        "manual",  # to disable using as host unit test in CI
+        "unit",
+    ],
+    target_compatible_with = ["@platforms//os:qnx"],
+    deps = [
+        "@score-baselibs//score/os/qnx:qnx_version",
         "@googletest//:gtest_main",
     ],
 )

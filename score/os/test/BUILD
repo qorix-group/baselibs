@@ -51,6 +51,7 @@ test_suite(
         ":string_impl_test",
         ":sys_wait_impl_test",
         ":uname_test",
+        ":version_test",
         "@score-baselibs//score/os/test/linux:unit_tests_linux",
     ],
     visibility = [
@@ -104,6 +105,7 @@ py_unittest_qnx_test(
         ":sys_wait_impl_test",
         ":time_test",
         ":uname_test",
+        ":version_test",
     ],
     test_suites = [
         "@score-baselibs//score/os/test/qnx:unit_tests_qnx",
@@ -749,6 +751,20 @@ cc_test(
     ],
     deps = [
         "@score-baselibs//score/os:sigevent",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "version_test",
+    srcs = ["version_test.cpp"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = [
+        "manual",  # to disable using as host unit test in CI
+        "unit",
+    ],
+    deps = [
+        "@score-baselibs//score/os:version",
         "@googletest//:gtest_main",
     ],
 )

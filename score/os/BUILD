@@ -905,3 +905,17 @@ cc_library(
         "@score-baselibs//score/mw/log",
     ],
 )
+
+cc_library(
+    name = "version",
+    hdrs = [
+        "version.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = ["//visibility:public"],
+    deps = select({
+        "@platforms//os:qnx": ["@score-baselibs//score/os/qnx:qnx_version"],
+        "//conditions:default": [],
+    }),
+)

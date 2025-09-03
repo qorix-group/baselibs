@@ -504,3 +504,16 @@ cc_library(
         "@score-baselibs//score/os:sigevent",
     ],
 )
+
+cc_library(
+    name = "qnx_version",
+    hdrs = [
+        "qnx_version.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    target_compatible_with = ["@platforms//os:qnx"],
+    visibility = [
+        "@score-baselibs//score/os:__subpackages__",
+    ],
+)
