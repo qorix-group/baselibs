@@ -37,6 +37,35 @@ cc_gtest_unit_test(
 )
 
 cc_library(
+    name = "null_termination_check",
+    srcs = ["null_termination_check.cpp"],
+    hdrs = ["null_termination_check.h"],
+    features = COMPILER_WARNING_FEATURES,
+    visibility = [
+        "//visibility:public",  # platform_only
+    ],
+    deps = [
+        ":null_termination_violation_policies",
+        ":zspan",
+        ":zstring_view",
+    ],
+)
+
+cc_gtest_unit_test(
+    name = "null_termination_check_test",
+    srcs = [
+        "null_termination_check_test.cpp",
+    ],
+    features = COMPILER_WARNING_FEATURES + [
+        "throws_upon_exception",
+    ],
+    deps = [
+        ":null_termination_check",
+        "@score-baselibs//score/language/futurecpp",
+    ],
+)
+
+cc_library(
     name = "zspan",
     srcs = ["zspan.cpp"],
     hdrs = ["zspan.h"],
@@ -93,6 +122,7 @@ cc_unit_test_suites_for_host_and_qnx(
     cc_unit_tests = [
         ":zspan_test",
         ":zstring_view_test",
+        ":null_termination_check_test",
         ":null_termination_violation_policies_test",
     ],
     visibility = ["@score-baselibs//score/language/safecpp:__pkg__"],

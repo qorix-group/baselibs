@@ -6,6 +6,7 @@ cc_unit_test_suites_for_host_and_qnx(
         "@score-baselibs//score/language/safecpp/aborts_upon_exception:unit_tests",
         "@score-baselibs//score/language/safecpp/safe_math:unit_tests",
         "@score-baselibs//score/language/safecpp/scoped_function:unit_tests",
+        "@score-baselibs//score/language/safecpp/string_view:unit_tests",
         "@score-baselibs//score/language/safecpp/test:unit_tests",
     ],
     visibility = [
