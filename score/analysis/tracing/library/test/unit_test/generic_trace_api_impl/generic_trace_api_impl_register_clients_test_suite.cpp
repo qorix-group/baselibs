@@ -21,6 +21,10 @@ TEST_F(GenericTraceAPIImplFixture, RegisterClientEmptyAppInstanceId)
     PromiseNotifier daemon_notifier;
     PromiseNotifier library_notifier;
     ExpectCorrectInitialization(daemon_notifier, library_notifier);
+    EXPECT_CALL(*mock_daemon_communicator_ptr_raw_, Connect).WillRepeatedly(Invoke([&daemon_notifier]() -> ResultBlank {
+        daemon_notifier.Notify();
+        return ResultBlank{};
+    }));
     {
         InSequence sequence;
         EXPECT_CALL(*mock_daemon_communicator_ptr_raw_, UnregisterSharedMemoryObject(tmd_shm_obj_handle_))
@@ -57,6 +61,10 @@ TEST_F(GenericTraceAPIImplFixture, RegisterClientInvalidBindingType)
     PromiseNotifier daemon_notifier;
     PromiseNotifier library_notifier;
     ExpectCorrectInitialization(daemon_notifier, library_notifier);
+    EXPECT_CALL(*mock_daemon_communicator_ptr_raw_, Connect).WillRepeatedly(Invoke([&daemon_notifier]() -> ResultBlank {
+        daemon_notifier.Notify();
+        return ResultBlank{};
+    }));
     {
         InSequence sequence;
         EXPECT_CALL(*mock_daemon_communicator_ptr_raw_, UnregisterSharedMemoryObject(tmd_shm_obj_handle_))
@@ -129,6 +137,10 @@ TEST_F(GenericTraceAPIImplFixture, RegisterClientMessageSendFailure)
     PromiseNotifier daemon_notifier;
     PromiseNotifier library_notifier;
     ExpectCorrectInitialization(daemon_notifier, library_notifier);
+    EXPECT_CALL(*mock_daemon_communicator_ptr_raw_, Connect).WillRepeatedly(Invoke([&daemon_notifier]() -> ResultBlank {
+        daemon_notifier.Notify();
+        return ResultBlank{};
+    }));
     {
         InSequence sequence;
         EXPECT_CALL(*mock_daemon_communicator_ptr_raw_, RegisterClient)
@@ -202,6 +214,10 @@ TEST_F(GenericTraceAPIImplFixture, RegisterLtpmDaemonClientDaemonOnly)
     PromiseNotifier daemon_notifier;
     PromiseNotifier library_notifier;
     ExpectCorrectInitialization(daemon_notifier, library_notifier);
+    EXPECT_CALL(*mock_daemon_communicator_ptr_raw_, Connect).WillRepeatedly(Invoke([&daemon_notifier]() -> ResultBlank {
+        daemon_notifier.Notify();
+        return ResultBlank{};
+    }));
     const TraceClientId client_id{1};
     {
         InSequence sequence;
@@ -274,6 +290,10 @@ TEST_F(GenericTraceAPIImplFixture, RegisterLtpmDaemonClientSuccess)
     PromiseNotifier daemon_notifier;
     PromiseNotifier library_notifier;
     ExpectCorrectInitialization(daemon_notifier, library_notifier);
+    EXPECT_CALL(*mock_daemon_communicator_ptr_raw_, Connect).WillRepeatedly(Invoke([&daemon_notifier]() -> ResultBlank {
+        daemon_notifier.Notify();
+        return ResultBlank{};
+    }));
     const TraceClientId client_id{1};
     {
         InSequence sequence;
@@ -314,6 +334,10 @@ TEST_F(GenericTraceAPIImplFixture, RegisterClientAlreadyRegistered)
     PromiseNotifier daemon_notifier;
     PromiseNotifier library_notifier;
     ExpectCorrectInitialization(daemon_notifier, library_notifier);
+    EXPECT_CALL(*mock_daemon_communicator_ptr_raw_, Connect).WillRepeatedly(Invoke([&daemon_notifier]() -> ResultBlank {
+        daemon_notifier.Notify();
+        return ResultBlank{};
+    }));
     const TraceClientId client_id{1};
     {
         InSequence sequence;
@@ -346,6 +370,10 @@ TEST_F(GenericTraceAPIImplFixture, RegisterSameAppInstanceIdDifferentBindingType
     PromiseNotifier daemon_notifier;
     PromiseNotifier library_notifier;
     ExpectCorrectInitialization(daemon_notifier, library_notifier);
+    EXPECT_CALL(*mock_daemon_communicator_ptr_raw_, Connect).WillRepeatedly(Invoke([&daemon_notifier]() -> ResultBlank {
+        daemon_notifier.Notify();
+        return ResultBlank{};
+    }));
     const TraceClientId first_client_id{1};
     const TraceClientId second_client_id{2};
     {
@@ -382,6 +410,10 @@ TEST_F(GenericTraceAPIImplFixture, RegisterShallFailWhenExceedingMaxNumberOfClie
     PromiseNotifier daemon_notifier;
     PromiseNotifier library_notifier;
     ExpectCorrectInitialization(daemon_notifier, library_notifier);
+    EXPECT_CALL(*mock_daemon_communicator_ptr_raw_, Connect).WillRepeatedly(Invoke([&daemon_notifier]() -> ResultBlank {
+        daemon_notifier.Notify();
+        return ResultBlank{};
+    }));
     const TraceClientId client_id{1};
     {
         InSequence sequence;
