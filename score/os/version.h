@@ -13,21 +13,53 @@
 #ifndef SCORE_LIB_OS_VERSION_H
 #define SCORE_LIB_OS_VERSION_H
 
-// Helper macros for version comparisons
-
+/**
+ * @name SPP OS Version Comparison Macros
+ * Helper macros for comparing QNX versions
+ * @{
+ */
 #define SPP_OS_VERSION_GTE(version, major, minor) ((version) >= ((major * 100) + minor))
 #define SPP_OS_VERSION_LT(version, major, minor) ((version) < ((major * 100) + minor))
-
-// SPP OS-specific macros
+/** @} */
 
 #if defined(__QNX__)
 #include "score/os/qnx/qnx_version.h"
-
+/**
+ * @name SPP OS QNX Version Macro
+ * A unified macro to retrieve the QNX version across different QNX variants,
+ * abstracting version specific retrieval methods.
+ * @default 0
+ * @{
+ */
 #define SPP_OS_QNX_VERSION _SPP_QNX_VERSION_
+/** @} */
 
+/**
+ * @name QNX Major Version Macros
+ * Macros for detecting major QNX versions
+ * @{
+ */
 #if SPP_OS_VERSION_GTE(SPP_OS_QNX_VERSION, 8, 0) && SPP_OS_VERSION_LT(SPP_OS_QNX_VERSION, 9, 0)
 #define SPP_OS_QNX8
 #endif
+/** @} */
+
 #endif  // __QNX__
+
+/**
+ * @example
+ * // Example usage:
+ *
+ * void some_function() {
+ * #ifdef SPP_OS_QNX8
+ *     // QNX 8.x specific code
+ * #endif
+ *
+ * void some_function() {
+ * #if SPP_OS_VERSION_LT(SPP_OS_QNX_VERSION, 8, 0)
+ *     // Code specific to QNX 7.x and earlier versions
+ * #endif
+ * }
+ */
 
 #endif  // SCORE_LIB_OS_VERSION_H
