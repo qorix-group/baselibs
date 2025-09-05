@@ -19,19 +19,7 @@ class VersionTest : public ::testing::Test
 };
 
 #ifndef __QNX__
-TEST(VersionTest, SPPQnxVersionMacroIsNotDefinedForNonQnxOS)
-{
-// Verify that SPP_OS_QNX_VERSION is not defined
-#ifndef SPP_OS_QNX_VERSION
-    SUCCEED();
-#else
-    FAIL() << "SPP_OS_QNX_VERSION should not be defined in non-QNX environment";
-#endif
-}
-#endif
-
-#ifndef __QNX__
-TEST(VersionTest, _SPPQnxVersion_MacroIsNotLeakedInNonQnxOS)
+TEST(VersionTest, _SPPOSQnxVersion_MacroIsNotLeakedInNonQnxOS)
 {
 #ifndef _SPP_QNX_VERSION_
     SUCCEED();
@@ -39,38 +27,54 @@ TEST(VersionTest, _SPPQnxVersion_MacroIsNotLeakedInNonQnxOS)
     FAIL() << "_SPP_QNX_VERSION_ should not be defined in non-QNX environment";
 #endif
 }
+
+TEST(VersionTest, SPPOSQnx8MacroIsNotLeakedInNonQnxOS)
+{
+#ifndef SPP_OS_QNX8
+    SUCCEED();
+#else
+    FAIL() << "SPP_OS_QNX8 should not be defined in non-QNX environment";
+#endif
+}
 #endif
 
-#ifdef __QNX__
-TEST(VersionTest, SPPQnxVersionMacroIsDefinedForQnx)
+#if defined(__QNX__)
+TEST(VersionTest, SPPOSQnxVersionMacroIsDefinedForQnx)
 {
     ASSERT_TRUE(SPP_OS_QNX_VERSION);
 }
 
-TEST(QnxVersionTest, SPPQnxVersionMatchesQnxMacro)
+TEST(QnxVersionTest, SPPOSQnxVersionMatchesQnxMacro)
 {
-#if __QNX__ >= 800
+#if __QNX__ >= 800  // QNX 8 or later
     EXPECT_EQ(SPP_OS_QNX_VERSION, __QNX__);
 #else
     EXPECT_EQ(SPP_OS_QNX_VERSION, _NTO_VERSION);
 #endif
 }
 
-TEST(QnxVersionTest, SPPQnxVersionIsWithinValidRange)
+TEST(QnxVersionTest, SPPOSQnxVersionIsWithinValidRange)
 {
     EXPECT_GE(SPP_OS_QNX_VERSION, 700u);   // Assuming QNX version is at least 7.0
     EXPECT_LT(SPP_OS_QNX_VERSION, 1000u);  // Assuming QNX version is less than 10.0
 }
 
-#if __QNX__ >= 800
-TEST(QnxVersionTest, SPPQnxVersionIsQnx8OrHigher)
+#if __QNX__ >= 800  // QNX 8 or later
+TEST(QnxVersionTest, SPPOSQnxVersionIsQnx8OrHigher)
 {
     EXPECT_GE(SPP_OS_QNX_VERSION, 800u);
 }
 #else
-TEST(QnxVersionTest, SPPQnxVersionIsLowerThanQnx8)
+TEST(QnxVersionTest, SPPOSQnxVersionIsLowerThanQnx8)
 {
     EXPECT_LT(SPP_OS_QNX_VERSION, 800u);
+}
+#endif
+
+#if __QNX__ >= 800  // QNX 8 or later
+TEST(QnxVersionTest, SPPOSQNX8IsDefinedForQnx8OrHigher)
+{
+    ASSERT_TRUE(SPP_OS_QNX8);
 }
 #endif
 

@@ -13,24 +13,17 @@
 #ifndef SCORE_LIB_OS_QNX_QNX_VERSION_H
 #define SCORE_LIB_OS_QNX_QNX_VERSION_H
 
-#include <cstdint>
-
-#if __QNX__ < 800 && __has_include(<sys/nto_version.h>)
-#include <sys/nto_version.h>
-#endif
-
-namespace detail
-{
-constexpr std::uint32_t get_qnx_version()
-{
 #if __QNX__ >= 800
-    return __QNX__;
+// QNX 8 or later
+#define _SPP_QNX_VERSION_ __QNX__
 #else
-    return _NTO_VERSION;
+#if __has_include(<sys/nto_version.h>)
+// QNX 7.x or earlier
+#include <sys/nto_version.h>
+#define _SPP_QNX_VERSION_ _NTO_VERSION
+#else
+#define _SPP_QNX_VERSION_ 0u
 #endif
-}
-}  // namespace detail
-
-inline constexpr std::uint32_t _SPP_QNX_VERSION_ = detail::get_qnx_version();
+#endif
 
 #endif  // SCORE_LIB_OS_QNX_QNX_VERSION_H
