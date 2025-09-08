@@ -92,6 +92,7 @@ TEST(LogStringTest, CanImplicitlyConvertFromStringLikeTypes)
 
     const auto test_implicit_conversion_from = [](LogString log_str) {
         EXPECT_STREQ(log_str.Data(), kExpected);
+        EXPECT_EQ(log_str.Size(), 8U);
     };
 
     const auto test = [&test_implicit_conversion_from](auto str) {
@@ -105,10 +106,23 @@ TEST(LogStringTest, CanImplicitlyConvertFromStringLikeTypes)
         test_implicit_conversion_from(std::move(str));
     };
 
+    struct MyStringView
+    {
+        constexpr const char* data() const noexcept
+        {
+            return kExpected;
+        }
+        constexpr std::size_t size() const noexcept
+        {
+            return 8U;
+        }
+    };
+
     test_implicit_conversion_from("MyString");
     test(score::cpp::pmr::string{kExpected});
     test(std::string_view{kExpected});
     test(std::string{kExpected});
+    test(MyStringView{});
 }
 
 TEST(MakeLogRawBufferTest, MakeBufferFromInteger)

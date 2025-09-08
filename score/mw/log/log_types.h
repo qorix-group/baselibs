@@ -16,11 +16,11 @@
 
 #include <score/assert.hpp>
 #include <score/span.hpp>
-#include <string_view>
 
 #include <cstdint>
 #include <functional>
 #include <iterator>
+#include <string_view>
 #include <type_traits>
 #include <vector>
 
@@ -89,33 +89,30 @@ struct LogBin64
 
 namespace detail
 {
-/// @brief Used to obtain the iterator type of the type `Range`.
-template <typename Range>
-using IteratorType = decltype(std::begin(std::declval<Range&>()));
-
-template <typename Iterator, typename R = decltype(*std::declval<Iterator&>()), typename = R&>
-using IteratorReferenceHelper = R;
-
-/// @brief Determines the reference type of `Iterator`.
-template <typename Iterator>
-using IteratorReferenceType = IteratorReferenceHelper<Iterator>;
-
-/// @brief Determines whether type `RangeType` is a range of `ElementType` and not an score::cpp::span or array of such type.
+/// @brief Determines whether type `RangeType` is a range of `ElementType`.
 template <typename RangeType, typename ElementType, typename = void>
-struct IsNonSpanNonArrayRange : std::false_type
+class IsRange : public std::false_type
 {
 };
 template <typename RangeType, typename ElementType>
-struct IsNonSpanNonArrayRange<
+class IsRange<
     RangeType,
     ElementType,
-    std::enable_if_t<
-        score::cpp::is_iterable<RangeType>::value && not(score::cpp::is_span<RangeType>::value) &&
-        not(std::is_array<RangeType>::value) &&
-        std::is_same<std::remove_const_t<std::remove_reference_t<IteratorReferenceType<IteratorType<RangeType>>>>,
-                     ElementType>::value>> : std::true_type
+    std::void_t<decltype(std::data(std::declval<RangeType>())), decltype(std::size(std::declval<RangeType>()))>>
+    // NOLINTNEXTLINE(score-banned-function): using `std::data()` is valid here since `IsRange` is just a type trait
+    : public std::is_same<std::remove_cv_t<std::remove_reference_t<decltype(*std::data(std::declval<RangeType>()))>>,
+                          ElementType>
 {
 };
+
+/// @brief Determines whether type `RangeType` is a range of `ElementType` and not an score::cpp::span or array of such type.
+template <typename RangeType, typename ElementType>
+constexpr bool IsNonSpanNonArrayRange() noexcept
+{
+    return std::conjunction_v<IsRange<RangeType, ElementType>,
+                              std::negation<score::cpp::is_span<RangeType>>,
+                              std::negation<std::is_array<RangeType>>>;
+}
 }  // namespace detail
 
 /// \brief Helper type serving as view over string-like types.
@@ -134,12 +131,13 @@ class LogString
     ///
     template <typename RangeType,
               typename RT = std::remove_cv_t<std::remove_reference_t<RangeType>>,
-              std::enable_if_t<detail::IsNonSpanNonArrayRange<RT, CharType>::value, bool> = true>
+              std::enable_if_t<detail::IsNonSpanNonArrayRange<RT, CharType>(), bool> = true>
     // NOLINTBEGIN(cppcoreguidelines-pro-type-member-init): false positive, this constructor delegates to another one
     // NOLINTNEXTLINE(google-explicit-constructor): intended here to allow implicit conversions from range of `CharType`
     constexpr LogString(RangeType&& range) noexcept(noexcept(std::data(range)) && noexcept(std::size(range)))
+        // NOLINTNEXTLINE(score-banned-function): using `std::data()` is valid here since used in conj. with `std::size()`
         : LogString(std::data(range), std::size(range))
-    // NOLINTEND(cppcoreguidelines-pro-type-member-init): see justification above
+    // NOLINTEND(cppcoreguidelines-pro-type-member-init)
     {
     }
 
@@ -150,22 +148,24 @@ class LogString
     ///
     template <typename RangeType,
               typename RT = std::remove_cv_t<std::remove_reference_t<RangeType>>,
-              std::enable_if_t<detail::IsNonSpanNonArrayRange<RT, CharType>::value, bool> = true>
+              std::enable_if_t<detail::IsNonSpanNonArrayRange<RT, CharType>(), bool> = true>
     // NOLINTBEGIN(cppcoreguidelines-pro-type-member-init): false positive, this constructor delegates to another one
     // NOLINTNEXTLINE(google-explicit-constructor): intended here to allow implicit conversions from range of `CharType`
     constexpr LogString(std::reference_wrapper<RangeType> range_wrapper) noexcept(noexcept(LogString{
         range_wrapper.get()}))
         : LogString(range_wrapper.get())
-    // NOLINTEND(cppcoreguidelines-pro-type-member-init): see justification above
+    // NOLINTEND(cppcoreguidelines-pro-type-member-init)
     {
     }
 
     /// \brief Constructs `LogString` as view over a bounded character array.
     template <std::size_t N>
     // NOLINTBEGIN(cppcoreguidelines-pro-type-member-init): false positive, this constructor delegates to another one
-    // NOLINTNEXTLINE(google-explicit-constructor, modernize-avoid-c-arrays): allow implicit conversion from char array
-    constexpr LogString(const CharType (&array)[N]) : LogString(score::cpp::data(array), N - 1U)
-    // NOLINTEND(cppcoreguidelines-pro-type-member-init): see justification above
+    // NOLINTBEGIN(google-explicit-constructor, modernize-avoid-c-arrays): allow implicit conversion from char array
+    // NOLINTNEXTLINE(score-banned-function): using `std::data()` is valid here since size information is known via `N`
+    constexpr LogString(const CharType (&array)[N]) : LogString(std::data(array), N - 1U)
+    // NOLINTEND(google-explicit-constructor, modernize-avoid-c-arrays)
+    // NOLINTEND(cppcoreguidelines-pro-type-member-init)
     {
         static_assert(N > 0U, "character array must have at least 1 element");
         EnsureIsNullCharacter(array[N - 1U]);
