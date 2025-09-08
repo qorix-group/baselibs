@@ -13,6 +13,7 @@
 #include <score/private/utility/ignore.hpp>          // IWYU pragma: export
 #include <score/private/utility/in_place_t.hpp>      // IWYU pragma: export
 #include <score/private/utility/in_place_type_t.hpp> // IWYU pragma: export
+#include <score/private/utility/static_const.hpp>    // IWYU pragma: export
 #include <score/private/utility/to_underlying.hpp>   // IWYU pragma: export
 
 #include <cstddef>
