@@ -34,10 +34,36 @@ cc_gtest_unit_test(
     ],
 )
 
+cc_library(
+    name = "zstring_view",
+    srcs = ["zstring_view.cpp"],
+    hdrs = ["zstring_view.h"],
+    features = COMPILER_WARNING_FEATURES,
+    visibility = [
+        "//visibility:public",  # platform_only
+    ],
+    deps = [
+        ":zspan",
+    ],
+)
+
+cc_gtest_unit_test(
+    name = "zstring_view_test",
+    srcs = [
+        "zstring_view_test.cpp",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    deps = [
+        ":zstring_view",
+        "@score-baselibs//score/mw/log",
+    ],
+)
+
 cc_unit_test_suites_for_host_and_qnx(
     name = "unit_tests",
     cc_unit_tests = [
         ":zspan_test",
+        ":zstring_view_test",
     ],
     visibility = ["@score-baselibs//score/language/safecpp:__pkg__"],
 )
