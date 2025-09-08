@@ -12,9 +12,9 @@ namespace tracing
 TEST_F(GenericTraceAPIImplFixture, LtpmDaemonConnectionReadyUncachingClientsFails)
 {
     std::atomic<bool> delay_ltpm_daemon{true};
-    bool ready_to_trace = false;
     PromiseNotifier daemon_notifier;
     PromiseNotifier library_notifier;
+    PromiseNotifier trace_meta;
     {
         InSequence sequence;
         EXPECT_CALL(*mock_object_factory_, CreateTraceJobProcessor)
@@ -48,9 +48,8 @@ TEST_F(GenericTraceAPIImplFixture, LtpmDaemonConnectionReadyUncachingClientsFail
         EXPECT_CALL(*mock_daemon_communicator_ptr_, RegisterSharedMemoryObject(tmd_filename_))
             .WillOnce(Return(tmd_shm_obj_handle_));
         EXPECT_CALL(*mock_trace_job_allocator_ptr_raw_, SetTraceMetaDataShmObjectHandle(tmd_shm_obj_handle_))
-            .WillOnce(Invoke([this, &ready_to_trace]() {
-                ready_to_trace = true;
-                condition_variable_.notify_one();
+            .WillOnce(Invoke([&trace_meta]() {
+                trace_meta.Notify();
             }));
         EXPECT_CALL(*mock_trace_job_processor_ptr_raw_, ProcessJobs).WillRepeatedly(Return(ResultBlank{}));
         EXPECT_CALL(*mock_daemon_communicator_ptr_raw_, UnregisterSharedMemoryObject(tmd_shm_obj_handle_))
@@ -74,9 +73,7 @@ TEST_F(GenericTraceAPIImplFixture, LtpmDaemonConnectionReadyUncachingClientsFail
     delay_daemon_startup.get();
     {
         std::unique_lock<std::mutex> lock{mutex_};
-        condition_variable_.wait(lock, [&ready_to_trace]() {
-            return ready_to_trace;
-        });
+        ASSERT_TRUE(trace_meta.WaitForNotificationWithTimeout(kDaemonReadyCheckPeriodicity * 100));
     }
     auto trace_result_1 =
         library_->Trace(register_client_result.value(), meta_info_, shm_data_chunk_list_, context_id_);
@@ -187,6 +184,10 @@ TEST_F(GenericTraceAPIImplFixture, LtpmDaemonConnectionReadyUncachingShmObjectsT
                                                           std::move(mock_unistd_),
                                                           std::move(mock_memory_validator_),
                                                           stop_source_.get_token());
+
+    // Sometimes the worker thread starts execution after/during the RegisterClient call below.
+    ASSERT_TRUE(library_notifier.WaitForNotificationWithTimeout(kDaemonReadyCheckPeriodicity * 100));
+
     auto register_client_result = library_->RegisterClient(BindingType::kVectorZeroCopy, app_instance_id_);
     EXPECT_TRUE(register_client_result.has_value());
     auto register_shm_by_file_descriptor =
@@ -197,7 +198,7 @@ TEST_F(GenericTraceAPIImplFixture, LtpmDaemonConnectionReadyUncachingShmObjectsT
         std::this_thread::sleep_for(kDaemonReadyCheckPeriodicity * 10);
         delay_ltpm_daemon.store(false);
     });
-    daemon_notifier.WaitForNotificationWithTimeout(kDaemonReadyCheckPeriodicity * 100);
+    ASSERT_TRUE(daemon_notifier.WaitForNotificationWithTimeout(kDaemonReadyCheckPeriodicity * 100));
     delay_daemon_startup.get();
     auto shm_trace_result =
         library_->Trace(register_client_result.value(), meta_info_, shm_data_chunk_list_, context_id_);
