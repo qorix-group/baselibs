@@ -42,8 +42,14 @@
 #if SPP_OS_VERSION_GTE(SPP_OS_QNX_VERSION, 8, 0) && SPP_OS_VERSION_LT(SPP_OS_QNX_VERSION, 9, 0)
 #define SPP_OS_QNX8
 #endif
+
+#if SPP_OS_VERSION_GTE(SPP_OS_QNX_VERSION, 7, 0) && SPP_OS_VERSION_LT(SPP_OS_QNX_VERSION, 8, 0)
+#define SPP_OS_QNX7
+#endif
 /** @} */
 
+#else
+#define SPP_OS_QNX_VERSION 0
 #endif  // __QNX__
 
 /**
@@ -54,6 +60,7 @@
  * #ifdef SPP_OS_QNX8
  *     // QNX 8.x specific code
  * #endif
+ * }
  *
  * void some_function() {
  * #if SPP_OS_VERSION_LT(SPP_OS_QNX_VERSION, 8, 0)
