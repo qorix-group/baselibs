@@ -82,4 +82,4 @@ The factory returns a structure containing pointers to library interfaces.
 
 ## Class diagram
 
-![Class Diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/ddad_score/filesystem/design/structure.uxf)
+<img alt="Class Diagram" src="https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/eclipse-score/baselibs/refs/heads/main/score/filesystem/design/structure.puml">
