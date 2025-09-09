@@ -55,6 +55,15 @@ struct GlobalTraceContextId
     TraceContextId context_id_;
 };
 
+struct TmdStatistics
+{
+    std::size_t tmd_total;
+    std::size_t tmd_max;
+    std::size_t tmd_average;
+    pid_t client_pid;
+    float tmd_alloc_rate;
+};
+
 inline bool operator==(const GlobalTraceContextId& lhs, const GlobalTraceContextId& rhs) noexcept
 {
     return (lhs.client_id_ == rhs.client_id_) && (lhs.context_id_ == rhs.context_id_);

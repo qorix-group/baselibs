@@ -14,7 +14,6 @@
 #define SCORE_ANALYSIS_TRACING_COMMON_FLEXIBLE_CIRCULAR_ALLOCATOR_MOCK_H
 
 #include "score/analysis/tracing/common/flexible_circular_allocator/flexible_circular_allocator_interface.h"
-
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 namespace score
@@ -29,6 +28,7 @@ class FlexibleCircularAllocatorMock : public IFlexibleCircularAllocator
     MOCK_METHOD(void*, Allocate, (const std::size_t, const std::size_t), (noexcept, override));
     MOCK_METHOD(bool, Deallocate, (void* const, const std::size_t), (noexcept, override));
     MOCK_METHOD(std::size_t, GetAvailableMemory, (), (noexcept, override));
+    MOCK_METHOD(void, GetTmdMemUsage, (TmdStatistics&), (noexcept, override));
     MOCK_METHOD(void*, GetBaseAddress, (), (const, noexcept, override));
     MOCK_METHOD(std::size_t, GetSize, (), (const, noexcept, override));
     MOCK_METHOD(bool, IsInBounds, (const void* const, const std::size_t), (const, noexcept, override));

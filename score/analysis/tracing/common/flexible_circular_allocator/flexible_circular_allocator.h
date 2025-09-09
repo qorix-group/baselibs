@@ -41,6 +41,8 @@ class FlexibleCircularAllocator : public IFlexibleCircularAllocator
 
     std::size_t GetAvailableMemory() noexcept override;
 
+    void GetTmdMemUsage(TmdStatistics&) noexcept override;
+
     void* GetBaseAddress() const noexcept override;
 
     std::size_t GetSize() const noexcept override;

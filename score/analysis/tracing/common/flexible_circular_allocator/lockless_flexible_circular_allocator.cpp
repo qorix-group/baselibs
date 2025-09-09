@@ -48,7 +48,11 @@ LocklessFlexibleCircularAllocator<AtomicIndirectorType>::LocklessFlexibleCircula
       // False positive, variable is used.
       // coverity[autosar_cpp14_a0_1_1_violation : FALSE]
       available_size_(total_size_),
-      wrap_around_(false)
+      wrap_around_(false),
+      cumulative_usage_(0U),
+      lowest_size_(total_size_),
+      alloc_cntr_(0U),
+      dealloc_cntr_(0U)
 {
     // Suppress "AUTOSAR C++14 A0-1-1" rule finds: "A project shall not contain instances of non-volatile variables
     // being given values that are not subsequently used"
@@ -79,6 +83,16 @@ std::uint32_t LocklessFlexibleCircularAllocator<AtomicIndirectorType>::GetListQu
     // coverity[autosar_cpp14_a4_7_1_violation]
     std::uint32_t head = (list_queue_head_.load() + 1U) % (kListEntryArraySize - 1U);
     return head;
+}
+
+template <template <class> class AtomicIndirectorType>
+void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::GetTmdMemUsage(TmdStatistics& tmd_stats) noexcept
+{
+    tmd_stats.tmd_max = total_size_ - lowest_size_.exchange(total_size_);
+    const std::uint32_t number_of_allocations = std::max(1U, alloc_cntr_.exchange(0U));
+    tmd_stats.tmd_average = cumulative_usage_.exchange(0U) / number_of_allocations;
+    tmd_stats.tmd_alloc_rate =
+        static_cast<float>(dealloc_cntr_.exchange(0U)) / static_cast<float>(number_of_allocations);
 }
 
 template <template <class> class AtomicIndirectorType>
@@ -167,6 +181,15 @@ void* LocklessFlexibleCircularAllocator<AtomicIndirectorType>::Allocate(const st
             // coverity[autosar_cpp14_a4_7_1_violation]
             AllocateWithNoWrapAround(static_cast<std::uint32_t>(aligned_size), list_entry_element_index);
     }
+
+    if (nullptr != allocated_address)
+    {
+        const std::uint32_t available_tmd_size = available_size_.load(std::memory_order_seq_cst);
+        lowest_size_ = std::min(available_tmd_size, lowest_size_.load(std::memory_order_seq_cst));
+        cumulative_usage_ += total_size_ - available_tmd_size;
+        alloc_cntr_++;
+    }
+
     return allocated_address;
     // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic): tolerated for algorithm
 }
@@ -329,7 +352,7 @@ bool LocklessFlexibleCircularAllocator<AtomicIndirectorType>::Deallocate(void* c
     {
         IterateBlocksToDeallocate();
     }
-
+    dealloc_cntr_++;
     return true;
     // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic): tolerated for algorithm
 }

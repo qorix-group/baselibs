@@ -168,6 +168,8 @@ std::size_t FlexibleCircularAllocator::GetAvailableMemory() noexcept
 }
 // clang-format on
 
+void FlexibleCircularAllocator::GetTmdMemUsage(TmdStatistics&) noexcept {}
+
 void* FlexibleCircularAllocator::GetBaseAddress() const noexcept
 {
     return base_address_;

@@ -48,6 +48,8 @@ class IFlexibleCircularAllocator
 
     virtual std::size_t GetAvailableMemory() noexcept = 0;
 
+    virtual void GetTmdMemUsage(TmdStatistics& tmd_stats) noexcept = 0;
+
     virtual void* GetBaseAddress() const noexcept = 0;
 
     virtual std::size_t GetSize() const noexcept = 0;

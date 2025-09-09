@@ -34,6 +34,7 @@ class LocklessFlexibleCircularAllocator : public IFlexibleCircularAllocator
     void* Allocate(const std::size_t size, const std::size_t alignment_size) noexcept override;
     bool Deallocate(void* const addr, const std::size_t) noexcept override;
     std::size_t GetAvailableMemory() noexcept override;
+    void GetTmdMemUsage(TmdStatistics& tmd_stats) noexcept override;
     void* GetBaseAddress() const noexcept override;
     std::size_t GetSize() const noexcept override;
     bool IsInBounds(const void* const address, const std::size_t size) const noexcept override;
@@ -59,6 +60,10 @@ class LocklessFlexibleCircularAllocator : public IFlexibleCircularAllocator
     std::atomic<std::uint32_t> list_queue_tail_;
     std::atomic<std::uint32_t> available_size_;
     std::atomic<bool> wrap_around_;
+    std::atomic<std::uint64_t> cumulative_usage_;
+    std::atomic<std::uint32_t> lowest_size_;
+    std::atomic<std::uint32_t> alloc_cntr_;
+    std::atomic<std::uint32_t> dealloc_cntr_;
 };
 
 }  // namespace tracing
