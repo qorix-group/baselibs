@@ -205,7 +205,8 @@ public:
     /// \param offset skipped elements at the front
     /// \param count number of elements in the resulting subspan, if `count` is  dynamic_extent, the resulting subspan
     /// contains all remaining elements.
-    /// \pre `0 <= offset <= size()` \pre `count <= size() - offset`
+    /// \pre `0 <= offset <= size()`
+    /// \pre `count <= size() - offset`
     /// \return The requested subspan `r`, such that `r.data() == this->data() + offset`. If `count` is dynamic_extent,
     /// `r.size() == this->size() - offset`; otherwise `r.size() == count`.
     span subspan(const size_type offset, const size_type count = dynamic_extent) const
