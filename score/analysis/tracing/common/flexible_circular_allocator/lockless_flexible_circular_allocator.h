@@ -52,9 +52,11 @@ class LocklessFlexibleCircularAllocator : public IFlexibleCircularAllocator
     void* base_address_;
     std::uint32_t total_size_;
     std::atomic<std::uint32_t> gap_address_;
-    std::atomic<BufferQueue> buffer_queue_;
+    std::atomic<std::uint32_t> buffer_queue_head_;
+    std::atomic<std::uint32_t> buffer_queue_tail_;
     std::array<std::atomic<ListEntry>, kListEntryArraySize> list_array_;
-    std::atomic<ListQueue> list_queue_;
+    std::atomic<std::uint32_t> list_queue_head_;
+    std::atomic<std::uint32_t> list_queue_tail_;
     std::atomic<std::uint32_t> available_size_;
     std::atomic<bool> wrap_around_;
 };

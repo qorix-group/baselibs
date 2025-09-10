@@ -37,43 +37,21 @@ struct alignas(std::max_align_t) BufferBlock
     std::uint32_t block_length;
 };
 
-struct BufferQueue
-{
-    std::uint32_t tail;
-    std::uint32_t head;
-};
-inline bool operator==(const BufferQueue& lhs, const BufferQueue& rhs) noexcept
-{
-    return (lhs.head == rhs.head) && (lhs.tail == rhs.tail);
-}
-
 struct ListEntry
 {
     std::uint32_t offset;
     std::uint16_t length;
     uint8_t flags;
 };
-struct ListQueue
-{
-    std::uint32_t tail;
-    std::uint32_t head;
-};
-inline bool operator==(const ListQueue& lhs, const ListQueue& rhs) noexcept
-{
-    return (lhs.tail == rhs.tail) && (lhs.head == rhs.head);
-}
-inline bool operator!=(const ListQueue& lhs, const ListQueue& rhs) noexcept
-{
-    return !(lhs == rhs);
-}
+
 inline std::size_t GetAlignedSize(const std::size_t non_aligned_size, std::size_t alignment)
 {
-    if (alignment == static_cast<std::size_t>(0u))
+    if (alignment == static_cast<std::size_t>(0U))
     {
         alignment = alignof(std::max_align_t);
     }
     const std::size_t remainder = non_aligned_size % alignment;
-    if (remainder == static_cast<std::size_t>(0u))
+    if (remainder == static_cast<std::size_t>(0U))
     {
         return non_aligned_size;
     }
