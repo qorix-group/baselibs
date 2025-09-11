@@ -36,8 +36,12 @@ class IJsonWriter
     virtual score::ResultBlank ToFile(const score::json::List& json_data,
                                     const score::cpp::string_view& file_path,
                                     std::shared_ptr<score::filesystem::IFileFactory> file_factory) = 0;
+    virtual score::ResultBlank ToFile(const score::json::Any& json_data,
+                                    const score::cpp::string_view& file_path,
+                                    std::shared_ptr<score::filesystem::IFileFactory> file_factory) = 0;
     virtual score::Result<std::string> ToBuffer(const score::json::Object& json_data) = 0;
     virtual score::Result<std::string> ToBuffer(const score::json::List& json_data) = 0;
+    virtual score::Result<std::string> ToBuffer(const score::json::Any& json_data) = 0;
     IJsonWriter() noexcept = default;
     IJsonWriter(const IJsonWriter&) = delete;
     IJsonWriter(IJsonWriter&&) noexcept = delete;

@@ -71,7 +71,15 @@ class TestJsonObject : public json::Object
 })";
 };
 
-using JsonSampleTypes = ::testing::Types<TestJsonList, TestJsonObject>;
+class TestJsonAny : public json::Any
+{
+  public:
+    TestJsonAny() : json::Any(std::string{"any_foo"}) {}
+
+    static constexpr auto expected = R"("any_foo")";
+};
+
+using JsonSampleTypes = ::testing::Types<TestJsonList, TestJsonObject, TestJsonAny>;
 
 template <typename T>
 class JsonWriterWriteToFileTest : public ::testing::Test

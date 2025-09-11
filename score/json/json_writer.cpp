@@ -217,12 +217,27 @@ score::ResultBlank score::json::JsonWriter::ToFile(const score::json::List& json
                : ToFileInternal(json_data, file_path, *file_factory);
 }
 
+score::ResultBlank score::json::JsonWriter::ToFile(const score::json::Any& json_data,
+                                               const score::cpp::string_view& file_path,
+                                               std::shared_ptr<score::filesystem::IFileFactory> file_factory)
+{
+    return (file_sync_mode_ == FileSyncMode::kSynced)
+               ? ToFileInternalAtomic(
+                     json_data, std::string_view{file_path.begin(), file_path.size()}, *file_factory, atomic_ownership_)
+               : ToFileInternal(json_data, file_path, *file_factory);
+}
+
 score::Result<std::string> score::json::JsonWriter::ToBuffer(const score::json::Object& json_data)
 {
     return ToBufferInternal(json_data);
 }
 
 score::Result<std::string> score::json::JsonWriter::ToBuffer(const score::json::List& json_data)
+{
+    return ToBufferInternal(json_data);
+}
+
+score::Result<std::string> score::json::JsonWriter::ToBuffer(const score::json::Any& json_data)
 {
     return ToBufferInternal(json_data);
 }

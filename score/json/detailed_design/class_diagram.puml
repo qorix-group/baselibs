@@ -52,8 +52,10 @@ class score::memory::StringComparisonAdaptor
 interface score::json::IJsonWriter {
   +ToFile(json_data: score::json::Object, file_path: score::cpp::string_view, file_factory: std::shared_ptr<score::filesystem::IFileFactory>): score::ResultBlank
   +ToFile(json_data: score::json::List, file_path: score::cpp::string_view, file_factory: std::shared_ptr<score::filesystem::IFileFactory>): score::ResultBlank
+  +ToFile(json_data: score::json::Any, file_path: score::cpp::string_view, file_factory: std::shared_ptr<score::filesystem::IFileFactory>): score::ResultBlank
   +ToBuffer(json_data: score::json::Object): score::Result<std::string>
   +ToBuffer(json_data: score::json::List): score::Result<std::string>
+  +ToBuffer(json_data: score::json::Any): score::Result<std::string>
 }
 
 score::json::IJsonWriter <|.. score::json::JsonWriter
@@ -66,8 +68,10 @@ score::json::IJsonWriter --> score::Result : use
 class score::json::JsonWriter {
   +ToFile(json_data: score::json::Object, file_path: score::cpp::string_view, file_factory: std::shared_ptr<score::filesystem::IFileFactory>): score::ResultBlank
   +ToFile(json_data: score::json::List, file_path: score::cpp::string_view, file_factory: std::shared_ptr<score::filesystem::IFileFactory>): score::ResultBlank
+  +ToFile(json_data: score::json::Any, file_path: score::cpp::string_view, file_factory: std::shared_ptr<score::filesystem::IFileFactory>): score::ResultBlank
   +ToBuffer(json_data: score::json::Object): score::Result<std::string>
   +ToBuffer(json_data: score::json::List): score::Result<std::string>
+  +ToBuffer(json_data: score::json::Any): score::Result<std::string>
 }
 
 score::json::JsonWriter --> score::json::Error : use

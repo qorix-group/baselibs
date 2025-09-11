@@ -81,6 +81,7 @@ class JsonSerialize final
     void SerializeType(const std::reference_wrapper<const score::json::Null>& json_null) const;
     bool SerializeType(const score::json::Object& json_data, const std::uint16_t tab_count);
     bool SerializeType(const score::json::List& json_data, const std::uint16_t tab_count);
+    bool SerializeType(const score::json::Any& json_data, const std::uint16_t tab_count);
     void Indent(const std::uint16_t indent_count) const;
 
     std::ostream& out_stream_;

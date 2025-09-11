@@ -38,6 +38,22 @@ void JsonSerialize::SerializeType(const std::reference_wrapper<const Null>& json
     score::cpp::ignore = out_stream_.flush();
 }
 
+bool JsonSerialize::SerializeType(const score::json::Any& json_data, const std::uint16_t tab_count)
+{
+    SCORE_LANGUAGE_FUTURECPP_ASSERT_PRD(tab_count < std::numeric_limits<std::uint16_t>::max());
+    // LCOV_EXCL_BR_START (Decision Coverage: Not reachable. Branch
+    // excluded from coverage report. See comment below)
+    if (!Serialize(json_data, static_cast<uint16_t>(tab_count)))
+    {
+        // This code can never be reached because template constraints of type Any make sure only valid underlying
+        // types are used.
+        return false; /* LCOV_EXCL_LINE */
+    }
+    // LCOV_EXCL_BR_STOP
+    score::cpp::ignore = out_stream_.flush();
+    return true;
+}
+
 // Justification: broken_link_c/issue/15410189
 // NOLINTNEXTLINE(misc-no-recursion) recursion justified for json parsing
 bool JsonSerialize::SerializeType(const Object& json_data, const std::uint16_t tab_count)
@@ -143,6 +159,8 @@ bool JsonSerialize::SerializeIfType(const Any& json_data)
 }
 
 template <typename T, std::enable_if_t<std::is_same<T, List>::value || std::is_same<T, Object>::value, bool>>
+// Justification: broken_link_c/issue/15410189
+// NOLINTNEXTLINE(misc-no-recursion) recursion justified for json parsing
 bool JsonSerialize::SerializeIfType(const Any& json_data, std::uint16_t tab_count)
 {
     if (json_data.As<T>().has_value() == true)

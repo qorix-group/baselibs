@@ -77,8 +77,13 @@ class JsonWriter final : public IJsonWriter
                             const score::cpp::string_view& file_path,
                             std::shared_ptr<score::filesystem::IFileFactory> file_factory) override;
 
+    score::ResultBlank ToFile(const score::json::Any& json_data,
+                            const score::cpp::string_view& file_path,
+                            std::shared_ptr<score::filesystem::IFileFactory> file_factory) override;
+
     score::Result<std::string> ToBuffer(const score::json::Object& json_data) override;
     score::Result<std::string> ToBuffer(const score::json::List& json_data) override;
+    score::Result<std::string> ToBuffer(const score::json::Any& json_data) override;
 
   private:
     FileSyncMode file_sync_mode_;

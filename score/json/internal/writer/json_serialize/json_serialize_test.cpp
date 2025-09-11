@@ -488,6 +488,57 @@ TEST(JsonSerializeTest, SerializeNestedObjectAndList)
     TestInput(input_json, list);
 }
 
+TEST(JsonSerializeAnyTest, SerializeAny)
+{
+    RecordProperty("Verifies", "5310867");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test serializing json::Any with all type variants, cf. RFC-8259 section 3-7");
+    RecordProperty("TestType", "Requirements-based test");
+    RecordProperty("DerivationTechnique", "Analysis of requirements");
+
+    std::vector<std::pair<std::string, score::json::Any>> v;
+
+    // boolean
+    v.emplace_back(std::make_pair("1", score::json::Any{true}));
+    // integer
+    v.emplace_back(std::make_pair("5", score::json::Any{5}));
+    // float
+    v.emplace_back(std::make_pair("5.5", score::json::Any{float(5.5f)}));
+    // double
+    v.emplace_back(std::make_pair("5.5", score::json::Any{double(5.5f)}));
+    // null
+    v.emplace_back(std::make_pair("null", score::json::Any{score::json::Null{}}));
+    // string
+    v.emplace_back(std::make_pair(R"("string")", score::json::Any{std::string{"string"}}));
+
+    // object
+    score::json::Object json{};
+    json["string1"] = std::string{"foo"};
+    json["string2"] = std::string{"bar"};
+
+    v.emplace_back(std::make_pair(R"({
+    "string1": "foo",
+    "string2": "bar"
+})",
+                                  score::json::Any{std::move(json)}));
+
+    // list
+    score::json::List list{};
+    list.emplace_back(score::json::Any{std::uint8_t{5}});
+    list.emplace_back(score::json::Any{std::string{"string"}});
+
+    v.emplace_back(std::make_pair(R"([
+    5,
+    "string"
+])",
+                                  score::json::Any{std::move(list)}));
+
+    for (const auto& i : v)
+    {
+        TestInput(i.first, i.second);
+    }
+}
+
 }  // namespace
 }  // namespace json
 }  // namespace score
