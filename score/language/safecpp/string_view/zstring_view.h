@@ -17,6 +17,7 @@
 
 #include <string_view>
 #include <type_traits>
+#include <utility>
 
 // NOLINTBEGIN(readability-identifier-naming): STL-style notation is intended here
 // in order to facilitate interoperability with other STL-like containters/algorithms
@@ -32,9 +33,35 @@ class basic_zstring_view : private safecpp::zspan<std::add_const_t<CharType>>
 {
     using base = safecpp::zspan<std::add_const_t<CharType>>;
 
+    template <typename T, typename S, typename = void>
+    class is_null_terminated_string_type : public std::false_type
+    {
+    };
+    template <typename T, typename S>
+    class is_null_terminated_string_type<
+        T,
+        S,
+        std::void_t<decltype(std::declval<T>().c_str()), decltype(std::declval<T>().size())>>
+        : public std::is_convertible<decltype(*std::declval<T>().c_str()), S>
+    {
+    };
+
   public:
+    using violation_policies = typename base::violation_policies;
+
     using value_type = typename base::value_type;
     using size_type = typename base::size_type;
+
+    /// @brief Constructs a `basic_zstring_view` as view over null-terminated \p StringType;.
+    /// @details type \p StringType; is required to guarantee null-termination of its underlying buffer
+    template <typename StringType,
+              std::enable_if_t<is_null_terminated_string_type<StringType, CharType>::value, bool> = true>
+    // NOLINTNEXTLINE(google-explicit-constructor) allow implicit conversions from `StringType` which is null-terminated
+    constexpr basic_zstring_view(const StringType& str) noexcept
+        // `StringType` guarantees null-termination of `c_str()` and hence we use `set_empty` as dummy policy here
+        : base(str.c_str(), str.size() + 1U, typename violation_policies::set_empty{})
+    {
+    }
 
     /// @brief Constructs a `basic_zstring_view` from base type (i.e. `zspan<const CharType>`)
     // NOLINTNEXTLINE(google-explicit-constructor) allow implicit conversions from base type `zspan` (are always safe)
@@ -48,8 +75,10 @@ class basic_zstring_view : private safecpp::zspan<std::add_const_t<CharType>>
 
     using base::base;
 
+    using base::back;
     using base::data;
     using base::empty;
+    using base::front;
     using base::size;
 
     ///

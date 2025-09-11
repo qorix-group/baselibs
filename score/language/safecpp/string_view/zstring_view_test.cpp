@@ -16,8 +16,11 @@
 
 #include "score/mw/log/logging.h"
 
+#include <score/string.hpp>
+
 #include <gtest/gtest.h>
 
+#include <string>
 #include <string_view>
 #include <type_traits>
 #include <utility>
@@ -49,6 +52,94 @@ TEST(ZStringView, CanConstructFromLiteral)
     EXPECT_EQ(view.data()[view.size()], '\0');
 }
 
+TEST(ZStringView, CanConstructFromBuffer)
+{
+    // Given a null-terminated character buffer
+    char buffer[] = {'h', 'e', 'l', 'l', 'o', '\0'};
+
+    // When constructing a `zstring_view` from it
+    safecpp::zstring_view view{buffer, sizeof(buffer)};
+
+    // Then it must not be empty
+    EXPECT_FALSE(view.empty());
+
+    // And its size must be the length of the string literal minus the null-terminator
+    EXPECT_EQ(view.size(), 5U);
+
+    // And its data must match the buffer's data
+    EXPECT_STREQ(view.data(), "hello");
+    EXPECT_EQ(view.front(), 'h');
+    EXPECT_EQ(view.back(), 'o');
+
+    // And its underlying character buffer must be null-terminted
+    EXPECT_EQ(view.data()[view.size()], '\0');
+}
+
+TEST(ZStringView, CanConstructFromAmpString)
+{
+    // Given an `score::cpp::pmr::string`
+    score::cpp::pmr::string str{"hello"};
+
+    // When constructing a `zstring_view` from it
+    safecpp::zstring_view view = str;
+
+    // Then it must not be empty
+    EXPECT_FALSE(view.empty());
+
+    // And its size must be the length of the `score::cpp::pmr::string`
+    EXPECT_EQ(view.size(), 5U);
+
+    // And its data must match the `score::cpp::pmr::string`'s data
+    EXPECT_STREQ(view.data(), "hello");
+    EXPECT_EQ(view.front(), 'h');
+    EXPECT_EQ(view.back(), 'o');
+
+    // And its underlying character buffer must be null-terminted
+    EXPECT_EQ(view.data()[view.size()], '\0');
+
+    // When constructing a `zstring_view` from an empty `score::cpp::pmr::string`
+    score::cpp::pmr::string empty_str{};
+    safecpp::zstring_view empty_view = empty_str;
+
+    // Then it must be empty
+    EXPECT_TRUE(empty_view.empty());
+    EXPECT_EQ(empty_view.size(), 0U);
+
+    // But it must nonetheless reference the `score::cpp::pmr::string`'s (empty) underlying character buffer
+    EXPECT_NE(empty_view.data(), nullptr);
+}
+
+TEST(ZStringView, CanConstructFromStdString)
+{
+    // Given an `std::string`
+    std::string str{"hello"};
+
+    // When constructing a `zstring_view` from it
+    safecpp::zstring_view view = str;
+
+    // Then it must not be empty
+    EXPECT_FALSE(view.empty());
+
+    // And its size must be the length of the `std::string`
+    EXPECT_EQ(view.size(), 5U);
+
+    // And its data must match the `std::string`'s data
+    EXPECT_STREQ(view.data(), "hello");
+    EXPECT_EQ(view.front(), 'h');
+    EXPECT_EQ(view.back(), 'o');
+
+    // When constructing a `zstring_view` from an empty `std::string`
+    std::string empty_str{};
+    safecpp::zstring_view empty_view = empty_str;
+
+    // Then it must be empty
+    EXPECT_TRUE(empty_view.empty());
+    EXPECT_EQ(empty_view.size(), 0U);
+
+    // But it must nonetheless reference the `std::string`'s (empty) underlying character buffer
+    EXPECT_NE(empty_view.data(), nullptr);
+}
+
 TEST(ZStringView, CanConstructFromZSpan)
 {
     // Given a `zspan` constructed from a null-terminated character buffer
@@ -66,6 +157,8 @@ TEST(ZStringView, CanConstructFromZSpan)
     // And its data must match the `zspan`'s one
     EXPECT_STREQ(view.c_str(), "hello");
     EXPECT_STREQ(view.data(), "hello");
+    EXPECT_EQ(view.front(), 'h');
+    EXPECT_EQ(view.back(), 'o');
 
     // And its underlying character buffer must be null-terminted
     EXPECT_EQ(view.data()[view.size()], '\0');

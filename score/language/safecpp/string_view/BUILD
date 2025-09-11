@@ -83,6 +83,7 @@ cc_gtest_unit_test(
     features = COMPILER_WARNING_FEATURES,
     deps = [
         ":zstring_view",
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/mw/log",
     ],
 )
