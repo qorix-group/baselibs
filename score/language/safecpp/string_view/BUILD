@@ -14,12 +14,38 @@ load("@score-baselibs//:bazel/unit_tests.bzl", "cc_gtest_unit_test", "cc_unit_te
 load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
+    name = "null_termination_violation_policies",
+    srcs = ["null_termination_violation_policies.cpp"],
+    hdrs = ["null_termination_violation_policies.h"],
+    features = COMPILER_WARNING_FEATURES,
+    visibility = [
+        "//visibility:public",  # platform_only
+    ],
+)
+
+cc_gtest_unit_test(
+    name = "null_termination_violation_policies_test",
+    srcs = [
+        "null_termination_violation_policies_test.cpp",
+    ],
+    features = COMPILER_WARNING_FEATURES + [
+        "throws_upon_exception",
+    ],
+    deps = [
+        ":null_termination_violation_policies",
+    ],
+)
+
+cc_library(
     name = "zspan",
     srcs = ["zspan.cpp"],
     hdrs = ["zspan.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "//visibility:public",  # platform_only
+    ],
+    deps = [
+        ":null_termination_violation_policies",
     ],
 )
 
@@ -64,6 +90,7 @@ cc_unit_test_suites_for_host_and_qnx(
     cc_unit_tests = [
         ":zspan_test",
         ":zstring_view_test",
+        ":null_termination_violation_policies_test",
     ],
     visibility = ["@score-baselibs//score/language/safecpp:__pkg__"],
 )
