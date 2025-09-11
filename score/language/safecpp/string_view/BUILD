@@ -54,7 +54,9 @@ cc_gtest_unit_test(
     srcs = [
         "zspan_test.cpp",
     ],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_WARNING_FEATURES + [
+        "throws_upon_exception",
+    ],
     deps = [
         ":zspan",
     ],

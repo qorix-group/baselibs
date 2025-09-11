@@ -10,10 +10,13 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
+#include "score/language/safecpp/string_view/null_termination_violation_policies.h"
+
 #include "score/language/safecpp/string_view/zspan.h"
 
 #include <gtest/gtest.h>
 
+#include <stdexcept>
 #include <type_traits>
 #include <utility>
 
@@ -40,6 +43,64 @@ TEST(ZSpan, CanConstructFromLiteral)
 
     // And its underlying character buffer must be null-terminted
     EXPECT_EQ(span.data()[span.size()], '\0');
+}
+
+TEST(ZSpan, CanConstructFromBuffer)
+{
+    // Given a null-terminated character buffer
+    char buffer[] = {'h', 'e', 'l', 'l', 'o', '\0'};
+
+    // When constructing a `zspan` from it
+    safecpp::zspan<char> span{buffer, sizeof(buffer)};
+
+    // Then it must not be empty
+    EXPECT_FALSE(span.empty());
+
+    // And its size must be the length of the buffer minus the null-terminator
+    EXPECT_EQ(span.size(), 5U);
+
+    // And its data must match the buffer's data
+    EXPECT_STREQ(span.data(), "hello");
+    EXPECT_EQ(span.front(), 'h');
+    EXPECT_EQ(span.back(), 'o');
+
+    // When constructing a `zspan` from it in conjunction with a size of zero & the `throw_exception` violation policy
+    // Then `std::invalid_argument` is expected to get thrown
+    EXPECT_THROW(
+        (span =
+             safecpp::zspan<char>{
+                 buffer, 0U, safecpp::null_termination_violation_policies::throw_exception<std::invalid_argument>{}}),
+        std::invalid_argument);
+
+    // When constructing a `zspan` from a nullptr in conjunction with the `throw_exception` violation policy
+    // Then `std::invalid_argument` is expected to get thrown
+    EXPECT_THROW((span =
+                      safecpp::zspan<char>{
+                          nullptr,
+                          sizeof(buffer),
+                          safecpp::null_termination_violation_policies::throw_exception<std::invalid_argument>{}}),
+                 std::invalid_argument);
+
+    // Given a non-null-terminated character buffer
+    char invalid_buffer[] = {'h', 'e', 'l', 'l', 'o'};
+
+    // When constructing a `zspan` from it in conjunction with the `set_empty` violation policy
+    span = safecpp::zspan<char>{
+        invalid_buffer, sizeof(invalid_buffer), safecpp::null_termination_violation_policies::set_empty{}};
+
+    // Then it must be empty
+    EXPECT_TRUE(span.empty());
+    EXPECT_EQ(span.size(), 0U);
+    EXPECT_EQ(span.data(), nullptr);
+
+    // When constructing a `zspan` from it in conjunction with the `throw_exception` violation policy
+    // Then `std::invalid_argument` is expected to get thrown
+    EXPECT_THROW((span =
+                      safecpp::zspan<char>{
+                          invalid_buffer,
+                          sizeof(invalid_buffer),
+                          safecpp::null_termination_violation_policies::throw_exception<std::invalid_argument>{}}),
+                 std::invalid_argument);
 }
 
 TEST(ZSpan, CanConstructFromOtherZSpan)
