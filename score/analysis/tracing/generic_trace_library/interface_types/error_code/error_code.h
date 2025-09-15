@@ -52,6 +52,10 @@ enum class ErrorCode : score::result::ErrorCode
     kRingBufferInvalidStateRecoverable,    ///< Invalid buffer state (Recoverable)
     kRingBufferTooLargeRecoverable,        ///< Buffer size too large (Recoverable)
     kRingBufferInvalidMemoryResourceRecoverable,  ///< Buffer size too small (Recoverable)
+    kRingBufferSharedMemoryHandleCreationRecoverable,  /// failed to create handle for shared memory ring buffer
+    kRingBufferSharedMemoryHandleOpenRecoverable, /// failed to open handle for shared memory ring buffer
+    kRingBufferSharedMemoryfstatRecoverable,  /// failed to perform fstat on shared memory ring buffer
+    kRingBufferSharedMemoryMapRecoverable,  /// failed to map memory region of shared memory ring buffer
 
     kDaemonConnectionFailedFatal,             ///< Daemon connection failed (Fatal)
     kDaemonCommunicatorNotSupportedFatal,     ///< Daemon connection is not supported

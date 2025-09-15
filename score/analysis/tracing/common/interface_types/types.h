@@ -183,6 +183,13 @@ static constexpr std::int32_t kSharedMemoryObjectOpenModes{S_IRUSR | S_IRGRP};
 // coverity[autosar_cpp14_a0_1_1_violation : FALSE]
 static constexpr std::int32_t kSharedMemoryObjectOpenFlags{O_RDONLY};
 
+/// @brief Flags to be used when opening client-side SHM objects
+// Suppress "AUTOSAR C++14 A0-1-1" rule finds: "A project shall not contain instances of non-volatile variables
+// being given values that are not subsequently used"
+// False positive, variable is used.
+// coverity[autosar_cpp14_a0_1_1_violation : FALSE]
+static constexpr std::int32_t kSharedMemoryRingBufferObjectOpenFlags{O_RDWR};
+
 }  // namespace tracing
 }  // namespace analysis
 }  // namespace score

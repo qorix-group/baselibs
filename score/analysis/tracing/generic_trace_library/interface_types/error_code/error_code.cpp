@@ -94,6 +94,18 @@ std::string_view score::analysis::tracing::GenericTraceAPIErrorDomain::MessageFo
         case ErrorCode::kRingBufferInvalidMemoryResourceRecoverable:
             error_message = "Invalid memory resource passed to constructor";
             break;
+        case ErrorCode::kRingBufferSharedMemoryHandleCreationRecoverable:
+            error_message = "Failed to create handle for shared memory ring buffer";
+            break;
+        case ErrorCode::kRingBufferSharedMemoryHandleOpenRecoverable:
+            error_message = "Failed to open handle for shared memory ring buffer";
+            break;
+        case ErrorCode::kRingBufferSharedMemoryfstatRecoverable:
+            error_message = "Failed to perform fstat on shared memory ring buffer file descriptor";
+            break;
+        case ErrorCode::kRingBufferSharedMemoryMapRecoverable:
+            error_message = "Failed to to map memory region of shared memory ring buffer";
+            break;
         case ErrorCode::kNoSpaceLeftForAllocationRecoverable:
             error_message = "No space to allocate in TMD shared memory";
             break;
