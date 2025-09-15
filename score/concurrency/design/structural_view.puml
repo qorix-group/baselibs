@@ -27,9 +27,6 @@ class "score::concurrency::Executor" as Executor {
   be stopped gracefully.
 }
 
-class "score::concurrency::DerivableExecutor<ExecutorType>" as DerivableExecutor {
-}
-
 class "score::concurrency::ThreadPool" as ThreadPool {
   - std::vector<score::cpp::jthread> pool{}
   - score::cpp::pmr::deque<score::cpp::pmr::unique_ptr<Task>> task_pool{}
@@ -199,8 +196,6 @@ class "score::concurrency::SimpleTaskFactory" as SimpleTaskFactory {
   std::pair<TaskResult<void>, score::cpp::pmr::unique_ptr<SimpleTask>>
 }
 
-DerivableExecutor -u.|> Executor
-ThreadPool -u.|> DerivableExecutor
 JThread -u-* ThreadPool: manages
 
 TimedTask -d-o TimedExecutor : enqueues
