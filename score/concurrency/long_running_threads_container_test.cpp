@@ -36,8 +36,7 @@ TEST(ThreadPool, ConstructionAndDestructionOnHeap)
 
 TEST(ThreadPool, ConstructionAndDestructionOnHeapWithBasePointer)
 {
-    std::unique_ptr<DerivableExecutor<LongRunningThreadsContainer>> unit =
-        std::make_unique<LongRunningThreadsContainer>();
+    std::unique_ptr<LongRunningThreadsContainer> unit = std::make_unique<LongRunningThreadsContainer>();
     unit.reset();
 }
 

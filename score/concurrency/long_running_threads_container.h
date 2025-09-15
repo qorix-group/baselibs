@@ -27,7 +27,7 @@ namespace concurrency
 /// @brief In difference to ThreadPool, this class automatically creates new threads for each enqueued task.
 ///        The idea is, that enqueued tasks _blocking_ tasks - meaning, that most of the time they wait on
 ///        a custom condition and only then perform small amounts of work. Threads will not be reused.
-class LongRunningThreadsContainer final : public DerivableExecutor<LongRunningThreadsContainer>
+class LongRunningThreadsContainer final : public Executor
 {
   public:
     LongRunningThreadsContainer() = default;

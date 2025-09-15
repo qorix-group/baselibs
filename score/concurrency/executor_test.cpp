@@ -23,11 +23,11 @@ namespace concurrency
 namespace
 {
 
-class DummyExecutor final : public DerivableExecutor<DummyExecutor>
+class DummyExecutor final : public Executor
 {
   public:
     explicit DummyExecutor(score::cpp::pmr::memory_resource* memory_resource = score::cpp::pmr::get_default_resource()) noexcept
-        : DerivableExecutor<DummyExecutor>(memory_resource)
+        : Executor(memory_resource)
     {
     }
 

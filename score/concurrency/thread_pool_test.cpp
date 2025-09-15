@@ -40,7 +40,7 @@ TEST(ThreadPool, ConstructionAndDestructionOnHeap)
 
 TEST(ThreadPool, ConstructionAndDestructionOnHeapWithBasePointer)
 {
-    std::unique_ptr<DerivableExecutor<ThreadPool>> unique_thread_pool = std::make_unique<ThreadPool>(1U);
+    std::unique_ptr<ThreadPool> unique_thread_pool = std::make_unique<ThreadPool>(1U);
     unique_thread_pool.reset();
 }
 

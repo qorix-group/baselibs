@@ -25,7 +25,7 @@ namespace concurrency
 namespace testing
 {
 
-class ExecutorMock : public concurrency::DerivableExecutor<ExecutorMock>
+class ExecutorMock : public concurrency::Executor
 {
   public:
     ExecutorMock()

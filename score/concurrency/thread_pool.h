@@ -44,7 +44,7 @@ namespace concurrency
  * In order to be used in safety systems, a memory_resource can be injected
  * which will be used for the dynamic allocation.
  */
-class ThreadPool final : public DerivableExecutor<ThreadPool>
+class ThreadPool final : public Executor
 {
   public:
     /**

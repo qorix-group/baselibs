@@ -167,36 +167,6 @@ class Executor
     score::cpp::pmr::memory_resource* memory_resource_;
 };
 
-/**
- * \brief The DerivableExecutor is used to implement the CRTP idiom.
- * Since the Executor contains methods that should be virtual but are templated
- * we cannot mark them virtual. The CRTP idiom helps in such cases.
- *
- * Meaning: All implementations of the Executor shall inherit from the DerivableExecutor.
- *
- * \tparam ExecutorType The implementation of an execution policy
- */
-template <class ExecutorType>
-class DerivableExecutor : public Executor
-{
-  public:
-    using Executor::Executor;
-    ~DerivableExecutor() noexcept override = default;
-
-    DerivableExecutor(const DerivableExecutor&) = delete;
-    DerivableExecutor& operator=(const DerivableExecutor&) = delete;
-
-  protected:
-    DerivableExecutor(DerivableExecutor&&) noexcept = default;
-    DerivableExecutor& operator=(DerivableExecutor&&) noexcept = default;
-
-  private:
-    ExecutorType& self() noexcept
-    {
-        return *static_cast<ExecutorType*>(this);
-    }
-};
-
 }  // namespace concurrency
 }  // namespace score
 
