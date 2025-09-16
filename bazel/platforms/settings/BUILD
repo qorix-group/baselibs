@@ -40,12 +40,22 @@ config_setting(
 )
 
 config_setting(
-    name = "arm64-qnx-virtual",
+    name = "arm64-qnx-qqvp",
     constraint_values = [
         "@swf_platforms//autosar:adaptive",
         "@platforms//cpu:arm64",
         "@platforms//os:qnx",
-        "//bazel/platforms/environment:virtual",
+        "//bazel/platforms/environment:qqvp",
+    ],
+)
+
+config_setting(
+    name = "arm64-qnx-qemu",
+    constraint_values = [
+        "@swf_platforms//autosar:adaptive",
+        "@platforms//cpu:arm64",
+        "@platforms//os:qnx",
+        "//bazel/platforms/environment:qemu",
     ],
 )
 

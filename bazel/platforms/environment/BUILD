@@ -20,7 +20,18 @@ constraint_value(
     constraint_setting = ":environment",
 )
 
-constraint_value(
+alias(
     name = "virtual",
+    actual = ":qqvp",
+    deprecation = "Use more specific constraint value",
+)
+
+constraint_value(
+    name = "qqvp",
+    constraint_setting = ":environment",
+)
+
+constraint_value(
+    name = "qemu",
     constraint_setting = ":environment",
 )

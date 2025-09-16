@@ -205,21 +205,10 @@ platform(
 )
 
 platform(
-    name = "arm64-qnx7-virtual",
+    name = "arm64-qnx7-qqvp",
     constraint_values = [
-        "//bazel/platforms/environment:virtual",
+        "//bazel/platforms/environment:qqvp",
         "//bazel/platforms/qnx_version:qnx7",
-    ],
-    parents = [
-        "@swf_platforms//:arm64-qnx-adaptive",
-    ],
-)
-
-platform(
-    name = "arm64-qnx8-virtual",
-    constraint_values = [
-        "//bazel/platforms/environment:virtual",
-        "//bazel/platforms/qnx_version:qnx8",
     ],
     parents = [
         "@swf_platforms//:arm64-qnx-adaptive",
@@ -237,6 +226,39 @@ platform(
     ],
 )
 
+platform(
+    name = "arm64-qnx8-qqvp",
+    constraint_values = [
+        "//bazel/platforms/environment:qqvp",
+        "//bazel/platforms/qnx_version:qnx8",
+    ],
+    parents = [
+        "@swf_platforms//:arm64-qnx-adaptive",
+    ],
+)
+
+platform(
+    name = "arm64-qnx7-qemu",
+    constraint_values = [
+        "//bazel/platforms/environment:qemu",
+        "//bazel/platforms/qnx_version:qnx7",
+    ],
+    parents = [
+        "@swf_platforms//:arm64-qnx-adaptive",
+    ],
+)
+
+platform(
+    name = "arm64-qnx8-qemu",
+    constraint_values = [
+        "//bazel/platforms/environment:qemu",
+        "//bazel/platforms/qnx_version:qnx8",
+    ],
+    parents = [
+        "@swf_platforms//:arm64-qnx-adaptive",
+    ],
+)
+
 alias(
     name = "hardware",
     actual = "//bazel/platforms/environment:hardware",
@@ -244,5 +266,5 @@ alias(
 
 alias(
     name = "virtual",
-    actual = "//bazel/platforms/environment:virtual",
+    actual = "//bazel/platforms/environment:qqvp",
 )
