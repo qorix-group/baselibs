@@ -50,50 +50,6 @@ config_setting(
 )
 
 config_setting(
-    name = "arm64-qnx7-hardware",
-    constraint_values = [
-        "@swf_platforms//autosar:adaptive",
-        "@platforms//cpu:arm64",
-        "@platforms//os:qnx",
-        "//bazel/platforms/environment:hardware",
-        "//bazel/platforms/qnx_version:qnx7",
-    ],
-)
-
-config_setting(
-    name = "arm64-qnx7-virtual",
-    constraint_values = [
-        "@swf_platforms//autosar:adaptive",
-        "@platforms//cpu:arm64",
-        "@platforms//os:qnx",
-        "//bazel/platforms/environment:virtual",
-        "//bazel/platforms/qnx_version:qnx7",
-    ],
-)
-
-config_setting(
-    name = "arm64-qnx8-hardware",
-    constraint_values = [
-        "@swf_platforms//autosar:adaptive",
-        "@platforms//cpu:arm64",
-        "@platforms//os:qnx",
-        "//bazel/platforms/environment:hardware",
-        "//bazel/platforms/qnx_version:qnx8",
-    ],
-)
-
-config_setting(
-    name = "arm64-qnx8-virtual",
-    constraint_values = [
-        "@swf_platforms//autosar:adaptive",
-        "@platforms//cpu:arm64",
-        "@platforms//os:qnx",
-        "//bazel/platforms/environment:virtual",
-        "//bazel/platforms/qnx_version:qnx8",
-    ],
-)
-
-config_setting(
     name = "x86_64-linux",
     constraint_values = [
         "@platforms//cpu:x86_64",
