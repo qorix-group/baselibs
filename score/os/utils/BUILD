@@ -245,6 +245,10 @@ cc_library(
     }),
     hdrs = ["tcp_keep_alive.h"],
     features = COMPILER_WARNING_FEATURES,
+    target_compatible_with = select({
+        "@platforms//os:qnx": ["//bazel/platforms/qnx_version:qnx7"],  # TODO: Ticket-214211 QNX8 incompatible
+        "//conditions:default": [],
+    }),
     visibility = ["//visibility:public"],
     deps = [
         "@score-baselibs//score/os:socket",

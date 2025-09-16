@@ -87,7 +87,14 @@ cc_test(
         "manual",  # to disable using as host unit test in CI
         "unit",
     ],
-    target_compatible_with = ["@platforms//os:qnx"],
+    target_compatible_with = select({
+        "@platforms//os:qnx": [
+            "//bazel/platforms/qnx_version:qnx7",  # TODO: Ticket-214211 QNX8 incompatible
+        ],
+        "//conditions:default": [
+            "@platforms//os:qnx",
+        ],
+    }),
     deps = [
         "@score-baselibs//score/os/qnx:pcap",
         "@googletest//:gtest_main",
