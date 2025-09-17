@@ -16,6 +16,8 @@
 #include "score/os/sys_poll_impl.h"
 #include "score/os/unistd.h"
 
+#include "score/language/safecpp/string_view/null_termination_check.h"
+
 namespace score
 {
 namespace os
@@ -90,8 +92,12 @@ score::cpp::expected<InotifyWatchDescriptor, Error> InotifyInstanceImpl::AddWatc
 
     {
         std::shared_lock<std::shared_timed_mutex> lock{inotify_file_descriptor_mutex_};
-        const auto expected_watch_descriptor =
-            inotify_->inotify_add_watch(inotify_file_descriptor_, pathname.data(), event_mask);
+        // NOTE: Below use of `safecpp::GetPtrToNullTerminatedUnderlyingBufferOf()` will emit a deprecation warning here
+        //       since it is used in conjunction with `std::string_view`. Thus, it must get fixed appropriately instead!
+        //       For examples about how to achieve that, see
+        //       broken_link_g/swh/safe-posix-platform/blob/master/score/language/safecpp/string_view/README.md
+        const auto expected_watch_descriptor = inotify_->inotify_add_watch(
+            inotify_file_descriptor_, safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(pathname), event_mask);
         if (!expected_watch_descriptor.has_value())
         {
             return score::cpp::make_unexpected(expected_watch_descriptor.error());

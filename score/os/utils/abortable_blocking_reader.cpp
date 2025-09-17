@@ -209,13 +209,12 @@ score::cpp::expected<score::cpp::span<std::uint8_t>, Error> AbortableBlockingRea
     // Suppressed here as it is safely used:
     // Provided error check and safeguard to ensure file descriptor is valid before reading.
     // NOLINTNEXTLINE(score-banned-function) see comment above
-    const auto expected_length = unistd_->read(file_descriptor, buffer.data(), static_cast<std::size_t>(buffer.size()));
-    if (!expected_length.has_value())
+    const auto expected_length = unistd_->read(file_descriptor, buffer.data(), buffer.size());
+    if ((!expected_length.has_value()) || (expected_length.value() < 0))
     {
         return score::cpp::make_unexpected(expected_length.error());
     }
-    return score::cpp::span<std::uint8_t>{buffer.data(),
-                                   static_cast<score::cpp::span<std::uint8_t>::size_type>(expected_length.value())};
+    return buffer.first(static_cast<std::size_t>(expected_length.value()));
 }
 
 void AbortableBlockingReader::SignalStop() noexcept

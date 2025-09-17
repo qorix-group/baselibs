@@ -49,6 +49,9 @@ cc_library(
     srcs = ["inotify_instance_impl.cpp"],
     hdrs = ["inotify_instance_impl.h"],
     features = COMPILER_WARNING_FEATURES,
+    implementation_deps = [
+        "@score-baselibs//score/language/safecpp/string_view:null_termination_check",
+    ],
     tags = ["FFI"],
     visibility = [
         "//visibility:public", # platform_only
