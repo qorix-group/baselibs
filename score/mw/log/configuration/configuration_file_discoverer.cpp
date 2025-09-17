@@ -12,6 +12,9 @@
  ********************************************************************************/
 #include "score/mw/log/configuration/configuration_file_discoverer.h"
 
+#include "score/language/safecpp/string_view/null_termination_check.h"
+#include "score/language/safecpp/string_view/zstring_view.h"
+
 #include "score/span.hpp"
 
 #include <algorithm>
@@ -28,11 +31,12 @@ namespace detail
 
 namespace
 {
+using safecpp::literals::operator""_zsv;
 
 static constexpr const std::string_view kGlobalConfigPath{"/etc/ecu_logging_config.json"};
 static constexpr const std::string_view kLocalEtcConfigPath{"etc/logging.json"};
 static constexpr const std::string_view kCwdConfigPath{"logging.json"};
-static constexpr const std::string_view kEnvironmentVariableConfig{"MW_LOG_CONFIG_FILE"};
+static constexpr const auto kEnvironmentVariableConfig = "MW_LOG_CONFIG_FILE"_zsv;
 
 }  // namespace
 
@@ -84,7 +88,13 @@ score::cpp::optional<std::string_view> ConfigurationFileDiscoverer::GetGlobalCon
 /// logging.
 bool ConfigurationFileDiscoverer::FileExists(const std::string_view& path) const noexcept
 {
-    return unistd_->access(path.data(), score::os::Unistd::AccessMode::kExists).has_value();
+    // NOTE: Below use of `safecpp::GetPtrToNullTerminatedUnderlyingBufferOf()` will emit a deprecation warning here
+    //       since it is used in conjunction with `std::string_view`. Thus, it must get fixed appropriately instead!
+    //       For examples about how to achieve that, see
+    //       broken_link_g/swh/safe-posix-platform/blob/master/score/language/safecpp/string_view/README.md
+    return unistd_
+        ->access(safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(path), score::os::Unistd::AccessMode::kExists)
+        .has_value();
 }
 
 score::cpp::optional<std::string> ConfigurationFileDiscoverer::FindLocalConfigFile() const noexcept

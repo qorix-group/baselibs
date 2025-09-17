@@ -176,22 +176,17 @@ struct GetFormatSpecifier<const std::int64_t, IntegerRepresentation::kDecimal>
 template <IntegerRepresentation I, typename T, typename PT>
 static void PutFormattedNumber(PT& payload, const T data) noexcept
 {
-    std::ignore = payload.Put([data](const score::cpp::span<Byte> buffer) noexcept {
-        const auto buffer_space = GetSpanSizeCasted(buffer);
-        if (buffer_space > 0U)  // LCOV_EXCL_BR_LINE: lcov complains about lots of uncovered branches here, it is not
-                                // convenient/related to this condition.
+    std::ignore = payload.Put([&data](score::cpp::span<Byte> buffer) noexcept {
+        if (!buffer.empty())  // LCOV_EXCL_BR_LINE: lcov complains about lots of uncovered branches here, it is not
+                              // convenient/related to this condition.
         {
             constexpr score::StringLiteral format = GetFormatSpecifier<const T, I>::value;
             const auto written =
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg) safe to use std::snprintf
-                FormattingFunctionReturnCast(std::snprintf(buffer.data(), GetSpanSizeCasted(buffer), format, data));
+                FormattingFunctionReturnCast(std::snprintf(buffer.data(), buffer.size(), format, data));
 
-            const std::size_t last_index = std::min(written, GetSpanSizeCasted(buffer) - 1U);
-            // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) used on span which is an array
-            // False positive: Pointer arithmetic is used on span which is an array
-            // coverity[autosar_cpp14_m5_0_15_violation]
-            buffer.data()[last_index] = ' ';
-            // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic) used on span which is an array
+            const std::size_t num_written = std::min(written, buffer.size() - 1U);
+            buffer.first(num_written + 1U).back() = ' ';
             return written;
         }
         else
