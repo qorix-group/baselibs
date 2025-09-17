@@ -26,7 +26,7 @@ namespace score
 namespace os
 {
 
-class IfaddrsMock final : public Ifaddrs
+class IfaddrsMock : public Ifaddrs
 {
   public:
     IfaddrsMock();

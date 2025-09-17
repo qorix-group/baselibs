@@ -46,5 +46,15 @@ score::cpp::expected_blank<Error> SysctlImpl::sysctlbyname(const char* sname,
     return {};
 }
 
+score::cpp::expected_blank<Error> SysctlImpl::sysctlnametomib(const char* sname, int* mibp, size_t* sizep) const noexcept
+{
+    const auto err = ::sysctlnametomib(sname, mibp, sizep);
+    if (0 != err)
+    {
+        return score::cpp::make_unexpected(Error::createFromErrno(err));
+    }
+    return {};
+}
+
 }  // namespace os
 }  // namespace score

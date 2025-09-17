@@ -36,6 +36,11 @@ class MockSysctl : public Sysctl
                 sysctlbyname,
                 (const char*, void* const, std::size_t* const, void* const, const std::size_t),
                 (const, noexcept, override));
+
+    MOCK_METHOD((score::cpp::expected_blank<score::os::Error>),
+                sysctlnametomib,
+                (const char*, int*, size_t*),
+                (const, noexcept, override));
 };
 
 }  // namespace os

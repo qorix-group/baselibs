@@ -52,6 +52,8 @@ class Sysctl : public ObjectSeam<Sysctl>
                                                     void* const newp,
                                                     const std::size_t newlen) const noexcept = 0;
 
+    virtual score::cpp::expected_blank<Error> sysctlnametomib(const char* sname, int* mibp, size_t* sizep) const noexcept = 0;
+
     virtual ~Sysctl() = default;
 };
 

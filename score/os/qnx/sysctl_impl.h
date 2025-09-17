@@ -35,6 +35,8 @@ class SysctlImpl final : public Sysctl
                                             std::size_t* const oldlenp,
                                             void* const newp,
                                             const std::size_t newlen) const noexcept override;
+
+    score::cpp::expected_blank<Error> sysctlnametomib(const char* sname, int* mibp, size_t* sizep) const noexcept override;
 };
 
 }  // namespace os
