@@ -103,7 +103,7 @@ template <typename ViewType,
     ViolationPolicy violation_policy = {}) noexcept(noexcept(std::invoke(violation_policy, "reason")))
     -> decltype(std::declval<ViewType>().data())
 {
-    if (view.empty() || view.data() == nullptr)
+    if (view.data() == nullptr)
     {
         std::invoke(violation_policy, "score::safecpp: provided view object does not entail any underlying buffer");
         return nullptr;
@@ -114,38 +114,41 @@ template <typename ViewType,
         // NOLINTNEXTLINE(bugprone-suspicious-stringview-data-usage) `ViewType` guarantees null-termination
         return view.data();
     }
+    else if constexpr (details::is_string_view<VT>::value)
+    {
+        // TODO (Ticket-214240): static_assert here once the codebase got fully migrated to `safecpp::zstring_view`
+        class EmitCompilerWarningFor
+        {
+          public:
+            [[deprecated(
+                "CAUTION: The underlying buffer of a string_view does NOT guarantee any null-termination! "
+                "Instead, migrate your code to make use of 'safecpp::zstring_view' in order to obtain "
+                "such guarantee")]] constexpr static void
+            DoNotExpectNullTerminationOfStringViewsUnderlyingBuffer() noexcept
+            {
+            }
+        };
+        // below line is required as such so that the emitted warning also prints the source location of our caller
+        EmitCompilerWarningFor::DoNotExpectNullTerminationOfStringViewsUnderlyingBuffer();
+        // NOLINTNEXTLINE(bugprone-suspicious-stringview-data-usage) this code will get removed, see Ticket-214240
+        return view.data();
+    }
     else
     {
-        if (view.back() == details::kNullByte)
+        if (view.empty())
         {
-            // NOLINTNEXTLINE(bugprone-suspicious-stringview-data-usage) underlying buffer is null-terminated at its end
-            return view.data();
-        }
-
-        if constexpr (details::is_string_view<VT>::value)
-        {
-            // TODO (Ticket-214240): static_assert here once the codebase got fully migrated to `safecpp::zstring_view`
-            class EmitCompilerWarningFor
-            {
-              public:
-                [[deprecated(
-                    "CAUTION: The underlying buffer of a string_view does NOT guarantee any null-termination! "
-                    "Instead, migrate your code to make use of 'safecpp::zstring_view' in order to obtain "
-                    "such guarantee")]] constexpr static void
-                DoNotExpectNullTerminationOfStringViewsUnderlyingBuffer() noexcept
-                {
-                }
-            };
-            // below line is required as such so that the emitted warning also prints the source location of our caller
-            EmitCompilerWarningFor::DoNotExpectNullTerminationOfStringViewsUnderlyingBuffer();
-            // NOLINTNEXTLINE(bugprone-suspicious-stringview-data-usage) this code will get removed, see Ticket-214240
-            return view.data();
-        }
-        else
-        {
-            std::invoke(violation_policy, "score::safecpp: provided view's underlying buffer is not null-terminated");
+            std::invoke(violation_policy, "score::safecpp: provided view object is empty");
             return nullptr;
         }
+
+        if (view.back() != details::kNullByte)
+        {
+            std::invoke(violation_policy, "score::safecpp: provided view's underlying sequence is not null-terminated");
+            return nullptr;
+        }
+
+        // NOLINTNEXTLINE(bugprone-suspicious-stringview-data-usage) underlying sequence is null-terminated at its end
+        return view.data();
     }
 }
 

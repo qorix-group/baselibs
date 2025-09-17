@@ -85,12 +85,19 @@ TEST(IsNullTerminatedViewType, CheckTypes)
     EXPECT_FALSE(safecpp::IsNullTerminatedViewType<const score::cpp::string_view>());
 }
 
-TEST(NullTerminationCheck, ForEmptyAmpStringView)
+TEST(NullTerminationCheck, ForDefaultAmpStringView)
 {
     score::cpp::string_view view{};
     // works just for now, is expected to report a violation once Ticket-214240 got resolved
     EXPECT_EXIT(
         score::cpp::ignore = safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(view), ::testing::KilledBySignal{SIGABRT}, "");
+}
+
+TEST(NullTerminationCheck, ForEmptyAmpStringView)
+{
+    score::cpp::string_view view{""};
+    // works just for now, is expected to report a violation once Ticket-214240 got resolved
+    EXPECT_EQ(safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(view), view.data());
 }
 
 TEST(NullTerminationCheck, ForNonEmptyAmpStringView)
@@ -108,12 +115,19 @@ TEST(NullTerminationCheck, ForNonNullTerminatedAmpStringView)
     EXPECT_EQ(safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(view), view.data());
 }
 
-TEST(NullTerminationCheck, ForEmptyStdStringView)
+TEST(NullTerminationCheck, ForDefaultStdStringView)
 {
     std::string_view view{};
     // works just for now, is expected to report a violation once Ticket-214240 got resolved
     EXPECT_EXIT(
         score::cpp::ignore = safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(view), ::testing::KilledBySignal{SIGABRT}, "");
+}
+
+TEST(NullTerminationCheck, ForEmptyStdStringView)
+{
+    std::string_view view{""};
+    // works just for now, is expected to report a violation once Ticket-214240 got resolved
+    EXPECT_EQ(safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(view), view.data());
 }
 
 TEST(NullTerminationCheck, ForNonEmptyStdStringView)
@@ -131,15 +145,20 @@ TEST(NullTerminationCheck, ForNonNullTerminatedStdStringView)
     EXPECT_EQ(safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(view), view.data());
 }
 
-TEST(NullTerminationCheck, ForEmptyStdString)
+TEST(NullTerminationCheck, ForDefaultStdString)
 {
     std::string str{};
-    EXPECT_EXIT(
-        score::cpp::ignore = safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(str), ::testing::KilledBySignal{SIGABRT}, "");
+    EXPECT_EQ(safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(str), str.data());
 
-    EXPECT_EXIT(score::cpp::ignore = safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(std::string{}),
-                ::testing::KilledBySignal{SIGABRT},
-                "");
+    EXPECT_NE(nullptr, safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(std::string{}));
+}
+
+TEST(NullTerminationCheck, ForEmptyStdString)
+{
+    std::string str{""};
+    EXPECT_EQ(safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(str), str.data());
+
+    EXPECT_NE(nullptr, safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(std::string{""}));
 }
 
 TEST(NullTerminationCheck, ForNonEmptyStdString)
