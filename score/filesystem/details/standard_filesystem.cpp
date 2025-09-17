@@ -565,7 +565,7 @@ Result<Path> StandardFilesystem::CurrentPath() const noexcept
     std::array<Path::value_type, kBufSize> buf = {
         0,
     };
-    const auto current_path = score::os::Unistd::instance().getcwd(&buf[0], kBufSize);
+    const auto current_path = score::os::Unistd::instance().getcwd(buf.data(), kBufSize);
     if (!current_path.has_value())
     {
         return MakeUnexpected(ErrorCode::kCouldNotGetCurrentPath);
@@ -740,7 +740,7 @@ Result<Path> StandardFilesystem::ReadSymlink(const Path& path) const noexcept
     // The reason for banning is, because it's error-prone to use. One should use abstractions e.g. provided by
     // the C++ standard library. Since this library exactly is such abstraction, we can use the OS function.
     // NOLINTNEXTLINE(score-banned-function): See above
-    const auto result = score::os::Unistd::instance().readlink(path.CStr(), &buf[0], kBufSize);
+    const auto result = score::os::Unistd::instance().readlink(path.CStr(), buf.data(), kBufSize);
     if (!result.has_value())
     {
         return MakeUnexpected(ErrorCode::kCouldNotReadSymlink);
