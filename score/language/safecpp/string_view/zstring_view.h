@@ -103,11 +103,13 @@ using zstring_view = basic_zstring_view<char>;
 namespace literals
 {
 ///
-/// @brief user-defined literal operator for character type `char`
+/// @brief user-defined literal operator for character type `const char`
+/// @note invoking this literal operator manually is strictly prohibited and will result in undefined behavior!
 ///
 [[nodiscard]] constexpr zstring_view operator""_zsv(const char* str, std::size_t len) noexcept
 {
-    return safecpp::literals::operator""_zsp(str, len);
+    // since string literals are guaranteed to be null-terminated, we can safely apply `len + 1U`
+    return zspan<const char>{str, len + 1U, null_termination_violation_policies::set_empty{}};
 }
 }  // namespace literals
 

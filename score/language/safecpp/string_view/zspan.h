@@ -18,7 +18,6 @@
 #if defined(__has_include) && __has_include(<span>)
 #include <span>
 #endif
-#include <cassert>
 #include <cstddef>
 #include <functional>
 #include <type_traits>
@@ -28,32 +27,6 @@
 
 namespace score::safecpp
 {
-
-template <typename T>
-class zspan;
-
-namespace literals
-{
-namespace internal
-{
-/// @brief private implementation of user-defined literal operator
-[[nodiscard]] constexpr zspan<const char> operator""_zsp(const char* str, std::size_t len) noexcept;
-
-/// @brief helper type for user-defined literal operator
-class zspan_creator
-{
-  private:  // since `operator()` is only permitted to get invoked by `operator""_zsp`
-    friend constexpr zspan<const char> operator""_zsp(const char* str, std::size_t len) noexcept;
-    [[nodiscard]] constexpr zspan<const char> operator()(const char* str, std::size_t len) noexcept;
-};
-}  // namespace internal
-
-///
-/// @brief user-defined literal operator for public use
-///
-using internal::operator""_zsp;
-
-}  // namespace literals
 
 namespace details
 {
@@ -97,9 +70,8 @@ class zspan
             size_ = 0U;
             std::invoke(violation_policy, "score::safecpp::zspan: provided range is not null-terminated");
         }
-        else
+        if (size_ > 0U)
         {
-            assert(size_ > 0U);  // just for documentation, must have gotten handled already by above if-stmt
             size_ -= 1U;
         }
     }
@@ -137,14 +109,14 @@ class zspan
 
     /// @brief Returns a const reference to the first element in the span.
     /// @note Calling this function on an empty span results in undefined behavior!
-    [[nodiscard]] const_reference front() const
+    [[nodiscard]] constexpr const_reference front() const
     {
         return *data_;
     }
 
     /// @brief Returns a const reference to the last element in the span.
     /// @note Calling this function on an empty span results in undefined behavior!
-    [[nodiscard]] const_reference back() const
+    [[nodiscard]] constexpr const_reference back() const
     {
         return data_[size_ - 1U];
     }
@@ -157,32 +129,22 @@ class zspan
 #endif
 
   private:
-    friend class literals::internal::zspan_creator;  // since only `zspan_creator` shall have direct access to fields
-
     const_pointer data_{};
     size_type size_{};
 };
 
-///
-/// @brief user-defined literal operator helper for character type `char`
-///
-[[nodiscard]] constexpr zspan<const char> literals::internal::zspan_creator::operator()(const char* str,
-                                                                                        std::size_t len) noexcept
+namespace literals
 {
-    // no further checks are required here since string literals are guaranteed to be null-terminated
-    zspan<const char> result{};
-    result.data_ = str;
-    result.size_ = len;
-    return result;
-}
-
 ///
-/// @brief user-defined literal operator for character type `char`
+/// @brief user-defined literal operator for character type `const char`
+/// @note invoking this literal operator manually is strictly prohibited and will result in undefined behavior!
 ///
-[[nodiscard]] constexpr zspan<const char> literals::internal::operator""_zsp(const char* str, std::size_t len) noexcept
+[[nodiscard]] constexpr zspan<const char> operator""_zsp(const char* str, std::size_t len) noexcept
 {
-    return literals::internal::zspan_creator{}(str, len);
+    // since string literals are guaranteed to be null-terminated, we can safely apply `len + 1U`
+    return zspan<const char>{str, len + 1U, null_termination_violation_policies::set_empty{}};
 }
+}  // namespace literals
 
 }  // namespace score::safecpp
 
