@@ -28,9 +28,9 @@ cc_library(
     target_compatible_with = ["@platforms//os:linux"],
     visibility = [
         "//ecu/xpad/ara:__subpackages__",
+        "//platform/aas/pas/sysmon:__subpackages__",
         "@score-baselibs//score/os/linux/utils/mocklib:__subpackages__",
         "@score-baselibs//score/os/linux/utils/test:__subpackages__",
-        "//platform/aas/pas/sysmon:__subpackages__",
     ],
     deps = select({
         "//bazel/platforms:config_xpad_dnv": [],
@@ -38,8 +38,8 @@ cc_library(
             "//third_party/libseccomp2",
         ],
     }) + [
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/os:stat",
         "@score-baselibs//score/os/linux",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )

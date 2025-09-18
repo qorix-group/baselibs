@@ -49,10 +49,10 @@ cc_gtest_unit_test(
     srcs = ["error_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "@score-baselibs//score/language/safecpp/safe_math:__pkg__",
-        "@score-baselibs//score/memory/shared:__subpackages__",
         "//platform/aas/mw/com/impl:__subpackages__",
         "//platform/aas/network/tunneling/pdu_handling:__subpackages__",
+        "@score-baselibs//score/language/safecpp/safe_math:__pkg__",
+        "@score-baselibs//score/memory/shared:__subpackages__",
     ],
     deps = [":error"],
 )

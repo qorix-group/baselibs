@@ -19,12 +19,12 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
         ":inotify_watch_descriptor",
-        "@score-baselibs//score/os:inotify",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/os:inotify",
     ],
 )
 
@@ -35,7 +35,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
         ":inotify_event",
@@ -54,19 +54,19 @@ cc_library(
     ],
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
         ":inotify_event",
         ":inotify_instance",
         ":inotify_watch_descriptor",
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/os:errno",
         "@score-baselibs//score/os:fcntl",
         "@score-baselibs//score/os:inotify",
         "@score-baselibs//score/os:sys_poll",
         "@score-baselibs//score/os:unistd",
         "@score-baselibs//score/os/utils:abortable_blocking_reader",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 
@@ -77,7 +77,7 @@ cc_library(
     hdrs = ["inotify_instance_mock.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
         ":inotify_instance",
@@ -92,7 +92,7 @@ cc_library(
     hdrs = ["inotify_instance_facade.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
         ":inotify_instance",
@@ -108,7 +108,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
 )
 
@@ -136,10 +136,10 @@ cc_test(
     ],
     deps = [
         ":inotify_instance_impl",
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os/mocklib:fcntl_mock",
         "@score-baselibs//score/os/mocklib:inotify_mock",
         "@score-baselibs//score/os/mocklib:sys_poll_mock",
         "@score-baselibs//score/os/mocklib:unistd_mock",
-        "@googletest//:gtest_main",
     ],
 )

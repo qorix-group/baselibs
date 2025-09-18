@@ -41,9 +41,9 @@ cc_test(
         "@score-baselibs//score/json:__subpackages__",
     ],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/json/internal/parser:parser_test_suite",
         "@score-baselibs//score/json/internal/parser/vajson:vajson_parser",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -58,10 +58,10 @@ cc_test(
     ],
     deps = [
         ":vajson_parser",
-        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
+        "@googletest//:gtest_main",
         "@score-baselibs//score/json",
         "@score-baselibs//score/json/internal/parser:number_parser_test_suite",
-        "@googletest//:gtest_main",
+        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
     ],
 )
 

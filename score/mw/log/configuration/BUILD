@@ -81,11 +81,11 @@ cc_library(
         ":configuration_interface",
         "@score-baselibs//score/json",
         "@score-baselibs//score/memory:split_string_view",
+        "@score-baselibs//score/mw/log/detail:initialization_reporter",
+        "@score-baselibs//score/mw/log/detail:types_and_errors",
         "@score-baselibs//score/os:stdlib",
         "@score-baselibs//score/os:unistd",
         "@score-baselibs//score/os/utils:path",
-        "@score-baselibs//score/mw/log/detail:initialization_reporter",
-        "@score-baselibs//score/mw/log/detail:types_and_errors",
     ],
 )
 
@@ -156,12 +156,12 @@ cc_test(
         ":configuration_file_discoverer_mock",
         ":configuration_parser",
         ":target_config_reader_mock",
+        "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log/test/console_logging_environment",
         "@score-baselibs//score/os/mocklib:fcntl_mock",
         "@score-baselibs//score/os/mocklib:stdlib_mock",
         "@score-baselibs//score/os/mocklib:unistd_mock",
         "@score-baselibs//score/os/utils/mocklib:path_mock",
-        "@score-baselibs//score/mw/log/test/console_logging_environment",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -177,13 +177,13 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score-baselibs//score/mw/log:__subpackages__",
         "//platform/aas/pas/logging:__subpackages__",
+        "@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/mw/log:shared_types",
         "@score-baselibs//score/mw/log/detail:logging_identifier",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 
@@ -202,14 +202,14 @@ cc_library(
     ],
     tags = ["FFI"],
     visibility = [
-        "@score-baselibs//score/mw/log:__subpackages__",
         "//platform/aas/pas/logging:__subpackages__",
+        "@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
         ":nvconfig_interface",
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/mw/log:shared_types",
         "@score-baselibs//score/mw/log/detail:logging_identifier",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 

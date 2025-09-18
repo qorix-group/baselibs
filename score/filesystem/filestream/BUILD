@@ -42,10 +42,10 @@ cc_library(
     deps = [
         "@score-baselibs//score/filesystem:error",
         "@score-baselibs//score/filesystem:path",
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/os:object_seam",
         "@score-baselibs//score/os:stat",
         "@score-baselibs//score/result",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 
@@ -88,12 +88,12 @@ cc_test(
     deps = [
         ":fake",
         ":filestream",
+        "@googletest//:gtest_main",
         "@score-baselibs//score/filesystem/factory",
         "@score-baselibs//score/filesystem/file_utils:file_test_utils",
         "@score-baselibs//score/os/mocklib:fcntl_mock",
         "@score-baselibs//score/os/mocklib:stat_mock",
         "@score-baselibs//score/os/mocklib:unistd_mock",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -123,10 +123,12 @@ cc_test(
         # "@ddad@score-baselibs//score/filesystem:__pkg__",
     ],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/filesystem:error",
         "@score-baselibs//score/filesystem:file_status",
         "@score-baselibs//score/filesystem:path",
         "@score-baselibs//score/filesystem/file_utils:file_test_utils",
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/os:fcntl",
         "@score-baselibs//score/os:object_seam",
         "@score-baselibs//score/os:stat",
@@ -136,7 +138,5 @@ cc_test(
         "@score-baselibs//score/os/mocklib:stdio_mock",
         "@score-baselibs//score/os/mocklib:unistd_mock",
         "@score-baselibs//score/result",
-        "@googletest//:gtest_main",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )

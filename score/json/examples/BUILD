@@ -28,8 +28,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@score-baselibs//score/json",
-        "@score-baselibs//score/os:unistd",
         "@score-baselibs//score/mw/log",
+        "@score-baselibs//score/os:unistd",
     ],
 )
 
@@ -49,8 +49,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@score-baselibs//score/json",
-        "@score-baselibs//score/os:unistd",
         "@score-baselibs//score/mw/log",
+        "@score-baselibs//score/os:unistd",
     ],
 )
 
@@ -69,7 +69,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@score-baselibs//score/json",
-        "@score-baselibs//score/os:unistd",
         "@score-baselibs//score/mw/log",
+        "@score-baselibs//score/os:unistd",
     ],
 )

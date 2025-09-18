@@ -28,7 +28,7 @@ cc_library(
         "@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
-        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/result",
     ],
 )

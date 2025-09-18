@@ -98,9 +98,9 @@ cc_library(
         "@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
-        "@score-baselibs//score/os:fcntl",
-        "@score-baselibs//score/mw/log/configuration",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/mw/log/configuration",
+        "@score-baselibs//score/os:fcntl",
     ],
 )
 
@@ -153,8 +153,8 @@ cc_library(
         "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
     ],
     deps = [
-        "@score-baselibs//score/mw/log/detail:backend_interface",
         "@googletest//:gtest",
+        "@score-baselibs//score/mw/log/detail:backend_interface",
     ],
 )
 
@@ -172,8 +172,8 @@ cc_library(
         "@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
-        "@score-baselibs//score/static_reflection_with_serialization/visitor",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/static_reflection_with_serialization/visitor",
     ],
 )
 
@@ -204,8 +204,8 @@ cc_library(
     ],
     deps = [
         ":logging_identifier",
-        "@score-baselibs//score/static_reflection_with_serialization/visitor",
         "@score-baselibs//score/mw/log:shared_types",
+        "@score-baselibs//score/static_reflection_with_serialization/visitor",
     ],
 )
 
@@ -220,8 +220,8 @@ cc_library(
     ],
     deps = [
         ":logging_identifier",
-        "@score-baselibs//score/static_reflection_with_serialization/visitor",
         "@score-baselibs//score/mw/log:shared_types",
+        "@score-baselibs//score/static_reflection_with_serialization/visitor",
     ],
 )
 
@@ -327,9 +327,9 @@ cc_library(
         ":integer_representation",
         ":log_data_types",
         "@score-baselibs//score/bitmanipulation",
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/memory:string_literal",
         "@score-baselibs//score/mw/log:shared_types",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 
@@ -396,8 +396,8 @@ cc_library(
         ":log_entry",
         ":logging_identifier",
         ":types_and_errors",
-        "@score-baselibs//score/mw/log:recorder",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/mw/log:recorder",
     ],
 )
 
@@ -479,8 +479,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         ":composite_recorder",
-        "@score-baselibs//score/mw/log:recorder_mock",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log:recorder_mock",
     ],
 )
 
@@ -599,8 +599,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         ":log_data_types",
-        "@score-baselibs//score/quality/compiler_warnings",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/quality/compiler_warnings",
     ],
 )
 
@@ -651,9 +651,9 @@ cc_test(
     tags = ["unit"],
     deps = [
         ":recorder_factory",
-        "@score-baselibs//score/os/mocklib:fcntl_mock",
-        "@score-baselibs//score/mw/log/configuration:target_config_reader_mock",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log/configuration:target_config_reader_mock",
+        "@score-baselibs//score/os/mocklib:fcntl_mock",
     ],
 )
 
@@ -687,8 +687,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         ":statistics_reporter",
-        "@score-baselibs//score/mw/log:recorder_mock",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log:recorder_mock",
     ],
 )
 
@@ -718,8 +718,8 @@ cc_test(
     ],
     tags = ["unit"],
     deps = [
-        "@score-baselibs//score/mw/log/detail:recorder_factory_stub",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log/detail:recorder_factory_stub",
     ],
 )
 
@@ -736,8 +736,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         ":thread_local_guard",
-        "@score-baselibs//score/concurrency:notification",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/concurrency:notification",
     ],
 )
 

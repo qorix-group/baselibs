@@ -116,8 +116,8 @@ cc_gtest_unit_test(
     features = COMPILER_WARNING_FEATURES,
     deps = [
         ":function_wrapper",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:instrumented_memory_resource",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:instrumented_memory_resource",
     ],
 )
 
@@ -232,8 +232,8 @@ cc_gtest_unit_test(
     features = COMPILER_WARNING_FEATURES,
     deps = [
         ":scope_state",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:function_wrapper",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:function_wrapper",
     ],
 )
 

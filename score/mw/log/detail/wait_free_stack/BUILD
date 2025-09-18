@@ -30,8 +30,8 @@ cc_library(
         "@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
-        "@score-baselibs//score/memory/shared:atomic_indirector",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/memory/shared:atomic_indirector",
     ],
 )
 
@@ -44,8 +44,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         ":wait_free_stack",
-        "@score-baselibs//score/memory/shared:atomic_indirector_mock_binding",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/memory/shared:atomic_indirector_mock_binding",
     ],
 )
 

@@ -50,10 +50,10 @@ cc_library(
     ],
     deps = [
         ":factory",
+        "@googletest//:gtest",
         "@score-baselibs//score/filesystem:standard_filesystem_fake",
         "@score-baselibs//score/filesystem/file_utils:fake",
         "@score-baselibs//score/filesystem/filestream:fake",
-        "@googletest//:gtest",
     ],
 )
 

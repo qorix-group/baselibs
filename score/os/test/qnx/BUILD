@@ -65,13 +65,13 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os/mocklib/qnx:dispatch_mock",
         "@score-baselibs//score/os/qnx:channel",
         "@score-baselibs//score/os/qnx:dispatch",
         "@score-baselibs//score/os/qnx:iofunc",
         "@score-baselibs//score/os/qnx:procmgr",
         "@score-baselibs//score/os/qnx:timer",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -96,8 +96,8 @@ cc_test(
         ],
     }),
     deps = [
-        "@score-baselibs//score/os/qnx:pcap",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/os/qnx:pcap",
     ],
 )
 
@@ -110,11 +110,11 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os/qnx:channel",
         "@score-baselibs//score/os/qnx:dispatch",
         "@score-baselibs//score/os/qnx:iofunc",
         "@score-baselibs//score/os/qnx:procmgr",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -127,10 +127,10 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os/mocklib/qnx:channel_mock",
         "@score-baselibs//score/os/qnx:channel",
         "@score-baselibs//score/os/qnx:dispatch",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -143,9 +143,9 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os/qnx:channel",
         "@score-baselibs//score/os/qnx:dispatch",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -158,10 +158,10 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os:fcntl",
         "@score-baselibs//score/os/mocklib/qnx:devctl_mock",
         "@score-baselibs//score/os/qnx:devctl",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -174,9 +174,9 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os/mocklib/qnx:iofunc_mock",
         "@score-baselibs//score/os/qnx:iofunc",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -194,12 +194,12 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os/mocklib/qnx:neutrino_qnx_mock",
         "@score-baselibs//score/os/qnx:channel",
         "@score-baselibs//score/os/qnx:dispatch",
         "@score-baselibs//score/os/qnx:neutrino",
         "@score-baselibs//score/os/qnx:sigevent_qnx",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -212,9 +212,9 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os/mocklib/qnx:procmgr_mock",
         "@score-baselibs//score/os/qnx:procmgr",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -230,8 +230,8 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
-        "@score-baselibs//score/os/qnx:resmgr",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/os/qnx:resmgr",
     ],
 )
 
@@ -247,8 +247,8 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
-        "@score-baselibs//score/os/qnx:secpol",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/os/qnx:secpol",
     ],
 )
 
@@ -264,8 +264,8 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
-        "@score-baselibs//score/os/qnx:slog2",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/os/qnx:slog2",
     ],
 )
 
@@ -280,9 +280,9 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os/qnx:neutrino",
         "@score-baselibs//score/os/qnx:pci",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -294,8 +294,8 @@ cc_test(
     tags = ["manual"],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
-        "@score-baselibs//score/os/qnx:pci_safety",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/os/qnx:pci_safety",
     ],
 )
 
@@ -308,10 +308,10 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
+        "//third_party/libsocket",
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os/mocklib/qnx:sysctl_mock",
         "@score-baselibs//score/os/qnx:sysctl",
-        "@googletest//:gtest_main",
-        "//third_party/libsocket",
     ],
 )
 
@@ -324,9 +324,9 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os:unistd",
         "@score-baselibs//score/os/qnx:unistd",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -342,8 +342,8 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
-        "@score-baselibs//score/os:pthread",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/os:pthread",
     ],
 )
 
@@ -356,9 +356,9 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os/mocklib/qnx:timer_mock",
         "@score-baselibs//score/os/qnx:timer",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -371,9 +371,9 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os/mocklib/qnx:thread_ctl_mock",
         "@score-baselibs//score/os/qnx:thread_ctl",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -387,8 +387,8 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
-        "@score-baselibs//score/os/qnx:inout",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/os/qnx:inout",
     ],
 )
 
@@ -402,8 +402,8 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
-        "@score-baselibs//score/os/qnx:mman",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/os/qnx:mman",
     ],
 )
 
@@ -417,9 +417,9 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os/mocklib/qnx:fs_crypto_mock",
         "@score-baselibs//score/os/qnx:fs_crypto",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -433,8 +433,8 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
-        "@score-baselibs//score/os/qnx:fs_crypto",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/os/qnx:fs_crypto",
     ],
 )
 
@@ -448,8 +448,8 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
-        "@score-baselibs//score/os/qnx:sigevent_qnx",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/os/qnx:sigevent_qnx",
     ],
 )
 
@@ -465,7 +465,7 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
-        "@score-baselibs//score/os/qnx:qnx_version",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/os/qnx:qnx_version",
     ],
 )

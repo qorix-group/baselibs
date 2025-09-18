@@ -52,8 +52,8 @@ cc_library(
     hdrs = ["interprocess_notification.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "@score-baselibs//score/analysis/tracing/test:__subpackages__",
         "//platform/aas/mw/com/test:__subpackages__",
+        "@score-baselibs//score/analysis/tracing/test:__subpackages__",
     ],
     deps = [
         ":interprocess_conditional_variable",

@@ -57,8 +57,8 @@ cc_library(
     deps = [
         "@score-baselibs//score/filesystem/filestream",
         "@score-baselibs//score/json/internal/model",
-        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/result",
     ],
 )
 
@@ -77,9 +77,9 @@ cc_library(
     visibility = LIB_JSON_VISIBILITY,
     deps = [
         ":interface",
-        "@score-baselibs//score/language/safecpp/safe_math",
         "@score-baselibs//score/json/internal/parser",
         "@score-baselibs//score/json/internal/writer/json_serialize",
+        "@score-baselibs//score/language/safecpp/safe_math",
     ],
 )
 
@@ -90,13 +90,13 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
         ":json",
-        "@score-baselibs//score/static_reflection_with_serialization/visitor",
-        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/result",
+        "@score-baselibs//score/static_reflection_with_serialization/visitor",
     ],
 )
 
@@ -104,7 +104,7 @@ alias(
     name = "json_parser",
     actual = ":json",
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
 )
 
@@ -163,9 +163,9 @@ cc_test(
         "@score-baselibs//score/json:__pkg__",
     ],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/filesystem:mock",
         "@score-baselibs//score/json",
-        "@googletest//:gtest_main",
     ],
 )
 

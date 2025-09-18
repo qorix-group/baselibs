@@ -26,9 +26,9 @@ cc_test(
     ],
     tags = ["unit"],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os/linux/utils/mocklib:network_interface_mock",
         "@score-baselibs//score/os/mocklib:nonposixwrapper_mock",
         "@score-baselibs//score/os/mocklib:stat_mock",
-        "@googletest//:gtest_main",
     ] + ["@score-baselibs//score/os/linux/utils:network_interface"],
 )

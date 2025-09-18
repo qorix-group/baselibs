@@ -40,13 +40,13 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
         ":error",
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/result/details/expected",
         "@score-baselibs//score/result/details/expected:extensions",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 

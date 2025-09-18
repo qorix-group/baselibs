@@ -71,10 +71,10 @@ cc_library(
     visibility = [
         "//ecu/xpad/xpad-shared/config/mpad/pp/taf_plus/pas/logging/test:__pkg__",
         "//platform/aas/ara/tsync:__subpackages__",
-        "@score-baselibs//score/os:__subpackages__",
         "//platform/aas/pas/crash_handler:__pkg__",
         "//platform/aas/pas/sysmon:__pkg__",
         "//platform/aas/pas/sysmon/library:__subpackages__",
+        "@score-baselibs//score/os:__subpackages__",
     ],
     deps = select({
         "//bazel/platforms:config_xpad_dnv": [],

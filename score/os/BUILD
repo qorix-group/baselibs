@@ -336,9 +336,9 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         ":__subpackages__",
+        "//platform/aas/network/xnm:__subpackages__",
         "@score-baselibs//score/analysis/tracing/daemon:__subpackages__",
         "@score-baselibs//score/os:__subpackages__",
-        "//platform/aas/network/xnm:__subpackages__",
     ],
     deps = [
         ":errno",
@@ -855,7 +855,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
         ":errno",
@@ -876,7 +876,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
         "@score-baselibs//score/result",
@@ -896,13 +896,13 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
         ":object_seam",
         ":sigevent_error",
-        "@score-baselibs//score/result",
         "@score-baselibs//score/mw/log",
+        "@score-baselibs//score/result",
     ],
 )
 

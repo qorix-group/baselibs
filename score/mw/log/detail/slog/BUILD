@@ -1,3 +1,5 @@
+load("@score-baselibs//third_party/itf:py_unittest_qnx_test.bzl", "py_unittest_qnx_test")
+
 # *******************************************************************************
 # Copyright (c) 2025 Contributors to the Eclipse Foundation
 #
@@ -11,7 +13,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 load("//score/mw:common_features.bzl", "COMPILER_WARNING_FEATURES")
-load("@score-baselibs//third_party/itf:py_unittest_qnx_test.bzl", "py_unittest_qnx_test")
 
 cc_library(
     name = "slog_backend",
@@ -28,10 +29,10 @@ cc_library(
         "@score-baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
-        "@score-baselibs//score/os/qnx:slog2",
         "@score-baselibs//score/mw/log/detail:backend_interface",
         "@score-baselibs//score/mw/log/detail:circular_allocator",
         "@score-baselibs//score/mw/log/detail:initialization_reporter",
+        "@score-baselibs//score/os/qnx:slog2",
     ],
 )
 
@@ -83,10 +84,10 @@ cc_test(
         "unit",
     ],
     deps = [
-        "@score-baselibs//score/mw/log/configuration",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
         "@score-baselibs//score/language/futurecpp:futurecpp_test_support",
+        "@score-baselibs//score/mw/log/configuration",
     ] + select({
         "@platforms//os:linux": [],
         "@platforms//os:qnx": [

@@ -31,9 +31,9 @@ cc_library(
     tags = ["unit"],
     visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
-        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
-        "@score-baselibs//score/json",
         "@googletest//:gtest",
+        "@score-baselibs//score/json",
+        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
     ],
 )
 
@@ -46,9 +46,9 @@ cc_test(
         "@score-baselibs//score/json:__pkg__",
     ],
     deps = [
-        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
-        "@score-baselibs//score/json",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/json",
+        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
     ],
 )
 
@@ -61,9 +61,9 @@ cc_library(
     tags = ["unit"],
     visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
-        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
-        "@score-baselibs//score/json",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/json",
+        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
     ],
 )
 

@@ -38,14 +38,14 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
+        "@score-baselibs//score/concurrency:interruptible_wait",
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/language/safecpp/scoped_function:move_only_scoped_function",
         "@score-baselibs//score/language/safecpp/scoped_function:scope",
-        "@score-baselibs//score/concurrency:interruptible_wait",
         "@score-baselibs//score/result",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 

@@ -14,16 +14,6 @@ load("@score-baselibs//:bazel/unit_tests.bzl", "cc_gtest_unit_test", "cc_unit_te
 load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
-    name = "time_conversion",
-    srcs = ["time_conversion.cpp"],
-    hdrs = ["time_conversion.h"],
-    features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        "@score-baselibs//score/os/utils:__subpackages__",
-    ],
-)
-
-cc_library(
     name = "pimpl_ptr",
     srcs = ["pimpl_ptr.cpp"],
     hdrs = ["pimpl_ptr.h"],
@@ -59,7 +49,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = ["@score-baselibs//score/language/futurecpp"],
 )
@@ -69,13 +59,6 @@ cc_gtest_unit_test(
     srcs = ["pimpl_ptr_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
     deps = [":pimpl_ptr"],
-)
-
-cc_gtest_unit_test(
-    name = "time_conversion_test",
-    srcs = ["time_conversion.cpp"],
-    features = COMPILER_WARNING_FEATURES,
-    deps = [":time_conversion"],
 )
 
 cc_gtest_unit_test(
@@ -96,7 +79,6 @@ cc_unit_test_suites_for_host_and_qnx(
     name = "unit_test_suite",
     cc_unit_tests = [
         ":pimpl_ptr_test",
-        ":time_conversion_test",
         ":payloadvalidation_test",
         ":scoped_operation_test",
     ],

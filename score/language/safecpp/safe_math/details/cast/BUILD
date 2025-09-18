@@ -27,10 +27,10 @@ cc_library(
         "@score-baselibs//score/language/safecpp/safe_math/details/negate:__pkg__",
     ],
     deps = [
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/language/safecpp/safe_math:error",
         "@score-baselibs//score/language/safecpp/safe_math/details/comparison",
         "@score-baselibs//score/result",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 
@@ -43,7 +43,7 @@ cc_gtest_unit_test(
     ],
     deps = [
         ":cast",
-        "@score-baselibs//score/language/safecpp/safe_math/details:test_type_collection",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/language/safecpp/safe_math/details:test_type_collection",
     ],
 )

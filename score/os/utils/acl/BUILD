@@ -25,13 +25,13 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/os:acl",
         "@score-baselibs//score/os:errno",
         "@score-baselibs//score/result",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 
@@ -43,7 +43,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
         ":acl",
@@ -61,7 +61,7 @@ cc_test(
     ],
     deps = [
         ":acl",
-        "@score-baselibs//score/os/mocklib:acl_mock",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/os/mocklib:acl_mock",
     ],
 )

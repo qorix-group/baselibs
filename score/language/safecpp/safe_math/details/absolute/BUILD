@@ -27,9 +27,9 @@ cc_library(
         "@score-baselibs//score/language/safecpp/safe_math/details/negate:__pkg__",
     ],
     deps = [
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/language/safecpp/safe_math/details/comparison",
         "@score-baselibs//score/language/safecpp/safe_math/details/type_traits",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 

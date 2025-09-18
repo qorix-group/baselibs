@@ -37,7 +37,7 @@ cc_library(
         "@score-baselibs//score/analysis/tracing/common/interface_types:shared_memory_location_helpers",
         "@score-baselibs//score/analysis/tracing/common/shared_list",
         "@score-baselibs//score/analysis/tracing/generic_trace_library/interface_types/error_code",
-        "@score-baselibs//score/memory/shared:types",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/memory/shared:types",
     ],
 )

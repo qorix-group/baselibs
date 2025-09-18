@@ -21,10 +21,10 @@ cc_library(
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/language/safecpp/safe_math/details:__subpackages__"],
     deps = [
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/language/safecpp/safe_math:error",
         "@score-baselibs//score/language/safecpp/safe_math/details/comparison",
         "@score-baselibs//score/result",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 
@@ -38,8 +38,8 @@ cc_gtest_unit_test(
     ],
     deps = [
         ":floating_point_environment",
-        "@score-baselibs//score/language/safecpp/safe_math:error",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/language/safecpp/safe_math:error",
     ],
 )
 

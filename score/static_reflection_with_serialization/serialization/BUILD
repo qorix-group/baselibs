@@ -32,8 +32,8 @@ cc_library(
         "//visibility:public",
     ],
     deps = [
-        "@score-baselibs//score/static_reflection_with_serialization/visitor",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/static_reflection_with_serialization/visitor",
     ],
 )
 

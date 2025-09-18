@@ -19,8 +19,8 @@ cc_library(
     hdrs = ["acl_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:acl",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:acl",
     ],
 )
 
@@ -31,8 +31,8 @@ cc_library(
     hdrs = ["mock_pthread.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:pthread",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:pthread",
     ],
 )
 
@@ -43,8 +43,8 @@ cc_library(
     hdrs = ["mock_ftw.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os/interface:ftw",
         "@googletest//:gtest",
+        "@score-baselibs//score/os/interface:ftw",
     ],
 )
 
@@ -55,8 +55,8 @@ cc_library(
     hdrs = ["mock_dirent.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:dirent",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:dirent",
     ],
 )
 
@@ -67,8 +67,8 @@ cc_library(
     hdrs = ["mock_select.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:select",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:select",
     ],
 )
 
@@ -79,9 +79,9 @@ cc_library(
     hdrs = ["nonposixwrappermock.h"],
     visibility = ["//visibility:public"],
     deps = [
+        "@googletest//:gtest",
         "@score-baselibs//score/os:file_stream",
         "@score-baselibs//score/os/linux:linux_header",
-        "@googletest//:gtest",
     ],
 )
 
@@ -92,8 +92,8 @@ cc_library(
     hdrs = ["pthreadwrappermock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:pthread",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:pthread",
     ],
 )
 
@@ -104,8 +104,8 @@ cc_library(
     hdrs = ["cpuidmock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:cpuid",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:cpuid",
     ],
 )
 
@@ -116,8 +116,8 @@ cc_library(
     features = ["test_warnings"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os/utils:machine",
         "@googletest//:gtest",
+        "@score-baselibs//score/os/utils:machine",
     ],
 )
 
@@ -128,8 +128,8 @@ cc_library(
     hdrs = ["file_stream_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:file_stream",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:file_stream",
     ],
 )
 
@@ -140,8 +140,8 @@ cc_library(
     hdrs = ["getoptmock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:getopt",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:getopt",
     ],
 )
 
@@ -152,9 +152,9 @@ cc_library(
     hdrs = ["libgen_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
+        "@googletest//:gtest",
         "@score-baselibs//score/os:file_stream",
         "@score-baselibs//score/os:libgen",
-        "@googletest//:gtest",
     ],
 )
 
@@ -165,8 +165,8 @@ cc_library(
     hdrs = ["inotify_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:inotify",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:inotify",
     ],
 )
 
@@ -177,8 +177,8 @@ cc_library(
     hdrs = ["ioctl_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:ioctl",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:ioctl",
     ],
 )
 
@@ -189,8 +189,8 @@ cc_library(
     hdrs = ["mman_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:mman",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:mman",
     ],
 )
 
@@ -201,8 +201,8 @@ cc_library(
     hdrs = ["stdlib_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:stdlib",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:stdlib",
     ],
 )
 
@@ -213,8 +213,8 @@ cc_library(
     hdrs = ["statvfsmock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:statvfs",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:statvfs",
     ],
 )
 
@@ -225,9 +225,9 @@ cc_library(
     hdrs = ["fcntl_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
+        "@googletest//:gtest",
         "@score-baselibs//score/os:fcntl",
         "@score-baselibs//score/os:mman",
-        "@googletest//:gtest",
     ],
 )
 
@@ -238,9 +238,9 @@ cc_library(
     hdrs = ["stat_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
+        "@googletest//:gtest",
         "@score-baselibs//score/os:mman",
         "@score-baselibs//score/os:stat",
-        "@googletest//:gtest",
     ],
 )
 
@@ -250,8 +250,8 @@ cc_library(
     hdrs = ["stdiomock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:stdio",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:stdio",
     ],
 )
 
@@ -262,8 +262,8 @@ cc_library(
     hdrs = ["mount_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:mount",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:mount",
     ],
 )
 
@@ -273,8 +273,8 @@ cc_library(
     hdrs = ["grpmock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:grp",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:grp",
     ],
 )
 
@@ -284,8 +284,8 @@ cc_library(
     hdrs = ["unistdmock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:unistd",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:unistd",
     ],
 )
 
@@ -296,8 +296,8 @@ cc_library(
     hdrs = ["string_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:string",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:string",
     ],
 )
 
@@ -308,8 +308,8 @@ cc_library(
     hdrs = ["time_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:time",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:time",
     ],
 )
 
@@ -320,8 +320,8 @@ cc_library(
     hdrs = ["mqueuemock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:mqueue",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:mqueue",
     ],
 )
 
@@ -332,8 +332,8 @@ cc_library(
     hdrs = ["net_if_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:net_if",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:net_if",
     ],
 )
 
@@ -344,8 +344,8 @@ cc_library(
     hdrs = ["sys_poll_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:sys_poll",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:sys_poll",
     ],
 )
 
@@ -356,8 +356,8 @@ cc_library(
     hdrs = ["sys_uio_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:sys_uio",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:sys_uio",
     ],
 )
 
@@ -368,8 +368,8 @@ cc_library(
     hdrs = ["semaphoremock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:semaphore",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:semaphore",
     ],
 )
 
@@ -380,8 +380,8 @@ cc_library(
     hdrs = ["socketmock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:socket",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:socket",
     ],
 )
 
@@ -392,8 +392,8 @@ cc_library(
     hdrs = ["netdbmock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:netdb",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:netdb",
     ],
 )
 
@@ -404,9 +404,9 @@ cc_library(
     hdrs = ["uname_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:uname",
         "@googletest//:gtest",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/os:uname",
     ],
 )
 
@@ -417,9 +417,9 @@ cc_library(
     hdrs = ["arpa_inet_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:arpa_inet",
         "@googletest//:gtest",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/os:arpa_inet",
     ],
 )
 
@@ -431,9 +431,9 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os/qnx:pcap",
         "@googletest//:gtest",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/os/qnx:pcap",
     ],
 )
 
@@ -444,9 +444,9 @@ cc_library(
     hdrs = ["sys_wait_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:sys_wait",
         "@googletest//:gtest",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/os:sys_wait",
     ],
 )
 
@@ -458,9 +458,9 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:sched",
         "@googletest//:gtest",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/os:sched",
     ],
 )
 
@@ -471,9 +471,9 @@ cc_library(
     hdrs = ["spawn_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:spawn",
         "@googletest//:gtest",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/os:spawn",
     ],
 )
 
@@ -484,11 +484,11 @@ cc_library(
     hdrs = ["ifaddrs_mock.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
-        "@score-baselibs//score/os:ifaddrs",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:ifaddrs",
     ],
 )
 
@@ -499,11 +499,11 @@ cc_library(
     hdrs = ["capability_mock.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
-        "@score-baselibs//score/os:capability",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:capability",
     ],
 )
 
@@ -514,9 +514,9 @@ cc_library(
     hdrs = ["linuxschedmock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os/linux:linux_header",
         "@googletest//:gtest_main",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/os/linux:linux_header",
     ],
 )
 
@@ -527,8 +527,8 @@ cc_library(
     hdrs = ["glob_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:glob",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:glob",
     ],
 )
 
@@ -539,7 +539,7 @@ cc_library(
     hdrs = ["sigevent_mock.h"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:sigevent",
         "@googletest//:gtest",
+        "@score-baselibs//score/os:sigevent",
     ],
 )

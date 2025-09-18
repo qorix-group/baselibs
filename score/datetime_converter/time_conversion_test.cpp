@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/utils/time_conversion.h"
+#include "score/datetime_converter/time_conversion.h"
 
 #include <gtest/gtest.h>
 #include <cstdint>

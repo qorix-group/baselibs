@@ -51,7 +51,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
         # "@ddad//platform/aas:__subpackages__",
     ],
     deps = [
@@ -105,11 +105,11 @@ cc_test(
     deps = [
         ":file_utils",
         ":mock",
+        "@googletest//:gtest_main",
         "@score-baselibs//score/filesystem:standard_filesystem_fake",
         "@score-baselibs//score/os/mocklib:fcntl_mock",
         "@score-baselibs//score/os/mocklib:grp_mock",
         "@score-baselibs//score/os/mocklib:stat_mock",
         "@score-baselibs//score/os/mocklib:unistd_mock",
-        "@googletest//:gtest_main",
     ],
 )

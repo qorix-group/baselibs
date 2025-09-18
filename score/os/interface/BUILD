@@ -19,7 +19,7 @@ cc_library(
     tags = ["FFI"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/os:errno",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/os:errno",
     ],
 )

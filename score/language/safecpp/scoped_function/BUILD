@@ -20,12 +20,12 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/language/safecpp/scoped_function/details:allocator_wrapper",
         "@score-baselibs//score/language/safecpp/scoped_function/details:scope_state",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 
@@ -37,8 +37,8 @@ cc_gtest_unit_test(
         ":copyable_scoped_function",
         ":move_only_scoped_function",
         ":scope",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:instrumented_memory_resource",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/language/safecpp/scoped_function/details:instrumented_memory_resource",
     ],
 )
 
@@ -49,10 +49,11 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
         ":scope",
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/language/safecpp/scoped_function/details:allocator_aware_type_erasure_pointer",
         "@score-baselibs//score/language/safecpp/scoped_function/details:function_wrapper",
         "@score-baselibs//score/language/safecpp/scoped_function/details:invoker",
@@ -60,7 +61,6 @@ cc_library(
         "@score-baselibs//score/language/safecpp/scoped_function/details:modify_signature",
         "@score-baselibs//score/language/safecpp/scoped_function/details:scope_state",
         "@score-baselibs//score/language/safecpp/scoped_function/details:scoped_function_invoker",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 
@@ -71,11 +71,12 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
         ":copyable_scoped_function",
         ":scope",
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/language/safecpp/scoped_function/details:allocator_aware_type_erasure_pointer",
         "@score-baselibs//score/language/safecpp/scoped_function/details:function_wrapper",
         "@score-baselibs//score/language/safecpp/scoped_function/details:invoker",
@@ -83,7 +84,6 @@ cc_library(
         "@score-baselibs//score/language/safecpp/scoped_function/details:modify_signature",
         "@score-baselibs//score/language/safecpp/scoped_function/details:scope_state",
         "@score-baselibs//score/language/safecpp/scoped_function/details:scoped_function_invoker",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 
@@ -99,10 +99,10 @@ cc_gtest_unit_test(
     deps = [
         ":copyable_scoped_function",
         ":move_only_scoped_function",
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/language/safecpp/scoped_function/details:instrumented_memory_resource",
         "@score-baselibs//score/language/safecpp/scoped_function/details:parametrization_helper",
         "@score-baselibs//score/language/safecpp/scoped_function/details:testing_allocator",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 

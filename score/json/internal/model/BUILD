@@ -33,9 +33,9 @@ cc_library(
     tags = ["FFI"],
     visibility = ["@score-baselibs//score/json:__subpackages__"],
     deps = [
+        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/memory:string_comparison_adaptor",
         "@score-baselibs//score/result",
-        "@score-baselibs//score/language/futurecpp",
     ],
 )
 

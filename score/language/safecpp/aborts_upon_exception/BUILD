@@ -34,9 +34,9 @@ cc_test(
     tags = ["unit"],
     deps = [
         ":abortsuponexception",
-        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
         "@googletest//:gtest_main",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
     ],
 )
 
@@ -49,9 +49,9 @@ cc_test(
     features = ["aborts_upon_exception"],
     tags = ["unit"],
     deps = [
-        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
         "@googletest//:gtest_main",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
     ],
 )
 

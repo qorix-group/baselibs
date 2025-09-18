@@ -30,9 +30,9 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:linux"],
     deps = [
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os/linux",
         "@score-baselibs//score/os/linux:linux_header",
-        "@googletest//:gtest_main",
     ],
 )
 
@@ -47,7 +47,7 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:linux"],
     deps = [
-        "@score-baselibs//score/os:pthread",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/os:pthread",
     ],
 )

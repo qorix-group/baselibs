@@ -10,29 +10,19 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef SCORE_LIB_UTILS_TIME_CONVERSION_H
-#define SCORE_LIB_UTILS_TIME_CONVERSION_H
-
-#include <time.h> /* KW_SUPPRESS:MISRA.INCL.UNSAFE:providing conversion to timespec is purpose of this file */
-#include <chrono>
+#include "score/datetime_converter/time_conversion.h"
 
 namespace score
 {
 namespace common
 {
-template <typename Duration>
-timespec duration_to_timespec(Duration dur)
-{
-    timespec ts{};
-    ts.tv_sec = std::chrono::duration_cast<std::chrono::seconds>(dur).count();
-    ts.tv_nsec = std::chrono::duration_cast<std::chrono::nanoseconds>(dur % std::chrono::seconds(1)).count();
-    return ts;
-}
 
 timespec timeout_in_timespec(const std::chrono::milliseconds timeout,
-                             const std::chrono::time_point<std::chrono::system_clock> current_time);
+                             const std::chrono::time_point<std::chrono::system_clock> current_time)
+{
+    const std::chrono::nanoseconds time_to_wait = current_time.time_since_epoch() + timeout;
+    return duration_to_timespec(time_to_wait);
+}
 
 }  // namespace common
 }  // namespace score
-
-#endif  // SCORE_LIB_UTILS_TIME_CONVERSION_H

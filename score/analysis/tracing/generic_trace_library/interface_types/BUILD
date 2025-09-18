@@ -77,8 +77,8 @@ cc_library(
     ],
     deps = [
         ":type_definitions",
-        "@score-baselibs//score/memory:string_literal",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/memory:string_literal",
     ],
 )
 

@@ -32,8 +32,8 @@ cc_library(
         "flexible_circular_allocator_interface",
         "@score-baselibs//score/analysis/tracing/common/interface_types:generic_trace_api_types",
         "@score-baselibs//score/analysis/tracing/generic_trace_library/interface_types/error_code",
-        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/result",
     ],
 )
 
@@ -61,8 +61,8 @@ cc_library(
         "flexible_circular_allocator_interface",
         "@score-baselibs//score/analysis/tracing/common/interface_types:generic_trace_api_types",
         "@score-baselibs//score/analysis/tracing/generic_trace_library/interface_types/error_code",
-        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/result",
     ],
 )
 
@@ -169,7 +169,7 @@ cc_library(
         "@score-baselibs//score/analysis:__subpackages__",
     ],
     deps = [
-        "@score-baselibs//score/result",
         "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/result",
     ],
 )

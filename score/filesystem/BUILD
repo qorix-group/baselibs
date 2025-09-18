@@ -38,14 +38,14 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "//visibility:public", # platform_only
+        "//visibility:public",  # platform_only
     ],
     deps = [
         ":standard_filesystem_fake",
+        "@googletest//:gtest",
         "@score-baselibs//score/filesystem/factory:fake",
         "@score-baselibs//score/filesystem/file_utils:mock",
         "@score-baselibs//score/filesystem/filestream:fake",
-        "@googletest//:gtest",
     ],
 )
 
@@ -153,11 +153,11 @@ cc_library(
     ],
     deps = [
         ":filesystem",
+        "@googletest//:gtest",
         "@score-baselibs//score/filesystem/filestream:fake",
         "@score-baselibs//score/os/mocklib:dirent_mock",
         "@score-baselibs//score/os/mocklib:stat_mock",
         "@score-baselibs//score/os/mocklib:stdlib_mock",
-        "@googletest//:gtest",
     ],
 )
 
@@ -181,12 +181,12 @@ cc_test(
     deps = [
         ":standard_filesystem",
         ":standard_filesystem_fake",
+        "@googletest//:gtest_main",
         "@score-baselibs//score/os/mocklib:dirent_mock",
         "@score-baselibs//score/os/mocklib:stat_mock",
         "@score-baselibs//score/os/mocklib:stdio_mock",
         "@score-baselibs//score/os/mocklib:stdlib_mock",
         "@score-baselibs//score/os/mocklib:unistd_mock",
-        "@googletest//:gtest_main",
     ],
 )
 
