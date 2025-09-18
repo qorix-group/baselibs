@@ -67,10 +67,11 @@ class zspan
     class is_compatible_range<
         R,
         std::void_t<decltype(std::data(std::declval<R>())), decltype(std::size(std::declval<R>()))>>
-        // NOLINTNEXTLINE(score-banned-function): using `std::data()` is valid here, `is_range_of` is just a type trait
+        // NOLINTNEXTLINE(score-banned-function) use of `std::data()` for sole type trait purpose here is legitimate
         : public std::is_convertible<decltype(*std::data(std::declval<R>())), decltype(details::kNullByte)>
     {
       public:
+        // NOLINTNEXTLINE(score-banned-function) use of `std::data()` for sole type trait purpose here is legitimate
         using value_type = std::remove_reference_t<decltype(*std::data(std::declval<R>()))>;
     };
 
