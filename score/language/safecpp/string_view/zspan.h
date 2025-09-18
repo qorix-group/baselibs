@@ -46,6 +46,53 @@ class zspan
     static_assert(!std::is_pointer_v<T>, "`safecpp::zspan` cannot be instantiated for pointer types");
     static_assert(!std::is_reference_v<T>, "`safecpp::zspan` cannot be instantiated for reference types");
 
+    /// @brief type trait for checking whether type \p U; is a `safecpp::zspan`
+    template <typename U>
+    class is_zspan : public std::false_type
+    {
+    };
+    template <typename U>
+    class is_zspan<zspan<U>> : public std::true_type
+    {
+    };
+
+    /// @brief type trait for checking whether type \p R; is a range over elements which can get compared to kNullByte
+    template <typename R, typename = void>
+    class is_compatible_range : public std::false_type
+    {
+    };
+    template <typename R>
+    class is_compatible_range<
+        R,
+        std::void_t<decltype(std::data(std::declval<R>())), decltype(std::size(std::declval<R>()))>>
+        // NOLINTNEXTLINE(score-banned-function): using `std::data()` is valid here, `is_range_of` is just a type trait
+        : public std::is_convertible<decltype(*std::data(std::declval<R>())), decltype(details::kNullByte)>
+    {
+      public:
+        using value_type = std::remove_reference_t<decltype(*std::data(std::declval<R>()))>;
+    };
+
+    /// @brief type trait for checking whether type \p R; is a range over a guaranteed null-terminated sequence
+    template <typename R, typename = void>
+    class is_guaranteed_null_terminated : public std::false_type
+    {
+    };
+    template <typename R>
+    class is_guaranteed_null_terminated<
+        R,
+        std::void_t<decltype(std::declval<R>().c_str()), decltype(std::declval<R>().size())>> : public std::true_type
+    {
+      public:
+        using value_type = std::remove_reference_t<decltype(*std::declval<R>().c_str())>;
+    };
+
+    /// @brief type trait for checking whether a ptr to \p RangeValueType;'s is convertible to one of \p ZSpanValueType;
+    template <typename RangeValueType, typename ZSpanValueType>
+    class is_pointer_convertible
+        : public std::is_convertible<std::add_pointer_t<RangeValueType>, std::add_pointer_t<ZSpanValueType>>
+    {
+    };
+
   public:
     using value_type = T;
     using size_type = std::size_t;
@@ -55,6 +102,29 @@ class zspan
     using const_reference = std::add_lvalue_reference_t<std::add_const_t<value_type>>;
 
     using violation_policies = null_termination_violation_policies;
+
+    /// @brief Constructs `zspan` as view over arbitrary \p range;.
+    /// @details The provided \p violation_policy; will get invoked in case the range is not null-terminated.
+    template <typename RangeType,
+              typename ZSpanValueType = T,
+              typename RangeValueType = std::enable_if_t<is_compatible_range<RangeType>::value,
+                                                         typename is_compatible_range<RangeType>::value_type>,
+              typename RT = std::remove_cv_t<std::remove_reference_t<RangeType>>,
+              typename ViolationPolicy = violation_policies::default_policy,
+              std::enable_if_t<violation_policies::is_valid_one<ViolationPolicy>(), bool> = true,
+              std::enable_if_t<is_pointer_convertible<RangeValueType, ZSpanValueType>::value, bool> = true,
+              std::enable_if_t<
+                  std::conjunction_v<std::negation<is_zspan<RT>>, std::negation<is_guaranteed_null_terminated<RT>>>,
+                  bool> = true>
+    // NOLINTBEGIN(cppcoreguidelines-pro-type-member-init) false positive, this constructor delegates to another one
+    constexpr explicit zspan(RangeType&& range, ViolationPolicy violation_policy = {}) noexcept(
+        // NOLINTNEXTLINE(score-banned-function) using `std::data()` is valid here since used in conj. with `std::size()`
+        noexcept(std::data(range)) && noexcept(std::size(range)) && noexcept(std::invoke(violation_policy, "reason")))
+        // NOLINTNEXTLINE(score-banned-function) using `std::data()` is valid here since used in conj. with `std::size()`
+        : zspan(std::data(range), std::size(range), std::move(violation_policy))
+    // NOLINTEND(cppcoreguidelines-pro-type-member-init)
+    {
+    }
 
     /// @brief Constructs a `zspan` as view over null-terminated sequence \p data; with provided \p size;.
     /// @details The provided \p violation_policy; will get invoked in case the sequence is not null-terminated.

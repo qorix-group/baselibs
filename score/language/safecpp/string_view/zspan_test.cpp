@@ -25,24 +25,31 @@ namespace score::safecpp
 namespace
 {
 
+constexpr const char null_terminated_char_array[] = "hello";
+
 using safecpp::literals::operator""_zsp;
 
-TEST(ZSpan, CanConstructFromLiteral)
+TEST(ZSpan, CanConstructConstexpr)
 {
-    // Given a `zspan` constructed from a string literal
-    constexpr auto span = "hello"_zsp;
+    // Given a `zspan`s constructed from a constexpr buffer
+    constexpr safecpp::zspan<const char> span{null_terminated_char_array};
+    constexpr safecpp::zspan<const char> other_span{"hello world"};
 
-    // Then it must not be empty
+    // Then they must not be empty
     EXPECT_FALSE(span.empty());
+    EXPECT_FALSE(other_span.empty());
 
-    // And its size must be the length of the string literal minus the null-terminator
+    // And their size must be the length of the respective string literal minus the null-terminator
     EXPECT_EQ(span.size(), 5U);
+    EXPECT_EQ(other_span.size(), 11U);
 
-    // And its data must point to the start of the string literal
+    // And their data must point to the start of the respective string literal
     EXPECT_STREQ(span.data(), "hello");
+    EXPECT_STREQ(other_span.data(), "hello world");
 
-    // And its underlying character buffer must be null-terminted
+    // And their underlying character buffers must be null-terminted
     EXPECT_EQ(span.data()[span.size()], '\0');
+    EXPECT_EQ(other_span.data()[other_span.size()], '\0');
 }
 
 TEST(ZSpan, CanConstructFromBuffer)
@@ -103,17 +110,70 @@ TEST(ZSpan, CanConstructFromBuffer)
                  std::invalid_argument);
 }
 
+TEST(ZSpan, CanConstructFromRange)
+{
+    // Given a null-terminated character range
+    char range[] = {'h', 'e', 'l', 'l', 'o', '\0'};
+
+    // When constructing a `zspan` from it
+    safecpp::zspan<char> span{range};
+
+    // Then it must not be empty
+    EXPECT_FALSE(span.empty());
+
+    // And its size must be the length of the range minus the null-terminator
+    EXPECT_EQ(span.size(), 5U);
+
+    // And its data must match the buffer's data
+    EXPECT_STREQ(span.data(), "hello");
+    EXPECT_EQ(span.front(), 'h');
+    EXPECT_EQ(span.back(), 'o');
+
+    // Given a non-null-terminated character range
+    char invalid_range[] = {'h', 'e', 'l', 'l', 'o'};
+
+    // When constructing a `zspan` from it in conjunction with the `set_empty` violation policy
+    span = safecpp::zspan<char>{invalid_range, safecpp::null_termination_violation_policies::set_empty{}};
+
+    // Then it must be empty
+    EXPECT_TRUE(span.empty());
+    EXPECT_EQ(span.size(), 0U);
+    EXPECT_EQ(span.data(), nullptr);
+
+    // When constructing a `zspan` from it in conjunction with the `throw_exception` violation policy
+    // Then `std::invalid_argument` is expected to get thrown
+    EXPECT_THROW((span =
+                      safecpp::zspan<char>{
+                          invalid_range,
+                          safecpp::null_termination_violation_policies::throw_exception<std::invalid_argument>{}}),
+                 std::invalid_argument);
+}
+
 TEST(ZSpan, CanConstructFromOtherZSpan)
 {
-    // Given a preconstructed `zspan`
-    zspan<char> span{};
+    // Given an empty preconstructed `zspan`
+    zspan<char> empty_span{};
 
-    // When constructing it based on the above one
-    zspan<const char> copied{span};
+    // When constructing a `zspan` based on the above one
+    zspan<const char> copied_empty{empty_span};
 
     // Then it must have worked
-    EXPECT_TRUE(copied.empty());
-    EXPECT_EQ(copied.data(), nullptr);
+    EXPECT_TRUE(copied_empty.empty());
+    EXPECT_EQ(copied_empty.data(), nullptr);
+
+    // Given an non-empty preconstructed `zspan`
+    char range[] = {'h', 'e', 'l', 'l', 'o', '\0'};
+    zspan<char> span{range};
+
+    // When constructing a `zspan` based on the above one
+    zspan<const char> copied{span};
+
+    // Then it must have worked correctly
+    EXPECT_FALSE(copied.empty());
+    EXPECT_EQ(copied.data(), std::data(range));
+    EXPECT_STREQ(copied.data(), "hello");
+    EXPECT_EQ(copied.front(), 'h');
+    EXPECT_EQ(copied.back(), 'o');
 }
 
 TEST(ZSpan, CanDefaultConstruct)
