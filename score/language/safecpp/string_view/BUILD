@@ -88,6 +88,8 @@ cc_gtest_unit_test(
     ],
     deps = [
         ":zspan",
+        ":zstring_view",
+        "@score-baselibs//score/language/futurecpp",
     ],
 )
 

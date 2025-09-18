@@ -13,6 +13,9 @@
 #include "score/language/safecpp/string_view/null_termination_violation_policies.h"
 
 #include "score/language/safecpp/string_view/zspan.h"
+#include "score/language/safecpp/string_view/zstring_view.h"
+
+#include <score/string.hpp>
 
 #include <gtest/gtest.h>
 
@@ -28,6 +31,7 @@ namespace
 constexpr const char null_terminated_char_array[] = "hello";
 
 using safecpp::literals::operator""_zsp;
+using safecpp::literals::operator""_zsv;
 
 TEST(ZSpan, CanConstructConstexpr)
 {
@@ -147,6 +151,48 @@ TEST(ZSpan, CanConstructFromRange)
                           invalid_range,
                           safecpp::null_termination_violation_policies::throw_exception<std::invalid_argument>{}}),
                  std::invalid_argument);
+}
+
+TEST(ZSpan, CanConstructFromAmpString)
+{
+    // Given a preconstructed `std::string`
+    score::cpp::pmr::string str{"hello"};
+
+    // When constructing it based on the above one
+    safecpp::zspan<const char> span{str};
+
+    // Then it must have worked
+    ASSERT_FALSE(span.empty());
+    EXPECT_EQ(span.size(), 5U);
+    EXPECT_STREQ(span.data(), "hello");
+}
+
+TEST(ZSpan, CanConstructFromStdString)
+{
+    // Given a preconstructed `std::string`
+    std::string str{"hello"};
+
+    // When constructing it based on the above one
+    safecpp::zspan<const char> span{str};
+
+    // Then it must have worked
+    ASSERT_FALSE(span.empty());
+    EXPECT_EQ(span.size(), 5U);
+    EXPECT_STREQ(span.data(), "hello");
+}
+
+TEST(ZSpan, CanConstructFromZStringView)
+{
+    // Given a preconstructed `zstring_view`
+    constexpr static auto view = "hello"_zsv;
+
+    // When constructing it based on the above one
+    constexpr safecpp::zspan<const char> span = view;
+
+    // Then it must have worked
+    ASSERT_FALSE(span.empty());
+    EXPECT_EQ(span.size(), 5U);
+    EXPECT_STREQ(span.data(), "hello");
 }
 
 TEST(ZSpan, CanConstructFromOtherZSpan)

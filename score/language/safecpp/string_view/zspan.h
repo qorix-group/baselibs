@@ -103,6 +103,18 @@ class zspan
 
     using violation_policies = null_termination_violation_policies;
 
+    /// @brief Constructs `zspan` as view over a guaranteed null-terminated \p range;.
+    template <typename RangeType,
+              typename ZSpanValueType = T,
+              typename RangeValueType = std::enable_if_t<is_guaranteed_null_terminated<RangeType>::value,
+                                                         typename is_guaranteed_null_terminated<RangeType>::value_type>,
+              std::enable_if_t<is_pointer_convertible<RangeValueType, ZSpanValueType>::value, bool> = true>
+    // NOLINTNEXTLINE(google-explicit-constructor) allow implicit conversions from guaranteed null-terminated ranges
+    constexpr zspan(RangeType&& range) noexcept(noexcept(range.c_str()) && noexcept(range.size()))
+        : data_{range.c_str()}, size_{range.size()}
+    {
+    }
+
     /// @brief Constructs `zspan` as view over arbitrary \p range;.
     /// @details The provided \p violation_policy; will get invoked in case the range is not null-terminated.
     template <typename RangeType,
