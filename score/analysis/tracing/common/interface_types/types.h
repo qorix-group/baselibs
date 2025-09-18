@@ -41,12 +41,6 @@ constexpr std::uint8_t kMaxChunksPerOneTraceRequest = 10U;
 
 // Suppress "AUTOSAR C++14 A0-1-1" rule finding. This rule states: "A project shall not contain
 // instances of non-volatile variables being given values that are not subsequently used."
-// The variable kRingBufferSharedMemoryPath is declared and given value that is used in multiple files
-// like object_factory.cpp, shm_ring_buffer.cpp, trace_job_processor_factory.cpp (false positive)
-// coverity[autosar_cpp14_a0_1_1_violation: False]
-constexpr std::string_view kRingBufferSharedMemoryPath = "/dev_shmem";
-// Suppress "AUTOSAR C++14 A0-1-1" rule finding. This rule states: "A project shall not contain
-// instances of non-volatile variables being given values that are not subsequently used."
 // The variable kNumberOfElements is declared and given value that is used in multiple files
 // like object_factory.cpp and trace_job_processor_factory.cpp (false positive)
 // coverity[autosar_cpp14_a0_1_1_violation: False]
@@ -183,12 +177,22 @@ static constexpr std::int32_t kSharedMemoryObjectOpenModes{S_IRUSR | S_IRGRP};
 // coverity[autosar_cpp14_a0_1_1_violation : FALSE]
 static constexpr std::int32_t kSharedMemoryObjectOpenFlags{O_RDONLY};
 
-/// @brief Flags to be used when opening client-side SHM objects
+/// @brief Flags to be used when opening client-side SHM for ShmRingBuffer
 // Suppress "AUTOSAR C++14 A0-1-1" rule finds: "A project shall not contain instances of non-volatile variables
 // being given values that are not subsequently used"
 // False positive, variable is used.
 // coverity[autosar_cpp14_a0_1_1_violation : FALSE]
 static constexpr std::int32_t kSharedMemoryRingBufferObjectOpenFlags{O_RDWR};
+
+/// @brief Flags to be used when opening client-side SHM for ShmRingBuffer
+// No harm to do bitwise operations on these values m5_0_21
+// Suppress "AUTOSAR C++14 A0-1-1" rule finds: "A project shall not contain instances of non-volatile variables
+// being given values that are not subsequently used"
+// False positive, variable is used.
+// coverity[autosar_cpp14_a0_1_1_violation : FALSE]
+//  coverity[autosar_cpp14_m5_0_21_violation]
+static constexpr std::int32_t kSharedMemoryRingBufferObjectOpenModes{S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH |
+                                                                     S_IWOTH};
 
 }  // namespace tracing
 }  // namespace analysis

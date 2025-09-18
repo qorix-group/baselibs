@@ -94,17 +94,30 @@ std::string_view score::analysis::tracing::GenericTraceAPIErrorDomain::MessageFo
         case ErrorCode::kRingBufferInvalidMemoryResourceRecoverable:
             error_message = "Invalid memory resource passed to constructor";
             break;
-        case ErrorCode::kRingBufferSharedMemoryHandleCreationRecoverable:
-            error_message = "Failed to create handle for shared memory ring buffer";
+        case ErrorCode::kRingBufferSharedMemoryCreationFatal:
+            error_message = "Failed to create shared memory for shared memory ring buffer";
             break;
-        case ErrorCode::kRingBufferSharedMemoryHandleOpenRecoverable:
-            error_message = "Failed to open handle for shared memory ring buffer";
+        case ErrorCode::kRingBufferSharedMemoryHandleCreationFatal:
+            error_message = "Failed to create shared memory handle for shared memory ring buffer";
             break;
-        case ErrorCode::kRingBufferSharedMemoryfstatRecoverable:
+        case ErrorCode::kRingBufferSharedMemorySealFatal:
+            error_message = "Failed to seal shared memory of shared memory ring buffer";
+            break;
+        case ErrorCode::kRingBufferSharedMemoryHandleOpenFatal:
+            error_message = "Failed to open shared memory handle of shared memory ring buffer";
+            break;
+        case ErrorCode::kRingBufferSharedMemoryFstatFatal:
             error_message = "Failed to perform fstat on shared memory ring buffer file descriptor";
             break;
-        case ErrorCode::kRingBufferSharedMemoryMapRecoverable:
+        case ErrorCode::kRingBufferSharedMemoryMapFatal:
             error_message = "Failed to to map memory region of shared memory ring buffer";
+            break;
+        case ErrorCode::kRingBufferSharedMemoryFlexibleAllocatorFatal:
+            error_message = "Failed to to create flexible allocator in shared memory ring buffer";
+            break;
+        case ErrorCode::kRingBufferSharedMemorySizeCalculationFatal:
+            error_message =
+                "Calculated shared memory size doesn't match the size of the original created shared memory";
             break;
         case ErrorCode::kNoSpaceLeftForAllocationRecoverable:
             error_message = "No space to allocate in TMD shared memory";
@@ -313,6 +326,14 @@ bool score::analysis::tracing::IsErrorRecoverable(const score::analysis::tracing
         case ErrorCode::kFailedRegisterCachedShmObjectsFatal:
         case ErrorCode::kTraceJobAllocatorInitializationFailedFatal:
         case ErrorCode::kFailedToProcessJobsFatal:
+        case ErrorCode::kRingBufferSharedMemoryCreationFatal:
+        case ErrorCode::kRingBufferSharedMemoryHandleCreationFatal:
+        case ErrorCode::kRingBufferSharedMemorySealFatal:
+        case ErrorCode::kRingBufferSharedMemoryHandleOpenFatal:
+        case ErrorCode::kRingBufferSharedMemoryFstatFatal:
+        case ErrorCode::kRingBufferSharedMemoryMapFatal:
+        case ErrorCode::kRingBufferSharedMemoryFlexibleAllocatorFatal:
+        case ErrorCode::kRingBufferSharedMemorySizeCalculationFatal:
         default:
             error = false;
             break;
