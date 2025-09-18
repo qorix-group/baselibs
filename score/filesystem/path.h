@@ -335,7 +335,7 @@ class Path final
         iterator& operator=(const iterator&) noexcept;
 
         /// \brief move assignment operator.
-        iterator& operator=(iterator&&) & noexcept = default;
+        iterator& operator=(iterator&&) & noexcept;
 
         /// \brief Destructor.
         ~iterator() noexcept = default;

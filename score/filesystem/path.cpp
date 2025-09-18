@@ -788,6 +788,20 @@ Path::iterator& Path::iterator::operator=(const Path::iterator& it) noexcept
     return *this;
 }
 
+// The & ref-qualifier ensures that the move assignment operator can only be called on actual objects (lvalues), not on
+// temporary objects (rvalues), which makes the code safer and more predictable.
+Path::iterator& Path::iterator::operator=(Path::iterator&& it) & noexcept
+{
+    if (this == &it)
+    {
+        return *this;
+    }
+    path_ = std::move(it.path_);
+    cur_ = std::move(it.cur_);
+    is_at_end_ = std::move(it.is_at_end_);
+    return *this;
+}
+
 Path::iterator::iterator(const Path& path, const bool is_at_end) noexcept : path_{path}, cur_{}, is_at_end_{is_at_end}
 {
 }
