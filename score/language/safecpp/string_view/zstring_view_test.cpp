@@ -31,7 +31,6 @@ namespace
 {
 
 using safecpp::literals::operator""_zsv;
-using safecpp::literals::operator""_zsp;
 
 TEST(ZStringView, CanConstructFromLiteral)
 {
@@ -143,7 +142,7 @@ TEST(ZStringView, CanConstructFromStdString)
 TEST(ZStringView, CanConstructFromZSpan)
 {
     // Given a `zspan` constructed from a null-terminated character buffer
-    auto span = "hello"_zsp;
+    safecpp::zspan<const char> span{"hello"};
 
     // When constructing a `zstring_view` from it
     safecpp::zstring_view view{span};

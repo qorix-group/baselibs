@@ -30,7 +30,6 @@ namespace
 
 constexpr const char null_terminated_char_array[] = "hello";
 
-using safecpp::literals::operator""_zsp;
 using safecpp::literals::operator""_zsv;
 
 TEST(ZSpan, CanConstructConstexpr)
@@ -240,7 +239,7 @@ TEST(ZSpan, CanDefaultConstruct)
 TEST(ZSpan, CanCopyConstruct)
 {
     // Given a preconstructed `zspan`
-    auto span = "hello"_zsp;
+    safecpp::zspan<const char> span{"hello"};
 
     // When copy-constructing it based on the above one
     zspan<const char> copied{span};
@@ -259,7 +258,7 @@ TEST(ZSpan, CanCopyConstruct)
 TEST(ZSpan, CanMoveConstruct)
 {
     // Given a preconstructed `zspan`
-    auto span = "hello"_zsp;
+    safecpp::zspan<const char> span{"hello"};
 
     // When move-constructing it based on the above one
     zspan<const char> moved{std::move(span)};
@@ -278,7 +277,7 @@ TEST(ZSpan, CanMoveConstruct)
 TEST(ZSpan, CanCopyAssign)
 {
     // Given a preconstructed `zspan`
-    auto span = "hello"_zsp;
+    safecpp::zspan<const char> span{"hello"};
 
     // When copy-assigning it to another one
     zspan<const char> copied;
@@ -298,7 +297,7 @@ TEST(ZSpan, CanCopyAssign)
 TEST(ZSpan, CanMoveAssign)
 {
     // Given a preconstructed `zspan`
-    auto span = "hello"_zsp;
+    safecpp::zspan<const char> span{"hello"};
 
     // When move-assigning it to another one
     zspan<const char> moved;

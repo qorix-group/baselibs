@@ -215,19 +215,6 @@ class zspan
     size_type size_{};
 };
 
-namespace literals
-{
-///
-/// @brief user-defined literal operator for character type `const char`
-/// @note invoking this literal operator manually is strictly prohibited and will result in undefined behavior!
-///
-[[nodiscard]] constexpr zspan<const char> operator""_zsp(const char* str, std::size_t len) noexcept
-{
-    // since string literals are guaranteed to be null-terminated, we can safely apply `len + 1U`
-    return zspan<const char>{str, len + 1U, null_termination_violation_policies::set_empty{}};
-}
-}  // namespace literals
-
 }  // namespace score::safecpp
 
 // NOLINTEND(readability-identifier-naming)

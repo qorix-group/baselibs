@@ -42,7 +42,6 @@ namespace
 {
 
 using safecpp::literals::operator""_zsv;
-using safecpp::literals::operator""_zsp;
 
 TEST(IsNullTerminatedViewType, CheckTypes)
 {
