@@ -80,6 +80,7 @@ class basic_zstring_view : private safecpp::zspan<std::add_const_t<CharType>>
     using base::empty;
     using base::front;
     using base::size;
+    using base::operator[];
 
     ///
     /// @brief implicit conversion operator from `basic_zstring_view` to `std::string_view`

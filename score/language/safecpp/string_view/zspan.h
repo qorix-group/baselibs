@@ -21,6 +21,7 @@
 #include <cstddef>
 #include <functional>
 #include <type_traits>
+#include <utility>
 
 // NOLINTBEGIN(readability-identifier-naming): STL-style notation is intended here
 // in order to facilitate interoperability with other STL-like containters/algorithms
@@ -98,12 +99,54 @@ class zspan
     using size_type = std::size_t;
 
     using pointer = std::add_pointer_t<value_type>;
+    using reference = std::add_lvalue_reference_t<value_type>;
     using const_pointer = std::add_pointer_t<std::add_const_t<value_type>>;
     using const_reference = std::add_lvalue_reference_t<std::add_const_t<value_type>>;
-
     using violation_policies = null_termination_violation_policies;
 
+    ///
+    /// @brief helper type for encapsulating references to single elements of the `zspan`'s underlying sequence
+    /// @details Rationale is to facilitate element access while hiding the non-const pointer to the underlying sequence
+    ///          and at the same time protecting against write accesses to adjacent elements. This helps a) to maintain
+    ///          full control over which elements exactly shall get modified and, as a result, b) protects the
+    ///          trailing null-terminator of the underyling sequence from getting overwritten.
+    ///
+    class element_accessor
+    {
+      public:
+        /// @brief constructs an `element_accessor` for provided \p data; at position \p index;
+        constexpr explicit element_accessor(pointer data, size_type index) noexcept : element_{&data[index]} {}
+
+        /// @brief given that value types are assignable, assigns provided \p value;
+        template <typename ValueType, std::enable_if_t<std::is_assignable_v<reference, ValueType>, bool> = true>
+        constexpr element_accessor& operator=(ValueType value) noexcept(
+            std::is_nothrow_assignable_v<reference, ValueType>)
+        {
+            *element_ = std::move(value);
+            return *this;
+        }
+
+        /// @brief value assignments on const `element_accessor` type are prohibited
+        template <typename ValueType,
+                  std::enable_if_t<std::negation_v<std::is_same<ValueType, element_accessor>>, bool> = true>
+        constexpr element_accessor& operator=(ValueType) const noexcept = delete;
+
+        /// @brief provides read-only access to the underlying element
+        /// @note for write access to elements, above-defined `operator=` shall be used
+        // NOLINTNEXTLINE(google-explicit-constructor) allow implicit conversion to `const_reference`
+        constexpr operator const_reference() const noexcept
+        {
+            return *element_;
+        }
+
+      private:
+        pointer element_;
+    };
+
+  public:
+    ///
     /// @brief Constructs `zspan` as view over a guaranteed null-terminated \p range;.
+    ///
     template <typename RangeType,
               typename ZSpanValueType = T,
               typename RangeValueType = std::enable_if_t<is_guaranteed_null_terminated<RangeType>::value,
@@ -115,8 +158,10 @@ class zspan
     {
     }
 
+    ///
     /// @brief Constructs `zspan` as view over arbitrary \p range;.
     /// @details The provided \p violation_policy; will get invoked in case the range is not null-terminated.
+    ///
     template <typename RangeType,
               typename ZSpanValueType = T,
               typename RangeValueType = std::enable_if_t<is_compatible_range<RangeType>::value,
@@ -138,8 +183,10 @@ class zspan
     {
     }
 
+    ///
     /// @brief Constructs a `zspan` as view over null-terminated sequence \p data; with provided \p size;.
     /// @details The provided \p violation_policy; will get invoked in case the sequence is not null-terminated.
+    ///
     template <typename ViolationPolicy = violation_policies::default_policy,
               std::enable_if_t<violation_policies::is_valid_one<ViolationPolicy>(), bool> = true>
     constexpr explicit zspan(pointer data, size_type size, ViolationPolicy violation_policy = {}) noexcept(
@@ -158,7 +205,9 @@ class zspan
         }
     }
 
+    ///
     /// @brief Constructs a `zspan` from another `zspan` of compatible type.
+    ///
     template <typename U,
               std::enable_if_t<std::conjunction_v<std::negation<std::is_same<U, T>>,
                                                   std::is_convertible<typename zspan<U>::pointer, pointer>>,
@@ -168,39 +217,85 @@ class zspan
     {
     }
 
+    ///
     /// @brief Default constructs a `zspan`.
+    ///
     constexpr zspan() noexcept = default;
 
+    ///
     /// @brief Obtains pointer to the null-terminated underlying sequence.
+    ///
     [[nodiscard]] constexpr const_pointer data() const noexcept
     {
         return data_;
     }
 
+    ///
     /// @brief Obtains number of `value_type` elements in the view (not accounting the trailing null-terminator).
+    ///
     [[nodiscard]] constexpr size_type size() const noexcept
     {
         return size_;
     }
 
+    ///
     /// @brief Returns whether the span's range is empty or not.
+    ///
     [[nodiscard]] constexpr bool empty() const noexcept
     {
         return (data_ == nullptr || size_ == 0U);
     }
 
+    ///
     /// @brief Returns a const reference to the first element in the span.
     /// @note Calling this function on an empty span results in undefined behavior!
+    ///
     [[nodiscard]] constexpr const_reference front() const
     {
         return *data_;
     }
 
+    ///
     /// @brief Returns a const reference to the last element in the span.
     /// @note Calling this function on an empty span results in undefined behavior!
+    ///
     [[nodiscard]] constexpr const_reference back() const
     {
         return data_[size_ - 1U];
+    }
+
+    ///
+    /// @brief element access operator (non-const overload)
+    /// @param index index of the element to get accessed
+    /// @note aborts program execution in case \p index; is out of the `zspan`'s range
+    ///
+    [[nodiscard]] constexpr element_accessor operator[](size_type index) noexcept
+    {
+        if (index >= size_)
+#if __cplusplus >= 202002L  // C++20
+            [[unlikely]]
+#endif
+        {
+            std::invoke(violation_policies::abort{}, "score::safecpp::zspan::operator[]: index out of bounds");
+        }
+        return element_accessor{data_, index};
+    }
+
+    ///
+    /// @brief element access operator (const overload)
+    /// @param index index of the element to get accessed
+    /// @note aborts program execution in case \p index; is out of the `zspan`'s range
+    ///
+    [[nodiscard]] constexpr const element_accessor operator[](size_type index) const noexcept
+    {
+        if (index >= size_)
+#if __cplusplus >= 202002L  // C++20
+            [[unlikely]]
+#endif
+        {
+            std::invoke(violation_policies::abort{}, "score::safecpp::zspan::operator[]: index out of bounds");
+        }
+        return element_accessor{data_, index};
     }
 
     /// @brief Disallow implicit conversions back to `std::span` since its `data()` method exposes a non-const pointer.
@@ -211,7 +306,7 @@ class zspan
 #endif
 
   private:
-    const_pointer data_{};
+    pointer data_{};
     size_type size_{};
 };
 

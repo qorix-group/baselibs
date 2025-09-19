@@ -28,31 +28,87 @@ namespace score::safecpp
 namespace
 {
 
-constexpr const char null_terminated_char_array[] = "hello";
+constexpr const char kNullTerminatedCharArray[] = "hello";
+constexpr safecpp::zspan<const char> kSpan{kNullTerminatedCharArray};
+constexpr safecpp::zspan<const char> kOtherSpan{"hello world"};
 
 using safecpp::literals::operator""_zsv;
+
+TEST(ZSpan, CanAssignElements)
+{
+    // Given a non-const `zspan` to a modifiable range
+    char buffer[] = "hello world";
+    safecpp::zspan<char> span{buffer};
+
+    // When accessing elements
+    // Then it must work as expected
+    EXPECT_EQ(span[0], 'h');
+    EXPECT_EQ(span[1], 'e');
+    EXPECT_EQ(span[2], 'l');
+    EXPECT_EQ(span[3], 'l');
+    EXPECT_EQ(span[4], 'o');
+    EXPECT_EQ(span[5], ' ');
+    EXPECT_EQ(span[6], 'w');
+    EXPECT_EQ(span[7], 'o');
+    EXPECT_EQ(span[8], 'r');
+    EXPECT_EQ(span[9], 'l');
+    EXPECT_EQ(span[10], 'd');
+
+    // When accessing an element out of the `zspan`'s range
+    // Then immediate termination is expected
+    ASSERT_EQ(span.size(), 11U);
+    EXPECT_EXIT((void)span[11], ::testing::KilledBySignal{SIGABRT}, "");
+
+    // When modifying some of the `zspan`'s elements
+    span[6] = 'f';
+    span[7] = 'o';
+    span[8] = 'l';
+    span[9] = 'k';
+    span[10] = 's';
+
+    // Then the `zspan`'s underlying buffer must have gotten modified
+    EXPECT_STREQ(buffer, "hello folks");
+}
+
+TEST(ZSpan, CanAccessUnderlyingSequenceOnlyViaPointerToConst)
+{
+    // Given a non-const `zspan` to a modifiable range
+    char buffer[] = "hello world";
+    safecpp::zspan<char> span{buffer};
+
+    // When requesting a pointer to the `zspan`'s underlying sequence
+    // Then a pointer to const is expected to get returned.
+    // Reason is that the underlying sequence shall not be modifiable via raw pointer.
+    ASSERT_TRUE((std::is_pointer_v<decltype(span.data())>));
+    ASSERT_TRUE((std::is_const_v<std::remove_pointer_t<decltype(span.data())>>));
+}
 
 TEST(ZSpan, CanConstructConstexpr)
 {
     // Given a `zspan`s constructed from a constexpr buffer
-    constexpr safecpp::zspan<const char> span{null_terminated_char_array};
-    constexpr safecpp::zspan<const char> other_span{"hello world"};
+    // see declarations at the top of this file
 
     // Then they must not be empty
-    EXPECT_FALSE(span.empty());
-    EXPECT_FALSE(other_span.empty());
+    EXPECT_FALSE(kSpan.empty());
+    EXPECT_FALSE(kOtherSpan.empty());
 
     // And their size must be the length of the respective string literal minus the null-terminator
-    EXPECT_EQ(span.size(), 5U);
-    EXPECT_EQ(other_span.size(), 11U);
+    EXPECT_EQ(kSpan.size(), 5U);
+    EXPECT_EQ(kOtherSpan.size(), 11U);
 
     // And their data must point to the start of the respective string literal
-    EXPECT_STREQ(span.data(), "hello");
-    EXPECT_STREQ(other_span.data(), "hello world");
+    EXPECT_STREQ(kSpan.data(), "hello");
+    EXPECT_STREQ(kOtherSpan.data(), "hello world");
 
-    // And their underlying character buffers must be null-terminted
-    EXPECT_EQ(span.data()[span.size()], '\0');
-    EXPECT_EQ(other_span.data()[other_span.size()], '\0');
+    // And their underlying character buffers must be null-terminated
+    EXPECT_EQ(kSpan.data()[kSpan.size()], '\0');
+    EXPECT_EQ(kOtherSpan.data()[kOtherSpan.size()], '\0');
+
+    // And accessing their elements via operator[] in a constexpr context must work as expected
+    constexpr auto element = kSpan[1];
+    constexpr auto other_element = kOtherSpan[8];
+    EXPECT_EQ(element, 'e');
+    EXPECT_EQ(other_element, 'r');
 }
 
 TEST(ZSpan, CanConstructFromBuffer)
@@ -200,7 +256,7 @@ TEST(ZSpan, CanConstructFromOtherZSpan)
     zspan<char> empty_span{};
 
     // When constructing a `zspan` based on the above one
-    zspan<const char> copied_empty{empty_span};
+    const zspan<const char> copied_empty{empty_span};
 
     // Then it must have worked
     EXPECT_TRUE(copied_empty.empty());
@@ -219,6 +275,9 @@ TEST(ZSpan, CanConstructFromOtherZSpan)
     EXPECT_STREQ(copied.data(), "hello");
     EXPECT_EQ(copied.front(), 'h');
     EXPECT_EQ(copied.back(), 'o');
+    EXPECT_EQ(copied[1], 'e');
+    EXPECT_EQ(copied[2], 'l');
+    EXPECT_EQ(copied[3], 'l');
 }
 
 TEST(ZSpan, CanDefaultConstruct)

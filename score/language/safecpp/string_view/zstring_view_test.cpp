@@ -69,6 +69,9 @@ TEST(ZStringView, CanConstructFromBuffer)
     EXPECT_STREQ(view.data(), "hello");
     EXPECT_EQ(view.front(), 'h');
     EXPECT_EQ(view.back(), 'o');
+    EXPECT_EQ(view[1], 'e');
+    EXPECT_EQ(view[2], 'l');
+    EXPECT_EQ(view[3], 'l');
 
     // And its underlying character buffer must be null-terminted
     EXPECT_EQ(view.data()[view.size()], '\0');
@@ -92,6 +95,9 @@ TEST(ZStringView, CanConstructFromAmpString)
     EXPECT_STREQ(view.data(), "hello");
     EXPECT_EQ(view.front(), 'h');
     EXPECT_EQ(view.back(), 'o');
+    EXPECT_EQ(view[1], 'e');
+    EXPECT_EQ(view[2], 'l');
+    EXPECT_EQ(view[3], 'l');
 
     // And its underlying character buffer must be null-terminted
     EXPECT_EQ(view.data()[view.size()], '\0');
@@ -126,6 +132,9 @@ TEST(ZStringView, CanConstructFromStdString)
     EXPECT_STREQ(view.data(), "hello");
     EXPECT_EQ(view.front(), 'h');
     EXPECT_EQ(view.back(), 'o');
+    EXPECT_EQ(view[1], 'e');
+    EXPECT_EQ(view[2], 'l');
+    EXPECT_EQ(view[3], 'l');
 
     // When constructing a `zstring_view` from an empty `std::string`
     std::string empty_str{};
@@ -158,6 +167,9 @@ TEST(ZStringView, CanConstructFromZSpan)
     EXPECT_STREQ(view.data(), "hello");
     EXPECT_EQ(view.front(), 'h');
     EXPECT_EQ(view.back(), 'o');
+    EXPECT_EQ(view[1], 'e');
+    EXPECT_EQ(view[2], 'l');
+    EXPECT_EQ(view[3], 'l');
 
     // And its underlying character buffer must be null-terminted
     EXPECT_EQ(view.data()[view.size()], '\0');
