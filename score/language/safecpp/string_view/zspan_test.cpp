@@ -64,14 +64,15 @@ TEST(ZSpan, CanAssignElements)
     EXPECT_THROW((void)span.at(11), std::out_of_range);
 
     // When modifying some of the `zspan`'s elements
+    span.front() = 'f';
     span[6] = 'f';
     span[7] = 'o';
     span[8] = 'l';
     span[9] = 'k';
-    span[10] = 's';
+    span.back() = 's';
 
     // Then the `zspan`'s underlying buffer must have gotten modified
-    EXPECT_STREQ(buffer, "hello folks");
+    EXPECT_STREQ(buffer, "fello folks");
 }
 
 TEST(ZSpan, CanAccessUnderlyingSequenceOnlyViaPointerToConst)

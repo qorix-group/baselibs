@@ -248,21 +248,67 @@ class zspan
     }
 
     ///
-    /// @brief Returns a const reference to the first element in the span.
-    /// @note Calling this function on an empty span results in undefined behavior!
+    /// @brief Returns a modifiable `element_accessor` to the first element of the span.
+    /// @note aborts program execution in case the `zspan` is empty
     ///
-    [[nodiscard]] constexpr const_reference front() const
+    [[nodiscard]] constexpr element_accessor front() noexcept
     {
-        return *data_;
+        if (empty())
+#if __cplusplus >= 202002L  // C++20
+            [[unlikely]]
+#endif
+        {
+            std::invoke(violation_policies::abort{}, "score::safecpp::zspan::front(): zspan is empty");
+        }
+        return element_accessor{data_, 0U};
     }
 
     ///
-    /// @brief Returns a const reference to the last element in the span.
-    /// @note Calling this function on an empty span results in undefined behavior!
+    /// @brief Returns a non-modifiable `element_accessor` to the first element of the span.
+    /// @note aborts program execution in case the `zspan` is empty
     ///
-    [[nodiscard]] constexpr const_reference back() const
+    [[nodiscard]] constexpr const element_accessor front() const noexcept
     {
-        return data_[size_ - 1U];
+        if (empty())
+#if __cplusplus >= 202002L  // C++20
+            [[unlikely]]
+#endif
+        {
+            std::invoke(violation_policies::abort{}, "score::safecpp::zspan::front(): zspan is empty");
+        }
+        return element_accessor{data_, 0U};
+    }
+
+    ///
+    /// @brief Returns a modifiable `element_accessor` to the last element of the span.
+    /// @note aborts program execution in case the `zspan` is empty
+    ///
+    [[nodiscard]] constexpr element_accessor back() noexcept
+    {
+        if (empty())
+#if __cplusplus >= 202002L  // C++20
+            [[unlikely]]
+#endif
+        {
+            std::invoke(violation_policies::abort{}, "score::safecpp::zspan::back(): zspan is empty");
+        }
+        return element_accessor{data_, size_ - 1U};
+    }
+
+    ///
+    /// @brief Returns a non-modifiable `element_accessor` to the last element of the span.
+    /// @note aborts program execution in case the `zspan` is empty
+    ///
+    [[nodiscard]] constexpr const element_accessor back() const noexcept
+    {
+        if (empty())
+#if __cplusplus >= 202002L  // C++20
+            [[unlikely]]
+#endif
+        {
+            std::invoke(violation_policies::abort{}, "score::safecpp::zspan::back(): zspan is empty");
+        }
+        return element_accessor{data_, size_ - 1U};
     }
 
     ///
