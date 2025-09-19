@@ -55,9 +55,13 @@ TEST(ZSpan, CanAssignElements)
     EXPECT_EQ(span[10], 'd');
 
     // When accessing an element out of the `zspan`'s range
-    // Then immediate termination is expected
+    // Then immediate termination is expected when invoking `operator[]`
     ASSERT_EQ(span.size(), 11U);
     EXPECT_EXIT((void)span[11], ::testing::KilledBySignal{SIGABRT}, "");
+
+    // Whereas `std::out_of_range` is expected when invoking `at()`
+    ASSERT_EQ(span.size(), 11U);
+    EXPECT_THROW((void)span.at(11), std::out_of_range);
 
     // When modifying some of the `zspan`'s elements
     span[6] = 'f';
@@ -275,7 +279,7 @@ TEST(ZSpan, CanConstructFromOtherZSpan)
     EXPECT_STREQ(copied.data(), "hello");
     EXPECT_EQ(copied.front(), 'h');
     EXPECT_EQ(copied.back(), 'o');
-    EXPECT_EQ(copied[1], 'e');
+    EXPECT_EQ(copied.at(1), 'e');
     EXPECT_EQ(copied[2], 'l');
     EXPECT_EQ(copied[3], 'l');
 }

@@ -69,7 +69,7 @@ TEST(ZStringView, CanConstructFromBuffer)
     EXPECT_STREQ(view.data(), "hello");
     EXPECT_EQ(view.front(), 'h');
     EXPECT_EQ(view.back(), 'o');
-    EXPECT_EQ(view[1], 'e');
+    EXPECT_EQ(view.at(1), 'e');
     EXPECT_EQ(view[2], 'l');
     EXPECT_EQ(view[3], 'l');
 
@@ -95,7 +95,7 @@ TEST(ZStringView, CanConstructFromAmpString)
     EXPECT_STREQ(view.data(), "hello");
     EXPECT_EQ(view.front(), 'h');
     EXPECT_EQ(view.back(), 'o');
-    EXPECT_EQ(view[1], 'e');
+    EXPECT_EQ(view.at(1), 'e');
     EXPECT_EQ(view[2], 'l');
     EXPECT_EQ(view[3], 'l');
 
@@ -132,7 +132,7 @@ TEST(ZStringView, CanConstructFromStdString)
     EXPECT_STREQ(view.data(), "hello");
     EXPECT_EQ(view.front(), 'h');
     EXPECT_EQ(view.back(), 'o');
-    EXPECT_EQ(view[1], 'e');
+    EXPECT_EQ(view.at(1), 'e');
     EXPECT_EQ(view[2], 'l');
     EXPECT_EQ(view[3], 'l');
 
@@ -154,7 +154,7 @@ TEST(ZStringView, CanConstructFromZSpan)
     safecpp::zspan<const char> span{"hello"};
 
     // When constructing a `zstring_view` from it
-    safecpp::zstring_view view{span};
+    const safecpp::zstring_view view{span};
 
     // Then it must not be empty
     EXPECT_FALSE(view.empty());
@@ -167,7 +167,7 @@ TEST(ZStringView, CanConstructFromZSpan)
     EXPECT_STREQ(view.data(), "hello");
     EXPECT_EQ(view.front(), 'h');
     EXPECT_EQ(view.back(), 'o');
-    EXPECT_EQ(view[1], 'e');
+    EXPECT_EQ(view.at(1), 'e');
     EXPECT_EQ(view[2], 'l');
     EXPECT_EQ(view[3], 'l');
 

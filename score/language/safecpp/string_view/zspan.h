@@ -20,6 +20,7 @@
 #endif
 #include <cstddef>
 #include <functional>
+#include <stdexcept>
 #include <type_traits>
 #include <utility>
 
@@ -262,6 +263,42 @@ class zspan
     [[nodiscard]] constexpr const_reference back() const
     {
         return data_[size_ - 1U];
+    }
+
+    ///
+    /// @brief element access operator (non-const overload)
+    /// @param index index of the element to get accessed
+    /// @note throws `std::out_of_range` in case \p index; is out of the `zspan`'s range
+    ///
+    [[nodiscard]] constexpr element_accessor at(size_type index)
+    {
+        if (index >= size_)
+#if __cplusplus >= 202002L  // C++20
+            [[unlikely]]
+#endif
+        {
+            std::invoke(violation_policies::throw_exception<std::out_of_range>{},
+                        "score::safecpp::zspan::at(): index out of bounds");
+        }
+        return element_accessor{data_, index};
+    }
+
+    ///
+    /// @brief element access operator (const overload)
+    /// @param index index of the element to get accessed
+    /// @note throws `std::out_of_range` in case \p index; is out of the `zspan`'s range
+    ///
+    [[nodiscard]] constexpr const element_accessor at(size_type index) const
+    {
+        if (index >= size_)
+#if __cplusplus >= 202002L  // C++20
+            [[unlikely]]
+#endif
+        {
+            std::invoke(violation_policies::throw_exception<std::out_of_range>{},
+                        "score::safecpp::zspan::at(): index out of bounds");
+        }
+        return element_accessor{data_, index};
     }
 
     ///

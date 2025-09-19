@@ -75,6 +75,7 @@ class basic_zstring_view : private safecpp::zspan<std::add_const_t<CharType>>
 
     using base::base;
 
+    using base::at;
     using base::back;
     using base::data;
     using base::empty;
