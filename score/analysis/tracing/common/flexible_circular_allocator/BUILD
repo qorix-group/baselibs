@@ -10,6 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
 cc_library(
     name = "flexible_circular_allocator",
     srcs = [
@@ -20,11 +22,7 @@ cc_library(
         "custom_polymorphic_offset_ptr_allocator.h",
         "flexible_circular_allocator.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
     ],
@@ -48,11 +46,7 @@ cc_library(
         "lockless_flexible_circular_allocator.h",
         "lockless_flexible_circular_allocator_types.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FUSA"],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
@@ -74,11 +68,7 @@ cc_library(
     hdrs = [
         "flexible_circular_allocator_interface.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FUSA"],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
@@ -95,11 +85,7 @@ cc_library(
     hdrs = [
         "flexible_circular_allocator_factory.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
     ],
@@ -115,11 +101,7 @@ cc_library(
     hdrs = [
         "lockless_flexible_circular_allocator_factory.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FUSA"],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
@@ -136,11 +118,7 @@ cc_library(
     hdrs = [
         "flexible_circular_allocator_factory_interface.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FUSA"],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
@@ -159,11 +137,7 @@ cc_library(
     hdrs = [
         "error_code.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FUSA"],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",

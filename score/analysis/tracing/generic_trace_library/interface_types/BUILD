@@ -11,14 +11,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
 cc_library(
     name = "generic_trace_api_header",
     hdrs = ["generic_trace_api.h"],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/analysis/tracing/generic_trace_library:__subpackages__",
@@ -34,11 +32,7 @@ cc_library(
 cc_library(
     name = "trace_library_interface",
     hdrs = ["i_trace_library.h"],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/analysis/tracing/generic_trace_library:__subpackages__",
@@ -66,11 +60,7 @@ cc_library(
         "meta_info.h",
         "meta_info_variants.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "additional_warnings",
-        "strict_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/analysis/tracing:__subpackages__",
@@ -88,11 +78,7 @@ cc_library(
         "service_instance_element.h",
         "trace_point_type.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "additional_warnings",
-        "strict_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/analysis/tracing:__subpackages__",

@@ -10,6 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
 cc_library(
     name = "chunk_list",
     srcs = [
@@ -20,11 +22,7 @@ cc_library(
         "local_data_chunk_list.h",
         "shm_data_chunk_list.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",

@@ -10,6 +10,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+
 cc_library(
     name = "shared_list",
     srcs = [
@@ -18,11 +20,7 @@ cc_library(
     hdrs = [
         "shared_list.h",
     ],
-    features = [
-        "treat_warnings_as_errors",
-        "strict_warnings",
-        "additional_warnings",
-    ],
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FUSA"],
     visibility = [
         "@score-baselibs//score/analysis:__subpackages__",
