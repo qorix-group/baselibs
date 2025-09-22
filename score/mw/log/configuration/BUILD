@@ -120,6 +120,21 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "nvconfig_mock",
+    testonly = True,
+    srcs = ["invconfig_mock.cpp"],
+    hdrs = ["invconfig_mock.h"],
+    features = COMPILER_WARNING_FEATURES,
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        ":nvconfig_interface",
+        "@googletest//:gtest",
+    ],
+)
+
 filegroup(
     name = "tests_config_files",
     srcs = [
@@ -209,6 +224,30 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "nvconfigfactory",
+    srcs = [
+        "nvconfigfactory.cpp",
+    ],
+    hdrs = [
+        "nvconfigfactory.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        ":nvconfig",
+        ":nvconfig_interface",
+        "@score_baselibs//score/json:json_parser",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/mw/log:shared_types",
+        "@score_baselibs//score/mw/log/detail:logging_identifier",
+        "@score_baselibs//score/result",
+    ],
+)
+
 cc_test(
     name = "nvconfig_test",
     srcs = [
@@ -232,6 +271,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         ":nvconfig",
+        ":nvconfigfactory",
         "@googletest//:gtest_main",
     ],
 )

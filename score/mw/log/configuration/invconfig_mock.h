@@ -10,11 +10,12 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "nvconfig.h"
+#ifndef SCORE_MW_LOG_CONFIGURATION_INVCONFIG_MOCK_H_
+#define SCORE_MW_LOG_CONFIGURATION_INVCONFIG_MOCK_H_
 
-#include "score/json/json_parser.h"
+#include "score/mw/log/configuration/invconfig.h"
 
-#include <string_view>
+#include "gmock/gmock.h"
 
 namespace score
 {
@@ -23,25 +24,17 @@ namespace mw
 namespace log
 {
 
-NvConfig::NvConfig(std::unordered_map<std::string, config::NvMsgDescriptor> map) : INvConfig(), typemap_{std::move(map)}
+class INvConfigMock final : public INvConfig
 {
-}
-
-const config::NvMsgDescriptor* NvConfig::getDltMsgDesc(const std::string& typeName) const noexcept
-{
-    auto desc =
-        typemap_.find(typeName);  //  Future C++20 optimiazation by directly using std::string_view as find() argument
-
-    if (desc != typemap_.end())
-    {
-        return &desc->second;
-    }
-    else
-    {
-        return nullptr;
-    }
-}
+  public:
+    MOCK_METHOD(const config::NvMsgDescriptor*,
+                getDltMsgDesc,
+                (const std::string& typeName),
+                (const, noexcept, override));
+};
 
 }  // namespace log
 }  // namespace mw
 }  // namespace score
+
+#endif  // SCORE_MW_LOG_CONFIGURATION_INVCONFIG_MOCK_H_
