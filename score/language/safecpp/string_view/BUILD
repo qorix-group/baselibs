@@ -18,6 +18,7 @@ cc_library(
     srcs = ["null_termination_violation_policies.cpp"],
     hdrs = ["null_termination_violation_policies.h"],
     features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
     visibility = [
         "//visibility:public",  # platform_only
     ],
@@ -41,6 +42,7 @@ cc_library(
     srcs = ["null_termination_check.cpp"],
     hdrs = ["null_termination_check.h"],
     features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
     visibility = [
         "//visibility:public",  # platform_only
     ],
@@ -70,6 +72,7 @@ cc_library(
     srcs = ["zspan.cpp"],
     hdrs = ["zspan.h"],
     features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
     visibility = [
         "//visibility:public",  # platform_only
     ],
@@ -98,6 +101,7 @@ cc_library(
     srcs = ["zstring_view.cpp"],
     hdrs = ["zstring_view.h"],
     features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
     visibility = [
         "//visibility:public",  # platform_only
     ],
