@@ -904,7 +904,9 @@ TEST_F(UnistdFixture, UnistdAlarmSetsAndReportsPendingAlarm)
 
     const std::uint32_t seconds = 10;
     EXPECT_EQ(unit_->alarm(seconds), 0);
-    EXPECT_EQ(unit_->alarm(0), seconds);
+    const auto result = unit_->alarm(0);
+    // The value returned may be rounded down to the nearest second
+    EXPECT_TRUE((result == seconds - 1) || (result == seconds));
 }
 
 TEST_F(UnistdFixture, UnistdAlarmTriggersInExpectedTime)

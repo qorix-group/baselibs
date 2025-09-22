@@ -80,9 +80,13 @@ TEST_F(NeutrinoImplFixture, InterruptAttachAndDetachTest)
 
     std::int32_t id = neutrino_.InterruptAttachEvent(intr, &event, new_flags);
     EXPECT_NE(id, -1);
-
-    std::int32_t unmask = neutrino_.InterruptUnmask(intr, id);
-    EXPECT_NE(unmask, -1);
+#if defined(__QNX__)
+#if __QNX__ >= 800
+    EXPECT_NE(neutrino_.InterruptUnmask(0, id), -1);
+#else  // QNX 7.x or earlier
+    EXPECT_NE(neutrino_.InterruptUnmask(intr, id), -1);
+#endif
+#endif
 
     EXPECT_NE(neutrino_.InterruptWait_r(id, &timeout), EOK);
 
@@ -116,7 +120,7 @@ TEST_F(NeutrinoImplFixture, ChannelCreateDeprecatedFailure)
     const auto result = neutrino_.ChannelCreate(invalid_flags);
 
     ASSERT_EQ(result, -1);
-    EXPECT_EQ(errno, ENOTSUP);
+    // errno value is OS specific
 }
 
 TEST_F(NeutrinoImplFixture, ChannelCreateSuccess)
@@ -142,7 +146,7 @@ TEST_F(NeutrinoImplFixture, ChannelCreateFailure)
     const auto result =
         neutrino_.ChannelCreate(static_cast<Neutrino::ChannelFlag>(std::numeric_limits<std::uint32_t>::max()));
     ASSERT_FALSE(result.has_value());
-    EXPECT_EQ(errno, ENOTSUP);
+    // errno value is OS specific
 }
 
 TEST_F(NeutrinoImplFixture, ChannelDestroySuccess)

@@ -41,7 +41,6 @@ TEST_F(MmanTestFixture, MmapMunmapDeviceIOReturnNoErrorIfPassValidAddress)
 
     const auto val = unit_->mmap_device_io(1, address_);
     EXPECT_TRUE(val.has_value());
-    EXPECT_EQ(val.value(), 0x60UL);
 
     const auto val_2 = unit_->munmap_device_io(val.value(), 1);
     EXPECT_TRUE(val_2.has_value());

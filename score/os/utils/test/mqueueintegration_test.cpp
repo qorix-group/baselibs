@@ -27,6 +27,22 @@ namespace os
 namespace test
 {
 
+namespace
+{
+#if defined(__QNX__)
+#if __QNX__ >= 800
+constexpr size_t kQueueNameHash = 18020715410057215184U;
+constexpr size_t kNonExistingQueueNameHash = 11493048575142093764U;
+#else  // QNX 7.x or earlier
+constexpr size_t kQueueNameHash = 18020715410057215184U;
+constexpr size_t kNonExistingQueueNameHash = 16659226646718876469U;
+#endif
+#else  //__linux__
+constexpr size_t kQueueNameHash = 3778941452914592862U;
+constexpr size_t kNonExistingQueueNameHash = 2445131158773332806U;
+#endif
+}  // namespace
+
 static const std::string name{"myqueue"};
 
 struct FixtureMQueueShould : ::testing::Test
@@ -187,7 +203,6 @@ TEST_F(FixtureMQueueMaxMsgSizeShould, ReopenOnlyWithId)
     EXPECT_EQ(str, msg);
 }
 
-#if defined(__linux__)
 TEST(MQueue, TryOpenNotExistingMQqueue)
 {
     RecordProperty("ParentRequirement", "SCR-46010294");
@@ -196,9 +211,8 @@ TEST(MQueue, TryOpenNotExistingMQqueue)
     RecordProperty("TestingTechnique", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
-    const size_t queue_name_hash = 2445131158773332806U;
     MQueue test{"blah", AccessMode::kUse};
-    EXPECT_EQ(test.get_id(), queue_name_hash);
+    EXPECT_EQ(test.get_id(), kNonExistingQueueNameHash);
     EXPECT_FALSE(test.unlink().has_value());
 }
 
@@ -210,42 +224,11 @@ TEST(MQueue, shouldReturnId)
     RecordProperty("TestingTechnique", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
-    const size_t queue_name_hash = 3778941452914592862U;
     MQueue queue{"some_name", AccessMode::kCreate};
     std::size_t n = queue.get_id();
-    EXPECT_EQ(n, queue_name_hash);
+    EXPECT_EQ(n, kQueueNameHash);
     EXPECT_TRUE(queue.unlink().has_value());
 }
-#else
-TEST(MQueue, TryOpenNotExistingMQqueue)
-{
-    RecordProperty("ParentRequirement", "SCR-46010294");
-    RecordProperty("ASIL", "B");
-    RecordProperty("Description", "MQueue Try Open Not Existing MQqueue");
-    RecordProperty("TestingTechnique", "Interface test");
-    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
-
-    const size_t queue_name_hash = 16659226646718876469U;
-    MQueue test{"blah", AccessMode::kUse};
-    EXPECT_EQ(test.get_id(), queue_name_hash);
-    EXPECT_FALSE(test.unlink().has_value());
-}
-
-TEST(MQueue, shouldReturnId)
-{
-    RecordProperty("ParentRequirement", "SCR-46010294");
-    RecordProperty("ASIL", "B");
-    RecordProperty("Description", "MQueue should Return Id");
-    RecordProperty("TestingTechnique", "Interface test");
-    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
-
-    const size_t queue_name_hash = 18020715410057215184U;
-    MQueue queue{"some_name", AccessMode::kCreate};
-    std::size_t n = queue.get_id();
-    EXPECT_EQ(n, queue_name_hash);
-    EXPECT_TRUE(queue.unlink().has_value());
-}
-#endif
 
 TEST(MQueue, ShouldGetEmtpyMessage)
 {

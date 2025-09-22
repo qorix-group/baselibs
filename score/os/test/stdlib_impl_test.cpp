@@ -15,6 +15,7 @@
 #include "score/os/errno.h"
 
 #include <gtest/gtest.h>
+#include <limits.h>
 #include <limits>
 
 namespace score
@@ -70,10 +71,11 @@ TEST(StdlibImpl, realpath)
     RecordProperty("TestType", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
-    char resolved_path[20];
-    auto res = score::os::Stdlib::instance().realpath("/usr/bin/grep", resolved_path);
-    EXPECT_STREQ(res.value(), "/usr/bin/grep");
-    EXPECT_STREQ(resolved_path, "/usr/bin/grep");
+    char resolved_path[PATH_MAX];
+    auto res = score::os::Stdlib::instance().realpath("/etc", resolved_path);
+    ASSERT_TRUE(res.has_value());
+    EXPECT_STREQ(res.value(), "/etc");
+    EXPECT_STREQ(resolved_path, "/etc");
     memset(resolved_path, 0, sizeof(resolved_path));
     auto res1 = score::os::Stdlib::instance().realpath("/tmt", resolved_path);
     EXPECT_EQ(res1.error(), score::os::Error::createFromErrno(ENOENT));

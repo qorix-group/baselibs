@@ -81,13 +81,6 @@ cc_test(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["unit"],
-    #TODO: Ticket-214717: Fix disabled tests which failed on qnx8
-    target_compatible_with = select({
-        "@platforms//os:linux": [],
-        "@platforms//os:qnx": [
-            "//bazel/platforms/qnx_version:qnx7",
-        ],
-    }),
     deps = [
         "@googletest//:gtest_main",
         "@score-baselibs//score/os/utils:mqueue",
