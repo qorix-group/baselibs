@@ -13,6 +13,7 @@
 #include "score/filesystem/path.h"
 
 #include <gtest/gtest.h>
+#include <memory>
 
 namespace score
 {
@@ -945,7 +946,7 @@ TEST(Path, CopyOperator_SelfAssignment)
 {
     Path path{"foo/bar.txt"};
 
-    path = path;
+    path = *std::addressof(path);
 
     EXPECT_STREQ(path.CStr(), "foo/bar.txt");
 }
@@ -965,7 +966,7 @@ TEST(PathIterator, CopyOperator_SelfAssignment)
     Path path{"foo/bar.txt"};
     Path::iterator iterator = path.begin();
 
-    iterator = iterator;
+    iterator = *std::addressof(iterator);
 
     ASSERT_EQ(iterator, path.begin());
 }
