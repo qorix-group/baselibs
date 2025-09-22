@@ -29,7 +29,7 @@ class MetaInfoVariants
 {
   public:
     /// @brief Datatype used to store meta info data in std::variant
-    using type = score::cpp::variant<AraComMetaInfo, DltMetaInfo>;
+    using Type = score::cpp::variant<AraComMetaInfo, DltMetaInfo>;
 };
 
 }  // namespace tracing

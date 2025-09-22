@@ -67,7 +67,7 @@ class ShmDataChunkList
     /// @brief Get count of chunks currently on the list
     ///
     /// @return Count of chunks in the list
-    std::size_t Size();
+    std::size_t Size() const;
 
     /// @brief Clear the contents of LocalDataChunkList
     void Clear();

@@ -31,7 +31,7 @@ class TraceLibraryMock : public ITraceLibrary
     {
         GenericTraceAPI::InjectMock(this);
     }
-    void uninject()
+    void Uninject()
     {
         GenericTraceAPI::InjectMock(nullptr);
     }
@@ -55,13 +55,13 @@ class TraceLibraryMock : public ITraceLibrary
     MOCK_METHOD(TraceResult,
                 Trace,
                 (const TraceClientId client,
-                 const MetaInfoVariants::type& meta_info,
+                 const MetaInfoVariants::Type& meta_info,
                  ShmDataChunkList& data,
                  TraceContextId context_id),
                 (override));
     MOCK_METHOD(TraceResult,
                 Trace,
-                (const TraceClientId client, const MetaInfoVariants::type& meta_info, LocalDataChunkList& data),
+                (const TraceClientId client, const MetaInfoVariants::Type& meta_info, LocalDataChunkList& data),
                 (noexcept, override));
 };
 

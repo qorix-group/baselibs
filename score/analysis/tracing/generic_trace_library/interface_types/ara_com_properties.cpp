@@ -20,14 +20,14 @@ namespace tracing
 {
 AraComProperties::AraComProperties(const TracePointType trace_point_type,
                                    const ServiceInstanceElement service_instance_element,
-                                   score::cpp::optional<TracePointDataId> trace_point_data_id)
-    : trace_point_id_{trace_point_type, service_instance_element}, trace_point_data_id_{trace_point_data_id}
+                                   score::cpp::optional<TracePointDataId> opt_trace_point_data_id)
+    : trace_point_id{trace_point_type, service_instance_element}, trace_point_data_id{opt_trace_point_data_id}
 {
 }
 
 bool operator==(const AraComProperties& lhs, const AraComProperties& rhs) noexcept
 {
-    return (lhs.trace_point_id_ == rhs.trace_point_id_) && (lhs.trace_point_data_id_ == rhs.trace_point_data_id_);
+    return (lhs.trace_point_id == rhs.trace_point_id) && (lhs.trace_point_data_id == rhs.trace_point_data_id);
 }
 
 }  // namespace tracing

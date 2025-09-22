@@ -133,7 +133,7 @@ class GenericTraceAPI
     /// kRingBufferFullRecoverable, kRingBufferNoEmptyElementRecoverable, kRingBufferNoReadyElementRecoverable,
     /// kClientNotFoundRecoverable) in case where trace operation was not successful
     static TraceResult Trace(const TraceClientId client,
-                             const MetaInfoVariants::type& meta_info,
+                             const MetaInfoVariants::Type& meta_info,
                              ShmDataChunkList& data,
                              TraceContextId context_id);
 
@@ -153,7 +153,7 @@ class GenericTraceAPI
     /// kRingBufferFullRecoverable, kRingBufferNoEmptyElementRecoverable, kRingBufferNoReadyElementRecoverable,
     /// kClientNotFoundRecoverable) in case where trace operation was not successful
     static TraceResult Trace(const TraceClientId client,
-                             const MetaInfoVariants::type& meta_info,
+                             const MetaInfoVariants::Type& meta_info,
                              LocalDataChunkList& data) noexcept;
 
   private:
@@ -165,7 +165,7 @@ class GenericTraceAPI
     static void InjectMock(ITraceLibrary* mock) noexcept;
 
     /// @brief mocking the underlying trace library for the user testability
-    static ITraceLibrary* mock_;
+    static ITraceLibrary* gMock;
     // No harm from using friend keyword as it used here to let TraceLibraryMock access the private members of
     // GenericTraceAPI
     //  coverity[autosar_cpp14_a11_3_1_violation]

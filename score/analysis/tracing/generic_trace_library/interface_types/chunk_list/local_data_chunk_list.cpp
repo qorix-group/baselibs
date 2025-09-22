@@ -69,7 +69,7 @@ void LocalDataChunkList::Append(const LocalDataChunk& next)
     }
 }
 
-std::size_t LocalDataChunkList::Size()
+std::size_t LocalDataChunkList::Size() const
 {
     return static_cast<std::size_t>(number_of_chunks_);
 }
@@ -96,7 +96,7 @@ std::array<LocalDataChunk, kMaxChunksPerOneTraceRequest>& LocalDataChunkList::Ge
 
 bool operator==(const LocalDataChunk& lhs, const LocalDataChunk& rhs) noexcept
 {
-    return (lhs.start_ == rhs.start_) && (lhs.size_ == rhs.size_);
+    return (lhs.start == rhs.start) && (lhs.size == rhs.size);
 }
 
 // Suppress "AUTOSAR C++14 A15-5-3" rule findings. This rule states: "The std::terminate() function
@@ -148,7 +148,7 @@ score::Result<SharedMemoryLocation> LocalDataChunkList::SaveToSharedMemory(
     {
         return score::MakeUnexpected(ErrorCode::kNotEnoughMemoryRecoverable);
     }
-    auto vector = ConstructShmChunkVector(vector_shm_raw_pointer, flexible_allocator);
+    auto* vector = ConstructShmChunkVector(vector_shm_raw_pointer, flexible_allocator);
     return FillVectorInSharedMemory(vector, memory_resource, handle, flexible_allocator, vector_shm_raw_pointer);
 }
 
@@ -178,7 +178,7 @@ score::Result<SharedMemoryLocation> LocalDataChunkList::FillVectorInSharedMemory
         {
             continue;
         }
-        void* shm_pointer = flexible_allocator->Allocate(element.size_);
+        void* shm_pointer = flexible_allocator->Allocate(element.size);
         if (shm_pointer == nullptr)
         {
             CleanupAllocatedData(allocated_data, flexible_allocator, vector, vector_shm_raw_pointer);
@@ -188,7 +188,7 @@ score::Result<SharedMemoryLocation> LocalDataChunkList::FillVectorInSharedMemory
         // not be implicitly converted to a different underlying type"
         // False positive, right hand value is the same type.
         // coverity[autosar_cpp14_m5_0_3_violation]
-        allocated_data.at(index) = std::pair<void*, std::size_t>{shm_pointer, element.size_};
+        allocated_data.at(index) = std::pair<void*, std::size_t>{shm_pointer, element.size};
 
         if (index < kMaxChunksPerOneTraceRequest - 1U)
         {
@@ -201,7 +201,7 @@ score::Result<SharedMemoryLocation> LocalDataChunkList::FillVectorInSharedMemory
 
         CopyDataToSharedMemory(element, shm_pointer);
         auto result = vector->push_back(
-            {SharedMemoryLocation{handle, GetOffsetFromPointer(shm_pointer, memory_resource).value()}, element.size_});
+            {SharedMemoryLocation{handle, GetOffsetFromPointer(shm_pointer, memory_resource).value()}, element.size});
         if (!result.has_value())
         {
             CleanupAllocatedData(allocated_data, flexible_allocator, vector, vector_shm_raw_pointer);
@@ -242,7 +242,7 @@ ShmChunkVector* LocalDataChunkList::ConstructShmChunkVector(
 }
 bool LocalDataChunkList::IsValidElement(const LocalDataChunk& element) const
 {
-    return (element.size_ != 0U) && (element.start_ != nullptr);
+    return (element.size != 0U) && (element.start != nullptr);
 }
 
 // clang-format off
@@ -251,10 +251,10 @@ void LocalDataChunkList::CopyDataToSharedMemory(const LocalDataChunk& element, v
     // Needed in order to perform offset calculations (offset in the offset_ptr) for rule m5-2-8,m5-0-15
     // coverity[autosar_cpp14_m5_2_8_violation]
     // coverity[autosar_cpp14_m5_0_15_violation]
-    const auto element_start_end = static_cast<const std::uint8_t*>(element.start_) + element.size_;// NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic) see comment above
+    const auto *const element_start_end = static_cast<const std::uint8_t*>(element.start) + element.size;// NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic) see comment above
     // Needed in order to perform offset calculations (offset in the offset_ptr)
     // coverity[autosar_cpp14_m5_2_8_violation]
-    std::ignore = std::copy(static_cast<const std::uint8_t*>(element.start_), element_start_end, static_cast<std::uint8_t*>(shm_pointer));
+    std::ignore = std::copy(static_cast<const std::uint8_t*>(element.start), element_start_end, static_cast<std::uint8_t*>(shm_pointer));
 }
 // clang-format on
 // Const Reference passing for shared pointer.

@@ -37,7 +37,7 @@ class MetaInfoBase
     using StatusBits = std::bitset<1>;  ///< Type used to store trace status bits
     // No harm to declare the members as public
     //  coverity[autosar_cpp14_m11_0_1_violation]
-    StatusBits trace_status_{0U};  ///< Trace status bits field. Used to store i.e. information about the data loss
+    StatusBits trace_status{0U};  ///< Trace status bits field. Used to store i.e. information about the data loss
     // Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
     // Calling std::terminate() if any exceptions are thrown is expected as per safety requirements
     // coverity[autosar_cpp14_a15_5_3_violation]
@@ -45,7 +45,7 @@ class MetaInfoBase
     {
         // No harm from ignorning the returned value here
         //  coverity[autosar_cpp14_a0_1_2_violation]
-        trace_status_.set(0U);
+        trace_status.set(0U);
     }
 };
 
@@ -58,16 +58,16 @@ template <typename Properties>
 class MetaInfo : public MetaInfoBase
 {
   public:
-    explicit MetaInfo(Properties p) noexcept : MetaInfoBase(), properties_(p) {}
+    explicit MetaInfo(Properties p) noexcept : MetaInfoBase(), properties(p) {}
     // No harm to declare the members as public
     //  coverity[autosar_cpp14_m11_0_1_violation]
-    Properties properties_;  ///< Properties of the meta data specific to the protocol that needs to be traced
+    Properties properties;  ///< Properties of the meta data specific to the protocol that needs to be traced
 };
 
 template <typename Properties>
 bool operator==(const MetaInfo<Properties>& lhs, const MetaInfo<Properties>& rhs) noexcept
 {
-    return lhs.properties_ == rhs.properties_;
+    return lhs.properties == rhs.properties;
 }
 
 }  // namespace tracing

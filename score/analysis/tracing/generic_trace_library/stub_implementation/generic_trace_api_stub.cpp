@@ -19,13 +19,13 @@ namespace analysis
 namespace tracing
 {
 
-ITraceLibrary* GenericTraceAPI::mock_{nullptr};
+ITraceLibrary* GenericTraceAPI::gMock{nullptr};
 
 RegisterClientResult GenericTraceAPI::RegisterClient(const BindingType type, const std::string& app_instance_identifier)
 {
-    if (mock_ != nullptr)
+    if (gMock != nullptr)
     {
-        return mock_->RegisterClient(type, app_instance_identifier);
+        return gMock->RegisterClient(type, app_instance_identifier);
     }
     return static_cast<TraceClientId>(0);
 }
@@ -33,9 +33,9 @@ RegisterClientResult GenericTraceAPI::RegisterClient(const BindingType type, con
 RegisterSharedMemoryObjectResult GenericTraceAPI::RegisterShmObject(const TraceClientId client,
                                                                     const std::string& shm_object_path) noexcept
 {
-    if (mock_ != nullptr)
+    if (gMock != nullptr)
     {
-        return mock_->RegisterShmObject(client, shm_object_path);
+        return gMock->RegisterShmObject(client, shm_object_path);
     }
     return static_cast<ShmObjectHandle>(0);
 }
@@ -43,18 +43,18 @@ RegisterSharedMemoryObjectResult GenericTraceAPI::RegisterShmObject(const TraceC
 RegisterSharedMemoryObjectResult GenericTraceAPI::RegisterShmObject(const TraceClientId client,
                                                                     const std::int32_t shm_object_fd) noexcept
 {
-    if (mock_ != nullptr)
+    if (gMock != nullptr)
     {
-        return mock_->RegisterShmObject(client, shm_object_fd);
+        return gMock->RegisterShmObject(client, shm_object_fd);
     }
     return static_cast<ShmObjectHandle>(0);
 }
 
 ResultBlank GenericTraceAPI::UnregisterShmObject(const TraceClientId client, const ShmObjectHandle handle)
 {
-    if (mock_ != nullptr)
+    if (gMock != nullptr)
     {
-        return mock_->UnregisterShmObject(client, handle);
+        return gMock->UnregisterShmObject(client, handle);
     }
     return {};
 }
@@ -62,39 +62,39 @@ ResultBlank GenericTraceAPI::UnregisterShmObject(const TraceClientId client, con
 RegisterTraceDoneCallBackResult GenericTraceAPI::RegisterTraceDoneCB(const TraceClientId client,
                                                                      TraceDoneCallBackType trace_done_callback)
 {
-    if (mock_ != nullptr)
+    if (gMock != nullptr)
     {
-        return mock_->RegisterTraceDoneCB(client, std::move(trace_done_callback));
+        return gMock->RegisterTraceDoneCB(client, std::move(trace_done_callback));
     }
     return {};
 }
 
 TraceResult GenericTraceAPI::Trace(const TraceClientId client,
-                                   const MetaInfoVariants::type& meta_info,
+                                   const MetaInfoVariants::Type& meta_info,
                                    ShmDataChunkList& data,
                                    TraceContextId context_id)
 {
-    if (mock_ != nullptr)
+    if (gMock != nullptr)
     {
-        return mock_->Trace(client, meta_info, data, context_id);
+        return gMock->Trace(client, meta_info, data, context_id);
     }
     return {};
 }
 
 TraceResult GenericTraceAPI::Trace(const TraceClientId client,
-                                   const MetaInfoVariants::type& meta_info,
+                                   const MetaInfoVariants::Type& meta_info,
                                    LocalDataChunkList& data) noexcept
 {
-    if (mock_ != nullptr)
+    if (gMock != nullptr)
     {
-        return mock_->Trace(client, meta_info, data);
+        return gMock->Trace(client, meta_info, data);
     }
     return {};
 }
 
 void GenericTraceAPI::InjectMock(ITraceLibrary* mock) noexcept
 {
-    mock_ = mock;
+    gMock = mock;
 }
 
 }  // namespace tracing

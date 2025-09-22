@@ -68,7 +68,7 @@ void ShmDataChunkList::Append(const SharedMemoryChunk& next)
     }
 }
 
-std::size_t ShmDataChunkList::Size()
+std::size_t ShmDataChunkList::Size() const
 {
     return static_cast<std::size_t>(number_of_chunks_);
 }
@@ -146,7 +146,7 @@ score::Result<SharedMemoryLocation> ShmDataChunkList::SaveToSharedMemory(
     // in the pre-allocated memory provided by the flexible allocator
     // NOLINTBEGIN(score-no-dynamic-raw-memory) Usage of placement new is intended here to allocate the shared list
     //  coverity[autosar_cpp14_a18_5_10_violation]
-    const auto vector = new (vector_shm_raw_pointer) ShmChunkVector(flexible_allocator);
+    auto* const vector = new (vector_shm_raw_pointer) ShmChunkVector(flexible_allocator);
     // NOLINTEND(score-no-dynamic-raw-memory) Usage of placement new is intended here to allocate the shared list
 
     const std::size_t offset = GetOffsetFromPointer(vector, memory_resource).value();

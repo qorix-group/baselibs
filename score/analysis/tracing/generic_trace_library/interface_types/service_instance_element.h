@@ -37,27 +37,27 @@ class ServiceInstanceElement
     using VariantType = score::cpp::variant<EventIdType, FieldIdType, MethodIdType>;
     // No harm to declare the members as public
     //  coverity[autosar_cpp14_m11_0_1_violation]
-    ServiceIdType service_id_;
+    ServiceIdType service_id;
     // No harm to declare the members as public
     //  coverity[autosar_cpp14_m11_0_1_violation]
-    std::uint32_t major_version_;
+    std::uint32_t major_version;
     // No harm to declare the members as public
     //  coverity[autosar_cpp14_m11_0_1_violation]
-    std::uint32_t minor_version_;
+    std::uint32_t minor_version;
     // No harm to declare the members as public
     //  coverity[autosar_cpp14_m11_0_1_violation]
-    InstanceIdType instance_id_;
+    InstanceIdType instance_id;
     // No harm to declare the members as public
     //  coverity[autosar_cpp14_m11_0_1_violation]
-    VariantType element_id_;
+    VariantType element_id;
 
     // No harm from defining the == operator as member function
     // coverity[autosar_cpp14_a13_5_5_violation]
     bool operator==(const ServiceInstanceElement& other) const
     {
-        return ((((service_id_ == other.service_id_) && (major_version_ == other.major_version_)) &&
-                 ((minor_version_ == other.minor_version_) && (instance_id_ == other.instance_id_))) &&
-                (element_id_ == other.element_id_));
+        return ((((service_id == other.service_id) && (major_version == other.major_version)) &&
+                 ((minor_version == other.minor_version) && (instance_id == other.instance_id))) &&
+                (element_id == other.element_id));
     }
 };
 

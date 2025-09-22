@@ -213,13 +213,13 @@ std::string_view score::analysis::tracing::GenericTraceAPIErrorDomain::MessageFo
 
 namespace
 {
-constexpr score::analysis::tracing::GenericTraceAPIErrorDomain generic_trace_api_error_domain;
+constexpr score::analysis::tracing::GenericTraceAPIErrorDomain kGenericTraceApiErrorDomain;
 }
 
 score::result::Error score::analysis::tracing::MakeError(const score::analysis::tracing::ErrorCode code,
                                                      const std::string_view user_message) noexcept
 {
-    return {static_cast<score::result::ErrorCode>(code), generic_trace_api_error_domain, user_message};
+    return {static_cast<score::result::ErrorCode>(code), kGenericTraceApiErrorDomain, user_message};
 }
 
 bool score::analysis::tracing::IsErrorRecoverable(const score::analysis::tracing::ErrorCode code) noexcept

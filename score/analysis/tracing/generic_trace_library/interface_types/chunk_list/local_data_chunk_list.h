@@ -37,11 +37,11 @@ class LocalDataChunk
   public:
     //  Tolerated here as this is a generic pointer and will be casted later
     // coverity[autosar_cpp14_a9_6_1_violation]
-    const void* start_;  ///< Pointer to the data that needs to be traced
-    std::size_t size_;   ///< Size of the data that needs to be traced
-    friend bool operator==(const LocalDataChunk& lhs, const LocalDataChunk& rhs) noexcept;
+    const void* start;  ///< Pointer to the data that needs to be traced
+    std::size_t size;   ///< Size of the data that needs to be traced
 };
 bool operator==(const LocalDataChunk& lhs, const LocalDataChunk& rhs) noexcept;
+
 /// @brief LocalDataChunkList class
 ///
 /// Class used to pass lists of local memory data chunks.
@@ -77,7 +77,7 @@ class LocalDataChunkList
     /// @brief Get count of chunks currently on the list
     ///
     /// @return Count of chunks in the list
-    std::size_t Size();
+    std::size_t Size() const;
 
     /// @brief Clear the contents of LocalDataChunkList
     void Clear();
