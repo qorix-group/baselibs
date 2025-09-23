@@ -36,20 +36,6 @@ cc_library(
 )
 
 cc_library(
-    name = "recorder_interface",
-    srcs = ["irecorder_factory.cpp"],
-    hdrs = ["irecorder_factory.h"],
-    features = COMPILER_WARNING_FEATURES,
-    tags = ["FFI"],
-    visibility = [
-        "@score-baselibs//score/mw/log:__pkg__",
-        "@score-baselibs//score/mw/log/detail:__subpackages__",
-    ],
-    deps = [":recorder"],
-)
-
-# TODO: make use of implementation_deps and private header files
-cc_library(
     name = "frontend",
     srcs = [
         "log_stream_factory.cpp",
@@ -66,22 +52,9 @@ cc_library(
         "runtime.h",
     ],
     features = COMPILER_WARNING_FEATURES,
-    tags = ["FFI"],
-    visibility = [
-        "//platform/aas/ara/log:__subpackages__",
-        "//platform/aas/sysfunc/common/logistics/error:__pkg__",
-        "@score-baselibs//score/memory/shared:__subpackages__",  # Needed to break cyclic dependency (Ticket-105741)
-        "@score-baselibs//score/mw/log/detail:__subpackages__",
-        "@score-baselibs//score/mw/log/legacy_non_verbose_api:__pkg__",
-        "@score-baselibs//score/mw/log/log_ext:__pkg__",
-        "@score-baselibs//score/mw/log/test:__subpackages__",
-        "@score-baselibs//score/mw/log/test/sctf_example:__subpackages__",
-    ],
-    deps = [
-        ":log_stream",
+    implementation_deps = [
         ":recorder",
         ":recorder_interface",
-        ":shared_types",
         "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/mw/log/detail:circular_allocator",
         "@score-baselibs//score/mw/log/detail:empty_recorder",
@@ -89,6 +62,24 @@ cc_library(
         "@score-baselibs//score/mw/log/detail/wait_free_stack",
         "@score-baselibs//score/result",
     ],
+    tags = ["FFI"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":log_stream",
+    ],
+)
+
+cc_library(
+    name = "recorder_interface",
+    srcs = ["irecorder_factory.cpp"],
+    hdrs = ["irecorder_factory.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "@score-baselibs//score/mw/log:__pkg__",
+        "@score-baselibs//score/mw/log/detail:__subpackages__",
+    ],
+    deps = [":recorder"],
 )
 
 cc_library(
@@ -116,7 +107,9 @@ cc_library(
         "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
         "@score-baselibs//score/mw/log/detail/slog:__pkg__",
     ],
-    deps = ["@score-baselibs//score/language/futurecpp"],
+    deps = [
+        "@score-baselibs//score/language/futurecpp",
+    ],
 )
 
 cc_library(
@@ -159,6 +152,11 @@ cc_library(
     ],
     hdrs = ["log_stream.h"],
     features = COMPILER_WARNING_FEATURES,
+    implementation_deps = [
+        "@score-baselibs//score/language/futurecpp",
+        "@score-baselibs//score/mw/log/detail:thread_local_guard",
+        "@score-baselibs//score/result:error",
+    ],
     tags = ["FFI"],
     visibility = [
         "//platform/aas/lib/hash/code/common:__pkg__",
@@ -180,10 +178,7 @@ cc_library(
     deps = [
         ":recorder",
         ":shared_types",
-        "@score-baselibs//score/language/futurecpp",
         "@score-baselibs//score/mw/log/detail:logging_identifier",
-        "@score-baselibs//score/mw/log/detail:thread_local_guard",
-        "@score-baselibs//score/result:error",
     ],
 )
 

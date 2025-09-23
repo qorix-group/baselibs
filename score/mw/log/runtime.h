@@ -13,7 +13,6 @@
 #ifndef SCORE_MW_LOG_RUNTIME_H
 #define SCORE_MW_LOG_RUNTIME_H
 
-#include "score/mw/log/detail/empty_recorder.h"
 #include "score/mw/log/logger_container.h"
 #include "score/mw/log/recorder.h"
 

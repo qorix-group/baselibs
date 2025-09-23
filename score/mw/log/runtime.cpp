@@ -12,6 +12,7 @@
  ********************************************************************************/
 #include "score/mw/log/runtime.h"
 
+#include "score/mw/log/detail/empty_recorder.h"
 #include "score/mw/log/detail/thread_local_guard.h"
 #include "score/mw/log/irecorder_factory.h"
 
