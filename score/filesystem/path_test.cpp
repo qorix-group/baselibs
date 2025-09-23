@@ -182,6 +182,18 @@ TEST(Path, AppendString)
     EXPECT_EQ(unit.Native(), "/bar");
 }
 
+TEST(Path, AppendStringViewPointingToStringLiteral)
+{
+    // Given a path
+    Path unit{"/foo"};
+
+    // When appending a string view pointing to a string literal
+    unit /= std::string_view{"/bar"};
+
+    // Then it is treated as path
+    EXPECT_EQ(unit.Native(), "/bar");
+}
+
 TEST(Path, IsAbsoluteOnEmpty)
 {
     // Given an empty path

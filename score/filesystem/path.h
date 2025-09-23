@@ -31,7 +31,10 @@ template <class Source>
 using UnderlyingTypeFromPointer = typename std::remove_const_t<typename std::remove_pointer_t<Source>>;
 
 template <class Source>
-using IsCharacter = typename std::is_same<Source, char>; /* KW_SUPPRESS:AUTOSAR.BUILTIN_NUMERIC: Need to check char*/
+using IsCharacter = typename std::is_same<Source, char>;
+
+template <class Source>
+using IsStringView = typename std::is_same<typename Source::value_type, char>;
 
 template <typename Source, class enable = void>
 struct CanBeInterpretedAsPath : std::false_type
@@ -42,6 +45,11 @@ template <typename Source>
 struct CanBeInterpretedAsPath<
     Source,
     typename std::enable_if_t<IsCharacter<UnderlyingTypeFromPointer<std::decay_t<Source>>>::value>> : std::true_type
+{
+};
+
+template <typename Source>
+struct CanBeInterpretedAsPath<Source, typename std::enable_if_t<IsStringView<Source>::value>> : std::true_type
 {
 };
 
