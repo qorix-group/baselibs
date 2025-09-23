@@ -58,6 +58,9 @@ class IFileFactory : public os::ObjectSeam<IFileFactory>
     /// @param path Path to the file that is going to be updated.
     /// @param mode The open mode for the file. Currently, only writing and truncating are supported.
     /// @return On success, a pointer to a FileStream object, an error otherwise.
+    // as intended, we don't enforce users to specify ownership flags unless needed
+    // defaults for override and base function are the same thus static binding is safe
+    // NOLINTNEXTLINE(google-default-arguments) : see above
     [[nodiscard]] virtual Result<std::unique_ptr<FileStream>> AtomicUpdate(
         const Path& path,
         const std::ios_base::openmode mode,

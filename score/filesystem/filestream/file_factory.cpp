@@ -193,6 +193,9 @@ Result<std::unique_ptr<std::iostream>> FileFactory::Open(const Path& path, const
     });
 }
 
+// as intended, we don't enforce users to specify ownership flags unless needed
+// defaults for override and base function are the same thus static binding is safe
+// NOLINTNEXTLINE(google-default-arguments) : see above
 Result<std::unique_ptr<FileStream>> FileFactory::AtomicUpdate(const Path& path,
                                                               const std::ios_base::openmode mode,
                                                               const AtomicUpdateOwnershipFlags ownership_flag)
