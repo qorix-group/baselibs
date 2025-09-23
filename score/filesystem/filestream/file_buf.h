@@ -37,12 +37,14 @@ class StdioFileBuf : public StdioFilebufBase
     StdioFileBuf(const StdioFileBuf&) = delete;
     StdioFileBuf& operator=(const StdioFileBuf&) = delete;
     ~StdioFileBuf() override = default;
+    // Move constructor/operator of the base class are not marked noexcept.
+    // Adding noexcept here would violate LSP and base class compatibility.
     // Need to be public as the class is used directly and moving is needed.
     // coverity[autosar_cpp14_a12_8_6_violation]
-    StdioFileBuf& operator=(StdioFileBuf&&) = default;
+    StdioFileBuf& operator=(StdioFileBuf&&) = default;  // NOLINT(performance-noexcept-move-constructor): see above
     // Need to be public as the class is used directly and moving is needed.
     // coverity[autosar_cpp14_a12_8_6_violation]
-    StdioFileBuf(StdioFileBuf&&) = default;
+    StdioFileBuf(StdioFileBuf&&) = default;  // NOLINT(performance-noexcept-move-constructor): see above
 
     virtual ResultBlank Close();
 };
@@ -51,8 +53,10 @@ class AtomicFileBuf : public StdioFileBuf
 {
   public:
     AtomicFileBuf(int fd, std::ios::openmode mode, Path from_path, Path to_path);
-    AtomicFileBuf& operator=(AtomicFileBuf&&) = default;
-    AtomicFileBuf(AtomicFileBuf&&) = default;
+    // Move constructor/operator of the base class are not marked noexcept.
+    // Adding noexcept here would violate LSP and base class compatibility.
+    AtomicFileBuf& operator=(AtomicFileBuf&&) = default;  // NOLINT(performance-noexcept-move-constructor): see above
+    AtomicFileBuf(AtomicFileBuf&&) = default;             // NOLINT(performance-noexcept-move-constructor): see above
     AtomicFileBuf(const AtomicFileBuf&) = delete;
     AtomicFileBuf& operator=(const AtomicFileBuf&) = delete;
     ~AtomicFileBuf() override = default;

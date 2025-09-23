@@ -62,12 +62,15 @@ class StdioFilebufBase : public std::filebuf
     ~StdioFilebufBase() override = default;
     StdioFilebufBase(const StdioFilebufBase&) = delete;
     StdioFilebufBase& operator=(const StdioFilebufBase&) = delete;
+    // Move constructor/operator of the base class are not marked noexcept.
+    // Adding noexcept here would violate LSP and base class compatibility.
     // Need to be compatible with the GCC counterpart.
     // coverity[autosar_cpp14_a12_8_6_violation]
-    StdioFilebufBase(StdioFilebufBase&&) = default;
+    StdioFilebufBase(StdioFilebufBase&&) = default;  // NOLINT(performance-noexcept-move-constructor): see above
     // Need to be compatible with the GCC counterpart.
     // coverity[autosar_cpp14_a12_8_6_violation]
-    StdioFilebufBase& operator=(StdioFilebufBase&&) = default;
+    StdioFilebufBase& operator=(StdioFilebufBase&&) =
+        default;  // NOLINT(performance-noexcept-move-constructor): see above
 
     int fd() const noexcept
     {
