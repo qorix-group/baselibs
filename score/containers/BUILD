@@ -28,7 +28,7 @@ cc_gtest_unit_test(
         ":dynamic_array",
         "@score-baselibs//score/memory/shared:fake_memory_resources",
         "@score-baselibs//score/memory/shared:types",
-        "@score-baselibs//score/mw/log",
+        "@score-baselibs//score/mw/log:backend_stub_testutil",
     ],
 )
 
