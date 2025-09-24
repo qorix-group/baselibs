@@ -20,6 +20,7 @@ namespace score
 {
 namespace common
 {
+
 template <typename Duration>
 timespec duration_to_timespec(Duration dur)
 {

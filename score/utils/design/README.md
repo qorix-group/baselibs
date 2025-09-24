@@ -21,10 +21,6 @@ Only one function that is standalone as such.
 
 Helper to calculate string hash.
 
-## TimeConversion
-
-Different functions for time conversion not available in the standard library.
-
 ## ScopedOperation
 
 Is a small helper class that follows the ideas of https://en.cppreference.com/w/cpp/experimental/scope_exit where you

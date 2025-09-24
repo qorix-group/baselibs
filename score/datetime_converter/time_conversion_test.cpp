@@ -15,11 +15,9 @@
 #include <gtest/gtest.h>
 #include <cstdint>
 
-namespace commons = score::common;
-
 TEST(DurationToTimespec, Millisecond)
 {
-    struct timespec ts = commons::duration_to_timespec(std::chrono::milliseconds(1));
+    struct timespec ts = score::common::duration_to_timespec(std::chrono::milliseconds(1));
 
     EXPECT_EQ(ts.tv_sec, 0);
     EXPECT_EQ(ts.tv_nsec, 1000000);
@@ -27,7 +25,7 @@ TEST(DurationToTimespec, Millisecond)
 
 TEST(DurationToTimespec, Hour)
 {
-    struct timespec ts = commons::duration_to_timespec(std::chrono::hours(1));
+    struct timespec ts = score::common::duration_to_timespec(std::chrono::hours(1));
 
     EXPECT_EQ(ts.tv_sec, 3600);
     EXPECT_EQ(ts.tv_nsec, 0);
@@ -36,7 +34,7 @@ TEST(DurationToTimespec, Hour)
 TEST(MilisecToTimesec, test)
 {
     std::chrono::time_point<std::chrono::system_clock> t(std::chrono::seconds(4));
-    struct timespec ts = commons::timeout_in_timespec(std::chrono::milliseconds(1), t);
+    struct timespec ts = score::common::timeout_in_timespec(std::chrono::milliseconds(1), t);
 
     EXPECT_EQ(ts.tv_sec, 4);
     EXPECT_EQ(ts.tv_nsec, 1000000);

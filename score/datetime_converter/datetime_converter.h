@@ -5,9 +5,7 @@
 
 namespace score
 {
-namespace platform
-{
-namespace datetime_converter
+namespace common
 {
 
 static constexpr std::int32_t SECONDS_PER_DAY = 86400;
@@ -58,8 +56,7 @@ bool isValidDateTimeFormat(const std::shared_ptr<DateTimeType> dateTime);
 bool dateTimeToEpoch(const std::shared_ptr<DateTimeType> dateTime, time_t* epoch);
 std::shared_ptr<DateTimeType> epochToDateTime(time_t epoch);
 
-}  // namespace datetime_converter
-}  // namespace platform
+}  // namespace common
 }  // namespace score
 
 #endif  // SCORE_LIB_DATETIME_CONVERTER__DATETIME_CONVERTER_H

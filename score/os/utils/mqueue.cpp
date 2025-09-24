@@ -99,7 +99,7 @@ std::pair<ssize_t, bool> MQueue::MQueuePrivate::timed_receive(char* const msg,
     }
 
     auto result = score::cpp::expected<ssize_t, score::os::Error>{};
-    timespec times = common::timeout_in_timespec(timeout, std::chrono::system_clock::now());
+    timespec times = score::common::timeout_in_timespec(timeout, std::chrono::system_clock::now());
 
     do
     {
@@ -364,7 +364,7 @@ ssize_t MQueue::MQueuePrivate::timed_send(/* KW_SUPPRESS:MISRA.VAR.HIDDEN:Wrappe
                                           const std::chrono::milliseconds timeout) const noexcept
 {
     /* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC:Char is used as an argument of a wrapped function */
-    timespec times = common::timeout_in_timespec(timeout, std::chrono::system_clock::now());
+    timespec times = score::common::timeout_in_timespec(timeout, std::chrono::system_clock::now());
     auto result = score::cpp::expected_blank<score::os::Error>{};
 
     do

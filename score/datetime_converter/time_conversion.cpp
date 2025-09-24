@@ -16,7 +16,6 @@ namespace score
 {
 namespace common
 {
-
 timespec timeout_in_timespec(const std::chrono::milliseconds timeout,
                              const std::chrono::time_point<std::chrono::system_clock> current_time)
 {

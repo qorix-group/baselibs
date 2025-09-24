@@ -1,10 +1,8 @@
-#include "DateTimeConverter.h"
+#include "score/datetime_converter/datetime_converter.h"
 
 namespace score
 {
-namespace platform
-{
-namespace datetime_converter
+namespace common
 {
 
 int16_t leapYearsSince1970(const int16_t year)
@@ -258,6 +256,5 @@ std::shared_ptr<DateTimeType> epochToDateTime(time_t epoch)
         return nullptr;
 };
 
-}  // namespace datetime_converter
-}  // namespace platform
+}  // namespace common
 }  // namespace score
