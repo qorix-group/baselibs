@@ -97,10 +97,11 @@ class GenericTraceAPI
                                                               const std::int32_t shm_object_fd) noexcept;
 
     /// @brief Unregister shared-memory object.
-    /// Method used to unregister previously registered shared-memory object. From point of unregistration it no longer
-    /// can be used for tracing facilities. It is needed that upper layer will take care that there is no pending trace
-    /// operation that uses this memory region, otherwise some trace data can be lost due to no possibility of access to
-    /// shared-memory regions.
+    /// Method used to unregister previously registered shared-memory object. Upon return from this function, the client
+    /// may reuse or delete the shared memory object. The backend may still access the shared memory region for some
+    /// time after this call returns, as there may be pending traces. To avoid any data loss the client needs to ensure
+    /// that there is no pending trace before unregistering. In the worst case scenario the backend will access its own
+    /// private mapping and send out garbage.
     ///
     /// @param handle Handle to previously registered shared-memory object
     /// @return a blank or error code (kDaemonNotConnectedFatal, kSharedMemoryObjectUnregisterFailedFatal,
@@ -110,6 +111,7 @@ class GenericTraceAPI
     /// @brief Register a callback to be invoked once a trace has completed.
     /// Method used to register callback method that will be called when the trace operation is done. Each client has
     /// its own callback method. Callback method should be of score::cpp::callback<void(TraceContextId)> type.
+    /// The callback will be invoked from a different thread context and should be thread-safe.
     ///
     /// @param client Id of trace client
     /// @param trace_done_callback TraceDoneCallBackType method used as callback
@@ -121,12 +123,18 @@ class GenericTraceAPI
     static RegisterTraceDoneCallBackResult RegisterTraceDoneCB(const TraceClientId client,
                                                                TraceDoneCallBackType trace_done_callback);
 
-    /// Memory. Meta info passed to this function by reference will be copied to another shared-memory region by library
-    /// upper layer that the trace data was successfully sent out so it should be unique identifier.
+    /// @brief Trace the data placed in shared-memory region
+    /// Method used to perform actual trace of the data. This version provides interface to trace data placed already
+    /// in shared memory without doing any copies. Only the meta-info passed to this function by reference will be
+    /// copied to another shared-memory region by library. The library does not access at any point the memory during
+    /// its processing. The shared memory regions where the data to be traced is located must have been previously
+    /// registered via a call to RegisterShmObject(). Once the backend has processed the trace data, the client will be
+    /// notified via the callback registered via RegisterTraceDoneCB() using the context_id provided here as an
+    /// argument. The callback may be invoked even if the memory is unregistered during an on going trace operation.
     ///
     /// @param meta_info Meta info data
     /// @param data List of data chunks placed in shared-memory region which should be traced
-    /// @param context_id Context id of data used to distinguish it.
+    /// @param context_id Context id of data used to distinguish it. It should be unique for the client.
     ///
     /// @return An error code (kDaemonNotConnectedFatal, kModuleNotInitializedRecoverable,
     /// kNotEnoughMemoryRecoverable, kRingBufferNotInitializedRecoverable, kRingBufferInvalidStateRecoverable,
