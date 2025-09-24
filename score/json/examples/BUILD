@@ -28,7 +28,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@score-baselibs//score/json",
-        "@score-baselibs//score/mw/log",
+        "@score-baselibs//score/mw/log:backend_stub_testutil",
+        "@score-baselibs//score/mw/log:frontend",
         "@score-baselibs//score/os:unistd",
     ],
 )
@@ -49,7 +50,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@score-baselibs//score/json",
-        "@score-baselibs//score/mw/log",
+        "@score-baselibs//score/mw/log:backend_stub_testutil",
+        "@score-baselibs//score/mw/log:frontend",
         "@score-baselibs//score/os:unistd",
     ],
 )
@@ -69,7 +71,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@score-baselibs//score/json",
-        "@score-baselibs//score/mw/log",
+        "@score-baselibs//score/mw/log:backend_stub_testutil",
+        "@score-baselibs//score/mw/log:frontend",
         "@score-baselibs//score/os:unistd",
     ],
 )
