@@ -516,7 +516,7 @@ cc_library(
     }) + [
         ":errno_logging",
         ":object_seam",
-        "@score-baselibs//score/mw/log",
+        "@score-baselibs//score/mw/log:frontend",
     ],
 )
 
@@ -901,7 +901,7 @@ cc_library(
     deps = [
         ":object_seam",
         ":sigevent_error",
-        "@score-baselibs//score/mw/log",
+        "@score-baselibs//score/mw/log:frontend",
         "@score-baselibs//score/result",
     ],
 )

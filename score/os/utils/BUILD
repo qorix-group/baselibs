@@ -121,7 +121,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":thread_headers",
-        "@score-baselibs//score/mw/log",
+        "@score-baselibs//score/mw/log:frontend",
         "@score-baselibs//score/os:pthread",
     ],
 )
@@ -252,7 +252,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/mw/log",
+        "@score-baselibs//score/mw/log:frontend",
         "@score-baselibs//score/os:socket",
     ],
 )

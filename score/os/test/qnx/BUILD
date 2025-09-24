@@ -195,6 +195,7 @@ cc_test(
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
         "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log:backend_stub_testutil",
         "@score-baselibs//score/os/mocklib/qnx:neutrino_qnx_mock",
         "@score-baselibs//score/os/qnx:channel",
         "@score-baselibs//score/os/qnx:dispatch",
@@ -461,6 +462,7 @@ cc_test(
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
         "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log:backend_stub_testutil",
         "@score-baselibs//score/os/qnx:sigevent_qnx",
     ],
 )

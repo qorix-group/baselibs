@@ -63,7 +63,7 @@ cc_library(
         "//visibility:public",  # platform_only
     ],
     deps = [
-        "@score-baselibs//score/mw/log",
+        "@score-baselibs//score/mw/log:frontend",
         "@score-baselibs//score/os:errno",
         "@score-baselibs//score/os/qnx:dispatch",
         "@score-baselibs//score/os/qnx:iofunc",
@@ -112,7 +112,7 @@ cc_library(
     ],
     deps = [
         ":error",
-        "@score-baselibs//score/mw/log",
+        "@score-baselibs//score/mw/log:frontend",
         "@score-baselibs//score/os:errno",
         "@score-baselibs//score/os/qnx:iofunc",
         "@score-baselibs//score/os/qnx:resmgr",
@@ -203,6 +203,7 @@ cc_test(
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
         "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log:backend_stub_testutil",
         "@score-baselibs//score/os/mocklib/qnx:dispatch_mock",
         "@score-baselibs//score/os/mocklib/qnx:iofunc_mock",
         "@score-baselibs//score/os/utils/qnx/resource_manager",
@@ -300,6 +301,7 @@ cc_test(
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
         "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log:backend_stub_testutil",
         "@score-baselibs//score/os/mocklib/qnx:iofunc_mock",
         "@score-baselibs//score/os/mocklib/qnx:resmgr_mock",
         "@score-baselibs//score/os/utils/qnx/resource_manager:simple_read_function_mock",

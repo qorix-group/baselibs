@@ -69,6 +69,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log:backend_stub_testutil",
         "@score-baselibs//score/os/mocklib:socket_mock",
         "@score-baselibs//score/os/utils:tcp_keep_alive",
     ],
@@ -133,6 +134,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log:backend_stub_testutil",
         "@score-baselibs//score/os/utils:thread",
     ],
 )

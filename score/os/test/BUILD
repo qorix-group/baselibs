@@ -276,7 +276,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/mw/log",
+        "@score-baselibs//score/mw/log:backend_stub_testutil",
+        "@score-baselibs//score/mw/log:frontend",
         "@score-baselibs//score/mw/log:recorder_mock",
         "@score-baselibs//score/os:errno",
         "@score-baselibs//score/os:errno_logging",
@@ -584,6 +585,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log:backend_stub_testutil",
         "@score-baselibs//score/os/mocklib:capability_mock",
         "@score-baselibs//score/os/mocklib:unistd_mock",
     ],
@@ -766,6 +768,7 @@ cc_test(
     ],
     deps = [
         "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log:backend_stub_testutil",
         "@score-baselibs//score/os:sigevent",
     ],
 )
