@@ -53,7 +53,7 @@ class pimpl_ptr
         static_assert(alignof(T) <= Align, "Wrong alignment for private class");
         // use of "placement new" is fullfiled according to "AUTOSAR C++14 A18-5-10" rule
         // Pointer storage is aligned to underlying type.
-        // NOLINTNEXTLINE(score-no-dynamic-raw-memory)[score-qualified-nolint]
+        // NOLINTNEXTLINE(score-no-dynamic-raw-memory) see above justification
         m_ptr = new (&m_storage) T(std::forward<Args>(args)...);
     }
 
