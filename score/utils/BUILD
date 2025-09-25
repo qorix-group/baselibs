@@ -54,6 +54,40 @@ cc_library(
     deps = ["@score-baselibs//score/language/futurecpp"],
 )
 
+cc_library(
+    name = "base64",
+    srcs = ["base64.cpp"],
+    hdrs = ["base64.h"],
+    strip_include_prefix = ".",
+    tags = ["FFI"],
+    visibility = [
+        "//platform/aas/abac:__subpackages__",
+        "//platform/aas/sysfunc:__subpackages__",
+        "//visibility:public",  # platform_only
+    ],
+    deps = [
+        "@score-baselibs//score/language/futurecpp",
+    ],
+)
+
+cc_test(
+    name = "base64_unit_test",
+    srcs = [
+        "base64_test.cpp",
+    ],
+    features = [
+        "treat_warnings_as_errors",
+        "strict_warnings",
+        "additional_warnings",
+    ],
+    tags = ["unit"],
+    visibility = ["@score-baselibs//score/utils:__pkg__"],
+    deps = [
+        ":base64",
+        "@googletest//:gtest_main",
+    ],
+)
+
 cc_gtest_unit_test(
     name = "pimpl_ptr_test",
     srcs = ["pimpl_ptr_test.cpp"],
@@ -78,6 +112,7 @@ cc_gtest_unit_test(
 cc_unit_test_suites_for_host_and_qnx(
     name = "unit_test_suite",
     cc_unit_tests = [
+        ":base64_unit_test",
         ":pimpl_ptr_test",
         ":payloadvalidation_test",
         ":scoped_operation_test",
