@@ -64,6 +64,7 @@ class LocklessFlexibleCircularAllocator : public IFlexibleCircularAllocator
     std::atomic<std::uint32_t> lowest_size_;
     std::atomic<std::uint32_t> alloc_cntr_;
     std::atomic<std::uint32_t> dealloc_cntr_;
+    std::atomic<bool> tmd_stats_enabled_;
 };
 
 }  // namespace tracing
