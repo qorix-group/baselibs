@@ -257,6 +257,7 @@ class SPP_EXPECTED_NODISCARD expected : impl::base_expected
 
     template <typename U = T,
               typename = std::enable_if_t<std::conjunction_v<
+                  // NOLINTBEGIN(modernize-avoid-c-arrays): false-positive no c-arrays used
                   std::negation<std::is_same<std::remove_cv_t<std::remove_reference_t<U>>, std::in_place_t>>,
                   std::negation<std::is_same<expected, std::remove_cv_t<std::remove_reference_t<U>>>>,
                   std::negation<std::is_base_of<impl::base_unexpected, std::remove_cv_t<std::remove_reference_t<U>>>>,
@@ -265,6 +266,7 @@ class SPP_EXPECTED_NODISCARD expected : impl::base_expected
                       // coverity[autosar_cpp14_a2_11_1_violation] Used intentionally in compliance with the standard
                       std::negation<std::is_same<const volatile bool, std::remove_cv_t<std::remove_reference_t<U>>>>,
                       std::is_base_of<base_expected, std::remove_cv_t<std::remove_reference_t<U>>>>>>>
+    // NOLINTEND(modernize-avoid-c-arrays)
     // DIVERGENCE FROM STANDARD: Explicitness cannot be specified according to standard, since this requires a
     // C++20 feature. Anyway, only available if T can be implicitly constructed from U.
     // NOLINTNEXTLINE(google-explicit-constructor) see justification above
@@ -333,6 +335,7 @@ class SPP_EXPECTED_NODISCARD expected : impl::base_expected
 
     template <typename U = T,
               typename = std::enable_if_t<std::conjunction_v<
+                  // NOLINTBEGIN(modernize-avoid-c-arrays): false-positive no c-arrays used
                   std::negation<std::is_same<expected<T, E>, std::remove_cv_t<std::remove_reference_t<U>>>>,
                   std::negation<std::is_base_of<impl::base_unexpected, std::remove_cv_t<std::remove_reference_t<U>>>>,
                   std::is_constructible<T, U>,
@@ -340,6 +343,7 @@ class SPP_EXPECTED_NODISCARD expected : impl::base_expected
                   std::disjunction<std::is_nothrow_constructible<T, U>,
                                    std::is_nothrow_move_constructible<T>,
                                    std::is_nothrow_move_constructible<E>>>>>
+    // NOLINTEND(modernize-avoid-c-arrays)
     // coverity[autosar_cpp14_a13_3_1_violation]
     constexpr expected& operator=(U&& v)
     {
