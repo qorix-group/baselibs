@@ -69,6 +69,15 @@ cc_library(
     ],
 )
 
+alias(
+    name = "backend_stub_testutil",
+    testonly = True,
+    actual = "@score-baselibs//score/mw/log/detail:recorder_factory_stub",
+    visibility = [
+        "//visibility:public",  # platform only
+    ],
+)
+
 cc_library(
     name = "recorder_interface",
     srcs = ["irecorder_factory.cpp"],
