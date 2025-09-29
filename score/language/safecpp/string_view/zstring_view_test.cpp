@@ -151,7 +151,7 @@ TEST(ZStringView, CanConstructFromStdString)
 TEST(ZStringView, CanConstructFromZSpan)
 {
     // Given a `zspan` constructed from a null-terminated character buffer
-    safecpp::zspan<const char> span{"hello"};
+    details::zspan<const char> span{"hello"};
 
     // When constructing a `zstring_view` from it
     const safecpp::zstring_view view{span};

@@ -66,7 +66,7 @@ template <typename T>
 [[nodiscard]] constexpr bool IsNullTerminatedViewType() noexcept
 {
     return std::disjunction_v<
-        std::is_convertible<T, safecpp::zspan<std::add_const_t<typename T::value_type>>>,
+        std::is_convertible<T, safecpp::details::zspan<std::add_const_t<typename T::value_type>>>,
         std::is_convertible<T, safecpp::basic_zstring_view<std::remove_const_t<typename T::value_type>>>>;
 }
 

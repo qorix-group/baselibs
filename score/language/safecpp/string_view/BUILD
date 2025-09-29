@@ -73,9 +73,6 @@ cc_library(
     hdrs = ["zspan.h"],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "//visibility:public",  # platform_only
-    ],
     deps = [
         ":null_termination_violation_policies",
     ],

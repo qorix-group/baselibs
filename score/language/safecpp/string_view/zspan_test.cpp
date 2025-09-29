@@ -23,14 +23,14 @@
 #include <type_traits>
 #include <utility>
 
-namespace score::safecpp
+namespace score::safecpp::details
 {
 namespace
 {
 
 constexpr const char kNullTerminatedCharArray[] = "hello";
-constexpr safecpp::zspan<const char> kSpan{kNullTerminatedCharArray};
-constexpr safecpp::zspan<const char> kOtherSpan{"hello world"};
+constexpr zspan<const char> kSpan{kNullTerminatedCharArray};
+constexpr zspan<const char> kOtherSpan{"hello world"};
 
 using safecpp::literals::operator""_zsv;
 
@@ -38,7 +38,7 @@ TEST(ZSpan, CanAssignElements)
 {
     // Given a non-const `zspan` to a modifiable range
     char buffer[] = "hello world";
-    safecpp::zspan<char> span{buffer};
+    zspan<char> span{buffer};
 
     // When accessing elements
     // Then it must work as expected
@@ -79,7 +79,7 @@ TEST(ZSpan, CanAccessUnderlyingSequenceOnlyViaPointerToConst)
 {
     // Given a non-const `zspan` to a modifiable range
     char buffer[] = "hello world";
-    safecpp::zspan<char> span{buffer};
+    zspan<char> span{buffer};
 
     // When requesting a pointer to the `zspan`'s underlying sequence
     // Then a pointer to const is expected to get returned.
@@ -122,7 +122,7 @@ TEST(ZSpan, CanConstructFromBuffer)
     char buffer[] = {'h', 'e', 'l', 'l', 'o', '\0'};
 
     // When constructing a `zspan` from it
-    safecpp::zspan<char> span{buffer, sizeof(buffer)};
+    zspan<char> span{buffer, sizeof(buffer)};
 
     // Then it must not be empty
     EXPECT_FALSE(span.empty());
@@ -139,25 +139,24 @@ TEST(ZSpan, CanConstructFromBuffer)
     // Then `std::invalid_argument` is expected to get thrown
     EXPECT_THROW(
         (span =
-             safecpp::zspan<char>{
+             zspan<char>{
                  buffer, 0U, safecpp::null_termination_violation_policies::throw_exception<std::invalid_argument>{}}),
         std::invalid_argument);
 
     // When constructing a `zspan` from a nullptr in conjunction with the `throw_exception` violation policy
     // Then `std::invalid_argument` is expected to get thrown
-    EXPECT_THROW((span =
-                      safecpp::zspan<char>{
-                          nullptr,
-                          sizeof(buffer),
-                          safecpp::null_termination_violation_policies::throw_exception<std::invalid_argument>{}}),
-                 std::invalid_argument);
+    EXPECT_THROW(
+        (span = zspan<char>{nullptr,
+                            sizeof(buffer),
+                            safecpp::null_termination_violation_policies::throw_exception<std::invalid_argument>{}}),
+        std::invalid_argument);
 
     // Given a non-null-terminated character buffer
     char invalid_buffer[] = {'h', 'e', 'l', 'l', 'o'};
 
     // When constructing a `zspan` from it in conjunction with the `set_empty` violation policy
-    span = safecpp::zspan<char>{
-        invalid_buffer, sizeof(invalid_buffer), safecpp::null_termination_violation_policies::set_empty{}};
+    span =
+        zspan<char>{invalid_buffer, sizeof(invalid_buffer), safecpp::null_termination_violation_policies::set_empty{}};
 
     // Then it must be empty
     EXPECT_TRUE(span.empty());
@@ -166,12 +165,11 @@ TEST(ZSpan, CanConstructFromBuffer)
 
     // When constructing a `zspan` from it in conjunction with the `throw_exception` violation policy
     // Then `std::invalid_argument` is expected to get thrown
-    EXPECT_THROW((span =
-                      safecpp::zspan<char>{
-                          invalid_buffer,
-                          sizeof(invalid_buffer),
-                          safecpp::null_termination_violation_policies::throw_exception<std::invalid_argument>{}}),
-                 std::invalid_argument);
+    EXPECT_THROW(
+        (span = zspan<char>{invalid_buffer,
+                            sizeof(invalid_buffer),
+                            safecpp::null_termination_violation_policies::throw_exception<std::invalid_argument>{}}),
+        std::invalid_argument);
 }
 
 TEST(ZSpan, CanConstructFromRange)
@@ -180,7 +178,7 @@ TEST(ZSpan, CanConstructFromRange)
     char range[] = {'h', 'e', 'l', 'l', 'o', '\0'};
 
     // When constructing a `zspan` from it
-    safecpp::zspan<char> span{range};
+    zspan<char> span{range};
 
     // Then it must not be empty
     EXPECT_FALSE(span.empty());
@@ -197,7 +195,7 @@ TEST(ZSpan, CanConstructFromRange)
     char invalid_range[] = {'h', 'e', 'l', 'l', 'o'};
 
     // When constructing a `zspan` from it in conjunction with the `set_empty` violation policy
-    span = safecpp::zspan<char>{invalid_range, safecpp::null_termination_violation_policies::set_empty{}};
+    span = zspan<char>{invalid_range, safecpp::null_termination_violation_policies::set_empty{}};
 
     // Then it must be empty
     EXPECT_TRUE(span.empty());
@@ -206,11 +204,10 @@ TEST(ZSpan, CanConstructFromRange)
 
     // When constructing a `zspan` from it in conjunction with the `throw_exception` violation policy
     // Then `std::invalid_argument` is expected to get thrown
-    EXPECT_THROW((span =
-                      safecpp::zspan<char>{
-                          invalid_range,
-                          safecpp::null_termination_violation_policies::throw_exception<std::invalid_argument>{}}),
-                 std::invalid_argument);
+    EXPECT_THROW(
+        (span = zspan<char>{invalid_range,
+                            safecpp::null_termination_violation_policies::throw_exception<std::invalid_argument>{}}),
+        std::invalid_argument);
 }
 
 TEST(ZSpan, CanConstructFromAmpString)
@@ -219,7 +216,7 @@ TEST(ZSpan, CanConstructFromAmpString)
     score::cpp::pmr::string str{"hello"};
 
     // When constructing it based on the above one
-    safecpp::zspan<const char> span{str};
+    zspan<const char> span{str};
 
     // Then it must have worked
     ASSERT_FALSE(span.empty());
@@ -233,7 +230,7 @@ TEST(ZSpan, CanConstructFromStdString)
     std::string str{"hello"};
 
     // When constructing it based on the above one
-    safecpp::zspan<const char> span{str};
+    zspan<const char> span{str};
 
     // Then it must have worked
     ASSERT_FALSE(span.empty());
@@ -247,7 +244,7 @@ TEST(ZSpan, CanConstructFromZStringView)
     constexpr static auto view = "hello"_zsv;
 
     // When constructing it based on the above one
-    constexpr safecpp::zspan<const char> span = view;
+    constexpr zspan<const char> span = view;
 
     // Then it must have worked
     ASSERT_FALSE(span.empty());
@@ -303,7 +300,7 @@ TEST(ZSpan, CanDefaultConstruct)
 TEST(ZSpan, CanCopyConstruct)
 {
     // Given a preconstructed `zspan`
-    safecpp::zspan<const char> span{"hello"};
+    zspan<const char> span{"hello"};
 
     // When copy-constructing it based on the above one
     zspan<const char> copied{span};
@@ -322,7 +319,7 @@ TEST(ZSpan, CanCopyConstruct)
 TEST(ZSpan, CanMoveConstruct)
 {
     // Given a preconstructed `zspan`
-    safecpp::zspan<const char> span{"hello"};
+    zspan<const char> span{"hello"};
 
     // When move-constructing it based on the above one
     zspan<const char> moved{std::move(span)};
@@ -341,7 +338,7 @@ TEST(ZSpan, CanMoveConstruct)
 TEST(ZSpan, CanCopyAssign)
 {
     // Given a preconstructed `zspan`
-    safecpp::zspan<const char> span{"hello"};
+    zspan<const char> span{"hello"};
 
     // When copy-assigning it to another one
     zspan<const char> copied;
@@ -361,7 +358,7 @@ TEST(ZSpan, CanCopyAssign)
 TEST(ZSpan, CanMoveAssign)
 {
     // Given a preconstructed `zspan`
-    safecpp::zspan<const char> span{"hello"};
+    zspan<const char> span{"hello"};
 
     // When move-assigning it to another one
     zspan<const char> moved;
@@ -380,7 +377,7 @@ TEST(ZSpan, CanMoveAssign)
 
 TEST(ZSpan, TypeTraits)
 {
-    using zspan = safecpp::zspan<char>;
+    using zspan = zspan<char>;
     EXPECT_TRUE((std::is_nothrow_default_constructible_v<zspan>));
     EXPECT_TRUE((std::is_trivially_copy_constructible_v<zspan>));
     EXPECT_TRUE((std::is_trivially_move_constructible_v<zspan>));
@@ -388,4 +385,4 @@ TEST(ZSpan, TypeTraits)
 }
 
 }  // namespace
-}  // namespace score::safecpp
+}  // namespace score::safecpp::details

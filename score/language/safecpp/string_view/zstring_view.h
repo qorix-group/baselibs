@@ -29,9 +29,9 @@ namespace score::safecpp
 /// @brief non-modifiable view type over null-terminated character sequence
 ///
 template <typename CharType>
-class basic_zstring_view : private safecpp::zspan<std::add_const_t<CharType>>
+class basic_zstring_view : private details::zspan<std::add_const_t<CharType>>
 {
-    using base = safecpp::zspan<std::add_const_t<CharType>>;
+    using base = const details::zspan<std::add_const_t<CharType>>;
 
     template <typename T, typename S, typename = void>
     class is_null_terminated_string_type : public std::false_type
@@ -111,7 +111,7 @@ namespace literals
 [[nodiscard]] constexpr zstring_view operator""_zsv(const char* str, std::size_t len) noexcept
 {
     // since string literals are guaranteed to be null-terminated, we can safely apply `len + 1U`
-    return zspan<const char>{str, len + 1U, null_termination_violation_policies::set_empty{}};
+    return details::zspan<const char>{str, len + 1U, null_termination_violation_policies::set_empty{}};
 }
 }  // namespace literals
 

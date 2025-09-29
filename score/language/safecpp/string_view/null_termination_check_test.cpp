@@ -59,23 +59,23 @@ TEST(IsNullTerminatedViewType, CheckTypes)
     EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::zstring_view>());
     EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::zstring_view>());
 
-    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::zspan<char>>());
-    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::zspan<unsigned char>>());
-    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::zspan<std::uint8_t>>());
-    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::zspan<std::byte>>());
-    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::zspan<const char>>());
-    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::zspan<const unsigned char>>());
-    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::zspan<const std::uint8_t>>());
-    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::zspan<const std::byte>>());
+    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::details::zspan<char>>());
+    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::details::zspan<unsigned char>>());
+    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::details::zspan<std::uint8_t>>());
+    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::details::zspan<std::byte>>());
+    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::details::zspan<const char>>());
+    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::details::zspan<const unsigned char>>());
+    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::details::zspan<const std::uint8_t>>());
+    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<safecpp::details::zspan<const std::byte>>());
 
-    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::zspan<char>>());
-    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::zspan<unsigned char>>());
-    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::zspan<std::uint8_t>>());
-    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::zspan<std::byte>>());
-    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::zspan<const char>>());
-    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::zspan<const unsigned char>>());
-    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::zspan<const std::uint8_t>>());
-    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::zspan<const std::byte>>());
+    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::details::zspan<char>>());
+    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::details::zspan<unsigned char>>());
+    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::details::zspan<std::uint8_t>>());
+    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::details::zspan<std::byte>>());
+    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::details::zspan<const char>>());
+    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::details::zspan<const unsigned char>>());
+    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::details::zspan<const std::uint8_t>>());
+    EXPECT_TRUE(safecpp::IsNullTerminatedViewType<const safecpp::details::zspan<const std::byte>>());
 
     EXPECT_FALSE(safecpp::IsNullTerminatedViewType<std::string_view>());
     EXPECT_FALSE(safecpp::IsNullTerminatedViewType<const std::string_view>());
@@ -184,11 +184,11 @@ TEST(NullTerminationCheck, ForNonEmptyZStringView)
 
 TEST(NullTerminationCheck, ForEmptyZSpan)
 {
-    EXPECT_EXIT(score::cpp::ignore = safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(safecpp::zspan<char>{}),
+    EXPECT_EXIT(score::cpp::ignore = safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(safecpp::details::zspan<char>{}),
                 ::testing::KilledBySignal{SIGABRT},
                 "");
 
-    EXPECT_EXIT(score::cpp::ignore = safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(safecpp::zspan<const char>{}),
+    EXPECT_EXIT(score::cpp::ignore = safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(safecpp::details::zspan<const char>{}),
                 ::testing::KilledBySignal{SIGABRT},
                 "");
 }
@@ -196,16 +196,16 @@ TEST(NullTerminationCheck, ForEmptyZSpan)
 TEST(NullTerminationCheck, ForNonEmptyZSpan)
 {
     char buffer[] = "hello";
-    safecpp::zspan<char> span{buffer, sizeof(buffer)};
+    safecpp::details::zspan<char> span{buffer, sizeof(buffer)};
     EXPECT_EQ(safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(span), span.data());
 
-    safecpp::zspan<const char> span_const = span;
+    safecpp::details::zspan<const char> span_const = span;
     EXPECT_EQ(safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(span_const), span_const.data());
 
-    const safecpp::zspan<char> const_span = span;
+    const safecpp::details::zspan<char> const_span = span;
     EXPECT_EQ(safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(const_span), const_span.data());
 
-    const safecpp::zspan<const char> const_span_const = span;
+    const safecpp::details::zspan<const char> const_span_const = span;
     EXPECT_EQ(safecpp::GetPtrToNullTerminatedUnderlyingBufferOf(span_const), const_span_const.data());
 }
 

@@ -27,13 +27,9 @@
 // NOLINTBEGIN(readability-identifier-naming): STL-style notation is intended here
 // in order to facilitate interoperability with other STL-like containters/algorithms
 
-namespace score::safecpp
-{
-
-namespace details
+namespace score::safecpp::details
 {
 constexpr inline auto kNullByte = '\0';
-}
 
 ///
 /// @brief view type over contiguous sequence of objects which is guaranteed to be null-terminated
@@ -44,9 +40,8 @@ constexpr inline auto kNullByte = '\0';
 template <typename T>
 class zspan
 {
-    static_assert(!std::is_array_v<T>, "`safecpp::zspan` cannot be instantiated for array types");
-    static_assert(!std::is_pointer_v<T>, "`safecpp::zspan` cannot be instantiated for pointer types");
-    static_assert(!std::is_reference_v<T>, "`safecpp::zspan` cannot be instantiated for reference types");
+    static_assert(std::is_same_v<unsigned char, std::make_unsigned_t<std::remove_const_t<T>>>,
+                  "`safecpp::zspan` is not permitted to be instantiated for non-character types");
 
     /// @brief type trait for checking whether type \p U; is a `safecpp::zspan`
     template <typename U>
@@ -394,7 +389,7 @@ class zspan
     size_type size_{};
 };
 
-}  // namespace score::safecpp
+}  // namespace score::safecpp::details
 
 // NOLINTEND(readability-identifier-naming)
 
