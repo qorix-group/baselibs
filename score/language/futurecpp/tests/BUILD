@@ -40,6 +40,7 @@ googletest_tests = [
     "move_only_function_test",
     "multi_span_test",
     "narrow_test",
+    "numeric_saturate_cast_test",
     "optional_test",
     "overload_test",
     "range_pair_test",
@@ -68,6 +69,8 @@ googletest_tests = [
     "uninitialized_value_construct_test",
     "uses_allocator_construction_args_test",
     "utility_test",
+    "utility_in_range_test",
+    "utility_int_cmp_test",
     "variant_test",
     "zip_iterator_test",
 ]
