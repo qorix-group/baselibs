@@ -93,8 +93,8 @@ TEST_F(CircularAllocatorFixture, WriteSingleThreadedOverBufferSize)
 
     // Overview of the expected storage layout:
     // | Slot 0 | Slot 1 | Slot 2 |
-    // |   N/A  |    0   |   1    | <- Before overrun
-    // |    2   |    3   |   1    | <- After overrun
+    // |    0   |    1   |   2    | <- Before overrun
+    // |    3   |    1   |   2    | <- After overrun
 
     // Given a Ring-Buffer with to few space
     CircularAllocator<std::int32_t> unit{3};
@@ -106,9 +106,9 @@ TEST_F(CircularAllocatorFixture, WriteSingleThreadedOverBufferSize)
     }
 
     // Then old unused values are overwritten
-    ASSERT_EQ(unit.GetUnderlyingBufferFor(std::size_t{0}), 2);
-    ASSERT_EQ(unit.GetUnderlyingBufferFor(std::size_t{1}), 3);
-    ASSERT_EQ(unit.GetUnderlyingBufferFor(std::size_t{2}), 1);
+    ASSERT_EQ(unit.GetUnderlyingBufferFor(std::size_t{0}), 3);
+    ASSERT_EQ(unit.GetUnderlyingBufferFor(std::size_t{1}), 1);
+    ASSERT_EQ(unit.GetUnderlyingBufferFor(std::size_t{2}), 2);
 }
 
 TEST_F(CircularAllocatorFixture, WritingFromMultipleThreadsIsSafe)

@@ -69,8 +69,7 @@ class CircularAllocator final
         do
         {
             loop_limiter++;
-            claimed_sequence_++;
-            slot_index = claimed_sequence_;
+            slot_index = claimed_sequence_.fetch_add(1UL);
             slot_index %= buffer_.capacity();
 
             if (loop_limiter > max_number_of_loops)
