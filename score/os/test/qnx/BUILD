@@ -192,7 +192,11 @@ cc_test(
         "manual",  # to disable using as host unit test in CI
         "unit",
     ],
-    target_compatible_with = ["@platforms//os:qnx"],
+    target_compatible_with = select({
+        "@platforms//os:qnx": [
+            "//bazel/platforms/qnx_version:qnx7",
+        ],
+    }),
     deps = [
         "@googletest//:gtest_main",
         "@score-baselibs//score/os/mocklib/qnx:neutrino_qnx_mock",
