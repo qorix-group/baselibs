@@ -35,7 +35,7 @@ jobs:
       - name: Bazel build baselibs targets
         run: |
           bazel build --config bl-x86_64-linux -- //score/...
-  build_qnx:
+  build_target:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
