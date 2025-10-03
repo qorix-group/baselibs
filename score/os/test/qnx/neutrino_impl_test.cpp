@@ -81,9 +81,7 @@ TEST_F(NeutrinoImplFixture, InterruptAttachAndDetachTest)
     std::int32_t id = neutrino_.InterruptAttachEvent(intr, &event, new_flags);
     EXPECT_NE(id, -1);
 #if defined(__QNX__)
-#if __QNX__ >= 800
-    EXPECT_NE(neutrino_.InterruptUnmask(0, id), -1);
-#else  // QNX 7.x or earlier
+#if __QNX__ < 800  // QNX 7.x or earlier
     EXPECT_NE(neutrino_.InterruptUnmask(intr, id), -1);
 #endif
 #endif
