@@ -816,7 +816,7 @@ TEST_F(serializer_visitor_overflows, test_logger_type_info_copy_size_overflow)
     RecordProperty("Description", "Test the inability of logger_type_info API to copy data bigger than the size.");
     RecordProperty("TestingTechnique", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
-
+    constexpr auto cmpr = std::numeric_limits<char>::is_signed ? 0x7f : 0xff;
     constexpr auto array_size = 64UL;
     std::array<char, array_size> buffer;
 
@@ -828,10 +828,10 @@ TEST_F(serializer_visitor_overflows, test_logger_type_info_copy_size_overflow)
     //  'StructOneSigned' into a buffer
     ::score::common::visitor::logger_type_info<StructOneSigned>().copy(buffer.data(), sizeof(std::int16_t));
     // The datatype uint16 Overflowed (0x7f)
-    EXPECT_EQ(buffer[GetNumberOfElementsIndex(0)], 0x7f);
-    EXPECT_EQ(buffer[GetNumberOfElementsIndex(1)], 0x7f);
-    EXPECT_EQ(buffer[GetNumberOfElementsIndex(2)], 0x7f);
-    EXPECT_EQ(buffer[GetNumberOfElementsIndex(3)], 0x7f);
+    EXPECT_EQ(buffer[GetNumberOfElementsIndex(0)], cmpr);
+    EXPECT_EQ(buffer[GetNumberOfElementsIndex(1)], cmpr);
+    EXPECT_EQ(buffer[GetNumberOfElementsIndex(2)], cmpr);
+    EXPECT_EQ(buffer[GetNumberOfElementsIndex(3)], cmpr);
 }
 
 TEST_F(serializer_visitor_overflows, test_logger_type_info_copy_size_not_fit)

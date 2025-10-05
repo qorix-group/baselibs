@@ -52,13 +52,10 @@ test_suite(
 cc_test(
     name = "serializer_ut",
     srcs = [
+        "test/ut/test_serializer_visitor.cpp",
         "test/ut/test_skip_deserialize.cpp",
         "test/ut/visitor_test_types.h",
-    ] + select({
-        "//bazel/platforms/qnx_version:qnx8": [],
-        #TODO: Ticket-214738: Fix disabled tests which failed on qnx8
-        "//conditions:default": ["test/ut/test_serializer_visitor.cpp"],
-    }),
+    ],
     features = _compiler_warning_features,
     tags = ["unit"],
     visibility = [
