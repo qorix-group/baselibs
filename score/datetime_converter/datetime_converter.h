@@ -1,6 +1,7 @@
 #ifndef SCORE_LIB_DATETIME_CONVERTER__DATETIME_CONVERTER_H
 #define SCORE_LIB_DATETIME_CONVERTER__DATETIME_CONVERTER_H
 
+#include <cstdint>
 #include <memory>
 
 namespace score
