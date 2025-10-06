@@ -41,3 +41,9 @@ host_gcc9_constraints = host_constraints + [
     "@platforms//os:linux",
     "//bazel/platforms/libraries:systemd",
 ]
+
+host_gcc12_constraints = host_constraints + [
+    ":gcc",
+    "@platforms//cpu:x86_64",
+    "@platforms//os:linux",
+]

@@ -13,6 +13,7 @@
 
 load(
     "//bazel/platforms:variables.bzl",
+    "host_gcc12_constraints",
     "host_gcc8_constraints",
     "host_gcc9_constraints",
     "wasm32_constraints",
@@ -86,6 +87,16 @@ platform(
 config_setting(
     name = "config_host_gcc9",
     constraint_values = host_gcc9_constraints,
+)
+
+platform(
+    name = "host_gcc12",
+    constraint_values = host_gcc12_constraints,
+)
+
+config_setting(
+    name = "config_host_gcc12",
+    constraint_values = host_gcc12_constraints,
 )
 
 platform(
