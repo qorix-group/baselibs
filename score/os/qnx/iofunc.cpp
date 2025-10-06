@@ -155,8 +155,9 @@ score::cpp::expected_blank<std::int32_t> score::os::IoFuncQnx::iofunc_client_inf
     const std::int32_t result = ::iofunc_client_info_ext_free(info);
     if (result != EOK) /* KW_SUPPRESS:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     {
-        // LCOV_EXCL_LINE (Creation of invalid _client_info struct is not possible through unit tests)
+        // LCOV_EXCL_START (Creation of invalid _client_info struct is not possible through unit tests)
         return score::cpp::make_unexpected(result);
+        // LCOV_EXCL_STOP
     }
     // LCOV_EXCL_BR_STOP (Creation of invalid _client_info struct is not possible through unit tests)
     return {};
