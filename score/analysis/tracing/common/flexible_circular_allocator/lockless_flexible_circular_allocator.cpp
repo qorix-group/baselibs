@@ -292,7 +292,8 @@ void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::IterateBlocksToDea
                 FreeBlock(*current_block);
                 init_tail += current_block->block_length;
 
-                if ((init_tail == gap_address_.load()) || (init_tail >= total_size_))
+                if ((init_tail == gap_address_.load() && init_tail != buffer_queue_head_.load()) ||
+                    (init_tail >= total_size_))
                 {
                     // The retries loop is designed to secure successful completion well within the set limit.
                     // kMaxRetries is intentionally set high to ensure operations reliably complete without reaching it,
