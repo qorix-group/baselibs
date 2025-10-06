@@ -1456,6 +1456,44 @@ TEST(math_test, pow)
 }
 
 /// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18288545
+TEST(math_test, int_pow)
+{
+    for (const double v : {std::numeric_limits<double>::min(),
+                           std::numeric_limits<double>::max(),
+                           std::numeric_limits<double>::lowest(),
+                           std::numeric_limits<double>::infinity(),
+                           -std::numeric_limits<double>::infinity(),
+                           -0.0,
+                           1.0,
+                           -2.0})
+    {
+        EXPECT_DOUBLE_EQ(std::pow(v, 1.0), score::cpp::int_pow<1>(v));
+        EXPECT_DOUBLE_EQ(std::pow(v, 2.0), score::cpp::int_pow<2>(v));
+        EXPECT_DOUBLE_EQ(std::pow(v, 3.0), score::cpp::int_pow<3>(v));
+        EXPECT_DOUBLE_EQ(std::pow(v, 6.0), score::cpp::int_pow<6>(v));
+    }
+
+    EXPECT_TRUE(std::isnan(score::cpp::int_pow<3>(std::numeric_limits<double>::quiet_NaN())));
+
+    for (const float v : {std::numeric_limits<float>::min(),
+                          std::numeric_limits<float>::max(),
+                          std::numeric_limits<float>::lowest(),
+                          std::numeric_limits<float>::infinity(),
+                          -std::numeric_limits<float>::infinity(),
+                          -0.0F,
+                          1.0F,
+                          -2.0F})
+    {
+        EXPECT_FLOAT_EQ(std::pow(v, 1.0F), score::cpp::int_pow<1>(v));
+        EXPECT_FLOAT_EQ(std::pow(v, 2.0F), score::cpp::int_pow<2>(v));
+        EXPECT_FLOAT_EQ(std::pow(v, 3.0F), score::cpp::int_pow<3>(v));
+        EXPECT_FLOAT_EQ(std::pow(v, 6.0F), score::cpp::int_pow<6>(v));
+    }
+    EXPECT_TRUE(std::isnan(score::cpp::int_pow<3>(std::numeric_limits<float>::quiet_NaN())));
+}
+
+/// @testmethods TM_REQUIREMENT
 /// @requirement CB-#9079509
 TEST(math_test, sqrt)
 {

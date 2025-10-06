@@ -263,6 +263,34 @@ inline double exp(Integer num)
     return score::cpp::exp(static_cast<double>(num));
 }
 
+/// \brief Computes the power of base to constant expression exponent N
+
+/// \pre N <= 6
+
+/// \tparam N is the exponent of type unsigned integer.
+/// \tparam T Floating point type.
+/// \param base The base for the power operation.
+/// \return Power of base to N. Might return nan/inf/-inf.
+template <const std::uint32_t N, typename T>
+inline T int_pow(T base)
+{
+    static_assert(N <= 6, "N must be less than or equal to 6");
+    static_assert(std::is_floating_point<T>::value, "T must be a floating point type");
+
+    if (N == 0)
+    {
+        return T{1};
+    }
+    else if ((N % 2) == 1)
+    {
+        return base * int_pow<N / 2>(base * base);
+    }
+    else
+    {
+        return int_pow<N / 2>(base * base);
+    }
+}
+
 inline double pow(double base, double exp) { return ::score_future_cpp_pow(base, exp); }
 inline float pow(float base, float exp) { return ::score_future_cpp_powf(base, exp); }
 
