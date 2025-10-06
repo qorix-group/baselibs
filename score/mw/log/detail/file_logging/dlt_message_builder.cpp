@@ -13,7 +13,7 @@
 #include "score/mw/log/detail/file_logging/dlt_message_builder.h"
 
 #include "score/os/utils/high_resolution_steady_clock.h"
-#include "score/mw/log/detail/dlt_format.h"
+#include "score/mw/log/detail/common/dlt_format.h"
 #include "score/mw/log/detail/file_logging/svp_time.h"
 #include "score/mw/log/log_level.h"
 

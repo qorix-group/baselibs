@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/statistics_reporter.h"
+#include "score/mw/log/detail/common/statistics_reporter.h"
 
 #include "score/mw/log/recorder_mock.h"
 

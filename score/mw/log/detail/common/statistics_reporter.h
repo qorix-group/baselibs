@@ -15,7 +15,7 @@
 
 #include "score/mw/log/recorder.h"
 
-#include "score/mw/log/detail/istatistics_reporter.h"
+#include "score/mw/log/detail/common/istatistics_reporter.h"
 
 #include <score/optional.hpp>
 

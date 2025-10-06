@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/composite_recorder.h"
+#include "score/mw/log/detail/common/composite_recorder.h"
 
 #include "score/result/result.h"
 #include "score/mw/log/detail/error.h"

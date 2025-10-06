@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/dlt_format.h"
+#include "score/mw/log/detail/common/dlt_format.h"
 
 #include "gtest/gtest.h"
 

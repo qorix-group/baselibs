@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/log_entry_deserialize.h"
+#include "score/mw/log/detail/common/log_entry_deserialize.h"
 
 #include "gtest/gtest.h"
 

@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/istatistics_reporter.h"
+#include "score/mw/log/detail/common/istatistics_reporter.h"
 
 namespace score
 {

@@ -12,8 +12,8 @@
  ********************************************************************************/
 #include "score/mw/log/runtime.h"
 
+#include "score/mw/log/detail/common/recorder_config.h"
 #include "score/mw/log/detail/empty_recorder.h"
-#include "score/mw/log/detail/recorder_config.h"
 #include "score/mw/log/recorder_mock.h"
 
 #include "gtest/gtest.h"

@@ -13,7 +13,7 @@
 #include "score/mw/log/test/console_logging_environment/console_logging_environment.h"
 
 #if (!defined KUSE_STUB_IMPLEMENTATION_ONLY)
-#include "score/mw/log/detail/recorder_factory.h"
+#include "score/mw/log/detail/common/recorder_factory.h"
 #else
 #include "score/mw/log/detail/recorder_factory_stub.h"
 #endif

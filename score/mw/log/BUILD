@@ -31,7 +31,7 @@ cc_library(
             "@score_baselibs//score/mw/log/detail:recorder_factory_stub",
         ],
         "//conditions:default": [
-            "@score_baselibs//score/mw/log/detail:recorder_factory",
+            "@score_baselibs//score/mw/log/detail/common:recorder_factory",
         ],
     }),
 )
@@ -111,6 +111,7 @@ cc_library(
         "//platform/aas/test/pas/logging/utils:__pkg__",
         "@score_baselibs//score/mw/log/configuration:__pkg__",
         "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail/common:__pkg__",
         "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
         "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
         "@score_baselibs//score/mw/log/detail/slog:__pkg__",
@@ -128,6 +129,7 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail/common:__pkg__",
         "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
         "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
         "@score_baselibs//score/mw/log/detail/slog:__pkg__",
@@ -281,11 +283,10 @@ cc_test(
     ],
     tags = ["unit"],
     deps = [
-        ":frontend",
-        ":recorder_mock",
         "@googletest//:gtest_main",
-        "@score_baselibs//score/mw/log/detail:recorder_factory",
-        "@score_baselibs//score/mw/log/detail/wait_free_stack",
+        "@score_baselibs//score/mw/log:frontend",
+        "@score_baselibs//score/mw/log:recorder_mock",
+        "@score_baselibs//score/mw/log/detail/common:recorder_factory",
     ],
 )
 
@@ -351,8 +352,7 @@ cc_test(
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
-        "@score_baselibs//score/mw/log/detail:recorder_factory",
-        "@score_baselibs//score/mw/log/detail/wait_free_stack",
+        "@score_baselibs//score/mw/log/detail/common:recorder_factory",
         "@score_baselibs//score/mw/log/test/my_custom_lib:my_custom_type_mw_log",
     ],
 )

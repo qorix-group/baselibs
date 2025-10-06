@@ -35,6 +35,7 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail/common:__pkg__",
     ],
     deps = [
         ":file_output_backend",
@@ -44,8 +45,8 @@ cc_library(
         "@score_baselibs//score/mw/log:shared_types",
         "@score_baselibs//score/mw/log/configuration",
         "@score_baselibs//score/mw/log/detail:backend_interface",
-        "@score_baselibs//score/mw/log/detail:dlt_content_formatting",
-        "@score_baselibs//score/mw/log/detail:statistics_reporter",
+        "@score_baselibs//score/mw/log/detail/common:dlt_content_formatting",
+        "@score_baselibs//score/mw/log/detail/common:statistics_reporter",
         "@score_baselibs//score/os/utils:high_resolution_steady_clock",
         "@score_baselibs//score/static_reflection_with_serialization/serialization",
     ],
@@ -65,6 +66,7 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail/common:__pkg__",
         "@score_baselibs//score/mw/log/detail/slog:__pkg__",
     ],
     deps = [
@@ -113,6 +115,7 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail/common:__pkg__",
     ],
     deps = [
         ":file_recorder",
@@ -135,6 +138,7 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail/common:__pkg__",
     ],
     deps = [
         ":text_recorder",
@@ -151,6 +155,7 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail/common:__pkg__",
     ],
     deps = [
         "@score_baselibs//score/language/futurecpp",
@@ -252,7 +257,10 @@ cc_unit_test_suites_for_host_and_qnx(
         ":non_blocking_writer_test",
         ":unit_test",
     ],
-    visibility = ["@score_baselibs//score/mw/log/detail:__pkg__"],
+    visibility = [
+        "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail/common:__pkg__",
+    ],
 )
 
 cc_test(

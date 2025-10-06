@@ -10,13 +10,13 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/recorder_factory.h"
+#include "score/mw/log/detail/common/recorder_factory.h"
 
-#include "score/mw/log/detail/composite_recorder.h"
+#include "score/mw/log/detail/common/composite_recorder.h"
+#include "score/mw/log/detail/common/recorder_config.h"
 #include "score/mw/log/detail/empty_recorder.h"
 #include "score/mw/log/detail/error.h"
 #include "score/mw/log/detail/initialization_reporter.h"
-#include "score/mw/log/detail/recorder_config.h"
 
 #ifdef __QNXNTO__
 #include "score/mw/log/detail/slog/slog_backend.h"

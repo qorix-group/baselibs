@@ -15,7 +15,7 @@
 
 #include "score/mw/log/configuration/configuration.h"
 #include "score/mw/log/detail/backend.h"
-#include "score/mw/log/detail/statistics_reporter.h"
+#include "score/mw/log/detail/common/statistics_reporter.h"
 #include "score/mw/log/recorder.h"
 
 namespace score

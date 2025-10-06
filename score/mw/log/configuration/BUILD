@@ -76,6 +76,7 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail/common:__pkg__",
     ],
     deps = [
         ":configuration",
@@ -99,6 +100,7 @@ cc_library(
     visibility = [
         "@score_baselibs//score/mw/log:__pkg__",
         "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail/common:__pkg__",
         "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
         "@score_baselibs//score/mw/log/detail/slog:__pkg__",
     ],
