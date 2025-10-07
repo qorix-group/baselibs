@@ -212,18 +212,18 @@ Result<std::unique_ptr<FileStream>> FileFactory::AtomicUpdate(const Path& path,
         if (metadata.has_value())
         {
             uid_t uid = std::get<1>(metadata.value());
-            if ((ownership_flag & kUseCurrentProcessUID) == kUseCurrentProcessUID || uid == getuid())
+            if (((ownership_flag & kUseCurrentProcessUID) == kUseCurrentProcessUID) || (uid == getuid()))
             {
                 uid = kDoNotChangeUID;
             }
 
             gid_t gid = std::get<2>(metadata.value());
-            if ((ownership_flag & kUseCurrentProcessGID) == kUseCurrentProcessGID || gid == getgid())
+            if (((ownership_flag & kUseCurrentProcessGID) == kUseCurrentProcessGID) || (gid == getgid()))
             {
                 gid = kDoNotChangeGID;
             }
 
-            if (uid != kDoNotChangeUID || gid != kDoNotChangeGID)
+            if ((uid != kDoNotChangeUID) || (gid != kDoNotChangeGID))
             {
                 auto ownership_adjustment = os::Unistd::instance().chown(temp_path.CStr(), uid, gid);
                 if (!ownership_adjustment.has_value())
