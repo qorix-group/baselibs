@@ -227,9 +227,9 @@ Result<std::unique_ptr<FileStream>> FileFactory::AtomicUpdate(const Path& path,
                 auto ownership_adjustment = os::Unistd::instance().chown(temp_path.CStr(), uid, gid);
                 if (!ownership_adjustment.has_value())
                 {
-                    close(*file_handle);
-                    unlink(temp_path.CStr());
-                    remove(temp_path.CStr());
+                    os::Unistd::instance().close(*file_handle);
+                    os::Unistd::instance().unlink(temp_path.CStr());
+                    os::Stdio::instance().remove(temp_path.CStr());
                     return MakeUnexpected(ErrorCode::kCouldNotSetPermissions);
                 }
             }
