@@ -76,7 +76,7 @@ cc_library(
         "//conditions:default": [],
     }) + select({
         "@score_baselibs//score/mw/log/detail/flags:config_KFile_Logging": [
-            "@score_baselibs//score/mw/log/detail/file_logging:file_recorder_factory",
+            "@score_baselibs//score/mw/log/detail/file_recorder:file_recorder_factory",
         ],
         "//conditions:default": [],
     }) + select({
@@ -125,7 +125,8 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
+        #"@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
+        "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
     ],
     deps = [
         "@score_baselibs//score/mw/log:recorder",
@@ -144,7 +145,8 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
+        #"@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
+        "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
     ],
     deps = [
         "@score_baselibs//score/bitmanipulation",

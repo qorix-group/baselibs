@@ -10,10 +10,10 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/file_logging/file_recorder_factory.h"
+#include "score/mw/log/detail/file_recorder/file_recorder_factory.h"
 #include "score/mw/log/detail/empty_recorder.h"
-#include "score/mw/log/detail/file_logging/dlt_message_builder.h"
 #include "score/mw/log/detail/file_logging/file_output_backend.h"
+#include "score/mw/log/detail/file_recorder/dlt_message_builder.h"
 
 namespace score
 {

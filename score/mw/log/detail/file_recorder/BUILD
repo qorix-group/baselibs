@@ -1,0 +1,98 @@
+COMPILER_WARNING_FEATURES = [
+    "treat_warnings_as_errors",
+    "additional_warnings",
+    "strict_warnings",
+]
+
+cc_library(
+    name = "file_recorder",
+    srcs = [
+        "dlt_message_builder.cpp",
+        "dlt_message_builder.h",
+        "dlt_message_builder_types.h",
+        "file_recorder.cpp",
+    ],
+    hdrs = [
+        "file_recorder.h",
+        "svp_time.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail/common:__pkg__",
+    ],
+    deps = [
+        "//platform/aas/mw/time/HighPrecisionLocalSteadyClock",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/mw/log:recorder",
+        "@score_baselibs//score/mw/log:shared_types",
+        "@score_baselibs//score/mw/log/configuration",
+        "@score_baselibs//score/mw/log/detail:backend_interface",
+        "@score_baselibs//score/mw/log/detail/common:dlt_content_formatting",
+        "@score_baselibs//score/mw/log/detail/common:statistics_reporter",
+        "@score_baselibs//score/mw/log/detail/file_logging:file_output_backend",
+        "@score_baselibs//score/mw/log/detail/file_logging:message_builder_interface",
+        "@score_baselibs//score/static_reflection_with_serialization/serialization",
+    ],
+)
+
+cc_library(
+    name = "file_recorder_factory",
+    srcs = [
+        "file_recorder_factory.cpp",
+    ],
+    hdrs = [
+        "file_recorder_factory.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail/common:__pkg__",
+    ],
+    deps = [
+        ":file_recorder",
+        "@score_baselibs//score/mw/log/configuration",
+        "@score_baselibs//score/mw/log/detail:empty_recorder",
+        "@score_baselibs//score/mw/log/detail:initialization_reporter",
+        "@score_baselibs//score/mw/log/detail:log_recorder_factory",
+    ],
+)
+
+cc_library(
+    name = "file_output_backend_mocks",
+    testonly = True,
+    hdrs = ["mock/message_builder_mock.h"],
+    features = COMPILER_WARNING_FEATURES,
+    deps = [
+        "@googletest//:gtest",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/mw/log/detail/file_logging:non_blocking_writer",
+    ],
+)
+
+cc_test(
+    name = "unit_test",
+    srcs = [
+        "dlt_message_builder_test.cpp",
+        "file_recorder_factory_test.cpp",
+        "file_recorder_test.cpp",
+    ],
+    data = [
+    ],
+    features = COMPILER_WARNING_FEATURES + [
+        "aborts_upon_exception",
+    ],
+    tags = ["unit"],
+    deps = [
+        ":file_recorder",
+        ":file_recorder_factory",
+        "@googletest//:gtest_main",
+        "@score_baselibs//score/mw/log/detail:backend_mock",
+        "@score_baselibs//score/mw/log/detail/file_logging:file_output_backend",
+        "@score_baselibs//score/mw/log/detail/file_logging:file_output_backend_mocks",
+        "@score_baselibs//score/mw/log/test/console_logging_environment",
+        "@score_baselibs//score/os/mocklib:fcntl_mock",
+    ],
+)

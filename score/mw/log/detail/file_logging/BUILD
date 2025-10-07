@@ -20,39 +20,6 @@ COMPILER_WARNING_FEATURES = [
 ]
 
 cc_library(
-    name = "file_recorder",
-    srcs = [
-        "dlt_message_builder.cpp",
-        "dlt_message_builder.h",
-        "dlt_message_builder_types.h",
-        "file_recorder.cpp",
-    ],
-    hdrs = [
-        "file_recorder.h",
-        "svp_time.h",
-    ],
-    features = COMPILER_WARNING_FEATURES,
-    tags = ["FFI"],
-    visibility = [
-        "@score_baselibs//score/mw/log/detail:__pkg__",
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
-    ],
-    deps = [
-        ":file_output_backend",
-        ":message_builder_interface",
-        "@score_baselibs//score/language/futurecpp",
-        "@score_baselibs//score/mw/log:recorder",
-        "@score_baselibs//score/mw/log:shared_types",
-        "@score_baselibs//score/mw/log/configuration",
-        "@score_baselibs//score/mw/log/detail:backend_interface",
-        "@score_baselibs//score/mw/log/detail/common:dlt_content_formatting",
-        "@score_baselibs//score/mw/log/detail/common:statistics_reporter",
-        "@score_baselibs//score/os/utils:high_resolution_steady_clock",
-        "@score_baselibs//score/static_reflection_with_serialization/serialization",
-    ],
-)
-
-cc_library(
     name = "text_recorder",
     srcs = [
         "text_message_builder.cpp",
@@ -104,29 +71,6 @@ cc_library(
 )
 
 cc_library(
-    name = "file_recorder_factory",
-    srcs = [
-        "file_recorder_factory.cpp",
-    ],
-    hdrs = [
-        "file_recorder_factory.h",
-    ],
-    features = COMPILER_WARNING_FEATURES,
-    tags = ["FFI"],
-    visibility = [
-        "@score_baselibs//score/mw/log/detail:__pkg__",
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
-    ],
-    deps = [
-        ":file_recorder",
-        "@score_baselibs//score/mw/log/configuration",
-        "@score_baselibs//score/mw/log/detail:empty_recorder",
-        "@score_baselibs//score/mw/log/detail:initialization_reporter",
-        "@score_baselibs//score/mw/log/detail:log_recorder_factory",
-    ],
-)
-
-cc_library(
     name = "console_recorder_factory",
     srcs = [
         "console_recorder_factory.cpp",
@@ -156,6 +100,7 @@ cc_library(
     visibility = [
         "@score_baselibs//score/mw/log/detail:__pkg__",
         "@score_baselibs//score/mw/log/detail/common:__pkg__",
+        "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
     ],
     deps = [
         "@score_baselibs//score/language/futurecpp",
@@ -176,6 +121,7 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score_baselibs//score/mw/log:__pkg__",
+        "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
     ],
     deps = [
         "@score_baselibs//score/mw/log/detail:log_data_types",
@@ -194,7 +140,10 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = ["@score_baselibs//score/mw/log:__pkg__"],
+    visibility = [
+        "@score_baselibs//score/mw/log:__pkg__",
+        "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
+    ],
     deps = [
         ":message_builder_interface",
         ":non_blocking_writer",
@@ -208,10 +157,7 @@ cc_library(
 cc_test(
     name = "unit_test",
     srcs = [
-        "dlt_message_builder_test.cpp",
         "file_output_backend_test.cpp",
-        "file_recorder_factory_test.cpp",
-        "file_recorder_test.cpp",
         "slot_drainer_test.cpp",
         "text_format_test.cpp",
         "text_message_builder_test.cpp",
@@ -226,8 +172,6 @@ cc_test(
     deps = [
         ":file_output_backend",
         ":file_output_backend_mocks",
-        ":file_recorder",
-        ":file_recorder_factory",
         ":text_recorder",
         "@googletest//:gtest_main",
         "@score_baselibs//score/mw/log/detail:backend_mock",
@@ -244,6 +188,9 @@ cc_library(
     testonly = True,
     hdrs = ["mock/message_builder_mock.h"],
     features = COMPILER_WARNING_FEATURES,
+    visibility = [
+        "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
+    ],
     deps = [
         ":non_blocking_writer",
         "@googletest//:gtest",

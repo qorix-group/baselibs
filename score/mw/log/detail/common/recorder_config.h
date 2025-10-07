@@ -21,7 +21,7 @@
 #endif
 
 #if defined(KFILE_LOGGING)
-#include "score/mw/log/detail/file_logging/file_recorder_factory.h"
+#include "score/mw/log/detail/file_recorder/file_recorder_factory.h"
 #endif
 
 #if defined(KREMOTE_LOGGING)

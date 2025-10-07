@@ -114,6 +114,7 @@ cc_library(
         "@score_baselibs//score/mw/log/detail/common:__pkg__",
         "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
         "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
+        "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
         "@score_baselibs//score/mw/log/detail/slog:__pkg__",
     ],
     deps = [
@@ -132,6 +133,7 @@ cc_library(
         "@score_baselibs//score/mw/log/detail/common:__pkg__",
         "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
         "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
+        "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
         "@score_baselibs//score/mw/log/detail/slog:__pkg__",
     ],
     deps = [

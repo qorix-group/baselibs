@@ -10,11 +10,11 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/file_logging/file_recorder_factory.h"
+#include "score/mw/log/detail/file_recorder/file_recorder_factory.h"
 #include "score/mw/log/detail/empty_recorder.h"
 
 #include "score/os/mocklib/fcntl_mock.h"
-#include "score/mw/log/detail/file_logging/file_recorder.h"
+#include "score/mw/log/detail/file_recorder/file_recorder.h"
 
 #include "gtest/gtest.h"
 

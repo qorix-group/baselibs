@@ -10,12 +10,12 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/file_logging/dlt_message_builder.h"
+#include "score/mw/log/detail/file_recorder/dlt_message_builder.h"
 
-#include "score/os/utils/high_resolution_steady_clock.h"
 #include "score/mw/log/detail/common/dlt_format.h"
-#include "score/mw/log/detail/file_logging/svp_time.h"
+#include "score/mw/log/detail/file_recorder/svp_time.h"
 #include "score/mw/log/log_level.h"
+#include "platform/aas/mw/time/HighPrecisionLocalSteadyClock/details/factory_impl.h"
 
 #include "static_reflection_with_serialization/serialization/for_logging.h"
 #include "static_reflection_with_serialization/visitor/visit.h"
@@ -151,7 +151,7 @@ void ConstructDltStandardHeaderTypes(DltStandardHeader& standard,
     standard.len = htons(msg_size);
 }
 
-using timestamp_t = score::os::HighResolutionSteadyClock::time_point;
+using timestamp_t = mw::time::HighPrecisionLocalSteadyClock;
 using systime_t = std::chrono::system_clock::time_point;
 using dlt_duration_t = std::chrono::duration<std::uint32_t, std::ratio<1, 10000>>;
 
@@ -169,7 +169,12 @@ void DltMessageBuilder::SetNextMessage(LogRecord& log_record) noexcept
     log_record_ = log_record;
 
     const auto& entry = log_record.getLogEntry();
-    const auto time_stamp = timestamp_t::clock::now().time_since_epoch();
+    // const auto high_precision_clock_ =
+    //     score::mw::time::HighPrecisionLocalSteadyClock::FactoryImpl().CreateHighPrecisionLocalSteadyClock();
+    // const auto time_stamp = high_precision_clock_->Now().time_since_epoch();
+    const auto hplsc =
+        score::mw::time::HighPrecisionLocalSteadyClock::FactoryImpl().CreateHighPrecisionLocalSteadyClock();
+    const auto time_stamp = hplsc->Now().time_since_epoch();
     const auto time_epoch = systime_t::clock::now().time_since_epoch();
 
     using secs_u32 = std::chrono::duration<std::uint32_t, std::ratio<1>>;

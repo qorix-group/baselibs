@@ -15,7 +15,7 @@
 
 #include "score/os/fcntl.h"
 #include "score/mw/log/detail/error.h"
-#include "score/mw/log/detail/file_logging/file_recorder.h"
+#include "score/mw/log/detail/file_recorder/file_recorder.h"
 #include "score/mw/log/detail/initialization_reporter.h"
 #include "score/mw/log/detail/log_recorder_factory.hpp"
 
