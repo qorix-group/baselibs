@@ -61,8 +61,6 @@ cc_library(
     strip_include_prefix = ".",
     tags = ["FFI"],
     visibility = [
-        "//platform/aas/abac:__subpackages__",
-        "//platform/aas/sysfunc:__subpackages__",
         "//visibility:public",  # platform_only
     ],
     deps = [
