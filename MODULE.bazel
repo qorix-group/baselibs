@@ -95,10 +95,9 @@ deb(
 
 bazel_dep(name = "nlohmann_json", version = "3.11.3")
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
-bazel_dep(name = "platforms", version = "0.0.11")
 #############################################################
 #
 # Constraint values for specifying platforms and toolchains
 #
 #############################################################
-bazel_dep(name = "score_bazel_platforms", version = "0.0.1")
+bazel_dep(name = "score_bazel_platforms", version = "0.0.2")
