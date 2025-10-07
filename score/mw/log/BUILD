@@ -235,6 +235,7 @@ cc_test(
         ":log",
         ":recorder_mock",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log/detail/wait_free_stack",
     ],
 )
 
@@ -267,6 +268,7 @@ cc_test(
         ":log",
         ":recorder_mock",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log/detail/wait_free_stack",
     ],
 )
 
@@ -284,6 +286,7 @@ cc_test(
         ":recorder_mock",
         "@googletest//:gtest_main",
         "@score-baselibs//score/mw/log/detail:recorder_factory",
+        "@score-baselibs//score/mw/log/detail/wait_free_stack",
     ],
 )
 
@@ -300,6 +303,7 @@ cc_test(
         ":log",
         ":recorder_mock",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log/detail/wait_free_stack",
     ],
 )
 
@@ -316,6 +320,7 @@ cc_test(
         ":log",
         ":recorder_mock",
         "@googletest//:gtest_main",
+        "@score-baselibs//score/mw/log/detail/wait_free_stack",
     ],
 )
 
@@ -348,6 +353,7 @@ cc_test(
         ":recorder_mock",
         "@googletest//:gtest_main",
         "@score-baselibs//score/mw/log/detail:recorder_factory",
+        "@score-baselibs//score/mw/log/detail/wait_free_stack",
         "@score-baselibs//score/mw/log/test/my_custom_lib:my_custom_type_mw_log",
     ],
 )

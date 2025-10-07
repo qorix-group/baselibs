@@ -38,5 +38,6 @@ cc_library(
     deps = [
         "@googletest//:gtest",
         "@score-baselibs//score/mw/log",
+        "@score-baselibs//score/mw/log/detail/wait_free_stack",
     ],
 )
