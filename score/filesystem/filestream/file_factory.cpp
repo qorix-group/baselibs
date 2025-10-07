@@ -229,7 +229,6 @@ Result<std::unique_ptr<FileStream>> FileFactory::AtomicUpdate(const Path& path,
                 {
                     os::Unistd::instance().close(*file_handle);
                     os::Unistd::instance().unlink(temp_path.CStr());
-                    os::Stdio::instance().remove(temp_path.CStr());
                     return MakeUnexpected(ErrorCode::kCouldNotSetPermissions);
                 }
             }
