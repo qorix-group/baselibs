@@ -12,59 +12,36 @@
  ********************************************************************************/
 #include "score/os/stdio_impl.h"
 
-/* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-/* KW_SUPPRESS_START:AUTOSAR.BUILTIN_NUMERIC:Char is used in respect to the wrapped function's signature */
-namespace score
+namespace score::os
 {
-namespace os
-{
-/* KW_SUPPRESS_START:MISRA.STDLIB.WRONGNAME:Function is wrapped */
 score::cpp::expected<FILE*, Error> StdioImpl::fopen(const char* const filename, const char* const mode) const noexcept
-/* KW_SUPPRESS_END:MISRA.STDLIB.WRONGNAME:Function is wrapped */
-{ /* KW_SUPPRESS_START:MISRA.STDLIB.STDIO:Used fopen from stdio-wrapper */
+{
     FILE* const ret = ::fopen(filename, mode);
-    /* KW_SUPPRESS_END:MISRA.STDLIB.STDIO:Used fopen from stdio-wrapper */
     if (ret == nullptr)
     {
         return score::cpp::make_unexpected(score::os::Error::createFromErrno());
     }
     return ret;
 }
-/* KW_SUPPRESS_START:MISRA.STDLIB.WRONGNAME:Function is wrapped */
 score::cpp::expected_blank<Error> StdioImpl::fclose(FILE* const stream) const noexcept
-/* KW_SUPPRESS_END:MISRA.STDLIB.WRONGNAME:Function is wrapped */
 {
-    /* KW_SUPPRESS_START:MISRA.STDLIB.STDIO:Used fclose from stdio-wrapper */
-    /* KW_SUPPRESS_START:MISRA.USE.EXPANSION:OS library macro */
-    /* KW_SUPPRESS_START:MISRA.EXPANSION.UNSAFE:macro from stdio library file used in stdio-wrapper */
     if (::fclose(stream) == EOF)
-    /* KW_SUPPRESS_END:MISRA.EXPANSION.UNSAFE:macro from stdio library file used in stdio-wrapper */
-    /* KW_SUPPRESS_END:MISRA.USE.EXPANSION:OS library macro */
-    /* KW_SUPPRESS_END:MISRA.STDLIB.STDIO:Used fclose from stdio-wrapper */
     {
         return score::cpp::make_unexpected(score::os::Error::createFromErrno());
     }
     return {};
 }
-/* KW_SUPPRESS_START:MISRA.STDLIB.WRONGNAME:Function is wrapped */
 score::cpp::expected_blank<Error> StdioImpl::remove(const char* const pathname) const noexcept
-/* KW_SUPPRESS_END:MISRA.STDLIB.WRONGNAME:Function is wrapped */
 {
-    /* KW_SUPPRESS_START:MISRA.STDLIB.STDIO:Used remove from stdio-wrapper */
     if (::remove(pathname) != 0)
-    /* KW_SUPPRESS_END:MISRA.STDLIB.STDIO:Used remove from stdio-wrapper */
     {
         return score::cpp::make_unexpected(score::os::Error::createFromErrno());
     }
     return {};
 }
-/* KW_SUPPRESS_START:MISRA.STDLIB.WRONGNAME:Function is wrapped */
 score::cpp::expected_blank<Error> StdioImpl::rename(const char* const oldname, const char* const newname) const noexcept
-/* KW_SUPPRESS_END:MISRA.STDLIB.WRONGNAME:Function is wrapped */
 {
-    /* KW_SUPPRESS_START:MISRA.STDLIB.STDIO:Used rename from stdio-wrapper */
     if (::rename(oldname, newname) != 0)
-    /* KW_SUPPRESS_END:MISRA.STDLIB.STDIO:Used rename from stdio-wrapper */
     {
         return score::cpp::make_unexpected(score::os::Error::createFromErrno());
     }
@@ -107,8 +84,4 @@ score::cpp::expected<std::int32_t, Error> StdioImpl::fileno(FILE* const stream) 
     return ret;
 }
 
-}  // namespace os
-}  // namespace score
-
-/* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-/* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC:Char is used in respect to the wrapped function's signature */
+}  // namespace score::os

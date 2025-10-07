@@ -19,9 +19,6 @@
 #include <unistd.h>
 #endif  // __QNX__
 
-/* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-/* KW_SUPPRESS_START:AUTOSAR.BUILTIN_NUMERIC:Char is used in respect to the wrapped function's signature */
-
 score::cpp::expected_blank<score::os::Error> score::os::internal::UnistdImpl::close(const std::int32_t fd) const noexcept
 {
     // Suppressed here because usage of this OSAL method is on banned list
@@ -46,27 +43,21 @@ score::cpp::expected_blank<score::os::Error> score::os::internal::UnistdImpl::ac
                                                                           const AccessMode mode) const noexcept
 {
     std::uint32_t native_mode{};
-    /* KW_SUPPRESS_START:MISRA.ENUM.OPERAND: Allow enum in a bit operations */
     if (static_cast<std::int32_t>(mode & Unistd::AccessMode::kRead) != 0)
     {
-        native_mode |=
-            static_cast<std::uint32_t>(R_OK); /* KW_SUPPRESS:MISRA.USE.EXPANSION:R_OK unveils numeric value */
+        native_mode |= static_cast<std::uint32_t>(R_OK);
     }
     if (static_cast<std::int32_t>(mode & Unistd::AccessMode::kWrite) != 0)
     {
-        native_mode |=
-            static_cast<std::uint32_t>(W_OK); /* KW_SUPPRESS:MISRA.USE.EXPANSION:W_OK unveils numeric value */
+        native_mode |= static_cast<std::uint32_t>(W_OK);
     }
     if (static_cast<std::int32_t>(mode & Unistd::AccessMode::kExec) != 0)
     {
-        native_mode |=
-            static_cast<std::uint32_t>(X_OK); /* KW_SUPPRESS:MISRA.USE.EXPANSION:X_OK unveils numeric value */
+        native_mode |= static_cast<std::uint32_t>(X_OK);
     }
     if (static_cast<std::int32_t>(mode & Unistd::AccessMode::kExists) != 0)
-    /* KW_SUPPRESS_END:MISRA.ENUM.OPERAND: Allow enum in a bit operations */
     {
-        native_mode |=
-            static_cast<std::uint32_t>(F_OK); /* KW_SUPPRESS:MISRA.USE.EXPANSION:F_OK unveils numeric value */
+        native_mode |= static_cast<std::uint32_t>(F_OK);
     }
 
     if (::access(pathname, static_cast<int>(native_mode)) == -1)
@@ -76,7 +67,6 @@ score::cpp::expected_blank<score::os::Error> score::os::internal::UnistdImpl::ac
     return {};
 }
 
-/* KW_SUPPRESS_START:AUTOSAR.ARRAY.CSTYLE:Wrapped function requires C-style array param */
 // Wrapped function requires C-style array param
 // NOLINTNEXTLINE(modernize-avoid-c-arrays) see comment above
 score::cpp::expected_blank<score::os::Error> score::os::internal::UnistdImpl::pipe(std::int32_t pipefd[2]) const noexcept
@@ -84,18 +74,14 @@ score::cpp::expected_blank<score::os::Error> score::os::internal::UnistdImpl::pi
     // Suppressed here because usage of this OSAL method is on banned list
     /* It is immposible to cover the return statement */
     /* Hence, added suppression */
-    /* KW_SUPPRESS_START:MISRA.FUNC.ARRAY.PARAMS: False Positive */
-    /* Issue cannot be fixed unless the signature of the underlying OS method is modified */
     // NOLINTNEXTLINE(score-banned-function) see comment above
     if (::pipe(pipefd) == -1)  // LCOV_EXCL_BR_LINE
-    /* KW_SUPPRESS_END:MISRA.FUNC.ARRAY.PARAMS: False Positive */
     {
         return score::cpp::make_unexpected(score::os::Error::createFromErrno()); /* LCOV_EXCL_LINE */
         /*Error can not be reproduced in scope of unit tests. Incorrect value is prohibited, causes undefined behavior*/
     }
     return {};
 }
-/* KW_SUPPRESS_END:AUTOSAR.ARRAY.CSTYLE:Wrapped function requires C-style array param */
 
 score::cpp::expected<std::int32_t, score::os::Error> score::os::internal::UnistdImpl::dup(const std::int32_t oldfd) const noexcept
 {
@@ -215,8 +201,8 @@ std::int64_t score::os::internal::UnistdImpl::gettid() const noexcept
 #elif defined(__linux__)
     // Can't use gettid() because our glibc version < 2.30.
     // https://man7.org/linux/man-pages/man2/gettid.2.html#VERSIONS
-    return ::syscall(SYS_gettid); /* KW_SUPPRESS:MISRA.USE.EXPANSION: predefined value for syscall */
-                                  // coverity[autosar_cpp14_a16_0_1_violation], see above rationale
+    return ::syscall(SYS_gettid);
+// coverity[autosar_cpp14_a16_0_1_violation], see above rationale
 #endif  // __QNX__
 }
 
@@ -392,16 +378,10 @@ std::unique_ptr<score::os::Unistd> score::os::Unistd::Default() noexcept
     return std::make_unique<internal::UnistdImpl>();
 }
 
-/* KW_SUPPRESS_START:MISRA.PPARAM.NEEDS.CONST, MISRA.VAR.NEEDS.CONST: */
-/* score::cpp::pmr::make_unique takes non-const memory_resource */
 score::cpp::pmr::unique_ptr<score::os::Unistd> score::os::Unistd::Default(score::cpp::pmr::memory_resource* memory_resource) noexcept
-/* KW_SUPPRESS_END:MISRA.PPARAM.NEEDS.CONST, MISRA.VAR.NEEDS.CONST */
 {
     return score::cpp::pmr::make_unique<internal::UnistdImpl>(memory_resource);
 }
-
-/* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-/* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC:Char is used in respect to the wrapped function's signature */
 
 score::cpp::expected_blank<score::os::Error> score::os::internal::UnistdImpl::sync() const noexcept
 {

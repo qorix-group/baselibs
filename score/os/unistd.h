@@ -26,9 +26,6 @@
 #include <cstdint>
 #include <memory>
 
-/* KW_SUPPRESS_START:AUTOSAR.BUILTIN_NUMERIC:Char is used in respect to the wrapped function's signature */
-/* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Signatures "close, unbind, access,..." are hidden by Unistd class */
-
 namespace score
 {
 namespace os
@@ -63,11 +60,9 @@ class Unistd : public ObjectSeam<Unistd>
     virtual score::cpp::expected_blank<score::os::Error> unlink(const char* const pathname) const noexcept = 0;
     virtual score::cpp::expected_blank<score::os::Error> access(const char* const pathname,
                                                        const AccessMode mode) const noexcept = 0;
-    /* KW_SUPPRESS_START:AUTOSAR.ARRAY.CSTYLE:Wrapped function requires C-style array param */
     // Wrapped function requires C-style array param
     // NOLINTNEXTLINE(modernize-avoid-c-arrays) see comment above
     virtual score::cpp::expected_blank<score::os::Error> pipe(std::int32_t pipefd[2]) const noexcept = 0;
-    /* KW_SUPPRESS_END:AUTOSAR.ARRAY.CSTYLE:Wrapped function requires C-style array param */
     virtual score::cpp::expected<std::int32_t, score::os::Error> dup(const std::int32_t oldfd) const noexcept = 0;
     virtual score::cpp::expected<std::int32_t, score::os::Error> dup2(const std::int32_t oldfd,
                                                              const std::int32_t newfd) const noexcept = 0;
@@ -147,11 +142,9 @@ class UnistdImpl final : public Unistd
     score::cpp::expected_blank<score::os::Error> access(const char* const pathname,
                                                const AccessMode mode) const noexcept override;
 
-    /* KW_SUPPRESS_START:AUTOSAR.ARRAY.CSTYLE:Wrapped function requires C-style array param */
     // Wrapped function requires C-style array param
     // NOLINTNEXTLINE(modernize-avoid-c-arrays) see comment above
     score::cpp::expected_blank<score::os::Error> pipe(std::int32_t pipefd[2]) const noexcept override;
-    /* KW_SUPPRESS_END:AUTOSAR.ARRAY.CSTYLE:Wrapped function requires C-style array param */
 
     score::cpp::expected<std::int32_t, score::os::Error> dup(const std::int32_t oldfd) const noexcept override;
 
@@ -234,9 +227,6 @@ class UnistdImpl final : public Unistd
 // nifty_counter is unique and not reused elsewhere in score::os
 // coverity[autosar_cpp14_a2_10_4_violation]
 static StaticDestructionGuard<internal::UnistdImpl> nifty_counter;
-
-/* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Signatures "close, unbind, access,..." are hidden by Unistd class */
-/* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC:Char is used in respect to the wrapped function's signature */
 
 }  // namespace os
 
