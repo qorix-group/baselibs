@@ -29,7 +29,11 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log:__subpackages__",
+        "//platform/aas/tools/sctf/mw_log_helper:__pkg__",
+        "@score_baselibs//score/mw/log:__pkg__",
+        "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
+        "@score_baselibs//score/mw/log/test:__subpackages__",
     ],
     deps = [
         ":composite_recorder",
@@ -59,9 +63,6 @@ cc_library(
     }),
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "@score_baselibs//score/mw/log:__subpackages__",
-    ],
     deps = [
         "@score_baselibs//score/mw/log/detail:empty_recorder_factory",
     ] + select({
@@ -125,7 +126,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
-        #"@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
         "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
     ],
     deps = [
@@ -145,7 +145,6 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
-        #"@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
         "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
     ],
     deps = [
