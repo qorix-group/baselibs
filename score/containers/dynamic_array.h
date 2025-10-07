@@ -292,6 +292,14 @@ template <typename ElementType, typename Allocator>
 DynamicArray<ElementType, Allocator>::DynamicArray(const DynamicArray& other)
     : dynamic_array_{nullptr}, alloc_{other.alloc_}, size_{other.size_}
 {
+    // Early return prevents memory leaks with custom allocators that track zero-size allocations.
+    // Some allocators (e.g., PolymorphicOffsetPtrAllocator) may return valid pointers and track resources
+    // even for zero-byte allocations, but the destructor skips deallocation for size_= 0, causing leaks.
+    if (size_ == 0U)
+    {
+        return;
+    }
+
     using alloc_traits = std::allocator_traits<Allocator>;
     auto storage = alloc_traits::allocate(alloc_, size_);
     SCORE_LANGUAGE_FUTURECPP_PRECONDITION_PRD_MESSAGE(nullptr != storage, "no memory allocated");
