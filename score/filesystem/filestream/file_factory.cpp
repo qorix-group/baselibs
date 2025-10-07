@@ -20,6 +20,7 @@
 #include "score/os/unistd.h"
 
 #include <score/assert.hpp>
+#include <score/utility.hpp>
 
 #include <chrono>
 #include <iomanip>
@@ -227,8 +228,12 @@ Result<std::unique_ptr<FileStream>> FileFactory::AtomicUpdate(const Path& path,
                 auto ownership_adjustment = os::Unistd::instance().chown(temp_path.CStr(), uid, gid);
                 if (!ownership_adjustment.has_value())
                 {
-                    os::Unistd::instance().close(*file_handle);
-                    os::Unistd::instance().unlink(temp_path.CStr());
+                    // If close or unlink fails, there is not much we can do. Returning a different error would hide the
+                    // original issue that permissions could not be set.
+                    // We could log an error but this library is currently designed without logging. Introduce logging
+                    // only for that does not seem worth it.
+                    score::cpp::ignore = os::Unistd::instance().close(*file_handle);
+                    score::cpp::ignore = os::Unistd::instance().unlink(temp_path.CStr());
                     return MakeUnexpected(ErrorCode::kCouldNotSetPermissions);
                 }
             }
