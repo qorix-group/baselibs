@@ -716,3 +716,40 @@ TEST(EmptyDynamicArrayOfTrivialElementTypeMemoryTest, TestNeverFailsButMemcheckD
     DynamicArray<TrivialType> da(array_size);
     EXPECT_TRUE(true);
 }
+
+// This test is to validates the fix for the memory leak issue where copying zero-size arrays would call allocate() but
+// leave dynamic_array_ as nullptr
+TEST(DynamicArrayCopyConstructorMemoryTest, CopyConstructorWithZeroSizeArrayDoesNotLeakMemory)
+{
+    // Given an empty source array
+    DynamicArray<TrivialType> source_array{0U};
+    EXPECT_EQ(source_array.size(), 0U);
+
+    // When copy construct from the empty array, then this should not leak memory
+    DynamicArray<TrivialType> copied_array{source_array};
+    EXPECT_EQ(copied_array.size(), 0U);
+
+    // Verify both arrays behave correctly as empty arrays
+    EXPECT_EQ(source_array.data(), nullptr);
+    EXPECT_EQ(copied_array.data(), nullptr);
+    EXPECT_EQ(source_array.begin(), source_array.end());
+    EXPECT_EQ(copied_array.begin(), copied_array.end());
+}
+
+// Test the same scenario with non-trivial types to ensure the fix works for both code paths
+TEST(DynamicArrayCopyConstructorMemoryTest, CopyConstructorWithNonTrivialZeroSizeArrayDoesNotLeakMemory)
+{
+    // Given an empty source array of non-trivial type
+    DynamicArray<NonTrivialType> source_array{0U};
+    EXPECT_EQ(source_array.size(), 0U);
+
+    // When copy construct from the empty array, then this should not leak memory
+    DynamicArray<NonTrivialType> copied_array{source_array};
+    EXPECT_EQ(copied_array.size(), 0U);
+
+    // Verify both arrays behave correctly as empty arrays
+    EXPECT_EQ(source_array.data(), nullptr);
+    EXPECT_EQ(copied_array.data(), nullptr);
+    EXPECT_EQ(source_array.begin(), source_array.end());
+    EXPECT_EQ(copied_array.begin(), copied_array.end());
+}
