@@ -91,6 +91,12 @@ class basic_zstring_view : private details::zspan<std::add_const_t<CharType>>
         return data();
     }
 
+    /// @brief Returns the number of `char_type` elements in the view (not accounting the trailing null-terminator).
+    [[nodiscard]] constexpr size_type length() const noexcept
+    {
+        return size();
+    }
+
     ///
     /// @brief implicit conversion operator from `safecpp::basic_zstring_view` to `std::basic_string_view`
     ///

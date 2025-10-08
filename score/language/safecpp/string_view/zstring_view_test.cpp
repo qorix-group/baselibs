@@ -42,6 +42,7 @@ TEST(ZStringView, CanConstructFromLiteral)
     EXPECT_FALSE(view.empty());
 
     // And its size must be the length of the string literal minus the null-terminator
+    EXPECT_EQ(view.length(), 5U);
     EXPECT_EQ(view.size(), 5U);
 
     // And its data must point to the start of the string literal
@@ -64,6 +65,7 @@ TEST(ZStringView, CanConstructFromBuffer)
     EXPECT_FALSE(view.empty());
 
     // And its size must be the length of the string literal minus the null-terminator
+    EXPECT_EQ(view.length(), 5U);
     EXPECT_EQ(view.size(), 5U);
 
     // And its data must match the buffer's data
@@ -90,6 +92,7 @@ TEST(ZStringView, CanConstructFromAmpString)
     EXPECT_FALSE(view.empty());
 
     // And its size must be the length of the `score::cpp::pmr::string`
+    EXPECT_EQ(view.length(), 5U);
     EXPECT_EQ(view.size(), 5U);
 
     // And its data must match the `score::cpp::pmr::string`'s data
@@ -127,6 +130,7 @@ TEST(ZStringView, CanConstructFromStdString)
     EXPECT_FALSE(view.empty());
 
     // And its size must be the length of the `std::string`
+    EXPECT_EQ(view.length(), 5U);
     EXPECT_EQ(view.size(), 5U);
 
     // And its data must match the `std::string`'s data
@@ -161,6 +165,7 @@ TEST(ZStringView, CanConstructFromZSpan)
     EXPECT_FALSE(view.empty());
 
     // And its size must be the length of the string literal minus the null-terminator
+    EXPECT_EQ(view.length(), 5U);
     EXPECT_EQ(view.size(), 5U);
 
     // And its data must match the `zspan`'s one
@@ -185,6 +190,7 @@ TEST(ZStringView, CanDefaultConstruct)
     EXPECT_TRUE(view.empty());
 
     // And its size must be zero
+    EXPECT_EQ(view.length(), 0U);
     EXPECT_EQ(view.size(), 0U);
 
     // And its data must be nullptr
