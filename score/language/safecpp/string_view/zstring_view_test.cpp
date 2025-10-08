@@ -333,6 +333,20 @@ TEST(ZStringView, CanOutputToOStream)
     EXPECT_EQ(oss.str(), (std::string{"hello\0world", 11U}));
 }
 
+TEST(ZStringView, CanSwap)
+{
+    // Given two preconstructed `zstring_view`s
+    auto view = "got swapped"_zsv;
+    auto other_view = "this view"_zsv;
+
+    // Then it must be possible to swap them
+    swap(view, other_view);
+    EXPECT_EQ(view.size(), 9U);
+    EXPECT_EQ(other_view.size(), 11U);
+    EXPECT_STREQ(view.data(), "this view");
+    EXPECT_STREQ(other_view.data(), "got swapped");
+}
+
 TEST(ZStringView, TypeTraits)
 {
     EXPECT_TRUE((std::is_nothrow_default_constructible_v<safecpp::zstring_view>));

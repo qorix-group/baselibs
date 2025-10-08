@@ -106,6 +106,17 @@ class basic_zstring_view : private details::zspan<std::add_const_t<CharType>>
     {
         return os << std::basic_string_view<CharType>{sv};
     }
+
+    ///
+    /// @brief swap operator for `safecpp::basic_zstring_view`
+    ///
+    friend constexpr void swap(safecpp::basic_zstring_view<CharType>& lhs,
+                               safecpp::basic_zstring_view<CharType>& rhs) noexcept
+    {
+        auto tmp = lhs;
+        lhs = rhs;
+        rhs = tmp;
+    }
 };
 
 /// @brief alias definition for `zstring_view`
