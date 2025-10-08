@@ -33,10 +33,10 @@ namespace details
 {
 namespace
 {
-constexpr uint32_t kTIDDigitsLength = 6U;
-constexpr uint32_t kTIDDigitsCropMask = 1000000U;
-constexpr uint32_t kSystemTicksDigitsLength = 8U;
-constexpr uint32_t kSystemTicksDigitsCropMask = 100000000U;
+constexpr std::int32_t kTIDDigitsLength = 6;
+constexpr std::uint32_t kTIDDigitsCropMask = 1'000'000U;
+constexpr std::int32_t kSystemTicksDigitsLength = 8;
+constexpr std::uint32_t kSystemTicksDigitsCropMask = 100'000'000U;
 
 }  // namespace
 std::string ComposeTempFilename(std::string original_filename,
