@@ -137,6 +137,7 @@ cc_library(
         "include/score/private/memory_resource/unsynchronized_pool_resource.hpp",
         "include/score/private/numeric/lerp.hpp",
         "include/score/private/numeric/saturate_cast.hpp",
+        "include/score/private/simd/simd_aarch64_neon_backend.hpp",
         "include/score/private/simd/simd_data_types.hpp",
         "include/score/private/simd/simd_default_backend.hpp",
         "include/score/private/simd/simd_math.hpp",

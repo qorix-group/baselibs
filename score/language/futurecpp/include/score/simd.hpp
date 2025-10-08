@@ -10,6 +10,8 @@
 
 #if defined(__SSE4_2__) && (defined(__linux__) || defined(__QNX__))
 #include <score/private/simd/simd_sse42_backend.hpp>
+#elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
+#include <score/private/simd/simd_aarch64_neon_backend.hpp>
 #else
 #include <score/private/simd/simd_default_backend.hpp>
 #endif
