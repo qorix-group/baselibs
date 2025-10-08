@@ -83,19 +83,28 @@ class basic_zstring_view : private details::zspan<std::add_const_t<CharType>>
     using base::size;
     using base::operator[];
 
-    ///
-    /// @brief implicit conversion operator from `basic_zstring_view` to `std::string_view`
-    ///
-    // NOLINTNEXTLINE(google-explicit-constructor) allow implicit conversions to `std::string_view` (const view type)
-    [[nodiscard]] constexpr operator std::string_view() const noexcept
-    {
-        return std::string_view{data(), size()};
-    }
-
     /// @brief Returns a pointer to the null-terminated underlying character sequence.
     [[nodiscard]] constexpr auto c_str() const noexcept
     {
         return data();
+    }
+
+    ///
+    /// @brief implicit conversion operator from `safecpp::basic_zstring_view` to `std::basic_string_view`
+    ///
+    // NOLINTNEXTLINE(google-explicit-constructor) allow impl. conversions to `std::basic_string_view` (const view type)
+    [[nodiscard]] constexpr operator std::basic_string_view<CharType>() const noexcept
+    {
+        return std::basic_string_view<CharType>{data(), size()};
+    }
+
+    ///
+    /// @brief `std::ostream` output operator for `safecpp::basic_zstring_view`
+    ///
+    friend std::basic_ostream<CharType>& operator<<(std::basic_ostream<CharType>& os,
+                                                    safecpp::basic_zstring_view<CharType> sv)
+    {
+        return os << std::basic_string_view<CharType>{sv};
     }
 };
 

@@ -20,6 +20,7 @@
 
 #include <gtest/gtest.h>
 
+#include <sstream>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -313,6 +314,23 @@ TEST(ZStringView, CanCompareWithStringView)
     EXPECT_TRUE(view <= std::string_view{"hello"});
     EXPECT_FALSE(view > std::string_view{"hello world"});
     EXPECT_FALSE(view >= std::string_view{"hello world"});
+}
+
+TEST(ZStringView, CanOutputToOStream)
+{
+    // Given a preconstructed `zstring_view`
+    auto view = "hello"_zsv;
+
+    // Then it must be possible to output it to an std::ostream
+    std::ostringstream oss;
+    oss << view;
+    EXPECT_EQ(oss.str(), "hello");
+
+    // And it must also be possible to output an in-between null-terminated `zstring_view` correctly
+    auto other_view = "hello\0world"_zsv;
+    oss = std::ostringstream{};
+    oss << other_view;
+    EXPECT_EQ(oss.str(), (std::string{"hello\0world", 11U}));
 }
 
 TEST(ZStringView, TypeTraits)
