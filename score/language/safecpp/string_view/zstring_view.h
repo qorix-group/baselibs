@@ -27,6 +27,8 @@ namespace score::safecpp
 
 ///
 /// @brief non-modifiable view type over null-terminated character sequence
+/// @note This implementation is based on the following C++ standard draft paper:
+///       https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2025/p3655r2.html
 ///
 template <typename CharType>
 class basic_zstring_view : private details::zspan<std::add_const_t<CharType>>
