@@ -63,6 +63,14 @@ class simd_fixture : public testing::Test
 using ElementTypes = ::testing::Types<std::int32_t, float, double>;
 TYPED_TEST_SUITE(simd_fixture, ElementTypes, /*unused*/);
 
+template <typename T>
+class simd_floating_point_fixture : public testing::Test
+{
+};
+
+using ElementFloatingPointTypes = ::testing::Types<float, double>;
+TYPED_TEST_SUITE(simd_floating_point_fixture, ElementFloatingPointTypes, /*unused*/);
+
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
 TYPED_TEST(simd_fixture, TrivialAndStandardLayout)
@@ -232,11 +240,11 @@ TYPED_TEST(simd_fixture, Add)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TEST(simd, AddFloatSpecialValues)
+TYPED_TEST(simd_floating_point_fixture, AddFloatSpecialValues)
 {
-    const simd<float> nan{std::numeric_limits<float>::quiet_NaN()};
-    const simd<float> inf{std::numeric_limits<float>::infinity()};
-    const simd<float> one{1.0F};
+    const simd<TypeParam> nan{std::numeric_limits<TypeParam>::quiet_NaN()};
+    const simd<TypeParam> inf{std::numeric_limits<TypeParam>::infinity()};
+    const simd<TypeParam> one{TypeParam{1}};
 
     EXPECT_TRUE(all_of(inf == one + inf));
     EXPECT_TRUE(all_of(is_nan(one + nan)));
@@ -268,13 +276,13 @@ TYPED_TEST(simd_fixture, Subtract)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TEST(simd, SubtractFloatSpecialValues)
+TYPED_TEST(simd_floating_point_fixture, SubtractFloatSpecialValues)
 {
-    const simd<float> nan{std::numeric_limits<float>::quiet_NaN()};
-    const simd<float> inf{std::numeric_limits<float>::infinity()};
-    const simd<float> one{1.0F};
+    const simd<TypeParam> nan{std::numeric_limits<TypeParam>::quiet_NaN()};
+    const simd<TypeParam> inf{std::numeric_limits<TypeParam>::infinity()};
+    const simd<TypeParam> one{TypeParam{1}};
 
-    EXPECT_TRUE(all_of(simd<float>{0.0F} == one - one));
+    EXPECT_TRUE(all_of(simd<TypeParam>{TypeParam{0}} == one - one));
     EXPECT_TRUE(all_of(-inf == one - inf));
     EXPECT_TRUE(all_of(is_nan(one - nan)));
 
@@ -305,14 +313,14 @@ TYPED_TEST(simd_fixture, Multiply)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TEST(simd, MultiplyFloatSpecialValues)
+TYPED_TEST(simd_floating_point_fixture, MultiplyFloatSpecialValues)
 {
-    const simd<float> nan{std::numeric_limits<float>::quiet_NaN()};
-    const simd<float> inf{std::numeric_limits<float>::infinity()};
-    const simd<float> two{2.0F};
-    const simd<float> zero{0.0F};
+    const simd<TypeParam> nan{std::numeric_limits<TypeParam>::quiet_NaN()};
+    const simd<TypeParam> inf{std::numeric_limits<TypeParam>::infinity()};
+    const simd<TypeParam> two{TypeParam{2}};
+    const simd<TypeParam> zero{TypeParam{0}};
 
-    EXPECT_TRUE(all_of(simd<float>{4.0F} == two * two));
+    EXPECT_TRUE(all_of(simd<TypeParam>{TypeParam{4}} == two * two));
     EXPECT_TRUE(all_of(inf == two * inf));
     EXPECT_TRUE(all_of(is_nan(two * nan)));
 
@@ -346,14 +354,14 @@ TYPED_TEST(simd_fixture, Divide)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TEST(simd, DivideFloatSpecialValues)
+TYPED_TEST(simd_floating_point_fixture, DivideFloatSpecialValues)
 {
-    const simd<float> nan{std::numeric_limits<float>::quiet_NaN()};
-    const simd<float> inf{std::numeric_limits<float>::infinity()};
-    const simd<float> two{2.0F};
-    const simd<float> zero{0.0F};
+    const simd<TypeParam> nan{std::numeric_limits<TypeParam>::quiet_NaN()};
+    const simd<TypeParam> inf{std::numeric_limits<TypeParam>::infinity()};
+    const simd<TypeParam> two{TypeParam{2}};
+    const simd<TypeParam> zero{TypeParam{0}};
 
-    EXPECT_TRUE(all_of(simd<float>{1.0F} == two / two));
+    EXPECT_TRUE(all_of(simd<TypeParam>{TypeParam{1}} == two / two));
     EXPECT_TRUE(all_of(zero == two / inf));
     EXPECT_TRUE(all_of(inf == two / zero));
     EXPECT_TRUE(all_of(is_nan(two / nan)));
@@ -387,24 +395,24 @@ TYPED_TEST(simd_fixture, Negate)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TEST(simd, NegateFloatSpecialValues)
+TYPED_TEST(simd_floating_point_fixture, NegateFloatSpecialValues)
 {
-    const simd<float> nan{std::numeric_limits<float>::quiet_NaN()};
-    const simd<float> inf{std::numeric_limits<float>::infinity()};
-    const simd<float> zero{0.0F};
+    const TypeParam nan{std::numeric_limits<TypeParam>::quiet_NaN()};
+    const TypeParam inf{std::numeric_limits<TypeParam>::infinity()};
+    const TypeParam zero{0};
 
-    const std::uint32_t nan_bits{0x7FC00000};
-    const std::uint32_t neg_nan_bits{0xFFC00000};
-    const std::uint32_t inf_bits{0x7F800000};
-    const std::uint32_t neg_inf_bits{0xFF800000};
-    const std::uint32_t null_bits{0x00000000};
-    const std::uint32_t neg_null_bits{0x80000000};
-    EXPECT_EQ(nan_bits, score::cpp::bit_cast<std::uint32_t>(nan[0]));
-    EXPECT_EQ(neg_nan_bits, score::cpp::bit_cast<std::uint32_t>((-nan)[0]));
-    EXPECT_EQ(inf_bits, score::cpp::bit_cast<std::uint32_t>(inf[0]));
-    EXPECT_EQ(neg_inf_bits, score::cpp::bit_cast<std::uint32_t>((-inf)[0]));
-    EXPECT_EQ(null_bits, score::cpp::bit_cast<std::uint32_t>(zero[0]));
-    EXPECT_EQ(neg_null_bits, score::cpp::bit_cast<std::uint32_t>((-zero)[0]));
+    static_assert(std::is_floating_point<TypeParam>::value, "failed");
+    using bits = std::conditional_t<std::is_same<float, TypeParam>::value, std::uint32_t, std::uint64_t>;
+
+    for (std::size_t i{0U}; i < simd<TypeParam>::size(); ++i)
+    {
+        EXPECT_EQ(score::cpp::bit_cast<bits>(nan), score::cpp::bit_cast<bits>(simd<TypeParam>{nan}[i]));
+        EXPECT_EQ(score::cpp::bit_cast<bits>(-nan), score::cpp::bit_cast<bits>(simd<TypeParam>{-nan}[i]));
+        EXPECT_EQ(score::cpp::bit_cast<bits>(inf), score::cpp::bit_cast<bits>(simd<TypeParam>{inf}[i]));
+        EXPECT_EQ(score::cpp::bit_cast<bits>(-inf), score::cpp::bit_cast<bits>(simd<TypeParam>{-inf}[i]));
+        EXPECT_EQ(score::cpp::bit_cast<bits>(zero), score::cpp::bit_cast<bits>(simd<TypeParam>{zero}[i]));
+        EXPECT_EQ(score::cpp::bit_cast<bits>(-zero), score::cpp::bit_cast<bits>(simd<TypeParam>{-zero}[i]));
+    }
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -419,11 +427,11 @@ TYPED_TEST(simd_fixture, Equal)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TEST(simd, EqualFloatSpecialValues)
+TYPED_TEST(simd_floating_point_fixture, EqualFloatSpecialValues)
 {
-    const simd<float> nan{std::numeric_limits<float>::quiet_NaN()};
-    const simd<float> inf{std::numeric_limits<float>::infinity()};
-    const simd<float> one{1.0F};
+    const simd<TypeParam> nan{std::numeric_limits<TypeParam>::quiet_NaN()};
+    const simd<TypeParam> inf{std::numeric_limits<TypeParam>::infinity()};
+    const simd<TypeParam> one{TypeParam{1}};
 
     EXPECT_TRUE(none_of(one == nan));
     EXPECT_TRUE(none_of(nan == one));
@@ -449,11 +457,11 @@ TYPED_TEST(simd_fixture, NotEqual)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TEST(simd, NotEqualFloatSpecialValues)
+TYPED_TEST(simd_floating_point_fixture, NotEqualFloatSpecialValues)
 {
-    const simd<float> nan{std::numeric_limits<float>::quiet_NaN()};
-    const simd<float> inf{std::numeric_limits<float>::infinity()};
-    const simd<float> one{1.0F};
+    const simd<TypeParam> nan{std::numeric_limits<TypeParam>::quiet_NaN()};
+    const simd<TypeParam> inf{std::numeric_limits<TypeParam>::infinity()};
+    const simd<TypeParam> one{TypeParam{1}};
 
     EXPECT_TRUE(all_of(one != nan));
     EXPECT_TRUE(all_of(nan != one));
@@ -479,11 +487,11 @@ TYPED_TEST(simd_fixture, LessThan)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TEST(simd, LessThanFloatSpecialValues)
+TYPED_TEST(simd_floating_point_fixture, LessThanFloatSpecialValues)
 {
-    const simd<float> nan{std::numeric_limits<float>::quiet_NaN()};
-    const simd<float> inf{std::numeric_limits<float>::infinity()};
-    const simd<float> one{1.0F};
+    const simd<TypeParam> nan{std::numeric_limits<TypeParam>::quiet_NaN()};
+    const simd<TypeParam> inf{std::numeric_limits<TypeParam>::infinity()};
+    const simd<TypeParam> one{TypeParam{1}};
 
     EXPECT_TRUE(all_of(-one < one));
     EXPECT_TRUE(none_of(one < one));
@@ -511,11 +519,11 @@ TYPED_TEST(simd_fixture, LessEqual)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TEST(simd, LessEqualFloatSpecialValues)
+TYPED_TEST(simd_floating_point_fixture, LessEqualFloatSpecialValues)
 {
-    const simd<float> nan{std::numeric_limits<float>::quiet_NaN()};
-    const simd<float> inf{std::numeric_limits<float>::infinity()};
-    const simd<float> one{1.0F};
+    const simd<TypeParam> nan{std::numeric_limits<TypeParam>::quiet_NaN()};
+    const simd<TypeParam> inf{std::numeric_limits<TypeParam>::infinity()};
+    const simd<TypeParam> one{TypeParam{1}};
 
     EXPECT_TRUE(none_of(one <= nan));
     EXPECT_TRUE(none_of(nan <= one));
@@ -541,11 +549,11 @@ TYPED_TEST(simd_fixture, GreaterThan)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TEST(simd, GreaterThanFloatSpecialValues)
+TYPED_TEST(simd_floating_point_fixture, GreaterThanFloatSpecialValues)
 {
-    const simd<float> nan{std::numeric_limits<float>::quiet_NaN()};
-    const simd<float> inf{std::numeric_limits<float>::infinity()};
-    const simd<float> one{1.0F};
+    const simd<TypeParam> nan{std::numeric_limits<TypeParam>::quiet_NaN()};
+    const simd<TypeParam> inf{std::numeric_limits<TypeParam>::infinity()};
+    const simd<TypeParam> one{TypeParam{1}};
 
     EXPECT_TRUE(none_of(one > nan));
     EXPECT_TRUE(none_of(nan > one));
@@ -571,11 +579,11 @@ TYPED_TEST(simd_fixture, GreaterEqual)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TEST(simd, GreaterEqualFloatSpecialValues)
+TYPED_TEST(simd_floating_point_fixture, GreaterEqualFloatSpecialValues)
 {
-    const simd<float> nan{std::numeric_limits<float>::quiet_NaN()};
-    const simd<float> inf{std::numeric_limits<float>::infinity()};
-    const simd<float> one{1.0F};
+    const simd<TypeParam> nan{std::numeric_limits<TypeParam>::quiet_NaN()};
+    const simd<TypeParam> inf{std::numeric_limits<TypeParam>::infinity()};
+    const simd<TypeParam> one{TypeParam{1}};
 
     EXPECT_TRUE(none_of(one >= nan));
     EXPECT_TRUE(none_of(nan >= one));
@@ -600,11 +608,11 @@ TYPED_TEST(simd_fixture, Min)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TEST(simd, MinFloatSpecialValues)
+TYPED_TEST(simd_floating_point_fixture, MinFloatSpecialValues)
 {
-    const simd<float> nan{std::numeric_limits<float>::quiet_NaN()};
-    const simd<float> inf{std::numeric_limits<float>::infinity()};
-    const simd<float> one{1.0F};
+    const simd<TypeParam> nan{std::numeric_limits<TypeParam>::quiet_NaN()};
+    const simd<TypeParam> inf{std::numeric_limits<TypeParam>::infinity()};
+    const simd<TypeParam> one{TypeParam{1}};
 
     EXPECT_TRUE(all_of(-inf == min(one, -inf)));
     EXPECT_TRUE(all_of(one == min(one, nan)));
@@ -622,11 +630,11 @@ TYPED_TEST(simd_fixture, Max)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TEST(simd, MaxSpecialFloatValues)
+TYPED_TEST(simd_floating_point_fixture, MaxSpecialFloatValues)
 {
-    const simd<float> nan{std::numeric_limits<float>::quiet_NaN()};
-    const simd<float> inf{std::numeric_limits<float>::infinity()};
-    const simd<float> two{2.0F};
+    const simd<TypeParam> nan{std::numeric_limits<TypeParam>::quiet_NaN()};
+    const simd<TypeParam> inf{std::numeric_limits<TypeParam>::infinity()};
+    const simd<TypeParam> two{TypeParam{2}};
 
     EXPECT_TRUE(all_of(inf == max(two, inf)));
     EXPECT_TRUE(all_of(two == max(two, nan)));
