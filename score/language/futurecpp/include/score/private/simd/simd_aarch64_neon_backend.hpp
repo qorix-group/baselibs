@@ -73,7 +73,7 @@ struct neon_mask_backend<std::int32_t>
 
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE all_of(const type v) noexcept
     {
-        return vget_lane_u64(vreinterpret_u64_u16(vmovn_u32(v)), 0) == 0xFFFFFFFFFFFFFFFF;
+        return vget_lane_u64(vreinterpret_u64_u16(vmovn_u32(v)), 0) == 0xFFFF'FFFF'FFFF'FFFF;
     }
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE any_of(const type v) noexcept
     {
@@ -129,7 +129,7 @@ struct neon_mask_backend<float>
 
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE all_of(const type v) noexcept
     {
-        return vget_lane_u64(vreinterpret_u64_u16(vmovn_u32(v)), 0) == 0xFFFFFFFFFFFFFFFF;
+        return vget_lane_u64(vreinterpret_u64_u16(vmovn_u32(v)), 0) == 0xFFFF'FFFF'FFFF'FFFF;
     }
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE any_of(const type v) noexcept
     {
@@ -183,7 +183,7 @@ struct neon_mask_backend<double>
 
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE all_of(const type v) noexcept
     {
-        return vget_lane_u64(vreinterpret_u64_u32(vmovn_u64(v)), 0) == 0xFFFFFFFFFFFFFFFF;
+        return vget_lane_u64(vreinterpret_u64_u32(vmovn_u64(v)), 0) == 0xFFFF'FFFF'FFFF'FFFF;
     }
 
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE any_of(const type v) noexcept
@@ -193,25 +193,6 @@ struct neon_mask_backend<double>
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE none_of(const type v) noexcept
     {
         return vget_lane_u64(vreinterpret_u64_u32(vmovn_u64(v)), 0) == 0;
-    }
-};
-
-template <typename To, typename From>
-struct converter;
-template <>
-struct converter<std::int32_t, float>
-{
-    static int32x4_t SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE run(const float32x4_t v) noexcept
-    {
-        return vcvtq_s32_f32(v);
-    }
-};
-template <>
-struct converter<float, std::int32_t>
-{
-    static float32x4_t SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE run(const int32x4_t v) noexcept
-    {
-        return vcvtq_f32_s32(v);
     }
 };
 
@@ -329,11 +310,9 @@ struct neon_backend<std::int32_t>
         return vmaxq_s32(a, b);
     }
 
-    template <typename To>
-    static float32x4_t SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE convert(const type v) noexcept
+    static float32x4_t SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE convert(const type v, float) noexcept
     {
-        static_assert(sizeof(To) == sizeof(std::int32_t), "Mismatch in number of elements");
-        return converter<To, std::int32_t>::run(v);
+        return vcvtq_f32_s32(v);
     }
 
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE blend(const type a,
@@ -444,11 +423,9 @@ struct neon_backend<float>
         return vbslq_f32(vcltq_f32(a, b), b, a);
     }
 
-    template <typename To>
-    static int32x4_t SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE convert(const type v) noexcept
+    static int32x4_t SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE convert(const type v, std::int32_t) noexcept
     {
-        static_assert(sizeof(To) == sizeof(float), "Mismatch in number of elements");
-        return converter<To, float>::run(v);
+        return vcvtq_s32_f32(v);
     }
 
     static mask_type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE is_nan(const type v) noexcept
@@ -534,7 +511,7 @@ struct neon_backend<double>
     }
     static mask_type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE not_equal(const type a, const type b) noexcept
     {
-        return vbicq_u64(vdupq_n_u64(0xFFFFFFFFFFFFFFFF), vceqq_f64(a, b));
+        return vbicq_u64(vdupq_n_u64(0xFFFF'FFFF'FFFF'FFFF), vceqq_f64(a, b));
     }
     static mask_type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE less_than(const type a, const type b) noexcept
     {
@@ -564,7 +541,7 @@ struct neon_backend<double>
 
     static mask_type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE is_nan(const type v) noexcept
     {
-        return vbicq_u64(vdupq_n_u64(0xFFFFFFFFFFFFFFFF), vceqq_f64(v, v));
+        return vbicq_u64(vdupq_n_u64(0xFFFF'FFFF'FFFF'FFFF), vceqq_f64(v, v));
         ;
     }
 

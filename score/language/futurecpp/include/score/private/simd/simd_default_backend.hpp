@@ -299,7 +299,7 @@ struct simd_default_backend
     }
 
     template <typename To>
-    static simd_vector<To, N> convert(const simd_vector<T, N>& v) noexcept
+    static simd_vector<To, N> convert(const simd_vector<T, N>& v, To) noexcept
     {
         static_assert(sizeof(To) == sizeof(T), "Mismatch in number of elements");
         simd_vector<To, N> r;

@@ -130,19 +130,6 @@ struct sse42_mask_backend<double>
     static bool SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE none_of(const type v) noexcept { return _mm_movemask_pd(v) == 0; }
 };
 
-template <typename To, typename From>
-struct converter;
-template <>
-struct converter<std::int32_t, float>
-{
-    static __m128i SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE run(const __m128 v) noexcept { return _mm_cvttps_epi32(v); }
-};
-template <>
-struct converter<float, std::int32_t>
-{
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE run(const __m128i v) noexcept { return _mm_cvtepi32_ps(v); }
-};
-
 template <typename T>
 struct sse42_backend;
 
@@ -230,12 +217,7 @@ struct sse42_backend<std::int32_t>
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE min(const type a, const type b) noexcept { return _mm_min_epi32(b, a); }
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE max(const type a, const type b) noexcept { return _mm_max_epi32(b, a); }
 
-    template <typename To>
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE convert(const type v) noexcept
-    {
-        static_assert(sizeof(To) == sizeof(std::int32_t), "Mismatch in number of elements");
-        return converter<To, std::int32_t>::run(v);
-    }
+    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE convert(const type v, float) noexcept { return _mm_cvtepi32_ps(v); }
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE blend(const type a, const type b, const mask_type c) noexcept
     {
@@ -304,12 +286,7 @@ struct sse42_backend<float>
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE min(const type a, const type b) noexcept { return _mm_min_ps(b, a); }
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE max(const type a, const type b) noexcept { return _mm_max_ps(b, a); }
 
-    template <typename To>
-    static __m128i SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE convert(const __m128 v) noexcept
-    {
-        static_assert(sizeof(To) == sizeof(float), "Mismatch in number of elements");
-        return converter<To, float>::run(v);
-    }
+    static __m128i SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE convert(const type v, std::int32_t) noexcept { return _mm_cvttps_epi32(v); }
 
     static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE is_nan(const type v) noexcept { return _mm_cmpunord_ps(v, v); }
 

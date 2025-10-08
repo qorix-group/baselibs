@@ -440,6 +440,20 @@ public:
     /// [parallel] 9.6.4 1 and 2
     explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE simd(const value_type v) noexcept : v_{impl::broadcast(v)} {}
 
+    /// \brief Initializes the ith element with static_cast<T>(x[i]) for all i in the range of [0, size()).
+    ///
+    /// \note This constructor is always explicit even if the conversion is value preserving
+    ///
+    /// [simd.ctor] 29.10.7.2 (C++26)
+    template <typename U,
+              typename UAbi,
+              typename UImpl = typename simd_abi::deduce<U, UAbi>::impl,
+              typename = std::enable_if_t<size() == simd<U, UAbi>::size()>>
+    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE simd(const simd<U, UAbi> v) noexcept
+        : v_{UImpl::convert(static_cast<typename UImpl::type>(v), value_type{})}
+    {
+    }
+
     /// \brief Constructs an object where the ith element is initialized to `gen(integral_constant<size_t, i>())`.
     ///
     /// [parallel] 9.6.4 5, 6 and 7
@@ -466,6 +480,14 @@ public:
     ///
     /// [parallel] 9.6.4 8, 9 and 10
     SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE simd(const value_type* v, element_aligned_tag) : v_{impl::load(v)} {}
+
+    /// \brief Constructs the elements of the simd object from an unaligned memory address.
+    ///
+    /// @pre [v, v + size()) is a valid range.
+    /// @pre v shall point to storage aligned to alignof(value_type).
+    ///
+    /// [parallel] 9.6.4 8, 9 and 10
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE simd(const value_type* v) : v_{impl::load(v)} {}
 
     /// \brief Convert from platform specific type, e.g., _m128 for SSE4.2.
     ///
@@ -506,6 +528,14 @@ public:
         v_ = impl::load(v);
     }
 
+    /// \brief Replaces the elements of the simd object from an unaligned memory address.
+    ///
+    /// @pre [v, v + size()) is a valid range.
+    /// @pre v shall point to storage aligned to alignof(value_type).
+    ///
+    /// [parallel] 9.6.5 1, 2 and 3
+    void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE copy_from(const value_type* const v) { v_ = impl::load(v); }
+
     /// \brief Replaces the elements of the simd object from an aligned memory address.
     ///
     /// @pre [v, v + size()) is a valid range.
@@ -530,6 +560,14 @@ public:
         static_assert(is_simd_flag_type_v<element_aligned_tag>, "element_aligned_tag not a simd flag type tag");
         impl::store(v, v_);
     }
+
+    /// \brief Replaces the elements of the simd object from an unaligned memory address.
+    ///
+    /// @pre [v, v + size()) is a valid range.
+    /// @pre v shall point to storage aligned to alignof(value_type).
+    ///
+    /// [parallel] 9.6.5 4, 5 and 6
+    void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE copy_to(value_type* const v) const { impl::store(v, v_); }
 
     /// \brief The value of the ith element.
     ///
@@ -820,9 +858,7 @@ template <typename T,
           typename = std::enable_if_t<is_simd_v<T> && T::size() == simd<U, Abi>::size()>>
 inline T SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE static_simd_cast(const simd<U, Abi>& v) noexcept
 {
-    using impl = typename simd_abi::deduce<U, Abi>::impl;
-    using type = typename impl::type;
-    return T{impl::template convert<typename T::value_type>(static_cast<type>(v))};
+    return T{v};
 }
 
 } // namespace score::cpp

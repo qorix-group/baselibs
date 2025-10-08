@@ -114,6 +114,20 @@ TYPED_TEST(simd_fixture, Initialize)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050, CB-#18397902
+TYPED_TEST(simd_fixture, InitializeByDefaultIsUnaligned)
+{
+    const std::array<TypeParam, 4U> scalars{TypeParam{1}, TypeParam{2}, TypeParam{3}, TypeParam{4}};
+    const simd<TypeParam> vector{scalars.data()};
+    static_assert(vector.size() <= scalars.size(), "");
+
+    for (std::size_t i{0U}; i < vector.size(); ++i)
+    {
+        EXPECT_EQ(scalars[i], vector[i]);
+    }
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18398050, CB-#18397902
 TYPED_TEST(simd_fixture, InitializeUnaligned)
 {
     const std::array<TypeParam, 4U> scalars{TypeParam{1}, TypeParam{2}, TypeParam{3}, TypeParam{4}};
@@ -133,6 +147,21 @@ TYPED_TEST(simd_fixture, InitializeAligned)
     alignas(16) const std::array<TypeParam, 4U> scalars{TypeParam{1}, TypeParam{2}, TypeParam{3}, TypeParam{4}};
     const simd<TypeParam> vector{scalars.data(), vector_aligned};
     static_assert(vector.size() <= scalars.size(), "");
+
+    for (std::size_t i{0U}; i < vector.size(); ++i)
+    {
+        EXPECT_EQ(scalars[i], vector[i]);
+    }
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18398050, CB-#18397902
+TYPED_TEST(simd_fixture, LoadByDefaultIsUnaligned)
+{
+    simd<TypeParam> vector;
+    const std::array<TypeParam, 4U> scalars{TypeParam{1}, TypeParam{2}, TypeParam{3}, TypeParam{4}};
+    static_assert(vector.size() <= scalars.size(), "");
+    vector.copy_from(scalars.data());
 
     for (std::size_t i{0U}; i < vector.size(); ++i)
     {
@@ -178,6 +207,21 @@ TYPED_TEST(simd_fixture, LoadAligned_WhenCopyingFromUnalignedMemory_ThenPrecondi
     alignas(16) const std::array<TypeParam, vector.size() + 1> scalars{};
 
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(vector.copy_from(&scalars[1], vector_aligned));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18398050, CB-#18397902
+TYPED_TEST(simd_fixture, StoreByDefaultIsUnaligned)
+{
+    const generator<TypeParam> gen{1, 2, 3, 4};
+    const simd<TypeParam> vector{gen};
+    std::array<TypeParam, vector.size()> scalars;
+    vector.copy_to(scalars.data());
+
+    for (std::size_t i{0U}; i < vector.size(); ++i)
+    {
+        EXPECT_EQ(gen[i], scalars[i]);
+    }
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -672,6 +716,9 @@ TEST(simd, ConvertFloatToInt)
     EXPECT_TRUE(all_of(simd<std::int32_t>{-23} == static_simd_cast<simd<std::int32_t>>(simd<float>{-23.75F})));
     EXPECT_TRUE(all_of(simd<std::int32_t>{23} == static_simd_cast<simd<std::int32_t>>(simd<float>{23.0F})));
     EXPECT_TRUE(all_of(simd<std::int32_t>{23} == static_simd_cast<simd<std::int32_t>>(simd<float>{23.75F})));
+    EXPECT_TRUE(all_of(simd<std::int32_t>{-23} == simd<std::int32_t>{simd<float>{-23.75F}}));
+    EXPECT_TRUE(all_of(simd<std::int32_t>{23} == simd<std::int32_t>{simd<float>{23.0F}}));
+    EXPECT_TRUE(all_of(simd<std::int32_t>{23} == simd<std::int32_t>{simd<float>{23.75F}}));
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -680,6 +727,8 @@ TEST(simd, ConvertIntToFloat)
 {
     EXPECT_TRUE(all_of(simd<float>{-23.0F} == static_simd_cast<simd<float>>(simd<std::int32_t>{-23})));
     EXPECT_TRUE(all_of(simd<float>{23.0F} == static_simd_cast<simd<float>>(simd<std::int32_t>{23})));
+    EXPECT_TRUE(all_of(simd<float>{-23.0F} == simd<float>{simd<std::int32_t>{-23}}));
+    EXPECT_TRUE(all_of(simd<float>{23.0F} == simd<float>{simd<std::int32_t>{23}}));
 }
 
 /// @testmethods TM_REQUIREMENT
