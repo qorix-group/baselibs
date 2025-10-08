@@ -150,6 +150,7 @@ template <>
 struct sse42_backend<std::int32_t>
 {
     using type = __m128i;
+    using mask_type = sse42_mask_backend<std::int32_t>::type;
     static constexpr std::size_t width{4};
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE broadcast(const std::int32_t v) noexcept { return _mm_set1_epi32(v); }
@@ -165,25 +166,25 @@ struct sse42_backend<std::int32_t>
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE load(const std::int32_t* const v) noexcept
     {
-        return _mm_loadu_si128(reinterpret_cast<const __m128i*>(v));
+        return _mm_loadu_si128(reinterpret_cast<const type*>(v));
     }
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE load_aligned(const std::int32_t* const v) noexcept
     {
-        return _mm_load_si128(reinterpret_cast<const __m128i*>(v));
+        return _mm_load_si128(reinterpret_cast<const type*>(v));
     }
     static void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE store(std::int32_t* const v, const type a) noexcept
     {
-        _mm_storeu_si128(reinterpret_cast<__m128i*>(v), a);
+        _mm_storeu_si128(reinterpret_cast<type*>(v), a);
     }
     static void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE store_aligned(std::int32_t* const v, const type a) noexcept
     {
-        _mm_store_si128(reinterpret_cast<__m128i*>(v), a);
+        _mm_store_si128(reinterpret_cast<type*>(v), a);
     }
 
     static std::int32_t SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE extract(const type v, const std::size_t i) noexcept
     {
         alignas(16) std::int32_t tmp[width];
-        _mm_store_si128(reinterpret_cast<__m128i*>(tmp), v);
+        _mm_store_si128(reinterpret_cast<type*>(tmp), v);
         return tmp[i];
     }
 
@@ -192,11 +193,11 @@ struct sse42_backend<std::int32_t>
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE multiply(const type a, const type b) noexcept { return _mm_mullo_epi32(a, b); }
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE divide(const type a, const type b) noexcept
     {
-        __m128i r0{};
+        type r0{};
         r0 = _mm_insert_epi32(r0, _mm_extract_epi32(a, 0) / _mm_extract_epi32(b, 0), 0);
         r0 = _mm_insert_epi32(r0, _mm_extract_epi32(a, 1) / _mm_extract_epi32(b, 1), 1);
 
-        __m128i r1{};
+        type r1{};
         r1 = _mm_insert_epi32(r1, _mm_extract_epi32(a, 2) / _mm_extract_epi32(b, 2), 0);
         r1 = _mm_insert_epi32(r1, _mm_extract_epi32(a, 3) / _mm_extract_epi32(b, 3), 1);
 
@@ -204,21 +205,24 @@ struct sse42_backend<std::int32_t>
     }
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE negate(const type v) noexcept { return _mm_sub_epi32(_mm_setzero_si128(), v); }
 
-    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE equal(const type a, const type b) noexcept { return _mm_cmpeq_epi32(a, b); }
-    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE not_equal(const type a, const type b) noexcept
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE equal(const type a, const type b) noexcept { return _mm_cmpeq_epi32(a, b); }
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE not_equal(const type a, const type b) noexcept
     {
         return _mm_cmpeq_epi32(_mm_cmpeq_epi32(a, b), _mm_setzero_si128());
     }
-    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE less_than(const type a, const type b) noexcept { return _mm_cmplt_epi32(a, b); }
-    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE less_equal(const type a, const type b) noexcept
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE less_than(const type a, const type b) noexcept
+    {
+        return _mm_cmplt_epi32(a, b);
+    }
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE less_equal(const type a, const type b) noexcept
     {
         return _mm_cmpeq_epi32(_mm_cmpgt_epi32(a, b), _mm_setzero_si128());
     }
-    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE greater_than(const type a, const type b) noexcept
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE greater_than(const type a, const type b) noexcept
     {
         return _mm_cmpgt_epi32(a, b);
     }
-    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE greater_equal(const type a, const type b) noexcept
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE greater_equal(const type a, const type b) noexcept
     {
         return _mm_cmpeq_epi32(_mm_cmplt_epi32(a, b), _mm_setzero_si128());
     }
@@ -233,7 +237,7 @@ struct sse42_backend<std::int32_t>
         return converter<To, std::int32_t>::run(v);
     }
 
-    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE blend(const type a, const type b, const type c) noexcept
+    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE blend(const type a, const type b, const mask_type c) noexcept
     {
         return _mm_blendv_epi8(a, b, c);
     }
@@ -243,9 +247,10 @@ template <>
 struct sse42_backend<float>
 {
     using type = __m128;
+    using mask_type = sse42_mask_backend<float>::type;
     static constexpr std::size_t width{4};
 
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE broadcast(const float v) noexcept { return _mm_set1_ps(v); }
+    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE broadcast(const float v) noexcept { return _mm_set1_ps(v); }
 
     template <typename G>
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE init(G&& gen, const std::index_sequence<0U, 1U, 2U, 3U>) noexcept
@@ -256,48 +261,48 @@ struct sse42_backend<float>
                           gen(std::integral_constant<std::size_t, 0U>{}));
     }
 
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE load(const float* const v) noexcept { return _mm_loadu_ps(v); }
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE load_aligned(const float* const v) noexcept { return _mm_load_ps(v); }
-    static void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE store(float* const v, const __m128 a) noexcept { _mm_storeu_ps(v, a); }
-    static void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE store_aligned(float* const v, const __m128 a) noexcept { _mm_store_ps(v, a); }
+    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE load(const float* const v) noexcept { return _mm_loadu_ps(v); }
+    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE load_aligned(const float* const v) noexcept { return _mm_load_ps(v); }
+    static void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE store(float* const v, const type a) noexcept { _mm_storeu_ps(v, a); }
+    static void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE store_aligned(float* const v, const type a) noexcept { _mm_store_ps(v, a); }
 
-    static float SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE extract(const __m128 v, const std::size_t i) noexcept
+    static float SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE extract(const type v, const std::size_t i) noexcept
     {
         alignas(16) float tmp[width];
         _mm_store_ps(&tmp[0], v);
         return tmp[i];
     }
 
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE add(const __m128 a, const __m128 b) noexcept { return _mm_add_ps(a, b); }
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE subtract(const __m128 a, const __m128 b) noexcept { return _mm_sub_ps(a, b); }
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE multiply(const __m128 a, const __m128 b) noexcept { return _mm_mul_ps(a, b); }
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE divide(const __m128 a, const __m128 b) noexcept { return _mm_div_ps(a, b); }
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE negate(const __m128 v) noexcept { return _mm_xor_ps(v, _mm_set1_ps(-0.0F)); }
+    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE add(const type a, const type b) noexcept { return _mm_add_ps(a, b); }
+    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE subtract(const type a, const type b) noexcept { return _mm_sub_ps(a, b); }
+    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE multiply(const type a, const type b) noexcept { return _mm_mul_ps(a, b); }
+    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE divide(const type a, const type b) noexcept { return _mm_div_ps(a, b); }
+    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE negate(const type v) noexcept { return _mm_xor_ps(v, _mm_set1_ps(-0.0F)); }
 
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE equal(const __m128 a, const __m128 b) noexcept { return _mm_cmpeq_ps(a, b); }
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE not_equal(const __m128 a, const __m128 b) noexcept
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE equal(const type a, const type b) noexcept { return _mm_cmpeq_ps(a, b); }
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE not_equal(const type a, const type b) noexcept
     {
         return _mm_cmpneq_ps(a, b);
     }
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE less_than(const __m128 a, const __m128 b) noexcept
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE less_than(const type a, const type b) noexcept
     {
         return _mm_cmplt_ps(a, b);
     }
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE less_equal(const __m128 a, const __m128 b) noexcept
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE less_equal(const type a, const type b) noexcept
     {
         return _mm_cmple_ps(a, b);
     }
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE greater_than(const __m128 a, const __m128 b) noexcept
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE greater_than(const type a, const type b) noexcept
     {
         return _mm_cmpgt_ps(a, b);
     }
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE greater_equal(const __m128 a, const __m128 b) noexcept
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE greater_equal(const type a, const type b) noexcept
     {
         return _mm_cmpge_ps(a, b);
     }
 
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE min(const __m128 a, const __m128 b) noexcept { return _mm_min_ps(b, a); }
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE max(const __m128 a, const __m128 b) noexcept { return _mm_max_ps(b, a); }
+    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE min(const type a, const type b) noexcept { return _mm_min_ps(b, a); }
+    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE max(const type a, const type b) noexcept { return _mm_max_ps(b, a); }
 
     template <typename To>
     static __m128i SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE convert(const __m128 v) noexcept
@@ -306,9 +311,9 @@ struct sse42_backend<float>
         return converter<To, float>::run(v);
     }
 
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE is_nan(const __m128 v) noexcept { return _mm_cmpunord_ps(v, v); }
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE is_nan(const type v) noexcept { return _mm_cmpunord_ps(v, v); }
 
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE blend(const __m128 a, const __m128 b, const __m128 c) noexcept
+    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE blend(const type a, const type b, const mask_type c) noexcept
     {
         return _mm_blendv_ps(a, b, c);
     }
@@ -318,6 +323,7 @@ template <>
 struct sse42_backend<double>
 {
     using type = __m128d;
+    using mask_type = sse42_mask_backend<double>::type;
     static constexpr std::size_t width{2};
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE broadcast(const double v) noexcept { return _mm_set1_pd(v); }
@@ -347,19 +353,34 @@ struct sse42_backend<double>
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE divide(const type a, const type b) noexcept { return _mm_div_pd(a, b); }
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE negate(const type v) noexcept { return _mm_xor_pd(v, _mm_set1_pd(-0.0)); }
 
-    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE equal(const type a, const type b) noexcept { return _mm_cmpeq_pd(a, b); }
-    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE not_equal(const type a, const type b) noexcept { return _mm_cmpneq_pd(a, b); }
-    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE less_than(const type a, const type b) noexcept { return _mm_cmplt_pd(a, b); }
-    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE less_equal(const type a, const type b) noexcept { return _mm_cmple_pd(a, b); }
-    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE greater_than(const type a, const type b) noexcept { return _mm_cmpgt_pd(a, b); }
-    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE greater_equal(const type a, const type b) noexcept { return _mm_cmpge_pd(a, b); }
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE equal(const type a, const type b) noexcept { return _mm_cmpeq_pd(a, b); }
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE not_equal(const type a, const type b) noexcept
+    {
+        return _mm_cmpneq_pd(a, b);
+    }
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE less_than(const type a, const type b) noexcept
+    {
+        return _mm_cmplt_pd(a, b);
+    }
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE less_equal(const type a, const type b) noexcept
+    {
+        return _mm_cmple_pd(a, b);
+    }
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE greater_than(const type a, const type b) noexcept
+    {
+        return _mm_cmpgt_pd(a, b);
+    }
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE greater_equal(const type a, const type b) noexcept
+    {
+        return _mm_cmpge_pd(a, b);
+    }
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE min(const type a, const type b) noexcept { return _mm_min_pd(b, a); }
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE max(const type a, const type b) noexcept { return _mm_max_pd(b, a); }
 
-    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE is_nan(const type v) noexcept { return _mm_cmpunord_pd(v, v); }
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE is_nan(const type v) noexcept { return _mm_cmpunord_pd(v, v); }
 
-    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE blend(const type a, const type b, const type c) noexcept
+    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE blend(const type a, const type b, const mask_type c) noexcept
     {
         return _mm_blendv_pd(a, b, c);
     }
