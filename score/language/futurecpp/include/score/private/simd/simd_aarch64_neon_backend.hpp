@@ -19,6 +19,9 @@
 // usable on QNX for ASIL B software. covered by requirement broken_link_c/issue/4049789
 #define SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE __attribute__((__always_inline__))
 
+// Documentation of Arm Neon Intrinsics
+// https://arm-software.github.io/acle/neon_intrinsics/advsimd.html
+
 namespace score::cpp
 {
 namespace simd_abi

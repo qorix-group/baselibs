@@ -17,6 +17,9 @@
 // usable on QNX for ASIL B software. covered by requirement broken_link_c/issue/4049789
 #define SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE __attribute__((__always_inline__))
 
+// Documentation of Intel SSE4.2 Intrinsics
+// https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#techs=SSE_ALL
+
 namespace score::cpp
 {
 namespace simd_abi
