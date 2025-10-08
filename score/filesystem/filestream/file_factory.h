@@ -17,8 +17,18 @@
 
 #include "score/os/stat.h"
 
+#include <cstdint>
+#include <string>
+
 namespace score::filesystem
 {
+
+namespace details
+{
+std::string ComposeTempFilename(std::string original_filename,
+                                std::size_t threa_id_hash,
+                                std::uint64_t timestamp) noexcept;
+}
 
 /// @brief Production implementation of IFileFactory. Will create actual file streams.
 class FileFactory final : public IFileFactory

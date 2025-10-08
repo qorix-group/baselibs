@@ -26,9 +26,7 @@
 #include <cstdio>
 #include <iostream>
 
-namespace score
-{
-namespace filesystem
+namespace score::filesystem
 {
 namespace
 {
@@ -301,6 +299,11 @@ TEST_F(FileFactoryTestWithStatMock, AtomicUpdateFileHandleFailedOnChown)
     EXPECT_EQ(result.error(), filesystem::ErrorCode::kCouldNotSetPermissions);
 }
 
+TEST(FileFactoryHelpersTest, ComposeTempFilenameUsesAllParameters)
+{
+    const auto result = details::ComposeTempFilename("foo", 42, 32);
+    EXPECT_EQ(result, ".foo-000042-00000032");
+}
+
 }  // namespace
-}  // namespace filesystem
-}  // namespace score
+}  // namespace score::filesystem

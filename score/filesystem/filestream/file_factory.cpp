@@ -29,16 +29,33 @@
 
 namespace score::filesystem
 {
+namespace details
+{
+namespace
+{
+constexpr uint32_t kTIDDigitsLength = 6U;
+constexpr uint32_t kTIDDigitsCropMask = 1000000U;
+constexpr uint32_t kSystemTicksDigitsLength = 8U;
+constexpr uint32_t kSystemTicksDigitsCropMask = 100000000U;
+
+}  // namespace
+std::string ComposeTempFilename(std::string original_filename,
+                                std::size_t threa_id_hash,
+                                std::uint64_t timestamp) noexcept
+{
+    std::stringstream final_filename;
+    final_filename << "." << original_filename << "-" << std::setw(kTIDDigitsLength) << std::setfill('0')
+                   << (threa_id_hash % kTIDDigitsCropMask) << "-" << std::setw(kSystemTicksDigitsLength)
+                   << std::setfill('0') << (timestamp % kSystemTicksDigitsCropMask);
+    return final_filename.str();
+}
+}  // namespace details
 namespace
 {
 
 constexpr os::Stat::Mode kDefaultMode = os::Stat::Mode::kReadUser | os::Stat::Mode::kWriteUser |
                                         os::Stat::Mode::kReadGroup | os::Stat::Mode::kWriteGroup |
                                         os::Stat::Mode::kReadOthers | os::Stat::Mode::kWriteOthers;
-constexpr uint32_t kTIDDigitsLength = 6U;
-constexpr uint32_t kTIDDigitsCropMask = 1000000U;
-constexpr uint32_t kSystemTicksDigitsLength = 8U;
-constexpr uint32_t kSystemTicksDigitsCropMask = 100000000U;
 
 using OpenFlags = os::Fcntl::Open;
 
@@ -85,11 +102,7 @@ std::string ComposeTempFilename(std::string original_filename) noexcept
     const auto now = std::chrono::steady_clock::now();
     const auto duration = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch());
     const auto ticks = static_cast<uint64_t>(duration.count());
-    std::stringstream final_filename;
-    final_filename << "." << original_filename << "-" << std::setw(kTIDDigitsLength) << std::setfill('0')
-                   << (tid % kTIDDigitsCropMask) << "-" << std::setw(kSystemTicksDigitsLength) << std::setfill('0')
-                   << (ticks % kSystemTicksDigitsCropMask);
-    return final_filename.str();
+    return details::ComposeTempFilename(original_filename, tid, ticks);
 }
 
 // Supression: -1 is a value to indicate to the system that we don't intend to change the user id (Linux and QNX
