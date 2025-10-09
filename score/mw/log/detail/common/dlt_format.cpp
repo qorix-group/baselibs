@@ -12,7 +12,7 @@
  ********************************************************************************/
 #include "score/mw/log/detail/common/dlt_format.h"
 #include "score/bitmanipulation/bit_manipulation.h"
-#include "score/mw/log/detail/helper_functions.h"
+#include "score/mw/log/detail/common/helper_functions.h"
 
 #include "score/assert.hpp"
 #include "score/span.hpp"

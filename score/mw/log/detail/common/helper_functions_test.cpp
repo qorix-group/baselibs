@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/helper_functions.h"
+#include "score/mw/log/detail/common/helper_functions.h"
 #include <tuple>
 
 #include "gtest/gtest.h"

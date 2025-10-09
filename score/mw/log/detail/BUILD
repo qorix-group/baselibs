@@ -146,19 +146,6 @@ cc_library(
 )
 
 cc_library(
-    name = "helper_functions",
-    hdrs = [
-        "helper_functions.h",
-    ],
-    features = COMPILER_WARNING_FEATURES,
-    tags = ["FFI"],
-    visibility = [
-        "@score_baselibs//score/mw/log/detail:__pkg__",
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
-    ],
-)
-
-cc_library(
     name = "log_data_types",
     srcs = [
         "log_record.cpp",
@@ -176,8 +163,8 @@ cc_library(
         "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
     ],
     deps = [
-        ":helper_functions",
         ":log_entry",
+        "@score_baselibs//score/mw/log/detail/common:helper_functions",
     ],
 )
 
@@ -381,23 +368,6 @@ cc_test(
 )
 
 cc_test(
-    name = "helper_functions_test",
-    srcs = [
-        "helper_functions_test.cpp",
-    ],
-    data = [
-    ],
-    features = COMPILER_WARNING_FEATURES + [
-        "aborts_upon_exception",
-    ],
-    tags = ["unit"],
-    deps = [
-        "helper_functions",
-        "@googletest//:gtest_main",
-    ],
-)
-
-cc_test(
     name = "log_record_test",
     srcs = [
         "log_record_test.cpp",
@@ -525,7 +495,6 @@ cc_unit_test_suites_for_host_and_qnx(
         ":recorder_factory_stub_test",
         ":empty_recorder_test",
         ":error_test",
-        ":helper_functions_test",
         ":log_record_test",
         ":logging_identifier_test",
         ":slot_test",

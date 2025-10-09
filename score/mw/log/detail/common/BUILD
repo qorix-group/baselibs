@@ -110,6 +110,9 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
+    visibility = [
+        "@score_baselibs//score/mw/log/detail:__pkg__",
+    ],
 )
 
 cc_library(
@@ -148,12 +151,12 @@ cc_library(
         "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
     ],
     deps = [
+        ":helper_functions",
         "@score_baselibs//score/bitmanipulation",
         "@score_baselibs//score/language/futurecpp",
         "@score_baselibs//score/memory:string_literal",
         "@score_baselibs//score/mw/log:shared_types",
         "@score_baselibs//score/mw/log/detail:dlt_argument_counter",
-        "@score_baselibs//score/mw/log/detail:helper_functions",
         "@score_baselibs//score/mw/log/detail:integer_representation",
         "@score_baselibs//score/mw/log/detail:log_data_types",
     ],
@@ -269,6 +272,23 @@ cc_test(
     ],
 )
 
+cc_test(
+    name = "helper_functions_test",
+    srcs = [
+        "helper_functions_test.cpp",
+    ],
+    data = [
+    ],
+    features = COMPILER_WARNING_FEATURES + [
+        "aborts_upon_exception",
+    ],
+    tags = ["unit"],
+    deps = [
+        ":helper_functions",
+        "@googletest//:gtest_main",
+    ],
+)
+
 cc_unit_test_suites_for_host_and_qnx(
     name = "unit_tests",
     cc_unit_tests = [
@@ -277,6 +297,7 @@ cc_unit_test_suites_for_host_and_qnx(
         ":log_entry_deserialize_test",
         ":recorder_factory_test",
         ":statistics_reporter_test",
+        ":helper_functions_test",
     ],
     visibility = [
         "@score_baselibs//score/mw/log:__pkg__",
