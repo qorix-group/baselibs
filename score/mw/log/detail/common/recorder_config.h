@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef SCORE_MW_LOG_DETAIL_RECORDER_CONFIG_H
-#define SCORE_MW_LOG_DETAIL_RECORDER_CONFIG_H
+#ifndef SCORE_MW_LOG_DETAIL_COMMON_RECORDER_CONFIG_H
+#define SCORE_MW_LOG_DETAIL_COMMON_RECORDER_CONFIG_H
 
 #include "score/mw/log/detail/empty_recorder_factory.h"
 
@@ -100,4 +100,4 @@ using SystemRecorderFactoryType = EmptyRecorderFactory;
 }  // namespace mw
 }  // namespace score
 
-#endif  // SCORE_MW_LOG_DETAIL_RECORDER_CONFIG_H
+#endif  // SCORE_MW_LOG_DETAIL_COMMON_RECORDER_CONFIG_H

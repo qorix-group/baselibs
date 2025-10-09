@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef SCORE_MW_LOG_DETAIL_COMPOSITE_RECORDER_H
-#define SCORE_MW_LOG_DETAIL_COMPOSITE_RECORDER_H
+#ifndef SCORE_MW_LOG_DETAIL_COMMON_COMPOSITE_RECORDER_H
+#define SCORE_MW_LOG_DETAIL_COMMON_COMPOSITE_RECORDER_H
 
 #include "score/mw/log/recorder.h"
 
@@ -78,4 +78,4 @@ class CompositeRecorder final : public Recorder
 }  // namespace mw
 }  // namespace score
 
-#endif  // SCORE_MW_LOG_DETAIL_COMPOSITE_RECORDER_H
+#endif  // SCORE_MW_LOG_DETAIL_COMMON_COMPOSITE_RECORDER_H

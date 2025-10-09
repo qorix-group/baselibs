@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef SCORE_MW_LOG_DETAIL_DLT_FORMAT_H
-#define SCORE_MW_LOG_DETAIL_DLT_FORMAT_H
+#ifndef SCORE_MW_LOG_DETAIL_COMMON_DLT_FORMAT_H
+#define SCORE_MW_LOG_DETAIL_COMMON_DLT_FORMAT_H
 
 #include "score/mw/log/detail/add_argument_result.h"
 #include "score/mw/log/detail/integer_representation.h"
@@ -94,4 +94,4 @@ class DLTFormat
 }  // namespace mw
 }  // namespace score
 
-#endif  // SCORE_MW_LOG_DETAIL_DLT_FORMAT_H
+#endif  // SCORE_MW_LOG_DETAIL_COMMON_DLT_FORMAT_H

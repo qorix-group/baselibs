@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef SCORE_MW_LOG_DETAIL_LOG_ENTRY_DESERIALIZE_H
-#define SCORE_MW_LOG_DETAIL_LOG_ENTRY_DESERIALIZE_H
+#ifndef SCORE_MW_LOG_DETAIL_COMMON_LOG_ENTRY_DESERIALIZE_H
+#define SCORE_MW_LOG_DETAIL_COMMON_LOG_ENTRY_DESERIALIZE_H
 
 #include "score/mw/log/detail/logging_identifier.h"
 #include "score/mw/log/log_level.h"
@@ -105,4 +105,4 @@ STRUCT_TRACEABLE(LogEntryDeserializationReflection, app_id, ctx_id, serialized_v
 }  // namespace log
 }  // namespace mw
 }  // namespace score
-#endif  // SCORE_MW_LOG_DETAIL_LOG_ENTRY_DESERIALIZE_H
+#endif  // SCORE_MW_LOG_DETAIL_COMMON_LOG_ENTRY_DESERIALIZE_H
