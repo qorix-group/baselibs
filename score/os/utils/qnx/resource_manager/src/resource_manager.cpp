@@ -152,7 +152,7 @@ std::int32_t ResourceManager::InitializeDispatchInterface()
 /// @brief Register the configured I/O and connect handlers to QNX system
 void ResourceManager::InitializeHandlers()
 {
-    for (const std::shared_ptr<Resource> resource : resources_)
+    for (const auto& resource : resources_)
     {
         // Get the resource specific info
         const resmgr_io_funcs_t& io_funcs_ptr = resource->GetResourceIoFunctions();
@@ -175,7 +175,7 @@ void ResourceManager::InitializeHandlers()
 /// @brief Initialize the resource I/O attributes
 void ResourceManager::InitializeIoFuncParameters()
 {
-    for (const std::shared_ptr<Resource> resource : resources_)
+    for (const auto& resource : resources_)
     {
         const extended_dev_attr_t& device_attributes_ptr = resource->GetResourceAttributes();
         const std::uint32_t file_mode = resource->GetResourceFlags();
@@ -191,7 +191,7 @@ std::int32_t ResourceManager::AttachResource()
 {
     std::uint8_t resource_index = 0;
 
-    for (const std::shared_ptr<Resource> resource : resources_)
+    for (const auto& resource : resources_)
     {
         // Get the resource specific info
         const resmgr_io_funcs_t& io_funcs_ptr = resource->GetResourceIoFunctions();

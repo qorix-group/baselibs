@@ -180,6 +180,8 @@ void SlogBackend::FlushSlot(const SlotHandle& slot) noexcept
                                           app_id_length,
                                           app_id_.c_str(),
                                           ctx_id_length,
+                                          // above variable `ctx_id_length` contains corresponding length information
+                                          // NOLINTNEXTLINE(bugprone-suspicious-stringview-data-usage) justified above
                                           log_entry.ctx_id.GetStringView().data(),
                                           payload_length,
                                           log_entry.payload.data());
