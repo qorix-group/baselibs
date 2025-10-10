@@ -11,6 +11,7 @@
 #include <score/private/bit/bit_cast.hpp>
 #include <cstddef>
 #include <cstdint>
+#include <limits>
 #include <utility>
 
 // usable on QNX for ASIL B software. covered by requirement broken_link_c/issue/4987269
@@ -433,7 +434,9 @@ struct neon_backend<float>
 
     static mask_type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE is_nan(const type v) noexcept
     {
-        return vmvnq_u32(vceqq_f32(v, v));
+        const auto inf = score::cpp::bit_cast<std::uint32_t>(std::numeric_limits<float>::infinity());
+        const auto abs_v = vandq_u32(vreinterpretq_u32_f32(v), vdupq_n_u32(0x7FFF'FFFFU));
+        return vcltq_u32(vdupq_n_u32(inf), abs_v);
     }
 
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE blend(const type a,
@@ -544,8 +547,9 @@ struct neon_backend<double>
 
     static mask_type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE is_nan(const type v) noexcept
     {
-        return vbicq_u64(vdupq_n_u64(0xFFFF'FFFF'FFFF'FFFF), vceqq_f64(v, v));
-        ;
+        const auto inf = score::cpp::bit_cast<std::uint64_t>(std::numeric_limits<double>::infinity());
+        const auto abs_v = vandq_u64(vreinterpretq_u64_f64(v), vdupq_n_u64(0x7FFF'FFFF'FFFF'FFFFU));
+        return vcltq_u64(vdupq_n_u64(inf), abs_v);
     }
 
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE blend(const type a,

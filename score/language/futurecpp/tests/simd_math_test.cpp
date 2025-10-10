@@ -6,12 +6,32 @@
 #include <score/simd.hpp>
 #include <score/simd.hpp> // test include guard
 
+#include <array>
+#include <cfenv>
+#include <limits>
+
 #include <gtest/gtest.h>
 
 namespace score::cpp
 {
 namespace
 {
+
+template <typename T>
+class generator
+{
+public:
+    explicit generator(const std::array<T, simd<T>::size()> v) : v_{v} {}
+    template <std::size_t U>
+    constexpr T operator()(std::integral_constant<std::size_t, U>) const noexcept
+    {
+        return std::get<std::integral_constant<std::size_t, U>{}()>(v_);
+    }
+    constexpr T operator[](std::size_t i) const { return v_[i]; }
+
+private:
+    std::array<T, simd<T>::size()> v_;
+};
 
 template <typename T>
 class simd_math_fixture : public testing::Test
@@ -21,18 +41,81 @@ class simd_math_fixture : public testing::Test
 using ElementTypes = ::testing::Types<float, double>;
 TYPED_TEST_SUITE(simd_math_fixture, ElementTypes, /*unused*/);
 
-/// @testmethods TM_REQUIREMENT
-/// @requirement CB-#18397903
-TYPED_TEST(simd_math_fixture, IsNan)
+TYPED_TEST(simd_math_fixture, GivenNan_ExpectIsNanIsTrue)
 {
     const simd<TypeParam> nan{std::numeric_limits<TypeParam>::quiet_NaN()};
-    const simd<TypeParam> inf{std::numeric_limits<TypeParam>::infinity()};
-    const simd<TypeParam> one{static_cast<TypeParam>(1.0)};
-
-    EXPECT_TRUE(none_of(is_nan(one)));
-    EXPECT_TRUE(none_of(is_nan(inf)));
     EXPECT_TRUE(all_of(is_nan(nan)));
     EXPECT_TRUE(all_of(is_nan(-nan)));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18397903
+TYPED_TEST(simd_math_fixture, GivenNanInOneLane_ExpectIsNanIsTrueOnlyForThisLane)
+{
+    for (std::size_t i{0U}; i < simd<TypeParam>::size(); ++i)
+    {
+        std::array<TypeParam, simd<TypeParam>::size()> in{};
+        in[i] = std::numeric_limits<TypeParam>::quiet_NaN();
+
+        const simd<TypeParam> a{generator<TypeParam>{in}};
+        const auto r = is_nan(a);
+
+        for (std::size_t j{0U}; j < a.size(); ++j)
+        {
+            if (j == i)
+            {
+                EXPECT_TRUE(r[j]);
+            }
+            else
+            {
+                EXPECT_FALSE(r[j]);
+            }
+        }
+    }
+}
+
+TYPED_TEST(simd_math_fixture, GivenSignalingNan_ExpectNoFpuExceptionRaised)
+{
+#if !defined(__SSE4_2__) && !defined(__ARM_NEON)
+    GTEST_SKIP() << "not IEE754";
+#endif
+
+    EXPECT_EQ(std::feclearexcept(FE_ALL_EXCEPT), 0);
+
+    const simd<TypeParam> nan{std::numeric_limits<TypeParam>::signaling_NaN()};
+    EXPECT_TRUE(all_of(is_nan(nan)));
+    EXPECT_TRUE(all_of(is_nan(-nan)));
+
+    EXPECT_EQ(std::fetestexcept(FE_ALL_EXCEPT), 0);
+}
+
+TYPED_TEST(simd_math_fixture, GivenInf_ExpectIsNanIsFalse)
+{
+    const simd<TypeParam> inf{std::numeric_limits<TypeParam>::infinity()};
+    EXPECT_TRUE(none_of(is_nan(inf)));
+    EXPECT_TRUE(none_of(is_nan(-inf)));
+}
+
+TYPED_TEST(simd_math_fixture, GivenDenorm_ExpectIsNanIsFalse)
+{
+    const simd<TypeParam> denorm{std::numeric_limits<TypeParam>::denorm_min()};
+    EXPECT_TRUE(none_of(is_nan(denorm)));
+    EXPECT_TRUE(none_of(is_nan(-denorm)));
+}
+
+TYPED_TEST(simd_math_fixture, GivenMax_ExpectIsNanIsFalse)
+{
+    const simd<TypeParam> lowest{std::numeric_limits<TypeParam>::lowest()};
+    const simd<TypeParam> max{std::numeric_limits<TypeParam>::max()};
+    EXPECT_TRUE(none_of(is_nan(lowest)));
+    EXPECT_TRUE(none_of(is_nan(max)));
+}
+
+TYPED_TEST(simd_math_fixture, GivenMin_ExpectIsNanIsFalse)
+{
+    const simd<TypeParam> min{std::numeric_limits<TypeParam>::min()};
+    EXPECT_TRUE(none_of(is_nan(min)));
+    EXPECT_TRUE(none_of(is_nan(-min)));
 }
 
 } // namespace

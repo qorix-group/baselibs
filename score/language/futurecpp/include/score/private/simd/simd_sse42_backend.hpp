@@ -8,8 +8,10 @@
 #ifndef SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_SSE42_BACKEND_HPP
 #define SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_SSE42_BACKEND_HPP
 
+#include <score/private/bit/bit_cast.hpp>
 #include <cstddef>
 #include <cstdint>
+#include <limits>
 #include <utility>
 // usable on QNX for ASIL B software. covered by requirement broken_link_c/issue/4036540
 #include <nmmintrin.h> // only include SSE4.2.
@@ -291,7 +293,12 @@ struct sse42_backend<float>
 
     static __m128i SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE convert(const type v, std::int32_t) noexcept { return _mm_cvttps_epi32(v); }
 
-    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE is_nan(const type v) noexcept { return _mm_cmpunord_ps(v, v); }
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE is_nan(const type v) noexcept
+    {
+        const auto inf = score::cpp::bit_cast<std::int32_t>(std::numeric_limits<float>::infinity());
+        const auto abs_v = _mm_and_si128(_mm_castps_si128(v), _mm_set1_epi32(0x7FFF'FFFF));
+        return _mm_castsi128_ps(_mm_cmplt_epi32(_mm_set1_epi32(inf), abs_v));
+    }
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE blend(const type a, const type b, const mask_type c) noexcept
     {
@@ -358,7 +365,12 @@ struct sse42_backend<double>
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE min(const type a, const type b) noexcept { return _mm_min_pd(b, a); }
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE max(const type a, const type b) noexcept { return _mm_max_pd(b, a); }
 
-    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE is_nan(const type v) noexcept { return _mm_cmpunord_pd(v, v); }
+    static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE is_nan(const type v) noexcept
+    {
+        const auto inf = score::cpp::bit_cast<std::int64_t>(std::numeric_limits<double>::infinity());
+        const auto abs_v = _mm_and_si128(_mm_castpd_si128(v), _mm_set1_epi64x(0x7FFF'FFFF'FFFF'FFFF));
+        return _mm_castsi128_pd(_mm_cmpgt_epi64(abs_v, _mm_set1_epi64x(inf)));
+    }
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE blend(const type a, const type b, const mask_type c) noexcept
     {
