@@ -10,11 +10,11 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/file_logging/slot_drainer.h"
+#include "score/mw/log/detail/text_recorder/slot_drainer.h"
 
 #include "score/os/mocklib/unistdmock.h"
 #include "score/mw/log/detail/error.h"
-#include "score/mw/log/detail/file_logging/mock/message_builder_mock.h"
+#include "score/mw/log/detail/text_recorder/mock/message_builder_mock.h"
 
 #include "gtest/gtest.h"
 

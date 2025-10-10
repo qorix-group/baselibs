@@ -11,10 +11,10 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-#include "score/mw/log/detail/file_logging/text_message_builder.h"
+#include "score/mw/log/detail/text_recorder/text_message_builder.h"
 
 #include "score/os/utils/high_resolution_steady_clock.h"
-#include "score/mw/log/detail/file_logging/text_format.h"
+#include "score/mw/log/detail/text_recorder/text_format.h"
 
 #include <chrono>
 #include <iostream>

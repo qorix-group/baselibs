@@ -14,9 +14,9 @@
 #define MW_LOG_DETAILS_SLOT_DRAINER_H_
 
 #include "score/mw/log/detail/circular_allocator.h"
-#include "score/mw/log/detail/file_logging/imessage_builder.h"
-#include "score/mw/log/detail/file_logging/non_blocking_writer.h"
 #include "score/mw/log/detail/log_record.h"
+#include "score/mw/log/detail/text_recorder/imessage_builder.h"
+#include "score/mw/log/detail/text_recorder/non_blocking_writer.h"
 #include "score/mw/log/slot_handle.h"
 
 #include <score/circular_buffer.hpp>

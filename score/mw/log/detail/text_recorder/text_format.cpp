@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/file_logging/text_format.h"
+#include "score/mw/log/detail/text_recorder/text_format.h"
 
 #include <array>
 #include <iomanip>

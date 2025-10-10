@@ -67,7 +67,7 @@ cc_library(
     deps = [
         ":slog_backend",
         "@score_baselibs//score/mw/log/detail:log_recorder_factory",
-        "@score_baselibs//score/mw/log/detail/file_logging:text_recorder",
+        "@score_baselibs//score/mw/log/detail/text_recorder",
     ],
 )
 

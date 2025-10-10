@@ -68,7 +68,7 @@ cc_library(
         ],
     }) + select({
         "@score_baselibs//score/mw/log/detail/flags:config_KConsole_Logging": [
-            "@score_baselibs//score/mw/log/detail/file_logging:console_recorder_factory",
+            "@score_baselibs//score/mw/log/detail/text_recorder:console_recorder_factory",
         ],
         "//conditions:default": [],
     }) + select({

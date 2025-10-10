@@ -13,8 +13,8 @@
 #ifndef SCORE_MW_LOG_DETAIL_DLT_MESSAGE_BUILDER_H_
 #define SCORE_MW_LOG_DETAIL_DLT_MESSAGE_BUILDER_H_
 
-#include "score/mw/log/detail/file_logging/imessage_builder.h"
 #include "score/mw/log/detail/file_recorder/dlt_message_builder_types.h"
+#include "score/mw/log/detail/text_recorder/imessage_builder.h"
 
 #include <atomic>
 

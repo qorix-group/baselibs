@@ -10,13 +10,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef _MW_LOG_DETAIL_MOCK_MESSAGE_BUILDER_H_
-#define _MW_LOG_DETAIL_MOCK_MESSAGE_BUILDER_H_
-
-#include "score/mw/log/detail/file_logging/imessage_builder.h"
-#include "score/mw/log/detail/log_record.h"
-
-#include <gmock/gmock.h>
+#include "score/mw/log/detail/text_recorder/imessage_builder.h"
 
 namespace score
 {
@@ -26,23 +20,10 @@ namespace log
 {
 namespace detail
 {
-namespace mock
-{
 
-class MessageBuilderMock : public IMessageBuilder
-{
-  public:
-    MessageBuilderMock() = default;
-    ~MessageBuilderMock() = default;
+IMessageBuilder::~IMessageBuilder() noexcept = default;
 
-    MOCK_METHOD((score::cpp::optional<score::cpp::span<const std::uint8_t>>), GetNextSpan, (), (noexcept, override));
-    MOCK_METHOD(void, SetNextMessage, (LogRecord&), (noexcept, override));
-};
-
-}  // namespace mock
 }  // namespace detail
 }  // namespace log
 }  // namespace mw
 }  // namespace score
-
-#endif  //  _MW_LOG_DETAIL_MOCK_MESSAGE_BUILDER_H_

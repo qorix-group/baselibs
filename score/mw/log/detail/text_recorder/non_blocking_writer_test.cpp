@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/file_logging/non_blocking_writer.h"
+#include "score/mw/log/detail/text_recorder/non_blocking_writer.h"
 
 #include "score/os/mocklib/unistdmock.h"
 

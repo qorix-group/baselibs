@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/file_logging/text_message_builder.h"
+#include "score/mw/log/detail/text_recorder/text_message_builder.h"
 #include "score/mw/log/log_level.h"
 
 #include "gtest/gtest.h"

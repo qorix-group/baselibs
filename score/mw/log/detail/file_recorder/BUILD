@@ -31,8 +31,8 @@ cc_library(
         "@score_baselibs//score/mw/log/detail:backend_interface",
         "@score_baselibs//score/mw/log/detail/common:dlt_content_formatting",
         "@score_baselibs//score/mw/log/detail/common:statistics_reporter",
-        "@score_baselibs//score/mw/log/detail/file_logging:file_output_backend",
-        "@score_baselibs//score/mw/log/detail/file_logging:message_builder_interface",
+        "@score_baselibs//score/mw/log/detail/text_recorder:file_output_backend",
+        "@score_baselibs//score/mw/log/detail/text_recorder:message_builder_interface",
         "@score_baselibs//score/static_reflection_with_serialization/serialization",
     ],
 )
@@ -68,7 +68,7 @@ cc_library(
     deps = [
         "@googletest//:gtest",
         "@score_baselibs//score/language/futurecpp",
-        "@score_baselibs//score/mw/log/detail/file_logging:non_blocking_writer",
+        "@score_baselibs//score/mw/log/detail/text_recorder:non_blocking_writer",
     ],
 )
 
@@ -90,8 +90,8 @@ cc_test(
         ":file_recorder_factory",
         "@googletest//:gtest_main",
         "@score_baselibs//score/mw/log/detail:backend_mock",
-        "@score_baselibs//score/mw/log/detail/file_logging:file_output_backend",
-        "@score_baselibs//score/mw/log/detail/file_logging:file_output_backend_mocks",
+        "@score_baselibs//score/mw/log/detail/text_recorder:file_output_backend",
+        "@score_baselibs//score/mw/log/detail/text_recorder:file_output_backend_mocks",
         "@score_baselibs//score/mw/log/test/console_logging_environment",
         "@score_baselibs//score/os/mocklib:fcntl_mock",
     ],

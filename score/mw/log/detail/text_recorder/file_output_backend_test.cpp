@@ -10,12 +10,12 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/file_logging/file_output_backend.h"
+#include "score/mw/log/detail/text_recorder/file_output_backend.h"
 
 #include "score/mw/log/configuration/configuration.h"
 #include "score/mw/log/detail/circular_allocator.h"
 #include "score/mw/log/detail/error.h"
-#include "score/mw/log/detail/file_logging/mock/message_builder_mock.h"
+#include "score/mw/log/detail/text_recorder/mock/message_builder_mock.h"
 
 #include "score/os/mocklib/fcntl_mock.h"
 #include "score/os/mocklib/unistdmock.h"

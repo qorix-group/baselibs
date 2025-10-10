@@ -15,7 +15,7 @@
 
 #include "score/mw/log/detail/backend.h"
 #include "score/mw/log/detail/circular_allocator.h"
-#include "score/mw/log/detail/file_logging/slot_drainer.h"
+#include "score/mw/log/detail/text_recorder/slot_drainer.h"
 
 #include "score/os/fcntl_impl.h"
 

@@ -16,8 +16,8 @@
 #include "score/mw/log/detail/empty_recorder_factory.h"
 
 #if defined(KCONSOLE_LOGGING)
-#include "score/mw/log/detail/file_logging/console_recorder_factory.h"
-#include "score/mw/log/detail/file_logging/text_recorder.h"
+#include "score/mw/log/detail/text_recorder/console_recorder_factory.h"
+#include "score/mw/log/detail/text_recorder/text_recorder.h"
 #endif
 
 #if defined(KFILE_LOGGING)

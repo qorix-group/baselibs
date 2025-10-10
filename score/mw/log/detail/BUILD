@@ -64,9 +64,9 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
         "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
         "@score_baselibs//score/mw/log/detail/slog:__pkg__",
+        "@score_baselibs//score/mw/log/detail/text_recorder:__pkg__",
     ],
     deps = [
         ":log_data_types",
@@ -83,8 +83,8 @@ cc_library(
     visibility = [
         "@score_baselibs//score/mw/log:__pkg__",
         "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
         "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
+        "@score_baselibs//score/mw/log/detail/text_recorder:__pkg__",
     ],
     deps = [
         "@googletest//:gtest",
@@ -269,7 +269,7 @@ cc_library(
     deps = [
         ":empty_recorder",
         "@score_baselibs//score/mw/log:recorder_interface",
-        "@score_baselibs//score/mw/log/detail/file_logging:text_recorder",
+        "@score_baselibs//score/mw/log/detail/text_recorder",
     ],
     alwayslink = True,
 )
@@ -509,7 +509,7 @@ cc_unit_test_suites_for_host_and_qnx(
         ":verbose_payload_test",
     ],
     test_suites_from_sub_packages = [
-        "@score_baselibs//score/mw/log/detail/file_logging:unit_tests",
+        "@score_baselibs//score/mw/log/detail/text_recorder:unit_tests",
         #"@score_baselibs//score/mw/log/detail/data_router:unit_tests",
         "@score_baselibs//score/mw/log/detail/slog:unit_tests",
         #"@score_baselibs//score/mw/log/detail/wait_free_producer_queue:unit_tests",

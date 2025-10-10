@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/file_logging/slot_drainer.h"
+#include "score/mw/log/detail/text_recorder/slot_drainer.h"
 
 #include <algorithm>
 

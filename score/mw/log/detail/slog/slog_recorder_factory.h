@@ -13,9 +13,9 @@
 #ifndef SCORE_MW_LOG_DETAIL_SLOG_RECORDER_FACTORY_H
 #define SCORE_MW_LOG_DETAIL_SLOG_RECORDER_FACTORY_H
 
-#include "score/mw/log/detail/file_logging/text_recorder.h"
 #include "score/mw/log/detail/log_recorder_factory.hpp"
 #include "score/mw/log/detail/slog/slog_backend.h"
+#include "score/mw/log/detail/text_recorder/text_recorder.h"
 
 namespace score
 {

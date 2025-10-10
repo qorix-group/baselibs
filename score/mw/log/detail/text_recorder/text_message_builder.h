@@ -13,7 +13,7 @@
 #ifndef SCORE_MW_LOG_TEXT_MESSAGE_BUILDER_H_
 #define SCORE_MW_LOG_TEXT_MESSAGE_BUILDER_H_
 
-#include "score/mw/log/detail/file_logging/imessage_builder.h"
+#include "score/mw/log/detail/text_recorder/imessage_builder.h"
 
 namespace score
 {

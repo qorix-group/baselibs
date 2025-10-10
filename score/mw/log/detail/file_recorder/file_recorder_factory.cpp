@@ -12,8 +12,8 @@
  ********************************************************************************/
 #include "score/mw/log/detail/file_recorder/file_recorder_factory.h"
 #include "score/mw/log/detail/empty_recorder.h"
-#include "score/mw/log/detail/file_logging/file_output_backend.h"
 #include "score/mw/log/detail/file_recorder/dlt_message_builder.h"
+#include "score/mw/log/detail/text_recorder/file_output_backend.h"
 
 namespace score
 {
