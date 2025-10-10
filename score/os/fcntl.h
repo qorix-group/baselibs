@@ -25,9 +25,6 @@
 #include <cstdint>
 #include <memory>
 
-/* KW_SUPPRESS_START:AUTOSAR.BUILTIN_NUMERIC:Char is used in respect to the wrapped function's signature */
-/* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-
 namespace score
 {
 namespace os
@@ -142,8 +139,5 @@ struct enable_bitmask_operators<score::os::Fcntl::Operation>
 };
 
 }  // namespace score
-
-/* KW_SUPPRESS_END:AUTOSAR.BUILTIN_NUMERIC:Char is used in respect to the wrapped function's signature */
-/* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 
 #endif  // SCORE_LIB_OS_FCNTL_H

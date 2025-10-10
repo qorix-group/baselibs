@@ -26,6 +26,7 @@ cc_library(
         "include/serialization/visit_type_traits.h",
     ],
     features = _compiler_warning_features,
+    include_prefix = "static_reflection_with_serialization",
     strip_include_prefix = "include",
     tags = ["FFI"],
     visibility = [

@@ -20,9 +20,7 @@
 // switch statement.", respectively. This is false positive. The `return` statement in this case clause
 // unconditionally exits the function, making an additional `break` statement redundant.
 
-namespace score
-{
-namespace os
+namespace score::os
 {
 
 score::cpp::expected<std::int32_t, Error> internal::fcntl_helper::CommandToInteger(const Fcntl::Command command) noexcept
@@ -32,21 +30,15 @@ score::cpp::expected<std::int32_t, Error> internal::fcntl_helper::CommandToInteg
     {
         // coverity[autosar_cpp14_m6_4_5_violation] see Note 1
         case Fcntl::Command::kFileGetStatusFlags:
-            /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
             return F_GETFL;
-            /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         // coverity[autosar_cpp14_m6_4_5_violation] see Note 1
         case Fcntl::Command::kFileSetStatusFlags:
-            /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
             return F_SETFL;
-            /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         // coverity[autosar_cpp14_m6_4_5_violation] see Note 1
         case Fcntl::Command::kInvalid:
         // coverity[autosar_cpp14_m6_4_5_violation] see Note 1
         default:
-            /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Usage of EINVAL OS macro for Invalid argument */
             return score::cpp::make_unexpected(Error::createFromErrno(EINVAL));
-            /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Usage of EINVAL OS macro for Invalid argument */
     }
 }
 
@@ -57,62 +49,40 @@ Fcntl::Open internal::fcntl_helper::IntegerToOpenFlag(const std::int32_t flags) 
     Fcntl::Open fcntl_flags{};
 
     // POSIX specifies that at least one of the access modes must be specified
-    /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     if ((bitwise_flags & static_cast<std::uint32_t>(O_ACCMODE)) == static_cast<std::uint32_t>(O_WRONLY))
-    /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     {
-        /* KW_SUPPRESS_START:UNINIT.STACK.MUST: fcntl_flags enum variable is default initialized using {} */
         fcntl_flags = fcntl_flags | Fcntl::Open::kWriteOnly;
-        /* KW_SUPPRESS_END:UNINIT.STACK.MUST: fcntl_flags enum variable is default initialized using {} */
     }
-    /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     else if ((bitwise_flags & static_cast<std::uint32_t>(O_ACCMODE)) == static_cast<std::uint32_t>(O_RDWR))
-    /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     {
-        /* KW_SUPPRESS_START:UNINIT.STACK.MUST: fcntl_flags enum variable is default initialized using {} */
         fcntl_flags = fcntl_flags | Fcntl::Open::kReadWrite;
-        /* KW_SUPPRESS_END:UNINIT.STACK.MUST: fcntl_flags enum variable is default initialized using {} */
     }
     else
     {
-        /* KW_SUPPRESS_START:UNINIT.STACK.MUST: fcntl_flags enum variable is default initialized using {} */
         fcntl_flags = fcntl_flags | Fcntl::Open::kReadOnly;
-        /* KW_SUPPRESS_END:UNINIT.STACK.MUST: fcntl_flags enum variable is default initialized using {} */
     }
 
-    /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     if ((bitwise_flags & static_cast<std::uint32_t>(O_CREAT)) == static_cast<std::uint32_t>(O_CREAT))
-    /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     {
         fcntl_flags = fcntl_flags | Fcntl::Open::kCreate;
     }
-    /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     if ((bitwise_flags & static_cast<std::uint32_t>(O_CLOEXEC)) == static_cast<std::uint32_t>(O_CLOEXEC))
-    /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     {
         fcntl_flags = fcntl_flags | Fcntl::Open::kCloseOnExec;
     }
-    /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     if ((bitwise_flags & static_cast<std::uint32_t>(O_NONBLOCK)) == static_cast<std::uint32_t>(O_NONBLOCK))
-    /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     {
         fcntl_flags = fcntl_flags | Fcntl::Open::kNonBlocking;
     }
-    /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     if ((bitwise_flags & static_cast<std::uint32_t>(O_EXCL)) == static_cast<std::uint32_t>(O_EXCL))
-    /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     {
         fcntl_flags = fcntl_flags | Fcntl::Open::kExclusive;
     }
-    /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     if ((bitwise_flags & static_cast<std::uint32_t>(O_TRUNC)) == static_cast<std::uint32_t>(O_TRUNC))
-    /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     {
         fcntl_flags = fcntl_flags | Fcntl::Open::kTruncate;
     }
-    /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     if ((bitwise_flags & static_cast<std::uint32_t>(O_DIRECTORY)) == static_cast<std::uint32_t>(O_DIRECTORY))
-    /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     {
         fcntl_flags = fcntl_flags | Fcntl::Open::kDirectory;
     }
@@ -128,9 +98,7 @@ Fcntl::Open internal::fcntl_helper::IntegerToOpenFlag(const std::int32_t flags) 
 // coverity[autosar_cpp14_a16_0_1_violation]
 #ifdef __linux__
     // LCOV_EXCL_START: Linux specific code, scope of codecoverage is only for qnx code
-    /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     if ((bitwise_flags & static_cast<std::uint32_t>(O_SYNC)) == static_cast<std::uint32_t>(O_SYNC))
-    /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     {
         fcntl_flags = fcntl_flags | Fcntl::Open::kSynchronized;
     }
@@ -148,57 +116,39 @@ std::int32_t internal::fcntl_helper::OpenFlagToInteger(const Fcntl::Open flags) 
     std::uint32_t native_flags{0x0U};
     if (static_cast<utype_openflag>(flags & Fcntl::Open::kReadOnly) != 0U)
     {
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         native_flags |= static_cast<std::uint32_t>(O_RDONLY);
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     }
     if (static_cast<utype_openflag>(flags & Fcntl::Open::kWriteOnly) != 0U)
     {
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         native_flags |= static_cast<std::uint32_t>(O_WRONLY);
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     }
     if (static_cast<utype_openflag>(flags & Fcntl::Open::kReadWrite) != 0U)
     {
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         native_flags |= static_cast<std::uint32_t>(O_RDWR);
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     }
     if (static_cast<utype_openflag>(flags & Fcntl::Open::kCreate) != 0U)
     {
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         native_flags |= static_cast<std::uint32_t>(O_CREAT);
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     }
     if (static_cast<utype_openflag>(flags & Fcntl::Open::kCloseOnExec) != 0U)
     {
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         native_flags |= static_cast<std::uint32_t>(O_CLOEXEC);
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     }
     if (static_cast<utype_openflag>(flags & Fcntl::Open::kNonBlocking) != 0U)
     {
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         native_flags |= static_cast<std::uint32_t>(O_NONBLOCK);
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     }
     if (static_cast<utype_openflag>(flags & Fcntl::Open::kExclusive) != 0U)
     {
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         native_flags |= static_cast<std::uint32_t>(O_EXCL);
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     }
     if (static_cast<utype_openflag>(flags & Fcntl::Open::kTruncate) != 0U)
     {
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         native_flags |= static_cast<std::uint32_t>(O_TRUNC);
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     }
     if (static_cast<utype_openflag>(flags & Fcntl::Open::kDirectory) != 0U)
     {
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         native_flags |= static_cast<std::uint32_t>(O_DIRECTORY);
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     }
     if (static_cast<utype_openflag>(flags & Fcntl::Open::kAppend) != 0U)
     {
@@ -209,9 +159,7 @@ std::int32_t internal::fcntl_helper::OpenFlagToInteger(const Fcntl::Open flags) 
     // LCOV_EXCL_START: Linux specific code, scope of codecoverage is only for qnx code
     if (static_cast<utype_openflag>(flags & Fcntl::Open::kSynchronized) != 0U)
     {
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         native_flags |= static_cast<std::uint32_t>(O_SYNC);
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     }
     // LCOV_EXCL_STOP
 // coverity[autosar_cpp14_a16_0_1_violation], see above rationale
@@ -228,34 +176,25 @@ std::int32_t internal::fcntl_helper::OperationFlagToInteger(const Fcntl::Operati
     std::uint32_t native_flags{0x0U};
     if (static_cast<utype_operation>(op & Fcntl::Operation::kLockShared) != 0U)
     {
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         native_flags |= static_cast<std::uint32_t>(LOCK_SH);
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     }
     if (static_cast<utype_operation>(op & Fcntl::Operation::kLockExclusive) != 0U)
     {
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         native_flags |= static_cast<std::uint32_t>(LOCK_EX);
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     }
     if (static_cast<utype_operation>(op & Fcntl::Operation::kLockNB) != 0U)
     {
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         native_flags |= static_cast<std::uint32_t>(LOCK_NB);
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     }
     if (static_cast<utype_operation>(op & Fcntl::Operation::kUnLock) != 0U)
     {
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
         native_flags |= static_cast<std::uint32_t>(LOCK_UN);
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: Using library-defined macro to ensure correct operation */
     }
 
     return static_cast<std::int32_t>(native_flags);
 }
 
-}  // namespace os
-}  // namespace score
+}  // namespace score::os
 
 std::unique_ptr<score::os::Fcntl> score::os::Fcntl::Default() noexcept
 {
@@ -269,10 +208,7 @@ score::os::Fcntl& score::os::Fcntl::instance() noexcept
     return select_instance(instance);
 }
 
-/* KW_SUPPRESS_START:MISRA.PPARAM.NEEDS.CONST, MISRA.VAR.NEEDS.CONST: */
-/* score::cpp::pmr::make_unique takes non-const memory_resource */
 score::cpp::pmr::unique_ptr<score::os::Fcntl> score::os::Fcntl::Default(score::cpp::pmr::memory_resource* memory_resource) noexcept
-/* KW_SUPPRESS_END:MISRA.PPARAM.NEEDS.CONST, MISRA.VAR.NEEDS.CONST */
 {
     return score::cpp::pmr::make_unique<score::os::FcntlImpl>(memory_resource);
 }

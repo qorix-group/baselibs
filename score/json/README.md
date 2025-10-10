@@ -254,7 +254,7 @@ be moved-from where possible.
 The following example demonstrates the usage of the declarative JSON parser:
 
 ```c++
-#include <visitor/visit_as_struct.h>
+#include <static_reflection_with_serialization/visitor/visit_as_struct.h>
 
 #include "score/json/json_serializer.h"
 

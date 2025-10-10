@@ -13,24 +13,18 @@
 #include "score/os/fcntl_impl.h"
 #include <sys/file.h>
 
-namespace score
-{
-namespace os
+namespace score::os
 {
 
-/* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 score::cpp::expected_blank<Error> FcntlImpl::fcntl(const std::int32_t fd,
                                             const Command command,
                                             const Open flags) const noexcept
-/* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 {
     // Because the signature is very specific, we must also restrict the commands we support.
     // Based on the signature this is solely Command::kFileSetStatusFlags
     if (command != Command::kFileSetStatusFlags)
     {
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: OS library macros */
         return score::cpp::make_unexpected(Error::createFromErrno(EINVAL));
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: OS library macros */
     }
 
     // Manual code analysis:
@@ -53,17 +47,13 @@ score::cpp::expected_blank<Error> FcntlImpl::fcntl(const std::int32_t fd,
     return {};
 }
 
-/* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 score::cpp::expected<Fcntl::Open, Error> FcntlImpl::fcntl(const std::int32_t fd, const Fcntl::Command command) const noexcept
-/* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 {
     // Because the signature is very specific, we must also restrict the commands we support.
     // This signature supports more commands, but we restrict to the required commands for the current use cases.
     if (command != Command::kFileGetStatusFlags)
     {
-        /* KW_SUPPRESS_START:MISRA.USE.EXPANSION: OS library macros */
         return score::cpp::make_unexpected(Error::createFromErrno(EINVAL));
-        /* KW_SUPPRESS_END:MISRA.USE.EXPANSION: OS library macros */
     }
 
     // Manual code analysis:
@@ -85,9 +75,7 @@ score::cpp::expected<Fcntl::Open, Error> FcntlImpl::fcntl(const std::int32_t fd,
     return internal::fcntl_helper::IntegerToOpenFlag(ret);
 }
 
-/* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 score::cpp::expected<std::int32_t, Error> FcntlImpl::open(const char* const pathname, const Open flags) const noexcept
-/* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 {
     const std::int32_t native_flags{internal::fcntl_helper::OpenFlagToInteger(flags)};
     // Suppressed here because usage of this OSAL method is on banned list
@@ -100,11 +88,9 @@ score::cpp::expected<std::int32_t, Error> FcntlImpl::open(const char* const path
     return ret;
 }
 
-/* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 score::cpp::expected<std::int32_t, Error> FcntlImpl::open(const char* const pathname,
                                                    const Open flags,
                                                    const Stat::Mode mode) const noexcept
-/* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 {
     const std::int32_t native_flags{internal::fcntl_helper::OpenFlagToInteger(flags)};
     const std::uint32_t native_mode{ModeToInteger(mode)};
@@ -118,11 +104,9 @@ score::cpp::expected<std::int32_t, Error> FcntlImpl::open(const char* const path
     return ret;
 }
 
-score::cpp::expected_blank<Error>
-FcntlImpl::posix_fallocate(/* KW_SUPPRESS:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-                           const std::int32_t fd,
-                           const off_t offset,
-                           const off_t len) const noexcept
+score::cpp::expected_blank<Error> FcntlImpl::posix_fallocate(const std::int32_t fd,
+                                                      const off_t offset,
+                                                      const off_t len) const noexcept
 {
     const std::int32_t ret{::posix_fallocate(fd, offset, len)};
     if (ret != 0)
@@ -145,5 +129,4 @@ score::cpp::expected_blank<Error> FcntlImpl::flock(const std::int32_t filedes, c
     return {};
 }
 
-}  // namespace os
-}  // namespace score
+}  // namespace score::os

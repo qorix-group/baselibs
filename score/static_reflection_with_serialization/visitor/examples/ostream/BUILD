@@ -15,6 +15,7 @@ cc_library(
     hdrs = [
         "include/visitor/visit_ostream.h",
     ],
+    include_prefix = "static_reflection_with_serialization",
     strip_include_prefix = "include",
     tags = ["aas"],
     visibility = [

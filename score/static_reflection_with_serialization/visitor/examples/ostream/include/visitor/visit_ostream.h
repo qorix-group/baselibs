@@ -10,11 +10,11 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef COMMON_VISITOR_EXAMPLES_OSTREAM_INCLUDE_VISITOR_VISIT_OSTREAM_H
-#define COMMON_VISITOR_EXAMPLES_OSTREAM_INCLUDE_VISITOR_VISIT_OSTREAM_H
+#ifndef SCORE_COMMON_VISITOR_EXAMPLES_OSTREAM_INCLUDE_VISITOR_VISIT_OSTREAM_H
+#define SCORE_COMMON_VISITOR_EXAMPLES_OSTREAM_INCLUDE_VISITOR_VISIT_OSTREAM_H
 
-#include "visitor/visit.h"
-#include "visitor/visit_as_struct.h"
+#include "static_reflection_with_serialization/visitor/visit.h"
+#include "static_reflection_with_serialization/visitor/visit_as_struct.h"
 
 #include <ostream>
 #include <tuple>
@@ -150,4 +150,4 @@ inline void visit_as(ostream_visitor v, const T (&t)[N])
 
 }  // namespace score
 
-#endif  // COMMON_VISITOR_EXAMPLES_OSTREAM_INCLUDE_VISITOR_VISIT_OSTREAM_H
+#endif  // SCORE_COMMON_VISITOR_EXAMPLES_OSTREAM_INCLUDE_VISITOR_VISIT_OSTREAM_H

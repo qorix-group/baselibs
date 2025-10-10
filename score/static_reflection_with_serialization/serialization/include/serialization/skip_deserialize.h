@@ -10,10 +10,10 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_SKIP_DESERIALIZE_H
-#define COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_SKIP_DESERIALIZE_H
+#ifndef SCORE_COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_SKIP_DESERIALIZE_H
+#define SCORE_COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_SKIP_DESERIALIZE_H
 
-#include "serialization/for_logging.h"
+#include "static_reflection_with_serialization/serialization/for_logging.h"
 
 namespace score
 {
@@ -87,4 +87,4 @@ constexpr inline bool is_payload_compatible()
 }  // namespace common
 }  // namespace score
 
-#endif  // COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_SKIP_DESERIALIZE_H
+#endif  // SCORE_COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_SKIP_DESERIALIZE_H

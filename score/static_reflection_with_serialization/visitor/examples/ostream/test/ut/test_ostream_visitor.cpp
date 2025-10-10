@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "visitor/visit_ostream.h"
+#include "static_reflection_with_serialization/visitor/visit_ostream.h"
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"

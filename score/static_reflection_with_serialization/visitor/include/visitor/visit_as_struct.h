@@ -11,8 +11,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 // NOLINT(score-header-guard) False positive - Include guard provided
-#ifndef COMMON_VISITOR_INCLUDE_VISITOR_VISIT_AS_STRUCT_H
-#define COMMON_VISITOR_INCLUDE_VISITOR_VISIT_AS_STRUCT_H
+#ifndef SCORE_COMMON_VISITOR_INCLUDE_VISITOR_VISIT_AS_STRUCT_H
+#define SCORE_COMMON_VISITOR_INCLUDE_VISITOR_VISIT_AS_STRUCT_H
 
 #include <array>
 #include <cstdint>
@@ -6682,4 +6682,4 @@ using struct_visitable = decltype(get_struct_visitable<T>());
 // coverity[autosar_cpp14_m16_0_6_violation]
 #define STRUCT_VISITABLE(S, ...) DDAD_CONCATENATE(STRUCT_VISITABLE, COUNT_VARARGS(__VA_ARGS__))(S, __VA_ARGS__)
 
-#endif  // COMMON_VISITOR_INCLUDE_VISITOR_VISIT_AS_STRUCT_H
+#endif  // SCORE_COMMON_VISITOR_INCLUDE_VISITOR_VISIT_AS_STRUCT_H

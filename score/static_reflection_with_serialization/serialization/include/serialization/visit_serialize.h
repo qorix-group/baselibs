@@ -10,13 +10,13 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_VISIT_SERIALIZE_H
-#define COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_VISIT_SERIALIZE_H
+#ifndef SCORE_COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_VISIT_SERIALIZE_H
+#define SCORE_COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_VISIT_SERIALIZE_H
 
-#include "serialization/visit_size.h"
-#include "serialization/visit_type_traits.h"
-#include "visitor/visit.h"
-#include "visitor/visit_as_struct.h"
+#include "static_reflection_with_serialization/serialization/visit_size.h"
+#include "static_reflection_with_serialization/serialization/visit_type_traits.h"
+#include "static_reflection_with_serialization/visitor/visit.h"
+#include "static_reflection_with_serialization/visitor/visit_as_struct.h"
 
 #include "score/assert.hpp"
 #include "score/optional.hpp"
@@ -1608,4 +1608,4 @@ class serializer_t
 /* KW_SUPPRESS_END:MISRA.DEFINE.NOPARS: Correct usage of macro. */
 /* KW_SUPPRESS_END:MISRA.USE.DEFINE: intentionally. */
 
-#endif  // COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_VISIT_SERIALIZE_H
+#endif  // SCORE_COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_VISIT_SERIALIZE_H

@@ -15,11 +15,7 @@
 
 #include "score/os/fcntl.h"
 
-/* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-
-namespace score
-{
-namespace os
+namespace score::os
 {
 
 class FcntlImpl final : public Fcntl
@@ -45,9 +41,6 @@ class FcntlImpl final : public Fcntl
     score::cpp::expected_blank<Error> flock(const std::int32_t filedes, const Operation op) const noexcept override;
 };
 
-}  // namespace os
-}  // namespace score
-
-/* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
+}  // namespace score::os
 
 #endif  // SCORE_LIB_OS_FCNTL_IMPL_H

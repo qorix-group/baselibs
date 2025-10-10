@@ -10,12 +10,12 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_VISIT_SIZE_H
-#define COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_VISIT_SIZE_H
+#ifndef SCORE_COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_VISIT_SIZE_H
+#define SCORE_COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_VISIT_SIZE_H
 
-#include "serialization/visit_type_traits.h"
-#include "visitor/visit.h"
-#include "visitor/visit_as_struct.h"
+#include "static_reflection_with_serialization/serialization/visit_type_traits.h"
+#include "static_reflection_with_serialization/visitor/visit.h"
+#include "static_reflection_with_serialization/visitor/visit_as_struct.h"
 
 #include "score/assert.hpp"
 #include <cstdint>
@@ -293,4 +293,4 @@ class serialized_size_t
 }  // namespace common
 }  // namespace score
 
-#endif  // COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_VISIT_SIZE_H
+#endif  // SCORE_COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_VISIT_SIZE_H

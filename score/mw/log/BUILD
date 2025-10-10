@@ -73,9 +73,7 @@ alias(
     name = "backend_stub_testutil",
     testonly = True,
     actual = "@score-baselibs//score/mw/log/detail:recorder_factory_stub",
-    visibility = [
-        "//visibility:public",  # platform only
-    ],
+    visibility = ["//visibility:public"],
 )
 
 cc_library(

@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef COMMON_VISITOR_INCLUDE_VISITOR_VISIT_H
-#define COMMON_VISITOR_INCLUDE_VISITOR_VISIT_H
+#ifndef SCORE_COMMON_VISITOR_INCLUDE_VISITOR_VISIT_H
+#define SCORE_COMMON_VISITOR_INCLUDE_VISITOR_VISIT_H
 
 #include <utility>
 
@@ -67,4 +67,4 @@ inline auto visit(V&& v, T&& t)
 
 }  // namespace score
 
-#endif  // COMMON_VISITOR_INCLUDE_VISITOR_VISIT_H
+#endif  // SCORE_COMMON_VISITOR_INCLUDE_VISITOR_VISIT_H

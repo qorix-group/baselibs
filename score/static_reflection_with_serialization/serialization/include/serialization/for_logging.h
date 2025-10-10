@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_FOR_LOGGING_H
-#define COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_FOR_LOGGING_H
+#ifndef SCORE_COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_FOR_LOGGING_H
+#define SCORE_COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_FOR_LOGGING_H
 
 #include "visit_serialize.h"
 #include "visit_size.h"
@@ -197,4 +197,4 @@ inline auto logger_type_info()
 }  // namespace common
 }  // namespace score
 
-#endif  // COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_FOR_LOGGING_H
+#endif  // SCORE_COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_FOR_LOGGING_H

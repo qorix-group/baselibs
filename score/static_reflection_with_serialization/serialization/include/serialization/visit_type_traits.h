@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_VISIT_TYPE_TRAITS_H
-#define COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_VISIT_TYPE_TRAITS_H
+#ifndef SCORE_COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_VISIT_TYPE_TRAITS_H
+#define SCORE_COMMON_SERIALIZATION_INCLUDE_SERIALIZATION_VISIT_TYPE_TRAITS_H
 
 #include <string>
 #include <type_traits>
