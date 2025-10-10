@@ -32,9 +32,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log/detail:__pkg__",
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
-        "@score_baselibs//score/mw/log/detail/slog:__pkg__",
+        "//visibility:public",
     ],
     deps = [
         ":file_output_backend",
@@ -81,8 +79,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log/detail:__pkg__",
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
+        "//visibility:public",
     ],
     deps = [
         ":text_recorder",
@@ -98,9 +95,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log/detail:__pkg__",
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
+        "//visibility:public",
     ],
     deps = [
         "@score_baselibs//score/language/futurecpp",
@@ -206,7 +201,6 @@ cc_unit_test_suites_for_host_and_qnx(
     ],
     visibility = [
         "@score_baselibs//score/mw/log/detail:__pkg__",
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
     ],
 )
 

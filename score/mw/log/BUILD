@@ -107,15 +107,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//platform/aas/ara/log:__subpackages__",
-        "//platform/aas/test/pas/logging/utils:__pkg__",
-        "@score_baselibs//score/mw/log/configuration:__pkg__",
-        "@score_baselibs//score/mw/log/detail:__pkg__",
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
-        "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
-        "@score_baselibs//score/mw/log/detail/slog:__pkg__",
+        "//visibility:public",
     ],
     deps = [
         "@score_baselibs//score/language/futurecpp",
@@ -129,12 +121,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log/detail:__pkg__",
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
-        "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
-        "@score_baselibs//score/mw/log/detail/slog:__pkg__",
+        "//visibility:public",
     ],
     deps = [
         ":shared_types",

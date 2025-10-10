@@ -30,7 +30,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log:__subpackages__",
+        "//visibility:public",
     ],
     deps = [
         "@score_baselibs//score/mw/log:shared_types",
@@ -75,8 +75,7 @@ cc_library(
     ],
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log/detail:__pkg__",
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
+        "//visibility:public",
     ],
     deps = [
         ":configuration",
@@ -98,11 +97,7 @@ cc_library(
     hdrs = ["target_config_reader_mock.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "@score_baselibs//score/mw/log:__pkg__",
-        "@score_baselibs//score/mw/log/detail:__pkg__",
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
-        "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
-        "@score_baselibs//score/mw/log/detail/slog:__pkg__",
+        "//visibility:public",
     ],
     deps = [
         ":configuration_interface",
@@ -180,8 +175,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//platform/aas/pas/logging:__subpackages__",
-        "@score_baselibs//score/mw/log:__subpackages__",
+        "//visibility:public",
     ],
     deps = [
         "@score_baselibs//score/language/futurecpp",
@@ -205,8 +199,7 @@ cc_library(
     ],
     tags = ["FFI"],
     visibility = [
-        "//platform/aas/pas/logging:__subpackages__",
-        "@score_baselibs//score/mw/log:__subpackages__",
+        "//visibility:public",
     ],
     deps = [
         ":nvconfig_interface",

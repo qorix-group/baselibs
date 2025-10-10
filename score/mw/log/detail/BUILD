@@ -118,11 +118,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log:__pkg__",
-        "@score_baselibs//score/mw/log/configuration:__pkg__",
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
-        "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
+        "//visibility:public",
     ],
     deps = [
         "@score_baselibs//score/result",
@@ -152,9 +148,6 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "@score_baselibs//score/mw/log/detail:__pkg__",
-    ],
 )
 
 cc_library(
@@ -170,9 +163,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
-        "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
+        "//visibility:public",
     ],
     deps = [
         ":helper_functions",
@@ -190,9 +181,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
-        "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
+        "//visibility:public",
     ],
     deps = [
         "@score_baselibs//score/language/futurecpp",
@@ -207,8 +196,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
+        "//visibility:public",
     ],
 )
 
@@ -223,13 +211,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log:__pkg__",
-        "@score_baselibs//score/mw/log/configuration:__pkg__",
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
-        "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
-        "@score_baselibs//score/mw/log/detail/slog:__pkg__",
+        "//visibility:public",
     ],
     deps = [
         ":types_and_errors",
@@ -247,11 +229,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log:__pkg__",
-        "@score_baselibs//score/mw/log/detail/common:__pkg__",
-        "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
+        "//visibility:public",
     ],
     deps = [
         ":log_data_types",
