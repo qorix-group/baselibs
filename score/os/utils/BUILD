@@ -142,7 +142,7 @@ cc_library(
         "@score_baselibs//score/analysis/tracing/generic_trace_library/test/unit_test:__pkg__",
         "@score_baselibs//score/analysis/tracing/plugin/ipc_trace_plugin/ipc_trace/utils:__pkg__",
         "@score_baselibs//score/mw/log/detail/data_router/shared_memory:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
+        "@score_baselibs//score/mw/log/detail/text_recorder:__pkg__",
         "@score_baselibs//score/os/utils:__pkg__",
         "@score_baselibs//score/os/utils/test:__pkg__",
     ],
