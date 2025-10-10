@@ -41,6 +41,8 @@ class simd_math_fixture : public testing::Test
 using ElementTypes = ::testing::Types<float, double>;
 TYPED_TEST_SUITE(simd_math_fixture, ElementTypes, /*unused*/);
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18397903
 TYPED_TEST(simd_math_fixture, GivenNan_ExpectIsNanIsTrue)
 {
     const simd<TypeParam> nan{std::numeric_limits<TypeParam>::quiet_NaN()};
@@ -74,6 +76,8 @@ TYPED_TEST(simd_math_fixture, GivenNanInOneLane_ExpectIsNanIsTrueOnlyForThisLane
     }
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18397903
 TYPED_TEST(simd_math_fixture, GivenSignalingNan_ExpectNoFpuExceptionRaised)
 {
 #if !defined(__SSE4_2__) && !defined(__ARM_NEON)
@@ -89,6 +93,8 @@ TYPED_TEST(simd_math_fixture, GivenSignalingNan_ExpectNoFpuExceptionRaised)
     EXPECT_EQ(std::fetestexcept(FE_ALL_EXCEPT), 0);
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18397903
 TYPED_TEST(simd_math_fixture, GivenInf_ExpectIsNanIsFalse)
 {
     const simd<TypeParam> inf{std::numeric_limits<TypeParam>::infinity()};
@@ -96,6 +102,8 @@ TYPED_TEST(simd_math_fixture, GivenInf_ExpectIsNanIsFalse)
     EXPECT_TRUE(none_of(is_nan(-inf)));
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18397903
 TYPED_TEST(simd_math_fixture, GivenDenorm_ExpectIsNanIsFalse)
 {
     const simd<TypeParam> denorm{std::numeric_limits<TypeParam>::denorm_min()};
@@ -103,6 +111,8 @@ TYPED_TEST(simd_math_fixture, GivenDenorm_ExpectIsNanIsFalse)
     EXPECT_TRUE(none_of(is_nan(-denorm)));
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18397903
 TYPED_TEST(simd_math_fixture, GivenMax_ExpectIsNanIsFalse)
 {
     const simd<TypeParam> lowest{std::numeric_limits<TypeParam>::lowest()};
@@ -111,6 +121,8 @@ TYPED_TEST(simd_math_fixture, GivenMax_ExpectIsNanIsFalse)
     EXPECT_TRUE(none_of(is_nan(max)));
 }
 
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18397903
 TYPED_TEST(simd_math_fixture, GivenMin_ExpectIsNanIsFalse)
 {
     const simd<TypeParam> min{std::numeric_limits<TypeParam>::min()};
