@@ -104,7 +104,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     deps = [
         ":result",
-        "@rust_cxx//:cxx",
+        "@rust_cxx//:core",
     ],
 )
 
@@ -139,7 +139,7 @@ cc_library(
     deps = [
         ":result",
         ":result_cxx",
-        "@rust_cxx//:cxx",
+        "@rust_cxx//:core",
     ],
 )
 
