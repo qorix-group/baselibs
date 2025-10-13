@@ -72,6 +72,9 @@ mod ffi {
         fn as_char_slice(&self) -> &[std::ffi::c_char] {
             if self.storage.len > 0 {
                 assert!(!self.storage.data.is_null());
+                // SAFETY: We checked that data is not null and len > 0. Everything else is
+                // accounted by either the fact that this came across FFI (which is unsafe anyway)
+                // or by the careful caller of from_parts (which is unsafe as well).
                 unsafe { std::slice::from_raw_parts(self.storage.data, self.storage.len) }
             } else {
                 &[]
@@ -79,7 +82,18 @@ mod ffi {
         }
 
         fn as_byte_slice(&self) -> &[u8] {
-            unsafe { &*(self.as_char_slice() as *const [std::ffi::c_char] as *const [u8]) }
+            assert_eq!(std::mem::size_of::<std::ffi::c_char>(), std::mem::size_of::<u8>(),
+                       "c_char must be of the same size as u8.");
+            assert_eq!(std::mem::align_of::<std::ffi::c_char>(), std::mem::align_of::<u8>(),
+                       "c_char must be of the same alignment as u8.");
+            if self.storage.len > 0 {
+                assert!(!self.storage.data.is_null(), "String data is null but length is non-zero");
+                // SAFETY: This is safe because c_char is guaranteed to have the same size and
+                // alignment as u8.
+                unsafe { &*(self.as_char_slice() as *const [std::ffi::c_char] as *const [u8]) }
+            } else {
+                &[]
+            }
         }
 
         /// Create a string view from a pointer to C chars and a length.
@@ -185,6 +199,8 @@ mod ffi {
         /// # Panics
         /// This function will panic if the domain is null.
         pub fn domain(&self) -> &ErrorDomain {
+            // SAFETY: This is safe as long as the user of from_parts ensured that domain is valid,
+            // or because the Error was created in C++ and passed to Rust in a valid way.
             unsafe { self.domain.as_ref().expect("Domain not set") }
         }
     }
@@ -234,6 +250,13 @@ mod ffi {
     ///
     /// Discriminant = 255 is not used by C++ as it's used on the Rust side to mark a moved-from
     /// result
+    //
+    // # Safety
+    //
+    // The invariant of this class is that the discriminant always correctly indicates which of the
+    // union members is currently valid. If the discriminant is Stale, then neither member is valid.
+    // If this invariant is violated, the behavior is undefined and any safety argumentation become
+    // void.
     pub struct Expected<T, E> {
         storage: ExpectedStorage<T, E>,
         discriminant: ExpectedDiscriminant,
@@ -242,6 +265,8 @@ mod ffi {
     impl<T, E> Drop for Expected<T, E> {
         fn drop(&mut self) {
             match self.discriminant {
+                // SAFETY: We only manually drop if the discriminant indicates the existence of
+                // either a value or an error. In the stale case, nothing will be done.
                 ExpectedDiscriminant::Value =>
                     unsafe { std::mem::ManuallyDrop::drop(&mut self.storage.value) },
                 ExpectedDiscriminant::Error => unsafe { std::mem::ManuallyDrop::drop(&mut self.storage.error) },
@@ -279,6 +304,8 @@ mod ffi {
         /// Returns a reference to the contained value, or None if this instance contains an error.
         pub fn get_value(&self) -> Option<&T> {
             match self.discriminant {
+                // SAFETY: We only access the value part of the union if the discriminant indicates
+                // the presence of this value.
                 ExpectedDiscriminant::Value => Some(unsafe { self.storage.value.deref() }),
                 ExpectedDiscriminant::Error => None,
                 ExpectedDiscriminant::Stale => unreachable!("get_value called on a moved-from value"),
@@ -289,6 +316,8 @@ mod ffi {
         pub fn get_error(&self) -> Option<&E> {
             match self.discriminant {
                 ExpectedDiscriminant::Value => None,
+                // SAFETY: We only access the error part of the union if the discriminant indicates
+                // the presence of such an error.
                 ExpectedDiscriminant::Error => Some(unsafe { self.storage.error.deref() }),
                 ExpectedDiscriminant::Stale => unreachable!("get_error called on a moved-from value"),
             }
@@ -328,6 +357,7 @@ mod ffi {
             if self.discriminant != other.discriminant {
                 return false;
             }
+            // SAFETY: Since we only use the union members that fit the discriminant, this is safe.
             match self.discriminant {
                 ExpectedDiscriminant::Value => {
                     let self_value = unsafe { self.storage.value.deref() };
@@ -348,6 +378,7 @@ mod ffi {
 
     impl<T, E> From<Expected<T, E>> for std::result::Result<T, E> {
         fn from(mut expected: Expected<T, E>) -> Self {
+            // SAFETY: Since we only use the union members that fit the discriminant, this is safe.
             let result = match expected.discriminant {
                 ExpectedDiscriminant::Value => Ok(unsafe { ManuallyDrop::take(&mut expected.storage.value) }),
                 ExpectedDiscriminant::Error => Err(unsafe { ManuallyDrop::take(&mut expected.storage.error) }),
@@ -830,6 +861,8 @@ macro_rules! import_result {
             }
         }
 
+        // SAFETY: The calling macro forces the user to declare the type as unsafe. We pass this
+        // to the `ExternType` trait.
         unsafe impl cxx::ExternType for $name {
             type Id = cxx::type_id!($cxxid);
             type Kind = cxx::kind::Trivial;
@@ -881,7 +914,17 @@ macro_rules! import_result {
 ///         unsafe fn cpp_create_storage(file: &str) -> ResultUniquePtrStorage;
 ///     }
 /// }
-/// ```
+///```
+///
+/// # Safety
+///
+/// Declaring these types is inherently unsafe for multiple reasons:
+/// 1. The compiler cannot know whether the type on C++ side really is a Result<T> with the same T
+///    as on Rust side.
+/// 2. The compiler cannot verify whether the type is trivial and thus relocatable. While there is a
+///    check on C++ side inside the generated code, we cannot be sure whether this check gets
+///    overridden in an invalid way.
+///
 macro_rules! import_cpp_results {
     { $(unsafe type $name:ident = Result<$typename:ty> as $cxxid:tt;)* } => {
         $($crate::import_result!($name, $typename, $cxxid);)*
