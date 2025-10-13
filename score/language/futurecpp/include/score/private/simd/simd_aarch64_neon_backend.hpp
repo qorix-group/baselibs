@@ -78,7 +78,7 @@ struct neon_mask_backend<std::int32_t>
 
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE all_of(const type v) noexcept
     {
-        return vget_lane_u64(vreinterpret_u64_u16(vmovn_u32(v)), 0) == 0xFFFF'FFFF'FFFF'FFFF;
+        return vget_lane_u64(vreinterpret_u64_u16(vmovn_u32(v)), 0) == 0xFFFF'FFFF'FFFF'FFFFU;
     }
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE any_of(const type v) noexcept
     {
@@ -134,7 +134,7 @@ struct neon_mask_backend<float>
 
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE all_of(const type v) noexcept
     {
-        return vget_lane_u64(vreinterpret_u64_u16(vmovn_u32(v)), 0) == 0xFFFF'FFFF'FFFF'FFFF;
+        return vget_lane_u64(vreinterpret_u64_u16(vmovn_u32(v)), 0) == 0xFFFF'FFFF'FFFF'FFFFU;
     }
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE any_of(const type v) noexcept
     {
@@ -188,7 +188,7 @@ struct neon_mask_backend<double>
 
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE all_of(const type v) noexcept
     {
-        return vget_lane_u64(vreinterpret_u64_u32(vmovn_u64(v)), 0) == 0xFFFF'FFFF'FFFF'FFFF;
+        return vget_lane_u64(vreinterpret_u64_u32(vmovn_u64(v)), 0) == 0xFFFF'FFFF'FFFF'FFFFU;
     }
 
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE any_of(const type v) noexcept
