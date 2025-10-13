@@ -43,15 +43,15 @@ struct neon_mask_backend<std::int32_t>
         return vdupq_n_u32(-static_cast<std::uint32_t>(v));
     }
 
-    template <typename G>
+    template <typename G, std::size_t I0, std::size_t I1, std::size_t I2, std::size_t I3>
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE
-    init(G&& gen, const std::index_sequence<0U, 1U, 2U, 3U>) noexcept
+    init(G&& gen, const std::index_sequence<I0, I1, I2, I3>) noexcept
     {
         return type{
-            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, 0U>{})),
-            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, 1U>{})),
-            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, 2U>{})),
-            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, 3U>{})),
+            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I0>{})),
+            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I1>{})),
+            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I2>{})),
+            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I3>{})),
         };
     }
 
@@ -99,15 +99,15 @@ struct neon_mask_backend<float>
         return vdupq_n_u32(-static_cast<std::uint32_t>(v));
     }
 
-    template <typename G>
+    template <typename G, std::size_t I0, std::size_t I1, std::size_t I2, std::size_t I3>
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE
-    init(G&& gen, const std::index_sequence<0U, 1U, 2U, 3U>) noexcept
+    init(G&& gen, const std::index_sequence<I0, I1, I2, I3>) noexcept
     {
         return type{
-            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, 0U>{})),
-            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, 1U>{})),
-            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, 2U>{})),
-            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, 3U>{})),
+            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I0>{})),
+            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I1>{})),
+            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I2>{})),
+            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I3>{})),
         };
     }
 
@@ -155,13 +155,13 @@ struct neon_mask_backend<double>
         return vdupq_n_u64(-static_cast<std::uint64_t>(v));
     }
 
-    template <typename G>
+    template <typename G, std::size_t I0, std::size_t I1>
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE init(G&& gen,
-                                                                      const std::index_sequence<0U, 1U>) noexcept
+                                                                      const std::index_sequence<I0, I1>) noexcept
     {
         return type{
-            -static_cast<std::uint64_t>(gen(std::integral_constant<std::size_t, 0U>{})),
-            -static_cast<std::uint64_t>(gen(std::integral_constant<std::size_t, 1U>{})),
+            -static_cast<std::uint64_t>(gen(std::integral_constant<std::size_t, I0>{})),
+            -static_cast<std::uint64_t>(gen(std::integral_constant<std::size_t, I1>{})),
         };
     }
 
@@ -215,15 +215,15 @@ struct neon_backend<std::int32_t>
         return vdupq_n_s32(v);
     }
 
-    template <typename G>
+    template <typename G, std::size_t I0, std::size_t I1, std::size_t I2, std::size_t I3>
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE
-    init(G&& gen, const std::index_sequence<0U, 1U, 2U, 3U>) noexcept
+    init(G&& gen, const std::index_sequence<I0, I1, I2, I3>) noexcept
     {
         return type{
-            gen(std::integral_constant<std::size_t, 0U>{}),
-            gen(std::integral_constant<std::size_t, 1U>{}),
-            gen(std::integral_constant<std::size_t, 2U>{}),
-            gen(std::integral_constant<std::size_t, 3U>{}),
+            gen(std::integral_constant<std::size_t, I0>{}),
+            gen(std::integral_constant<std::size_t, I1>{}),
+            gen(std::integral_constant<std::size_t, I2>{}),
+            gen(std::integral_constant<std::size_t, I3>{}),
         };
     }
 
@@ -339,15 +339,15 @@ struct neon_backend<float>
         return vdupq_n_f32(v);
     }
 
-    template <typename G>
+    template <typename G, std::size_t I0, std::size_t I1, std::size_t I2, std::size_t I3>
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE
-    init(G&& gen, const std::index_sequence<0U, 1U, 2U, 3U>) noexcept
+    init(G&& gen, const std::index_sequence<I0, I1, I2, I3>) noexcept
     {
         return type{
-            gen(std::integral_constant<std::size_t, 0U>{}),
-            gen(std::integral_constant<std::size_t, 1U>{}),
-            gen(std::integral_constant<std::size_t, 2U>{}),
-            gen(std::integral_constant<std::size_t, 3U>{}),
+            gen(std::integral_constant<std::size_t, I0>{}),
+            gen(std::integral_constant<std::size_t, I1>{}),
+            gen(std::integral_constant<std::size_t, I2>{}),
+            gen(std::integral_constant<std::size_t, I3>{}),
         };
     }
 
@@ -459,13 +459,13 @@ struct neon_backend<double>
         return vdupq_n_f64(v);
     }
 
-    template <typename G>
+    template <typename G, std::size_t I0, std::size_t I1>
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE init(G&& gen,
-                                                                      const std::index_sequence<0U, 1U>) noexcept
+                                                                      const std::index_sequence<I0, I1>) noexcept
     {
         return type{
-            gen(std::integral_constant<std::size_t, 0U>{}),
-            gen(std::integral_constant<std::size_t, 1U>{}),
+            gen(std::integral_constant<std::size_t, I0>{}),
+            gen(std::integral_constant<std::size_t, I1>{}),
         };
     }
 
