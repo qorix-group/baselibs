@@ -138,6 +138,7 @@ cc_library(
         "include/score/private/numeric/lerp.hpp",
         "include/score/private/numeric/saturate_cast.hpp",
         "include/score/private/simd/simd_aarch64_neon_backend.hpp",
+        "include/score/private/simd/simd_abi.hpp",
         "include/score/private/simd/simd_data_types.hpp",
         "include/score/private/simd/simd_default_backend.hpp",
         "include/score/private/simd/simd_math.hpp",

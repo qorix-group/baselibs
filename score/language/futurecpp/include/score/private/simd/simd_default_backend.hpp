@@ -8,6 +8,7 @@
 #ifndef SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_DEFAULT_BACKEND_HPP
 #define SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_DEFAULT_BACKEND_HPP
 
+#include <score/private/simd/simd_abi.hpp>
 #include <score/float.hpp>
 #include <score/math.hpp>
 
@@ -333,59 +334,75 @@ struct simd_default_backend
     }
 };
 
-template <std::int32_t N>
-struct fixed_size
-{
-};
-
 template <typename T>
-struct compatible
-{
-};
-
-template <typename T, typename Abi>
-struct deduce;
-
+struct scalar;
 template <>
-struct deduce<std::int32_t, fixed_size<4>>
+struct scalar<std::int32_t>
 {
     using impl = simd_default_backend<std::int32_t, 4>;
     using mask_impl = simd_mask_default_backend<4>;
 };
 template <>
-struct deduce<float, fixed_size<4>>
+struct scalar<float>
 {
     using impl = simd_default_backend<float, 4>;
     using mask_impl = simd_mask_default_backend<4>;
 };
 template <>
-struct deduce<double, fixed_size<2>>
+struct scalar<double>
 {
     using impl = simd_default_backend<double, 2>;
     using mask_impl = simd_mask_default_backend<2>;
 };
 
 template <>
-struct deduce<std::int32_t, compatible<std::int32_t>>
+struct native<std::int32_t>
 {
-    using impl = simd_default_backend<std::int32_t, 4>;
-    using mask_impl = simd_mask_default_backend<4>;
+    using type = scalar<std::int32_t>;
 };
 template <>
-struct deduce<float, compatible<float>>
+struct native<float>
 {
-    using impl = simd_default_backend<float, 4>;
-    using mask_impl = simd_mask_default_backend<4>;
+    using type = scalar<float>;
 };
 template <>
-struct deduce<double, compatible<double>>
+struct native<double>
 {
-    using impl = simd_default_backend<double, 2>;
-    using mask_impl = simd_mask_default_backend<2>;
+    using type = scalar<double>;
+};
+
+template <>
+struct deduce_abi<std::int32_t, 4>
+{
+    using type = native<std::int32_t>::type;
+};
+template <>
+struct deduce_abi<float, 4>
+{
+    using type = native<float>::type;
+};
+template <>
+struct deduce_abi<double, 2>
+{
+    using type = native<double>::type;
 };
 
 } // namespace detail
 } // namespace simd_abi
+
+template <>
+struct is_abi_tag<simd_abi::detail::scalar<std::int32_t>> : std::true_type
+{
+};
+template <>
+struct is_abi_tag<simd_abi::detail::scalar<float>> : std::true_type
+{
+};
+template <>
+struct is_abi_tag<simd_abi::detail::scalar<double>> : std::true_type
+{
+};
+
 } // namespace score::cpp
 
 #endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_DEFAULT_BACKEND_HPP

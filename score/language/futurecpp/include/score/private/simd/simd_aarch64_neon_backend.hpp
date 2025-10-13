@@ -9,6 +9,7 @@
 #define SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_BACKEND_HPP
 
 #include <score/private/bit/bit_cast.hpp>
+#include <score/private/simd/simd_abi.hpp>
 #include <cstddef>
 #include <cstdint>
 #include <limits>
@@ -560,59 +561,76 @@ struct neon_backend<double>
     }
 };
 
-template <int N>
-struct fixed_size
-{
-};
-
 template <typename T>
-struct compatible
-{
-};
-
-template <typename T, typename Abi>
-struct deduce;
+struct neon;
 
 template <>
-struct deduce<std::int32_t, fixed_size<4>>
+struct neon<std::int32_t>
 {
     using impl = neon_backend<std::int32_t>;
     using mask_impl = neon_mask_backend<std::int32_t>;
 };
 template <>
-struct deduce<float, fixed_size<4>>
+struct neon<float>
 {
     using impl = neon_backend<float>;
     using mask_impl = neon_mask_backend<float>;
 };
 template <>
-struct deduce<double, fixed_size<2>>
+struct neon<double>
 {
     using impl = neon_backend<double>;
     using mask_impl = neon_mask_backend<double>;
 };
 
 template <>
-struct deduce<std::int32_t, compatible<std::int32_t>>
+struct native<std::int32_t>
 {
-    using impl = neon_backend<std::int32_t>;
-    using mask_impl = neon_mask_backend<std::int32_t>;
+    using type = neon<std::int32_t>;
 };
 template <>
-struct deduce<float, compatible<float>>
+struct native<float>
 {
-    using impl = neon_backend<float>;
-    using mask_impl = neon_mask_backend<float>;
+    using type = neon<float>;
 };
 template <>
-struct deduce<double, compatible<double>>
+struct native<double>
 {
-    using impl = neon_backend<double>;
-    using mask_impl = neon_mask_backend<double>;
+    using type = neon<double>;
+};
+
+template <>
+struct deduce_abi<std::int32_t, 4>
+{
+    using type = native<std::int32_t>::type;
+};
+template <>
+struct deduce_abi<float, 4>
+{
+    using type = native<float>::type;
+};
+template <>
+struct deduce_abi<double, 2>
+{
+    using type = native<double>::type;
 };
 
 } // namespace detail
 } // namespace simd_abi
+
+template <>
+struct is_abi_tag<simd_abi::detail::neon<std::int32_t>> : std::true_type
+{
+};
+template <>
+struct is_abi_tag<simd_abi::detail::neon<float>> : std::true_type
+{
+};
+template <>
+struct is_abi_tag<simd_abi::detail::neon<double>> : std::true_type
+{
+};
+
 } // namespace score::cpp
 
 #undef SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE
