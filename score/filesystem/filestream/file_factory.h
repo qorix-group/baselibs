@@ -74,7 +74,19 @@ Result<int> OpenFileHandle(const Path& path,
                            const std::ios_base::openmode mode,
                            const os::Stat::Mode create_mode) noexcept;
 
-Result<std::tuple<os::Stat::Mode, uid_t, gid_t>> GetIdentityMetadata(const Path& path);
+struct IdentityMetadata
+{
+    // Suppress "AUTOSAR C++14 M11-0-1" rule findings. This rule states: "Member data in non-POD class types shall
+    // be private.". We need these data elements to be organized into a coherent organized data structure.
+    // coverity[autosar_cpp14_m11_0_1_violation]
+    os::Stat::Mode mode{};
+    // coverity[autosar_cpp14_m11_0_1_violation]
+    uid_t uid{};
+    // coverity[autosar_cpp14_m11_0_1_violation]
+    gid_t gid{};
+};
+
+Result<IdentityMetadata> GetIdentityMetadata(const Path& path);
 
 }  // namespace details
 
