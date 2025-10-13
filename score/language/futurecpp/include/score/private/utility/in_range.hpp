@@ -48,4 +48,4 @@ constexpr bool in_range(U value) noexcept
 
 } // namespace score::cpp
 
-#endif
+#endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_UTILITY_IN_RANGE_HPP

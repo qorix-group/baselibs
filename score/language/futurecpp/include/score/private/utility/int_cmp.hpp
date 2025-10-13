@@ -262,4 +262,4 @@ constexpr bool cmp_greater_equal(T lhs, U rhs) noexcept
 
 } // namespace score::cpp
 
-#endif
+#endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_UTILITY_INT_CMP_HPP
