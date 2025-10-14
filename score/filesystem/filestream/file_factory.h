@@ -19,13 +19,14 @@
 
 #include <cstdint>
 #include <string>
+#include <string_view>
 
 namespace score::filesystem
 {
 
 namespace details
 {
-std::string ComposeTempFilename(std::string original_filename,
+std::string ComposeTempFilename(std::string_view original_filename,
                                 std::size_t threa_id_hash,
                                 std::uint64_t timestamp) noexcept;
 }

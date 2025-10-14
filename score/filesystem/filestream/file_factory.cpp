@@ -39,7 +39,7 @@ constexpr std::int32_t kSystemTicksDigitsLength = 8;
 constexpr std::uint32_t kSystemTicksDigitsCropMask = 100'000'000U;
 
 }  // namespace
-std::string ComposeTempFilename(std::string original_filename,
+std::string ComposeTempFilename(std::string_view original_filename,
                                 std::size_t threa_id_hash,
                                 std::uint64_t timestamp) noexcept
 {
