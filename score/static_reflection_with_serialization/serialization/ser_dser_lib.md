@@ -13,8 +13,8 @@ Good tutorials can be found on youtube:
 Serialization & deserialization is used by datarouter for both verbose and non-verbose DLT messages logging.
 The implementation resides under the following locations:
 
-* <broken_link_g/swh/static_reflection_with_serialization/tree/master/score/static_reflection_with_serialization/serialization>
-* <broken_link_g/swh/static_reflection_with_serialization/tree/master/score/static_reflection_with_serialization/visitor>
+* <broken_link_g/swh/safe-posix-platform/tree/master/score/static_reflection_with_serialization/serialization>
+* <broken_link_g/swh/safe-posix-platform/tree/master/score/static_reflection_with_serialization/visitor>
 
 C++ does not support reflection e.g. like Java or C#; so in order do inspect the content of a structure the
 implementation is using macros and templates to generate ser/dser code. Only simple linear memory types are
@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
     UptimeTick dataTo_Ser{};
     UptimeTick dataTo_DSer{};
     uint8_t buffer[1024];
-    auto retValSer = s::serialize(dataToSer_Dser, buffer, sizeof(buffer));
+    auto retValSer = s::serialize(dataTo_Ser, buffer, sizeof(buffer));
     auto retValDser = s::deserialize(buffer, sizeof(buffer, sizeof(buffer), UptimeTick dataTo_DSer);
     return 0;
 }
@@ -272,7 +272,7 @@ inline void deserialize(const vector_serialized<A, S>& s, deserializer_helper<A>
 
 To get non-verbose fibex data for the structures that are being serialized, please check this link:
 
-* [PSP Wiki Non-verbose Logging](broken_link_ac/wiki/display/PSP/Non-verbose+logging)
+* [Non-verbose Logging](broken_link_cf/spaces/psp/pages/334671839/Non-verbose+logging)
 
 ## Debugging
 
@@ -281,4 +281,4 @@ The metaprogramming compiler errors are hard to read so try to simplify the code
 If the ser/dser code breaks while running, the error message can be long (50k or more), first thing is do not panic :)
 Since ser/dser code is in heavy use, so the bugs are rare and usually they are due to incomplete data that cannot be deserialized.
 So, first thing is to check if the serialized data is big enough.
-There are checks now in the code that should minimize these issues.
+There are compile time assertions in place that should minimize these issues.
