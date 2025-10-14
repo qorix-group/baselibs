@@ -17,8 +17,6 @@
 
 #include <gtest/gtest.h>
 
-namespace score::cpp
-{
 namespace
 {
 
@@ -92,7 +90,7 @@ class simd_fixture : public testing::Test
 {
 };
 
-using ElementTypes = ::testing::Types<simd<std::int32_t>, simd<float>, simd<double>>;
+using ElementTypes = ::testing::Types<score::cpp::simd::vec<std::int32_t>, score::cpp::simd::vec<float>, score::cpp::simd::vec<double>>;
 TYPED_TEST_SUITE(simd_fixture, ElementTypes, /*unused*/);
 
 template <typename T>
@@ -100,7 +98,7 @@ class simd_floating_point_fixture : public testing::Test
 {
 };
 
-using ElementFloatingPointTypes = ::testing::Types<simd<float>, simd<double>>;
+using ElementFloatingPointTypes = ::testing::Types<score::cpp::simd::vec<float>, score::cpp::simd::vec<double>>;
 TYPED_TEST_SUITE(simd_floating_point_fixture, ElementFloatingPointTypes, /*unused*/);
 
 /// @testmethods TM_REQUIREMENT
@@ -162,7 +160,7 @@ TYPED_TEST(simd_fixture, InitializeByDefaultIsUnaligned)
 TYPED_TEST(simd_fixture, InitializeUnaligned)
 {
     const auto scalars{integer_sequence<TypeParam>()};
-    const TypeParam vector{scalars.data(), element_aligned};
+    const TypeParam vector{scalars.data(), score::cpp::simd::element_aligned};
 
     for (std::size_t i{0U}; i < vector.size(); ++i)
     {
@@ -175,7 +173,7 @@ TYPED_TEST(simd_fixture, InitializeUnaligned)
 TYPED_TEST(simd_fixture, InitializeAligned)
 {
     alignas(16) const auto scalars{integer_sequence<TypeParam>()};
-    const TypeParam vector{scalars.data(), vector_aligned};
+    const TypeParam vector{scalars.data(), score::cpp::simd::vector_aligned};
 
     for (std::size_t i{0U}; i < vector.size(); ++i)
     {
@@ -203,7 +201,7 @@ TYPED_TEST(simd_fixture, LoadUnaligned)
 {
     const auto scalars{integer_sequence<TypeParam>()};
     TypeParam vector;
-    vector.copy_from(scalars.data(), element_aligned);
+    vector.copy_from(scalars.data(), score::cpp::simd::element_aligned);
 
     for (std::size_t i{0U}; i < vector.size(); ++i)
     {
@@ -217,7 +215,7 @@ TYPED_TEST(simd_fixture, LoadAligned)
 {
     alignas(16) const auto scalars{integer_sequence<TypeParam>()};
     TypeParam vector;
-    vector.copy_from(scalars.data(), vector_aligned);
+    vector.copy_from(scalars.data(), score::cpp::simd::vector_aligned);
 
     for (std::size_t i{0U}; i < vector.size(); ++i)
     {
@@ -232,7 +230,7 @@ TYPED_TEST(simd_fixture, LoadAligned_WhenCopyingFromUnalignedMemory_ThenPrecondi
     TypeParam vector;
     alignas(16) const std::array<typename TypeParam::value_type, vector.size() + 1> scalars{};
 
-    SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(vector.copy_from(&scalars[1], vector_aligned));
+    SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(vector.copy_from(&scalars[1], score::cpp::simd::vector_aligned));
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -254,7 +252,7 @@ TYPED_TEST(simd_fixture, StoreUnaligned)
     const auto scalars{integer_sequence<TypeParam>()};
     const TypeParam vector{scalars.data()};
     std::array<typename TypeParam::value_type, vector.size()> result;
-    vector.copy_to(result.data(), element_aligned);
+    vector.copy_to(result.data(), score::cpp::simd::element_aligned);
 
     EXPECT_EQ(result, scalars);
 }
@@ -266,7 +264,7 @@ TYPED_TEST(simd_fixture, StoreAligned)
     const auto scalars{integer_sequence<TypeParam>()};
     const TypeParam vector{scalars.data()};
     alignas(16) std::array<typename TypeParam::value_type, vector.size()> result;
-    vector.copy_to(result.data(), vector_aligned);
+    vector.copy_to(result.data(), score::cpp::simd::vector_aligned);
 
     EXPECT_EQ(result, scalars);
 }
@@ -279,7 +277,7 @@ TYPED_TEST(simd_fixture, StoreAligned_WhenCopyingToUnalignedMemory_ThenPrecondit
     const TypeParam vector{value_type{23}};
     alignas(16) std::array<value_type, vector.size() + 1U> scalars;
 
-    SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(vector.copy_to(&scalars[1], vector_aligned));
+    SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(vector.copy_to(&scalars[1], score::cpp::simd::vector_aligned));
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -962,22 +960,19 @@ TYPED_TEST(simd_fixture, Clscore_future_cpp_WhenNoValidBoundaryInterval_ThenPrec
 /// @requirement CB-#18398050
 TEST(simd, ConvertFloatToInt)
 {
-    EXPECT_TRUE(all_of(simd<std::int32_t>{-23} == static_simd_cast<simd<std::int32_t>>(simd<float>{-23.75F})));
-    EXPECT_TRUE(all_of(simd<std::int32_t>{23} == static_simd_cast<simd<std::int32_t>>(simd<float>{23.0F})));
-    EXPECT_TRUE(all_of(simd<std::int32_t>{23} == static_simd_cast<simd<std::int32_t>>(simd<float>{23.75F})));
-    EXPECT_TRUE(all_of(simd<std::int32_t>{-23} == simd<std::int32_t>{simd<float>{-23.75F}}));
-    EXPECT_TRUE(all_of(simd<std::int32_t>{23} == simd<std::int32_t>{simd<float>{23.0F}}));
-    EXPECT_TRUE(all_of(simd<std::int32_t>{23} == simd<std::int32_t>{simd<float>{23.75F}}));
+    EXPECT_TRUE(
+        all_of(score::cpp::simd::vec<std::int32_t>{-23} == score::cpp::simd::vec<std::int32_t>{score::cpp::simd::vec<float>{-23.75F}}));
+    EXPECT_TRUE(all_of(score::cpp::simd::vec<std::int32_t>{23} == score::cpp::simd::vec<std::int32_t>{score::cpp::simd::vec<float>{23.0F}}));
+    EXPECT_TRUE(
+        all_of(score::cpp::simd::vec<std::int32_t>{23} == score::cpp::simd::vec<std::int32_t>{score::cpp::simd::vec<float>{23.75F}}));
 }
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
 TEST(simd, ConvertIntToFloat)
 {
-    EXPECT_TRUE(all_of(simd<float>{-23.0F} == static_simd_cast<simd<float>>(simd<std::int32_t>{-23})));
-    EXPECT_TRUE(all_of(simd<float>{23.0F} == static_simd_cast<simd<float>>(simd<std::int32_t>{23})));
-    EXPECT_TRUE(all_of(simd<float>{-23.0F} == simd<float>{simd<std::int32_t>{-23}}));
-    EXPECT_TRUE(all_of(simd<float>{23.0F} == simd<float>{simd<std::int32_t>{23}}));
+    EXPECT_TRUE(all_of(score::cpp::simd::vec<float>{-23.0F} == score::cpp::simd::vec<float>{score::cpp::simd::vec<std::int32_t>{-23}}));
+    EXPECT_TRUE(all_of(score::cpp::simd::vec<float>{23.0F} == score::cpp::simd::vec<float>{score::cpp::simd::vec<std::int32_t>{23}}));
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -1076,4 +1071,3 @@ TYPED_TEST(simd_fixture, WhereAssignmentDivide)
 }
 
 } // namespace
-} // namespace score::cpp

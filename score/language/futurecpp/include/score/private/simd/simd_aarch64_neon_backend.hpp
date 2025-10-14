@@ -26,8 +26,9 @@
 
 namespace score::cpp
 {
-namespace simd_abi
+namespace simd
 {
+
 namespace detail
 {
 
@@ -562,75 +563,75 @@ struct neon_backend<double>
 };
 
 template <typename T>
-struct neon;
+struct neon_abi;
 
 template <>
-struct neon<std::int32_t>
+struct neon_abi<std::int32_t>
 {
     using impl = neon_backend<std::int32_t>;
     using mask_impl = neon_mask_backend<std::int32_t>;
 };
 template <>
-struct neon<float>
+struct neon_abi<float>
 {
     using impl = neon_backend<float>;
     using mask_impl = neon_mask_backend<float>;
 };
 template <>
-struct neon<double>
+struct neon_abi<double>
 {
     using impl = neon_backend<double>;
     using mask_impl = neon_mask_backend<double>;
 };
 
 template <>
-struct native<std::int32_t>
+struct native_abi<std::int32_t>
 {
-    using type = neon<std::int32_t>;
+    using type = neon_abi<std::int32_t>;
 };
 template <>
-struct native<float>
+struct native_abi<float>
 {
-    using type = neon<float>;
+    using type = neon_abi<float>;
 };
 template <>
-struct native<double>
+struct native_abi<double>
 {
-    using type = neon<double>;
+    using type = neon_abi<double>;
 };
 
 template <>
 struct deduce_abi<std::int32_t, 4>
 {
-    using type = native<std::int32_t>::type;
+    using type = native_abi<std::int32_t>::type;
 };
 template <>
 struct deduce_abi<float, 4>
 {
-    using type = native<float>::type;
+    using type = native_abi<float>::type;
 };
 template <>
 struct deduce_abi<double, 2>
 {
-    using type = native<double>::type;
+    using type = native_abi<double>::type;
 };
 
 } // namespace detail
-} // namespace simd_abi
 
 template <>
-struct is_abi_tag<simd_abi::detail::neon<std::int32_t>> : std::true_type
+struct is_abi_tag<detail::neon_abi<std::int32_t>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<simd_abi::detail::neon<float>> : std::true_type
+struct is_abi_tag<detail::neon_abi<float>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<simd_abi::detail::neon<double>> : std::true_type
+struct is_abi_tag<detail::neon_abi<double>> : std::true_type
 {
 };
 
+} // namespace simd
 } // namespace score::cpp
 
 #undef SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_AARCH64_NEON_ALWAYS_INLINE

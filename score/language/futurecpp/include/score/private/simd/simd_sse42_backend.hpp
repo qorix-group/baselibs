@@ -25,8 +25,9 @@
 
 namespace score::cpp
 {
-namespace simd_abi
+namespace simd
 {
+
 namespace detail
 {
 
@@ -380,75 +381,75 @@ struct sse42_backend<double>
 };
 
 template <typename T>
-struct sse42;
+struct sse42_abi;
 
 template <>
-struct sse42<std::int32_t>
+struct sse42_abi<std::int32_t>
 {
     using impl = sse42_backend<std::int32_t>;
     using mask_impl = sse42_mask_backend<std::int32_t>;
 };
 template <>
-struct sse42<float>
+struct sse42_abi<float>
 {
     using impl = sse42_backend<float>;
     using mask_impl = sse42_mask_backend<float>;
 };
 template <>
-struct sse42<double>
+struct sse42_abi<double>
 {
     using impl = sse42_backend<double>;
     using mask_impl = sse42_mask_backend<double>;
 };
 
 template <>
-struct native<std::int32_t>
+struct native_abi<std::int32_t>
 {
-    using type = sse42<std::int32_t>;
+    using type = sse42_abi<std::int32_t>;
 };
 template <>
-struct native<float>
+struct native_abi<float>
 {
-    using type = sse42<float>;
+    using type = sse42_abi<float>;
 };
 template <>
-struct native<double>
+struct native_abi<double>
 {
-    using type = sse42<double>;
+    using type = sse42_abi<double>;
 };
 
 template <>
 struct deduce_abi<std::int32_t, 4>
 {
-    using type = native<std::int32_t>::type;
+    using type = native_abi<std::int32_t>::type;
 };
 template <>
 struct deduce_abi<float, 4>
 {
-    using type = native<float>::type;
+    using type = native_abi<float>::type;
 };
 template <>
 struct deduce_abi<double, 2>
 {
-    using type = native<double>::type;
+    using type = native_abi<double>::type;
 };
 
 } // namespace detail
-} // namespace simd_abi
 
 template <>
-struct is_abi_tag<simd_abi::detail::sse42<std::int32_t>> : std::true_type
+struct is_abi_tag<detail::sse42_abi<std::int32_t>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<simd_abi::detail::sse42<float>> : std::true_type
+struct is_abi_tag<detail::sse42_abi<float>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<simd_abi::detail::sse42<double>> : std::true_type
+struct is_abi_tag<detail::sse42_abi<double>> : std::true_type
 {
 };
 
+} // namespace simd
 } // namespace score::cpp
 
 #undef SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE

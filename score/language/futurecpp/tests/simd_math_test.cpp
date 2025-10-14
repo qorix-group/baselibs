@@ -12,8 +12,6 @@
 
 #include <gtest/gtest.h>
 
-namespace score::cpp
-{
 namespace
 {
 
@@ -42,7 +40,7 @@ class simd_math_fixture : public testing::Test
 {
 };
 
-using ElementTypes = ::testing::Types<simd<float>, simd<double>>;
+using ElementTypes = ::testing::Types<score::cpp::simd::vec<float>, score::cpp::simd::vec<double>>;
 TYPED_TEST_SUITE(simd_math_fixture, ElementTypes, /*unused*/);
 
 /// @testmethods TM_REQUIREMENT
@@ -142,4 +140,3 @@ TYPED_TEST(simd_math_fixture, GivenMin_ExpectIsNanIsFalse)
 }
 
 } // namespace
-} // namespace score::cpp

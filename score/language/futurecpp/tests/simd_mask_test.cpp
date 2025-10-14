@@ -12,8 +12,6 @@
 
 #include <gtest/gtest.h>
 
-namespace score::cpp
-{
 namespace
 {
 
@@ -42,7 +40,7 @@ class simd_mask_fixture : public testing::Test
 {
 };
 
-using ElementTypes = ::testing::Types<simd_mask<std::int32_t>, simd_mask<float>, simd_mask<double>>;
+using ElementTypes = ::testing::Types<score::cpp::simd::mask<std::int32_t>, score::cpp::simd::mask<float>, score::cpp::simd::mask<double>>;
 TYPED_TEST_SUITE(simd_mask_fixture, ElementTypes, /*unused*/);
 
 /// @testmethods TM_REQUIREMENT
@@ -260,4 +258,3 @@ TYPED_TEST(simd_mask_fixture, NoneOf)
 }
 
 } // namespace
-} // namespace score::cpp

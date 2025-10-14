@@ -16,13 +16,13 @@
 
 namespace score::cpp
 {
-namespace simd_abi
+namespace simd
 {
 
 namespace detail
 {
 template <typename T>
-struct native;
+struct native_abi;
 
 template <typename T, std::size_t N>
 struct deduce_abi;
@@ -34,13 +34,11 @@ struct deduce_abi;
 /// [parallel] 9.3 ff
 /// \{
 template <typename T>
-using native = typename detail::native<T>::type;
+using native_abi = typename detail::native_abi<T>::type;
 
 template <typename T, std::size_t N>
 using deduce_abi = typename detail::deduce_abi<T, N>::type;
 /// \}
-
-} // namespace simd_abi
 
 /// \brief If `T` is a standard or extended ABI tag returns `true_type`, and `false_type` otherwise.
 ///
@@ -54,6 +52,7 @@ template <typename T>
 constexpr bool is_abi_tag_v{is_abi_tag<T>::value};
 /// \}
 
+} // namespace simd
 } // namespace score::cpp
 
 #endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_ABI_HPP

@@ -20,8 +20,9 @@
 
 namespace score::cpp
 {
-namespace simd_abi
+namespace simd
 {
+
 namespace detail
 {
 
@@ -335,74 +336,75 @@ struct simd_default_backend
 };
 
 template <typename T>
-struct scalar;
+struct scalar_abi;
+
 template <>
-struct scalar<std::int32_t>
+struct scalar_abi<std::int32_t>
 {
     using impl = simd_default_backend<std::int32_t, 4>;
     using mask_impl = simd_mask_default_backend<4>;
 };
 template <>
-struct scalar<float>
+struct scalar_abi<float>
 {
     using impl = simd_default_backend<float, 4>;
     using mask_impl = simd_mask_default_backend<4>;
 };
 template <>
-struct scalar<double>
+struct scalar_abi<double>
 {
     using impl = simd_default_backend<double, 2>;
     using mask_impl = simd_mask_default_backend<2>;
 };
 
 template <>
-struct native<std::int32_t>
+struct native_abi<std::int32_t>
 {
-    using type = scalar<std::int32_t>;
+    using type = scalar_abi<std::int32_t>;
 };
 template <>
-struct native<float>
+struct native_abi<float>
 {
-    using type = scalar<float>;
+    using type = scalar_abi<float>;
 };
 template <>
-struct native<double>
+struct native_abi<double>
 {
-    using type = scalar<double>;
+    using type = scalar_abi<double>;
 };
 
 template <>
 struct deduce_abi<std::int32_t, 4>
 {
-    using type = native<std::int32_t>::type;
+    using type = native_abi<std::int32_t>::type;
 };
 template <>
 struct deduce_abi<float, 4>
 {
-    using type = native<float>::type;
+    using type = native_abi<float>::type;
 };
 template <>
 struct deduce_abi<double, 2>
 {
-    using type = native<double>::type;
+    using type = native_abi<double>::type;
 };
 
 } // namespace detail
-} // namespace simd_abi
 
 template <>
-struct is_abi_tag<simd_abi::detail::scalar<std::int32_t>> : std::true_type
+struct is_abi_tag<detail::scalar_abi<std::int32_t>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<simd_abi::detail::scalar<float>> : std::true_type
+struct is_abi_tag<detail::scalar_abi<float>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<simd_abi::detail::scalar<double>> : std::true_type
+struct is_abi_tag<detail::scalar_abi<double>> : std::true_type
 {
 };
 
+} // namespace simd
 } // namespace score::cpp
 
 #endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_DEFAULT_BACKEND_HPP

@@ -27,12 +27,14 @@
 
 namespace score::cpp
 {
+namespace simd
+{
 
 template <typename T, typename Abi>
-class simd;
+class basic_vec;
 
 template <typename T, typename Abi>
-class simd_mask;
+class basic_mask;
 
 /// \brief If `T` is a specialization of the `simd` class template returns `true_type`, and `false_type` otherwise.
 ///
@@ -43,7 +45,7 @@ struct is_simd : std::false_type
 {
 };
 template <typename T, typename Abi>
-struct is_simd<simd<T, Abi>> : is_abi_tag<Abi>
+struct is_simd<basic_vec<T, Abi>> : is_abi_tag<Abi>
 {
 };
 template <typename T>
@@ -59,7 +61,7 @@ struct is_simd_mask : std::false_type
 {
 };
 template <typename T, typename Abi>
-struct is_simd_mask<simd_mask<T, Abi>> : is_abi_tag<Abi>
+struct is_simd_mask<basic_mask<T, Abi>> : is_abi_tag<Abi>
 {
 };
 template <typename T>
@@ -141,15 +143,15 @@ constexpr std::size_t memory_alignment_v{memory_alignment<T, U>::value};
 /// is an element-wise operation that applies a binary operation to corresponding elements of two data-parallel objects.
 ///
 /// [parallel] 9.8 ff
-template <typename T, typename Abi = typename simd_abi::deduce_abi<T, simd_size_v<T, simd_abi::native<T>>>>
-class simd_mask
+template <typename T, typename Abi = native_abi<T>>
+class basic_mask
 {
     static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value, "T not a data-parallel type");
     static_assert(is_abi_tag_v<Abi>, "Abi must be an abi tag");
-    static_assert(is_simd_mask_v<simd_mask>, "simd_mask<T, Abi> not a valid mask type");
+    static_assert(is_simd_mask_v<basic_mask>, "simd_mask<T, Abi> not a valid mask type");
 
     template <typename U>
-    using is_forwarding_ref_overload = std::is_same<simd_mask, score::cpp::remove_cvref_t<U>>;
+    using is_forwarding_ref_overload = std::is_same<basic_mask, score::cpp::remove_cvref_t<U>>;
 
     template <typename G, typename std::size_t... Is>
     static constexpr bool is_generator_invocable(std::index_sequence<Is...>)
@@ -160,7 +162,6 @@ class simd_mask
 
 public:
     using value_type = bool;
-    using simd_type = simd<T, Abi>;
     using abi_type = Abi;
 
     /// \brief The number of elements, i.e., the width, of `score::cpp::simd<T, Abi>`.
@@ -173,12 +174,12 @@ public:
     /// Performs no initialization of the elements. Thus, leaves the elements in an indeterminate state.
     ///
     /// [parallel] 9.8.1 3
-    simd_mask() noexcept = default;
+    basic_mask() noexcept = default;
 
     /// \brief Broadcast argument to all elements.
     ///
     /// [parallel] 9.8.3 1
-    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE simd_mask(const value_type v) noexcept : v_{Abi::mask_impl::broadcast(v)} {}
+    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_mask(const value_type v) noexcept : v_{Abi::mask_impl::broadcast(v)} {}
 
     /// \brief Constructs an object where the ith element is initialized to `gen(integral_constant<size_t, i>())`.
     ///
@@ -186,7 +187,7 @@ public:
     template <typename G,
               typename = std::enable_if_t<!is_forwarding_ref_overload<G>::value &&
                                           is_generator_invocable<G>(std::make_index_sequence<simd_size_v<T, Abi>>{})>>
-    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE simd_mask(G&& gen) noexcept
+    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_mask(G&& gen) noexcept
         : v_{Abi::mask_impl::init(std::forward<G>(gen), std::make_index_sequence<size()>{})}
     {
     }
@@ -196,7 +197,7 @@ public:
     ///  \note Use this function with caution as it makes the code platform dependent.
     ///
     /// [parallel] 9.8.1 4
-    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE simd_mask(const typename Abi::mask_impl::type v) : v_{v} {}
+    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_mask(const typename Abi::mask_impl::type v) : v_{v} {}
 
     /// \brief Convert to platform specific type, e.g., _m128 for SSE4.2.
     ///
@@ -219,7 +220,7 @@ public:
     /// \brief Applies "logical not" to each element.
     ///
     /// [parallel] 9.8.6 1
-    simd_mask SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator!() const noexcept { return simd_mask{Abi::mask_impl::logical_not(v_)}; }
+    basic_mask SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator!() const noexcept { return basic_mask{Abi::mask_impl::logical_not(v_)}; }
 
     /// \brief Applies "logical and" to each element.
     ///
@@ -227,11 +228,11 @@ public:
     ///
     /// \note This operator is not short-circuiting and always evaluating lhs and rhs.
     /// \note the order of evaluation of the operands is unspecified in versions prior to C++17.
-    friend simd_mask SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator&&(const simd_mask<T, Abi>& lhs,
-                                                       const simd_mask<T, Abi>& rhs) noexcept
+    friend basic_mask SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator&&(const basic_mask<T, Abi>& lhs,
+                                                        const basic_mask<T, Abi>& rhs) noexcept
     {
         using type = typename Abi::mask_impl::type;
-        return simd_mask{Abi::mask_impl::logical_and(static_cast<type>(lhs), static_cast<type>(rhs))};
+        return basic_mask{Abi::mask_impl::logical_and(static_cast<type>(lhs), static_cast<type>(rhs))};
     }
 
     /// \brief Applies "logical or" to each element.
@@ -240,21 +241,24 @@ public:
     ///
     /// \note This operator is not short-circuiting and always evaluating lhs and rhs.
     /// \note the order of evaluation of the operands is unspecified in versions prior to C++17.
-    friend simd_mask SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator||(const simd_mask& lhs, const simd_mask& rhs) noexcept
+    friend basic_mask SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator||(const basic_mask& lhs, const basic_mask& rhs) noexcept
     {
         using type = typename Abi::mask_impl::type;
-        return simd_mask{Abi::mask_impl::logical_or(static_cast<type>(lhs), static_cast<type>(rhs))};
+        return basic_mask{Abi::mask_impl::logical_or(static_cast<type>(lhs), static_cast<type>(rhs))};
     }
 
 private:
     typename Abi::mask_impl::type v_;
 };
 
+template <class T, std::size_t N = simd_size_v<T, native_abi<T>>>
+using mask = basic_mask<T, deduce_abi<T, N>>;
+
 /// \brief Returns true if all boolean elements in v are true, false otherwise.
 ///
 /// [parallel] 9.9.4 1
 template <typename T, typename Abi>
-inline bool SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE all_of(const simd_mask<T, Abi>& v) noexcept
+inline bool SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE all_of(const basic_mask<T, Abi>& v) noexcept
 {
     return Abi::mask_impl::all_of(static_cast<typename Abi::mask_impl::type>(v));
 }
@@ -263,7 +267,7 @@ inline bool SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE all_of(const simd_mask<T
 ///
 /// [parallel] 9.9.4 2
 template <typename T, typename Abi>
-inline bool SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE any_of(const simd_mask<T, Abi>& v) noexcept
+inline bool SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE any_of(const basic_mask<T, Abi>& v) noexcept
 {
     return Abi::mask_impl::any_of(static_cast<typename Abi::mask_impl::type>(v));
 }
@@ -272,7 +276,7 @@ inline bool SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE any_of(const simd_mask<T
 ///
 /// [parallel] 9.9.4 3
 template <typename T, typename Abi>
-inline bool SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE none_of(const simd_mask<T, Abi>& v) noexcept
+inline bool SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE none_of(const basic_mask<T, Abi>& v) noexcept
 {
     return Abi::mask_impl::none_of(static_cast<typename Abi::mask_impl::type>(v));
 }
@@ -291,15 +295,15 @@ inline bool SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE none_of(const simd_mask<
 /// is an element-wise operation that applies a binary operation to corresponding elements of two data-parallel objects.
 ///
 /// [parallel] 9.6 ff
-template <typename T, typename Abi = typename simd_abi::deduce_abi<T, simd_size_v<T, simd_abi::native<T>>>>
-class simd
+template <typename T, typename Abi = native_abi<T>>
+class basic_vec
 {
     static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value, "T not a data-parallel type");
     static_assert(is_abi_tag_v<Abi>, "Abi must be an abi tag");
-    static_assert(is_simd_v<simd>, "simd<T, Abi> not a valid simd type");
+    static_assert(is_simd_v<basic_vec>, "simd<T, Abi> not a valid simd type");
 
     template <typename U>
-    using is_forwarding_ref_overload = std::is_same<simd, score::cpp::remove_cvref_t<U>>;
+    using is_forwarding_ref_overload = std::is_same<basic_vec, score::cpp::remove_cvref_t<U>>;
 
     template <typename G, typename std::size_t... Is>
     static constexpr bool is_generator_invocable(std::index_sequence<Is...>)
@@ -310,7 +314,7 @@ class simd
 
 public:
     using value_type = T;
-    using mask_type = simd_mask<T, Abi>;
+    using mask_type = basic_mask<T, Abi>;
     using abi_type = Abi;
 
     /// \brief The number of elements, i.e., the width, of score::cpp::simd<T, Abi>.
@@ -323,22 +327,22 @@ public:
     /// Performs no initialization of the elements. Thus, leaves the elements in an indeterminate state.
     ///
     /// [parallel] 9.6.1 3
-    simd() noexcept = default;
+    basic_vec() noexcept = default;
 
     /// \brief Broadcast argument to all elements.
     ///
     /// \note This constructor does not allow conversion to `value_type` as opposed to standard.
     ///
     /// [parallel] 9.6.4 1 and 2
-    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE simd(const value_type v) noexcept : v_{Abi::impl::broadcast(v)} {}
+    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const value_type v) noexcept : v_{Abi::impl::broadcast(v)} {}
 
     /// \brief Initializes the ith element with static_cast<T>(x[i]) for all i in the range of [0, size()).
     ///
     /// \note This constructor is always explicit even if the conversion is value preserving
     ///
     /// [simd.ctor] 29.10.7.2 (C++26)
-    template <typename U, typename UAbi, typename = std::enable_if_t<size() == simd<U, UAbi>::size()>>
-    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE simd(const simd<U, UAbi> v) noexcept
+    template <typename U, typename UAbi, typename = std::enable_if_t<size() == basic_vec<U, UAbi>::size()>>
+    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const basic_vec<U, UAbi> v) noexcept
         : v_{UAbi::impl::convert(static_cast<typename UAbi::impl::type>(v), value_type{})}
     {
     }
@@ -349,7 +353,7 @@ public:
     template <typename G,
               typename = std::enable_if_t<!is_forwarding_ref_overload<G>::value &&
                                           is_generator_invocable<G>(std::make_index_sequence<simd_size_v<T, Abi>>{})>>
-    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE simd(G&& gen) noexcept
+    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(G&& gen) noexcept
         : v_{Abi::impl::init(std::forward<G>(gen), std::make_index_sequence<size()>{})}
     {
     }
@@ -357,10 +361,10 @@ public:
     /// \brief Constructs the elements of the simd object from an aligned memory address.
     ///
     /// @pre [v, v + size()) is a valid range.
-    /// @pre v shall point to storage aligned to score::cpp::memory_alignment_v<simd>.
+    /// @pre v shall point to storage aligned to score::cpp::memory_alignment_v<basic_vec>.
     ///
     /// [parallel] 9.6.4 8, 9 and 10
-    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE simd(const value_type* v, vector_aligned_tag) : v_{Abi::impl::load_aligned(v)} {}
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const value_type* v, vector_aligned_tag) : v_{Abi::impl::load_aligned(v)} {}
 
     /// \brief Constructs the elements of the simd object from an unaligned memory address.
     ///
@@ -368,7 +372,7 @@ public:
     /// @pre v shall point to storage aligned to alignof(value_type).
     ///
     /// [parallel] 9.6.4 8, 9 and 10
-    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE simd(const value_type* v, element_aligned_tag) : v_{Abi::impl::load(v)} {}
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const value_type* v, element_aligned_tag) : v_{Abi::impl::load(v)} {}
 
     /// \brief Constructs the elements of the simd object from an unaligned memory address.
     ///
@@ -376,14 +380,14 @@ public:
     /// @pre v shall point to storage aligned to alignof(value_type).
     ///
     /// [parallel] 9.6.4 8, 9 and 10
-    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE simd(const value_type* v) : v_{Abi::impl::load(v)} {}
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const value_type* v) : v_{Abi::impl::load(v)} {}
 
     /// \brief Convert from platform specific type, e.g., _m128 for SSE4.2.
     ///
     ///  \note Use this function with caution as it makes the code platform dependent.
     ///
     /// [parallel] 9.6.1 4
-    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE simd(const typename Abi::impl::type& v) noexcept : v_{v} {}
+    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const typename Abi::impl::type& v) noexcept : v_{v} {}
 
     /// \brief Convert to platform specific type, e.g., _m128 for SSE4.2.
     ///
@@ -395,13 +399,13 @@ public:
     /// \brief Replaces the elements of the simd object from an aligned memory address.
     ///
     /// @pre [v, v + size()) is a valid range.
-    /// @pre v shall point to storage aligned to score::cpp::memory_alignment_v<simd>.
+    /// @pre v shall point to storage aligned to score::cpp::memory_alignment_v<basic_vec>.
     ///
     /// [parallel] 9.6.5 1, 2 and 3
     void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE copy_from(const value_type* const v, vector_aligned_tag)
     {
         static_assert(is_simd_flag_type_v<vector_aligned_tag>, "vector_aligned_tag not a simd flag type tag");
-        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((score::cpp::bit_cast<std::uintptr_t>(v) % memory_alignment_v<simd>) == 0U);
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((score::cpp::bit_cast<std::uintptr_t>(v) % memory_alignment_v<basic_vec>) == 0U);
         v_ = Abi::impl::load_aligned(v);
     }
 
@@ -428,13 +432,13 @@ public:
     /// \brief Replaces the elements of the simd object from an aligned memory address.
     ///
     /// @pre [v, v + size()) is a valid range.
-    /// @pre v shall point to storage aligned to score::cpp::memory_alignment_v<simd>.
+    /// @pre v shall point to storage aligned to score::cpp::memory_alignment_v<basic_vec>.
     ///
     /// [parallel] 9.6.5 4, 5 and 6
     void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE copy_to(value_type* const v, vector_aligned_tag) const
     {
         static_assert(is_simd_flag_type_v<vector_aligned_tag>, "vector_aligned_tag not a simd flag type tag");
-        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((score::cpp::bit_cast<std::uintptr_t>(v) % memory_alignment_v<simd>) == 0U);
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((score::cpp::bit_cast<std::uintptr_t>(v) % memory_alignment_v<basic_vec>) == 0U);
         Abi::impl::store_aligned(v, v_);
     }
 
@@ -472,48 +476,48 @@ public:
     /// \brief Same as -1 * *this.
     ///
     /// [parallel] 9.6.7 14
-    simd SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator-() const noexcept { return simd{Abi::impl::negate(v_)}; }
+    basic_vec SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator-() const noexcept { return basic_vec{Abi::impl::negate(v_)}; }
 
     /// \brief Addition operator.
     ///
     /// [parallel] 9.7.1 1 and 2
-    friend simd SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator+(const simd& lhs, const simd& rhs) noexcept
+    friend basic_vec SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator+(const basic_vec& lhs, const basic_vec& rhs) noexcept
     {
-        simd tmp{lhs};
+        basic_vec tmp{lhs};
         return tmp += rhs;
     }
 
     /// \brief Subtraction operator.
     ///
     /// [parallel] 9.7.1 1 and 2
-    friend simd SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator-(const simd& lhs, const simd& rhs) noexcept
+    friend basic_vec SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator-(const basic_vec& lhs, const basic_vec& rhs) noexcept
     {
-        simd tmp{lhs};
+        basic_vec tmp{lhs};
         return tmp -= rhs;
     }
 
     /// \brief Multiplication operator.
     ///
     /// [parallel] 9.7.1 1 and 2
-    friend simd SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator*(const simd& lhs, const simd& rhs) noexcept
+    friend basic_vec SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator*(const basic_vec& lhs, const basic_vec& rhs) noexcept
     {
-        simd tmp{lhs};
+        basic_vec tmp{lhs};
         return tmp *= rhs;
     }
 
     /// \brief Division operator.
     ///
     /// [parallel] 9.7.1 1 and 2
-    friend simd SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator/(const simd& lhs, const simd& rhs) noexcept
+    friend basic_vec SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator/(const basic_vec& lhs, const basic_vec& rhs) noexcept
     {
-        simd tmp{lhs};
+        basic_vec tmp{lhs};
         return tmp /= rhs;
     }
 
     /// \brief Addition assignment operator.
     ///
     /// [parallel] 9.7.2 1, 2 and 3
-    friend SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE simd& operator+=(simd& lhs, const simd& rhs) noexcept
+    friend SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec& operator+=(basic_vec& lhs, const basic_vec& rhs) noexcept
     {
         lhs.v_ = Abi::impl::add(lhs.v_, rhs.v_);
         return lhs;
@@ -522,7 +526,7 @@ public:
     /// \brief Subtraction assignment operator.
     ///
     /// [parallel] 9.7.2 1, 2 and 3
-    friend simd& SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator-=(simd& lhs, const simd& rhs) noexcept
+    friend basic_vec& SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator-=(basic_vec& lhs, const basic_vec& rhs) noexcept
     {
         lhs.v_ = Abi::impl::subtract(lhs.v_, rhs.v_);
         return lhs;
@@ -531,7 +535,7 @@ public:
     /// \brief Multiplication assignment operator.
     ///
     /// [parallel] 9.7.2 1, 2 and 3
-    friend simd& SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator*=(simd& lhs, const simd& rhs) noexcept
+    friend basic_vec& SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator*=(basic_vec& lhs, const basic_vec& rhs) noexcept
     {
         lhs.v_ = Abi::impl::multiply(lhs.v_, rhs.v_);
         return lhs;
@@ -540,7 +544,7 @@ public:
     /// \brief Division assignment operator.
     ///
     /// [parallel] 9.7.2 1, 2 and 3
-    friend simd& SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator/=(simd& lhs, const simd& rhs) noexcept
+    friend basic_vec& SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator/=(basic_vec& lhs, const basic_vec& rhs) noexcept
     {
         lhs.v_ = Abi::impl::divide(lhs.v_, rhs.v_);
         return lhs;
@@ -549,7 +553,7 @@ public:
     /// \brief Returns true if lhs is equal to rhs, false otherwise.
     ///
     /// [parallel] 9.7.3 1
-    friend mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator==(const simd& lhs, const simd& rhs) noexcept
+    friend mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator==(const basic_vec& lhs, const basic_vec& rhs) noexcept
     {
         using type = typename Abi::impl::type;
         return mask_type{Abi::impl::equal(static_cast<type>(lhs), static_cast<type>(rhs))};
@@ -558,7 +562,7 @@ public:
     /// \brief Returns true if lhs is not equal to rhs, false otherwise.
     ///
     /// [parallel] 9.7.3 1
-    friend mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator!=(const simd& lhs, const simd& rhs) noexcept
+    friend mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator!=(const basic_vec& lhs, const basic_vec& rhs) noexcept
     {
         using type = typename Abi::impl::type;
         return mask_type{Abi::impl::not_equal(static_cast<type>(lhs), static_cast<type>(rhs))};
@@ -567,7 +571,7 @@ public:
     /// \brief Returns true if lhs is less than rhs, false otherwise.
     ///
     /// [parallel] 9.7.3 1
-    friend mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator<(const simd& lhs, const simd& rhs) noexcept
+    friend mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator<(const basic_vec& lhs, const basic_vec& rhs) noexcept
     {
         using type = typename Abi::impl::type;
         return mask_type{Abi::impl::less_than(static_cast<type>(lhs), static_cast<type>(rhs))};
@@ -576,7 +580,7 @@ public:
     /// \brief Returns true if lhs is less than or equal to rhs, false otherwise.
     ///
     /// [parallel] 9.7.3 1
-    friend mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator<=(const simd& lhs, const simd& rhs) noexcept
+    friend mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator<=(const basic_vec& lhs, const basic_vec& rhs) noexcept
     {
         using type = typename Abi::impl::type;
         return mask_type{Abi::impl::less_equal(static_cast<type>(lhs), static_cast<type>(rhs))};
@@ -585,7 +589,7 @@ public:
     /// \brief Returns true if lhs is greater than rhs, false otherwise.
     ///
     /// [parallel] 9.7.3 1
-    friend mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator>(const simd& lhs, const simd& rhs) noexcept
+    friend mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator>(const basic_vec& lhs, const basic_vec& rhs) noexcept
     {
         using type = typename Abi::impl::type;
         return mask_type{Abi::impl::greater_than(static_cast<type>(lhs), static_cast<type>(rhs))};
@@ -594,7 +598,7 @@ public:
     /// \brief Returns true if lhs is greater than or equal to rhs, false otherwise.
     ///
     /// [parallel] 9.7.3 1
-    friend mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator>=(const simd& lhs, const simd& rhs) noexcept
+    friend mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator>=(const basic_vec& lhs, const basic_vec& rhs) noexcept
     {
         using type = typename Abi::impl::type;
         return mask_type{Abi::impl::greater_equal(static_cast<type>(lhs), static_cast<type>(rhs))};
@@ -604,24 +608,27 @@ private:
     typename Abi::impl::type v_;
 };
 
+template <typename T, std::size_t N = simd_size_v<T, native_abi<T>>>
+using vec = basic_vec<T, deduce_abi<T, N>>;
+
 /// \brief Returns the smaller of a and b. Returns a if one operand is NaN.
 ///
 /// [parallel] 9.7.6 1
 template <typename T, typename Abi>
-inline simd<T, Abi> SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE min(const simd<T, Abi>& a, const simd<T, Abi>& b) noexcept
+inline basic_vec<T, Abi> SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE min(const basic_vec<T, Abi>& a, const basic_vec<T, Abi>& b) noexcept
 {
     using type = typename Abi::impl::type;
-    return simd<T, Abi>{Abi::impl::min(static_cast<type>(a), static_cast<type>(b))};
+    return basic_vec<T, Abi>{Abi::impl::min(static_cast<type>(a), static_cast<type>(b))};
 }
 
 /// \brief Returns the greater of a and b. Returns a if one operand is NaN.
 ///
 /// [parallel] 9.7.6 2
 template <typename T, typename Abi>
-inline simd<T, Abi> SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE max(const simd<T, Abi>& a, const simd<T, Abi>& b) noexcept
+inline basic_vec<T, Abi> SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE max(const basic_vec<T, Abi>& a, const basic_vec<T, Abi>& b) noexcept
 {
     using type = typename Abi::impl::type;
-    return simd<T, Abi>{Abi::impl::max(static_cast<type>(a), static_cast<type>(b))};
+    return basic_vec<T, Abi>{Abi::impl::max(static_cast<type>(a), static_cast<type>(b))};
 }
 
 /// \brief Returns low if v is less than low, high if high is less than v, otherwise v.
@@ -630,11 +637,12 @@ inline simd<T, Abi> SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE max(const simd<T
 ///
 /// [parallel] 9.7.6 4 and 5
 template <typename T, typename Abi>
-inline simd<T, Abi>
-    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE clamp(const simd<T, Abi>& v, const simd<T, Abi>& low, const simd<T, Abi>& high)
+inline basic_vec<T, Abi> SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE clamp(const basic_vec<T, Abi>& v,
+                                                      const basic_vec<T, Abi>& low,
+                                                      const basic_vec<T, Abi>& high)
 {
     SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG(all_of(low <= high));
-    return score::cpp::min(score::cpp::max(v, low), high);
+    return score::cpp::simd::min(score::cpp::simd::max(v, low), high);
 }
 
 /// \brief The class abstracts the notion of selecting elements of a given object of a data-parallel type.
@@ -646,7 +654,7 @@ class where_expression
 {
     static_assert(is_simd_mask_v<M>, "M not a simd_mask type");
     static_assert(is_simd_v<T>, "T not a simd type");
-    static_assert(std::is_same<T, typename M::simd_type>::value, "simd and simd_mask are incompatible");
+    static_assert(std::is_same<typename T::mask_type, M>::value, "simd and simd_mask are incompatible");
 
     using impl = typename T::abi_type::impl;
     using mask_impl = typename T::abi_type::mask_impl;
@@ -728,26 +736,13 @@ private:
 ///
 /// [parallel] 9.9.5 ff
 template <typename T, typename Abi>
-inline where_expression<simd_mask<T, Abi>, simd<T, Abi>> where(const typename simd<T, Abi>::mask_type& m,
-                                                               simd<T, Abi>& v) noexcept
+inline where_expression<basic_mask<T, Abi>, basic_vec<T, Abi>> where(const typename basic_vec<T, Abi>::mask_type& m,
+                                                                     basic_vec<T, Abi>& v) noexcept
 {
     return {m, v};
 }
 
-/// \brief Returns a simd object with each element cast to `T::value_type`.
-///
-/// \pre `T` and `simd<U>` must have the same number of elements
-///
-/// [parallel] 9.7.5 5, 6, 7ff and 8ff
-template <typename T,
-          typename U,
-          typename Abi,
-          typename = std::enable_if_t<is_simd_v<T> && T::size() == simd<U, Abi>::size()>>
-inline T SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE static_simd_cast(const simd<U, Abi>& v) noexcept
-{
-    return T{v};
-}
-
+} // namespace simd
 } // namespace score::cpp
 
 #undef SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE
