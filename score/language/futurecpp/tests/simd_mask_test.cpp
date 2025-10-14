@@ -17,19 +17,24 @@ namespace score::cpp
 namespace
 {
 
+template <std::size_t N>
 class generator
 {
-public:
-    generator(const bool a, const bool b, const bool c, const bool d) : v_{a, b, c, d} {}
+    static constexpr std::size_t size{N};
 
-    constexpr bool operator()(std::integral_constant<std::size_t, 0U>) const noexcept { return std::get<0U>(v_); }
-    constexpr bool operator()(std::integral_constant<std::size_t, 1U>) const noexcept { return std::get<1U>(v_); }
-    constexpr bool operator()(std::integral_constant<std::size_t, 2U>) const noexcept { return std::get<2U>(v_); }
-    constexpr bool operator()(std::integral_constant<std::size_t, 3U>) const noexcept { return std::get<3U>(v_); }
+public:
+    explicit generator(const bool v) : v_{} { v_.fill(v); }
+
+    template <std::size_t M>
+    constexpr bool operator()(std::integral_constant<std::size_t, M>) const noexcept
+    {
+        return std::get<std::integral_constant<std::size_t, M>{}()>(v_);
+    }
     constexpr bool operator[](std::size_t i) const { return v_[i]; }
+    constexpr bool& operator[](std::size_t i) { return v_[i]; }
 
 private:
-    std::array<bool, 4U> v_;
+    std::array<bool, size> v_;
 };
 
 template <typename T>
@@ -37,14 +42,14 @@ class simd_mask_fixture : public testing::Test
 {
 };
 
-using ElementTypes = ::testing::Types<std::int32_t, float, double>;
+using ElementTypes = ::testing::Types<simd_mask<std::int32_t>, simd_mask<float>, simd_mask<double>>;
 TYPED_TEST_SUITE(simd_mask_fixture, ElementTypes, /*unused*/);
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398051
 TYPED_TEST(simd_mask_fixture, Broadcast)
 {
-    const simd_mask<TypeParam> a{true};
+    const TypeParam a{true};
 
     for (std::size_t i{0U}; i < a.size(); ++i)
     {
@@ -56,40 +61,22 @@ TYPED_TEST(simd_mask_fixture, Broadcast)
 /// @requirement CB-#18398051
 TYPED_TEST(simd_mask_fixture, Initialize)
 {
+    for (std::size_t i{0U}; i < TypeParam::size(); ++i)
     {
-        const generator gen{true, false, false, false};
-        const simd_mask<TypeParam> a{gen};
+        generator<TypeParam::size()> gen{false};
+        gen[i] = true;
+        const TypeParam a{gen};
 
-        for (std::size_t i{0U}; i < a.size(); ++i)
+        for (std::size_t j{0U}; j < a.size(); ++j)
         {
-            EXPECT_EQ(gen[i], a[i]);
-        }
-    }
-    {
-        const generator gen{false, true, false, false};
-        const simd_mask<TypeParam> a{gen};
-
-        for (std::size_t i{0U}; i < a.size(); ++i)
-        {
-            EXPECT_EQ(gen[i], a[i]);
-        }
-    }
-    {
-        const generator gen{false, false, true, false};
-        const simd_mask<TypeParam> a{gen};
-
-        for (std::size_t i{0U}; i < a.size(); ++i)
-        {
-            EXPECT_EQ(gen[i], a[i]);
-        }
-    }
-    {
-        const generator gen{false, false, false, true};
-        const simd_mask<TypeParam> a{gen};
-
-        for (std::size_t i{0U}; i < a.size(); ++i)
-        {
-            EXPECT_EQ(gen[i], a[i]);
+            if (j == i)
+            {
+                EXPECT_TRUE(a[j]);
+            }
+            else
+            {
+                EXPECT_FALSE(a[j]);
+            }
         }
     }
 }
@@ -98,7 +85,7 @@ TYPED_TEST(simd_mask_fixture, Initialize)
 /// @requirement CB-#18398051
 TYPED_TEST(simd_mask_fixture, Access_WhenOutOfBounds_ThenPreconditionViolated)
 {
-    const simd_mask<TypeParam> a{false};
+    const TypeParam a{false};
 
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(a[a.size()]);
 }
@@ -108,11 +95,11 @@ TYPED_TEST(simd_mask_fixture, Access_WhenOutOfBounds_ThenPreconditionViolated)
 TYPED_TEST(simd_mask_fixture, Not)
 {
     {
-        const simd_mask<TypeParam> a{true};
+        const TypeParam a{true};
         EXPECT_TRUE(none_of(!a));
     }
     {
-        const simd_mask<TypeParam> a{false};
+        const TypeParam a{false};
         EXPECT_TRUE(all_of(!a));
     }
 }
@@ -122,19 +109,19 @@ TYPED_TEST(simd_mask_fixture, Not)
 TYPED_TEST(simd_mask_fixture, And)
 {
     {
-        const simd_mask<TypeParam> a{true};
+        const TypeParam a{true};
         EXPECT_TRUE(all_of(a && a));
     }
     {
-        const simd_mask<TypeParam> a{true};
+        const TypeParam a{true};
         EXPECT_TRUE(none_of(a && !a));
     }
     {
-        const simd_mask<TypeParam> a{true};
+        const TypeParam a{true};
         EXPECT_TRUE(none_of(!a && a));
     }
     {
-        const simd_mask<TypeParam> a{false};
+        const TypeParam a{false};
         EXPECT_TRUE(none_of(a && a));
     }
 }
@@ -144,97 +131,130 @@ TYPED_TEST(simd_mask_fixture, And)
 TYPED_TEST(simd_mask_fixture, Or)
 {
     {
-        const simd_mask<TypeParam> a{true};
+        const TypeParam a{true};
         EXPECT_TRUE(all_of(a || a));
     }
     {
-        const simd_mask<TypeParam> a{true};
+        const TypeParam a{true};
         EXPECT_TRUE(all_of(a || !a));
     }
     {
-        const simd_mask<TypeParam> a{true};
+        const TypeParam a{true};
         EXPECT_TRUE(all_of(!a || a));
     }
     {
-        const simd_mask<TypeParam> a{false};
+        const TypeParam a{false};
         EXPECT_TRUE(none_of(a || a));
     }
 }
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398051
+TYPED_TEST(simd_mask_fixture, AllOf_AllSet)
+{
+    const generator<TypeParam::size()> gen{true};
+    const TypeParam a{gen};
+
+    EXPECT_TRUE(all_of(a));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18398051
+TYPED_TEST(simd_mask_fixture, AllOf_NoneSet)
+{
+    const generator<TypeParam::size()> gen{false};
+    const TypeParam a{gen};
+
+    EXPECT_FALSE(all_of(a));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18398051
 TYPED_TEST(simd_mask_fixture, AllOf)
 {
+    generator<TypeParam::size()> gen{false};
+
+    for (std::size_t i{0U}; i < TypeParam::size(); ++i)
     {
-        const simd_mask<TypeParam> a{generator{false, false, false, false}};
-        EXPECT_FALSE(all_of(a));
+        gen[i] = true;
+        const TypeParam a{gen};
+
+        if (i == TypeParam::size() - 1U)
+        {
+            EXPECT_TRUE(all_of(a));
+        }
+        else
+        {
+            EXPECT_FALSE(all_of(a));
+        }
     }
-    {
-        const simd_mask<TypeParam> a{generator{false, false, false, true}};
-        EXPECT_FALSE(all_of(a));
-    }
-    {
-        const simd_mask<TypeParam> a{generator{false, false, true, true}};
-        EXPECT_FALSE(all_of(a));
-    }
-    {
-        const simd_mask<TypeParam> a{generator{false, true, true, true}};
-        EXPECT_FALSE(all_of(a));
-    }
-    {
-        const simd_mask<TypeParam> a{generator{true, true, true, true}};
-        EXPECT_TRUE(all_of(a));
-    }
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18398051
+TYPED_TEST(simd_mask_fixture, AnyOf_AllSet)
+{
+    const generator<TypeParam::size()> gen{true};
+    const TypeParam a{gen};
+
+    EXPECT_TRUE(all_of(a));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18398051
+TYPED_TEST(simd_mask_fixture, AnyOf_NoneSet)
+{
+    const generator<TypeParam::size()> gen{false};
+    const TypeParam a{gen};
+
+    EXPECT_FALSE(all_of(a));
 }
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398051
 TYPED_TEST(simd_mask_fixture, AnyOf)
 {
+    for (std::size_t i{0U}; i < TypeParam::size(); ++i)
     {
-        const simd_mask<TypeParam> a{generator{false, false, false, false}};
-        EXPECT_FALSE(any_of(a));
-    }
-    {
-        const simd_mask<TypeParam> a{generator{true, false, false, false}};
-        EXPECT_TRUE(any_of(a));
-    }
-    {
-        const simd_mask<TypeParam> a{generator{true, true, false, false}};
-        EXPECT_TRUE(any_of(a));
-    }
-    {
-        const simd_mask<TypeParam> a{generator{true, true, true, false}};
-        EXPECT_TRUE(any_of(a));
-    }
-    {
-        const simd_mask<TypeParam> a{generator{true, true, true, true}};
+        generator<TypeParam::size()> gen{false};
+        gen[i] = true;
+        const TypeParam a{gen};
+
         EXPECT_TRUE(any_of(a));
     }
 }
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398051
+TYPED_TEST(simd_mask_fixture, NoneOf_AllSet)
+{
+    const generator<TypeParam::size()> gen{true};
+    const TypeParam a{gen};
+
+    EXPECT_FALSE(none_of(a));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18398051
+TYPED_TEST(simd_mask_fixture, NoneOf_NoneSet)
+{
+    const generator<TypeParam::size()> gen{false};
+    const TypeParam a{gen};
+
+    EXPECT_TRUE(none_of(a));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18398051
 TYPED_TEST(simd_mask_fixture, NoneOf)
 {
+
+    for (std::size_t i{0U}; i < TypeParam::size(); ++i)
     {
-        const simd_mask<TypeParam> a{generator{false, false, false, false}};
-        EXPECT_TRUE(none_of(a));
-    }
-    {
-        const simd_mask<TypeParam> a{generator{true, false, false, false}};
-        EXPECT_FALSE(none_of(a));
-    }
-    {
-        const simd_mask<TypeParam> a{generator{true, true, false, false}};
-        EXPECT_FALSE(none_of(a));
-    }
-    {
-        const simd_mask<TypeParam> a{generator{true, true, true, false}};
-        EXPECT_FALSE(none_of(a));
-    }
-    {
-        const simd_mask<TypeParam> a{generator{true, true, true, true}};
+        generator<TypeParam::size()> gen{false};
+        gen[i] = true;
+        const TypeParam a{gen};
+
         EXPECT_FALSE(none_of(a));
     }
 }
