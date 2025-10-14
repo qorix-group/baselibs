@@ -181,6 +181,7 @@ cc_library(
         "include/score/private/utility/in_place_type_t.hpp",
         "include/score/private/utility/in_range.hpp",
         "include/score/private/utility/int_cmp.hpp",
+        "include/score/private/utility/make_offset_index_sequence.hpp",
         "include/score/private/utility/static_const.hpp",
         "include/score/private/utility/to_underlying.hpp",
         "include/score/range_pair.hpp",
