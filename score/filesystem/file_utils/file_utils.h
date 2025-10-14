@@ -51,7 +51,7 @@ class FileUtils final : public IFileUtils
                            const score::os::Stat::Mode perms,
                            const std::int64_t creation_delay_ns,
                            const std::int64_t creation_retry_factor,
-                           std::uint32_t& creation_retry_counter) const noexcept;
+                           std::uint32_t creation_retry_counter) const noexcept;
 
     mutable std::mutex groupname_mutex_;
 

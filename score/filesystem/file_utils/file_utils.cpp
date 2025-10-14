@@ -107,7 +107,7 @@ ResultBlank FileUtils::CreatePath(const Path& final_path,
                                   const score::os::Stat::Mode perms,
                                   const std::int64_t creation_delay_ns,
                                   const std::int64_t creation_retry_factor,
-                                  std::uint32_t& creation_retry_counter) const noexcept
+                                  std::uint32_t creation_retry_counter) const noexcept
 {
     timespec creation_retry_delay{0, creation_delay_ns};
     // internal loop just to handle (accumulating across the whole path) retry attempts
@@ -172,8 +172,6 @@ ResultBlank FileUtils::CreateDirectories(const Path& path, const score::os::Stat
     Path parent_path{};
     bool do_skip_root_path = native_path.IsAbsolute();
 
-    std::uint32_t creation_retry_counter = kCreationRetryLimit;
-
     for (const Path& part_path : native_path)
     {
         if (part_path.Empty())
@@ -189,12 +187,8 @@ ResultBlank FileUtils::CreateDirectories(const Path& path, const score::os::Stat
             continue;
         }
 
-        const auto result = CreatePath(path,
-                                       parent_path,
-                                       perms,
-                                       kCreationRetryInitialDelayNanoseconds,
-                                       kCreationRetryFactor,
-                                       creation_retry_counter);
+        const auto result = CreatePath(
+            path, parent_path, perms, kCreationRetryInitialDelayNanoseconds, kCreationRetryFactor, kCreationRetryLimit);
         if (!result.has_value())
         {
             return result;
