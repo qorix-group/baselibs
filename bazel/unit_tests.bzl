@@ -10,6 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+
 load("@score-baselibs//third_party/itf:py_unittest_qnx_test.bzl", "py_unittest_qnx_test")
 
 def cc_unit_test_suites_for_host_and_qnx(name, cc_unit_tests = None, visibility = None, test_suites_from_sub_packages = None, excluded_tests_filter = None):

@@ -10,6 +10,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+
 load("@safe_posix_platform//platform/aas/bazel/generators:aragen_tree.bzl", "cc_mw_com_library", "mw_artifacts")
 load("@safe_posix_platform//platform/aas/bazel/generators:franca2arxml.bzl", "franca2arxml_converter")
 

@@ -1,5 +1,3 @@
-load("@score-baselibs//third_party/itf:py_unittest_qnx_test.bzl", "py_unittest_qnx_test")
-
 # *******************************************************************************
 # Copyright (c) 2025 Contributors to the Eclipse Foundation
 #
@@ -12,6 +10,8 @@ load("@score-baselibs//third_party/itf:py_unittest_qnx_test.bzl", "py_unittest_q
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+
+load("@score-baselibs//third_party/itf:py_unittest_qnx_test.bzl", "py_unittest_qnx_test")
 load("//score/mw:common_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
