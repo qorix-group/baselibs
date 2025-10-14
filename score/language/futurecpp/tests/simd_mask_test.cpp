@@ -40,7 +40,8 @@ class simd_mask_fixture : public testing::Test
 {
 };
 
-using ElementTypes = ::testing::Types<score::cpp::simd::mask<std::int32_t>, score::cpp::simd::mask<float>, score::cpp::simd::mask<double>>;
+using ElementTypes = ::testing::
+    Types<score::cpp::simd::mask<std::int32_t>, score::cpp::simd::mask<float>, score::cpp::simd::mask<double>, score::cpp::simd::mask<float, 16>>;
 TYPED_TEST_SUITE(simd_mask_fixture, ElementTypes, /*unused*/);
 
 /// @testmethods TM_REQUIREMENT

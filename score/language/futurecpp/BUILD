@@ -139,6 +139,7 @@ cc_library(
         "include/score/private/numeric/saturate_cast.hpp",
         "include/score/private/simd/aarch64_neon_backend.hpp",
         "include/score/private/simd/abi.hpp",
+        "include/score/private/simd/array.hpp",
         "include/score/private/simd/data_types.hpp",
         "include/score/private/simd/default_backend.hpp",
         "include/score/private/simd/math.hpp",

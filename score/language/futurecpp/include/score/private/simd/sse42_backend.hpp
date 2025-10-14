@@ -10,6 +10,8 @@
 
 #include <score/private/bit/bit_cast.hpp>
 #include <score/private/simd/abi.hpp>
+#include <score/private/simd/array.hpp>
+
 #include <cstddef>
 #include <cstdint>
 #include <limits>
@@ -38,6 +40,7 @@ template <>
 struct sse42_mask_backend<std::int32_t>
 {
     using type = __m128i;
+    static constexpr std::size_t width{4};
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE broadcast(const bool v) noexcept
     {
@@ -75,6 +78,7 @@ template <>
 struct sse42_mask_backend<float>
 {
     using type = __m128;
+    static constexpr std::size_t width{4};
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE broadcast(const bool v) noexcept
     {
@@ -109,6 +113,7 @@ template <>
 struct sse42_mask_backend<double>
 {
     using type = __m128d;
+    static constexpr std::size_t width{2};
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE broadcast(const bool v) noexcept
     {
@@ -402,6 +407,16 @@ struct sse42_abi<double>
     using mask_impl = sse42_mask_backend<double>;
 };
 
+template <typename T, std::size_t N>
+struct sse42_array_abi;
+
+template <>
+struct sse42_array_abi<float, 16>
+{
+    using impl = array<float, sse42_backend<float>, sse42_mask_backend<float>, 0, 1, 2, 3>;
+    using mask_impl = array_mask<float, sse42_mask_backend<float>, 0, 1, 2, 3>;
+};
+
 template <>
 struct native_abi<std::int32_t>
 {
@@ -429,6 +444,11 @@ struct deduce_abi<float, 4>
     using type = native_abi<float>::type;
 };
 template <>
+struct deduce_abi<float, 16>
+{
+    using type = sse42_array_abi<float, 16>;
+};
+template <>
 struct deduce_abi<double, 2>
 {
     using type = native_abi<double>::type;
@@ -442,6 +462,10 @@ struct is_abi_tag<detail::sse42_abi<std::int32_t>> : std::true_type
 };
 template <>
 struct is_abi_tag<detail::sse42_abi<float>> : std::true_type
+{
+};
+template <>
+struct is_abi_tag<detail::sse42_array_abi<float, 16>> : std::true_type
 {
 };
 template <>

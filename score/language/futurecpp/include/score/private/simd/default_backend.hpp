@@ -9,6 +9,8 @@
 #define SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_DEFAULT_BACKEND_HPP
 
 #include <score/private/simd/abi.hpp>
+#include <score/private/simd/array.hpp>
+
 #include <score/float.hpp>
 #include <score/math.hpp>
 
@@ -36,6 +38,7 @@ template <std::int32_t N>
 struct simd_mask_default_backend
 {
     using type = simd_vector<bool, N>;
+    static constexpr std::size_t width{N};
 
     static simd_vector<bool, N> broadcast(const bool v) noexcept
     {
@@ -127,6 +130,7 @@ template <typename T, std::int32_t N>
 struct simd_default_backend
 {
     using type = simd_vector<T, N>;
+    using mask_type = typename simd_mask_default_backend<N>::type;
     static constexpr std::size_t width{N};
 
     static simd_vector<T, N> broadcast(const T v) noexcept
@@ -357,6 +361,16 @@ struct scalar_abi<double>
     using mask_impl = simd_mask_default_backend<2>;
 };
 
+template <typename T, std::size_t N>
+struct scalar_array_abi;
+
+template <>
+struct scalar_array_abi<float, 16>
+{
+    using impl = array<float, simd_default_backend<float, 4>, simd_mask_default_backend<4>, 0, 1, 2, 3>;
+    using mask_impl = array_mask<float, simd_mask_default_backend<4>, 0, 1, 2, 3>;
+};
+
 template <>
 struct native_abi<std::int32_t>
 {
@@ -384,6 +398,11 @@ struct deduce_abi<float, 4>
     using type = native_abi<float>::type;
 };
 template <>
+struct deduce_abi<float, 16>
+{
+    using type = scalar_array_abi<float, 16>;
+};
+template <>
 struct deduce_abi<double, 2>
 {
     using type = native_abi<double>::type;
@@ -397,6 +416,10 @@ struct is_abi_tag<detail::scalar_abi<std::int32_t>> : std::true_type
 };
 template <>
 struct is_abi_tag<detail::scalar_abi<float>> : std::true_type
+{
+};
+template <>
+struct is_abi_tag<detail::scalar_array_abi<float, 16>> : std::true_type
 {
 };
 template <>

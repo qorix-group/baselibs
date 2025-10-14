@@ -40,7 +40,7 @@ class simd_math_fixture : public testing::Test
 {
 };
 
-using ElementTypes = ::testing::Types<score::cpp::simd::vec<float>, score::cpp::simd::vec<double>>;
+using ElementTypes = ::testing::Types<score::cpp::simd::vec<float>, score::cpp::simd::vec<double>, score::cpp::simd::vec<float, 16>>;
 TYPED_TEST_SUITE(simd_math_fixture, ElementTypes, /*unused*/);
 
 /// @testmethods TM_REQUIREMENT

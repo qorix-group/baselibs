@@ -90,7 +90,8 @@ class simd_fixture : public testing::Test
 {
 };
 
-using ElementTypes = ::testing::Types<score::cpp::simd::vec<std::int32_t>, score::cpp::simd::vec<float>, score::cpp::simd::vec<double>>;
+using ElementTypes = ::testing::
+    Types<score::cpp::simd::vec<std::int32_t>, score::cpp::simd::vec<float>, score::cpp::simd::vec<double>, score::cpp::simd::vec<float, 16>>;
 TYPED_TEST_SUITE(simd_fixture, ElementTypes, /*unused*/);
 
 template <typename T>
@@ -98,7 +99,8 @@ class simd_floating_point_fixture : public testing::Test
 {
 };
 
-using ElementFloatingPointTypes = ::testing::Types<score::cpp::simd::vec<float>, score::cpp::simd::vec<double>>;
+using ElementFloatingPointTypes =
+    ::testing::Types<score::cpp::simd::vec<float>, score::cpp::simd::vec<double>, score::cpp::simd::vec<float, 16>>;
 TYPED_TEST_SUITE(simd_floating_point_fixture, ElementFloatingPointTypes, /*unused*/);
 
 /// @testmethods TM_REQUIREMENT
