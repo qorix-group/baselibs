@@ -49,7 +49,7 @@ googletest_tests = [
     "set_value_test",
     "simd_mask_test",
     "simd_math_test",
-    "simd_test",
+    "simd_vec_test",
     "size_test",
     "span_test",
     "spin_mutex_test",

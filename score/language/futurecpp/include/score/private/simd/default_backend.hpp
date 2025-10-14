@@ -5,10 +5,10 @@
 
 // IWYU pragma: private
 
-#ifndef SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_DEFAULT_BACKEND_HPP
-#define SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_DEFAULT_BACKEND_HPP
+#ifndef SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_DEFAULT_BACKEND_HPP
+#define SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_DEFAULT_BACKEND_HPP
 
-#include <score/private/simd/simd_abi.hpp>
+#include <score/private/simd/abi.hpp>
 #include <score/float.hpp>
 #include <score/math.hpp>
 
@@ -407,4 +407,4 @@ struct is_abi_tag<detail::scalar_abi<double>> : std::true_type
 } // namespace simd
 } // namespace score::cpp
 
-#endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_DEFAULT_BACKEND_HPP
+#endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_DEFAULT_BACKEND_HPP

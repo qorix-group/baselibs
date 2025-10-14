@@ -5,11 +5,11 @@
 
 // IWYU pragma: private
 
-#ifndef SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_SSE42_BACKEND_HPP
-#define SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_SSE42_BACKEND_HPP
+#ifndef SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SSE42_BACKEND_HPP
+#define SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SSE42_BACKEND_HPP
 
 #include <score/private/bit/bit_cast.hpp>
-#include <score/private/simd/simd_abi.hpp>
+#include <score/private/simd/abi.hpp>
 #include <cstddef>
 #include <cstdint>
 #include <limits>
@@ -454,4 +454,4 @@ struct is_abi_tag<detail::sse42_abi<double>> : std::true_type
 
 #undef SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE
 
-#endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_SSE42_BACKEND_HPP
+#endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SSE42_BACKEND_HPP

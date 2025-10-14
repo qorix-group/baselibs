@@ -5,10 +5,10 @@
 
 // IWYU pragma: private
 
-#ifndef SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_MATH_HPP
-#define SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_MATH_HPP
+#ifndef SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_MATH_HPP
+#define SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_MATH_HPP
 
-#include <score/private/simd/simd_data_types.hpp>
+#include <score/private/simd/data_types.hpp>
 
 // usable on QNX for ASIL B software. covered by requirement broken_link_c/issue/4049789
 #define SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE __attribute__((__always_inline__))
@@ -41,4 +41,4 @@ inline basic_mask<double, Abi> SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE is_na
 
 #undef SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE
 
-#endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_MATH_HPP
+#endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_MATH_HPP

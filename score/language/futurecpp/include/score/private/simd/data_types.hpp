@@ -8,10 +8,10 @@
 
 // IWYU pragma: private
 
-#ifndef SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_DATA_TYPES_HPP
-#define SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_DATA_TYPES_HPP
+#ifndef SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_DATA_TYPES_HPP
+#define SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_DATA_TYPES_HPP
 
-#include <score/private/simd/simd_abi.hpp>
+#include <score/private/simd/abi.hpp>
 
 #include <score/assert.hpp>
 #include <score/bit.hpp>
@@ -747,4 +747,4 @@ inline where_expression<basic_mask<T, Abi>, basic_vec<T, Abi>> where(const typen
 
 #undef SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE
 
-#endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_DATA_TYPES_HPP
+#endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_DATA_TYPES_HPP

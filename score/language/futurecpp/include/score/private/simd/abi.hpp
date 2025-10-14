@@ -8,8 +8,8 @@
 
 // IWYU pragma: private
 
-#ifndef SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_ABI_HPP
-#define SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_ABI_HPP
+#ifndef SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ABI_HPP
+#define SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ABI_HPP
 
 #include <cstddef>
 #include <type_traits>
@@ -55,4 +55,4 @@ constexpr bool is_abi_tag_v{is_abi_tag<T>::value};
 } // namespace simd
 } // namespace score::cpp
 
-#endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_SIMD_ABI_HPP
+#endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ABI_HPP
