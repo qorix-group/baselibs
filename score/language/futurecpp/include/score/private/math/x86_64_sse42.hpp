@@ -17,14 +17,14 @@
 #include <nmmintrin.h> // only include SSE4.2.
 
 // usable on QNX for ASIL B software. covered by requirement broken_link_c/issue/4049789
-#define SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE __attribute__((__always_inline__))
+#define SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE __attribute__((__always_inline__))
 
 namespace score::cpp
 {
 namespace detail
 {
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE double ceil_sse42(double num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE double ceil_sse42(double num)
 {
     const __m128d v = _mm_round_sd(_mm_set_sd(num), _mm_set_sd(num), (_MM_FROUND_NO_EXC | _MM_FROUND_TO_POS_INF));
     double r;
@@ -32,7 +32,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE dou
     return r;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE float ceil_sse42(float num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE float ceil_sse42(float num)
 {
     const __m128 v = _mm_round_ss(_mm_set_ss(num), _mm_set_ss(num), (_MM_FROUND_NO_EXC | _MM_FROUND_TO_POS_INF));
     float r;
@@ -40,7 +40,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE flo
     return r;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE double floor_sse42(double num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE double floor_sse42(double num)
 {
     const __m128d v = _mm_round_sd(_mm_set_sd(num), _mm_set_sd(num), (_MM_FROUND_NO_EXC | _MM_FROUND_TO_NEG_INF));
     double r;
@@ -48,7 +48,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE dou
     return r;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE float floor_sse42(float num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE float floor_sse42(float num)
 {
     const __m128 v = _mm_round_ss(_mm_set_ss(num), _mm_set_ss(num), (_MM_FROUND_NO_EXC | _MM_FROUND_TO_NEG_INF));
     float r;
@@ -56,7 +56,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE flo
     return r;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE double rint_sse42(double num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE double rint_sse42(double num)
 {
     const __m128d v = _mm_round_sd(_mm_set_sd(num), _mm_set_sd(num), (_MM_FROUND_RAISE_EXC | _MM_FROUND_CUR_DIRECTION));
     double r;
@@ -64,7 +64,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE dou
     return r;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE float rint_sse42(float num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE float rint_sse42(float num)
 {
     const __m128 v = _mm_round_ss(_mm_set_ss(num), _mm_set_ss(num), (_MM_FROUND_RAISE_EXC | _MM_FROUND_CUR_DIRECTION));
     float r;
@@ -72,7 +72,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE flo
     return r;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE double trunc_sse42(double num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE double trunc_sse42(double num)
 {
     const __m128d v = _mm_round_sd(_mm_set_sd(num), _mm_set_sd(num), (_MM_FROUND_NO_EXC | _MM_FROUND_TO_ZERO));
     double r;
@@ -80,7 +80,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE dou
     return r;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE float trunc_sse42(float num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE float trunc_sse42(float num)
 {
     const __m128 v = _mm_round_ss(_mm_set_ss(num), _mm_set_ss(num), (_MM_FROUND_NO_EXC | _MM_FROUND_TO_ZERO));
     float r;
@@ -88,7 +88,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE flo
     return r;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE double abs_sse42(double num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE double abs_sse42(double num)
 {
     const auto mask = score::cpp::bit_cast<double>(0x7FFFFFFFFFFFFFFFU);
     const __m128d v = _mm_and_pd(_mm_set_sd(num), _mm_set_sd(mask));
@@ -97,7 +97,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE dou
     return r;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE float abs_sse42(float num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE float abs_sse42(float num)
 {
     const auto mask = score::cpp::bit_cast<float>(0x7FFFFFFFU);
     const __m128 v = _mm_and_ps(_mm_set_ss(num), _mm_set_ss(mask));
@@ -106,7 +106,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE flo
     return r;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE double copysign_sse42(double mag, double sgn)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE double copysign_sse42(double mag, double sgn)
 {
     const auto sign_mask = score::cpp::bit_cast<double>(0x8000000000000000U);
     const __m128d sign_of_sgn = _mm_and_pd(_mm_set_sd(sgn), _mm_set_sd(sign_mask));
@@ -118,7 +118,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE dou
     return r;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE float copysign_sse42(float mag, float sgn)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE float copysign_sse42(float mag, float sgn)
 {
     const auto sign_mask = score::cpp::bit_cast<float>(0x80000000U);
     const __m128 sign_of_sgn = _mm_and_ps(_mm_set_ss(sgn), _mm_set_ss(sign_mask));
@@ -130,49 +130,49 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE flo
     return r;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE bool isfinite_sse42(double num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE bool isfinite_sse42(double num)
 {
     const auto inf = score::cpp::bit_cast<std::uint64_t>(std::numeric_limits<double>::infinity());
     const auto abs_num = score::cpp::bit_cast<std::uint64_t>(num) & 0x7FFFFFFFFFFFFFFFU;
     return abs_num < inf;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE bool isfinite_sse42(float num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE bool isfinite_sse42(float num)
 {
     const auto inf = score::cpp::bit_cast<std::uint32_t>(std::numeric_limits<float>::infinity());
     const auto abs_num = score::cpp::bit_cast<std::uint32_t>(num) & 0x7FFFFFFFU;
     return abs_num < inf;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE bool isinf_sse42(double num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE bool isinf_sse42(double num)
 {
     const auto inf = score::cpp::bit_cast<std::uint64_t>(std::numeric_limits<double>::infinity());
     const auto abs_num = score::cpp::bit_cast<std::uint64_t>(num) & 0x7FFFFFFFFFFFFFFFU;
     return abs_num == inf;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE bool isinf_sse42(float num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE bool isinf_sse42(float num)
 {
     const auto inf = score::cpp::bit_cast<std::uint32_t>(std::numeric_limits<float>::infinity());
     const auto abs_num = score::cpp::bit_cast<std::uint32_t>(num) & 0x7FFFFFFFU;
     return abs_num == inf;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE bool isnan_sse42(double num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE bool isnan_sse42(double num)
 {
     const auto inf = score::cpp::bit_cast<std::uint64_t>(std::numeric_limits<double>::infinity());
     const auto abs_num = score::cpp::bit_cast<std::uint64_t>(num) & 0x7FFFFFFFFFFFFFFFU;
     return inf < abs_num;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE bool isnan_sse42(float num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE bool isnan_sse42(float num)
 {
     const auto inf = score::cpp::bit_cast<std::uint32_t>(std::numeric_limits<float>::infinity());
     const auto abs_num = score::cpp::bit_cast<std::uint32_t>(num) & 0x7FFFFFFFU;
     return inf < abs_num;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE bool isnormal_sse42(double num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE bool isnormal_sse42(double num)
 {
     const auto min = score::cpp::bit_cast<std::uint64_t>(std::numeric_limits<double>::min());
     const auto inf = score::cpp::bit_cast<std::uint64_t>(std::numeric_limits<double>::infinity());
@@ -180,7 +180,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE boo
     return (abs_num - min) < (inf - min);
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE bool isnormal_sse42(float num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE bool isnormal_sse42(float num)
 {
     const auto min = score::cpp::bit_cast<std::uint32_t>(std::numeric_limits<float>::min());
     const auto inf = score::cpp::bit_cast<std::uint32_t>(std::numeric_limits<float>::infinity());
@@ -188,19 +188,19 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE boo
     return (abs_num - min) < (inf - min);
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE bool signbit_sse42(double num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE bool signbit_sse42(double num)
 {
     const auto v = _mm_movemask_pd(_mm_set_pd1(num));
     return (score::cpp::bit_cast<std::uint32_t>(v) & 1U) != 0U;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE bool signbit_sse42(float num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE bool signbit_sse42(float num)
 {
     const auto v = _mm_movemask_ps(_mm_set_ps1(num));
     return (score::cpp::bit_cast<std::uint32_t>(v) & 1U) != 0U;
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE double sqrt_sse42(double num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE double sqrt_sse42(double num)
 {
     static_assert(score::cpp::equals_bitexact(-0.0, 0.0), "usage of 0.0 in if-statement assumes equality");
     if (!score::cpp::detail::isnan_sse42(num) && (num >= 0.0))
@@ -213,7 +213,7 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE dou
     return ::score_future_cpp_sqrt(num);
 }
 
-inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE float sqrt_sse42(float num)
+inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE float sqrt_sse42(float num)
 {
     static_assert(score::cpp::equals_bitexact(-0.0F, 0.0F), "usage of 0.0 in if-statement assumes equality");
     if (!score::cpp::detail::isnan_sse42(num) && (num >= 0.0F))
@@ -229,6 +229,6 @@ inline SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE flo
 } // namespace detail
 } // namespace score::cpp
 
-#undef SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_ALWAYS_INLINE
+#undef SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_X86_64_SSE42_ALWAYS_INLINE
 
 #endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_MATH_MATH_X86_64_SSE42_HPP
