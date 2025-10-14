@@ -35,7 +35,7 @@ struct simd_vector
 };
 
 template <std::int32_t N>
-struct simd_mask_default_backend
+struct default_mask_backend
 {
     using type = simd_vector<bool, N>;
     static constexpr std::size_t width{N};
@@ -127,10 +127,10 @@ struct simd_mask_default_backend
 };
 
 template <typename T, std::int32_t N>
-struct simd_default_backend
+struct default_backend
 {
     using type = simd_vector<T, N>;
-    using mask_type = typename simd_mask_default_backend<N>::type;
+    using mask_type = typename default_mask_backend<N>::type;
     static constexpr std::size_t width{N};
 
     static simd_vector<T, N> broadcast(const T v) noexcept
@@ -345,20 +345,20 @@ struct scalar_abi;
 template <>
 struct scalar_abi<std::int32_t>
 {
-    using impl = simd_default_backend<std::int32_t, 4>;
-    using mask_impl = simd_mask_default_backend<4>;
+    using impl = default_backend<std::int32_t, 4>;
+    using mask_impl = default_mask_backend<4>;
 };
 template <>
 struct scalar_abi<float>
 {
-    using impl = simd_default_backend<float, 4>;
-    using mask_impl = simd_mask_default_backend<4>;
+    using impl = default_backend<float, 4>;
+    using mask_impl = default_mask_backend<4>;
 };
 template <>
 struct scalar_abi<double>
 {
-    using impl = simd_default_backend<double, 2>;
-    using mask_impl = simd_mask_default_backend<2>;
+    using impl = default_backend<double, 2>;
+    using mask_impl = default_mask_backend<2>;
 };
 
 template <typename T, std::size_t N>
@@ -367,8 +367,8 @@ struct scalar_array_abi;
 template <>
 struct scalar_array_abi<float, 16>
 {
-    using impl = array<float, simd_default_backend<float, 4>, simd_mask_default_backend<4>, 0, 1, 2, 3>;
-    using mask_impl = array_mask<float, simd_mask_default_backend<4>, 0, 1, 2, 3>;
+    using impl = array<float, default_backend<float, 4>, default_mask_backend<4>, 0, 1, 2, 3>;
+    using mask_impl = array_mask<float, default_mask_backend<4>, 0, 1, 2, 3>;
 };
 
 template <>
