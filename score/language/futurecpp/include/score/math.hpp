@@ -25,9 +25,9 @@
 #include <score/math_constants.hpp>
 
 #if defined(__SSE4_2__) && (defined(__linux__) || defined(__QNX__))
-#include <score/private/math/math_x86_64_sse42.hpp>
+#include <score/private/math/x86_64_sse42.hpp>
 #elif defined(__ARM_NEON) && (defined(__linux__) || defined(__QNX__))
-#include <score/private/math/math_aarch64_neon.hpp>
+#include <score/private/math/aarch64_neon.hpp>
 #endif
 
 namespace score::cpp
