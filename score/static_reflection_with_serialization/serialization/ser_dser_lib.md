@@ -164,10 +164,10 @@ inline void serialize(const T& t, serializer_helper<A>& a, string_serialized<A>&
     serialize(offset, a, s.offset);
     if (offset != 0) {                                             /*if offset == 0 we do not have enough space to serialize  */
         auto subsize = static_cast<typename A::subsize_t>(n);
-        serialize(subsize, a, *a.template address<subsize_s_t>(offset));  /*save string size*/ 
-        /*string_size_location should be called string_address like in deserialize */ 
+        serialize(subsize, a, *a.template address<subsize_s_t>(offset));  /*save string size*/
+        /*string_size_location should be called string_address like in deserialize */
         char* string_size_location =
-            a.template address<char>(static_cast<typename A::offset_t>(offset + sizeof(subsize_s_t))); 
+            a.template address<char>(static_cast<typename A::offset_t>(offset + sizeof(subsize_s_t)));
         std::memcpy(string_size_location, t.data(), n);
     }
 }
@@ -211,7 +211,7 @@ inline void deserialize(const string_serialized<A>& s, deserializer_helper<A>& a
 
 /* vector ser/dser */
 //serialized vector<std::string> will have following layout
-//first offset info will be serialized, each member holding offset in the buffer to serialized std::string 
+//first offset info will be serialized, each member holding offset in the buffer to serialized std::string
 //[offset_info_0]...[offset_info_n][serialized std::string_0].....[serialized std::string_n]
 template <typename A, typename S, typename T>
 inline void serialize(const T& t, serializer_helper<A>& a, vector_serialized<A, S>& s) {
