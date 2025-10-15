@@ -10,14 +10,9 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-load("@rules_rust//cargo:defs.bzl", "cargo_build_script")
-load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library")
 
-rust_library(
-    name = "mw_log",
-    srcs = glob(["src/**/*.rs"]),
-    crate_features = ["std"],
-    crate_name = "mw_log",
-    edition = "2021",
+alias(
+    name = "log",
+    actual = "@score_crates//:log",
     visibility = ["//visibility:public"],
 )

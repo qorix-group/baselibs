@@ -33,10 +33,6 @@ gcc.warning_flags(
     minimal_warnings = ["-Wall", "-Wno-error=deprecated-declarations", "-Wno-error=narrowing"],
     strict_warnings = ["-Wextra", "-Wpedantic"],
 )
-
-# Rust rules for Bazel
-bazel_dep(name = "rules_rust", version = "0.56.0")
-
 use_repo(gcc, "gcc_toolchain", "gcc_toolchain_gcc")
 
 # Configure the target toolchain.
@@ -102,6 +98,9 @@ deb(
 
 bazel_dep(name = "nlohmann_json", version = "3.11.3")
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
+
+bazel_dep(name = "score_crates", version = "0.0.3")
+
 #############################################################
 #
 # Constraint values for specifying platforms and toolchains
