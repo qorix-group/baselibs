@@ -372,15 +372,7 @@ public:
     /// @pre v shall point to storage aligned to alignof(value_type).
     ///
     /// [parallel] 9.6.4 8, 9 and 10
-    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const value_type* v, element_aligned_tag) : v_{Abi::impl::load(v)} {}
-
-    /// \brief Constructs the elements of the simd object from an unaligned memory address.
-    ///
-    /// @pre [v, v + size()) is a valid range.
-    /// @pre v shall point to storage aligned to alignof(value_type).
-    ///
-    /// [parallel] 9.6.4 8, 9 and 10
-    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const value_type* v) : v_{Abi::impl::load(v)} {}
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const value_type* v, element_aligned_tag = {}) : v_{Abi::impl::load(v)} {}
 
     /// \brief Convert from platform specific type, e.g., _m128 for SSE4.2.
     ///
@@ -415,19 +407,11 @@ public:
     /// @pre v shall point to storage aligned to alignof(value_type).
     ///
     /// [parallel] 9.6.5 1, 2 and 3
-    void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE copy_from(const value_type* const v, element_aligned_tag)
+    void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE copy_from(const value_type* const v, element_aligned_tag = {})
     {
         static_assert(is_simd_flag_type_v<element_aligned_tag>, "element_aligned_tag not a simd flag type tag");
         v_ = Abi::impl::load(v);
     }
-
-    /// \brief Replaces the elements of the simd object from an unaligned memory address.
-    ///
-    /// @pre [v, v + size()) is a valid range.
-    /// @pre v shall point to storage aligned to alignof(value_type).
-    ///
-    /// [parallel] 9.6.5 1, 2 and 3
-    void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE copy_from(const value_type* const v) { v_ = Abi::impl::load(v); }
 
     /// \brief Replaces the elements of the simd object from an aligned memory address.
     ///
@@ -448,19 +432,11 @@ public:
     /// @pre v shall point to storage aligned to alignof(value_type).
     ///
     /// [parallel] 9.6.5 4, 5 and 6
-    void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE copy_to(value_type* const v, element_aligned_tag) const
+    void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE copy_to(value_type* const v, element_aligned_tag = {}) const
     {
         static_assert(is_simd_flag_type_v<element_aligned_tag>, "element_aligned_tag not a simd flag type tag");
         Abi::impl::store(v, v_);
     }
-
-    /// \brief Replaces the elements of the simd object from an unaligned memory address.
-    ///
-    /// @pre [v, v + size()) is a valid range.
-    /// @pre v shall point to storage aligned to alignof(value_type).
-    ///
-    /// [parallel] 9.6.5 4, 5 and 6
-    void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE copy_to(value_type* const v) const { Abi::impl::store(v, v_); }
 
     /// \brief The value of the ith element.
     ///

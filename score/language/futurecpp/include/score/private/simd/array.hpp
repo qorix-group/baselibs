@@ -77,19 +77,19 @@ struct array_mask
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE all_of(const type v) noexcept
     {
         bool r{true};
-        score::cpp::ignore = std::initializer_list<int>{0, (r = r && Abi::all_of(v[Is]), 0)...};
+        score::cpp::ignore = std::initializer_list<int>{(r = r && Abi::all_of(v[Is]), 0)...};
         return r;
     }
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE any_of(const type v) noexcept
     {
         bool r{false};
-        score::cpp::ignore = std::initializer_list<int>{0, (r = r || Abi::any_of(v[Is]), 0)...};
+        score::cpp::ignore = std::initializer_list<int>{(r = r || Abi::any_of(v[Is]), 0)...};
         return r;
     }
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE none_of(const type v) noexcept
     {
         bool r{true};
-        score::cpp::ignore = std::initializer_list<int>{0, (r = r && Abi::none_of(v[Is]), 0)...};
+        score::cpp::ignore = std::initializer_list<int>{(r = r && Abi::none_of(v[Is]), 0)...};
         return r;
     }
 };
@@ -119,7 +119,7 @@ struct array
     template <typename G, std::size_t... I>
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE init(G&& gen, const std::index_sequence<I...>) noexcept
     {
-        return {Abi::init(gen, make_offset_index_sequence<Is * Abi::width, Abi::width>())...};
+        return {Abi::init(gen, make_offset_index_sequence<Is * Abi::width, Abi::width>{})...};
     }
 
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE load(const T* const v) noexcept
@@ -132,11 +132,11 @@ struct array
     }
     static void SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE store(T* const v, const type a) noexcept
     {
-        score::cpp::ignore = std::initializer_list<int>{0, (Abi::store(v + (Is * Abi::width), a[Is]), 0)...};
+        score::cpp::ignore = std::initializer_list<int>{(Abi::store(v + (Is * Abi::width), a[Is]), 0)...};
     }
     static void SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE store_aligned(T* const v, const type a) noexcept
     {
-        score::cpp::ignore = std::initializer_list<int>{0, (Abi::store(v + (Is * Abi::width), a[Is]), 0)...};
+        score::cpp::ignore = std::initializer_list<int>{(Abi::store(v + (Is * Abi::width), a[Is]), 0)...};
     }
 
     static T SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE extract(const type v, const std::size_t i) noexcept
