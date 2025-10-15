@@ -2,5 +2,3 @@ bazel-*
 user.bazelrc
 .cache
 compile_commands.json
-target/
-Cargo.lock
