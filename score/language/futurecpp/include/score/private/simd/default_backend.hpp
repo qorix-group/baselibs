@@ -304,16 +304,21 @@ struct default_backend
         return r;
     }
 
-    template <typename To>
+    template <typename To, typename = std::enable_if_t<std::is_arithmetic<To>::value>>
     static simd_vector<To, N> convert(const simd_vector<T, N>& v, To) noexcept
     {
-        static_assert(sizeof(To) == sizeof(T), "Mismatch in number of elements");
         simd_vector<To, N> r;
         for (std::int32_t i{0}; i < N; ++i)
         {
             r.v[i] = static_cast<To>(v.v[i]);
         }
         return r;
+    }
+
+    template <typename To, typename U, typename = std::enable_if_t<std::is_arithmetic<U>::value>>
+    static simd_vector<U, N> convert(const simd_vector<T, N>& v, U)
+    {
+        return convert(v, U{});
     }
 
     static simd_vector<bool, N> is_nan(const simd_vector<T, N>& v) noexcept
@@ -339,52 +344,32 @@ struct default_backend
     }
 };
 
-template <typename T>
-struct scalar_abi;
-
-template <>
-struct scalar_abi<std::int32_t>
-{
-    using impl = default_backend<std::int32_t, 4>;
-    using mask_impl = default_mask_backend<4>;
-};
-template <>
-struct scalar_abi<float>
-{
-    using impl = default_backend<float, 4>;
-    using mask_impl = default_mask_backend<4>;
-};
-template <>
-struct scalar_abi<double>
-{
-    using impl = default_backend<double, 2>;
-    using mask_impl = default_mask_backend<2>;
-};
-
 template <typename T, std::size_t N>
-struct scalar_array_abi;
-
-template <>
-struct scalar_array_abi<float, 16>
+struct scalar_abi
 {
-    using impl = array<float, default_backend<float, 4>, default_mask_backend<4>, 0, 1, 2, 3>;
-    using mask_impl = array_mask<float, default_mask_backend<4>, 0, 1, 2, 3>;
+    using impl = default_backend<T, std::int32_t{N}>;
+    using mask_impl = default_mask_backend<std::int32_t{N}>;
 };
 
+template <>
+struct native_abi<std::uint8_t>
+{
+    using type = scalar_abi<std::uint8_t, 16>;
+};
 template <>
 struct native_abi<std::int32_t>
 {
-    using type = scalar_abi<std::int32_t>;
+    using type = scalar_abi<std::int32_t, 4>;
 };
 template <>
 struct native_abi<float>
 {
-    using type = scalar_abi<float>;
+    using type = scalar_abi<float, 4>;
 };
 template <>
 struct native_abi<double>
 {
-    using type = scalar_abi<double>;
+    using type = scalar_abi<double, 2>;
 };
 
 template <>
@@ -400,7 +385,7 @@ struct deduce_abi<float, 4>
 template <>
 struct deduce_abi<float, 16>
 {
-    using type = scalar_array_abi<float, 16>;
+    using type = scalar_abi<float, 16>;
 };
 template <>
 struct deduce_abi<double, 2>
@@ -411,19 +396,19 @@ struct deduce_abi<double, 2>
 } // namespace detail
 
 template <>
-struct is_abi_tag<detail::scalar_abi<std::int32_t>> : std::true_type
+struct is_abi_tag<detail::scalar_abi<std::int32_t, 4>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<detail::scalar_abi<float>> : std::true_type
+struct is_abi_tag<detail::scalar_abi<float, 4>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<detail::scalar_array_abi<float, 16>> : std::true_type
+struct is_abi_tag<detail::scalar_abi<float, 16>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<detail::scalar_abi<double>> : std::true_type
+struct is_abi_tag<detail::scalar_abi<double, 2>> : std::true_type
 {
 };
 

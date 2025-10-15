@@ -146,6 +146,33 @@ template <typename T>
 struct sse42_backend;
 
 template <>
+struct sse42_backend<std::uint8_t>
+{
+    using type = __m128i;
+    static constexpr std::size_t width{16};
+
+    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE load(const std::uint8_t* const v) noexcept
+    {
+        return _mm_loadu_si128(reinterpret_cast<const type*>(v));
+    }
+    static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE load_aligned(const std::uint8_t* const v) noexcept
+    {
+        return _mm_load_si128(reinterpret_cast<const type*>(v));
+    }
+
+    template <typename To>
+    static std::array<typename To::value_type, 4> SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE convert(const type v, float) noexcept
+    {
+        return {
+            _mm_cvtepi32_ps(_mm_cvtepu8_epi32(v)),
+            _mm_cvtepi32_ps(_mm_cvtepu8_epi32(_mm_srli_si128(v, 4))),
+            _mm_cvtepi32_ps(_mm_cvtepu8_epi32(_mm_srli_si128(v, 8))),
+            _mm_cvtepi32_ps(_mm_cvtepu8_epi32(_mm_srli_si128(v, 12))),
+        };
+    }
+};
+
+template <>
 struct sse42_backend<std::int32_t>
 {
     using type = __m128i;
@@ -389,6 +416,12 @@ template <typename T>
 struct sse42_abi;
 
 template <>
+struct sse42_abi<std::uint8_t>
+{
+    using impl = sse42_backend<std::uint8_t>;
+    using mask_impl = sse42_mask_backend<std::uint8_t>;
+};
+template <>
 struct sse42_abi<std::int32_t>
 {
     using impl = sse42_backend<std::int32_t>;
@@ -417,6 +450,11 @@ struct sse42_array_abi<float, 16>
     using mask_impl = array_mask<float, sse42_mask_backend<float>, 0, 1, 2, 3>;
 };
 
+template <>
+struct native_abi<std::uint8_t>
+{
+    using type = sse42_abi<std::uint8_t>;
+};
 template <>
 struct native_abi<std::int32_t>
 {

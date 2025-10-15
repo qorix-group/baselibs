@@ -174,7 +174,7 @@ TYPED_TEST(simd_fixture, InitializeUnaligned)
 /// @requirement CB-#18398050, CB-#18397902
 TYPED_TEST(simd_fixture, InitializeAligned)
 {
-    alignas(16) const auto scalars{integer_sequence<TypeParam>()};
+    alignas(score::cpp::simd::memory_alignment_v<TypeParam>) const auto scalars{integer_sequence<TypeParam>()};
     const TypeParam vector{scalars.data(), score::cpp::simd::vector_aligned};
 
     for (std::size_t i{0U}; i < vector.size(); ++i)
@@ -215,7 +215,7 @@ TYPED_TEST(simd_fixture, LoadUnaligned)
 /// @requirement CB-#18398050, CB-#18397902
 TYPED_TEST(simd_fixture, LoadAligned)
 {
-    alignas(16) const auto scalars{integer_sequence<TypeParam>()};
+    alignas(score::cpp::simd::memory_alignment_v<TypeParam>) const auto scalars{integer_sequence<TypeParam>()};
     TypeParam vector;
     vector.copy_from(scalars.data(), score::cpp::simd::vector_aligned);
 
@@ -229,8 +229,9 @@ TYPED_TEST(simd_fixture, LoadAligned)
 /// @requirement CB-#18398050, CB-#18397902
 TYPED_TEST(simd_fixture, LoadAligned_WhenCopyingFromUnalignedMemory_ThenPreconditionViolated)
 {
+    using value_type = typename TypeParam::value_type;
     TypeParam vector;
-    alignas(16) const std::array<typename TypeParam::value_type, vector.size() + 1> scalars{};
+    alignas(score::cpp::simd::memory_alignment_v<TypeParam>) const std::array<value_type, vector.size() + 1> scalars{};
 
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(vector.copy_from(&scalars[1], score::cpp::simd::vector_aligned));
 }
@@ -263,9 +264,10 @@ TYPED_TEST(simd_fixture, StoreUnaligned)
 /// @requirement CB-#18398050, CB-#18397902
 TYPED_TEST(simd_fixture, StoreAligned)
 {
+    using value_type = typename TypeParam::value_type;
     const auto scalars{integer_sequence<TypeParam>()};
     const TypeParam vector{scalars.data()};
-    alignas(16) std::array<typename TypeParam::value_type, vector.size()> result;
+    alignas(score::cpp::simd::memory_alignment_v<TypeParam>) std::array<value_type, vector.size()> result;
     vector.copy_to(result.data(), score::cpp::simd::vector_aligned);
 
     EXPECT_EQ(result, scalars);
@@ -277,7 +279,7 @@ TYPED_TEST(simd_fixture, StoreAligned_WhenCopyingToUnalignedMemory_ThenPrecondit
 {
     using value_type = typename TypeParam::value_type;
     const TypeParam vector{value_type{23}};
-    alignas(16) std::array<value_type, vector.size() + 1U> scalars;
+    alignas(score::cpp::simd::memory_alignment_v<TypeParam>) std::array<value_type, vector.size() + 1U> scalars;
 
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(vector.copy_to(&scalars[1], score::cpp::simd::vector_aligned));
 }
@@ -962,19 +964,39 @@ TYPED_TEST(simd_fixture, Clscore_future_cpp_WhenNoValidBoundaryInterval_ThenPrec
 /// @requirement CB-#18398050
 TEST(simd, ConvertFloatToInt)
 {
-    EXPECT_TRUE(
-        all_of(score::cpp::simd::vec<std::int32_t>{-23} == score::cpp::simd::vec<std::int32_t>{score::cpp::simd::vec<float>{-23.75F}}));
-    EXPECT_TRUE(all_of(score::cpp::simd::vec<std::int32_t>{23} == score::cpp::simd::vec<std::int32_t>{score::cpp::simd::vec<float>{23.0F}}));
-    EXPECT_TRUE(
-        all_of(score::cpp::simd::vec<std::int32_t>{23} == score::cpp::simd::vec<std::int32_t>{score::cpp::simd::vec<float>{23.75F}}));
+    const auto seq = integer_sequence<score::cpp::simd::vec<float>>();
+    const score::cpp::simd::vec<std::int32_t> b{score::cpp::simd::vec<float>{seq.data()}};
+
+    for (std::size_t i{0U}; i < b.size(); ++i)
+    {
+        EXPECT_EQ(static_cast<std::int32_t>(seq[i]), b[i]);
+    }
 }
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
 TEST(simd, ConvertIntToFloat)
 {
-    EXPECT_TRUE(all_of(score::cpp::simd::vec<float>{-23.0F} == score::cpp::simd::vec<float>{score::cpp::simd::vec<std::int32_t>{-23}}));
-    EXPECT_TRUE(all_of(score::cpp::simd::vec<float>{23.0F} == score::cpp::simd::vec<float>{score::cpp::simd::vec<std::int32_t>{23}}));
+    const auto seq = integer_sequence<score::cpp::simd::vec<std::int32_t>>();
+    const score::cpp::simd::vec<float> b{score::cpp::simd::vec<std::int32_t>{seq.data()}};
+
+    for (std::size_t i{0U}; i < b.size(); ++i)
+    {
+        EXPECT_EQ(static_cast<float>(seq[i]), b[i]);
+    }
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18398050
+TEST(simd, ConvertCharToFloat)
+{
+    const std::array<std::uint8_t, 32> a{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+    const score::cpp::simd::vec<float, 16> b{a.data()};
+
+    for (std::size_t i{0U}; i < b.size(); ++i)
+    {
+        EXPECT_EQ(static_cast<std::uint8_t>(a[i]), b[i]);
+    }
 }
 
 /// @testmethods TM_REQUIREMENT

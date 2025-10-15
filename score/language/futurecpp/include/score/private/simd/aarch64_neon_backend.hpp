@@ -201,6 +201,42 @@ template <typename T>
 struct neon_backend;
 
 template <>
+struct neon_backend<std::uint8_t>
+{
+    using type = uint8x16_t;
+    static constexpr std::size_t width{16};
+
+    static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_AARCH64_NEON_ALWAYS_INLINE load(const std::uint8_t* const v) noexcept
+    {
+        return vld1q_u8(v);
+    }
+    static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_AARCH64_NEON_ALWAYS_INLINE load_aligned(const std::uint8_t* const v) noexcept
+    {
+        return vld1q_u8(v);
+    }
+
+    template <typename To>
+    static std::array<typename To::value_type, 4> SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_AARCH64_NEON_ALWAYS_INLINE convert(const type v,
+                                                                                                      float) noexcept
+    {
+        const uint16x8_t u2a{vmovl_u8(vget_low_u8(v))};
+        const uint16x8_t u2b{vshll_high_n_u8(v, 0)};
+
+        const uint32x4_t u3a{vmovl_u16(vget_low_u16(u2a))};
+        const uint32x4_t u3b{vshll_high_n_u16(u2a, 0)};
+        const uint32x4_t u3c{vmovl_u16(vget_low_u16(u2b))};
+        const uint32x4_t u3d{vshll_high_n_u16(u2b, 0)};
+
+        return {
+            vcvtq_f32_u32(u3a),
+            vcvtq_f32_u32(u3b),
+            vcvtq_f32_u32(u3c),
+            vcvtq_f32_u32(u3d),
+        };
+    }
+};
+
+template <>
 struct neon_backend<std::int32_t>
 {
     using type = int32x4_t;
@@ -552,6 +588,12 @@ template <typename T>
 struct neon_abi;
 
 template <>
+struct neon_abi<std::uint8_t>
+{
+    using impl = neon_backend<std::uint8_t>;
+    using mask_impl = neon_mask_backend<std::uint8_t>;
+};
+template <>
 struct neon_abi<std::int32_t>
 {
     using impl = neon_backend<std::int32_t>;
@@ -580,6 +622,11 @@ struct neon_array_abi<float, 16>
     using mask_impl = array_mask<float, neon_mask_backend<float>, 0, 1, 2, 3>;
 };
 
+template <>
+struct native_abi<std::uint8_t>
+{
+    using type = neon_abi<std::uint8_t>;
+};
 template <>
 struct native_abi<std::int32_t>
 {

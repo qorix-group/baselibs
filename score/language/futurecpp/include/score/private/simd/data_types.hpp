@@ -312,6 +312,13 @@ class basic_vec
                conjunction_v<std::is_same<T, score::cpp::invoke_result_t<G, std::integral_constant<std::size_t, Is>>>...>;
     }
 
+    template <typename From>
+    static constexpr bool is_convertible()
+    {
+        return (!std::is_same<value_type, From>::value) && (simd_size_v<From, native_abi<From>> == size()) &&
+               (std::is_integral<From>::value || std::is_floating_point<From>::value);
+    }
+
 public:
     using value_type = T;
     using mask_type = basic_mask<T, Abi>;
@@ -373,6 +380,31 @@ public:
     ///
     /// [parallel] 9.6.4 8, 9 and 10
     SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const value_type* v, element_aligned_tag = {}) : v_{Abi::impl::load(v)} {}
+
+    /// \brief Constructs the elements from an unaligned memory address.
+    ///
+    /// @pre [v, v + size()) is a valid range.
+    /// @pre v shall point to storage aligned to alignof(value_type).
+    ///
+    /// [parallel] 9.6.4 8, 9 and 10
+    template <typename U, typename = std::enable_if_t<!is_forwarding_ref_overload<U>::value && is_convertible<U>()>>
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const U* const v, vector_aligned_tag)
+        : v_{native_abi<U>::impl::template convert<typename Abi::impl::type>(native_abi<U>::impl::load_aligned(v),
+                                                                             value_type{})}
+    {
+    }
+
+    /// \brief Constructs the elements from an unaligned memory address.
+    ///
+    /// @pre [v, v + size()) is a valid range.
+    ///
+    /// [parallel] 9.6.4 8, 9 and 10
+    template <typename U, typename = std::enable_if_t<!is_forwarding_ref_overload<U>::value && is_convertible<U>()>>
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const U* const v, element_aligned_tag = {})
+        : v_{native_abi<U>::impl::template convert<typename Abi::impl::type>(native_abi<U>::impl::load(v),
+                                                                             value_type{})}
+    {
+    }
 
     /// \brief Convert from platform specific type, e.g., _m128 for SSE4.2.
     ///
