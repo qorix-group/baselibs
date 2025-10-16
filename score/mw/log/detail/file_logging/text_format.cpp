@@ -54,7 +54,12 @@ std::size_t TextFormat::PutLogStringViewData(const std::string_view data, score:
         else
         {
             std::advance(destination_it, -1L);
+            // LCOV_EXCL_BR_START : Defensive programming, else branch could not be reached
+            // Preconditions to reach else branch - data.size()==0 or buffer.size()==0
+            // These preconditions checked during length calculation
+            // In case when length==0 - this part of code is not executed
             if (destination_it >= buffer.begin())
+            // LCOV_EXCL_BR_STOP
             {
                 *destination_it = ' ';
             }
