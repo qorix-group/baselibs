@@ -16,7 +16,7 @@ module(
 )
 
 # Configure the host toolchain.
-bazel_dep(name = "score_toolchains_gcc", version = "0.4", dev_dependency=True)
+bazel_dep(name = "score_toolchains_gcc", version = "0.5", dev_dependency=True)
 gcc = use_extension("@score_toolchains_gcc//extentions:gcc.bzl", "gcc", dev_dependency=True)
 gcc.toolchain(
     url = "https://github.com/eclipse-score/toolchains_gcc_packages/releases/download/0.0.1/x86_64-unknown-linux-gnu_gcc12.tar.gz",
@@ -46,8 +46,8 @@ toolchains_qnx.sdp(
 use_repo(toolchains_qnx, "toolchains_qnx_sdp")
 use_repo(toolchains_qnx, "toolchains_qnx_qcc")
 
-bazel_dep(name = "googletest", version = "1.15.0")
-bazel_dep(name = "google_benchmark", version = "1.9.1")
+bazel_dep(name = "googletest", version = "1.17.0.bcr.1")
+bazel_dep(name = "google_benchmark", version = "1.9.4")
 
 bazel_dep(name = "boost.container", version = "1.87.0")
 bazel_dep(name = "boost.interprocess", version = "1.87.0")
@@ -97,7 +97,7 @@ deb(
 )
 
 bazel_dep(name = "nlohmann_json", version = "3.11.3")
-bazel_dep(name = "bazel_skylib", version = "1.7.1")
+bazel_dep(name = "bazel_skylib", version = "1.8.1")
 
 bazel_dep(name = "score_crates", version = "0.0.3")
 
