@@ -80,6 +80,8 @@ ResultBlank SigEventImpl::SetSignalEventValue(const std::variant<int32_t, void*>
 
     if (std::holds_alternative<int>(signal_event_value))
     {
+        // Use of C API, from which the union comes. Union access is unavoidable.
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access) POSIX Standard union
         raw_sigevent_.sigev_value.sival_int = std::get<int>(signal_event_value);
     }
     else
@@ -89,6 +91,8 @@ ResultBlank SigEventImpl::SetSignalEventValue(const std::variant<int32_t, void*>
         {
             return MakeUnexpected(SigEventErrorCode::kInvalidSignalEventValue);
         }
+        // Use of C API, from which the union comes. Union access is unavoidable.
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access) POSIX Standard union
         raw_sigevent_.sigev_value.sival_ptr = ptr;
     }
     return {};
@@ -141,7 +145,7 @@ sigevent& SigEventImpl::GetSigevent()
 void SigEventImpl::Reset()
 {
     mw::log::LogDebug() << __func__ << "called";
-    std::memset(&raw_sigevent_, 0, sizeof(raw_sigevent_));
+    raw_sigevent_ = {};
 }
 
 }  // namespace score::os

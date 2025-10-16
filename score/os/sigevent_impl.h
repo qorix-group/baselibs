@@ -23,6 +23,7 @@ namespace score::os
 class SigEventImpl final : public SigEvent
 {
   public:
+    SigEventImpl() = default;
     ~SigEventImpl() override;
     ResultBlank SetNotificationType(const SigEvent::NotificationType notification_type) override;
     ResultBlank SetSignalNumber(const std::int32_t signal_number) override;
@@ -31,6 +32,11 @@ class SigEventImpl final : public SigEvent
     ResultBlank SetThreadAttributes(pthread_attr_t& attr) override;
     const sigevent& GetSigevent() const override;
     void Reset() override;
+
+    SigEventImpl(const SigEventImpl& other) = delete;
+    SigEventImpl(SigEventImpl&& other) = delete;
+    SigEventImpl& operator=(const SigEventImpl& other) = delete;
+    SigEventImpl& operator=(SigEventImpl&& other) = delete;
 
   protected:
     sigevent& GetSigevent() override;

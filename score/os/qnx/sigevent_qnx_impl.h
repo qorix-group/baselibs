@@ -21,7 +21,7 @@ namespace score::os
 class SigEventQnxImpl final : public SigEventQnx
 {
   public:
-    SigEventQnxImpl(std::unique_ptr<SigEvent> signal_event = nullptr);
+    explicit SigEventQnxImpl(std::unique_ptr<SigEvent> signal_event = nullptr);
     ~SigEventQnxImpl() override = default;
 
     // override the common SigEvent functions
