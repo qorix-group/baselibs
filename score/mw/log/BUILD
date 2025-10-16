@@ -127,7 +127,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log/custom_recorder_example:__pkg__",
         "@score_baselibs//score/mw/log/detail:__pkg__",
         "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
         "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",

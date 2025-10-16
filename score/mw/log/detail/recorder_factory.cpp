@@ -78,12 +78,6 @@ std::unique_ptr<Recorder> RecorderFactory::CreateRecorderFromLogMode(
             recorder = system_recorder_factory.CreateLogRecorder(config, memory_resource);
             break;
         }
-        case LogMode::kCustom:
-        {
-            CustomRecorderFactoryType custom_recorder_factory;
-            recorder = custom_recorder_factory.CreateLogRecorder(config, memory_resource);
-            break;
-        }
         case LogMode::kInvalid:  // Intentional fall-through
         {
             ReportInitializationError(Error::kRecorderFactoryUnsupportedLogMode);

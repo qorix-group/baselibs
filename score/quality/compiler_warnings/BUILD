@@ -20,6 +20,6 @@ cc_library(
 test_suite(
     name = "unit_tests",
     tests = [
-        #"@score_baselibs//score/quality/compiler_warnings/post_processing:unit_tests",
+        "@score_baselibs//score/quality/compiler_warnings/post_processing:unit_tests",
     ],
 )

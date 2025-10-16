@@ -69,8 +69,7 @@ constexpr std::string::value_type kLogModeCombineChar = '|';
 const std::unordered_map<std::string_view, LogMode> kStringToLogMode{{{"kRemote", LogMode::kRemote},
                                                                       {"kConsole", LogMode::kConsole},
                                                                       {"kFile", LogMode::kFile},
-                                                                      {"kSystem", LogMode::kSystem},
-                                                                      {"kCustom", LogMode::kCustom}}};                                                                    
+                                                                      {"kSystem", LogMode::kSystem}}};
 
 /// \brief Provide user feedback in case a configuration file contains errors.
 template <typename T>
@@ -196,7 +195,7 @@ score::Result<LogMode> LogModeFromString(const std::string_view str) noexcept
 
     if (result == kStringToLogMode.end())
     {
-      return MakeUnexpected(Error::kInvalidLogModeString,"Expected `kRemote`, `kConsole`, `kSystem`, `kFile` or `kCustom`.");  
+        return MakeUnexpected(Error::kInvalidLogModeString, "Expected `kRemote`, `kConsole`, `kSystem` or `kFile`.");
     }
 
     return result->second;
