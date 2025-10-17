@@ -158,21 +158,36 @@ score::cpp::expected<std::int64_t, score::os::Error> ChannelImpl::MsgSendv(const
     return result;
 }
 
+// NOLINTBEGIN(score-banned-preprocessor-directives) see below
+// This rule stated: "The #pragma directive shall not be used"
+// rationale: pre-processor directives are required for diagnostic warning "-Wc99-extensions"
+
 // this is a wrapper only, pointers will be used below anyway
 // coverity[autosar_cpp14_a8_4_10_violation]
 void ChannelImpl::SetIov(iov_t* const msg, void* const addr, const size_t len) const noexcept
 {
     /* KW_SUPPRESS_START:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
+// coverity[autosar_cpp14_a16_0_1_violation]
+#if defined(__clang__)
+// coverity[autosar_cpp14_a16_0_1_violation]
+// coverity[autosar_cpp14_a16_7_1_violation]
+#pragma clang diagnostic push
+// Rationale: C-style cast is used in SETIOV, this is defined in a qnx internal code so we cannot change it
+// coverity[autosar_cpp14_a16_0_1_violation]
+// coverity[autosar_cpp14_a16_7_1_violation]
+#pragma clang diagnostic warning "-Wc99-extensions"
+// coverity[autosar_cpp14_a16_0_1_violation]
+#endif
     // Cast is happening outside our code domain
     // coverity[autosar_cpp14_a5_2_2_violation]
-#if defined(__clang__)
-#pragma clang diagnostic push
-// FIXME: @codeowners please add justification here (cf. platform/aas/intc/typedmemd/code/io_handler/typedmemoryio.cpp)
-#pragma clang diagnostic warning "-Wc99-extensions"
-#endif
+    // coverity[autosar_cpp14_m7_3_1_violation]
     SETIOV(msg, addr, len);
+// coverity[autosar_cpp14_a16_0_1_violation]
 #if defined(__clang__)
+// coverity[autosar_cpp14_a16_0_1_violation]
+// coverity[autosar_cpp14_a16_7_1_violation]
 #pragma clang diagnostic pop
+// coverity[autosar_cpp14_a16_0_1_violation]
 #endif
     /* KW_SUPPRESS_END:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
 }
@@ -182,17 +197,28 @@ void ChannelImpl::SetIov(iov_t* const msg, void* const addr, const size_t len) c
 void ChannelImpl::SetIovConst(iov_t* const msg, const void* const addr, const size_t len) const noexcept
 {
 /* KW_SUPPRESS_START:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
+// coverity[autosar_cpp14_a16_0_1_violation]
 #if defined(__clang__)
+// coverity[autosar_cpp14_a16_0_1_violation]
+// coverity[autosar_cpp14_a16_7_1_violation]
 #pragma clang diagnostic push
-// FIXME: @codeowners please add justification here (cf. platform/aas/intc/typedmemd/code/io_handler/typedmemoryio.cpp)
+// Rationale: C-style cast is used in SETIOV, this is defined in a qnx internal code so we cannot change it
+// coverity[autosar_cpp14_a16_0_1_violation]
+// coverity[autosar_cpp14_a16_7_1_violation]
 #pragma clang diagnostic warning "-Wc99-extensions"
+// coverity[autosar_cpp14_a16_0_1_violation]
 #endif
     SETIOV_CONST(msg, addr, len);
+// coverity[autosar_cpp14_a16_0_1_violation]
 #if defined(__clang__)
+// coverity[autosar_cpp14_a16_0_1_violation]
+// coverity[autosar_cpp14_a16_7_1_violation]
 #pragma clang diagnostic pop
+// coverity[autosar_cpp14_a16_0_1_violation]
 #endif
     /* KW_SUPPRESS_END:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
 }
+// NOLINTEND(score-banned-preprocessor-directives)
 
 /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 score::cpp::expected_blank<score::os::Error> ChannelImpl::MsgSendPulse(const std::int32_t coid,
