@@ -174,7 +174,7 @@ TYPED_TEST(simd_fixture, InitializeUnaligned)
 /// @requirement CB-#18398050, CB-#18397902
 TYPED_TEST(simd_fixture, InitializeAligned)
 {
-    alignas(score::cpp::simd::memory_alignment_v<TypeParam>) const auto scalars{integer_sequence<TypeParam>()};
+    alignas(score::cpp::simd::alignment_v<TypeParam>) const auto scalars{integer_sequence<TypeParam>()};
     const TypeParam vector{scalars.data(), score::cpp::simd::vector_aligned};
 
     for (std::size_t i{0U}; i < vector.size(); ++i)
@@ -215,7 +215,7 @@ TYPED_TEST(simd_fixture, LoadUnaligned)
 /// @requirement CB-#18398050, CB-#18397902
 TYPED_TEST(simd_fixture, LoadAligned)
 {
-    alignas(score::cpp::simd::memory_alignment_v<TypeParam>) const auto scalars{integer_sequence<TypeParam>()};
+    alignas(score::cpp::simd::alignment_v<TypeParam>) const auto scalars{integer_sequence<TypeParam>()};
     TypeParam vector;
     vector.copy_from(scalars.data(), score::cpp::simd::vector_aligned);
 
@@ -231,7 +231,7 @@ TYPED_TEST(simd_fixture, LoadAligned_WhenCopyingFromUnalignedMemory_ThenPrecondi
 {
     using value_type = typename TypeParam::value_type;
     TypeParam vector;
-    alignas(score::cpp::simd::memory_alignment_v<TypeParam>) const std::array<value_type, vector.size() + 1> scalars{};
+    alignas(score::cpp::simd::alignment_v<TypeParam>) const std::array<value_type, vector.size() + 1> scalars{};
 
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(vector.copy_from(&scalars[1], score::cpp::simd::vector_aligned));
 }
@@ -267,7 +267,7 @@ TYPED_TEST(simd_fixture, StoreAligned)
     using value_type = typename TypeParam::value_type;
     const auto scalars{integer_sequence<TypeParam>()};
     const TypeParam vector{scalars.data()};
-    alignas(score::cpp::simd::memory_alignment_v<TypeParam>) std::array<value_type, vector.size()> result;
+    alignas(score::cpp::simd::alignment_v<TypeParam>) std::array<value_type, vector.size()> result;
     vector.copy_to(result.data(), score::cpp::simd::vector_aligned);
 
     EXPECT_EQ(result, scalars);
@@ -279,7 +279,7 @@ TYPED_TEST(simd_fixture, StoreAligned_WhenCopyingToUnalignedMemory_ThenPrecondit
 {
     using value_type = typename TypeParam::value_type;
     const TypeParam vector{value_type{23}};
-    alignas(score::cpp::simd::memory_alignment_v<TypeParam>) std::array<value_type, vector.size() + 1U> scalars;
+    alignas(score::cpp::simd::alignment_v<TypeParam>) std::array<value_type, vector.size() + 1U> scalars;
 
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(vector.copy_to(&scalars[1], score::cpp::simd::vector_aligned));
 }

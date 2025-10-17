@@ -26,7 +26,6 @@ namespace score::cpp
 {
 namespace simd
 {
-
 namespace detail
 {
 

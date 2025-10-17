@@ -36,6 +36,19 @@ struct deduce_abi
 {
     using type = invalid_abi;
 };
+
+/// \brief If `T` is a standard or extended ABI tag returns `true_type`, and `false_type` otherwise.
+///
+/// [parallel] 9.4 1 and 2
+/// \{
+template <typename T>
+struct is_abi_tag : std::false_type
+{
+};
+template <typename T>
+constexpr bool is_abi_tag_v{is_abi_tag<T>::value};
+/// \}
+
 } // namespace detail
 
 /// \brief An ABI tag is a type that indicates a choice of size and binary representation for objects of data-parallel
@@ -48,18 +61,6 @@ using native_abi = typename detail::native_abi<T>::type;
 
 template <typename T, std::size_t N>
 using deduce_abi = typename detail::deduce_abi<T, N>::type;
-/// \}
-
-/// \brief If `T` is a standard or extended ABI tag returns `true_type`, and `false_type` otherwise.
-///
-/// [parallel] 9.4 1 and 2
-/// \{
-template <typename T>
-struct is_abi_tag : std::false_type
-{
-};
-template <typename T>
-constexpr bool is_abi_tag_v{is_abi_tag<T>::value};
 /// \}
 
 } // namespace simd

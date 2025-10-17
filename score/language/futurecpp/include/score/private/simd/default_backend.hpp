@@ -24,7 +24,6 @@ namespace score::cpp
 {
 namespace simd
 {
-
 namespace detail
 {
 
@@ -393,25 +392,24 @@ struct deduce_abi<double, 2>
     using type = native_abi<double>::type;
 };
 
+template <>
+struct is_abi_tag<scalar_abi<std::int32_t, 4>> : std::true_type
+{
+};
+template <>
+struct is_abi_tag<scalar_abi<float, 4>> : std::true_type
+{
+};
+template <>
+struct is_abi_tag<scalar_abi<float, 16>> : std::true_type
+{
+};
+template <>
+struct is_abi_tag<scalar_abi<double, 2>> : std::true_type
+{
+};
+
 } // namespace detail
-
-template <>
-struct is_abi_tag<detail::scalar_abi<std::int32_t, 4>> : std::true_type
-{
-};
-template <>
-struct is_abi_tag<detail::scalar_abi<float, 4>> : std::true_type
-{
-};
-template <>
-struct is_abi_tag<detail::scalar_abi<float, 16>> : std::true_type
-{
-};
-template <>
-struct is_abi_tag<detail::scalar_abi<double, 2>> : std::true_type
-{
-};
-
 } // namespace simd
 } // namespace score::cpp
 

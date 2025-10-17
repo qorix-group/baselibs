@@ -664,25 +664,24 @@ struct deduce_abi<double, 2>
     using type = native_abi<double>::type;
 };
 
+template <>
+struct is_abi_tag<neon_abi<std::int32_t>> : std::true_type
+{
+};
+template <>
+struct is_abi_tag<neon_abi<float>> : std::true_type
+{
+};
+template <>
+struct is_abi_tag<neon_array_abi<float, 16>> : std::true_type
+{
+};
+template <>
+struct is_abi_tag<neon_abi<double>> : std::true_type
+{
+};
+
 } // namespace detail
-
-template <>
-struct is_abi_tag<detail::neon_abi<std::int32_t>> : std::true_type
-{
-};
-template <>
-struct is_abi_tag<detail::neon_abi<float>> : std::true_type
-{
-};
-template <>
-struct is_abi_tag<detail::neon_array_abi<float, 16>> : std::true_type
-{
-};
-template <>
-struct is_abi_tag<detail::neon_abi<double>> : std::true_type
-{
-};
-
 } // namespace simd
 } // namespace score::cpp
 
