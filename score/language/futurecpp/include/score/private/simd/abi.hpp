@@ -21,11 +21,21 @@ namespace simd
 
 namespace detail
 {
+struct invalid_abi
+{
+};
+
 template <typename T>
-struct native_abi;
+struct native_abi
+{
+    using type = invalid_abi;
+};
 
 template <typename T, std::size_t N>
-struct deduce_abi;
+struct deduce_abi
+{
+    using type = invalid_abi;
+};
 } // namespace detail
 
 /// \brief An ABI tag is a type that indicates a choice of size and binary representation for objects of data-parallel

@@ -30,10 +30,10 @@ namespace score::cpp
 namespace simd
 {
 
-template <typename T, typename Abi>
+template <typename T, typename Abi = native_abi<T>, bool IsEnabled = is_abi_tag<Abi>::value>
 class basic_vec;
 
-template <typename T, typename Abi>
+template <typename T, typename Abi = native_abi<T>, bool IsEnabled = is_abi_tag<Abi>::value>
 class basic_mask;
 
 /// \brief If `T` is a specialization of the `simd` class template returns `true_type`, and `false_type` otherwise.
@@ -41,15 +41,15 @@ class basic_mask;
 /// [parallel] 9.4 3 and 4
 /// \{
 template <typename T>
-struct is_simd : std::false_type
+struct is_basic_vec : std::false_type
 {
 };
 template <typename T, typename Abi>
-struct is_simd<basic_vec<T, Abi>> : is_abi_tag<Abi>
+struct is_basic_vec<basic_vec<T, Abi, true>> : std::true_type
 {
 };
 template <typename T>
-constexpr bool is_simd_v{is_simd<T>::value};
+constexpr bool is_basic_vec_v{is_basic_vec<T>::value};
 /// \}
 
 /// \brief If `T` is a specialization of the `simd_mask` class template returns `true_type`, and `false_type` otherwise.
@@ -57,15 +57,15 @@ constexpr bool is_simd_v{is_simd<T>::value};
 /// [parallel] 9.4 5 and 6
 /// \{
 template <typename T>
-struct is_simd_mask : std::false_type
+struct is_basic_mask : std::false_type
 {
 };
 template <typename T, typename Abi>
-struct is_simd_mask<basic_mask<T, Abi>> : is_abi_tag<Abi>
+struct is_basic_mask<basic_mask<T, Abi, true>> : std::true_type
 {
 };
 template <typename T>
-constexpr bool is_simd_mask_v{is_simd_mask<T>::value};
+constexpr bool is_basic_mask_v{is_basic_mask<T>::value};
 /// \}
 
 struct element_aligned_tag
@@ -106,12 +106,16 @@ constexpr bool is_simd_flag_type_v{is_simd_flag_type<T>::value};
 ///
 /// [parallel] 9.4 9, 10 and 11
 /// \{
-template <typename T, typename Abi>
-struct simd_size : std::integral_constant<std::size_t, Abi::impl::width>
+template <typename T>
+struct simd_size : std::integral_constant<std::size_t, 0U>
 {
 };
 template <typename T, typename Abi>
-constexpr std::size_t simd_size_v{simd_size<T, Abi>::value};
+struct simd_size<basic_vec<T, Abi, true>> : std::integral_constant<std::size_t, Abi::impl::width>
+{
+};
+template <typename T, typename Abi>
+constexpr std::size_t simd_size_v{simd_size<basic_vec<T, Abi>>::value};
 /// \}
 
 /// \brief If `value` is present returns `integral_constant<size_t, N>` with `N` identifing the alignment restrictions
@@ -121,12 +125,17 @@ constexpr std::size_t simd_size_v{simd_size<T, Abi>::value};
 ///
 /// [parallel] 9.4 12, 13 and 14
 /// \{
-template <typename T, typename U = typename T::value_type>
-struct memory_alignment : std::integral_constant<std::size_t, alignof(typename T::abi_type::impl::type)>
+template <typename T>
+struct memory_alignment
+{
+};
+template <typename T, typename Abi>
+struct memory_alignment<basic_vec<T, Abi, true>>
+    : std::integral_constant<std::size_t, alignof(typename Abi::impl::type)>
 {
 };
 template <typename T, typename U = typename T::value_type>
-constexpr std::size_t memory_alignment_v{memory_alignment<T, U>::value};
+constexpr std::size_t memory_alignment_v{memory_alignment<T>::value};
 /// \}
 
 /// \brief The class template `simd_mask` is a data-parallel type with the element type bool.
@@ -143,12 +152,11 @@ constexpr std::size_t memory_alignment_v{memory_alignment<T, U>::value};
 /// is an element-wise operation that applies a binary operation to corresponding elements of two data-parallel objects.
 ///
 /// [parallel] 9.8 ff
-template <typename T, typename Abi = native_abi<T>>
-class basic_mask
+template <typename T, typename Abi>
+class basic_mask<T, Abi, true>
 {
     static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value, "T not a data-parallel type");
     static_assert(is_abi_tag_v<Abi>, "Abi must be an abi tag");
-    static_assert(is_simd_mask_v<basic_mask>, "simd_mask<T, Abi> not a valid mask type");
 
     template <typename U>
     using is_forwarding_ref_overload = std::is_same<basic_mask, score::cpp::remove_cvref_t<U>>;
@@ -251,7 +259,20 @@ private:
     typename Abi::mask_impl::type v_;
 };
 
-template <class T, std::size_t N = simd_size_v<T, native_abi<T>>>
+template <typename T, typename Abi>
+class basic_mask<T, Abi, false>
+{
+public:
+    using value_type = T;
+    using abi_type = Abi;
+
+    basic_mask() = delete;
+    basic_mask(const basic_mask&) = delete;
+    basic_mask& operator=(const basic_mask&) = delete;
+    ~basic_mask() = delete;
+};
+
+template <typename T, std::size_t N = simd_size_v<T, native_abi<T>>>
 using mask = basic_mask<T, deduce_abi<T, N>>;
 
 /// \brief Returns true if all boolean elements in v are true, false otherwise.
@@ -295,12 +316,11 @@ inline bool SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE none_of(const basic_mask
 /// is an element-wise operation that applies a binary operation to corresponding elements of two data-parallel objects.
 ///
 /// [parallel] 9.6 ff
-template <typename T, typename Abi = native_abi<T>>
-class basic_vec
+template <typename T, typename Abi>
+class basic_vec<T, Abi, true>
 {
     static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value, "T not a data-parallel type");
     static_assert(is_abi_tag_v<Abi>, "Abi must be an abi tag");
-    static_assert(is_simd_v<basic_vec>, "simd<T, Abi> not a valid simd type");
 
     template <typename U>
     using is_forwarding_ref_overload = std::is_same<basic_vec, score::cpp::remove_cvref_t<U>>;
@@ -315,7 +335,7 @@ class basic_vec
     template <typename From>
     static constexpr bool is_convertible()
     {
-        return (!std::is_same<value_type, From>::value) && (simd_size_v<From, native_abi<From>> == size()) &&
+        return (!std::is_same<value_type, From>::value) && (native_abi<From>::impl::width == size()) &&
                (std::is_integral<From>::value || std::is_floating_point<From>::value);
     }
 
@@ -616,6 +636,20 @@ private:
     typename Abi::impl::type v_;
 };
 
+template <typename T, typename Abi>
+class basic_vec<T, Abi, false>
+{
+public:
+    using value_type = T;
+    using mask_type = basic_mask<T, Abi>;
+    using abi_type = Abi;
+
+    basic_vec() = delete;
+    basic_vec(const basic_vec&) = delete;
+    basic_vec& operator=(const basic_vec&) = delete;
+    ~basic_vec() = delete;
+};
+
 template <typename T, std::size_t N = simd_size_v<T, native_abi<T>>>
 using vec = basic_vec<T, deduce_abi<T, N>>;
 
@@ -660,8 +694,8 @@ inline basic_vec<T, Abi> SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE clamp(const
 template <typename M, typename T>
 class where_expression
 {
-    static_assert(is_simd_mask_v<M>, "M not a simd_mask type");
-    static_assert(is_simd_v<T>, "T not a simd type");
+    static_assert(is_basic_mask_v<M>, "M not a basic_mask type");
+    static_assert(is_basic_vec_v<T>, "T not a basic_vec type");
     static_assert(std::is_same<typename T::mask_type, M>::value, "simd and simd_mask are incompatible");
 
     using impl = typename T::abi_type::impl;
