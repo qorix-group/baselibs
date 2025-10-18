@@ -173,4 +173,26 @@ TEST_F(SigEventTest, Reset)
     EXPECT_NE(signal_event.sigev_notify_function, callback);
 }
 
+TEST_F(SigEventTest, ModifySigevent)
+{
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "SigEventTest modify sigevent positive and negative scenarios");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
+    constexpr std::int32_t kTestSignalValue = 42;
+
+    signal_event_->ModifySigevent([](sigevent& raw_sigevent) {
+        raw_sigevent.sigev_notify = SIGEV_SIGNAL;
+        raw_sigevent.sigev_signo = SIGUSR1;
+        raw_sigevent.sigev_value.sival_int = kTestSignalValue;
+    });
+
+    const auto& signal_event = signal_event_->GetSigevent();
+    EXPECT_EQ(signal_event.sigev_notify, SIGEV_SIGNAL);
+    EXPECT_EQ(signal_event.sigev_signo, SIGUSR1);
+    EXPECT_EQ(signal_event.sigev_value.sival_int, kTestSignalValue);
+}
+
 }  // namespace score::os

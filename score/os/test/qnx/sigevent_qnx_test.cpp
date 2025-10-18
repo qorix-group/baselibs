@@ -30,12 +30,12 @@ class SigEventQnxTest : public testing::Test
     std::unique_ptr<SigEventQnx> signal_event_qnx_;
 
     static constexpr std::int32_t kConnectionId = 12;
-    static constexpr std::int32_t kPriority = 10;
-    static constexpr std::int32_t kCode = 42;
-    static constexpr std::int32_t kSignalEventValue = 1337;
+    static constexpr std::int16_t kPriority = 10;
+    static constexpr std::int16_t kCode = 42;
+    static constexpr std::intptr_t kSignalEventValue = 1337;
     static constexpr std::int32_t kSignalNumber = 30;
-    static constexpr std::int32_t kSignalCode = 50;
-    static constexpr pid_t kThreadId = 20;
+    static constexpr std::int16_t kSignalCode = 50;
+    static constexpr std::int16_t kThreadId = 20;
 };
 
 TEST_F(SigEventQnxTest, SetUnblock)
@@ -112,8 +112,8 @@ TEST_F(SigEventQnxTest, SetMemory)
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
     volatile std::uint32_t dummy_mem = 0;
-    constexpr std::size_t kSize = 4;
-    constexpr std::size_t kOffset = 0;
+    constexpr std::int32_t kSize = 4;
+    constexpr std::int32_t kOffset = 0;
 
     signal_event_qnx_->SetMemory(&dummy_mem, kSize, kOffset);
 
