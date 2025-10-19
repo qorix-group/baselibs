@@ -33,19 +33,9 @@ std::string_view SigEventErrorCodeDomain::MessageFor(const score::result::ErrorC
             message = "Invalid notification type";
             break;
         }
-        case static_cast<score::result::ErrorCode>(SigEventErrorCode::kInvalidConnectionIdNotificationType):
-        {
-            message = "Invalid notification type for the connection id";
-            break;
-        }
         case static_cast<score::result::ErrorCode>(SigEventErrorCode::kInvalidThreadAttributesNotificationType):
         {
             message = "Invalid notification type for the thread attributes";
-            break;
-        }
-        case static_cast<score::result::ErrorCode>(SigEventErrorCode::kInvalidThreadIdNotificationType):
-        {
-            message = "Invalid notification type for the thread id";
             break;
         }
         case static_cast<score::result::ErrorCode>(SigEventErrorCode::kInvalidThreadCallbackNotificationType):
