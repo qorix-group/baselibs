@@ -12,7 +12,6 @@
  ********************************************************************************/
 #include "score/mw/log/detail/logging_identifier.h"
 
-#include <algorithm>
 #include <cstring>
 
 namespace score

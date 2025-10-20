@@ -14,7 +14,6 @@
 #define SCORE_LIB_CONCURRENCY_CLOCK_H
 
 #include <chrono>
-#include <exception>
 #include <mutex>
 
 namespace score
