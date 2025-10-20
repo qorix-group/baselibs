@@ -119,6 +119,9 @@ std::string_view score::analysis::tracing::GenericTraceAPIErrorDomain::MessageFo
             error_message =
                 "Calculated shared memory size doesn't match the size of the original created shared memory";
             break;
+        case ErrorCode::kRingBufferSharedMemoryAllocationFatal:
+            error_message = "Failed to allocate shared memory inside shm ring buffer";
+            break;
         case ErrorCode::kNoSpaceLeftForAllocationRecoverable:
             error_message = "No space to allocate in TMD shared memory";
             break;
@@ -334,6 +337,7 @@ bool score::analysis::tracing::IsErrorRecoverable(const score::analysis::tracing
         case ErrorCode::kRingBufferSharedMemoryMapFatal:
         case ErrorCode::kRingBufferSharedMemoryFlexibleAllocatorFatal:
         case ErrorCode::kRingBufferSharedMemorySizeCalculationFatal:
+        case ErrorCode::kRingBufferSharedMemoryAllocationFatal:
         default:
             error = false;
             break;

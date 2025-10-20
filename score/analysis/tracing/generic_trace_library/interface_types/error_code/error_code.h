@@ -62,6 +62,7 @@ enum class ErrorCode : score::result::ErrorCode
                                                     ///< buffer
     kRingBufferSharedMemorySizeCalculationFatal,    ///< Calculated shared memory size doesn't match the size of the
                                                     ///< original created shared memory
+    kRingBufferSharedMemoryAllocationFatal,         ///< Failed to allocate shared memory inside shm ring buffer
 
     kDaemonConnectionFailedFatal,             ///< Daemon connection failed (Fatal)
     kDaemonCommunicatorNotSupportedFatal,     ///< Daemon connection is not supported
