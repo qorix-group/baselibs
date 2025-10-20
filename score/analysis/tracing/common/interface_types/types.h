@@ -75,7 +75,19 @@ struct TmdStatistics
     std::size_t tmd_total;
     std::size_t tmd_max;
     std::size_t tmd_average;
+    // Suppress "AUTOSAR C++14 A9-6-1" rule finding. This rule states: "Data types used for interfacing with
+    // hardware or conforming to communication protocols shall be trivial, standard-layout and only contain members
+    // of types with defined sizes.".
+    // client_pid is a system-defined identifier used for OS process handling inside the same ECU (IPC).
+    // No external communication interface is provided.
+    // coverity[autosar_cpp14_a9_6_1_violation]
     pid_t client_pid;
+    // Suppress "AUTOSAR C++14 A9-6-1" rule finding. This rule states: "Data types used for interfacing with
+    // hardware or conforming to communication protocols shall be trivial, standard-layout and only contain members
+    // of types with defined sizes.".
+    // tmd_alloc_rate is used for internal calculations only inside the same ECU, not interfacing with external
+    // hardware or communication protocols.
+    // coverity[autosar_cpp14_a9_6_1_violation]
     float tmd_alloc_rate;
 };
 
