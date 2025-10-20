@@ -128,3 +128,21 @@ config_setting(
         "@platforms//os:qnx",
     ],
 )
+
+config_setting(
+    name = "x86_64-qnx8-qemu",
+    constraint_values = [
+        "@swf_platforms//autosar:adaptive",
+        "@platforms//cpu:x86_64",
+        "@platforms//os:qnx",
+        "//bazel/platforms/environment:qemu",
+        "//bazel/platforms/qnx_version:qnx8",
+    ],
+    visibility = [
+        "//ecu/ipnext/tests:__subpackages__",
+        "//ecu/reference/qnx_qemu/test:__subpackages__",
+        "//ecu/xpad/xpad-shared/platform_tests:__subpackages__",
+        "//ecu/xpad/xpad-shared/vendor_tests:__subpackages__",
+        "//visibility:public",  # platform_only
+    ],
+)
