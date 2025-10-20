@@ -45,19 +45,20 @@ struct neon_mask_backend<std::int32_t>
 
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_AARCH64_NEON_ALWAYS_INLINE broadcast(const bool v) noexcept
     {
-        return vdupq_n_u32(-static_cast<std::uint32_t>(v));
+        return vdupq_n_u32(0U - static_cast<std::uint32_t>(v));
     }
 
     template <typename G, std::size_t I0, std::size_t I1, std::size_t I2, std::size_t I3>
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_AARCH64_NEON_ALWAYS_INLINE init(G&& gen,
                                                                  const std::index_sequence<I0, I1, I2, I3>) noexcept
     {
-        return type{
-            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I0>{})),
-            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I1>{})),
-            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I2>{})),
-            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I3>{})),
+        const type r{
+            static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I0>{})),
+            static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I1>{})),
+            static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I2>{})),
+            static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I3>{})),
         };
+        return vsubq_u32(vdupq_n_u32(0), r);
     }
 
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_AARCH64_NEON_ALWAYS_INLINE extract(const type v, const std::size_t i) noexcept
@@ -99,19 +100,20 @@ struct neon_mask_backend<float>
 
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_AARCH64_NEON_ALWAYS_INLINE broadcast(const bool v) noexcept
     {
-        return vdupq_n_u32(-static_cast<std::uint32_t>(v));
+        return vdupq_n_u32(0U - static_cast<std::uint32_t>(v));
     }
 
     template <typename G, std::size_t I0, std::size_t I1, std::size_t I2, std::size_t I3>
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_AARCH64_NEON_ALWAYS_INLINE init(G&& gen,
                                                                  const std::index_sequence<I0, I1, I2, I3>) noexcept
     {
-        return type{
-            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I0>{})),
-            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I1>{})),
-            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I2>{})),
-            -static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I3>{})),
+        const type r{
+            static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I0>{})),
+            static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I1>{})),
+            static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I2>{})),
+            static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I3>{})),
         };
+        return vsubq_u32(vdupq_n_u32(0), r);
     }
 
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_AARCH64_NEON_ALWAYS_INLINE extract(const type v, const std::size_t i) noexcept
@@ -153,16 +155,17 @@ struct neon_mask_backend<double>
 
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_AARCH64_NEON_ALWAYS_INLINE broadcast(const bool v) noexcept
     {
-        return vdupq_n_u64(-static_cast<std::uint64_t>(v));
+        return vdupq_n_u64(0U - static_cast<std::uint64_t>(v));
     }
 
     template <typename G, std::size_t I0, std::size_t I1>
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_AARCH64_NEON_ALWAYS_INLINE init(G&& gen, const std::index_sequence<I0, I1>) noexcept
     {
-        return type{
-            -static_cast<std::uint64_t>(gen(std::integral_constant<std::size_t, I0>{})),
-            -static_cast<std::uint64_t>(gen(std::integral_constant<std::size_t, I1>{})),
+        const type r{
+            static_cast<std::uint64_t>(gen(std::integral_constant<std::size_t, I0>{})),
+            static_cast<std::uint64_t>(gen(std::integral_constant<std::size_t, I1>{})),
         };
+        return vsubq_u64(vdupq_n_u64(0), r);
     }
 
     static bool SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_AARCH64_NEON_ALWAYS_INLINE extract(const type v, const std::size_t i) noexcept

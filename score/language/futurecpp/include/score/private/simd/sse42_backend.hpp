@@ -43,17 +43,17 @@ struct sse42_mask_backend<std::int32_t>
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE broadcast(const bool v) noexcept
     {
-        return _mm_set1_epi32(static_cast<std::int32_t>(-static_cast<std::uint32_t>(v)));
+        return _mm_set1_epi32(-static_cast<std::int32_t>(v));
     }
 
     template <typename G, std::size_t I0, std::size_t I1, std::size_t I2, std::size_t I3>
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE init(G&& gen, const std::index_sequence<I0, I1, I2, I3>) noexcept
     {
-        return _mm_set_epi32(
-            static_cast<std::int32_t>(-static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I3>{}))),
-            static_cast<std::int32_t>(-static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I2>{}))),
-            static_cast<std::int32_t>(-static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I1>{}))),
-            static_cast<std::int32_t>(-static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I0>{}))));
+        const type r{_mm_set_epi32(static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I3>{})),
+                                   static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I2>{})),
+                                   static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I1>{})),
+                                   static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I0>{})))};
+        return _mm_sub_epi32(_mm_setzero_si128(), r);
     }
 
     static bool SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE extract(const type v, const std::size_t i) noexcept
@@ -81,17 +81,17 @@ struct sse42_mask_backend<float>
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE broadcast(const bool v) noexcept
     {
-        return _mm_castsi128_ps(_mm_set1_epi32(static_cast<std::int32_t>(-static_cast<std::uint32_t>(v))));
+        return _mm_castsi128_ps(_mm_set1_epi32(-static_cast<std::int32_t>(v)));
     }
 
     template <typename G, std::size_t I0, std::size_t I1, std::size_t I2, std::size_t I3>
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE init(G&& gen, const std::index_sequence<I0, I1, I2, I3>) noexcept
     {
-        return _mm_castsi128_ps(_mm_set_epi32(
-            static_cast<std::int32_t>(-static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I3>{}))),
-            static_cast<std::int32_t>(-static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I2>{}))),
-            static_cast<std::int32_t>(-static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I1>{}))),
-            static_cast<std::int32_t>(-static_cast<std::uint32_t>(gen(std::integral_constant<std::size_t, I0>{})))));
+        const __m128i r{_mm_set_epi32(static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I3>{})),
+                                      static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I2>{})),
+                                      static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I1>{})),
+                                      static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I0>{})))};
+        return _mm_castsi128_ps(_mm_sub_epi32(_mm_setzero_si128(), r));
     }
 
     static bool SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE extract(const type v, const std::size_t i) noexcept
@@ -116,15 +116,15 @@ struct sse42_mask_backend<double>
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE broadcast(const bool v) noexcept
     {
-        return _mm_castsi128_pd(_mm_set1_epi64x(static_cast<std::int64_t>(-static_cast<std::uint64_t>(v))));
+        return _mm_castsi128_pd(_mm_set1_epi64x(-static_cast<std::int64_t>(v)));
     }
 
     template <typename G, std::size_t I0, std::size_t I1>
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE init(G&& gen, const std::index_sequence<I0, I1>) noexcept
     {
-        return _mm_castsi128_pd(_mm_set_epi64x(
-            static_cast<std::int64_t>(-static_cast<std::uint64_t>(gen(std::integral_constant<std::size_t, I1>{}))),
-            static_cast<std::int64_t>(-static_cast<std::uint64_t>(gen(std::integral_constant<std::size_t, I0>{})))));
+        const __m128i r{_mm_set_epi64x(static_cast<std::int64_t>(gen(std::integral_constant<std::size_t, I1>{})),
+                                       static_cast<std::int64_t>(gen(std::integral_constant<std::size_t, I0>{})))};
+        return _mm_castsi128_pd(_mm_sub_epi64(_mm_setzero_si128(), r));
     }
 
     static bool SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE extract(const type v, const std::size_t i) noexcept
