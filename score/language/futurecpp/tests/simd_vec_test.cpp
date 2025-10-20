@@ -86,13 +86,13 @@ private:
 };
 
 template <typename T>
-class simd_fixture : public testing::Test
+class simd_vec_fixture : public testing::Test
 {
 };
 
 using ElementTypes = ::testing::
     Types<score::cpp::simd::vec<std::int32_t>, score::cpp::simd::vec<float>, score::cpp::simd::vec<double>, score::cpp::simd::vec<float, 16>>;
-TYPED_TEST_SUITE(simd_fixture, ElementTypes, /*unused*/);
+TYPED_TEST_SUITE(simd_vec_fixture, ElementTypes, /*unused*/);
 
 template <typename T>
 class simd_floating_point_fixture : public testing::Test
@@ -105,7 +105,7 @@ TYPED_TEST_SUITE(simd_floating_point_fixture, ElementFloatingPointTypes, /*unuse
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, TrivialAndStandardLayout)
+TYPED_TEST(simd_vec_fixture, TrivialAndStandardLayout)
 {
     static_assert(std::is_standard_layout<TypeParam>::value, "failed");
     static_assert(std::is_trivial<TypeParam>::value, "failed");
@@ -120,7 +120,7 @@ TYPED_TEST(simd_fixture, TrivialAndStandardLayout)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, Broadcast)
+TYPED_TEST(simd_vec_fixture, Broadcast)
 {
     using value_type = typename TypeParam::value_type;
     const TypeParam a{value_type{23}};
@@ -133,7 +133,7 @@ TYPED_TEST(simd_fixture, Broadcast)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, InitializeWithGenerator)
+TYPED_TEST(simd_vec_fixture, InitializeWithGenerator)
 {
     const generator<TypeParam> gen{integer_sequence<TypeParam>()};
     const TypeParam a{gen};
@@ -146,7 +146,7 @@ TYPED_TEST(simd_fixture, InitializeWithGenerator)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050, CB-#18397902
-TYPED_TEST(simd_fixture, InitializeByDefaultIsUnaligned)
+TYPED_TEST(simd_vec_fixture, InitializeByDefaultIsUnaligned)
 {
     const auto scalars{integer_sequence<TypeParam>()};
     const TypeParam vector{scalars.data()};
@@ -159,7 +159,7 @@ TYPED_TEST(simd_fixture, InitializeByDefaultIsUnaligned)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050, CB-#18397902
-TYPED_TEST(simd_fixture, InitializeUnaligned)
+TYPED_TEST(simd_vec_fixture, InitializeUnaligned)
 {
     const auto scalars{integer_sequence<TypeParam>()};
     const TypeParam vector{scalars.data(), score::cpp::simd::element_aligned};
@@ -172,7 +172,7 @@ TYPED_TEST(simd_fixture, InitializeUnaligned)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050, CB-#18397902
-TYPED_TEST(simd_fixture, InitializeAligned)
+TYPED_TEST(simd_vec_fixture, InitializeAligned)
 {
     alignas(score::cpp::simd::alignment_v<TypeParam>) const auto scalars{integer_sequence<TypeParam>()};
     const TypeParam vector{scalars.data(), score::cpp::simd::vector_aligned};
@@ -185,7 +185,7 @@ TYPED_TEST(simd_fixture, InitializeAligned)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050, CB-#18397902
-TYPED_TEST(simd_fixture, LoadByDefaultIsUnaligned)
+TYPED_TEST(simd_vec_fixture, LoadByDefaultIsUnaligned)
 {
     const auto scalars{integer_sequence<TypeParam>()};
     TypeParam vector;
@@ -199,7 +199,7 @@ TYPED_TEST(simd_fixture, LoadByDefaultIsUnaligned)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050, CB-#18397902
-TYPED_TEST(simd_fixture, LoadUnaligned)
+TYPED_TEST(simd_vec_fixture, LoadUnaligned)
 {
     const auto scalars{integer_sequence<TypeParam>()};
     TypeParam vector;
@@ -213,7 +213,7 @@ TYPED_TEST(simd_fixture, LoadUnaligned)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050, CB-#18397902
-TYPED_TEST(simd_fixture, LoadAligned)
+TYPED_TEST(simd_vec_fixture, LoadAligned)
 {
     alignas(score::cpp::simd::alignment_v<TypeParam>) const auto scalars{integer_sequence<TypeParam>()};
     TypeParam vector;
@@ -227,7 +227,7 @@ TYPED_TEST(simd_fixture, LoadAligned)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050, CB-#18397902
-TYPED_TEST(simd_fixture, LoadAligned_WhenCopyingFromUnalignedMemory_ThenPreconditionViolated)
+TYPED_TEST(simd_vec_fixture, LoadAligned_WhenCopyingFromUnalignedMemory_ThenPreconditionViolated)
 {
     using value_type = typename TypeParam::value_type;
     TypeParam vector;
@@ -238,7 +238,7 @@ TYPED_TEST(simd_fixture, LoadAligned_WhenCopyingFromUnalignedMemory_ThenPrecondi
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050, CB-#18397902
-TYPED_TEST(simd_fixture, StoreByDefaultIsUnaligned)
+TYPED_TEST(simd_vec_fixture, StoreByDefaultIsUnaligned)
 {
     const auto scalars{integer_sequence<TypeParam>()};
     const TypeParam vector{scalars.data()};
@@ -250,7 +250,7 @@ TYPED_TEST(simd_fixture, StoreByDefaultIsUnaligned)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050, CB-#18397902
-TYPED_TEST(simd_fixture, StoreUnaligned)
+TYPED_TEST(simd_vec_fixture, StoreUnaligned)
 {
     const auto scalars{integer_sequence<TypeParam>()};
     const TypeParam vector{scalars.data()};
@@ -262,7 +262,7 @@ TYPED_TEST(simd_fixture, StoreUnaligned)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050, CB-#18397902
-TYPED_TEST(simd_fixture, StoreAligned)
+TYPED_TEST(simd_vec_fixture, StoreAligned)
 {
     using value_type = typename TypeParam::value_type;
     const auto scalars{integer_sequence<TypeParam>()};
@@ -275,7 +275,7 @@ TYPED_TEST(simd_fixture, StoreAligned)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050, CB-#18397902
-TYPED_TEST(simd_fixture, StoreAligned_WhenCopyingToUnalignedMemory_ThenPreconditionViolated)
+TYPED_TEST(simd_vec_fixture, StoreAligned_WhenCopyingToUnalignedMemory_ThenPreconditionViolated)
 {
     using value_type = typename TypeParam::value_type;
     const TypeParam vector{value_type{23}};
@@ -286,7 +286,7 @@ TYPED_TEST(simd_fixture, StoreAligned_WhenCopyingToUnalignedMemory_ThenPrecondit
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, Access_WhenOutOfBounds_ThenPreconditionViolated)
+TYPED_TEST(simd_vec_fixture, Access_WhenOutOfBounds_ThenPreconditionViolated)
 {
     using value_type = typename TypeParam::value_type;
     const TypeParam a{value_type{23}};
@@ -296,7 +296,7 @@ TYPED_TEST(simd_fixture, Access_WhenOutOfBounds_ThenPreconditionViolated)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, Add)
+TYPED_TEST(simd_vec_fixture, Add)
 {
     using value_type = typename TypeParam::value_type;
     const auto seq = integer_sequence<TypeParam>();
@@ -330,7 +330,7 @@ TYPED_TEST(simd_floating_point_fixture, AddFloatSpecialValues)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, AssignmentAdd)
+TYPED_TEST(simd_vec_fixture, AssignmentAdd)
 {
     using value_type = typename TypeParam::value_type;
     const auto seq = integer_sequence<TypeParam>();
@@ -345,7 +345,7 @@ TYPED_TEST(simd_fixture, AssignmentAdd)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, Subtract)
+TYPED_TEST(simd_vec_fixture, Subtract)
 {
     using value_type = typename TypeParam::value_type;
     const auto seq = integer_sequence<TypeParam>();
@@ -380,7 +380,7 @@ TYPED_TEST(simd_floating_point_fixture, SubtractFloatSpecialValues)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, AssignmentSubtract)
+TYPED_TEST(simd_vec_fixture, AssignmentSubtract)
 {
     using value_type = typename TypeParam::value_type;
     const auto seq = integer_sequence<TypeParam>();
@@ -395,7 +395,7 @@ TYPED_TEST(simd_fixture, AssignmentSubtract)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, Multiply)
+TYPED_TEST(simd_vec_fixture, Multiply)
 {
     using value_type = typename TypeParam::value_type;
     const auto seq = integer_sequence<TypeParam>();
@@ -434,7 +434,7 @@ TYPED_TEST(simd_floating_point_fixture, MultiplyFloatSpecialValues)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, AssignmentMultiply)
+TYPED_TEST(simd_vec_fixture, AssignmentMultiply)
 {
     using value_type = typename TypeParam::value_type;
     const auto seq = integer_sequence<TypeParam>();
@@ -449,7 +449,7 @@ TYPED_TEST(simd_fixture, AssignmentMultiply)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, Divide)
+TYPED_TEST(simd_vec_fixture, Divide)
 {
     using value_type = typename TypeParam::value_type;
     const auto seq = integer_sequence<TypeParam>();
@@ -489,7 +489,7 @@ TYPED_TEST(simd_floating_point_fixture, DivideFloatSpecialValues)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, AssignmentDivide)
+TYPED_TEST(simd_vec_fixture, AssignmentDivide)
 {
     using value_type = typename TypeParam::value_type;
     const auto seq = integer_sequence<TypeParam>();
@@ -504,7 +504,7 @@ TYPED_TEST(simd_fixture, AssignmentDivide)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, Negate)
+TYPED_TEST(simd_vec_fixture, Negate)
 {
     const auto seq = integer_sequence<TypeParam>();
     const TypeParam a{seq.data()};
@@ -542,7 +542,7 @@ TYPED_TEST(simd_floating_point_fixture, NegateFloatSpecialValues)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, Equal_SameValue)
+TYPED_TEST(simd_vec_fixture, Equal_SameValue)
 {
     const auto seq = integer_sequence<TypeParam>();
     const TypeParam a{seq.data()};
@@ -556,7 +556,7 @@ TYPED_TEST(simd_fixture, Equal_SameValue)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, Equal_DifferentValue)
+TYPED_TEST(simd_vec_fixture, Equal_DifferentValue)
 {
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = alternating_integer_sequence<TypeParam>();
@@ -596,7 +596,7 @@ TYPED_TEST(simd_floating_point_fixture, EqualFloatSpecialValues)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, NotEqual_SameValue)
+TYPED_TEST(simd_vec_fixture, NotEqual_SameValue)
 {
     const auto seq = integer_sequence<TypeParam>();
     const TypeParam a{seq.data()};
@@ -610,7 +610,7 @@ TYPED_TEST(simd_fixture, NotEqual_SameValue)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, NotEqual_DifferentValue)
+TYPED_TEST(simd_vec_fixture, NotEqual_DifferentValue)
 {
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = alternating_integer_sequence<TypeParam>();
@@ -650,7 +650,7 @@ TYPED_TEST(simd_floating_point_fixture, NotEqualFloatSpecialValues)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, LessThan_SameValue)
+TYPED_TEST(simd_vec_fixture, LessThan_SameValue)
 {
     const auto seq = integer_sequence<TypeParam>();
     const TypeParam a{seq.data()};
@@ -664,7 +664,7 @@ TYPED_TEST(simd_fixture, LessThan_SameValue)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, LessThan_DifferentValue)
+TYPED_TEST(simd_vec_fixture, LessThan_DifferentValue)
 {
     const auto seq_a = alternating_integer_sequence<TypeParam>();
     const auto seq_b = integer_sequence<TypeParam>();
@@ -706,7 +706,7 @@ TYPED_TEST(simd_floating_point_fixture, LessThanFloatSpecialValues)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, LessEqual_SameValue)
+TYPED_TEST(simd_vec_fixture, LessEqual_SameValue)
 {
     const auto seq = integer_sequence<TypeParam>();
     const TypeParam a{seq.data()};
@@ -720,7 +720,7 @@ TYPED_TEST(simd_fixture, LessEqual_SameValue)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, LessEqual_DifferentValue)
+TYPED_TEST(simd_vec_fixture, LessEqual_DifferentValue)
 {
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = alternating_integer_sequence<TypeParam>();
@@ -760,7 +760,7 @@ TYPED_TEST(simd_floating_point_fixture, LessEqualFloatSpecialValues)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, GreateThan_SameValue)
+TYPED_TEST(simd_vec_fixture, GreateThan_SameValue)
 {
     const auto seq = integer_sequence<TypeParam>();
     const TypeParam a{seq.data()};
@@ -774,7 +774,7 @@ TYPED_TEST(simd_fixture, GreateThan_SameValue)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, GreaterThan_DifferentValue)
+TYPED_TEST(simd_vec_fixture, GreaterThan_DifferentValue)
 {
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = alternating_integer_sequence<TypeParam>();
@@ -814,7 +814,7 @@ TYPED_TEST(simd_floating_point_fixture, GreaterThanFloatSpecialValues)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, GreateEqual_SameValue)
+TYPED_TEST(simd_vec_fixture, GreateEqual_SameValue)
 {
     const auto seq = integer_sequence<TypeParam>();
     const TypeParam a{seq.data()};
@@ -828,7 +828,7 @@ TYPED_TEST(simd_fixture, GreateEqual_SameValue)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, GreaterEqual_DifferentValue)
+TYPED_TEST(simd_vec_fixture, GreaterEqual_DifferentValue)
 {
     const auto seq_a = alternating_integer_sequence<TypeParam>();
     const auto seq_b = integer_sequence<TypeParam>();
@@ -868,7 +868,7 @@ TYPED_TEST(simd_floating_point_fixture, GreaterEqualFloatSpecialValues)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, Min)
+TYPED_TEST(simd_vec_fixture, Min)
 {
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = negative_integer_sequence<TypeParam>();
@@ -902,7 +902,7 @@ TYPED_TEST(simd_floating_point_fixture, MinFloatSpecialValues)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, Max)
+TYPED_TEST(simd_vec_fixture, Max)
 {
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = negative_integer_sequence<TypeParam>();
@@ -936,7 +936,7 @@ TYPED_TEST(simd_floating_point_fixture, MaxSpecialFloatValues)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, Clamp)
+TYPED_TEST(simd_vec_fixture, Clamp)
 {
     using value_type = typename TypeParam::value_type;
     const TypeParam one{value_type{1}};
@@ -950,7 +950,7 @@ TYPED_TEST(simd_fixture, Clamp)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, Clscore_future_cpp_WhenNoValidBoundaryInterval_ThenPreconditionViolated)
+TYPED_TEST(simd_vec_fixture, Clscore_future_cpp_WhenNoValidBoundaryInterval_ThenPreconditionViolated)
 {
     using value_type = typename TypeParam::value_type;
     const TypeParam one{value_type{1}};
@@ -962,7 +962,7 @@ TYPED_TEST(simd_fixture, Clscore_future_cpp_WhenNoValidBoundaryInterval_ThenPrec
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TEST(simd, ConvertFloatToInt)
+TEST(simd_vec, ConvertFloatToInt)
 {
     const auto seq = integer_sequence<score::cpp::simd::vec<float>>();
     const score::cpp::simd::vec<std::int32_t> b{score::cpp::simd::vec<float>{seq.data()}};
@@ -975,7 +975,7 @@ TEST(simd, ConvertFloatToInt)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TEST(simd, ConvertIntToFloat)
+TEST(simd_vec, ConvertIntToFloat)
 {
     const auto seq = integer_sequence<score::cpp::simd::vec<std::int32_t>>();
     const score::cpp::simd::vec<float> b{score::cpp::simd::vec<std::int32_t>{seq.data()}};
@@ -988,7 +988,7 @@ TEST(simd, ConvertIntToFloat)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TEST(simd, ConvertCharToFloat)
+TEST(simd_vec, ConvertCharToFloat)
 {
     const std::array<std::uint8_t, 32> a{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
     const score::cpp::simd::vec<float, 16> b{a.data()};
@@ -1001,7 +1001,7 @@ TEST(simd, ConvertCharToFloat)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, WhereAssignment)
+TYPED_TEST(simd_vec_fixture, WhereAssignment)
 {
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = negative_integer_sequence<TypeParam>();
@@ -1020,7 +1020,7 @@ TYPED_TEST(simd_fixture, WhereAssignment)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, WhereAssignmentAdd)
+TYPED_TEST(simd_vec_fixture, WhereAssignmentAdd)
 {
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = negative_integer_sequence<TypeParam>();
@@ -1039,7 +1039,7 @@ TYPED_TEST(simd_fixture, WhereAssignmentAdd)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, WhereAssignmentSubtract)
+TYPED_TEST(simd_vec_fixture, WhereAssignmentSubtract)
 {
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = negative_integer_sequence<TypeParam>();
@@ -1058,7 +1058,7 @@ TYPED_TEST(simd_fixture, WhereAssignmentSubtract)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, WhereAssignmentMultiply)
+TYPED_TEST(simd_vec_fixture, WhereAssignmentMultiply)
 {
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = negative_integer_sequence<TypeParam>();
@@ -1077,7 +1077,7 @@ TYPED_TEST(simd_fixture, WhereAssignmentMultiply)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
-TYPED_TEST(simd_fixture, WhereAssignmentDivide)
+TYPED_TEST(simd_vec_fixture, WhereAssignmentDivide)
 {
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = negative_integer_sequence<TypeParam>();
