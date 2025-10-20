@@ -31,12 +31,14 @@ namespace simd
 {
 namespace detail
 {
+namespace sse42
+{
 
 template <typename T>
-struct sse42_mask_backend;
+struct mask_backend;
 
 template <>
-struct sse42_mask_backend<std::int32_t>
+struct mask_backend<std::int32_t>
 {
     using type = __m128i;
     static constexpr std::size_t width{4};
@@ -74,7 +76,7 @@ struct sse42_mask_backend<std::int32_t>
 };
 
 template <>
-struct sse42_mask_backend<float>
+struct mask_backend<float>
 {
     using type = __m128;
     static constexpr std::size_t width{4};
@@ -109,7 +111,7 @@ struct sse42_mask_backend<float>
 };
 
 template <>
-struct sse42_mask_backend<double>
+struct mask_backend<double>
 {
     using type = __m128d;
     static constexpr std::size_t width{2};
@@ -142,10 +144,10 @@ struct sse42_mask_backend<double>
 };
 
 template <typename T>
-struct sse42_backend;
+struct backend;
 
 template <>
-struct sse42_backend<std::uint8_t>
+struct backend<std::uint8_t>
 {
     using type = __m128i;
     static constexpr std::size_t width{16};
@@ -172,10 +174,10 @@ struct sse42_backend<std::uint8_t>
 };
 
 template <>
-struct sse42_backend<std::int32_t>
+struct backend<std::int32_t>
 {
     using type = __m128i;
-    using mask_type = sse42_mask_backend<std::int32_t>::type;
+    using mask_type = mask_backend<std::int32_t>::type;
     static constexpr std::size_t width{4};
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE broadcast(const std::int32_t v) noexcept { return _mm_set1_epi32(v); }
@@ -264,10 +266,10 @@ struct sse42_backend<std::int32_t>
 };
 
 template <>
-struct sse42_backend<float>
+struct backend<float>
 {
     using type = __m128;
-    using mask_type = sse42_mask_backend<float>::type;
+    using mask_type = mask_backend<float>::type;
     static constexpr std::size_t width{4};
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE broadcast(const float v) noexcept { return _mm_set1_ps(v); }
@@ -340,10 +342,10 @@ struct sse42_backend<float>
 };
 
 template <>
-struct sse42_backend<double>
+struct backend<double>
 {
     using type = __m128d;
-    using mask_type = sse42_mask_backend<double>::type;
+    using mask_type = mask_backend<double>::type;
     static constexpr std::size_t width{2};
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE broadcast(const double v) noexcept { return _mm_set1_pd(v); }
@@ -412,62 +414,64 @@ struct sse42_backend<double>
 };
 
 template <typename T>
-struct sse42_abi;
+struct abi;
 
 template <>
-struct sse42_abi<std::uint8_t>
+struct abi<std::uint8_t>
 {
-    using impl = sse42_backend<std::uint8_t>;
-    using mask_impl = sse42_mask_backend<std::uint8_t>;
+    using impl = backend<std::uint8_t>;
+    using mask_impl = mask_backend<std::uint8_t>;
 };
 template <>
-struct sse42_abi<std::int32_t>
+struct abi<std::int32_t>
 {
-    using impl = sse42_backend<std::int32_t>;
-    using mask_impl = sse42_mask_backend<std::int32_t>;
+    using impl = backend<std::int32_t>;
+    using mask_impl = mask_backend<std::int32_t>;
 };
 template <>
-struct sse42_abi<float>
+struct abi<float>
 {
-    using impl = sse42_backend<float>;
-    using mask_impl = sse42_mask_backend<float>;
+    using impl = backend<float>;
+    using mask_impl = mask_backend<float>;
 };
 template <>
-struct sse42_abi<double>
+struct abi<double>
 {
-    using impl = sse42_backend<double>;
-    using mask_impl = sse42_mask_backend<double>;
+    using impl = backend<double>;
+    using mask_impl = mask_backend<double>;
 };
 
 template <typename T, std::size_t N>
-struct sse42_array_abi;
+struct array_abi;
 
 template <>
-struct sse42_array_abi<float, 16>
+struct array_abi<float, 16>
 {
-    using impl = array<float, sse42_backend<float>, sse42_mask_backend<float>, 0, 1, 2, 3>;
-    using mask_impl = array_mask<float, sse42_mask_backend<float>, 0, 1, 2, 3>;
+    using impl = array<float, backend<float>, mask_backend<float>, 0, 1, 2, 3>;
+    using mask_impl = array_mask<float, mask_backend<float>, 0, 1, 2, 3>;
 };
+
+} // namespace sse42
 
 template <>
 struct native_abi<std::uint8_t>
 {
-    using type = sse42_abi<std::uint8_t>;
+    using type = sse42::abi<std::uint8_t>;
 };
 template <>
 struct native_abi<std::int32_t>
 {
-    using type = sse42_abi<std::int32_t>;
+    using type = sse42::abi<std::int32_t>;
 };
 template <>
 struct native_abi<float>
 {
-    using type = sse42_abi<float>;
+    using type = sse42::abi<float>;
 };
 template <>
 struct native_abi<double>
 {
-    using type = sse42_abi<double>;
+    using type = sse42::abi<double>;
 };
 
 template <>
@@ -483,7 +487,7 @@ struct deduce_abi<float, 4>
 template <>
 struct deduce_abi<float, 16>
 {
-    using type = sse42_array_abi<float, 16>;
+    using type = sse42::array_abi<float, 16>;
 };
 template <>
 struct deduce_abi<double, 2>
@@ -492,19 +496,19 @@ struct deduce_abi<double, 2>
 };
 
 template <>
-struct is_abi_tag<sse42_abi<std::int32_t>> : std::true_type
+struct is_abi_tag<sse42::abi<std::int32_t>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<sse42_abi<float>> : std::true_type
+struct is_abi_tag<sse42::abi<float>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<sse42_array_abi<float, 16>> : std::true_type
+struct is_abi_tag<sse42::array_abi<float, 16>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<sse42_abi<double>> : std::true_type
+struct is_abi_tag<sse42::abi<double>> : std::true_type
 {
 };
 

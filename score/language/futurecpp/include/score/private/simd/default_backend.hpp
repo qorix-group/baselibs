@@ -26,6 +26,8 @@ namespace simd
 {
 namespace detail
 {
+namespace scalar
+{
 
 template <typename T, std::int32_t N>
 struct simd_vector
@@ -34,7 +36,7 @@ struct simd_vector
 };
 
 template <std::int32_t N>
-struct default_mask_backend
+struct mask_backend
 {
     using type = simd_vector<bool, N>;
     static constexpr std::size_t width{N};
@@ -126,10 +128,10 @@ struct default_mask_backend
 };
 
 template <typename T, std::int32_t N>
-struct default_backend
+struct backend
 {
     using type = simd_vector<T, N>;
-    using mask_type = typename default_mask_backend<N>::type;
+    using mask_type = typename mask_backend<N>::type;
     static constexpr std::size_t width{N};
 
     static simd_vector<T, N> broadcast(const T v) noexcept
@@ -344,31 +346,33 @@ struct default_backend
 };
 
 template <typename T, std::size_t N>
-struct scalar_abi
+struct abi
 {
-    using impl = default_backend<T, std::int32_t{N}>;
-    using mask_impl = default_mask_backend<std::int32_t{N}>;
+    using impl = backend<T, std::int32_t{N}>;
+    using mask_impl = mask_backend<std::int32_t{N}>;
 };
+
+} // namespace scalar
 
 template <>
 struct native_abi<std::uint8_t>
 {
-    using type = scalar_abi<std::uint8_t, 16>;
+    using type = scalar::abi<std::uint8_t, 16>;
 };
 template <>
 struct native_abi<std::int32_t>
 {
-    using type = scalar_abi<std::int32_t, 4>;
+    using type = scalar::abi<std::int32_t, 4>;
 };
 template <>
 struct native_abi<float>
 {
-    using type = scalar_abi<float, 4>;
+    using type = scalar::abi<float, 4>;
 };
 template <>
 struct native_abi<double>
 {
-    using type = scalar_abi<double, 2>;
+    using type = scalar::abi<double, 2>;
 };
 
 template <>
@@ -384,7 +388,7 @@ struct deduce_abi<float, 4>
 template <>
 struct deduce_abi<float, 16>
 {
-    using type = scalar_abi<float, 16>;
+    using type = scalar::abi<float, 16>;
 };
 template <>
 struct deduce_abi<double, 2>
@@ -393,19 +397,19 @@ struct deduce_abi<double, 2>
 };
 
 template <>
-struct is_abi_tag<scalar_abi<std::int32_t, 4>> : std::true_type
+struct is_abi_tag<scalar::abi<std::int32_t, 4>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<scalar_abi<float, 4>> : std::true_type
+struct is_abi_tag<scalar::abi<float, 4>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<scalar_abi<float, 16>> : std::true_type
+struct is_abi_tag<scalar::abi<float, 16>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<scalar_abi<double, 2>> : std::true_type
+struct is_abi_tag<scalar::abi<double, 2>> : std::true_type
 {
 };
 
