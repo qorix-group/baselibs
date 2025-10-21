@@ -211,7 +211,7 @@ protected:
     bool do_is_equal(const memory_resource& other) const noexcept override { return this == &other; }
 
 private:
-    static constexpr std::size_t default_initial_size{4096U};
+    inline static constexpr std::size_t default_initial_size{4096U};
 
     static constexpr std::size_t compute_next_buffer_size(const std::size_t buffer_size)
     {

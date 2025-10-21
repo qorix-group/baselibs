@@ -40,7 +40,7 @@ constexpr bool is_aligned(const std::size_t x, const std::size_t alignment) { re
 
 struct unsynchronized_pool_resource_utils
 {
-    static constexpr std::array<std::size_t, 32U> block_sizes{
+    inline static constexpr std::array<std::size_t, 32U> block_sizes{
         8U,          16U,         24U,         32U,         48U,         64U,         80U,         96U,
         112U,        128U,        192U,        256U,        320U,        384U,        448U,        512U,
         768U,        1024U,       1536U,       2048U,       3072U,       4096U,       1_UZ << 13U, 1_UZ << 14U,

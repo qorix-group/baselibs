@@ -114,9 +114,5 @@ memory_resource* set_default_resource(memory_resource* new_resource) noexcept
     return score::cpp::pmr::get_default_resource_singleton().exchange(new_resource);
 }
 
-constexpr std::size_t monotonic_buffer_resource::default_initial_size;
-
-constexpr std::array<std::size_t, 32U> detail::unsynchronized_pool_resource_utils::block_sizes;
-
 } // namespace pmr
 } // namespace score::cpp
