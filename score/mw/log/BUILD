@@ -60,13 +60,13 @@ cc_library(
         "@score_baselibs//score/mw/log/detail:circular_allocator",
         "@score_baselibs//score/mw/log/detail:empty_recorder",
         "@score_baselibs//score/mw/log/detail:thread_local_guard",
-        "@score_baselibs//score/mw/log/detail/wait_free_stack",
         "@score_baselibs//score/result",
     ],
     tags = ["FFI"],
     visibility = ["//visibility:public"],
     deps = [
         ":log_stream",
+        "@score_baselibs//score/mw/log/detail/wait_free_stack",  #Ticket-222244
     ],
 )
 
