@@ -15,10 +15,7 @@ load(
     "//bazel/platforms:variables.bzl",
     "host_gcc8_constraints",
     "host_gcc9_constraints",
-    "linux_constraints",
-    "osx_constraints",
     "wasm32_constraints",
-    "windows_constraints",
     "xpad_constraints",
     "xpad_dnv_constraints",
 )
@@ -57,33 +54,8 @@ constraint_value(
 )
 
 platform(
-    name = "linux_host",
-    constraint_values = linux_constraints,
-)
-
-platform(
-    name = "windows_host",
-    constraint_values = windows_constraints,
-)
-
-platform(
     name = "wasm32",
     constraint_values = wasm32_constraints,
-)
-
-config_setting(
-    name = "config_linux_host",
-    constraint_values = linux_constraints,
-)
-
-config_setting(
-    name = "config_windows_host",
-    constraint_values = windows_constraints,
-)
-
-config_setting(
-    name = "config_macos_host",
-    constraint_values = osx_constraints,
 )
 
 config_setting(

@@ -20,21 +20,6 @@ xpad_dnv_constraints = xpad_constraints + [
     ":dnv",
 ]
 
-linux_constraints = [
-    "@platforms//cpu:x86_64",
-    "@platforms//os:linux",
-]
-
-osx_constraints = [
-    "@platforms//cpu:x86_64",
-    "@platforms//os:osx",
-]
-
-windows_constraints = [
-    "@platforms//cpu:x86_64",
-    "@platforms//os:windows",
-]
-
 wasm32_constraints = [
     "@platforms//cpu:wasm32",
     "@platforms//os:none",
