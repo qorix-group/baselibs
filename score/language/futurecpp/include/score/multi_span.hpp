@@ -101,41 +101,19 @@ constexpr bool operator!=(const detail::coordinate_facade<Rank, T>& lhs, const d
 ///       with reverse_iterator.
 ///
 template <typename T, std::size_t Rank>
-class bounds_iterator : public std::iterator<std::random_access_iterator_tag, T>
+class bounds_iterator
 {
-    using base_type = std::iterator<std::random_access_iterator_tag, T>;
-    friend constexpr typename bounds_iterator<T, Rank>::difference_type operator-(const bounds_iterator<T, Rank>& lhs,
-                                                                                  const bounds_iterator<T, Rank>& rhs)
-    {
-        return lhs.linearize(lhs.idx_) - rhs.linearize(rhs.idx_);
-    }
-    friend constexpr bool operator==(const bounds_iterator<T, Rank>& lhs, const bounds_iterator<T, Rank>& rhs)
-    {
-        return lhs.idx_ == rhs.idx_;
-    }
-    friend constexpr bool operator<(const bounds_iterator<T, Rank>& lhs, const bounds_iterator<T, Rank>& rhs)
-    {
-        for (std::size_t i = 0; i < Rank; ++i)
-        {
-            if (lhs.idx_[i] < rhs.idx_[i])
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
 public:
     using value_type = T;
-    using typename base_type::difference_type;
-    using typename base_type::iterator_category;
-    using typename base_type::pointer;
-    using reference = typename std::remove_reference<typename base_type::reference>::type;
+    using difference_type = std::ptrdiff_t;
+    using iterator_category = std::random_access_iterator_tag;
+    using pointer = T*;
+    using reference = T;
 
-    constexpr bounds_iterator() : base_type(), bnd_(), idx_() {}
+    constexpr bounds_iterator() : bnd_(), idx_() {}
 
     constexpr explicit bounds_iterator(const bounds<Rank>& bnd, const offset<Rank>& idx = offset<Rank>())
-        : base_type(), bnd_(bnd), idx_(idx)
+        : bnd_(bnd), idx_(idx)
     {
     }
 
@@ -245,6 +223,27 @@ public:
     }
 
 private:
+    friend constexpr typename bounds_iterator<T, Rank>::difference_type operator-(const bounds_iterator<T, Rank>& lhs,
+                                                                                  const bounds_iterator<T, Rank>& rhs)
+    {
+        return lhs.linearize(lhs.idx_) - rhs.linearize(rhs.idx_);
+    }
+    friend constexpr bool operator==(const bounds_iterator<T, Rank>& lhs, const bounds_iterator<T, Rank>& rhs)
+    {
+        return lhs.idx_ == rhs.idx_;
+    }
+    friend constexpr bool operator<(const bounds_iterator<T, Rank>& lhs, const bounds_iterator<T, Rank>& rhs)
+    {
+        for (std::size_t i = 0; i < Rank; ++i)
+        {
+            if (lhs.idx_[i] < rhs.idx_[i])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     constexpr difference_type linearize(const offset<Rank>& idx) const
     {
         difference_type res = 0;
