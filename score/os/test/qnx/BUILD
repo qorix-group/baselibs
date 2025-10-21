@@ -89,7 +89,7 @@ cc_test(
     ],
     target_compatible_with = select({
         "@platforms//os:qnx": [
-            "//bazel/platforms/qnx_version:qnx7",  # TODO: Ticket-214211 QNX8 incompatible
+            "//bazel/platforms/qnx_version:qnx7",  # TODO: locally For QNX8 Filter needs to be expliclity added otherwise no packets are recived, on CI this is not working at all even with this filtering it needs to be investigated why in Ticket-221732
         ],
         "//conditions:default": [
             "@platforms//os:qnx",

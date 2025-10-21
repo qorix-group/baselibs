@@ -128,7 +128,7 @@ cc_test(
     ],
     target_compatible_with = select({
         "@platforms//os:qnx": [
-            "//bazel/platforms/qnx_version:qnx7",  # TODO: Ticket-214211 QNX8 incompatible
+            "//bazel/platforms/qnx_version:qnx7",  # TODO: Ticket-214211 QNX8 incompatible to be enabled in Ticket-219366
         ],
         "//conditions:default": [],
     }),
