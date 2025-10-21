@@ -85,28 +85,28 @@ void SigEventQnxImpl::SetPulse(const std::int32_t connection_id,
 {
     mw::log::LogDebug() << __func__ << "called";
     auto& raw_signal_event = signal_event_->GetSigevent();
-    SIGEV_PULSE_INIT(&raw_signal_event, connection_id, priority, code, value);
+    SIGEV_PULSE_INIT(&raw_signal_event, connection_id, static_cast<short>(priority), static_cast<short>(code), value);
 }
 
 void SigEventQnxImpl::SetSignalThread(const std::int32_t signal_number, const std::int32_t value, const pid_t tid)
 {
     mw::log::LogDebug() << __func__ << " called";
     auto& raw_signal_event = signal_event_->GetSigevent();
-    SIGEV_SIGNAL_THREAD_INIT(&raw_signal_event, signal_number, value, tid);
+    SIGEV_SIGNAL_THREAD_INIT(&raw_signal_event, signal_number, value, static_cast<short>(tid));
 }
 
 void SigEventQnxImpl::SetSignalCode(const std::int32_t signal_number, const std::int32_t value, const std::int32_t code)
 {
     mw::log::LogDebug() << __func__ << " called";
     auto& raw_signal_event = signal_event_->GetSigevent();
-    SIGEV_SIGNAL_CODE_INIT(&raw_signal_event, signal_number, value, code);
+    SIGEV_SIGNAL_CODE_INIT(&raw_signal_event, signal_number, value, static_cast<short>(code));
 }
 
 void SigEventQnxImpl::SetMemory(volatile std::uint32_t* addr, std::size_t size, std::size_t offset)
 {
     mw::log::LogDebug() << __func__ << " called";
     auto& raw_signal_event = signal_event_->GetSigevent();
-    SIGEV_MEMORY_INIT(&raw_signal_event, addr, size, offset);
+    SIGEV_MEMORY_INIT(&raw_signal_event, addr, static_cast<int>(size), static_cast<int>(offset));
 }
 
 void SigEventQnxImpl::SetInterrupt()
