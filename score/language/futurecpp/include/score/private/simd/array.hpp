@@ -32,17 +32,7 @@ namespace detail
 template <typename T, typename Abi, std::size_t... Is>
 struct array_mask
 {
-    // avoid "ignored attributes" warning: https://stackoverflow.com/a/79539286
-    struct wrapper
-    {
-        using type = typename Abi::type;
-        type v;
-        SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE wrapper() = default;
-        SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE wrapper(const type value) noexcept : v(value) {}
-        SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE operator type() const noexcept { return v; }
-    };
-
-    using type = std::array<wrapper, sizeof...(Is)>;
+    using type = std::array<typename Abi::type, sizeof...(Is)>;
 
     static type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE broadcast(const bool v) noexcept
     {
@@ -96,17 +86,7 @@ struct array_mask
 template <typename T, typename Abi, typename MaskAbi, std::size_t... Is>
 struct array
 {
-    // avoid "ignored attributes" warning: https://stackoverflow.com/a/79539286
-    struct wrapper
-    {
-        using type = typename Abi::type;
-        type v;
-        SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE wrapper() = default;
-        SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE wrapper(const type value) noexcept : v(value) {}
-        SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE operator type() const noexcept { return v; }
-    };
-
-    using type = std::array<wrapper, sizeof...(Is)>;
+    using type = std::array<typename Abi::type, sizeof...(Is)>;
     using mask_type = typename array_mask<T, MaskAbi, Is...>::type;
     static constexpr std::size_t width{Abi::width * sizeof...(Is)};
 

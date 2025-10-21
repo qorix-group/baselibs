@@ -220,9 +220,7 @@ struct backend<std::uint8_t>
         return vld1q_u8(v);
     }
 
-    template <typename To>
-    static std::array<typename To::value_type, 4> SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_AARCH64_NEON_ALWAYS_INLINE convert(const type v,
-                                                                                                      float) noexcept
+    static std::array<float32x4_t, 4> SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_AARCH64_NEON_ALWAYS_INLINE convert(const type v, float) noexcept
     {
         const uint16x8_t u2a{vmovl_u8(vget_low_u8(v))};
         const uint16x8_t u2b{vshll_high_n_u8(v, 0)};

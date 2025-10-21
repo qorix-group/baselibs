@@ -29,10 +29,46 @@ namespace score::cpp
 {
 namespace simd
 {
+
 namespace detail
 {
 namespace sse42
 {
+
+// wrap the SSE types to avoid "ignored attributes" warning: https://stackoverflow.com/a/79539286
+// see also the GCC bug ticket https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97222
+
+struct uint8x16_t
+{
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE uint8x16_t() = default;
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE uint8x16_t(const __m128i value) noexcept : v(value) {}
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator __m128i() const noexcept { return v; }
+    __m128i v;
+};
+
+struct int32x4_t
+{
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE int32x4_t() = default;
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE int32x4_t(const __m128i value) noexcept : v(value) {}
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator __m128i() const noexcept { return v; }
+    __m128i v;
+};
+
+struct float32x4_t
+{
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE float32x4_t() = default;
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE float32x4_t(const __m128 value) noexcept : v(value) {}
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator __m128() const noexcept { return v; }
+    __m128 v;
+};
+
+struct float64x2_t
+{
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE float64x2_t() = default;
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE float64x2_t(const __m128d value) noexcept : v(value) {}
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator __m128d() const noexcept { return v; }
+    __m128d v;
+};
 
 template <typename T>
 struct mask_backend;
@@ -40,7 +76,7 @@ struct mask_backend;
 template <>
 struct mask_backend<std::int32_t>
 {
-    using type = __m128i;
+    using type = int32x4_t;
     static constexpr std::size_t width{4};
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE broadcast(const bool v) noexcept
@@ -51,10 +87,10 @@ struct mask_backend<std::int32_t>
     template <typename G, std::size_t I0, std::size_t I1, std::size_t I2, std::size_t I3>
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE init(G&& gen, const std::index_sequence<I0, I1, I2, I3>) noexcept
     {
-        const type r{_mm_set_epi32(static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I3>{})),
-                                   static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I2>{})),
-                                   static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I1>{})),
-                                   static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I0>{})))};
+        const auto r = _mm_set_epi32(static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I3>{})),
+                                     static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I2>{})),
+                                     static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I1>{})),
+                                     static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I0>{})));
         return _mm_sub_epi32(_mm_setzero_si128(), r);
     }
 
@@ -78,7 +114,7 @@ struct mask_backend<std::int32_t>
 template <>
 struct mask_backend<float>
 {
-    using type = __m128;
+    using type = float32x4_t;
     static constexpr std::size_t width{4};
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE broadcast(const bool v) noexcept
@@ -89,10 +125,10 @@ struct mask_backend<float>
     template <typename G, std::size_t I0, std::size_t I1, std::size_t I2, std::size_t I3>
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE init(G&& gen, const std::index_sequence<I0, I1, I2, I3>) noexcept
     {
-        const __m128i r{_mm_set_epi32(static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I3>{})),
-                                      static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I2>{})),
-                                      static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I1>{})),
-                                      static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I0>{})))};
+        const auto r = _mm_set_epi32(static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I3>{})),
+                                     static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I2>{})),
+                                     static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I1>{})),
+                                     static_cast<std::int32_t>(gen(std::integral_constant<std::size_t, I0>{})));
         return _mm_castsi128_ps(_mm_sub_epi32(_mm_setzero_si128(), r));
     }
 
@@ -113,7 +149,7 @@ struct mask_backend<float>
 template <>
 struct mask_backend<double>
 {
-    using type = __m128d;
+    using type = float64x2_t;
     static constexpr std::size_t width{2};
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE broadcast(const bool v) noexcept
@@ -124,8 +160,8 @@ struct mask_backend<double>
     template <typename G, std::size_t I0, std::size_t I1>
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE init(G&& gen, const std::index_sequence<I0, I1>) noexcept
     {
-        const __m128i r{_mm_set_epi64x(static_cast<std::int64_t>(gen(std::integral_constant<std::size_t, I1>{})),
-                                       static_cast<std::int64_t>(gen(std::integral_constant<std::size_t, I0>{})))};
+        const auto r = _mm_set_epi64x(static_cast<std::int64_t>(gen(std::integral_constant<std::size_t, I1>{})),
+                                      static_cast<std::int64_t>(gen(std::integral_constant<std::size_t, I0>{})));
         return _mm_castsi128_pd(_mm_sub_epi64(_mm_setzero_si128(), r));
     }
 
@@ -149,20 +185,19 @@ struct backend;
 template <>
 struct backend<std::uint8_t>
 {
-    using type = __m128i;
+    using type = uint8x16_t;
     static constexpr std::size_t width{16};
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE load(const std::uint8_t* const v) noexcept
     {
-        return _mm_loadu_si128(reinterpret_cast<const type*>(v));
+        return _mm_loadu_si128(reinterpret_cast<const __m128i*>(v));
     }
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE load_aligned(const std::uint8_t* const v) noexcept
     {
-        return _mm_load_si128(reinterpret_cast<const type*>(v));
+        return _mm_load_si128(reinterpret_cast<const __m128i*>(v));
     }
 
-    template <typename To>
-    static std::array<typename To::value_type, 4> SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE convert(const type v, float) noexcept
+    static std::array<float32x4_t, 4> SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE convert(const type v, float) noexcept
     {
         return {
             _mm_cvtepi32_ps(_mm_cvtepu8_epi32(v)),
@@ -176,7 +211,7 @@ struct backend<std::uint8_t>
 template <>
 struct backend<std::int32_t>
 {
-    using type = __m128i;
+    using type = int32x4_t;
     using mask_type = mask_backend<std::int32_t>::type;
     static constexpr std::size_t width{4};
 
@@ -193,25 +228,25 @@ struct backend<std::int32_t>
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE load(const std::int32_t* const v) noexcept
     {
-        return _mm_loadu_si128(reinterpret_cast<const type*>(v));
+        return _mm_loadu_si128(reinterpret_cast<const __m128i*>(v));
     }
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE load_aligned(const std::int32_t* const v) noexcept
     {
-        return _mm_load_si128(reinterpret_cast<const type*>(v));
+        return _mm_load_si128(reinterpret_cast<const __m128i*>(v));
     }
     static void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE store(std::int32_t* const v, const type a) noexcept
     {
-        _mm_storeu_si128(reinterpret_cast<type*>(v), a);
+        _mm_storeu_si128(reinterpret_cast<__m128i*>(v), a);
     }
     static void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE store_aligned(std::int32_t* const v, const type a) noexcept
     {
-        _mm_store_si128(reinterpret_cast<type*>(v), a);
+        _mm_store_si128(reinterpret_cast<__m128i*>(v), a);
     }
 
     static std::int32_t SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE extract(const type v, const std::size_t i) noexcept
     {
         alignas(16) std::int32_t tmp[width];
-        _mm_store_si128(reinterpret_cast<type*>(tmp), v);
+        _mm_store_si128(reinterpret_cast<__m128i*>(tmp), v);
         return tmp[i];
     }
 
@@ -257,7 +292,7 @@ struct backend<std::int32_t>
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE min(const type a, const type b) noexcept { return _mm_min_epi32(b, a); }
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE max(const type a, const type b) noexcept { return _mm_max_epi32(b, a); }
 
-    static __m128 SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE convert(const type v, float) noexcept { return _mm_cvtepi32_ps(v); }
+    static float32x4_t SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE convert(const type v, float) noexcept { return _mm_cvtepi32_ps(v); }
 
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE blend(const type a, const type b, const mask_type c) noexcept
     {
@@ -268,7 +303,7 @@ struct backend<std::int32_t>
 template <>
 struct backend<float>
 {
-    using type = __m128;
+    using type = float32x4_t;
     using mask_type = mask_backend<float>::type;
     static constexpr std::size_t width{4};
 
@@ -326,7 +361,7 @@ struct backend<float>
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE min(const type a, const type b) noexcept { return _mm_min_ps(b, a); }
     static type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE max(const type a, const type b) noexcept { return _mm_max_ps(b, a); }
 
-    static __m128i SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE convert(const type v, std::int32_t) noexcept { return _mm_cvttps_epi32(v); }
+    static int32x4_t SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE convert(const type v, std::int32_t) noexcept { return _mm_cvttps_epi32(v); }
 
     static mask_type SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE is_nan(const type v) noexcept
     {
@@ -344,7 +379,7 @@ struct backend<float>
 template <>
 struct backend<double>
 {
-    using type = __m128d;
+    using type = float64x2_t;
     using mask_type = mask_backend<double>::type;
     static constexpr std::size_t width{2};
 

@@ -316,12 +316,6 @@ struct backend
         return r;
     }
 
-    template <typename To, typename U, typename = std::enable_if_t<std::is_arithmetic<U>::value>>
-    static simd_vector<U, N> convert(const simd_vector<T, N>& v, U)
-    {
-        return convert(v, U{});
-    }
-
     static simd_vector<bool, N> is_nan(const simd_vector<T, N>& v) noexcept
     {
         static_assert(std::is_floating_point<T>::value, "not a floating point type");

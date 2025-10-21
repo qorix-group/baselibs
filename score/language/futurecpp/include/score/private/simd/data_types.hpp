@@ -415,8 +415,7 @@ public:
     /// [parallel] 9.6.4 8, 9 and 10
     template <typename U, typename = std::enable_if_t<!is_forwarding_ref_overload<U>::value && is_convertible<U>()>>
     SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const U* const v, vector_aligned_tag)
-        : v_{native_abi<U>::impl::template convert<typename Abi::impl::type>(native_abi<U>::impl::load_aligned(v),
-                                                                             value_type{})}
+        : v_{native_abi<U>::impl::convert(native_abi<U>::impl::load_aligned(v), value_type{})}
     {
     }
 
@@ -427,8 +426,7 @@ public:
     /// [parallel] 9.6.4 8, 9 and 10
     template <typename U, typename = std::enable_if_t<!is_forwarding_ref_overload<U>::value && is_convertible<U>()>>
     SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const U* const v, element_aligned_tag = {})
-        : v_{native_abi<U>::impl::template convert<typename Abi::impl::type>(native_abi<U>::impl::load(v),
-                                                                             value_type{})}
+        : v_{native_abi<U>::impl::convert(native_abi<U>::impl::load(v), value_type{})}
     {
     }
 
