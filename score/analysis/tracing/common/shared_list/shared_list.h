@@ -391,7 +391,7 @@ class alignas(std::max_align_t) List
             new_node.value()->prev = AtomicIndirectorType<std::ptrdiff_t>::load(tail_offset_);
             AtomicIndirectorType<std::ptrdiff_t>::store(tail_offset_, CalculateOffset(new_node.value()));
         }
-        AtomicIndirectorType<std::size_t>::fetch_add(size_, 1UL);
+        std::ignore = AtomicIndirectorType<std::size_t>::fetch_add(size_, 1UL);
         return score::cpp::blank{};
     }
 

@@ -38,8 +38,23 @@ constexpr auto kBlockSize = 64U;
 constexpr std::uint8_t kMaxChunksPerOneTraceRequest = 10U;
 
 // NOLINTNEXTLINE(modernize-avoid-c-arrays): Tolerated
+// Suppress "AUTOSAR C++14 A0-1-1" rule finding. This rule states: "A project shall not contain
+// instances of non-volatile variables being given values that are not subsequently used."
+// The variable kRingBufferSharedMemoryPath is declared and given value that is used in multiple files
+// like object_factory.cpp, shm_ring_buffer.cpp, trace_job_processor_factory.cpp (false positive)
+// coverity[autosar_cpp14_a0_1_1_violation: False]
 constexpr char kRingBufferSharedMemoryPath[] = "/dev_shmem";
+// Suppress "AUTOSAR C++14 A0-1-1" rule finding. This rule states: "A project shall not contain
+// instances of non-volatile variables being given values that are not subsequently used."
+// The variable kNumberOfElements is declared and given value that is used in multiple files
+// like object_factory.cpp and trace_job_processor_factory.cpp (false positive)
+// coverity[autosar_cpp14_a0_1_1_violation: False]
 constexpr std::uint16_t kNumberOfElements = 500U;
+// Suppress "AUTOSAR C++14 A0-1-1" rule finding. This rule states: "A project shall not contain
+// instances of non-volatile variables being given values that are not subsequently used."
+// The variable kRingBufferSharedMemorySize is declared and given value that is used in multiple files
+// like shm_ring_buffer.cpp (false positive)
+// coverity[autosar_cpp14_a0_1_1_violation: False]
 constexpr std::size_t kRingBufferSharedMemorySize = 102400U;
 
 /// @brief Type used to store Trace client Id

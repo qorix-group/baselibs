@@ -120,7 +120,7 @@ class LocalDataChunkList
     void CopyDataToSharedMemory(const LocalDataChunk& element, void* shm_pointer) const;
     // do some cleaning in the memory
     void CleanupAllocatedData(std::array<std::pair<void*, std::size_t>, kMaxChunksPerOneTraceRequest>& allocated_data,
-                              const std::shared_ptr<IFlexibleCircularAllocator>& flexible_allocator,
+                              const std::shared_ptr<IFlexibleCircularAllocator> flexible_allocator,
                               ShmChunkVector* vector,
                               void* vector_shm_raw_pointer) const;
     // create an object to refer to the location in shared memory where the vector is stored.
