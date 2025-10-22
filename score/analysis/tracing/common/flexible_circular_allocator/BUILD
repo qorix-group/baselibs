@@ -24,6 +24,7 @@ cc_library(
         "flexible_circular_allocator.h",
     ],
     features = COMPILER_WARNING_FEATURES,
+    tags = ["FUSA"],
     visibility = [
         "@score_baselibs//score/analysis:__subpackages__",
     ],
@@ -87,6 +88,7 @@ cc_library(
         "flexible_circular_allocator_factory.h",
     ],
     features = COMPILER_WARNING_FEATURES,
+    tags = ["FUSA"],
     visibility = [
         "@score_baselibs//score/analysis:__subpackages__",
     ],
