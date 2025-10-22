@@ -260,6 +260,12 @@ void* create_cpp_string_view(const char* data, size_t len)
     return static_cast<void*>(sv);
 }
 
+void* create_empty_cpp_string_view()
+{
+    auto* sv = new std::string_view();
+    return static_cast<void*>(sv);
+}
+
 // Destroy a C++ std::string_view
 void destroy_cpp_string_view(void* sv)
 {

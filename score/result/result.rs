@@ -26,6 +26,13 @@ mod ffi {
     use std::ops::Deref;
     use std::fmt;
 
+    // SAFETY: The caller must make sure that error_domain points to a valid error domain, and that
+    // result points to a valid CStringView instance where the result will be written to.
+    unsafe extern "C" {
+        #[link_name = "LibResultErrorDomainGetMessageForErrorCode"]
+        fn get_message_for_error_code(error_domain: *const ErrorDomain, error_code: ErrorCode, result: *mut CStringView);
+    }
+
     /// Opaque type representing score::ErrorDomain
     ///
     /// Since we do not support creating ErrorDomains in Rust, we only need an opaque representation
@@ -35,8 +42,24 @@ mod ffi {
         _dummy: [u8; 0],
     }
 
+    impl ErrorDomain {
+        /// Retrieve a human-readable message for a certain error of a domain.
+        ///
+        /// error_code must be a valid number for the respective domain, otherwise the result is
+        /// undefined (but not unsafe - usually some default gets returned).
+        pub fn get_message_for_error_code(&self, error_code: ErrorCode) -> CStringView {
+            let mut error_domain_string = CStringView::default();
+            // SAFETY: Since self is valid, and we provide a valid result string, calling this
+            // function is safe.
+            unsafe {
+                get_message_for_error_code(self, error_code, &mut error_domain_string);
+            }
+            error_domain_string
+        }
+    }
+
     #[repr(C)]
-    #[derive(Clone, Copy, Debug, PartialEq)]
+    #[derive(Clone, Copy, Debug, PartialEq, Default)]
     #[cfg(feature = "libstdcpp_layout")]
     struct CStringViewStorage {
         len: libc::size_t,
@@ -44,7 +67,7 @@ mod ffi {
     }
 
     #[repr(C)]
-    #[derive(Clone, Copy, Debug, PartialEq)]
+    #[derive(Clone, Copy, Debug, PartialEq, Default)]
     #[cfg(feature = "libcxx_layout")]
     struct CStringViewStorage {
         data: *const std::ffi::c_char,
@@ -63,7 +86,7 @@ mod ffi {
     /// * Characters are of type `char` (i.e. [`std::ffi::c_char`] in Rust)
     /// * On some platforms (e.g. QNX with libcxx), the field order is swapped
     #[repr(transparent)]
-    #[derive(Clone, Copy, Debug, PartialEq)]
+    #[derive(Clone, Copy, Debug, PartialEq, Default)]
     pub struct CStringView {
         storage: CStringViewStorage
     }
@@ -148,7 +171,7 @@ mod ffi {
 
     impl fmt::Display for CStringView {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> fmt::Result {
-            write!(f, "{}", self.to_string_lossy().as_ref())
+            f.write_str(self.to_string_lossy().as_ref())
         }
     }
 
@@ -168,8 +191,15 @@ mod ffi {
 
     impl fmt::Display for Error {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> fmt::Result {
-            // TODO (Ticket-12345): Resolve error code via ErrorDomain
-            write!(f, "Error {}: {}", self.code, self.message)
+            // SAFETY: We can assume that domain is valid as long as the Error instance is valid
+            // (type invariant).
+            let error_domain_string = unsafe {
+                self.domain
+                    .as_ref()
+                    .expect("Domain is nullptr!")
+                    .get_message_for_error_code(self.code)
+            };
+            write!(f, "Error {} ({}): {}", error_domain_string, self.code, self.message)
         }
     }
 
@@ -431,6 +461,7 @@ mod ffi {
 
             // Function to create and test std::string_view layout compatibility
             fn create_cpp_string_view(data: *const std::ffi::c_char, len: libc::size_t) -> *mut std::ffi::c_void;
+            fn create_empty_cpp_string_view() -> *mut std::ffi::c_void;
             fn destroy_cpp_string_view(sv: *mut std::ffi::c_void);
             fn get_cpp_string_view_size() -> libc::size_t;
             fn verify_string_view_layout(rust_view: *const std::ffi::c_void, expected_data: *const std::ffi::c_char, expected_len: libc::size_t) -> bool;
@@ -503,6 +534,19 @@ mod ffi {
                 destroy_cpp_string_view(cpp_string_view);
 
                 println!("✓ CStringView layout is compatible with std::string_view");
+            }
+        }
+
+        #[test]
+        fn test_equality_of_defaulted_string_instances() {
+            unsafe {
+                let mut cpp_created_string_view = (create_empty_cpp_string_view() as *mut CStringView).as_mut().unwrap();
+                let default_cstringview = CStringView::default();
+                assert_eq!(cpp_created_string_view.storage.len, default_cstringview.storage.len,
+                           "Lengths of default CStringView and C++ created empty string_view should match");
+                assert_eq!(cpp_created_string_view.storage.data, default_cstringview.storage.data,
+                           "Data pointers of default CStringView and C++ created empty string_view should match");
+                destroy_cpp_string_view(cpp_created_string_view as *mut _ as *mut libc::c_void);
             }
         }
 
@@ -685,6 +729,9 @@ mod ffi {
                     let error = rust_error.get_error().unwrap();
                     println!("  error code: {}", error.code);
                     assert_eq!(error.code, 54321, "Error code should match what was set in C++");
+                    let friendly_error_message = error.to_string();
+                    assert_eq!(&friendly_error_message,
+                               "Error Test error from C++ (54321): Test error from C++");
                 } else {
                     panic!("C++ created error result should have an error when viewed from Rust");
                 }
