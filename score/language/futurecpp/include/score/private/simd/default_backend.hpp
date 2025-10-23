@@ -11,6 +11,7 @@
 #include <score/private/simd/abi.hpp>
 #include <score/private/simd/array.hpp>
 
+#include <score/assert.hpp>
 #include <score/float.hpp>
 #include <score/math.hpp>
 
@@ -29,381 +30,193 @@ namespace detail
 namespace scalar
 {
 
-template <typename T, std::int32_t N>
-struct simd_vector
-{
-    alignas(N * sizeof(T)) T v[static_cast<unsigned>(N)];
-};
-
-template <std::int32_t N>
 struct mask_backend
 {
-    using type = simd_vector<bool, N>;
-    static constexpr std::size_t width{N};
+    using type = bool;
+    static constexpr std::size_t width{1};
 
-    static simd_vector<bool, N> broadcast(const bool v) noexcept
+    static bool broadcast(const bool v) noexcept { return v; }
+
+    template <typename G, std::size_t I>
+    static bool init(G&& gen, const std::index_sequence<I>) noexcept
     {
-        simd_vector<bool, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = v;
-        }
-        return r;
+        return gen(std::integral_constant<std::size_t, I>{});
     }
 
-    template <typename G, std::size_t... Is>
-    static simd_vector<bool, N> init(G&& gen, const std::index_sequence<Is...>) noexcept
+    static bool extract(const bool v, const size_t i) noexcept
     {
-        static_assert(N == sizeof...(Is), "size mismatch");
-        return {gen(std::integral_constant<std::size_t, Is>{})...};
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG(i == 0U);
+        return v;
     }
 
-    static bool extract(const simd_vector<bool, N>& v, const size_t i) noexcept { return v.v[i]; }
+    static bool logical_not(const bool v) noexcept { return !v; }
 
-    static simd_vector<bool, N> logical_not(const simd_vector<bool, N>& v) noexcept
-    {
-        simd_vector<bool, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = !v.v[i];
-        }
-        return r;
-    }
+    static bool logical_and(const bool a, const bool b) noexcept { return a && b; }
 
-    static simd_vector<bool, N> logical_and(const simd_vector<bool, N>& a, const simd_vector<bool, N>& b) noexcept
-    {
-        simd_vector<bool, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = a.v[i] && b.v[i];
-        }
-        return r;
-    }
+    static bool logical_or(const bool a, const bool b) noexcept { return a || b; }
 
-    static simd_vector<bool, N> logical_or(const simd_vector<bool, N>& a, const simd_vector<bool, N>& b) noexcept
-    {
-        simd_vector<bool, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = a.v[i] || b.v[i];
-        }
-        return r;
-    }
+    static bool all_of(const bool v) noexcept { return v; }
 
-    static bool all_of(const simd_vector<bool, N>& v) noexcept
-    {
-        for (std::int32_t i{}; i < N; ++i)
-        {
-            if (!v.v[i])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
+    static bool any_of(const bool v) noexcept { return v; }
 
-    static bool any_of(const simd_vector<bool, N>& v) noexcept
-    {
-        for (std::int32_t i{}; i < N; ++i)
-        {
-            if (v.v[i])
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    static bool none_of(const simd_vector<bool, N>& v) noexcept
-    {
-        for (std::int32_t i{}; i < N; ++i)
-        {
-            if (v.v[i])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
+    static bool none_of(const bool v) noexcept { return !v; }
 };
 
-template <typename T, std::int32_t N>
+template <typename T>
 struct backend
 {
-    using type = simd_vector<T, N>;
-    using mask_type = typename mask_backend<N>::type;
-    static constexpr std::size_t width{N};
+    using type = T;
+    using mask_type = typename mask_backend::type;
+    static constexpr std::size_t width{1};
 
-    static simd_vector<T, N> broadcast(const T v) noexcept
+    static T broadcast(const T v) noexcept { return v; }
+
+    template <typename G, std::size_t I>
+    static T init(G&& gen, const std::index_sequence<I>) noexcept
     {
-        simd_vector<T, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = v;
-        }
-        return r;
+        return gen(std::integral_constant<std::size_t, I>{});
     }
 
-    template <typename G, std::size_t... Is>
-    static simd_vector<T, N> init(G&& gen, const std::index_sequence<Is...>) noexcept
+    static T load(const T* const v) { return v[0]; }
+
+    static T load_aligned(const T* const v) { return load(v); }
+
+    static void store(T* const v, const T a) { v[0] = a; }
+
+    static void store_aligned(T* const v, const T a) { store(v, a); }
+
+    static T extract(const T v, const std::size_t i) noexcept
     {
-        static_assert(N == sizeof...(Is), "size mismatch");
-        return {gen(std::integral_constant<std::size_t, Is>{})...};
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG(i == 0U);
+        return v;
     }
 
-    static simd_vector<T, N> load(const T* const v)
+    static T add(const T a, const T b) noexcept { return a + b; }
+
+    static T subtract(const T a, const T b) noexcept { return a - b; }
+
+    static T multiply(const T a, const T b) noexcept { return a * b; }
+
+    static T divide(const T a, const T b) noexcept { return a / b; }
+
+    static T negate(const T v) noexcept { return -v; }
+
+    static bool equal(const T a, const T b) noexcept { return score::cpp::equals_bitexact(a, b); }
+
+    static bool not_equal(const T a, const T b) noexcept { return !score::cpp::equals_bitexact(a, b); }
+
+    static bool less_than(const T a, const T b) noexcept { return a < b; }
+
+    static bool less_equal(const T a, const T b) noexcept { return a <= b; }
+
+    static bool greater_than(const T a, const T b) noexcept { return a > b; }
+
+    static bool greater_equal(const T a, const T b) noexcept { return a >= b; }
+
+    static T min(const T a, const T b) noexcept { return std::min(a, b); }
+
+    static T max(const T a, const T b) noexcept { return std::max(a, b); }
+
+    template <typename To>
+    static To convert(const T v, To) noexcept
     {
-        simd_vector<T, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = v[i];
-        }
-        return r;
+        static_assert(std::is_arithmetic<To>::value, "not an arithmetic type");
+        return static_cast<To>(v);
     }
 
-    static simd_vector<T, N> load_aligned(const T* const v) { return load(v); }
-
-    static void store(T* const v, const simd_vector<T, N>& a)
-    {
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            v[i] = a.v[i];
-        }
-    }
-
-    static void store_aligned(T* const v, const simd_vector<T, N>& a) { store(v, a); }
-
-    static T extract(const simd_vector<T, N>& v, const size_t i) noexcept { return v.v[i]; }
-
-    static simd_vector<T, N> add(const simd_vector<T, N>& a, const simd_vector<T, N>& b) noexcept
-    {
-        simd_vector<T, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = a.v[i] + b.v[i];
-        }
-        return r;
-    }
-
-    static simd_vector<T, N> subtract(const simd_vector<T, N>& a, const simd_vector<T, N>& b) noexcept
-    {
-        simd_vector<T, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = a.v[i] - b.v[i];
-        }
-        return r;
-    }
-
-    static simd_vector<T, N> multiply(const simd_vector<T, N>& a, const simd_vector<T, N>& b) noexcept
-    {
-        simd_vector<T, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = a.v[i] * b.v[i];
-        }
-        return r;
-    }
-
-    static simd_vector<T, N> divide(const simd_vector<T, N>& a, const simd_vector<T, N>& b) noexcept
-    {
-        simd_vector<T, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = a.v[i] / b.v[i];
-        }
-        return r;
-    }
-
-    static simd_vector<T, N> negate(const simd_vector<T, N>& v) noexcept
-    {
-        simd_vector<T, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = -v.v[i];
-        }
-        return r;
-    }
-
-    static simd_vector<bool, N> equal(const simd_vector<T, N>& a, const simd_vector<T, N>& b) noexcept
-    {
-        simd_vector<bool, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = score::cpp::equals_bitexact(a.v[i], b.v[i]);
-        }
-        return r;
-    }
-
-    static simd_vector<bool, N> not_equal(const simd_vector<T, N>& a, const simd_vector<T, N>& b) noexcept
-    {
-        simd_vector<bool, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = !score::cpp::equals_bitexact(a.v[i], b.v[i]);
-        }
-        return r;
-    }
-
-    static simd_vector<bool, N> less_than(const simd_vector<T, N>& a, const simd_vector<T, N>& b) noexcept
-    {
-        simd_vector<bool, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = a.v[i] < b.v[i];
-        }
-        return r;
-    }
-
-    static simd_vector<bool, N> less_equal(const simd_vector<T, N>& a, const simd_vector<T, N>& b) noexcept
-    {
-        simd_vector<bool, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = a.v[i] <= b.v[i];
-        }
-        return r;
-    }
-
-    static simd_vector<bool, N> greater_than(const simd_vector<T, N>& a, const simd_vector<T, N>& b) noexcept
-    {
-        simd_vector<bool, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = a.v[i] > b.v[i];
-        }
-        return r;
-    }
-
-    static simd_vector<bool, N> greater_equal(const simd_vector<T, N>& a, const simd_vector<T, N>& b) noexcept
-    {
-        simd_vector<bool, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = a.v[i] >= b.v[i];
-        }
-        return r;
-    }
-
-    static simd_vector<T, N> min(const simd_vector<T, N>& a, const simd_vector<T, N>& b) noexcept
-    {
-        simd_vector<T, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = std::min(a.v[i], b.v[i]);
-        }
-        return r;
-    }
-
-    static simd_vector<T, N> max(const simd_vector<T, N>& a, const simd_vector<T, N>& b) noexcept
-    {
-        simd_vector<T, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = std::max(a.v[i], b.v[i]);
-        }
-        return r;
-    }
-
-    template <typename To, typename = std::enable_if_t<std::is_arithmetic<To>::value>>
-    static simd_vector<To, N> convert(const simd_vector<T, N>& v, To) noexcept
-    {
-        simd_vector<To, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = static_cast<To>(v.v[i]);
-        }
-        return r;
-    }
-
-    static simd_vector<bool, N> is_nan(const simd_vector<T, N>& v) noexcept
+    static bool is_nan(const T v) noexcept
     {
         static_assert(std::is_floating_point<T>::value, "not a floating point type");
-        simd_vector<bool, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = score::cpp::isnan(v.v[i]);
-        }
-        return r;
+        return score::cpp::isnan(v);
     }
 
-    static simd_vector<T, N>
-    blend(const simd_vector<T, N>& a, const simd_vector<T, N>& b, const simd_vector<bool, N>& c) noexcept
-    {
-        simd_vector<T, N> r;
-        for (std::int32_t i{0}; i < N; ++i)
-        {
-            r.v[i] = c.v[i] ? b.v[i] : a.v[i];
-        }
-        return r;
-    }
+    static T blend(const T a, const T b, const bool c) noexcept { return c ? b : a; }
 };
 
-template <typename T, std::size_t N>
+template <typename T, std::size_t... Is>
 struct abi
 {
-    using impl = backend<T, std::int32_t{N}>;
-    using mask_impl = mask_backend<std::int32_t{N}>;
+    using impl = array<T, backend<T>, mask_backend, Is...>;
+    using mask_impl = array_mask<T, mask_backend, Is...>;
 };
+
+template <typename T, std::size_t... Is>
+constexpr auto make_native_abi_dispatch(std::index_sequence<Is...>)
+{
+    static_assert(std::is_arithmetic<T>::value, "not an arithmetic type");
+    return abi<T, Is...>{};
+}
+
+template <typename T>
+constexpr auto number_of_elements()
+{
+    static_assert(std::is_arithmetic<T>::value, "not an arithmetic type");
+    // vector registers have a fixed length (for example 64 Bits). Define the biggest type to fit into one register.
+    // The smaller types then fit number of times into the register:
+    return std::make_index_sequence<sizeof(std::uint64_t) / sizeof(T)>{};
+}
+
+template <typename T>
+using deduce_native_abi = decltype(score::cpp::simd::detail::scalar::make_native_abi_dispatch<T>(number_of_elements<T>()));
 
 } // namespace scalar
 
 template <>
 struct native_abi<std::uint8_t>
 {
-    using type = scalar::abi<std::uint8_t, 16>;
+    using type = scalar::deduce_native_abi<std::uint8_t>;
 };
 template <>
 struct native_abi<std::int32_t>
 {
-    using type = scalar::abi<std::int32_t, 4>;
+    using type = scalar::deduce_native_abi<std::int32_t>;
 };
 template <>
 struct native_abi<float>
 {
-    using type = scalar::abi<float, 4>;
+    using type = scalar::deduce_native_abi<float>;
 };
 template <>
 struct native_abi<double>
 {
-    using type = scalar::abi<double, 2>;
+    using type = scalar::deduce_native_abi<double>;
 };
 
 template <>
-struct deduce_abi<std::int32_t, 4>
+struct deduce_abi<std::int32_t, 2>
 {
     using type = native_abi<std::int32_t>::type;
 };
 template <>
-struct deduce_abi<float, 4>
+struct deduce_abi<float, 2>
 {
     using type = native_abi<float>::type;
 };
 template <>
-struct deduce_abi<float, 16>
+struct deduce_abi<float, 8>
 {
-    using type = scalar::abi<float, 16>;
+    using type = scalar::abi<float, 0, 1, 2, 3, 4, 5, 6, 7>;
 };
 template <>
-struct deduce_abi<double, 2>
+struct deduce_abi<double, 1>
 {
     using type = native_abi<double>::type;
 };
 
 template <>
-struct is_abi_tag<scalar::abi<std::int32_t, 4>> : std::true_type
+struct is_abi_tag<scalar::abi<std::int32_t, 0, 1>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<scalar::abi<float, 4>> : std::true_type
+struct is_abi_tag<scalar::abi<float, 0, 1>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<scalar::abi<float, 16>> : std::true_type
+struct is_abi_tag<scalar::abi<float, 0, 1, 2, 3, 4, 5, 6, 7>> : std::true_type
 {
 };
 template <>
-struct is_abi_tag<scalar::abi<double, 2>> : std::true_type
+struct is_abi_tag<scalar::abi<double, 0>> : std::true_type
 {
 };
 

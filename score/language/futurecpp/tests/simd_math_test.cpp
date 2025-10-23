@@ -15,6 +15,15 @@
 namespace
 {
 
+template <typename T, typename V>
+struct rebind
+{
+    // part of C++ standard https://en.cppreference.com/w/cpp/numeric/simd.html
+    // but currently not implemented by `amp`. It creates a type of `mask<T>` with the size of `V`.
+    // vector registers have a fixed length (for example 128 Bits). scale with ratio of both simd value types.
+    using type = score::cpp::simd::vec<T, sizeof(T) / sizeof(typename V::value_type) * score::cpp::simd::vec<T>::size()>;
+};
+
 template <typename T>
 class generator
 {
@@ -40,7 +49,8 @@ class simd_math_fixture : public testing::Test
 {
 };
 
-using ElementTypes = ::testing::Types<score::cpp::simd::vec<float>, score::cpp::simd::vec<double>, score::cpp::simd::vec<float, 16>>;
+using ElementTypes =
+    ::testing::Types<score::cpp::simd::vec<float>, score::cpp::simd::vec<double>, rebind<float, score::cpp::simd::vec<std::uint8_t>>::type>;
 TYPED_TEST_SUITE(simd_math_fixture, ElementTypes, /*unused*/);
 
 /// @testmethods TM_REQUIREMENT

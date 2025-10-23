@@ -20,6 +20,15 @@
 namespace
 {
 
+template <typename T, typename V>
+struct rebind
+{
+    // part of C++ standard https://en.cppreference.com/w/cpp/numeric/simd.html
+    // but currently not implemented by `amp`. It creates a type of `mask<T>` with the size of `V`.
+    // vector registers have a fixed length (for example 128 Bits). scale with ratio of both simd value types.
+    using type = score::cpp::simd::vec<T, sizeof(T) / sizeof(typename V::value_type) * score::cpp::simd::vec<T>::size()>;
+};
+
 /// @brief returns a sequence 1,2,3...
 template <typename TypeParam>
 auto integer_sequence()
@@ -90,8 +99,10 @@ class simd_vec_fixture : public testing::Test
 {
 };
 
-using ElementTypes = ::testing::
-    Types<score::cpp::simd::vec<std::int32_t>, score::cpp::simd::vec<float>, score::cpp::simd::vec<double>, score::cpp::simd::vec<float, 16>>;
+using ElementTypes = ::testing::Types<score::cpp::simd::vec<std::int32_t>,
+                                      score::cpp::simd::vec<float>,
+                                      score::cpp::simd::vec<double>,
+                                      rebind<float, score::cpp::simd::vec<std::uint8_t>>::type>;
 TYPED_TEST_SUITE(simd_vec_fixture, ElementTypes, /*unused*/);
 
 template <typename T>
@@ -100,7 +111,7 @@ class simd_floating_point_fixture : public testing::Test
 };
 
 using ElementFloatingPointTypes =
-    ::testing::Types<score::cpp::simd::vec<float>, score::cpp::simd::vec<double>, score::cpp::simd::vec<float, 16>>;
+    ::testing::Types<score::cpp::simd::vec<float>, score::cpp::simd::vec<double>, rebind<float, score::cpp::simd::vec<std::uint8_t>>::type>;
 TYPED_TEST_SUITE(simd_floating_point_fixture, ElementFloatingPointTypes, /*unused*/);
 
 /// @testmethods TM_REQUIREMENT
@@ -229,6 +240,11 @@ TYPED_TEST(simd_vec_fixture, LoadAligned)
 /// @requirement CB-#18398050, CB-#18397902
 TYPED_TEST(simd_vec_fixture, LoadAligned_WhenCopyingFromUnalignedMemory_ThenPreconditionViolated)
 {
+    if (score::cpp::simd::alignment_v<TypeParam> == alignof(typename TypeParam::value_type))
+    {
+        GTEST_SKIP() << "alignment of `score::cpp::simd::vec` the same as single element cannot trigger an unaligned load";
+    }
+
     using value_type = typename TypeParam::value_type;
     TypeParam vector;
     alignas(score::cpp::simd::alignment_v<TypeParam>) const std::array<value_type, vector.size() + 1> scalars{};
@@ -277,6 +293,11 @@ TYPED_TEST(simd_vec_fixture, StoreAligned)
 /// @requirement CB-#18398050, CB-#18397902
 TYPED_TEST(simd_vec_fixture, StoreAligned_WhenCopyingToUnalignedMemory_ThenPreconditionViolated)
 {
+    if (score::cpp::simd::alignment_v<TypeParam> == alignof(typename TypeParam::value_type))
+    {
+        GTEST_SKIP() << "alignment of `score::cpp::simd::vec` the same as single element cannot trigger an unaligned store";
+    }
+
     using value_type = typename TypeParam::value_type;
     const TypeParam vector{value_type{23}};
     alignas(score::cpp::simd::alignment_v<TypeParam>) std::array<value_type, vector.size() + 1U> scalars;
@@ -990,12 +1011,13 @@ TEST(simd_vec, ConvertIntToFloat)
 /// @requirement CB-#18398050
 TEST(simd_vec, ConvertCharToFloat)
 {
-    const std::array<std::uint8_t, 32> a{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-    const score::cpp::simd::vec<float, 16> b{a.data()};
+    const std::array<std::uint8_t, 32> seq{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+    const rebind<float, score::cpp::simd::vec<std::uint8_t>>::type b{seq.data()};
+    static_assert(b.size() < seq.size());
 
     for (std::size_t i{0U}; i < b.size(); ++i)
     {
-        EXPECT_EQ(static_cast<std::uint8_t>(a[i]), b[i]);
+        EXPECT_EQ(static_cast<std::uint8_t>(seq[i]), b[i]);
     }
 }
 

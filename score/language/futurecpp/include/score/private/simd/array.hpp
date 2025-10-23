@@ -175,6 +175,13 @@ struct array
         return {Abi::max(a[Is], b[Is])...};
     }
 
+    template <typename To>
+    static std::array<To, sizeof...(Is)> SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE convert(const type v, const To) noexcept
+    {
+        static_assert(Abi::width == 1U, "for now only support width 1. rearranging widths not yet needed");
+        return {Abi::convert(v[Is], To{})...};
+    }
+
     static mask_type SCORE_LANGUAGE_FUTURECPP_PRIVATE_SIMD_ARRAY_ALWAYS_INLINE is_nan(const type v) noexcept
     {
         return {Abi::is_nan(v[Is])...};
