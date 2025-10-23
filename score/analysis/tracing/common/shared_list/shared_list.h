@@ -15,17 +15,23 @@
 #include "score/analysis/tracing/common/flexible_circular_allocator/flexible_circular_allocator_interface.h"
 #include "score/analysis/tracing/generic_trace_library/interface_types/error_code/error_code.h"
 #include "score/memory/shared/atomic_indirector.h"
-
 #include <cstdint>
 #include <list>
+#include <type_traits>
+
 namespace score
 {
 namespace analysis
 {
 namespace tracing
 {
+
+// Forward declaration for type trait
+class SharedMemoryChunk;
+
 namespace shared
 {
+
 /**
  * @brief A custom doubly linked list implementation that uses flexible memory allocator.
  *
@@ -138,13 +144,34 @@ class alignas(std::max_align_t) List
             score::cpp::ignore = flexible_allocator_->Deallocate(static_cast<void*>(node), sizeof(Node));
         }
     }
-
+    std::uint64_t canary_start_ = kCanaryStart;                       ///< Start canary.
     std::shared_ptr<IFlexibleCircularAllocator> flexible_allocator_;  ///< Allocator for shared memory.
     std::atomic<std::ptrdiff_t> head_offset_;                         ///< Offset of the head node.
     std::atomic<std::ptrdiff_t> tail_offset_;                         ///< Offset of the tail node.
-    std::atomic_size_t size_;                                         ///< Number of elements in the list.
+    std::atomic_size_t size_;
+    std::uint64_t canary_end_ = kCanaryEnd;
+
+    /**
+     * @brief Validate list integrity by checking magic numbers
+     * @return true if valid, false if corrupted
+     */
+    bool IsValid() const noexcept
+    {
+        if (canary_start_ != kCanaryStart)
+        {
+            return false;
+        }
+        if (canary_end_ != kCanaryEnd)
+        {
+            return false;
+        }
+        return true;
+    }
 
   public:
+    static constexpr std::uint64_t kCanaryStart = 0xDEADBEEFCAFEBABEULL;
+    static constexpr std::uint64_t kCanaryEnd = 0xBABECAFEBEEFDEADULL;
+
     /**
      * @brief Custom Iterator class for the List.
      */
@@ -268,7 +295,12 @@ class alignas(std::max_align_t) List
                   std::ptrdiff_t head_offset,
                   std::ptrdiff_t tail_offset,
                   std::size_t size)
-        : flexible_allocator_(flexible_allocator), head_offset_(head_offset), tail_offset_(tail_offset), size_(size)
+        : canary_start_(kCanaryStart),
+          flexible_allocator_(flexible_allocator),
+          head_offset_(head_offset),
+          tail_offset_(tail_offset),
+          size_(size),
+          canary_end_(kCanaryEnd)
     {
     }
 
@@ -417,6 +449,11 @@ class alignas(std::max_align_t) List
      */
     score::Result<T> at(std::size_t index)
     {
+        if (!IsValid())
+        {
+            return score::MakeUnexpected(ErrorCode::kMemoryCorruptionDetectedFatal);
+        }
+
         if (index >= AtomicIndirectorType<std::size_t>::load(size_))
         {
             return score::MakeUnexpected(ErrorCode::kIndexOutOfBoundsInSharedListRecoverable);
@@ -433,6 +470,14 @@ class alignas(std::max_align_t) List
             // coverity[autosar_cpp14_a5_3_2_violation] See above
             current = ResolveOffset(current->next);
         }
+        if constexpr (std::is_same<T, SharedMemoryChunk>::value)
+        {
+            if (current->data.IsCorrupted())
+            {
+                return score::MakeUnexpected(ErrorCode::kMemoryCorruptionDetectedFatal);
+            }
+        }
+
         // coverity[autosar_cpp14_a5_3_2_violation] See above
         return current->data;
     }

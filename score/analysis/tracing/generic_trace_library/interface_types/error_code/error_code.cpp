@@ -97,6 +97,9 @@ std::string_view score::analysis::tracing::GenericTraceAPIErrorDomain::MessageFo
         case ErrorCode::kIndexOutOfBoundsInSharedListRecoverable:
             error_message = "Index is out of bounds";
             break;
+        case ErrorCode::kMemoryCorruptionDetectedFatal:
+            error_message = "Memory Corruption detected";
+            break;
         case ErrorCode::kDaemonConnectionFailedFatal:
             error_message = "Daemon connection failed";
             break;
@@ -262,6 +265,7 @@ bool score::analysis::tracing::IsErrorRecoverable(const score::analysis::tracing
         case ErrorCode::kSharedMemoryObjectAlreadyRegisteredRecoverable:
         case ErrorCode::kNoSpaceLeftForAllocationRecoverable:
         case ErrorCode::kIndexOutOfBoundsInSharedListRecoverable:
+        case ErrorCode::kMemoryCorruptionDetectedFatal:
         case ErrorCode::kDaemonIsDisconnectedRecoverable:
             error = true;
             break;

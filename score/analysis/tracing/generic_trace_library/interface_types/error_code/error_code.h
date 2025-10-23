@@ -87,6 +87,7 @@ enum class ErrorCode : score::result::ErrorCode
 
     kNoSpaceLeftForAllocationRecoverable,      ///< No space to allocate in TMD shared memory
     kIndexOutOfBoundsInSharedListRecoverable,  ///< Element os not found to retrieve or deallocate
+    kMemoryCorruptionDetectedFatal,            ///< Memory corruption detected via canary values (Fatal)
 
     kDaemonNotAvailableFatal,              ///< LTPM Daemon not available (Fatal)
     kFailedRegisterCachedClientsFatal,     ///< Failed to register the cached client registration requests (Fatal)
