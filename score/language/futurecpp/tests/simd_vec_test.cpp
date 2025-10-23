@@ -144,6 +144,22 @@ TYPED_TEST(simd_vec_fixture, Broadcast)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050
+TYPED_TEST(simd_vec_fixture, Alignment)
+{
+#if defined(__SSE4_2__)
+    // __m128{i,d} has 16 byte alignment
+    EXPECT_EQ(score::cpp::simd::alignment_v<TypeParam>, 16);
+#elif defined(__ARM_NEON)
+    // Neon types have 16 byte alignment
+    EXPECT_EQ(score::cpp::simd::alignment_v<TypeParam>, 16);
+#else
+    // scalar backend is element aligned
+    EXPECT_EQ(score::cpp::simd::alignment_v<TypeParam>, sizeof(typename TypeParam::value_type));
+#endif
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18398050
 TYPED_TEST(simd_vec_fixture, InitializeWithGenerator)
 {
     const generator<TypeParam> gen{integer_sequence<TypeParam>()};
