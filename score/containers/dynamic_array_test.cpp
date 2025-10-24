@@ -19,12 +19,12 @@
 #include "score/memory/shared/fake/my_memory_resource.h"
 #include "score/memory/shared/polymorphic_offset_ptr_allocator.h"
 
+#include <score/assert_support.hpp>
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <cstddef>
-#include <cstdint>
-#include <limits>
 #include <memory>
 
 using namespace score::containers;
@@ -368,7 +368,10 @@ TYPED_TEST(DynamicArrayTestFixture, ConstructingDynamicArrayWithTrivialTypeWithT
     const auto initialise_dynamic_array = [this] {
         DynamicArray<TrivialType, TypeParam> unit{array_size_exceeding_limit, this->getAllocator()};
     };
-    EXPECT_DEATH(initialise_dynamic_array(), ".*");
+
+    // Since a std::exception is thrown by std::allocator_traits<Allocator>::allocate(), rather than by an AMP assertion
+    // / precondition, we capture this using the gtest framework instead of SCORE_LANGUAGE_FUTURECPP_ASSERT_CONTRACT_VIOLATED.
+    EXPECT_THROW(initialise_dynamic_array(), std::exception);
 }
 
 TYPED_TEST(DynamicArrayTestFixture, AccessingConstRefArrayOutOfBoundsTerminates)
@@ -380,7 +383,7 @@ TYPED_TEST(DynamicArrayTestFixture, AccessingConstRefArrayOutOfBoundsTerminates)
         (void)element;
     };
 
-    EXPECT_DEATH(access_const_ref_out_of_bounds(), ".*");
+    SCORE_LANGUAGE_FUTURECPP_ASSERT_CONTRACT_VIOLATED(access_const_ref_out_of_bounds());
 }
 
 TYPED_TEST(DynamicArrayTestFixture, IteratingTrivialType)
@@ -579,7 +582,7 @@ TYPED_TEST(DynamicArrayTestFixture, AccessingElementWithAtWhenArrayIsEmptyTermin
 
     // When accessing an element with at
     // Then the program terminates
-    EXPECT_DEATH(score::cpp::ignore = unit.at(0), ".*");
+    SCORE_LANGUAGE_FUTURECPP_ASSERT_CONTRACT_VIOLATED(score::cpp::ignore = unit.at(0));
 }
 
 TYPED_TEST(DynamicArrayTestFixture, AccessingElementWithIndexOperatorWhenArrayIsEmptyTerminates)
@@ -589,7 +592,7 @@ TYPED_TEST(DynamicArrayTestFixture, AccessingElementWithIndexOperatorWhenArrayIs
 
     // When accessing an element with operator[]
     // Then the program terminates
-    EXPECT_DEATH(score::cpp::ignore = unit[0], ".*");
+    SCORE_LANGUAGE_FUTURECPP_ASSERT_CONTRACT_VIOLATED(score::cpp::ignore = unit[0]);
 }
 
 TYPED_TEST(DynamicArrayTestFixture, IteratingOverEmptyArrayIteratesZeroTimes)

@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score_baselibs//:bazel/unit_tests.bzl", "cc_gtest_unit_test", "cc_unit_test_suites_for_host_and_qnx")
+load("@score_baselibs//:bazel/unit_tests.bzl", "cc_gtest_unit_test", "cc_unit_test", "cc_unit_test_suites_for_host_and_qnx")
 load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_gtest_unit_test(
@@ -21,15 +21,21 @@ cc_gtest_unit_test(
     deps = [":intrusivelist"],
 )
 
-cc_gtest_unit_test(
+cc_unit_test(
     name = "dynamic_array_test",
     srcs = ["dynamic_array_test.cpp"],
-    features = COMPILER_WARNING_FEATURES,
+    features = COMPILER_WARNING_FEATURES + [
+        # These tests catch exceptions instead of using gtest EXPECT_DEATH so we disable aborts_upon_exception.
+        "-aborts_upon_exception",
+    ],
     deps = [
         ":dynamic_array",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
         "@score_baselibs//score/containers/test:allocator_test_type_helpers",
         "@score_baselibs//score/containers/test:container_test_types",
         "@score_baselibs//score/containers/test:custom_allocator_mock",
+        "@score_baselibs//score/language/futurecpp:futurecpp_test_support",
         "@score_baselibs//score/memory/shared:types",
         "@score_baselibs//score/memory/shared/fake:fake_memory_resources",
         "@score_baselibs//score/mw/log:backend_stub_testutil",
