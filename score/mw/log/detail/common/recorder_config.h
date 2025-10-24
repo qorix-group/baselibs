@@ -33,6 +33,13 @@
 #include "score/mw/log/detail/slog/slog_recorder_factory.h"
 #endif
 
+#if defined(KCUSTOM_LOGGING)
+#include "score/mw/log/custom_recorder_example/custom_recorder.h"
+#include "score/mw/log/custom_recorder_example/custom_recorder_factory.h"
+// #include "score/mw/log/detail/custom_recorder.h"
+// #include "score/mw/log/detail/custom_recorder_factory.h"
+#endif
+
 namespace score
 {
 namespace mw
@@ -92,6 +99,17 @@ using SystemRecorderFactoryType = SlogRecorderFactory;
 #else
 using SystemRecorderType = EmptyRecorder;
 using SystemRecorderFactoryType = EmptyRecorderFactory;
+// coverity[autosar_cpp14_a16_0_1_violation] see above
+#endif
+
+// coverity[autosar_cpp14_a16_0_1_violation] see above
+#if defined(KCUSTOM_LOGGING)
+using CustomRecorderType = CustomRecorder;
+using CustomRecorderFactoryType = CustomRecorderFactory;
+// coverity[autosar_cpp14_a16_0_1_violation] see above
+#else
+using CustomRecorderType = EmptyRecorder;
+using CustomRecorderFactoryType = EmptyRecorderFactory;
 // coverity[autosar_cpp14_a16_0_1_violation] see above
 #endif
 

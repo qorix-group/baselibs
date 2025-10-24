@@ -27,12 +27,27 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log:__subpackages__",
+        "//visibility:public",
     ],
     deps = [
         "@score_baselibs//score/language/futurecpp",
         "@score_baselibs//score/mw/log/configuration",
         "@score_baselibs//score/os:fcntl",
+    ],
+)
+
+cc_library(
+    name = "custom_recorder",
+    hdrs = [
+        "custom_recorder.h",
+        "custom_recorder_factory.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    visibility = [
+        "@score_baselibs//score/mw/log:__subpackages__",
+    ],
+    deps = [
+        ":empty_recorder_factory",
     ],
 )
 
