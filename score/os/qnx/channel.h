@@ -143,6 +143,8 @@ class Channel : public ObjectSeam<Channel>
     virtual score::cpp::expected_blank<score::os::Error> ConnectDetach(const std::int32_t coid) const noexcept = 0;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 
+    virtual score::cpp::expected<std::int32_t, score::os::Error> MsgRegisterEvent(sigevent* ev, std::int32_t coid) noexcept = 0;
+
     Channel() = default;
     virtual ~Channel() = default;
 

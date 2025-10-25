@@ -307,5 +307,16 @@ score::cpp::expected_blank<score::os::Error> ChannelImpl::ConnectDetach(const st
     return {};
 }
 
+score::cpp::expected<std::int32_t, score::os::Error> ChannelImpl::MsgRegisterEvent(sigevent* ev, std::int32_t coid) noexcept
+{
+    // Suppressed here because usage of this OSAL method is on banned list
+    // NOLINTNEXTLINE(score-banned-function) see comment above
+    const std::int32_t result = ::MsgRegisterEvent(ev, coid);
+    if (result == -1)
+    {
+        return score::cpp::make_unexpected(score::os::Error::createFromErrno());
+    }
+    return result;
+}
 }  // namespace os
 }  // namespace score
