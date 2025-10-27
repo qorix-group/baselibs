@@ -60,7 +60,9 @@ template <typename Buf, typename... Args>
 Result<std::unique_ptr<FileStream>> CreateFileStream(Args&&... args)
 {
     Buf filebuf{std::forward<Args>(args)...};
+    // LCOV_EXCL_BR_START Tooling issue, both branches show coverage, so decisions are also both covered (Ticket-202112)
     if (filebuf.is_open() != true)
+    // LCOV_EXCL_BR_STOP
     {
         return MakeUnexpected(ErrorCode::kCouldNotOpenFileStream);
     }
