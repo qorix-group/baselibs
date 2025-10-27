@@ -7,7 +7,7 @@ The custom recorder feature enables developers to implement their own logging ba
 
 ## Implementation
 
-A user who wants to use the custom recorder, has to provide implementation of "CustomRecorder" and "CustomRecorderFactory" classes. And make changes accordingly in `score/mw/log/detail/recorder_config.h`
+A user who wants to use the custom recorder, has to provide implementation of "CustomRecorder" and "CustomRecorderFactory" classes.
 
 ### custom recorder classes
 
@@ -16,37 +16,43 @@ A user who wants to use the custom recorder, has to provide implementation of "C
 
 ### feature configuration change
 
-Update `score/mw/log/detail/recorder_config.h` to include your custom implementation:
+Implement `user\specific\repo\folder\custom_recorder.h` to include your custom implementation:
 
 ```c++
-#if defined(KCUSTOM_LOGGING)
-#include "score/mw/log/custom_recorder_example/custom_recorder.h"
-#include "score/mw/log/custom_recorder_example/custom_recorder_factory.h"
-#endif
 
-#if defined(KCUSTOM_LOGGING)
-using CustomRecorderType = CustomRecorder;
-using CustomRecorderFactoryType = CustomRecorderFactory;
-// coverity[autosar_cpp14_a16_0_1_violation] see above
-#else
-using CustomRecorderType = EmptyRecorder;
-using CustomRecorderFactoryType = EmptyRecorderFactory;
-// coverity[autosar_cpp14_a16_0_1_violation] see above
-#endif
+#include "custom_recorder_impl.h"
+#include "custom_recorder_factory_impl.h"
+
+namespace score
+{
+namespace mw
+{
+namespace log
+{
+namespace detail
+{
+using CustomRecorderType = user::specific::impl::detail::CustomRecorderImpl;
+using CustomRecorderFactoryType = user::specific::impl::detail::CustomRecorderFactoryImpl;
+}
+}
+}
+}
+
 ```
 
 ## Build with Custom Recorder Implementation
 
-The label flag `custom_recorder` is defined in "score/mw/log/flags/BUILD". To link with custom implementation, the user should inject the library with build label.
+The label flag `custom_recorder_impl` is defined in "score/mw/log/flags/BUILD". To link with custom implementation, the user should inject the library with build label.
 
 ```bash
-bazel build --config=<platform_config> --//score/mw/log/flags:KCustom_Logging=True --//score/mw/log/flags:custom_recorder=//score/mw/log/custom_recorder_example <build_target>
+bazel build --config=<platform_config> --//score/mw/log/flags:KCustom_Logging=True --//score/mw/log/flags:custom_recorder_impl=//score/mw/log/custom_recorder_example --cxxopt=-I<user/specific/repo/folder> <build_target>
 ```
 
 Therein,
 
 - `--//score/mw/log/flags:KCustom_Logging=True` - feature flag, enable custom logging feature, False by default and recorder will fallback to `EmptyRecorder`
-- `--//score/mw/log/flags:custom_recorder=<impl_target>` - label flag, path to your implementation target
+- `--//score/mw/log/flags:custom_recorder_impl=<impl_target>` - label flag, path to your implementation target
+- `--cxxopt=-I<user/specific/repo/folder>` - specify include path to header file `custom_recorder.h`
 
 ## Configuration
 

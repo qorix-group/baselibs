@@ -44,14 +44,12 @@ config_setting(
 )
 
 cc_library(
-    name = "test",
-    srcs = [
-    ],
+    name = "unfilled",
 )
 
 label_flag(
-    name = "custom_recorder",
-    build_setting_default = ":test",
+    name = "custom_recorder_impl",
+    build_setting_default = ":unfilled",
     visibility = [
         "@score_baselibs//score/mw/log:__subpackages__",
     ],

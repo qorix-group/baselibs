@@ -10,31 +10,31 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef SCORE_MW_LOG_EXAMPLE_CUSTOM_RECORDER_FACTORY_H
-#define SCORE_MW_LOG_EXAMPLE_CUSTOM_RECORDER_FACTORY_H
+#ifndef SCORE_MW_LOG_EXAMPLE_CUSTOM_RECORDER_FACTORY_IMPL_H
+#define SCORE_MW_LOG_EXAMPLE_CUSTOM_RECORDER_FACTORY_IMPL_H
 
 #include "score/mw/log/detail/log_recorder_factory.hpp"
 
-namespace score
+namespace user
 {
-namespace mw
+namespace specific
 {
-namespace log
+namespace impl
 {
 namespace detail
 {
-class CustomRecorderFactory : public LogRecorderFactory<CustomRecorderFactory>
+class CustomRecorderFactoryImpl : public score::mw::log::detail::LogRecorderFactory<CustomRecorderFactoryImpl>
 {
   public:
-    CustomRecorderFactory() = default;
-    explicit CustomRecorderFactory(score::cpp::pmr::unique_ptr<score::os::Fcntl> fcntl_instance);
-    std::unique_ptr<Recorder> CreateConcreteLogRecorder(const Configuration& config,
+    CustomRecorderFactoryImpl() = default;
+    explicit CustomRecorderFactoryImpl(score::cpp::pmr::unique_ptr<score::os::Fcntl> fcntl_instance);
+    std::unique_ptr<score::mw::log::Recorder> CreateConcreteLogRecorder(const score::mw::log::detail::Configuration& config,
                                                         score::cpp::pmr::memory_resource* memory_resource);
 };
 
 }  // namespace detail
-}  // namespace log
-}  // namespace mw
-}  // namespace score
+}  // namespace impl
+}  // namespace specific
+}  // namespace user
 
-#endif  // SCORE_MW_LOG_EXAMPLE_CUSTOM_RECORDER_FACTORY_H
+#endif  // SCORE_MW_LOG_EXAMPLE_CUSTOM_RECORDER_FACTORY_IMPL_H

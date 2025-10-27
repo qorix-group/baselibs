@@ -10,30 +10,30 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "custom_recorder_factory.h"
-#include "custom_recorder.h"
+#include "custom_recorder_factory_impl.h"
+#include "custom_recorder_impl.h"
 
-namespace score
+namespace user
 {
-namespace mw
+namespace specific
 {
-namespace log
+namespace impl
 {
 namespace detail
 {
 
-CustomRecorderFactory::CustomRecorderFactory(score::cpp::pmr::unique_ptr<score::os::Fcntl>)
-    : LogRecorderFactory<CustomRecorderFactory>()
+CustomRecorderFactoryImpl::CustomRecorderFactoryImpl(score::cpp::pmr::unique_ptr<score::os::Fcntl>)
+    : LogRecorderFactory<CustomRecorderFactoryImpl>()
 {
 }
 
-std::unique_ptr<Recorder> CustomRecorderFactory::CreateConcreteLogRecorder(const Configuration&,
+std::unique_ptr<score::mw::log::Recorder> CustomRecorderFactoryImpl::CreateConcreteLogRecorder(const score::mw::log::detail::Configuration&,
                                                                            score::cpp::pmr::memory_resource*)
 {
-    return std::make_unique<CustomRecorder>();
+    return std::make_unique<CustomRecorderImpl>();
 }
 
 }  // namespace detail
-}  // namespace log
-}  // namespace mw
-}  // namespace score
+}  // namespace impl
+}  // namespace specific
+}  // namespace user

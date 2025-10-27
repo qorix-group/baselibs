@@ -14,12 +14,13 @@
 cc_library(
     name = "custom_recorder_example",
     srcs = [
-        "custom_recorder.cpp",
-        "custom_recorder_factory.cpp",
+        "custom_recorder_factory_impl.cpp",
+        "custom_recorder_impl.cpp",
     ],
     hdrs = [
         "custom_recorder.h",
-        "custom_recorder_factory.h",
+        "custom_recorder_factory_impl.h",
+        "custom_recorder_impl.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
