@@ -37,21 +37,6 @@ cc_library(
 )
 
 cc_library(
-    name = "custom_recorder",
-    hdrs = [
-        "custom_recorder.h",
-        "custom_recorder_factory.h",
-    ],
-    features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        "@score_baselibs//score/mw/log:__subpackages__",
-    ],
-    deps = [
-        ":empty_recorder_factory",
-    ],
-)
-
-cc_library(
     name = "empty_recorder_factory",
     srcs = [
         "empty_recorder_factory.cpp",

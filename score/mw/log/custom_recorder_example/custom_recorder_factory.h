@@ -13,7 +13,6 @@
 #ifndef SCORE_MW_LOG_EXAMPLE_CUSTOM_RECORDER_FACTORY_H
 #define SCORE_MW_LOG_EXAMPLE_CUSTOM_RECORDER_FACTORY_H
 
-// #include "score/mw/log/detail/empty_recorder.h"
 #include "score/mw/log/detail/log_recorder_factory.hpp"
 
 namespace score

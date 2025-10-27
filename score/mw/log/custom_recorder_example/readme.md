@@ -7,7 +7,7 @@ The custom recorder feature enables developers to implement their own logging ba
 
 ## Implementation
 
-Any user want to use the custom recorder, should implement "CustomRecorder" and "CustomRecorderFactory" classes. And make changes accordingly in `score/mw/log/detail/recorder_config.h`
+A user who wants to use the custom recorder, has to provide implementation of "CustomRecorder" and "CustomRecorderFactory" classes. And make changes accordingly in `score/mw/log/detail/recorder_config.h`
 
 ### custom recorder classes
 
@@ -37,13 +37,13 @@ using CustomRecorderFactoryType = EmptyRecorderFactory;
 
 ## Build with Custom Recorder Implementation
 
-The label flag `custom_recorder` is defined in "score/mw/log/flags/BUILD" and provides a default implementation using `EmptyRecorder`. To link with different implementation, the user should inject the library with build label.
+The label flag `custom_recorder` is defined in "score/mw/log/flags/BUILD". To link with custom implementation, the user should inject the library with build label.
 
 ```bash
 bazel build --config=<platform_config> --//score/mw/log/flags:KCustom_Logging=True --//score/mw/log/flags:custom_recorder=//score/mw/log/custom_recorder_example <build_target>
 ```
 
-Note
+Therein,
 
 - `--//score/mw/log/flags:KCustom_Logging=True` - feature flag, enable custom logging feature, False by default and recorder will fallback to `EmptyRecorder`
 - `--//score/mw/log/flags:custom_recorder=<impl_target>` - label flag, path to your implementation target

@@ -41,9 +41,8 @@ void CustomRecorder::Log(const SlotHandle&, const std::uint64_t) noexcept {}
 void CustomRecorder::Log(const SlotHandle&, const std::int64_t) noexcept {}
 void CustomRecorder::Log(const SlotHandle&, const float) noexcept {}
 void CustomRecorder::Log(const SlotHandle&, const double) noexcept {}
-void CustomRecorder::Log(const SlotHandle& slot, const std::string_view data) noexcept
+void CustomRecorder::Log(const SlotHandle&, const std::string_view data) noexcept
 {
-    std::ignore = slot;
     std::cout << __FUNCTION__ << " " << data << std::endl;
 }
 

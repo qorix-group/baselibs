@@ -43,9 +43,15 @@ config_setting(
     ],
 )
 
+cc_library(
+    name = "test",
+    srcs = [
+    ],
+)
+
 label_flag(
     name = "custom_recorder",
-    build_setting_default = "@score_baselibs//score/mw/log/detail:custom_recorder",
+    build_setting_default = ":test",
     visibility = [
         "@score_baselibs//score/mw/log:__subpackages__",
     ],

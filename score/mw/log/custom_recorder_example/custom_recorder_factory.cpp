@@ -22,18 +22,14 @@ namespace log
 namespace detail
 {
 
-CustomRecorderFactory::CustomRecorderFactory(score::cpp::pmr::unique_ptr<score::os::Fcntl> fcntl_instance)
+CustomRecorderFactory::CustomRecorderFactory(score::cpp::pmr::unique_ptr<score::os::Fcntl>)
     : LogRecorderFactory<CustomRecorderFactory>()
 {
-    std::ignore = fcntl_instance;
 }
 
-std::unique_ptr<Recorder> CustomRecorderFactory::CreateConcreteLogRecorder(const Configuration& config,
-                                                                           score::cpp::pmr::memory_resource* memory_resource)
+std::unique_ptr<Recorder> CustomRecorderFactory::CreateConcreteLogRecorder(const Configuration&,
+                                                                           score::cpp::pmr::memory_resource*)
 {
-    std::ignore = config;
-    std::ignore = memory_resource;
-
     return std::make_unique<CustomRecorder>();
 }
 
