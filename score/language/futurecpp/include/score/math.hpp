@@ -263,47 +263,31 @@ inline double exp(Integer num)
     return score::cpp::exp(static_cast<double>(num));
 }
 
-namespace detail
-{
-
-template <typename T, std::size_t... Is>
-inline T int_pow_dispatch(const T x, std::index_sequence<Is...>)
-{
-    constexpr auto expand = [](const T v, const std::size_t) { return v; };
-    return (... * expand(x, Is));
-}
-
-} // namespace detail
-
 /// \brief Computes the power of base to constant expression exponent N
-///
-/// \tparam N is the exponent. Must be a positive number.
+
+/// \pre N <= 6
+
+/// \tparam N is the exponent of type unsigned integer.
 /// \tparam T Floating point type.
 /// \param base The base for the power operation.
 /// \return Power of base to N. Might return nan/inf/-inf.
-template <std::int32_t N, typename T>
-inline T int_pow(const T base)
+template <const std::uint32_t N, typename T>
+inline T int_pow(T base)
 {
-    static_assert(N >= 0, "N must be positive");
+    static_assert(N <= 6, "N must be less than or equal to 6");
     static_assert(std::is_floating_point<T>::value, "T must be a floating point type");
 
-    // use exponantiation by squaring https://en.wikipedia.org/wiki/Exponentiation_by_squaring
-
-    if constexpr (N == 0)
+    if (N == 0)
     {
         return T{1};
     }
-    else if constexpr (N == 1)
+    else if ((N % 2) == 1)
     {
-        return base;
-    }
-    else if constexpr ((N % 2) == 1)
-    {
-        return base * score::cpp::detail::int_pow_dispatch(base * base, std::make_index_sequence<N / 2U>{});
+        return base * int_pow<N / 2>(base * base);
     }
     else
     {
-        return score::cpp::detail::int_pow_dispatch(base * base, std::make_index_sequence<N / 2U>{});
+        return int_pow<N / 2>(base * base);
     }
 }
 
