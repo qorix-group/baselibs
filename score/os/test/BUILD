@@ -11,11 +11,11 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
-load("@score-baselibs//third_party/itf:py_unittest_qnx_test.bzl", "py_unittest_qnx_test")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//third_party/itf:py_unittest_qnx_test.bzl", "py_unittest_qnx_test")
 
 package(default_visibility = [
-    "@score-baselibs//score/os/test:__subpackages__",
+    "@score_baselibs//score/os/test:__subpackages__",
 ])
 
 test_suite(
@@ -53,7 +53,7 @@ test_suite(
         ":sys_wait_impl_test",
         ":uname_test",
         ":version_test",
-        "@score-baselibs//score/os/test/linux:unit_tests_linux",
+        "@score_baselibs//score/os/test/linux:unit_tests_linux",
     ],
     visibility = [
         "//visibility:public",
@@ -109,7 +109,7 @@ py_unittest_qnx_test(
         ":version_test",
     ],
     test_suites = [
-        "@score-baselibs//score/os/test/qnx:unit_tests_qnx",
+        "@score_baselibs//score/os/test/qnx:unit_tests_qnx",
     ],
     visibility = [
         "//visibility:public",
@@ -130,8 +130,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:arpa_inet",
-        "@score-baselibs//score/os:netdb",
+        "@score_baselibs//score/os:arpa_inet",
+        "@score_baselibs//score/os:netdb",
     ],
 )
 
@@ -144,7 +144,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:cpuid",
+        "@score_baselibs//score/os:cpuid",
     ],
 )
 
@@ -164,7 +164,7 @@ cc_test(
     ],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:net_if",
+        "@score_baselibs//score/os:net_if",
     ],
 )
 
@@ -182,7 +182,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:ifaddrs",
+        "@score_baselibs//score/os:ifaddrs",
     ],
 )
 
@@ -195,7 +195,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:file_stream",
+        "@score_baselibs//score/os:file_stream",
     ],
 )
 
@@ -213,7 +213,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:arpa_inet",
+        "@score_baselibs//score/os:arpa_inet",
     ],
 )
 
@@ -242,7 +242,7 @@ cc_test(
     tags = ["manual"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:sched",
+        "@score_baselibs//score/os:sched",
     ],
 )
 
@@ -253,7 +253,7 @@ cc_test(
     tags = ["manual"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:sys_poll",
+        "@score_baselibs//score/os:sys_poll",
     ],
 )
 
@@ -264,7 +264,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:sys_uio",
+        "@score_baselibs//score/os:sys_uio",
     ],
 )
 
@@ -277,11 +277,11 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/mw/log:backend_stub_testutil",
-        "@score-baselibs//score/mw/log:frontend",
-        "@score-baselibs//score/mw/log:recorder_mock",
-        "@score-baselibs//score/os:errno",
-        "@score-baselibs//score/os:errno_logging",
+        "@score_baselibs//score/mw/log:backend_stub_testutil",
+        "@score_baselibs//score/mw/log:frontend",
+        "@score_baselibs//score/mw/log:recorder_mock",
+        "@score_baselibs//score/os:errno",
+        "@score_baselibs//score/os:errno_logging",
     ],
 )
 
@@ -294,8 +294,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:mqueue",
-        "@score-baselibs//score/os/utils/test/lib:random_string_test_lib",
+        "@score_baselibs//score/os:mqueue",
+        "@score_baselibs//score/os/utils/test/lib:random_string_test_lib",
     ],
 )
 
@@ -308,7 +308,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:statvfs",
+        "@score_baselibs//score/os:statvfs",
     ],
 )
 
@@ -321,7 +321,7 @@ cc_test(
     tags = ["manual"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:libgen",
+        "@score_baselibs//score/os:libgen",
     ],
 )
 
@@ -334,7 +334,7 @@ cc_test(
     tags = ["manual"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:time",
+        "@score_baselibs//score/os:time",
     ],
 )
 
@@ -350,8 +350,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:fcntl",
-        "@score-baselibs//score/utils:scoped_operation",
+        "@score_baselibs//score/os:fcntl",
+        "@score_baselibs//score/utils:scoped_operation",
     ],
 )
 
@@ -367,7 +367,7 @@ cc_test(
     ],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:stat",
+        "@score_baselibs//score/os:stat",
     ],
 )
 
@@ -382,8 +382,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:errno",
-        "@score-baselibs//score/os:inotify",
+        "@score_baselibs//score/os:errno",
+        "@score_baselibs//score/os:inotify",
     ],
 )
 
@@ -403,8 +403,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:errno",
-        "@score-baselibs//score/os/mocklib:ioctl_mock",
+        "@score_baselibs//score/os:errno",
+        "@score_baselibs//score/os/mocklib:ioctl_mock",
     ],
 )
 
@@ -419,8 +419,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:acl",
-        "@score-baselibs//score/os:errno",
+        "@score_baselibs//score/os:acl",
+        "@score_baselibs//score/os:errno",
     ],
 )
 
@@ -439,7 +439,7 @@ cc_test(
     }),
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:spawn",
+        "@score_baselibs//score/os:spawn",
     ],
 )
 
@@ -454,8 +454,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:semaphore",
-        "@score-baselibs//score/os/utils/test/lib:random_string_test_lib",
+        "@score_baselibs//score/os:semaphore",
+        "@score_baselibs//score/os/utils/test/lib:random_string_test_lib",
     ],
 )
 
@@ -468,8 +468,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:pthread",
-        "@score-baselibs//score/os/mocklib:pthread_mock",
+        "@score_baselibs//score/os:pthread",
+        "@score_baselibs//score/os/mocklib:pthread_mock",
     ],
 )
 
@@ -482,8 +482,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:uname",
-        "@score-baselibs//score/os/mocklib:uname_mock",
+        "@score_baselibs//score/os:uname",
+        "@score_baselibs//score/os/mocklib:uname_mock",
     ],
 )
 
@@ -498,8 +498,8 @@ cc_test(
     ],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os/mocklib:ftw_mock",
-        "@score-baselibs//score/os/posix:ftw_posix",
+        "@score_baselibs//score/os/mocklib:ftw_mock",
+        "@score_baselibs//score/os/posix:ftw_posix",
     ],
 )
 
@@ -514,7 +514,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:fcntl",
+        "@score_baselibs//score/os:fcntl",
     ],
 )
 
@@ -536,9 +536,9 @@ cc_test(
     }),
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:socket",
-        "@score-baselibs//score/os:unistd",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:socket",
+        "@score_baselibs//score/os:unistd",
     ],
 )
 
@@ -554,11 +554,11 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:mman",
-        "@score-baselibs//score/os:socket",
-        "@score-baselibs//score/os:unistd",
-        "@score-baselibs//score/os/utils:signal",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:mman",
+        "@score_baselibs//score/os:socket",
+        "@score_baselibs//score/os:unistd",
+        "@score_baselibs//score/os/utils:signal",
     ],
 )
 
@@ -571,7 +571,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os/mocklib:sched_mock",
+        "@score_baselibs//score/os/mocklib:sched_mock",
     ],
 )
 
@@ -586,9 +586,9 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/mw/log:backend_stub_testutil",
-        "@score-baselibs//score/os/mocklib:capability_mock",
-        "@score-baselibs//score/os/mocklib:unistd_mock",
+        "@score_baselibs//score/mw/log:backend_stub_testutil",
+        "@score_baselibs//score/os/mocklib:capability_mock",
+        "@score_baselibs//score/os/mocklib:unistd_mock",
     ],
 )
 
@@ -603,7 +603,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:dirent",
+        "@score_baselibs//score/os:dirent",
     ],
 )
 
@@ -616,7 +616,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:stdio",
+        "@score_baselibs//score/os:stdio",
     ],
 )
 
@@ -629,7 +629,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:grp",
+        "@score_baselibs//score/os:grp",
     ],
 )
 
@@ -642,7 +642,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:stdlib",
+        "@score_baselibs//score/os:stdlib",
     ],
 )
 
@@ -655,7 +655,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:make_dev",
+        "@score_baselibs//score/os:make_dev",
     ],
 )
 
@@ -670,7 +670,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:string",
+        "@score_baselibs//score/os:string",
     ],
 )
 
@@ -685,7 +685,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:sys_wait",
+        "@score_baselibs//score/os:sys_wait",
     ],
 )
 
@@ -700,7 +700,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:select",
+        "@score_baselibs//score/os:select",
     ],
 )
 
@@ -713,7 +713,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:getopt",
+        "@score_baselibs//score/os:getopt",
     ],
 )
 
@@ -726,7 +726,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:string",
+        "@score_baselibs//score/os:string",
     ],
 )
 
@@ -739,7 +739,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:mount",
+        "@score_baselibs//score/os:mount",
     ],
 )
 
@@ -755,7 +755,7 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:glob",
+        "@score_baselibs//score/os:glob",
     ],
 )
 
@@ -769,8 +769,8 @@ cc_test(
     ],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/mw/log:backend_stub_testutil",
-        "@score-baselibs//score/os:sigevent",
+        "@score_baselibs//score/mw/log:backend_stub_testutil",
+        "@score_baselibs//score/os:sigevent",
     ],
 )
 
@@ -784,6 +784,6 @@ cc_test(
     ],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os:version",
+        "@score_baselibs//score/os:version",
     ],
 )

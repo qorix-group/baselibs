@@ -11,8 +11,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//:bazel/unit_tests.bzl", "cc_gtest_unit_test", "cc_unit_test_suites_for_host_and_qnx")
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//:bazel/unit_tests.bzl", "cc_gtest_unit_test", "cc_unit_test_suites_for_host_and_qnx")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "scope",
@@ -24,9 +24,9 @@ cc_library(
         "//visibility:public",  # platform_only
     ],
     deps = [
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:allocator_wrapper",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:scope_state",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:allocator_wrapper",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:scope_state",
     ],
 )
 
@@ -38,8 +38,8 @@ cc_gtest_unit_test(
         ":copyable_scoped_function",
         ":move_only_scoped_function",
         ":scope",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:instrumented_memory_resource",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:instrumented_memory_resource",
     ],
 )
 
@@ -54,14 +54,14 @@ cc_library(
     ],
     deps = [
         ":scope",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:allocator_aware_type_erasure_pointer",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:function_wrapper",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:invoker",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:is_callable_from",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:modify_signature",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:scope_state",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:scoped_function_invoker",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:allocator_aware_type_erasure_pointer",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:function_wrapper",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:invoker",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:is_callable_from",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:modify_signature",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:scope_state",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:scoped_function_invoker",
     ],
 )
 
@@ -77,14 +77,14 @@ cc_library(
     deps = [
         ":copyable_scoped_function",
         ":scope",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:allocator_aware_type_erasure_pointer",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:function_wrapper",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:invoker",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:is_callable_from",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:modify_signature",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:scope_state",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:scoped_function_invoker",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:allocator_aware_type_erasure_pointer",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:function_wrapper",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:invoker",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:is_callable_from",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:modify_signature",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:scope_state",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:scoped_function_invoker",
     ],
 )
 
@@ -100,19 +100,19 @@ cc_gtest_unit_test(
     deps = [
         ":copyable_scoped_function",
         ":move_only_scoped_function",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:instrumented_memory_resource",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:parametrization_helper",
-        "@score-baselibs//score/language/safecpp/scoped_function/details:testing_allocator",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:instrumented_memory_resource",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:parametrization_helper",
+        "@score_baselibs//score/language/safecpp/scoped_function/details:testing_allocator",
     ],
 )
 
 cc_unit_test_suites_for_host_and_qnx(
     name = "unit_tests",
     cc_unit_tests = [
-        "@score-baselibs//score/language/safecpp/scoped_function:scope_test",
-        "@score-baselibs//score/language/safecpp/scoped_function:scoped_function_test",
+        "@score_baselibs//score/language/safecpp/scoped_function:scope_test",
+        "@score_baselibs//score/language/safecpp/scoped_function:scoped_function_test",
     ],
-    test_suites_from_sub_packages = ["@score-baselibs//score/language/safecpp/scoped_function/details:unit_tests"],
-    visibility = ["@score-baselibs//score/language/safecpp:__pkg__"],
+    test_suites_from_sub_packages = ["@score_baselibs//score/language/safecpp/scoped_function/details:unit_tests"],
+    visibility = ["@score_baselibs//score/language/safecpp:__pkg__"],
 )

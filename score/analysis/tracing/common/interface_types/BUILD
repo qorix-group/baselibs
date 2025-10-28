@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "generic_trace_api_types",
@@ -24,12 +24,12 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score-baselibs//score/analysis/tracing:__subpackages__",
+        "@score_baselibs//score/analysis/tracing:__subpackages__",
     ],
     deps = [
-        "@score-baselibs//score/language/safecpp/scoped_function:move_only_scoped_function",
-        "@score-baselibs//score/memory/shared",
-        "@score-baselibs//score/result",
+        "@score_baselibs//score/language/safecpp/scoped_function:move_only_scoped_function",
+        "@score_baselibs//score/memory/shared",
+        "@score_baselibs//score/result",
     ],
 )
 
@@ -40,7 +40,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score-baselibs//score/analysis/tracing:__subpackages__",
+        "@score_baselibs//score/analysis/tracing:__subpackages__",
     ],
     deps = [
         ":generic_trace_api_types",
@@ -54,13 +54,13 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score-baselibs//score/analysis/tracing:__subpackages__",
+        "@score_baselibs//score/analysis/tracing:__subpackages__",
     ],
     deps = [
         ":generic_trace_api_types",
         ":shared_memory_chunk",
         ":shared_memory_location",
-        "@score-baselibs//score/analysis/tracing/generic_trace_library/interface_types/error_code",
+        "@score_baselibs//score/analysis/tracing/generic_trace_library/interface_types/error_code",
     ],
 )
 
@@ -71,7 +71,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score-baselibs//score/analysis/tracing:__subpackages__",
+        "@score_baselibs//score/analysis/tracing:__subpackages__",
     ],
     deps = [
         ":generic_trace_api_types",

@@ -21,8 +21,8 @@ cc_library(
     ],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os/linux:linux_header",
-        "@score-baselibs//score/os/mocklib:nonposixwrapper_mock",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os/linux:linux_header",
+        "@score_baselibs//score/os/mocklib:nonposixwrapper_mock",
     ],
 )

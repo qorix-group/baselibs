@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "acl_mock",
@@ -21,7 +21,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:acl",
+        "@score_baselibs//score/os:acl",
     ],
 )
 
@@ -33,7 +33,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:pthread",
+        "@score_baselibs//score/os:pthread",
     ],
 )
 
@@ -45,7 +45,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/interface:ftw",
+        "@score_baselibs//score/os/interface:ftw",
     ],
 )
 
@@ -57,7 +57,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:dirent",
+        "@score_baselibs//score/os:dirent",
     ],
 )
 
@@ -69,7 +69,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:select",
+        "@score_baselibs//score/os:select",
     ],
 )
 
@@ -81,8 +81,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:file_stream",
-        "@score-baselibs//score/os/linux:linux_header",
+        "@score_baselibs//score/os:file_stream",
+        "@score_baselibs//score/os/linux:linux_header",
     ],
 )
 
@@ -94,7 +94,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:pthread",
+        "@score_baselibs//score/os:pthread",
     ],
 )
 
@@ -106,7 +106,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:cpuid",
+        "@score_baselibs//score/os:cpuid",
     ],
 )
 
@@ -118,7 +118,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/utils:machine",
+        "@score_baselibs//score/os/utils:machine",
     ],
 )
 
@@ -130,7 +130,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:file_stream",
+        "@score_baselibs//score/os:file_stream",
     ],
 )
 
@@ -142,7 +142,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:getopt",
+        "@score_baselibs//score/os:getopt",
     ],
 )
 
@@ -154,8 +154,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:file_stream",
-        "@score-baselibs//score/os:libgen",
+        "@score_baselibs//score/os:file_stream",
+        "@score_baselibs//score/os:libgen",
     ],
 )
 
@@ -167,7 +167,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:inotify",
+        "@score_baselibs//score/os:inotify",
     ],
 )
 
@@ -179,7 +179,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:ioctl",
+        "@score_baselibs//score/os:ioctl",
     ],
 )
 
@@ -191,7 +191,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:mman",
+        "@score_baselibs//score/os:mman",
     ],
 )
 
@@ -203,7 +203,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:stdlib",
+        "@score_baselibs//score/os:stdlib",
     ],
 )
 
@@ -215,7 +215,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:statvfs",
+        "@score_baselibs//score/os:statvfs",
     ],
 )
 
@@ -227,8 +227,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:fcntl",
-        "@score-baselibs//score/os:mman",
+        "@score_baselibs//score/os:fcntl",
+        "@score_baselibs//score/os:mman",
     ],
 )
 
@@ -240,8 +240,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:mman",
-        "@score-baselibs//score/os:stat",
+        "@score_baselibs//score/os:mman",
+        "@score_baselibs//score/os:stat",
     ],
 )
 
@@ -252,7 +252,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:stdio",
+        "@score_baselibs//score/os:stdio",
     ],
 )
 
@@ -264,7 +264,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:mount",
+        "@score_baselibs//score/os:mount",
     ],
 )
 
@@ -275,7 +275,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:grp",
+        "@score_baselibs//score/os:grp",
     ],
 )
 
@@ -286,7 +286,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:unistd",
+        "@score_baselibs//score/os:unistd",
     ],
 )
 
@@ -298,7 +298,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:string",
+        "@score_baselibs//score/os:string",
     ],
 )
 
@@ -310,7 +310,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:time",
+        "@score_baselibs//score/os:time",
     ],
 )
 
@@ -322,7 +322,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:mqueue",
+        "@score_baselibs//score/os:mqueue",
     ],
 )
 
@@ -334,7 +334,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:net_if",
+        "@score_baselibs//score/os:net_if",
     ],
 )
 
@@ -346,7 +346,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:sys_poll",
+        "@score_baselibs//score/os:sys_poll",
     ],
 )
 
@@ -358,7 +358,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:sys_uio",
+        "@score_baselibs//score/os:sys_uio",
     ],
 )
 
@@ -370,7 +370,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:semaphore",
+        "@score_baselibs//score/os:semaphore",
     ],
 )
 
@@ -382,7 +382,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:socket",
+        "@score_baselibs//score/os:socket",
     ],
 )
 
@@ -394,7 +394,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:netdb",
+        "@score_baselibs//score/os:netdb",
     ],
 )
 
@@ -406,8 +406,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:uname",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:uname",
     ],
 )
 
@@ -419,8 +419,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:arpa_inet",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:arpa_inet",
     ],
 )
 
@@ -433,8 +433,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os/qnx:pcap",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os/qnx:pcap",
     ],
 )
 
@@ -446,8 +446,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:sys_wait",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:sys_wait",
     ],
 )
 
@@ -460,8 +460,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:sched",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:sched",
     ],
 )
 
@@ -473,8 +473,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:spawn",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:spawn",
     ],
 )
 
@@ -489,7 +489,7 @@ cc_library(
     ],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:ifaddrs",
+        "@score_baselibs//score/os:ifaddrs",
     ],
 )
 
@@ -504,7 +504,7 @@ cc_library(
     ],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:capability",
+        "@score_baselibs//score/os:capability",
     ],
 )
 
@@ -516,8 +516,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os/linux:linux_header",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os/linux:linux_header",
     ],
 )
 
@@ -529,7 +529,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:glob",
+        "@score_baselibs//score/os:glob",
     ],
 )
 
@@ -541,6 +541,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:sigevent",
+        "@score_baselibs//score/os:sigevent",
     ],
 )

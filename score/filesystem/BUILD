@@ -11,8 +11,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "filesystem",
@@ -26,7 +26,7 @@ cc_library(
     ],
     deps = [
         ":struct",
-        "@score-baselibs//score/filesystem/factory",
+        "@score_baselibs//score/filesystem/factory",
     ],
 )
 
@@ -44,9 +44,9 @@ cc_library(
     deps = [
         ":standard_filesystem_fake",
         "@googletest//:gtest",
-        "@score-baselibs//score/filesystem/factory:fake",
-        "@score-baselibs//score/filesystem/file_utils:mock",
-        "@score-baselibs//score/filesystem/filestream:fake",
+        "@score_baselibs//score/filesystem/factory:fake",
+        "@score_baselibs//score/filesystem/file_utils:mock",
+        "@score_baselibs//score/filesystem/filestream:fake",
     ],
 )
 
@@ -63,8 +63,8 @@ cc_library(
     visibility = [":__subpackages__"],
     deps = [
         ":standard_filesystem",
-        "@score-baselibs//score/filesystem/file_utils",
-        "@score-baselibs//score/filesystem/filestream",
+        "@score_baselibs//score/filesystem/file_utils",
+        "@score_baselibs//score/filesystem/filestream",
     ],
 )
 
@@ -74,7 +74,7 @@ cc_library(
     hdrs = ["path.h"],
     features = COMPILER_WARNING_FEATURES,
     implementation_deps = [
-        "@score-baselibs//score/language/futurecpp",
+        "@score_baselibs//score/language/futurecpp",
     ],
     tags = ["FFI"],
     visibility = [":__subpackages__"],
@@ -87,7 +87,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [":__subpackages__"],
-    deps = ["@score-baselibs//score/result"],
+    deps = ["@score_baselibs//score/result"],
 )
 
 cc_library(
@@ -97,7 +97,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [":__subpackages__"],
-    deps = ["@score-baselibs//score/os:stat"],
+    deps = ["@score_baselibs//score/os:stat"],
 )
 
 cc_library(
@@ -118,7 +118,7 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     implementation_deps = [
-        "@score-baselibs//score/language/futurecpp",
+        "@score_baselibs//score/language/futurecpp",
     ],
     tags = ["FFI"],
     visibility = [":__subpackages__"],
@@ -126,13 +126,13 @@ cc_library(
         ":error",
         ":file_status",
         ":path",
-        "@score-baselibs//score/filesystem/filestream",
-        "@score-baselibs//score/os:dirent",
-        "@score-baselibs//score/os:errno",
-        "@score-baselibs//score/os:object_seam",
-        "@score-baselibs//score/os:stdio",
-        "@score-baselibs//score/os:stdlib",
-        "@score-baselibs//score/os:unistd",
+        "@score_baselibs//score/filesystem/filestream",
+        "@score_baselibs//score/os:dirent",
+        "@score_baselibs//score/os:errno",
+        "@score_baselibs//score/os:object_seam",
+        "@score_baselibs//score/os:stdio",
+        "@score_baselibs//score/os:stdlib",
+        "@score_baselibs//score/os:unistd",
     ],
 )
 
@@ -155,10 +155,10 @@ cc_library(
     deps = [
         ":filesystem",
         "@googletest//:gtest",
-        "@score-baselibs//score/filesystem/filestream:fake",
-        "@score-baselibs//score/os/mocklib:dirent_mock",
-        "@score-baselibs//score/os/mocklib:stat_mock",
-        "@score-baselibs//score/os/mocklib:stdlib_mock",
+        "@score_baselibs//score/filesystem/filestream:fake",
+        "@score_baselibs//score/os/mocklib:dirent_mock",
+        "@score_baselibs//score/os/mocklib:stat_mock",
+        "@score_baselibs//score/os/mocklib:stdlib_mock",
     ],
 )
 
@@ -183,11 +183,11 @@ cc_test(
         ":standard_filesystem",
         ":standard_filesystem_fake",
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os/mocklib:dirent_mock",
-        "@score-baselibs//score/os/mocklib:stat_mock",
-        "@score-baselibs//score/os/mocklib:stdio_mock",
-        "@score-baselibs//score/os/mocklib:stdlib_mock",
-        "@score-baselibs//score/os/mocklib:unistd_mock",
+        "@score_baselibs//score/os/mocklib:dirent_mock",
+        "@score_baselibs//score/os/mocklib:stat_mock",
+        "@score_baselibs//score/os/mocklib:stdio_mock",
+        "@score_baselibs//score/os/mocklib:stdlib_mock",
+        "@score_baselibs//score/os/mocklib:unistd_mock",
     ],
 )
 
@@ -195,10 +195,10 @@ cc_unit_test_suites_for_host_and_qnx(
     name = "unit_test_suite",
     cc_unit_tests = [
         "standard_filesystem_unit_test",
-        "@score-baselibs//score/filesystem/factory:unit_test",
-        "@score-baselibs//score/filesystem/file_utils:unit_test",
-        "@score-baselibs//score/filesystem/filestream:unit_test_basic",
-        "@score-baselibs//score/filesystem/filestream:unit_test_extra",
+        "@score_baselibs//score/filesystem/factory:unit_test",
+        "@score_baselibs//score/filesystem/file_utils:unit_test",
+        "@score_baselibs//score/filesystem/filestream:unit_test_basic",
+        "@score_baselibs//score/filesystem/filestream:unit_test_extra",
     ],
     visibility = [
         "//visibility:public",

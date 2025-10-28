@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "factory",
@@ -26,10 +26,10 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score-baselibs//score/filesystem:__subpackages__",
+        "@score_baselibs//score/filesystem:__subpackages__",
     ],
     deps = [
-        "@score-baselibs//score/filesystem:struct",
+        "@score_baselibs//score/filesystem:struct",
     ],
 )
 
@@ -47,14 +47,14 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "@score-baselibs//score/filesystem:__subpackages__",
+        "@score_baselibs//score/filesystem:__subpackages__",
     ],
     deps = [
         ":factory",
         "@googletest//:gtest",
-        "@score-baselibs//score/filesystem:standard_filesystem_fake",
-        "@score-baselibs//score/filesystem/file_utils:fake",
-        "@score-baselibs//score/filesystem/filestream:fake",
+        "@score_baselibs//score/filesystem:standard_filesystem_fake",
+        "@score_baselibs//score/filesystem/file_utils:fake",
+        "@score_baselibs//score/filesystem/filestream:fake",
     ],
 )
 
@@ -68,7 +68,7 @@ cc_test(
     features = COMPILER_WARNING_FEATURES,
     tags = ["unit"],
     visibility = [
-        "@score-baselibs//score/filesystem:__pkg__",
+        "@score_baselibs//score/filesystem:__pkg__",
     ],
     deps = [
         ":factory",

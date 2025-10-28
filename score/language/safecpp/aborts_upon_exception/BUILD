@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+load("@score_baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
 
 cc_library(
     name = "abortsuponexception",
@@ -36,8 +36,8 @@ cc_test(
     deps = [
         ":abortsuponexception",
         "@googletest//:gtest_main",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/language/safecpp/coverage_termination_handler",
     ],
 )
 
@@ -51,8 +51,8 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/language/safecpp/coverage_termination_handler",
     ],
 )
 
@@ -62,5 +62,5 @@ cc_unit_test_suites_for_host_and_qnx(
         ":abortsuponexception_lib_test",
         ":abortsuponexception_toolchain_test",
     ],
-    visibility = ["@score-baselibs//score/language/safecpp:__pkg__"],
+    visibility = ["@score_baselibs//score/language/safecpp:__pkg__"],
 )

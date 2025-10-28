@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+load("@score_baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
 
 COMPILER_WARNING_FEATURES = [
     "treat_warnings_as_errors",
@@ -27,11 +27,11 @@ cc_library(
     deps = [
         ":frontend",
     ] + select({
-        "@score-baselibs//score/mw/log/detail/flags:config_KUse_Stub_Implementation_Only": [
-            "@score-baselibs//score/mw/log/detail:recorder_factory_stub",
+        "@score_baselibs//score/mw/log/detail/flags:config_KUse_Stub_Implementation_Only": [
+            "@score_baselibs//score/mw/log/detail:recorder_factory_stub",
         ],
         "//conditions:default": [
-            "@score-baselibs//score/mw/log/detail:recorder_factory",
+            "@score_baselibs//score/mw/log/detail:recorder_factory",
         ],
     }),
 )
@@ -56,12 +56,12 @@ cc_library(
     implementation_deps = [
         ":recorder",
         ":recorder_interface",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/mw/log/detail:circular_allocator",
-        "@score-baselibs//score/mw/log/detail:empty_recorder",
-        "@score-baselibs//score/mw/log/detail:thread_local_guard",
-        "@score-baselibs//score/mw/log/detail/wait_free_stack",
-        "@score-baselibs//score/result",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/mw/log/detail:circular_allocator",
+        "@score_baselibs//score/mw/log/detail:empty_recorder",
+        "@score_baselibs//score/mw/log/detail:thread_local_guard",
+        "@score_baselibs//score/mw/log/detail/wait_free_stack",
+        "@score_baselibs//score/result",
     ],
     tags = ["FFI"],
     visibility = ["//visibility:public"],
@@ -73,7 +73,7 @@ cc_library(
 alias(
     name = "backend_stub_testutil",
     testonly = True,
-    actual = "@score-baselibs//score/mw/log/detail:recorder_factory_stub",
+    actual = "@score_baselibs//score/mw/log/detail:recorder_factory_stub",
     visibility = ["//visibility:public"],
 )
 
@@ -84,8 +84,8 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score-baselibs//score/mw/log:__pkg__",
-        "@score-baselibs//score/mw/log/detail:__subpackages__",
+        "@score_baselibs//score/mw/log:__pkg__",
+        "@score_baselibs//score/mw/log/detail:__subpackages__",
     ],
     deps = [":recorder"],
 )
@@ -109,14 +109,14 @@ cc_library(
     visibility = [
         "//platform/aas/ara/log:__subpackages__",
         "//platform/aas/test/pas/logging/utils:__pkg__",
-        "@score-baselibs//score/mw/log/configuration:__pkg__",
-        "@score-baselibs//score/mw/log/detail:__pkg__",
-        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
-        "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
-        "@score-baselibs//score/mw/log/detail/slog:__pkg__",
+        "@score_baselibs//score/mw/log/configuration:__pkg__",
+        "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
+        "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
+        "@score_baselibs//score/mw/log/detail/slog:__pkg__",
     ],
     deps = [
-        "@score-baselibs//score/language/futurecpp",
+        "@score_baselibs//score/language/futurecpp",
     ],
 )
 
@@ -127,14 +127,14 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score-baselibs//score/mw/log/detail:__pkg__",
-        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
-        "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
-        "@score-baselibs//score/mw/log/detail/slog:__pkg__",
+        "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
+        "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
+        "@score_baselibs//score/mw/log/detail/slog:__pkg__",
     ],
     deps = [
         ":shared_types",
-        "@score-baselibs//score/language/futurecpp",
+        "@score_baselibs//score/language/futurecpp",
     ],
 )
 
@@ -161,9 +161,9 @@ cc_library(
     hdrs = ["log_stream.h"],
     features = COMPILER_WARNING_FEATURES,
     implementation_deps = [
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/mw/log/detail:thread_local_guard",
-        "@score-baselibs//score/result:error",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/mw/log/detail:thread_local_guard",
+        "@score_baselibs//score/result:error",
     ],
     tags = ["FFI"],
     visibility = [
@@ -177,16 +177,16 @@ cc_library(
         "//platform/aas/sysfunc/SoftwareUpdate/code/minion_data/error:__pkg__",
         "//platform/aas/sysfunc/SoftwareUpdate/code/mirror_protocol/01_preprocessing/preprocessing_step:__pkg__",
         "//platform/aas/sysfunc/common/logistics/error:__pkg__",
-        "@score-baselibs//score/mw/log/detail:__pkg__",
-        "@score-baselibs//score/mw/log/log_ext:__pkg__",
-        "@score-baselibs//score/mw/log/test/my_custom_lib:__pkg__",
-        "@score-baselibs//score/mw/log/test/sample_ara_core_logging:__pkg__",
-        "@score-baselibs//score/os:__pkg__",
+        "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/log_ext:__pkg__",
+        "@score_baselibs//score/mw/log/test/my_custom_lib:__pkg__",
+        "@score_baselibs//score/mw/log/test/sample_ara_core_logging:__pkg__",
+        "@score_baselibs//score/os:__pkg__",
     ],
     deps = [
         ":recorder",
         ":shared_types",
-        "@score-baselibs//score/mw/log/detail:logging_identifier",
+        "@score_baselibs//score/mw/log/detail:logging_identifier",
     ],
 )
 
@@ -234,7 +234,7 @@ cc_test(
         ":log",
         ":recorder_mock",
         "@googletest//:gtest_main",
-        "@score-baselibs//score/mw/log/detail/wait_free_stack",
+        "@score_baselibs//score/mw/log/detail/wait_free_stack",
     ],
 )
 
@@ -267,7 +267,7 @@ cc_test(
         ":log",
         ":recorder_mock",
         "@googletest//:gtest_main",
-        "@score-baselibs//score/mw/log/detail/wait_free_stack",
+        "@score_baselibs//score/mw/log/detail/wait_free_stack",
     ],
 )
 
@@ -284,8 +284,8 @@ cc_test(
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
-        "@score-baselibs//score/mw/log/detail:recorder_factory",
-        "@score-baselibs//score/mw/log/detail/wait_free_stack",
+        "@score_baselibs//score/mw/log/detail:recorder_factory",
+        "@score_baselibs//score/mw/log/detail/wait_free_stack",
     ],
 )
 
@@ -302,7 +302,7 @@ cc_test(
         ":log",
         ":recorder_mock",
         "@googletest//:gtest_main",
-        "@score-baselibs//score/mw/log/detail/wait_free_stack",
+        "@score_baselibs//score/mw/log/detail/wait_free_stack",
     ],
 )
 
@@ -319,7 +319,7 @@ cc_test(
         ":log",
         ":recorder_mock",
         "@googletest//:gtest_main",
-        "@score-baselibs//score/mw/log/detail/wait_free_stack",
+        "@score_baselibs//score/mw/log/detail/wait_free_stack",
     ],
 )
 
@@ -351,9 +351,9 @@ cc_test(
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
-        "@score-baselibs//score/mw/log/detail:recorder_factory",
-        "@score-baselibs//score/mw/log/detail/wait_free_stack",
-        "@score-baselibs//score/mw/log/test/my_custom_lib:my_custom_type_mw_log",
+        "@score_baselibs//score/mw/log/detail:recorder_factory",
+        "@score_baselibs//score/mw/log/detail/wait_free_stack",
+        "@score_baselibs//score/mw/log/test/my_custom_lib:my_custom_type_mw_log",
     ],
 )
 
@@ -388,10 +388,10 @@ cc_unit_test_suites_for_host_and_qnx(
         ":slot_handle_test",
     ],
     test_suites_from_sub_packages = [
-        "@score-baselibs//score/mw/log/configuration:unit_tests",
-        "@score-baselibs//score/mw/log/detail:unit_tests",
-        #"@score-baselibs//score/mw/log/legacy_non_verbose_api:unit_tests",
-        "@score-baselibs//score/mw/log/test:unit_test_suite",
+        "@score_baselibs//score/mw/log/configuration:unit_tests",
+        "@score_baselibs//score/mw/log/detail:unit_tests",
+        #"@score_baselibs//score/mw/log/legacy_non_verbose_api:unit_tests",
+        "@score_baselibs//score/mw/log/test:unit_test_suite",
     ],
     visibility = [
         "//platform/aas/mw:__pkg__",

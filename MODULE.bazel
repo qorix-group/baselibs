@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 module(
-    name = "score-baselibs",
+    name = "score_baselibs",
     version = "0.1.0",
 )
 

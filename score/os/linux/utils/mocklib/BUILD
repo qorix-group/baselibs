@@ -17,12 +17,12 @@ cc_library(
     hdrs = ["network_interface_mock.h"],
     visibility = [
         "//platform/aas/pas/sysmon:__subpackages__",
-        "@score-baselibs//score/os/linux/utils/test:__subpackages__",
+        "@score_baselibs//score/os/linux/utils/test:__subpackages__",
     ],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os/linux/utils:network_interface",
-        "@score-baselibs//score/os/mocklib:nonposixwrapper_mock",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os/linux/utils:network_interface",
+        "@score_baselibs//score/os/mocklib:nonposixwrapper_mock",
     ],
 )

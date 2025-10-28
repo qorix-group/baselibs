@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "trace_library_mock",
@@ -21,6 +21,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/analysis/tracing/generic_trace_library/stub_implementation",
+        "@score_baselibs//score/analysis/tracing/generic_trace_library/stub_implementation",
     ],
 )

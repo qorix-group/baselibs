@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "acl",
@@ -29,10 +29,10 @@ cc_library(
         "//visibility:public",  # platform_only
     ],
     deps = [
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:acl",
-        "@score-baselibs//score/os:errno",
-        "@score-baselibs//score/result",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:acl",
+        "@score_baselibs//score/os:errno",
+        "@score_baselibs//score/result",
     ],
 )
 
@@ -58,11 +58,11 @@ cc_test(
     features = COMPILER_WARNING_FEATURES,
     tags = ["unit"],
     visibility = [
-        "@score-baselibs//score/os/utils/test:__pkg__",
+        "@score_baselibs//score/os/utils/test:__pkg__",
     ],
     deps = [
         ":acl",
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os/mocklib:acl_mock",
+        "@score_baselibs//score/os/mocklib:acl_mock",
     ],
 )

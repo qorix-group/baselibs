@@ -11,17 +11,17 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "mqueue_headers",
     hdrs = ["mqueue.h"],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = ["@score-baselibs//score/os/utils/mocklib:__subpackages__"],
+    visibility = ["@score_baselibs//score/os/utils/mocklib:__subpackages__"],
     deps = [
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:errno",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:errno",
     ],
 )
 
@@ -33,11 +33,11 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":mqueue_headers",
-        "@score-baselibs//score/datetime_converter:time_conversion",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:mqueue",
-        "@score-baselibs//score/os:stat",
-        "@score-baselibs//score/utils:string_hash",
+        "@score_baselibs//score/datetime_converter:time_conversion",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:mqueue",
+        "@score_baselibs//score/os:stat",
+        "@score_baselibs//score/utils:string_hash",
     ],
 )
 
@@ -45,9 +45,9 @@ cc_library(
     name = "semaphore_headers",
     hdrs = ["semaphore.h"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = ["@score-baselibs//score/os/utils/mocklib:__subpackages__"],
+    visibility = ["@score_baselibs//score/os/utils/mocklib:__subpackages__"],
     deps = [
-        "@score-baselibs//score/utils:pimpl_ptr",
+        "@score_baselibs//score/utils:pimpl_ptr",
     ],
 )
 
@@ -58,9 +58,9 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":semaphore_headers",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:semaphore",
-        "@score-baselibs//score/os:socket",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:semaphore",
+        "@score_baselibs//score/os:socket",
     ],
 )
 
@@ -72,10 +72,10 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = ["@score-baselibs//score/os/utils/mocklib:__subpackages__"],
+    visibility = ["@score_baselibs//score/os/utils/mocklib:__subpackages__"],
     deps = [
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:errno",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:errno",
     ],
 )
 
@@ -91,13 +91,13 @@ cc_library(
         "//platform/aas/mw/lifecycle:__subpackages__",
         "//platform/aas/pas/crash_reporter:__subpackages__",
         "//platform/aas/pas/logging:__subpackages__",
-        "@score-baselibs//score/mw/log:__subpackages__",
-        "@score-baselibs//score/os:__subpackages__",
+        "@score_baselibs//score/mw/log:__subpackages__",
+        "@score_baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":signal_headers",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:unistd",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:unistd",
     ],
 )
 
@@ -106,7 +106,7 @@ cc_library(
     hdrs = ["thread.h"],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = ["@score-baselibs//score/os/utils/mocklib:__subpackages__"],
+    visibility = ["@score_baselibs//score/os/utils/mocklib:__subpackages__"],
 )
 
 cc_library(
@@ -122,8 +122,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":thread_headers",
-        "@score-baselibs//score/mw/log:frontend",
-        "@score-baselibs//score/os:pthread",
+        "@score_baselibs//score/mw/log:frontend",
+        "@score_baselibs//score/os:pthread",
     ],
 )
 
@@ -138,13 +138,13 @@ cc_library(
         "//platform/aas/sysfunc/SafeCarTime/code/apps/TimeSyncValidationNonFFI/factory/impl:__pkg__",
         "//platform/aas/sysfunc/SafeCarTime/code/factory/impl:__pkg__",
         "//platform/aas/test/pas/perf_tests/tools/perf_apps:__pkg__",
-        "@score-baselibs//score/analysis/tracing/generic_trace_library/details/trace_job_allocator:__pkg__",
-        "@score-baselibs//score/analysis/tracing/generic_trace_library/test/unit_test:__pkg__",
-        "@score-baselibs//score/analysis/tracing/plugin/ipc_trace_plugin/ipc_trace/utils:__pkg__",
-        "@score-baselibs//score/mw/log/detail/data_router/shared_memory:__pkg__",
-        "@score-baselibs//score/mw/log/detail/file_logging:__pkg__",
-        "@score-baselibs//score/os/utils:__pkg__",
-        "@score-baselibs//score/os/utils/test:__pkg__",
+        "@score_baselibs//score/analysis/tracing/generic_trace_library/details/trace_job_allocator:__pkg__",
+        "@score_baselibs//score/analysis/tracing/generic_trace_library/test/unit_test:__pkg__",
+        "@score_baselibs//score/analysis/tracing/plugin/ipc_trace_plugin/ipc_trace/utils:__pkg__",
+        "@score_baselibs//score/mw/log/detail/data_router/shared_memory:__pkg__",
+        "@score_baselibs//score/mw/log/detail/file_logging:__pkg__",
+        "@score_baselibs//score/os/utils:__pkg__",
+        "@score_baselibs//score/os/utils/test:__pkg__",
     ],
 )
 
@@ -182,14 +182,14 @@ cc_library(
         "//platform/aas/mw/storage:__subpackages__",
         "//platform/aas/pas/logging:__subpackages__",
         "//platform/aas/sec/secured:__subpackages__",
-        "@score-baselibs//score/mw/log:__subpackages__",
-        "@score-baselibs//score/os:__subpackages__",
+        "@score_baselibs//score/mw/log:__subpackages__",
+        "@score_baselibs//score/os:__subpackages__",
     ],
     deps = [
         ":path_header",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:libgen",
-        "@score-baselibs//score/os:unistd",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:libgen",
+        "@score_baselibs//score/os:unistd",
     ],
 )
 
@@ -214,14 +214,14 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     local_defines = select({
-        "@score-baselibs//bazel/settings/qemu:on_qemu": ["MACHINE_QEMU"],
+        "@score_baselibs//bazel/settings/qemu:on_qemu": ["MACHINE_QEMU"],
         "//conditions:default": [],
     }),
     tags = ["FFI"],
     visibility = ["//visibility:public"],
     deps = [
         ":machine_header",
-        "@score-baselibs//score/os:stdlib",
+        "@score_baselibs//score/os:stdlib",
     ],
 )
 
@@ -233,8 +233,8 @@ cc_library(
     tags = ["FFI"],
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:uname",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:uname",
     ],
 )
 
@@ -252,9 +252,9 @@ cc_library(
     }),
     visibility = ["//visibility:public"],
     deps = [
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/mw/log:frontend",
-        "@score-baselibs//score/os:socket",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/mw/log:frontend",
+        "@score_baselibs//score/os:socket",
     ],
 )
 
@@ -264,11 +264,11 @@ cc_library(
     hdrs = ["abortable_blocking_reader.h"],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = ["@score-baselibs//score/os/utils:__subpackages__"],
+    visibility = ["@score_baselibs//score/os/utils:__subpackages__"],
     deps = [
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:fcntl",
-        "@score-baselibs//score/os:sys_poll",
-        "@score-baselibs//score/os:unistd",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:fcntl",
+        "@score_baselibs//score/os:sys_poll",
+        "@score_baselibs//score/os:unistd",
     ],
 )

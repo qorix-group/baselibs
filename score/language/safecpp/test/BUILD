@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//:bazel/unit_tests.bzl", "cc_gtest_unit_test", "cc_unit_test_suites_for_host_and_qnx")
+load("@score_baselibs//:bazel/unit_tests.bzl", "cc_gtest_unit_test", "cc_unit_test_suites_for_host_and_qnx")
 
 cc_gtest_unit_test(
     name = "test_std_arithmetic_types",
@@ -23,5 +23,5 @@ cc_unit_test_suites_for_host_and_qnx(
     cc_unit_tests = [
         ":test_std_arithmetic_types",
     ],
-    visibility = ["@score-baselibs//score/language/safecpp:__pkg__"],
+    visibility = ["@score_baselibs//score/language/safecpp:__pkg__"],
 )

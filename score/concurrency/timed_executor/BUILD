@@ -11,8 +11,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//:bazel/unit_tests.bzl", "cc_gtest_unit_test", "cc_unit_test_suites_for_host_and_qnx")
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//:bazel/unit_tests.bzl", "cc_gtest_unit_test", "cc_unit_test_suites_for_host_and_qnx")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "timed_task",
@@ -24,8 +24,8 @@ cc_library(
         "//visibility:public",  # platform_only
     ],
     deps = [
-        "@score-baselibs//score/concurrency:executor",
-        "@score-baselibs//score/language/futurecpp",
+        "@score_baselibs//score/concurrency:executor",
+        "@score_baselibs//score/language/futurecpp",
     ],
 )
 
@@ -40,7 +40,7 @@ cc_library(
     ],
     deps = [
         ":timed_task",
-        "@score-baselibs//score/language/futurecpp",
+        "@score_baselibs//score/language/futurecpp",
     ],
 )
 
@@ -52,8 +52,8 @@ cc_gtest_unit_test(
     ],
     deps = [
         ":periodic_task",
-        "@score-baselibs//score/concurrency:clock",
-        "@score-baselibs//score/concurrency:executor_mock",
+        "@score_baselibs//score/concurrency:clock",
+        "@score_baselibs//score/concurrency:executor_mock",
     ],
 )
 
@@ -68,7 +68,7 @@ cc_library(
     ],
     deps = [
         ":timed_task",
-        "@score-baselibs//score/language/futurecpp",
+        "@score_baselibs//score/language/futurecpp",
     ],
 )
 
@@ -80,8 +80,8 @@ cc_gtest_unit_test(
     ],
     deps = [
         ":delayed_task",
-        "@score-baselibs//score/concurrency:clock",
-        "@score-baselibs//score/concurrency:executor_mock",
+        "@score_baselibs//score/concurrency:clock",
+        "@score_baselibs//score/concurrency:executor_mock",
     ],
 )
 
@@ -97,7 +97,7 @@ cc_library(
     deps = [
         ":delayed_task",
         ":periodic_task",
-        "@score-baselibs//score/language/futurecpp",
+        "@score_baselibs//score/language/futurecpp",
     ],
 )
 
@@ -112,7 +112,7 @@ cc_library(
     ],
     deps = [
         ":timed_executor",
-        "@score-baselibs//score/language/futurecpp",
+        "@score_baselibs//score/language/futurecpp",
     ],
 )
 
@@ -139,9 +139,9 @@ cc_gtest_unit_test(
     ],
     deps = [
         ":concurrent_timed_executor",
-        "@score-baselibs//score/concurrency:clock",
-        "@score-baselibs//score/concurrency:executor_mock",
-        "@score-baselibs//score/concurrency:thread_pool",
+        "@score_baselibs//score/concurrency:clock",
+        "@score_baselibs//score/concurrency:executor_mock",
+        "@score_baselibs//score/concurrency:thread_pool",
     ],
 )
 
@@ -152,5 +152,5 @@ cc_unit_test_suites_for_host_and_qnx(
         ":delayed_task_tests",
         ":concurrent_timed_executor_test",
     ],
-    visibility = ["@score-baselibs//score/concurrency:__pkg__"],
+    visibility = ["@score_baselibs//score/concurrency:__pkg__"],
 )

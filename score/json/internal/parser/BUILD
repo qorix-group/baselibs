@@ -11,16 +11,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 alias(
     name = "parser",
     actual = select({
-        "@score-baselibs//score/json:base_library_nlohmann": "@score-baselibs//score/json/internal/parser/nlohmann:nlohmann_parser",
-        "@score-baselibs//score/json:base_library_vajson": "@score-baselibs//score/json/internal/parser/vajson:vajson_parser",
+        "@score_baselibs//score/json:base_library_nlohmann": "@score_baselibs//score/json/internal/parser/nlohmann:nlohmann_parser",
+        "@score_baselibs//score/json:base_library_vajson": "@score_baselibs//score/json/internal/parser/vajson:vajson_parser",
     }),
-    visibility = ["@score-baselibs//score/json:__pkg__"],
+    visibility = ["@score_baselibs//score/json:__pkg__"],
 )
 
 cc_library(
@@ -30,11 +30,11 @@ cc_library(
     hdrs = ["parsers_test_suite.h"],
     features = COMPILER_WARNING_FEATURES + ["aborts_upon_exception"],
     tags = ["unit"],
-    visibility = ["@score-baselibs//score/json:__subpackages__"],
+    visibility = ["@score_baselibs//score/json:__subpackages__"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/json",
-        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
+        "@score_baselibs//score/json",
+        "@score_baselibs//score/language/safecpp/coverage_termination_handler",
     ],
 )
 
@@ -44,12 +44,12 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + ["aborts_upon_exception"],
     tags = ["unit"],
     visibility = [
-        "@score-baselibs//score/json:__pkg__",
+        "@score_baselibs//score/json:__pkg__",
     ],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/json",
-        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
+        "@score_baselibs//score/json",
+        "@score_baselibs//score/language/safecpp/coverage_termination_handler",
     ],
 )
 
@@ -60,11 +60,11 @@ cc_library(
     hdrs = ["number_parser_test_suite.h"],
     features = COMPILER_WARNING_FEATURES + ["aborts_upon_exception"],
     tags = ["unit"],
-    visibility = ["@score-baselibs//score/json:__subpackages__"],
+    visibility = ["@score_baselibs//score/json:__subpackages__"],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/json",
-        "@score-baselibs//score/language/safecpp/coverage_termination_handler",
+        "@score_baselibs//score/json",
+        "@score_baselibs//score/language/safecpp/coverage_termination_handler",
     ],
 )
 
@@ -74,10 +74,10 @@ cc_unit_test_suites_for_host_and_qnx(
         ":json_parser_test",
     ],
     test_suites_from_sub_packages = [
-        "@score-baselibs//score/json/internal/parser/nlohmann:unit_test_suite",
-        "@score-baselibs//score/json/internal/parser/vajson:unit_test_suite",
+        "@score_baselibs//score/json/internal/parser/nlohmann:unit_test_suite",
+        "@score_baselibs//score/json/internal/parser/vajson:unit_test_suite",
     ],
     visibility = [
-        "@score-baselibs//score/json:__pkg__",
+        "@score_baselibs//score/json:__pkg__",
     ],
 )

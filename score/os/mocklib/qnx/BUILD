@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "channel_mock",
@@ -22,7 +22,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:channel",
+        "@score_baselibs//score/os/qnx:channel",
     ],
 )
 
@@ -35,7 +35,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:dispatch",
+        "@score_baselibs//score/os/qnx:dispatch",
     ],
 )
 
@@ -48,7 +48,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:devctl",
+        "@score_baselibs//score/os/qnx:devctl",
     ],
 )
 
@@ -62,7 +62,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:inout",
+        "@score_baselibs//score/os/qnx:inout",
     ],
 )
 
@@ -76,7 +76,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:mman",
+        "@score_baselibs//score/os/qnx:mman",
     ],
 )
 
@@ -89,7 +89,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:iofunc",
+        "@score_baselibs//score/os/qnx:iofunc",
     ],
 )
 
@@ -102,7 +102,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:procmgr",
+        "@score_baselibs//score/os/qnx:procmgr",
     ],
 )
 
@@ -115,7 +115,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:neutrino",
+        "@score_baselibs//score/os/qnx:neutrino",
     ],
 )
 
@@ -128,7 +128,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:pci",
+        "@score_baselibs//score/os/qnx:pci",
     ],
 )
 
@@ -141,11 +141,11 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "//platform/aas/pas/hw_reg_res_mgrs:__subpackages__",
-        "@score-baselibs//score/os:__subpackages__",
+        "@score_baselibs//score/os:__subpackages__",
     ],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:resmgr",
+        "@score_baselibs//score/os/qnx:resmgr",
     ],
 )
 
@@ -158,7 +158,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:secpol",
+        "@score_baselibs//score/os/qnx:secpol",
     ],
 )
 
@@ -171,7 +171,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:secpolev",
+        "@score_baselibs//score/os/qnx:secpolev",
     ],
 )
 
@@ -184,7 +184,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:sysctl",
+        "@score_baselibs//score/os/qnx:sysctl",
     ],
 )
 
@@ -197,7 +197,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:slog2",
+        "@score_baselibs//score/os/qnx:slog2",
     ],
 )
 
@@ -210,7 +210,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:sysmgr",
+        "@score_baselibs//score/os/qnx:sysmgr",
     ],
 )
 
@@ -223,7 +223,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:timer",
+        "@score_baselibs//score/os/qnx:timer",
     ],
 )
 
@@ -236,7 +236,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:thread_ctl",
+        "@score_baselibs//score/os/qnx:thread_ctl",
     ],
 )
 
@@ -249,7 +249,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:unistd",
+        "@score_baselibs//score/os/qnx:unistd",
     ],
 )
 
@@ -262,7 +262,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:fs_crypto",
+        "@score_baselibs//score/os/qnx:fs_crypto",
     ],
 )
 
@@ -275,6 +275,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/qnx:sigevent_qnx",
+        "@score_baselibs//score/os/qnx:sigevent_qnx",
     ],
 )

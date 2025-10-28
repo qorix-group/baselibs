@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+load("@score_baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
 
 COMPILER_WARNING_FEATURES = [
     "treat_warnings_as_errors",
@@ -28,11 +28,11 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//platform/aas/ara/log:__subpackages__",
-        "@score-baselibs//score/mw/log:__subpackages__",
+        "@score_baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/memory/shared:atomic_indirector",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/memory/shared:atomic_indirector",
     ],
 )
 
@@ -46,12 +46,12 @@ cc_test(
     deps = [
         ":wait_free_stack",
         "@googletest//:gtest_main",
-        "@score-baselibs//score/memory/shared:atomic_indirector_mock_binding",
+        "@score_baselibs//score/memory/shared:atomic_indirector_mock_binding",
     ],
 )
 
 cc_unit_test_suites_for_host_and_qnx(
     name = "unit_tests",
     cc_unit_tests = ["unit_test"],
-    visibility = ["@score-baselibs//score/mw/log/detail:__pkg__"],
+    visibility = ["@score_baselibs//score/mw/log/detail:__pkg__"],
 )

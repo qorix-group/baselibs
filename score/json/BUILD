@@ -12,8 +12,8 @@
 # *******************************************************************************
 
 load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
-load("@score-baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 LIB_JSON_VISIBILITY = ["//visibility:public"]
 
@@ -29,13 +29,13 @@ string_flag(
 config_setting(
     name = "base_library_vajson",
     flag_values = {":base_library": "vajson"},
-    visibility = ["@score-baselibs//score/json/internal/parser:__subpackages__"],
+    visibility = ["@score_baselibs//score/json/internal/parser:__subpackages__"],
 )
 
 config_setting(
     name = "base_library_nlohmann",
     flag_values = {":base_library": "nlohmann"},
-    visibility = ["@score-baselibs//score/json/internal/parser:__subpackages__"],
+    visibility = ["@score_baselibs//score/json/internal/parser:__subpackages__"],
 )
 
 cc_library(
@@ -53,13 +53,13 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score-baselibs//score/json:__subpackages__",
+        "@score_baselibs//score/json:__subpackages__",
     ],
     deps = [
-        "@score-baselibs//score/filesystem/filestream",
-        "@score-baselibs//score/json/internal/model",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/result",
+        "@score_baselibs//score/filesystem/filestream",
+        "@score_baselibs//score/json/internal/model",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/result",
     ],
 )
 
@@ -78,9 +78,9 @@ cc_library(
     visibility = LIB_JSON_VISIBILITY,
     deps = [
         ":interface",
-        "@score-baselibs//score/json/internal/parser",
-        "@score-baselibs//score/json/internal/writer/json_serialize",
-        "@score-baselibs//score/language/safecpp/safe_math",
+        "@score_baselibs//score/json/internal/parser",
+        "@score_baselibs//score/json/internal/writer/json_serialize",
+        "@score_baselibs//score/language/safecpp/safe_math",
     ],
 )
 
@@ -95,9 +95,9 @@ cc_library(
     ],
     deps = [
         ":json",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/result",
-        "@score-baselibs//score/static_reflection_with_serialization/visitor",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/result",
+        "@score_baselibs//score/static_reflection_with_serialization/visitor",
     ],
 )
 
@@ -138,7 +138,7 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + ["aborts_upon_exception"],
     tags = ["unit"],
     visibility = [
-        "@score-baselibs//score/json:__pkg__",
+        "@score_baselibs//score/json:__pkg__",
     ],
     deps = [
         ":json",
@@ -161,12 +161,12 @@ cc_test(
     ],
     tags = ["unit"],
     visibility = [
-        "@score-baselibs//score/json:__pkg__",
+        "@score_baselibs//score/json:__pkg__",
     ],
     deps = [
         "@googletest//:gtest_main",
-        "@score-baselibs//score/filesystem:mock",
-        "@score-baselibs//score/json",
+        "@score_baselibs//score/filesystem:mock",
+        "@score_baselibs//score/json",
     ],
 )
 
@@ -189,11 +189,11 @@ cc_unit_test_suites_for_host_and_qnx(
         ":json_test",
         ":json_serializer_test",
         ":json_writer_unit_test",  # workaround to include coverage for json_writer
-        "@score-baselibs//score/json/internal/model:unit_test",
-        "@score-baselibs//score/json/internal/writer/json_serialize:json_serialize_unit_test",  # workaround to include coverage for json_serialize
+        "@score_baselibs//score/json/internal/model:unit_test",
+        "@score_baselibs//score/json/internal/writer/json_serialize:json_serialize_unit_test",  # workaround to include coverage for json_serialize
     ],
     test_suites_from_sub_packages = [
-        "@score-baselibs//score/json/internal/parser:unit_tests",
+        "@score_baselibs//score/json/internal/parser:unit_tests",
     ],
     visibility = [
         "//visibility:public",

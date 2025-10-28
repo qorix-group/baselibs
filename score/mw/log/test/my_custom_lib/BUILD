@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "my_custom_type_mw_log",
@@ -26,9 +26,9 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "//platform/aas/test/pas/logging/utils:__pkg__",
-        "@score-baselibs//score/mw/log:__pkg__",
+        "@score_baselibs//score/mw/log:__pkg__",
     ],
     deps = [
-        "@score-baselibs//score/mw/log:log_stream",
+        "@score_baselibs//score/mw/log:log_stream",
     ],
 )

@@ -1,5 +1,5 @@
-load("@score-baselibs//:bazel/unit_tests.bzl", "cc_gtest_unit_test")
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//:bazel/unit_tests.bzl", "cc_gtest_unit_test")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "datetime_converter",
@@ -24,7 +24,7 @@ cc_test(
         "strict_warnings",
     ],
     tags = ["unit"],
-    visibility = ["@score-baselibs//score/datetime_converter:__pkg__"],
+    visibility = ["@score_baselibs//score/datetime_converter:__pkg__"],
     deps = [
         ":datetime_converter",
         "@googletest//:gtest_main",
@@ -35,7 +35,7 @@ cc_gtest_unit_test(
     name = "time_conversion_test",
     srcs = ["time_conversion_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    visibility = ["@score-baselibs//score/datetime_converter:__pkg__"],
+    visibility = ["@score_baselibs//score/datetime_converter:__pkg__"],
     deps = [":time_conversion"],
 )
 

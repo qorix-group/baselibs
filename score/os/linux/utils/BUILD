@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "network_interface",
@@ -30,8 +30,8 @@ cc_library(
     visibility = [
         "//ecu/xpad/ara:__subpackages__",
         "//platform/aas/pas/sysmon:__subpackages__",
-        "@score-baselibs//score/os/linux/utils/mocklib:__subpackages__",
-        "@score-baselibs//score/os/linux/utils/test:__subpackages__",
+        "@score_baselibs//score/os/linux/utils/mocklib:__subpackages__",
+        "@score_baselibs//score/os/linux/utils/test:__subpackages__",
     ],
     deps = select({
         "//bazel/platforms:config_xpad_dnv": [],
@@ -39,8 +39,8 @@ cc_library(
             "//third_party/libseccomp2",
         ],
     }) + [
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:stat",
-        "@score-baselibs//score/os/linux",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:stat",
+        "@score_baselibs//score/os/linux",
     ],
 )

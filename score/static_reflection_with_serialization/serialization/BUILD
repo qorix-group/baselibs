@@ -33,8 +33,8 @@ cc_library(
         "//visibility:public",
     ],
     deps = [
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/static_reflection_with_serialization/visitor",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/static_reflection_with_serialization/visitor",
     ],
 )
 
@@ -46,7 +46,7 @@ test_suite(
         ":visitor_type_traits_ut",
     ],
     visibility = [
-        # "@ddad@score-baselibs//score/mw/log/test:__pkg__",
+        # "@ddad@score_baselibs//score/mw/log/test:__pkg__",
     ],
 )
 
@@ -60,8 +60,8 @@ cc_test(
     features = _compiler_warning_features,
     tags = ["unit"],
     visibility = [
-        "@score-baselibs//score/mw/log/test:__pkg__",
-        # "@ddad@score-baselibs//score/mw/log/test:__pkg__",
+        "@score_baselibs//score/mw/log/test:__pkg__",
+        # "@ddad@score_baselibs//score/mw/log/test:__pkg__",
     ],
     deps = [
         ":serialization",
@@ -78,8 +78,8 @@ cc_test(
     features = _compiler_warning_features,
     tags = ["unit"],
     visibility = [
-        "@score-baselibs//score/mw/log/test:__pkg__",
-        # "@ddad@score-baselibs//score/mw/log/test:__pkg__",
+        "@score_baselibs//score/mw/log/test:__pkg__",
+        # "@ddad@score_baselibs//score/mw/log/test:__pkg__",
     ],
     deps = [
         ":serialization",

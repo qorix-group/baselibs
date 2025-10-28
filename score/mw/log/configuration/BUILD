@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+load("@score_baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
 
 COMPILER_WARNING_FEATURES = [
     "treat_warnings_as_errors",
@@ -30,11 +30,11 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score-baselibs//score/mw/log:__subpackages__",
+        "@score_baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
-        "@score-baselibs//score/mw/log:shared_types",
-        "@score-baselibs//score/mw/log/detail:logging_identifier",
+        "@score_baselibs//score/mw/log:shared_types",
+        "@score_baselibs//score/mw/log/detail:logging_identifier",
     ],
 )
 
@@ -51,11 +51,11 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score-baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":configuration",
-        "@score-baselibs//score/result",
+        "@score_baselibs//score/result",
     ],
 )
 
@@ -71,22 +71,22 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     implementation_deps = [
-        "@score-baselibs//score/language/safecpp/string_view:null_termination_check",
+        "@score_baselibs//score/language/safecpp/string_view:null_termination_check",
     ],
     tags = ["FFI"],
     visibility = [
-        "@score-baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":configuration",
         ":configuration_interface",
-        "@score-baselibs//score/json",
-        "@score-baselibs//score/memory:split_string_view",
-        "@score-baselibs//score/mw/log/detail:initialization_reporter",
-        "@score-baselibs//score/mw/log/detail:types_and_errors",
-        "@score-baselibs//score/os:stdlib",
-        "@score-baselibs//score/os:unistd",
-        "@score-baselibs//score/os/utils:path",
+        "@score_baselibs//score/json",
+        "@score_baselibs//score/memory:split_string_view",
+        "@score_baselibs//score/mw/log/detail:initialization_reporter",
+        "@score_baselibs//score/mw/log/detail:types_and_errors",
+        "@score_baselibs//score/os:stdlib",
+        "@score_baselibs//score/os:unistd",
+        "@score_baselibs//score/os/utils:path",
     ],
 )
 
@@ -97,10 +97,10 @@ cc_library(
     hdrs = ["target_config_reader_mock.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "@score-baselibs//score/mw/log:__pkg__",
-        "@score-baselibs//score/mw/log/detail:__pkg__",
-        "@score-baselibs//score/mw/log/detail/data_router:__pkg__",
-        "@score-baselibs//score/mw/log/detail/slog:__pkg__",
+        "@score_baselibs//score/mw/log:__pkg__",
+        "@score_baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail/data_router:__pkg__",
+        "@score_baselibs//score/mw/log/detail/slog:__pkg__",
     ],
     deps = [
         ":configuration_interface",
@@ -115,7 +115,7 @@ cc_library(
     hdrs = ["configuration_file_discoverer_mock.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "@score-baselibs//score/mw/log/detail:__pkg__",
+        "@score_baselibs//score/mw/log/detail:__pkg__",
     ],
     deps = [
         ":configuration_interface",
@@ -135,7 +135,7 @@ filegroup(
         "test/data/wrong-loglevel-value.json",
     ],
     visibility = [
-        "@score-baselibs//score/mw/log:__pkg__",
+        "@score_baselibs//score/mw/log:__pkg__",
     ],
 )
 
@@ -158,11 +158,11 @@ cc_test(
         ":configuration_parser",
         ":target_config_reader_mock",
         "@googletest//:gtest_main",
-        "@score-baselibs//score/mw/log/test/console_logging_environment",
-        "@score-baselibs//score/os/mocklib:fcntl_mock",
-        "@score-baselibs//score/os/mocklib:stdlib_mock",
-        "@score-baselibs//score/os/mocklib:unistd_mock",
-        "@score-baselibs//score/os/utils/mocklib:path_mock",
+        "@score_baselibs//score/mw/log/test/console_logging_environment",
+        "@score_baselibs//score/os/mocklib:fcntl_mock",
+        "@score_baselibs//score/os/mocklib:stdlib_mock",
+        "@score_baselibs//score/os/mocklib:unistd_mock",
+        "@score_baselibs//score/os/utils/mocklib:path_mock",
     ],
 )
 
@@ -179,12 +179,12 @@ cc_library(
     tags = ["FFI"],
     visibility = [
         "//platform/aas/pas/logging:__subpackages__",
-        "@score-baselibs//score/mw/log:__subpackages__",
+        "@score_baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/mw/log:shared_types",
-        "@score-baselibs//score/mw/log/detail:logging_identifier",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/mw/log:shared_types",
+        "@score_baselibs//score/mw/log/detail:logging_identifier",
     ],
 )
 
@@ -199,18 +199,18 @@ cc_library(
     ],
     features = COMPILER_WARNING_FEATURES,
     implementation_deps = [
-        "@score-baselibs//score/json",
+        "@score_baselibs//score/json",
     ],
     tags = ["FFI"],
     visibility = [
         "//platform/aas/pas/logging:__subpackages__",
-        "@score-baselibs//score/mw/log:__subpackages__",
+        "@score_baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
         ":nvconfig_interface",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/mw/log:shared_types",
-        "@score-baselibs//score/mw/log/detail:logging_identifier",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/mw/log:shared_types",
+        "@score_baselibs//score/mw/log/detail:logging_identifier",
     ],
 )
 
@@ -256,7 +256,7 @@ filegroup(
         "test/data/test-class-id.json",
     ],
     visibility = [
-        "@score-baselibs//score/mw/log:__pkg__",
+        "@score_baselibs//score/mw/log:__pkg__",
     ],
 )
 
@@ -267,6 +267,6 @@ cc_unit_test_suites_for_host_and_qnx(
         ":unit_test",
     ],
     visibility = [
-        "@score-baselibs//score/mw/log:__pkg__",
+        "@score_baselibs//score/mw/log:__pkg__",
     ],
 )

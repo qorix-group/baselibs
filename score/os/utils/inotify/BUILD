@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
     name = "inotify_event",
@@ -24,8 +24,8 @@ cc_library(
     ],
     deps = [
         ":inotify_watch_descriptor",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:inotify",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:inotify",
     ],
 )
 
@@ -41,7 +41,7 @@ cc_library(
     deps = [
         ":inotify_event",
         ":inotify_watch_descriptor",
-        "@score-baselibs//score/language/futurecpp",
+        "@score_baselibs//score/language/futurecpp",
     ],
 )
 
@@ -51,7 +51,7 @@ cc_library(
     hdrs = ["inotify_instance_impl.h"],
     features = COMPILER_WARNING_FEATURES,
     implementation_deps = [
-        "@score-baselibs//score/language/safecpp/string_view:null_termination_check",
+        "@score_baselibs//score/language/safecpp/string_view:null_termination_check",
     ],
     tags = ["FFI"],
     visibility = [
@@ -61,13 +61,13 @@ cc_library(
         ":inotify_event",
         ":inotify_instance",
         ":inotify_watch_descriptor",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os:errno",
-        "@score-baselibs//score/os:fcntl",
-        "@score-baselibs//score/os:inotify",
-        "@score-baselibs//score/os:sys_poll",
-        "@score-baselibs//score/os:unistd",
-        "@score-baselibs//score/os/utils:abortable_blocking_reader",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os:errno",
+        "@score_baselibs//score/os:fcntl",
+        "@score_baselibs//score/os:inotify",
+        "@score_baselibs//score/os:sys_poll",
+        "@score_baselibs//score/os:unistd",
+        "@score_baselibs//score/os/utils:abortable_blocking_reader",
     ],
 )
 
@@ -133,14 +133,14 @@ cc_test(
         "//conditions:default": [],
     }),
     visibility = [
-        "@score-baselibs//score/os/utils/test:__pkg__",
+        "@score_baselibs//score/os/utils/test:__pkg__",
     ],
     deps = [
         ":inotify_instance_impl",
         "@googletest//:gtest_main",
-        "@score-baselibs//score/os/mocklib:fcntl_mock",
-        "@score-baselibs//score/os/mocklib:inotify_mock",
-        "@score-baselibs//score/os/mocklib:sys_poll_mock",
-        "@score-baselibs//score/os/mocklib:unistd_mock",
+        "@score_baselibs//score/os/mocklib:fcntl_mock",
+        "@score_baselibs//score/os/mocklib:inotify_mock",
+        "@score_baselibs//score/os/mocklib:sys_poll_mock",
+        "@score_baselibs//score/os/mocklib:unistd_mock",
     ],
 )

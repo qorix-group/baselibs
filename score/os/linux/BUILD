@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@score-baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
+load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 exports_files([
     "capability.h",
@@ -37,8 +37,8 @@ cc_library(
     defines = ["ALLOW_QM"],
     target_compatible_with = ["@platforms//os:linux"],
     visibility = [
-        "@score-baselibs//score/os:__subpackages__",
-        "@score-baselibs//score/os/mocklib/linux:__subpackages__",
+        "@score_baselibs//score/os:__subpackages__",
+        "@score_baselibs//score/os/mocklib/linux:__subpackages__",
     ],
 )
 
@@ -75,7 +75,7 @@ cc_library(
         "//platform/aas/pas/crash_handler:__pkg__",
         "//platform/aas/pas/sysmon:__pkg__",
         "//platform/aas/pas/sysmon/library:__subpackages__",
-        "@score-baselibs//score/os:__subpackages__",
+        "@score_baselibs//score/os:__subpackages__",
     ],
     deps = select({
         "//bazel/platforms:config_xpad_dnv": [],

@@ -18,8 +18,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/language/futurecpp",
-        "@score-baselibs//score/os/utils:mqueue_headers",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/os/utils:mqueue_headers",
     ],
 )
 
@@ -31,8 +31,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os:errno",
-        "@score-baselibs//score/os/utils:semaphore_headers",
+        "@score_baselibs//score/os:errno",
+        "@score_baselibs//score/os/utils:semaphore_headers",
     ],
 )
 
@@ -44,7 +44,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/utils:signal_headers",
+        "@score_baselibs//score/os/utils:signal_headers",
     ],
 )
 
@@ -56,7 +56,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/utils:thread_headers",
+        "@score_baselibs//score/os/utils:thread_headers",
     ],
 )
 
@@ -68,7 +68,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/utils:tcp_keep_alive",
+        "@score_baselibs//score/os/utils:tcp_keep_alive",
     ],
 )
 
@@ -79,6 +79,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@googletest//:gtest",
-        "@score-baselibs//score/os/utils:path_header",
+        "@score_baselibs//score/os/utils:path_header",
     ],
 )
