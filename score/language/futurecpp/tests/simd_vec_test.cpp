@@ -65,11 +65,11 @@ auto alternating_boolean_sequence()
 {
     std::array<bool, N> v;
 
-    bool start{false};
+    bool start{true};
     for (std::size_t i{0U}; i < v.size(); ++i)
     {
-        start = !start;
         v[i] = start;
+        start = !start;
     }
     return v;
 }

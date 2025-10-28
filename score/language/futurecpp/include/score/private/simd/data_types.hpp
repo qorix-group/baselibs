@@ -42,8 +42,8 @@ struct element_aligned_tag
 struct vector_aligned_tag
 {
 };
-constexpr element_aligned_tag element_aligned{};
-constexpr vector_aligned_tag vector_aligned{};
+inline constexpr element_aligned_tag element_aligned{};
+inline constexpr vector_aligned_tag vector_aligned{};
 
 /// \brief If `value` is present returns `integral_constant<size_t, N>` with `N` identifing the alignment restrictions
 /// on pointers used for (converting) loads and stores for the give type `T` on arrays of type `U`
@@ -179,7 +179,7 @@ public:
     /// \brief The number of elements, i.e., the width, of `score::cpp::simd<T, Abi>`.
     ///
     /// [parallel] 9.8.2 ff
-    static constexpr std::size_t size() noexcept { return detail::simd_size_v<T, Abi>; }
+    static constexpr std::integral_constant<std::size_t, detail::simd_size_v<T, Abi>> size{};
 
     /// \brief Default initialize.
     ///
@@ -196,10 +196,9 @@ public:
     /// \brief Constructs an object where the ith element is initialized to `gen(integral_constant<size_t, i>())`.
     ///
     /// [parallel] none
-    template <
-        typename G,
-        typename = std::enable_if_t<!is_forwarding_ref_overload<G>::value &&
-                                    is_generator_invocable<G>(std::make_index_sequence<detail::simd_size_v<T, Abi>>{})>>
+    template <typename G,
+              typename = std::enable_if_t<!is_forwarding_ref_overload<G>::value &&
+                                          is_generator_invocable<G>(std::make_index_sequence<size.value>{})>>
     explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_mask(G&& gen) noexcept
         : v_{Abi::mask_impl::init(std::forward<G>(gen), std::make_index_sequence<size()>{})}
     {
@@ -340,8 +339,7 @@ class basic_vec<T, Abi, true>
     template <typename From>
     static constexpr bool is_convertible()
     {
-        return (!std::is_same<value_type, From>::value) && (native_abi<From>::impl::width == size()) &&
-               (std::is_integral<From>::value || std::is_floating_point<From>::value);
+        return (!std::is_same<value_type, From>::value) && (native_abi<From>::impl::width == size());
     }
 
 public:
@@ -352,7 +350,7 @@ public:
     /// \brief The number of elements, i.e., the width, of score::cpp::simd<T, Abi>.
     ///
     /// [parallel] 9.6.2 1
-    static constexpr std::size_t size() noexcept { return detail::simd_size_v<T, Abi>; }
+    static constexpr std::integral_constant<std::size_t, detail::simd_size_v<T, Abi>> size{};
 
     /// \brief Default initialize.
     ///
@@ -382,10 +380,9 @@ public:
     /// \brief Constructs an object where the ith element is initialized to `gen(integral_constant<size_t, i>())`.
     ///
     /// [parallel] 9.6.4 5, 6 and 7
-    template <
-        typename G,
-        typename = std::enable_if_t<!is_forwarding_ref_overload<G>::value &&
-                                    is_generator_invocable<G>(std::make_index_sequence<detail::simd_size_v<T, Abi>>{})>>
+    template <typename G,
+              typename = std::enable_if_t<!is_forwarding_ref_overload<G>::value &&
+                                          is_generator_invocable<G>(std::make_index_sequence<size.value>{})>>
     explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(G&& gen) noexcept
         : v_{Abi::impl::init(std::forward<G>(gen), std::make_index_sequence<size()>{})}
     {
@@ -417,6 +414,7 @@ public:
     SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const U* const v, vector_aligned_tag)
         : v_{native_abi<U>::impl::convert(native_abi<U>::impl::load_aligned(v), value_type{})}
     {
+        static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value, "U not a vectorizable type");
     }
 
     /// \brief Constructs the elements from an unaligned memory address.
@@ -428,6 +426,7 @@ public:
     SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const U* const v, element_aligned_tag = {})
         : v_{native_abi<U>::impl::convert(native_abi<U>::impl::load(v), value_type{})}
     {
+        static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value, "U not a vectorizable type");
     }
 
     /// \brief Convert from platform specific type, e.g., _m128 for SSE4.2.
