@@ -22,7 +22,8 @@ namespace impl
 namespace detail
 {
 
-score::cpp::optional<score::mw::log::SlotHandle> CustomRecorderImpl::StartRecord(const std::string_view, const score::mw::log::LogLevel) noexcept
+score::cpp::optional<score::mw::log::SlotHandle> CustomRecorderImpl::StartRecord(const std::string_view,
+                                                                        const score::mw::log::LogLevel) noexcept
 {
     SlotHandle slot_handle{};
     return slot_handle;

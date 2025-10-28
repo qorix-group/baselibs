@@ -13,8 +13,8 @@
 #ifndef SCORE_MW_LOG_CUSTOM_RECORDER_H_2
 #define SCORE_MW_LOG_CUSTOM_RECORDER_H_2
 
-#include "score/mw/log/custom_recorder_example/custom_recorder_impl.h"
 #include "score/mw/log/custom_recorder_example/custom_recorder_factory_impl.h"
+#include "score/mw/log/custom_recorder_example/custom_recorder_impl.h"
 
 namespace score
 {
@@ -29,9 +29,9 @@ namespace detail
 using CustomRecorder = user::specific::impl::detail::CustomRecorderImpl;
 using CustomRecorderFactory = user::specific::impl::detail::CustomRecorderFactoryImpl;
 
-}
-}  // namespace impl
-}  // namespace specific
-}  // namespace user
+}  // namespace detail
+}  // namespace log
+}  // namespace mw
+}  // namespace score
 
 #endif  // SCORE_MW_LOG_CUSTOM_RECORDER_H

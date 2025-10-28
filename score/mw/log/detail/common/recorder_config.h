@@ -35,8 +35,6 @@
 
 #if defined(KCUSTOM_LOGGING)
 #include "custom_recorder.h"
-// #include "score/mw/log/custom_recorder_example/custom_recorder_impl.h"
-// #include "score/mw/log/custom_recorder_example/custom_recorder_factory_impl.h"
 #endif
 
 namespace score
