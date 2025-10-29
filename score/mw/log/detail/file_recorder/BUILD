@@ -23,7 +23,6 @@ cc_library(
         "@score_baselibs//score/mw/log/detail/common:__pkg__",
     ],
     deps = [
-        "//platform/aas/mw/time/HighPrecisionLocalSteadyClock",
         "@score_baselibs//score/language/futurecpp",
         "@score_baselibs//score/mw/log:recorder",
         "@score_baselibs//score/mw/log:shared_types",
@@ -33,6 +32,7 @@ cc_library(
         "@score_baselibs//score/mw/log/detail/common:statistics_reporter",
         "@score_baselibs//score/mw/log/detail/text_recorder:file_output_backend",
         "@score_baselibs//score/mw/log/detail/text_recorder:message_builder_interface",
+        "@score_baselibs//score/os/utils:high_resolution_steady_clock",
         "@score_baselibs//score/static_reflection_with_serialization/serialization",
     ],
 )
