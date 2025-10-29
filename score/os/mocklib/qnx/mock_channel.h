@@ -28,12 +28,12 @@ namespace os
 class MockChannel : public Channel
 {
   public:
-    MOCK_METHOD((score::cpp::expected<std::int32_t, score::os::Error>),
+    MOCK_METHOD((score::cpp::expected<rcvid_t, score::os::Error>),
                 MsgReceive,
                 (std::int32_t chid, void* msg, std::size_t bytes, _msg_info* info),
                 (const, noexcept, override));
 
-    MOCK_METHOD((score::cpp::expected<std::int32_t, score::os::Error>),
+    MOCK_METHOD((score::cpp::expected<rcvid_t, score::os::Error>),
                 MsgReceivev,
                 (std::int32_t chid, const iov_t* riov, std::size_t rparts, struct _msg_info* info),
                 (const, noexcept, override));

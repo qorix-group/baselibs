@@ -25,19 +25,19 @@ class ChannelImpl final : public Channel
   public:
     /* KW_SUPPRESS_START:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    score::cpp::expected<std::int32_t, score::os::Error> MsgReceive(const std::int32_t chid,
-                                                           void* const msg,
-                                                           const std::size_t bytes,
-                                                           _msg_info* const info) const noexcept override;
+    score::cpp::expected<rcvid_t, score::os::Error> MsgReceive(const std::int32_t chid,
+                                                      void* const msg,
+                                                      const std::size_t bytes,
+                                                      _msg_info* const info) const noexcept override;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
     /* KW_SUPPRESS_END:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
 
     /* KW_SUPPRESS_START:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    score::cpp::expected<std::int32_t, score::os::Error> MsgReceivev(const std::int32_t chid,
-                                                            const iov_t* const riov,
-                                                            const std::size_t rparts,
-                                                            struct _msg_info* const info) const noexcept override;
+    score::cpp::expected<rcvid_t, score::os::Error> MsgReceivev(const std::int32_t chid,
+                                                       const iov_t* const riov,
+                                                       const std::size_t rparts,
+                                                       struct _msg_info* const info) const noexcept override;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
     /* KW_SUPPRESS_END:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
 

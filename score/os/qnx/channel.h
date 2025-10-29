@@ -24,6 +24,10 @@
 #include <unistd.h>
 #include <cstdlib>
 
+#ifndef __RCVID_T_SIZE
+using rcvid_t = int;
+#endif
+
 namespace score
 {
 namespace os
@@ -48,7 +52,7 @@ class Channel : public ObjectSeam<Channel>
     static score::cpp::pmr::unique_ptr<Channel> Default(score::cpp::pmr::memory_resource* memory_resource) noexcept;
 
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    virtual score::cpp::expected<std::int32_t, score::os::Error> MsgReceive(
+    virtual score::cpp::expected<rcvid_t, score::os::Error> MsgReceive(
         const std::int32_t chid,
         void* const msg,
         const std::size_t bytes,
@@ -58,7 +62,7 @@ class Channel : public ObjectSeam<Channel>
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    virtual score::cpp::expected<std::int32_t, score::os::Error> MsgReceivev(
+    virtual score::cpp::expected<rcvid_t, score::os::Error> MsgReceivev(
         const std::int32_t chid,
         const iov_t* const riov,
         const std::size_t rparts,

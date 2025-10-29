@@ -21,16 +21,16 @@ static_assert(sizeof(std::size_t) == sizeof(_Sizet), "unexpected _Sizet");
 
 /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 /* KW_SUPPRESS_START:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
-score::cpp::expected<std::int32_t, score::os::Error> ChannelImpl::MsgReceive(const std::int32_t chid,
-                                                                    void* const msg,
-                                                                    const std::size_t bytes,
-                                                                    _msg_info* const info) const noexcept
+score::cpp::expected<rcvid_t, score::os::Error> ChannelImpl::MsgReceive(const std::int32_t chid,
+                                                               void* const msg,
+                                                               const std::size_t bytes,
+                                                               _msg_info* const info) const noexcept
 /* KW_SUPPRESS_END:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
 /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 {
     // Suppressed here because usage of this OSAL method is on banned list
     // NOLINTNEXTLINE(score-banned-function) see comment above
-    const std::int32_t result = ::MsgReceive(chid, msg, bytes, info);
+    const rcvid_t result = ::MsgReceive(chid, msg, bytes, info);
     if (result == -1)
     {
         return score::cpp::make_unexpected(score::os::Error::createFromErrno());
@@ -40,16 +40,16 @@ score::cpp::expected<std::int32_t, score::os::Error> ChannelImpl::MsgReceive(con
 
 /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 /* KW_SUPPRESS_START:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
-score::cpp::expected<std::int32_t, score::os::Error> ChannelImpl::MsgReceivev(const std::int32_t chid,
-                                                                     const iov_t* const riov,
-                                                                     const std::size_t rparts,
-                                                                     struct _msg_info* const info) const noexcept
+score::cpp::expected<rcvid_t, score::os::Error> ChannelImpl::MsgReceivev(const std::int32_t chid,
+                                                                const iov_t* const riov,
+                                                                const std::size_t rparts,
+                                                                struct _msg_info* const info) const noexcept
 /* KW_SUPPRESS_END:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
 /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 {
     // Suppressed here because usage of this OSAL method is on banned list
     // NOLINTNEXTLINE(score-banned-function) see comment above
-    const std::int32_t result = ::MsgReceivev(chid, riov, rparts, info);
+    const rcvid_t result = ::MsgReceivev(chid, riov, rparts, info);
     if (result == -1)
     {
         return score::cpp::make_unexpected(score::os::Error::createFromErrno());
