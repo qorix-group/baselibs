@@ -108,8 +108,8 @@ constexpr bool IsResultV = IsResult<T>::value;
 
 /// This function can be used to get the message for an error code in a C-compatible way. It is used by the Rust Result
 /// bindings.
-extern "C" void LibResultErrorDomainGetMessageForErrorCode(const score::result::ErrorDomain* domain,
+extern "C" void LibResultErrorDomainGetMessageForErrorCode(const score::result::ErrorDomain& domain,
                                                            score::result::ErrorCode code,
-                                                           std::string_view* result) noexcept;
+                                                           std::string_view& result) noexcept;
 
 #endif  // SCORE_LIB_RESULT_RESULT_H

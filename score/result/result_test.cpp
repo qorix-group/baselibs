@@ -210,5 +210,13 @@ TEST_F(TypeTraitsTests, IsResultVIsFalseIfIsNoResult)
     EXPECT_FALSE(IsResultV<bool>);
 }
 
+TEST(RustBridgeTests, GetMessageForErrorCodeFFI)
+{
+    std::string_view error_message;
+    LibResultErrorDomainGetMessageForErrorCode(
+        dummy_error_domain, static_cast<ErrorCode>(DummyErrorCode::kFirstError), error_message);
+    ASSERT_EQ("First Error!", error_message);
+}
+
 }  // namespace
 }  // namespace score::result

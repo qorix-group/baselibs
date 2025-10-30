@@ -12,9 +12,9 @@
  ********************************************************************************/
 #include "score/result/result.h"
 
-extern "C" void LibResultErrorDomainGetMessageForErrorCode(const score::result::ErrorDomain* domain,
+extern "C" void LibResultErrorDomainGetMessageForErrorCode(const score::result::ErrorDomain& domain,
                                                            score::result::ErrorCode code,
-                                                           std::string_view* result) noexcept
+                                                           std::string_view& result) noexcept
 {
-    *result = domain->MessageFor(code);
+    result = domain.MessageFor(code);
 }

@@ -45,7 +45,7 @@ class FFITestErrorDomain : public score::result::ErrorDomain
     virtual ~FFITestErrorDomain() = default;
 };
 
-static const FFITestErrorDomain ffi_test_domain;
+static const FFITestErrorDomain ffi_test_domain{};
 
 }  // anonymous namespace
 

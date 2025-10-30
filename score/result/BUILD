@@ -91,10 +91,13 @@ cc_unit_test_suites_for_host_and_qnx(
 rust_library(
     name = "result_rs",
     srcs = ["result.rs"],
-    crate_features = select({
-        "@platforms//os:qnx": ["libcxx_layout"],
-        "//conditions:default": ["libstdcpp_layout"],
-    }),
+    crate_features = select(
+        {
+            "@platforms//os:linux": ["libstdcpp_layout"],
+            "@platforms//os:qnx": ["libcxx_layout"],
+        },
+        no_match_error = "Unsupported platform for result_rs crate",
+    ),
     deps = ["@crate_index//:libc"],
 )
 

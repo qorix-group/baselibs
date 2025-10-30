@@ -19,7 +19,7 @@ namespace
 {
 enum class ConversionErrorCode : score::result::ErrorCode
 {
-    kConversionFailed = 17,
+    kConversionFailed = 17,  // Use a random number different from 0 to distinguish from special cases like nullptr
 };
 
 class ConversionErrorDomain final : public score::result::ErrorDomain
@@ -39,7 +39,7 @@ class ConversionErrorDomain final : public score::result::ErrorDomain
 
 constexpr ConversionErrorDomain conversion_error_domain;
 
-score::result::Error MakeError(ConversionErrorCode code, std::string_view user_message = "") noexcept
+score::result::Error MakeError(ConversionErrorCode code, std::string_view user_message = {}) noexcept
 {
     return {static_cast<score::result::ErrorCode>(code), conversion_error_domain, user_message};
 }
@@ -60,5 +60,5 @@ score::Result<std::int32_t> ExecuteCppFunction(rust::Str input)
 
 UniquePtrResult CreateUniquePtrResult()
 {
-    return std::make_unique<OpaqueInt>(15);
+    return std::make_unique<OpaqueInt>(OpaqueInt{15});
 }

@@ -540,7 +540,7 @@ mod ffi {
         #[test]
         fn test_equality_of_defaulted_string_instances() {
             unsafe {
-                let mut cpp_created_string_view = (create_empty_cpp_string_view() as *mut CStringView).as_mut().unwrap();
+                let cpp_created_string_view = (create_empty_cpp_string_view() as *mut CStringView).as_mut().unwrap();
                 let default_cstringview = CStringView::default();
                 assert_eq!(cpp_created_string_view.storage.len, default_cstringview.storage.len,
                            "Lengths of default CStringView and C++ created empty string_view should match");
