@@ -53,6 +53,7 @@ cc_library(
         "@score_baselibs//score/analysis:__subpackages__",
     ],
     deps = [
+        "error_code",
         "flexible_circular_allocator_interface",
         "@score_baselibs//score/analysis/tracing/common/interface_types:generic_trace_api_types",
         "@score_baselibs//score/analysis/tracing/generic_trace_library/interface_types/error_code",

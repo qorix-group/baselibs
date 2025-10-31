@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 #include "score/analysis/tracing/common/flexible_circular_allocator/lockless_flexible_circular_allocator.h"
+#include "score/analysis/tracing/common/flexible_circular_allocator/error_code.h"
 
 #include <score/utility.hpp>
 
@@ -53,7 +54,8 @@ LocklessFlexibleCircularAllocator<AtomicIndirectorType>::LocklessFlexibleCircula
       lowest_size_(total_size_),
       alloc_cntr_(0U),
       dealloc_cntr_(0U),
-      tmd_stats_enabled_(false)
+      tmd_stats_enabled_(false),
+      last_error_code_(0U)
 {
     // Suppress "AUTOSAR C++14 A0-1-1" rule finds: "A project shall not contain instances of non-volatile variables
     // being given values that are not subsequently used"
@@ -104,6 +106,9 @@ template <template <class> class AtomicIndirectorType>
 void* LocklessFlexibleCircularAllocator<AtomicIndirectorType>::Allocate(const std::size_t size,
                                                                         const std::size_t alignment_size) noexcept
 {
+    // Clear any previous error state
+    ClearError();
+
     //  NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic): tolerated for algorithm
     // Suppress "AUTOSAR C++14 A4-7-1" rule finding. This rule states: "An integer expression shall
     // not lead to data loss.".
@@ -218,6 +223,13 @@ template <template <class> class AtomicIndirectorType>
 // coverity[autosar_cpp14_a8_4_10_violation]
 void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::MarkListEntryAsFree(const BufferBlock* meta)
 {
+    // Validate list_entry_offset before using it to prevent out-of-bounds access
+    if (!ValidateListEntryIndex(meta->list_entry_offset))
+    {
+        SetError(FlexibleAllocatorErrorCode::kCorruptedBufferBlock);
+        return;  // Early return to prevent crash
+    }
+
     // The retries loop is designed to secure successful completion well within the set limit. kMaxRetries
     // is intentionally set high to ensure operations reliably complete without reaching it, aligning with
     // the system's robustness goals. Scenarios hitting the max retries conflict with this design, focusing on
@@ -245,6 +257,13 @@ bool LocklessFlexibleCircularAllocator<AtomicIndirectorType>::IsRequestedBlockAt
     // coverity[autosar_cpp14_a8_4_10_violation]
     const BufferBlock* meta) const
 {
+    // Validate list_entry_offset before using it to prevent out-of-bounds access
+    if (!ValidateListEntryIndex(meta->list_entry_offset))
+    {
+        SetError(FlexibleAllocatorErrorCode::kCorruptedBufferBlock);
+        return false;  // For invalid offset
+    }
+
     // Suppress "AUTOSAR C++14 A4-7-1" rule finding. This rule states: "An integer expression shall
     // not lead to data loss.".
     // Rationale: All operands and operations are performed using std::uint32_t. Since both
@@ -260,6 +279,7 @@ bool LocklessFlexibleCircularAllocator<AtomicIndirectorType>::IsRequestedBlockAt
              list_array_.at(meta->list_entry_offset).load().length) == buffer_queue_tail_.load()) ||
            (buffer_queue_tail_.load() == 0U);
 }
+
 template <template <class> class AtomicIndirectorType>
 void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::IterateBlocksToDeallocate()
 {
@@ -278,6 +298,12 @@ void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::IterateBlocksToDea
         if (init_tail == 0U)
         {
             MarkListEntryAsFree(current_block);
+            // Check if MarkListEntryAsFree encountered an error
+            auto error = GetLastError();
+            if (*error != 0U)
+            {
+                break;  // break the loop to avoid further corruption
+            }
         }
         // list_entry_offset is always set internally via controlled allocation paths, making invalid
         // indices impossible during normal operation.
@@ -290,6 +316,13 @@ void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::IterateBlocksToDea
                      .flags) == static_cast<std::uint8_t>(ListEntryFlag::kFree))
             {
                 FreeBlock(*current_block);
+                // Check if FreeBlock encountered an error
+                auto error = GetLastError();
+                if (*error != 0U)
+                {
+                    break;  // break the loop to avoid further corruption
+                }
+
                 init_tail += current_block->block_length;
 
                 if ((init_tail == gap_address_.load() && init_tail != buffer_queue_head_.load()) ||
@@ -326,6 +359,9 @@ template <template <class> class AtomicIndirectorType>
 // coverity[autosar_cpp14_a15_5_3_violation]
 bool LocklessFlexibleCircularAllocator<AtomicIndirectorType>::Deallocate(void* const addr, const std::size_t) noexcept
 {
+    // Clear any previous error state
+    ClearError();
+
     // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast): tolerated for algorithm
     // coverity[autosar_cpp14_a5_2_4_violation]
     // coverity[autosar_cpp14_m5_2_8_violation]
@@ -350,11 +386,20 @@ bool LocklessFlexibleCircularAllocator<AtomicIndirectorType>::Deallocate(void* c
     }
 
     MarkListEntryAsFree(meta);
+    // Check if MarkListEntryAsFree encountered an error
+    auto error = GetLastError();
+    if (*error != 0U)
+    {
+        return false;
+    }
 
     if (IsRequestedBlockAtBufferQueueTail(meta))
     {
         IterateBlocksToDeallocate();
     }
+    // Note: If IsRequestedBlockAtBufferQueueTail() fails due to corruption, it returns false
+    // and sets an error code. Since we don't call IterateBlocksToDeallocate() in that case,
+    // the primary deallocation still succeeds, which is the desired behavior.
     dealloc_cntr_++;
     return true;
     // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic): tolerated for algorithm
@@ -377,6 +422,14 @@ void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::FreeBlock(BufferBl
             retries = kMaxRetries;
         }
     }
+
+    // Validate list_entry_offset before using it to prevent out-of-bounds access
+    if (!ValidateListEntryIndex(current_block.list_entry_offset))
+    {
+        SetError(FlexibleAllocatorErrorCode::kInvalidListEntryOffset);
+        return;  // Early return to prevent crash
+    }
+
     for (uint8_t retries = 0U; retries < kMaxRetries; retries++)
     {
         auto list_entry_old = list_array_.at(static_cast<size_t>(current_block.list_entry_offset)).load();
@@ -487,6 +540,14 @@ uint8_t* LocklessFlexibleCircularAllocator<AtomicIndirectorType>::AllocateWithWr
         // since list_entry_new.length is a std::uint16_t and cannot hold a larger value.
         return nullptr;
     }
+
+    // Validate list_entry_element_index before using it to prevent out-of-bounds access
+    if (!ValidateListEntryIndex(list_entry_element_index))
+    {
+        SetError(FlexibleAllocatorErrorCode::kInvalidListEntryOffset);
+        return nullptr;
+    }
+
     for (uint8_t retries = 0U; retries < kMaxRetries; retries++)
     {
         auto list_entry_old = list_array_.at(static_cast<size_t>(list_entry_element_index)).load();
@@ -551,6 +612,13 @@ uint8_t* LocklessFlexibleCircularAllocator<AtomicIndirectorType>::AllocateWithNo
         return nullptr;
     }
 
+    // Validate list_entry_element_index before using it to prevent out-of-bounds access
+    if (!ValidateListEntryIndex(list_entry_element_index))
+    {
+        SetError(FlexibleAllocatorErrorCode::kInvalidListEntryOffset);
+        return nullptr;
+    }
+
     // The retries loop is designed to secure successful completion well within the set limit. kMaxRetries
     // is intentionally set high to ensure operations reliably complete without reaching it, aligning with
     // the system's robustness goals. Scenarios hitting the max retries conflict with this design, focusing on
@@ -576,7 +644,7 @@ uint8_t* LocklessFlexibleCircularAllocator<AtomicIndirectorType>::AllocateWithNo
 }
 
 template <template <class> class AtomicIndirectorType>
-bool LocklessFlexibleCircularAllocator<AtomicIndirectorType>::ValidateListEntryIndex(const std::uint32_t& index)
+bool LocklessFlexibleCircularAllocator<AtomicIndirectorType>::ValidateListEntryIndex(const std::uint32_t& index) const
 {
     bool result = false;
     if (index < kListEntryArraySize)
@@ -585,6 +653,27 @@ bool LocklessFlexibleCircularAllocator<AtomicIndirectorType>::ValidateListEntryI
     }
     return result;
 }
+
+template <template <class> class AtomicIndirectorType>
+void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::SetError(
+    FlexibleAllocatorErrorCode error_code) const noexcept
+{
+    last_error_code_.store(static_cast<score::result::ErrorCode>(error_code), std::memory_order_seq_cst);
+}
+
+template <template <class> class AtomicIndirectorType>
+score::result::Error LocklessFlexibleCircularAllocator<AtomicIndirectorType>::GetLastError() const noexcept
+{
+    auto error_code = last_error_code_.load(std::memory_order_seq_cst);
+    return MakeError(static_cast<FlexibleAllocatorErrorCode>(error_code));
+}
+
+template <template <class> class AtomicIndirectorType>
+void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::ClearError() noexcept
+{
+    last_error_code_.store(0U, std::memory_order_seq_cst);
+}
+
 template class LocklessFlexibleCircularAllocator<score::memory::shared::AtomicIndirectorReal>;
 template class LocklessFlexibleCircularAllocator<score::memory::shared::AtomicIndirectorMock>;
 
