@@ -117,7 +117,8 @@ cc_gtest_unit_test(
     deps = [
         ":zstring_view",
         "@score_baselibs//score/language/futurecpp",
-        "@score_baselibs//score/mw/log",
+        "@score_baselibs//score/mw/log:backend_stub_testutil",
+        "@score_baselibs//score/mw/log:frontend",
     ],
 )
 
