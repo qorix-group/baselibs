@@ -29,7 +29,7 @@ class CustomRecorderFactoryImpl : public score::mw::log::detail::LogRecorderFact
     CustomRecorderFactoryImpl() = default;
     explicit CustomRecorderFactoryImpl(score::cpp::pmr::unique_ptr<score::os::Fcntl> fcntl_instance);
     std::unique_ptr<score::mw::log::Recorder> CreateConcreteLogRecorder(const score::mw::log::detail::Configuration& config,
-                                                        score::cpp::pmr::memory_resource* memory_resource);
+                                                                      score::cpp::pmr::memory_resource* memory_resource);
 };
 
 }  // namespace detail

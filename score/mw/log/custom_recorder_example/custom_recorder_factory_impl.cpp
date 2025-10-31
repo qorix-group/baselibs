@@ -27,8 +27,9 @@ CustomRecorderFactoryImpl::CustomRecorderFactoryImpl(score::cpp::pmr::unique_ptr
 {
 }
 
-std::unique_ptr<score::mw::log::Recorder> CustomRecorderFactoryImpl::CreateConcreteLogRecorder(const score::mw::log::detail::Configuration&,
-                                                                           score::cpp::pmr::memory_resource*)
+std::unique_ptr<score::mw::log::Recorder> CustomRecorderFactoryImpl::CreateConcreteLogRecorder(
+    const score::mw::log::detail::Configuration&,
+    score::cpp::pmr::memory_resource*)
 {
     return std::make_unique<CustomRecorderImpl>();
 }

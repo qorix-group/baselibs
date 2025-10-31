@@ -30,7 +30,7 @@ class CustomRecorderImpl final : public score::mw::log::Recorder
 {
   public:
     score::cpp::optional<score::mw::log::SlotHandle> StartRecord(const std::string_view context_id,
-                                          const score::mw::log::LogLevel log_level) noexcept override;
+                                                        const score::mw::log::LogLevel log_level) noexcept override;
 
     void StopRecord(const SlotHandle& slot) noexcept override;
 
