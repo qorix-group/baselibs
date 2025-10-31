@@ -55,4 +55,17 @@ TEST(ClampAddNullTerminatorTest, ClampAddNullTerminatorOverFlow)
     EXPECT_EQ(result1, expected_value);
 }
 
+TEST(ClampTest, ClampSourceOverflow)
+{
+    using SourceType = std::uint32_t;
+    using TargetType = std::uint8_t;
+
+    static_assert(std::numeric_limits<SourceType>::max() > std::numeric_limits<TargetType>::max(),
+                  "SourceType type must be greater than TargetType");
+
+    constexpr SourceType source = std::numeric_limits<SourceType>::max();
+    const auto result = helper::ClampTo<TargetType>(source);
+    EXPECT_EQ(result, std::numeric_limits<TargetType>::max());
+}
+
 }  // namespace helper

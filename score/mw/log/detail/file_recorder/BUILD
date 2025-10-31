@@ -1,3 +1,5 @@
+load("@score_baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
+
 COMPILER_WARNING_FEATURES = [
     "treat_warnings_as_errors",
     "additional_warnings",
@@ -94,5 +96,15 @@ cc_test(
         "@score_baselibs//score/mw/log/detail/text_recorder:file_output_backend_mocks",
         "@score_baselibs//score/mw/log/test/console_logging_environment",
         "@score_baselibs//score/os/mocklib:fcntl_mock",
+    ],
+)
+
+cc_unit_test_suites_for_host_and_qnx(
+    name = "unit_tests",
+    cc_unit_tests = [
+        ":unit_test",
+    ],
+    visibility = [
+        "@score_baselibs//score/mw/log/detail:__pkg__",
     ],
 )

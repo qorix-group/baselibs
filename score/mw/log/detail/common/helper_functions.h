@@ -51,7 +51,10 @@ inline constexpr Target ClampTo(Source value) noexcept
     // If the Source is bigger than what Target can represent, clamp to max of Target.
     if (static_cast<std::uint64_t>(value) > static_cast<std::uint64_t>(std::numeric_limits<Target>::max()))
     {
+        // LCOV_EXCL_START : tooling issue
+        // line is covered by test ClampTest::ClampSourceOverflow
         return std::numeric_limits<Target>::max();
+        // LCOV_EXCL_STOP
     }
 
     return static_cast<Target>(value);

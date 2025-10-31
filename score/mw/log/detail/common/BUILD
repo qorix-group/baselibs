@@ -301,6 +301,6 @@ cc_unit_test_suites_for_host_and_qnx(
         ":helper_functions_test",
     ],
     visibility = [
-        "@score_baselibs//score/mw/log:__pkg__",
+        "@score_baselibs//score/mw/log/detail:__pkg__",
     ],
 )

@@ -72,6 +72,24 @@ cc_library(
 )
 
 cc_test(
+    name = "slog_recorder_factory_test",
+    srcs = [
+        "slog_recorder_factory_test.cpp",
+    ],
+    features = [
+        "aborts_upon_exception",
+    ],
+    tags = ["unit"],
+    deps = [
+        ":slog_recorder_factory",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+        "@score_baselibs//score/language/futurecpp:futurecpp_test_support",
+        "@score_baselibs//score/mw/log/configuration",
+    ],
+)
+
+cc_test(
     name = "slog_backend_test",
     srcs = [
         "slog_backend_test.cpp",
@@ -101,6 +119,7 @@ py_unittest_qnx_test(
     name = "unit_tests_qnx",
     test_cases = [
         ":slog_backend_test",
+        ":slog_recorder_factory_test",
     ],
     visibility = ["@score_baselibs//score/mw/log/detail:__pkg__"],
 )

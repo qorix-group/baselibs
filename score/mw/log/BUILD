@@ -347,6 +347,24 @@ cc_test(
 )
 
 cc_test(
+    name = "log_stream_factory_test",
+    srcs = [
+        "log_stream_factory_test.cpp",
+    ],
+    features = COMPILER_WARNING_FEATURES + [
+        "aborts_upon_exception",
+    ],
+    tags = ["unit"],
+    deps = [
+        ":frontend",
+        ":recorder_mock",
+        "@googletest//:gtest_main",
+        "@score_baselibs//score/mw/log/detail:thread_local_guard",
+        "@score_baselibs//score/mw/log/detail/common:recorder_factory",
+    ],
+)
+
+cc_test(
     name = "log_types_test",
     srcs = [
         ":log_types_test.cpp",
@@ -368,6 +386,7 @@ cc_unit_test_suites_for_host_and_qnx(
         ":log_types_test",
         ":log_level_test",
         ":log_stream_error_test",
+        ":log_stream_factory_test",
         ":logger_container_test",
         ":logger_test",
         ":logging_test",
