@@ -235,6 +235,16 @@ TEST(span, AsBytes)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#9338069
+TEST(span, difference_type_matches_with_iterator)
+{
+    using type = span<const std::int32_t>;
+
+    static_assert(std::is_same_v<type::difference_type, std::iterator_traits<type::iterator>::difference_type>);
+    static_assert(std::is_same_v<type::difference_type, std::iterator_traits<type::const_iterator>::difference_type>);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
 TEST(span, ReverseIterator)
 {
     std::int32_t data[4]{1, 2, 3, 4};
