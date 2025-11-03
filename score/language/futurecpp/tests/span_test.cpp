@@ -167,6 +167,24 @@ TEST(span, MoveConstruction)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#9338069
+TEST(span, DynamicExtent)
+{
+    const span<const std::int32_t> view{};
+    EXPECT_EQ(view.extent, score::cpp::dynamic_extent);
+    static_assert(view.extent == score::cpp::dynamic_extent);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, StaticExtent)
+{
+    const span<const std::int32_t, 0U> view{};
+    EXPECT_EQ(view.extent, 0U);
+    static_assert(view.extent == 0U);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
 TEST(span, Empty)
 {
     {

@@ -114,6 +114,9 @@ public:
     /// \brief The type of a const reverse iterator. This is a requirement of STL compliant types.
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
+    /// \brief The number of elements in the sequence, or score::cpp::dynamic_extent if dynamic
+    static constexpr size_type extent{Extent};
+
     /// \brief Constructs an empty span whose `data() == nullptr` and `size() == 0`.
     template <std::size_t Size = 0U, typename = std::enable_if_t<(Extent == dynamic_extent) || (Extent == Size)>>
     span() noexcept : base_{nullptr, 0U}
