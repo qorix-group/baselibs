@@ -37,6 +37,14 @@ TEST(span, DefaultConstruction)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#9338069
+TEST(span, DefaultConstructionWithStaticExtent)
+{
+    span<const std::int32_t, 0U> view{};
+    EXPECT_TRUE(view.empty());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
 TEST(span, OneDimensionalCArray)
 {
     std::int32_t data[]{23, 42, 72};
@@ -50,6 +58,33 @@ TEST(span, OneDimensionalCArray)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#9338069
+TEST(span, RangeWithStaticExtent)
+{
+    const std::vector<std::int32_t> data{23, 42, 72};
+    span<const std::int32_t, 3U> view{data};
+
+    EXPECT_EQ(data.data(), view.data());
+    EXPECT_EQ(3U, view.size());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, RangeWithStaticExtent_SizeDoesNotMatch)
+{
+    const std::vector<std::int32_t> data{23, 42, 72};
+    SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED((span<const std::int32_t, 2U>{data}));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, Range_Explicit)
+{
+    static_assert(std::is_convertible_v<std::vector<std::int32_t>, span<std::int32_t>>, "failed");
+    static_assert(!std::is_convertible_v<std::vector<std::int32_t>, span<std::int32_t, 2U>>, "failed");
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
 TEST(span, OneDimensionalPointerSize)
 {
     std::int32_t data[]{23, 42, 72};
@@ -59,6 +94,39 @@ TEST(span, OneDimensionalPointerSize)
     EXPECT_EQ(3, (view.end() - view.begin()));
     EXPECT_EQ(72, view.data()[2]);
     EXPECT_EQ(72, at(view, 2));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, OneDimensionalPointerSizeWithStaticExtent)
+{
+    std::int32_t data[]{23, 42, 72};
+    span<const std::int32_t, 3U> view{data, 3};
+
+    EXPECT_EQ(&data[0], view.data());
+    EXPECT_EQ(3U, view.size());
+}
+
+template <typename To>
+void implicit_conversion_test(To);
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, OneDimensionalPointerSize_Explicit)
+{
+    const auto test = [](auto to, float* p, std::size_t s) -> decltype(implicit_conversion_test<decltype(to)>({p, s})) {
+    };
+
+    static_assert(std::is_invocable_v<decltype(test), span<float>, float*, std::size_t>, "failed");
+    static_assert(!std::is_invocable_v<decltype(test), span<float, 3U>, float*, std::size_t>, "failed");
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, OneDimensionalPointerSizeWithStaticExtent_SizeDoesNotMatch)
+{
+    std::int32_t data[]{23, 42, 72};
+    SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED((span<const std::int32_t, 3U>{data, 2}));
 }
 
 /// @testmethods TM_REQUIREMENT

@@ -14,7 +14,6 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <limits>
 #include <type_traits>
 #include <score/assert.hpp>
 #include <score/optional.hpp>
@@ -23,6 +22,36 @@
 
 namespace score::cpp
 {
+
+namespace detail
+{
+
+template <typename T, std::size_t Extent>
+class base_span
+{
+public:
+    constexpr base_span(T* const data, const std::size_t size) : data_{data} { SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG(Extent == size); }
+    constexpr std::size_t size() const noexcept { return Extent; }
+    constexpr T* data() const noexcept { return data_; }
+
+private:
+    T* data_;
+};
+
+template <typename T>
+class base_span<T, dynamic_extent>
+{
+public:
+    constexpr base_span(T* const data, const std::size_t size) noexcept : data_{data}, size_{size} {}
+    constexpr std::size_t size() const noexcept { return size_; }
+    constexpr T* data() const noexcept { return data_; }
+
+private:
+    T* data_;
+    std::size_t size_;
+};
+
+} // namespace detail
 
 /// \brief Provides a 1d-view of a pointer + size. The benefit is that a one-dimensional span does not decay to T*
 /// (thus looses the size information).
@@ -34,7 +63,7 @@ namespace score::cpp
 /// documentation for a two-dimensional span as both similar except the 1d vs 2d view.
 ///
 /// \tparam T Specifies the value type of a single element of a row.
-template <typename T>
+template <typename T, std::size_t Extent>
 class span
 {
     /// @brief Used to obtain the iterator type of the type Range.
@@ -86,22 +115,36 @@ public:
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
     /// \brief Constructs an empty span whose `data() == nullptr` and `size() == 0`.
-    span() noexcept : data_{nullptr}, size_{0} {}
+    template <std::size_t Size = 0U, typename = std::enable_if_t<(Extent == dynamic_extent) || (Extent == Size)>>
+    span() noexcept : base_{nullptr, 0U}
+    {
+    }
 
     /// \brief Provides a 1d-view of a pointer + size. The benefit is that a one-dimensional span does not decay to
     /// T* (thus looses the size information).
     ///
     /// \param array Pointer to the array
     /// \param size Number of elements in the one-dimensional span
-    span(T* const array, const size_type size) : data_{array}, size_{size} {}
+    /// \{
+    template <std::size_t Size = Extent, typename std::enable_if_t<Size != dynamic_extent, bool> = true>
+    explicit span(T* const array, const size_type size) : base_{array, size}
+    {
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION((Extent == dynamic_extent) || (Extent == size));
+    }
+    template <std::size_t Size = Extent, typename std::enable_if_t<Size == dynamic_extent, bool> = true>
+    span(T* const array, const size_type size) : base_{array, size}
+    {
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION((Extent == dynamic_extent) || (Extent == size));
+    }
+    /// \}
 
     /// \brief Provides a 1d-view of a C-array. The benefit is that a one-dimensional span does not decay to T*
     /// (thus looses the size information).
     ///
     /// \tparam Size Number of elements in the one-dimensional span
     /// \param array Pointer to the array
-    template <std::size_t Size>
-    span(T (&array)[Size]) noexcept : data_{score::cpp::data(array)}, size_{Size}
+    template <std::size_t Size, typename = std::enable_if_t<(Extent == dynamic_extent) || (Extent == Size)>>
+    span(T (&array)[Size]) noexcept : base_{score::cpp::data(array), Size}
     {
         static_assert(Size >= 0, "Size must be positive.");
     }
@@ -114,22 +157,44 @@ public:
     ///
     /// \tparam Range Type of \p range
     /// \param range Range to construct a view for
-    template <
-        typename Range,
-        typename R = score::cpp::remove_cvref_t<Range>,
-        typename = std::enable_if_t<
-            score::cpp::is_iterable<R>::value &&
-            std::is_convertible<std::remove_reference_t<iter_reference_t<iterator_t<Range>>> (*)[], T (*)[]>::value &&
-            !is_span<R>::value && !std::is_array<R>::value>>
-    span(Range&& range) : data_{score::cpp::data(range)}, size_{range.size()}
+    /// \{
+    template <typename Range,
+              std::size_t Size = Extent,
+              typename R = score::cpp::remove_cvref_t<Range>,
+              typename U = std::remove_reference_t<iter_reference_t<iterator_t<Range>>>,
+              typename std::enable_if_t<Size != dynamic_extent                              //
+                                            && score::cpp::is_iterable<R>::value                   //
+                                            && std::is_convertible<U (*)[], T (*)[]>::value //
+                                            && (!is_span<R>::value)                         //
+                                            && (!std::is_array<R>::value)                   //
+                                        ,
+                                        bool> = true>
+    explicit span(Range&& range) : base_{score::cpp::data(range), range.size()}
     {
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION((Extent == dynamic_extent) || (Extent == range.size()));
     }
+    template <typename Range,
+              std::size_t Size = Extent,
+              typename R = score::cpp::remove_cvref_t<Range>,
+              typename U = std::remove_reference_t<iter_reference_t<iterator_t<Range>>>,
+              typename std::enable_if_t<Size == dynamic_extent                              //
+                                            && score::cpp::is_iterable<R>::value                   //
+                                            && std::is_convertible<U (*)[], T (*)[]>::value //
+                                            && (!is_span<R>::value)                         //
+                                            && (!std::is_array<R>::value)                   //
+                                        ,
+                                        bool> = true>
+    span(Range&& range) : base_{score::cpp::data(range), range.size()}
+    {
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION((Extent == dynamic_extent) || (Extent == range.size()));
+    }
+    /// \}
 
     /// \brief Returns the number elements in the row - when combined with a two-dimensional span the number of
     /// columns.
     ///
     /// \return  Number of elements in the row.
-    size_type size() const noexcept { return size_; }
+    size_type size() const noexcept { return base_.size(); }
 
     /// \brief checks if the span is empty
     ///
@@ -139,7 +204,7 @@ public:
     /// \brief Returns a pointer to the underlying array.
     ///
     /// \return Pointer to the first element of the row.
-    pointer data() const noexcept { return data_; }
+    pointer data() const noexcept { return base_.data(); }
 
     ///\{
     /// \brief Returns an iterator to the beginning
@@ -241,15 +306,7 @@ public:
     }
 
 private:
-    /// \brief The max value of type to hold a size information
-    static constexpr size_type dynamic_extent = std::numeric_limits<size_type>::max();
-
-    /// \brief Pointer to the underlying array. Points to the first element of the row.
-    pointer data_;
-
-    /// \brief Size of the least significant dimension of the array -  when combined with a two-dimensional span
-    /// the number of columns.
-    size_type size_;
+    detail::base_span<T, Extent> base_;
 };
 
 /// \brief Obtains a view to the object representation of the elements of the span<>.
