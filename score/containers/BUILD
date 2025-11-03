@@ -27,8 +27,8 @@ cc_gtest_unit_test(
     features = COMPILER_WARNING_FEATURES,
     deps = [
         ":dynamic_array",
-        "@score_baselibs//score/memory/shared:fake_memory_resources",
         "@score_baselibs//score/memory/shared:types",
+        "@score_baselibs//score/memory/shared/fake:fake_memory_resources",
         "@score_baselibs//score/mw/log:backend_stub_testutil",
     ],
 )
