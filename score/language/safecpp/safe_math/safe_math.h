@@ -22,5 +22,6 @@
 #include "score/language/safecpp/safe_math/details/negate/negate.h"
 #include "score/language/safecpp/safe_math/details/type_traits/type_traits.h"
 #include "score/language/safecpp/safe_math/error.h"
+#include "score/language/safecpp/safe_math/return_mode.h"
 
 #endif  // SCORE_LIB_SAFE_MATH_SAFE_MATH_H

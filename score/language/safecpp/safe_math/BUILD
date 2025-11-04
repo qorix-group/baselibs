@@ -24,6 +24,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":error",
+        ":return_mode",
         "@score_baselibs//score/language/safecpp/safe_math/details/absolute",
         "@score_baselibs//score/language/safecpp/safe_math/details/addition_subtraction",
         "@score_baselibs//score/language/safecpp/safe_math/details/cast",
@@ -34,6 +35,16 @@ cc_library(
         "@score_baselibs//score/language/safecpp/safe_math/details/type_traits",
         "@score_baselibs//score/result",
     ],
+)
+
+cc_library(
+    name = "return_mode",
+    srcs = ["return_mode.cpp"],
+    hdrs = ["return_mode.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = ["@score_baselibs//score/language/safecpp/safe_math:__subpackages__"],
+    deps = ["@score_baselibs//score/result"],
 )
 
 cc_library(

@@ -25,6 +25,7 @@ cc_library(
     deps = [
         "@score_baselibs//score/language/futurecpp",
         "@score_baselibs//score/language/safecpp/safe_math:error",
+        "@score_baselibs//score/language/safecpp/safe_math:return_mode",
         "@score_baselibs//score/language/safecpp/safe_math/details/comparison",
         "@score_baselibs//score/result",
     ],
@@ -42,6 +43,7 @@ cc_gtest_unit_test(
         ":floating_point_environment",
         "@score_baselibs//score/language/futurecpp",
         "@score_baselibs//score/language/safecpp/safe_math:error",
+        "@score_baselibs//score/language/safecpp/safe_math:return_mode",
     ],
 )
 
