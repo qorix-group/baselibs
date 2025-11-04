@@ -172,6 +172,7 @@ cc_library(
         "include/score/private/type_traits/is_pair.hpp",
         "include/score/private/type_traits/is_span.hpp",
         "include/score/private/type_traits/is_static_vector.hpp",
+        "include/score/private/type_traits/is_std_array.hpp",
         "include/score/private/type_traits/is_tuple.hpp",
         "include/score/private/type_traits/is_unsigned_integer_type.hpp",
         "include/score/private/type_traits/iterator_category.hpp",

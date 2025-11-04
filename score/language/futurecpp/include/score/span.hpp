@@ -11,7 +11,9 @@
 #include <score/private/iterator/iterator.hpp> // IWYU pragma: export
 #include <score/private/iterator/size.hpp>     // IWYU pragma: export
 #include <score/private/type_traits/is_span.hpp>
+#include <score/private/type_traits/is_std_array.hpp>
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -152,6 +154,33 @@ public:
         static_assert(Size >= 0, "Size must be positive.");
     }
 
+    /// \brief Constructs a span that is a view over the supplied array
+    ///
+    /// The resulting span has size() == N and data() == std::data(arr).
+    ///
+    /// This overload participates in overload resolution only if elements of `arr` are convertible to this span's
+    /// element_type.
+    ///
+    /// \tparam U Type of std::array::value_type
+    /// \tparam N size of std::array.
+    /// \param arr std::array to construct a view for
+    /// \{
+    template <typename U,
+              std::size_t N,
+              typename = std::enable_if_t<((Extent == dynamic_extent) || (Extent == N)) &&
+                                          std::is_convertible_v<U (*)[], element_type (*)[]>>>
+    span(std::array<U, N>& arr) noexcept : base_{std::data(arr), N}
+    {
+    }
+    template <typename U,
+              std::size_t N,
+              typename = std::enable_if_t<((Extent == dynamic_extent) || (Extent == N)) &&
+                                          std::is_convertible_v<const U (*)[], element_type (*)[]>>>
+    span(const std::array<U, N>& arr) noexcept : base_{std::data(arr), N}
+    {
+    }
+    /// \}
+
     /// \brief Constructs a span that is a view over \p range; the resulting span has size() == range.size() and
     /// data() == score::cpp::data(range).
     ///
@@ -169,6 +198,7 @@ public:
                                             && score::cpp::is_iterable<R>::value                   //
                                             && std::is_convertible<U (*)[], T (*)[]>::value //
                                             && (!is_span<R>::value)                         //
+                                            && (!detail::is_std_array<R>::value)            //
                                             && (!std::is_array<R>::value)                   //
                                         ,
                                         bool> = true>
@@ -184,6 +214,7 @@ public:
                                             && score::cpp::is_iterable<R>::value                   //
                                             && std::is_convertible<U (*)[], T (*)[]>::value //
                                             && (!is_span<R>::value)                         //
+                                            && (!detail::is_std_array<R>::value)            //
                                             && (!std::is_array<R>::value)                   //
                                         ,
                                         bool> = true>
