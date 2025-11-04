@@ -30,6 +30,7 @@ cc_library(
     ],
     deps = [
         "@score_baselibs//score/language/safecpp/safe_math:error",
+        "@score_baselibs//score/language/safecpp/safe_math:return_mode",
         "@score_baselibs//score/language/safecpp/safe_math/details/absolute",
         "@score_baselibs//score/language/safecpp/safe_math/details/cast",
         "@score_baselibs//score/language/safecpp/safe_math/details/comparison",
@@ -46,6 +47,7 @@ cc_gtest_unit_test(
     ],
     deps = [
         ":negate",
+        "@score_baselibs//score/language/safecpp/safe_math/details:return_mode_test_helper",
         "@score_baselibs//score/language/safecpp/safe_math/details:test_type_collection",
     ],
 )

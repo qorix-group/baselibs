@@ -15,12 +15,14 @@
 
 #include "score/language/safecpp/safe_math/details/comparison/comparison.h"
 #include "score/language/safecpp/safe_math/error.h"
+#include "score/language/safecpp/safe_math/return_mode.h"
 
 #include "score/result/result.h"
 
 #include <score/math.hpp>
 
 #include <cfenv>
+#include <cstdlib>
 #include <iostream>
 #include <limits>
 
@@ -41,16 +43,17 @@ constexpr bool IsOutsideBoundsOfR(const T value) noexcept
     return CmpLess(value, min) || CmpGreater(value, max);
 }
 
-template <class R,
+template <ReturnMode return_mode,
+          class R,
           class T,
           typename std::enable_if_t<(std::is_integral<T>::value || std::is_floating_point<T>::value) &&
                                         (std::is_integral<R>::value || std::is_floating_point<R>::value),
                                     bool> = true>
-constexpr score::Result<R> CastWithBoundsCheck(T value) noexcept
+constexpr auto CastWithBoundsCheck(T value) noexcept -> ModeBasedReturnType<R, return_mode>
 {
     if (IsOutsideBoundsOfR<R>(value))
     {
-        return score::MakeUnexpected(ErrorCode::kExceedsNumericLimits);
+        return HandleError<R, return_mode>(score::MakeUnexpected(ErrorCode::kExceedsNumericLimits));
     }
 
     // Suppress of "AUTOSAR C++14 A4-7-1", the rule states: "An integer expression shall not lead to data loss."
@@ -58,18 +61,19 @@ constexpr score::Result<R> CastWithBoundsCheck(T value) noexcept
     // coverity[autosar_cpp14_a4_7_1_violation]
     return static_cast<R>(value);
 }
-
 }  // namespace details
 
-template <class R,
+template <ReturnMode return_mode = kDefaultReturnMode,
+          class R,
           class T,
           typename std::enable_if_t<(std::is_integral<T>::value && std::is_integral<R>::value), bool> = true>
-constexpr score::Result<R> Cast(T value) noexcept
+constexpr auto Cast(T value) noexcept -> ModeBasedReturnType<R, return_mode>
 {
-    return details::CastWithBoundsCheck<R>(value);
+    return details::CastWithBoundsCheck<return_mode, R>(value);
 }
 
 template <
+    ReturnMode return_mode = kDefaultReturnMode,
     class R,
     class T,
     typename std::enable_if_t<(std::is_floating_point<T>::value && std::is_floating_point<R>::value), bool> = true>
@@ -82,7 +86,7 @@ template <
 // coverity[fun_call_w_exception]
 // coverity[uncaught_exception]
 // coverity[autosar_cpp14_a15_5_3_violation]
-constexpr score::Result<R> Cast(T value) noexcept
+constexpr auto Cast(T value) noexcept -> ModeBasedReturnType<R, return_mode>
 {
     static_assert(std::numeric_limits<R>::is_iec559, "Result type must follow IEEE 754");
     if (score::cpp::isnan(value))
@@ -96,18 +100,21 @@ constexpr score::Result<R> Cast(T value) noexcept
         return score::cpp::signbit(value) ? -result_infinity : result_infinity;
     }
 
-    const auto result = details::CastWithBoundsCheck<R>(value);
+    const auto result = details::CastWithBoundsCheck<return_mode, R>(value);
 
     constexpr std::int32_t tolerance{0};
-    if (result.has_value() && CmpNotEqual(static_cast<T>(result.value()), value, tolerance))
-    {
-        return score::MakeUnexpected(ErrorCode::kImplicitRounding);
-    }
-
-    return result;
+    const auto check_rounding = [&value](R casted_value) -> ModeBasedReturnType<R, return_mode> {
+        if (CmpNotEqual(static_cast<T>(casted_value), value, tolerance))
+        {
+            return HandleError<R, return_mode>(score::MakeUnexpected(ErrorCode::kImplicitRounding));
+        }
+        return casted_value;
+    };
+    return PerformActionBasedOnReturnMode<return_mode, R>(check_rounding, result);
 }
 
-template <class R,
+template <ReturnMode return_mode = kDefaultReturnMode,
+          class R,
           class T,
           typename std::enable_if_t<(std::is_floating_point<T>::value && std::is_integral<R>::value), bool> = true>
 // Suppress "UNCAUGHT_EXCEPT" rule findings. This rule states: "Called function throws an exception of type
@@ -119,28 +126,31 @@ template <class R,
 // coverity[fun_call_w_exception]
 // coverity[uncaught_exception]
 // coverity[autosar_cpp14_a15_5_3_violation]
-constexpr score::Result<R> Cast(T value) noexcept
+constexpr auto Cast(T value) noexcept -> ModeBasedReturnType<R, return_mode>
 {
     if (score::cpp::isnan(value))
     {
-        return score::MakeUnexpected(ErrorCode::kExceedsNumericLimits);
+        return HandleError<R, return_mode>(score::MakeUnexpected(ErrorCode::kExceedsNumericLimits));
     }
 
-    const auto result = details::CastWithBoundsCheck<R>(value);
+    const auto result = details::CastWithBoundsCheck<return_mode, R>(value);
 
     constexpr std::int32_t tolerance{4};
-    if (result.has_value() && CmpNotEqual(result.value(), value, tolerance))
-    {
-        return score::MakeUnexpected(ErrorCode::kImplicitRounding);
-    }
-
-    return result;
+    const auto check_rounding = [&value](R casted_value) -> ModeBasedReturnType<R, return_mode> {
+        if (CmpNotEqual(casted_value, value, tolerance))
+        {
+            return HandleError<R, return_mode>(score::MakeUnexpected(ErrorCode::kImplicitRounding));
+        }
+        return casted_value;
+    };
+    return PerformActionBasedOnReturnMode<return_mode, R>(check_rounding, result);
 }
 
-template <class R,
+template <ReturnMode return_mode = kDefaultReturnMode,
+          class R,
           class T,
           typename std::enable_if_t<(std::is_integral<T>::value && std::is_floating_point<R>::value), bool> = true>
-constexpr score::Result<R> Cast(T value) noexcept
+constexpr auto Cast(T value) noexcept -> ModeBasedReturnType<R, return_mode>
 {
     static_assert(std::numeric_limits<R>::is_iec559, "Result type must follow IEEE 754");
 
@@ -158,7 +168,7 @@ constexpr score::Result<R> Cast(T value) noexcept
     if (std::feclearexcept(fe_all_except) != 0)
     {
         // LCOV_EXCL_START See comment above if-statement
-        return score::MakeUnexpected(ErrorCode::kUnknown);
+        return HandleError<R, return_mode>(score::MakeUnexpected(ErrorCode::kUnknown));
         // LCOV_EXCL_STOP
     }
     // LCOV_EXCL_BR_STOP
@@ -168,10 +178,18 @@ constexpr score::Result<R> Cast(T value) noexcept
     constexpr std::int32_t tolerance{0};
     if ((std::fetestexcept(fe_all_except) != 0) || CmpNotEqual(result, value, tolerance))
     {
-        return score::MakeUnexpected(ErrorCode::kImplicitRounding);
+        return HandleError<R, return_mode>(score::MakeUnexpected(ErrorCode::kImplicitRounding));
     }
 
     return result;
+}
+
+// Type-first convenience overload: allows specifying only the return type R without explicitly restating the
+// default ReturnMode.
+template <class R, class T>
+constexpr auto Cast(T value) noexcept -> decltype(Cast<kDefaultReturnMode, R>(value))
+{
+    return Cast<kDefaultReturnMode, R>(value);
 }
 
 }  // namespace score::safe_math

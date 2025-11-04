@@ -11,7 +11,9 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 #include "score/language/safecpp/safe_math/details/addition_subtraction/addition_subtraction.h"
+#include "score/language/safecpp/safe_math/details/return_mode_test_helper.h"
 #include "score/language/safecpp/safe_math/details/test_type_collection.h"
+#include "score/language/safecpp/safe_math/return_mode.h"
 
 #include <gtest/gtest.h>
 
@@ -23,107 +25,162 @@ namespace score::safe_math
 {
 namespace
 {
+// Helper to extract value type from Result<T> or return T if it's a plain type
+template <typename T>
+struct ExtractValueType
+{
+    using type = T;
+};
 
-template <typename>
+template <typename T>
+struct ExtractValueType<Result<T>>
+{
+    using type = T;
+};
+
+template <typename T>
+using ExtractValueType_t = typename ExtractValueType<T>::type;
+
+template <typename TypeAndMode>
 class AddTest : public ::testing::Test
 {
 };
 
-TYPED_TEST_SUITE(AddTest, UnsignedTypes, /* unused */);
+TYPED_TEST_SUITE(AddTest, WithBothModes<UnsignedTypes>::type, /* unused */);
 
 TYPED_TEST(AddTest, AddingTwoUnsignedWithoutOverflowWorks)
 {
-    const TypeParam val1{1};
-    const TypeParam val2{2};
-    const auto result = Add(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), val1 + val2);
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const Type val1{1};
+    const Type val2{2};
+    Helper::ExpectSuccess(Add<kMode>(val1, val2), static_cast<Type>(val1 + val2));
 }
 
 TYPED_TEST(AddTest, AddingTwoUnsignedWithOverflowThrowsError)
 {
-    const TypeParam val1{std::numeric_limits<TypeParam>::max()};
-    const TypeParam val2{1};
-    const auto result = Add(val1, val2);
-    EXPECT_FALSE(result.has_value()) << "Value: " << result.value();
-    EXPECT_EQ(result.error(), ErrorCode::kExceedsNumericLimits);
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const Type val1{std::numeric_limits<Type>::max()};
+    const Type val2{1};
+    Helper::ExpectErrorFromOperation(
+        [&]() {
+            return Add<kMode>(val1, val2);
+        },
+        ErrorCode::kExceedsNumericLimits);
 }
 
 TYPED_TEST(AddTest, AddingTwoUnsignedWithTooSmallResultTypeThrowsError)
 {
-    if constexpr (std::is_same_v<TypeParam, std::uint8_t>)
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    if constexpr (std::is_same_v<Type, std::uint8_t>)
     {
         GTEST_SKIP() << "Skipping, because there is no smaller result type than the input type";
     }
-    const TypeParam val1{std::numeric_limits<TypeParam>::max()};
-    const TypeParam val2{1};
-    const auto result = Add<std::uint8_t>(val1, val2);
-    EXPECT_FALSE(result.has_value()) << "Value: " << result.value();
-    EXPECT_EQ(result.error(), ErrorCode::kExceedsNumericLimits);
+    const Type val1{std::numeric_limits<Type>::max()};
+    const Type val2{1};
+    Helper::ExpectErrorFromOperation(
+        [&]() {
+            return Add<kMode, std::uint8_t>(val1, val2);
+        },
+        ErrorCode::kExceedsNumericLimits);
 }
 
 TYPED_TEST(AddTest, AddingUnsignedWithPositiveSignedWithoutOverflowWorks)
 {
-    const TypeParam val1{1};
-    const typename std::make_signed_t<TypeParam> val2{2};
-    const auto result = Add(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), val1 + val2);
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const Type val1{1};
+    const typename std::make_signed_t<Type> val2{2};
+    Helper::ExpectSuccess(Add<kMode>(val1, val2), static_cast<Type>(val1 + val2));
 }
 
 TYPED_TEST(AddTest, AddingUnsignedWithPositiveSignedWithOverflowReturnsError)
 {
-    const TypeParam val1{std::numeric_limits<TypeParam>::max()};
-    const typename std::make_signed_t<TypeParam> val2{1};
-    const auto result = Add(val1, val2);
-    EXPECT_FALSE(result.has_value()) << "Value: " << result.value();
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const Type val1{std::numeric_limits<Type>::max()};
+    const typename std::make_signed_t<Type> val2{1};
+    Helper::ExpectErrorFromOperation(
+        [&]() {
+            return Add<kMode>(val1, val2);
+        },
+        ErrorCode::kExceedsNumericLimits);
 }
 
 TYPED_TEST(AddTest, AddingUnsignedWithNegativeSignedWithoutOverflowOrUnderflowWorks)
 {
-    const TypeParam val1{1};
-    const typename std::make_signed_t<TypeParam> val2{-2};
-    const auto result = Add<typename std::make_signed_t<TypeParam>>(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), -1);
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const Type val1{1};
+    const typename std::make_signed_t<Type> val2{-2};
+    Helper::ExpectSuccess(Add<kMode, typename std::make_signed_t<Type>>(val1, val2),
+                          typename std::make_signed_t<Type>{-1});
 }
 
 TYPED_TEST(AddTest, AddingUnsignedWithNegativeSignedWithUnderflowReturnsError)
 {
-    const TypeParam val1{std::numeric_limits<TypeParam>::min()};
-    const typename std::make_signed_t<TypeParam> val2{-1};
-    const auto result = Add<TypeParam>(val1, val2);
-    EXPECT_FALSE(result.has_value()) << "Value: " << result.value();
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const Type val1{std::numeric_limits<Type>::min()};
+    const typename std::make_signed_t<Type> val2{-1};
+    Helper::ExpectErrorFromOperation(
+        [&]() {
+            return Add<kMode, Type>(val1, val2);
+        },
+        ErrorCode::kExceedsNumericLimits);
 }
 
 TYPED_TEST(AddTest, AddingSignedWithUnsignedWorks)
 {
-    const typename std::make_signed_t<TypeParam> val1{1};
-    const TypeParam val2{2};
-    const auto result = Add(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), 3);
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const typename std::make_signed_t<Type> val1{1};
+    const Type val2{2};
+    using ExpectedType = ExtractValueType_t<decltype(Add<kMode>(val1, val2))>;
+    Helper::ExpectSuccess(Add<kMode>(val1, val2), static_cast<ExpectedType>(3));
 }
 
 TYPED_TEST(AddTest, AddingPositiveSignedWithPositiveSignedWorks)
 {
-    const typename std::make_signed_t<TypeParam> val1{1};
-    const typename std::make_signed_t<TypeParam> val2{2};
-    const auto result = Add(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), 3);
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const typename std::make_signed_t<Type> val1{1};
+    const typename std::make_signed_t<Type> val2{2};
+    Helper::ExpectSuccess(Add<kMode>(val1, val2), typename std::make_signed_t<Type>{3});
 }
 
 TYPED_TEST(AddTest, AddingSignedWithNegativeSignedWorks)
 {
-    const typename std::make_signed_t<TypeParam> val1{1};
-    const typename std::make_signed_t<TypeParam> val2{-2};
-    const auto result = Add(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), -1);
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const typename std::make_signed_t<Type> val1{1};
+    const typename std::make_signed_t<Type> val2{-2};
+    Helper::ExpectSuccess(Add<kMode>(val1, val2), typename std::make_signed_t<Type>{-1});
 }
 
-template <typename>
+template <typename TypePairWithModeParam>
 class AdditionMultipleTypesTest : public ::testing::Test
 {
 };
@@ -132,127 +189,177 @@ TYPED_TEST_SUITE_P(AdditionMultipleTypesTest);
 
 TYPED_TEST_P(AdditionMultipleTypesTest, AdditionWorks)
 {
-    const typename TypeParam::first_type val1{2};
-    const typename TypeParam::second_type val2{3};
-    const auto result = Add(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), 5);
+    using TypePair = typename TypeParam::TypePair;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const typename TypePair::first_type val1{2};
+    const typename TypePair::second_type val2{3};
+    using ExpectedType = ExtractValueType_t<decltype(Add<kMode>(val1, val2))>;
+    Helper::ExpectSuccess(Add<kMode>(val1, val2), static_cast<ExpectedType>(5));
 }
 
 REGISTER_TYPED_TEST_SUITE_P(AdditionMultipleTypesTest, AdditionWorks);
 
-INSTANTIATE_TYPED_TEST_SUITE_P(UnsignedTypes, AdditionMultipleTypesTest, UnsignedTypePairs, /* unused */);
-INSTANTIATE_TYPED_TEST_SUITE_P(SignedTypes, AdditionMultipleTypesTest, SignedTypePairs, /* unused */);
-INSTANTIATE_TYPED_TEST_SUITE_P(SignedToUnsignedTypes, AdditionMultipleTypesTest, SignedUnsignedTypePairs,
+INSTANTIATE_TYPED_TEST_SUITE_P(UnsignedTypesReturnResult,
+                               AdditionMultipleTypesTest,
+                               WithBothModesPairs<UnsignedTypePairs>::type,
                                /* unused */);
-INSTANTIATE_TYPED_TEST_SUITE_P(UnsignedToSignedTypes, AdditionMultipleTypesTest, UnsignedSignedTypePairs,
+INSTANTIATE_TYPED_TEST_SUITE_P(SignedTypesReturnResult,
+                               AdditionMultipleTypesTest,
+                               WithBothModesPairs<SignedTypePairs>::type,
+                               /* unused */);
+INSTANTIATE_TYPED_TEST_SUITE_P(SignedToUnsignedTypesReturnResult,
+                               AdditionMultipleTypesTest,
+                               WithBothModesPairs<SignedUnsignedTypePairs>::type,
+                               /* unused */);
+INSTANTIATE_TYPED_TEST_SUITE_P(UnsignedToSignedTypesReturnResult,
+                               AdditionMultipleTypesTest,
+                               WithBothModesPairs<UnsignedSignedTypePairs>::type,
                                /* unused */);
 
-TEST(AdditionFloatingPointsTest, CanAddTwoFloats)
+// Floating-point tests (templated for both modes)
+using ReturnModes = ::testing::Types<std::integral_constant<ReturnMode, ReturnMode::kReturnResultOnError>,
+                                     std::integral_constant<ReturnMode, ReturnMode::kAbortOnError>>;
+
+template <typename ModeConstant>
+class AdditionFloatingPointsTest : public ::testing::Test
 {
+};
+
+TYPED_TEST_SUITE(AdditionFloatingPointsTest, ReturnModes, /* unused */);
+
+TYPED_TEST(AdditionFloatingPointsTest, CanAddTwoFloats)
+{
+    constexpr auto kMode = TypeParam::value;
+    using Helper = ReturnModeTestHelper<kMode>;
+
     const double lhs{2.0};
     const double rhs{3.1};
-    const auto result = Add(lhs, rhs);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), lhs + rhs);
+    const auto result = Add<kMode>(lhs, rhs);
+    Helper::ExpectSuccess(result, lhs + rhs);
 }
 
-TEST(AdditionFloatingPointsTest, CanAddFloatWithInteger)
+TYPED_TEST(AdditionFloatingPointsTest, CanAddFloatWithInteger)
 {
+    constexpr auto kMode = TypeParam::value;
+    using Helper = ReturnModeTestHelper<kMode>;
+
     const double lhs{3.1};
     const std::uint32_t rhs{2U};
-    const auto result = Add(lhs, rhs);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), 5.1);
+    const auto result = Add<kMode>(lhs, rhs);
+    Helper::ExpectSuccess(result, 5.1);
 }
 
-TEST(AdditionFloatingPointsTest, AdditionFailsIfIntegerCanNotBeRepresentedInFloat)
+TYPED_TEST(AdditionFloatingPointsTest, AdditionFailsIfIntegerCanNotBeRepresentedInFloat)
 {
+    constexpr auto kMode = TypeParam::value;
+    using Helper = ReturnModeTestHelper<kMode>;
+
     const double lhs{3.1};
     const auto rhs{std::numeric_limits<std::uint64_t>::max()};
-    const auto result = Add(lhs, rhs);
-    ASSERT_FALSE(result.has_value());
-    EXPECT_EQ(result.error(), ErrorCode::kImplicitRounding);
+    Helper::ExpectErrorFromOperation(
+        [&]() {
+            return Add<kMode>(lhs, rhs);
+        },
+        ErrorCode::kImplicitRounding);
 }
 
-TEST(AdditionFloatingPointsTest, CanAddIntegerWithFloat)
+TYPED_TEST(AdditionFloatingPointsTest, CanAddIntegerWithFloat)
 {
+    constexpr auto kMode = TypeParam::value;
+    using Helper = ReturnModeTestHelper<kMode>;
+
     const std::uint32_t lhs{2U};
     const double rhs{3.1};
-    const auto result = Add(lhs, rhs);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), 5.1);
+    const auto result = Add<kMode>(lhs, rhs);
+    Helper::ExpectSuccess(result, 5.1);
 }
-template <typename>
+
+template <typename TypeWithModeParam>
 class SubtractTest : public ::testing::Test
 {
 };
 
-TYPED_TEST_SUITE(SubtractTest, UnsignedTypes, /* unused */);
+TYPED_TEST_SUITE(SubtractTest, WithBothModes<UnsignedTypes>::type, /* unused */);
 
 TYPED_TEST(SubtractTest, SubtractBiggerUnsignedFromSmallerUnsignedWorks)
 {
-    const TypeParam val1{1U};
-    const TypeParam val2{2U};
-    const auto result = Subtract<std::int8_t>(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), -1);
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const Type val1{1U};
+    const Type val2{2U};
+    Helper::ExpectSuccess(Subtract<kMode, std::int8_t>(val1, val2), std::int8_t{-1});
 }
 
 TYPED_TEST(SubtractTest, SubtractEqualUnsignedWorks)
 {
-    const TypeParam val1{2U};
-    const TypeParam val2{2U};
-    const auto result = Subtract(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), 0);
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const Type val1{2U};
+    const Type val2{2U};
+    Helper::ExpectSuccess(Subtract<kMode>(val1, val2), Type{0});
 }
 
 TYPED_TEST(SubtractTest, SubtractSmallerUnsignedFromBiggerUnsignedWorks)
 {
-    const TypeParam val1{2U};
-    const TypeParam val2{1U};
-    const auto result = Subtract(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), 1);
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const Type val1{2U};
+    const Type val2{1U};
+    Helper::ExpectSuccess(Subtract<kMode>(val1, val2), Type{1});
 }
 
 TYPED_TEST(SubtractTest, SubtractNegativeSignedFromUnsignedWorks)
 {
-    const TypeParam val1{2U};
-    const typename std::make_signed_t<TypeParam> val2{-1};
-    const auto result = Subtract(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), 3);
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const Type val1{2U};
+    const typename std::make_signed_t<Type> val2{-1};
+    Helper::ExpectSuccess(Subtract<kMode>(val1, val2), Type{3});
 }
 
 TYPED_TEST(SubtractTest, SubtractPositiveSignedFromUnsignedWorks)
 {
-    const TypeParam val1{2U};
-    const typename std::make_signed_t<TypeParam> val2{1};
-    const auto result = Subtract(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), 1);
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const Type val1{2U};
+    const typename std::make_signed_t<Type> val2{1};
+    Helper::ExpectSuccess(Subtract<kMode>(val1, val2), Type{1});
 }
 
 TYPED_TEST(SubtractTest, SubtractUnsignedFromPositiveSignedWorks)
 {
-    const typename std::make_signed_t<TypeParam> val1{0};
-    const TypeParam val2{static_cast<TypeParam>(std::numeric_limits<typename std::make_signed_t<TypeParam>>::max()) +
-                         1U};
-    const auto result = Subtract(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), std::numeric_limits<typename std::make_signed_t<TypeParam>>::min());
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const typename std::make_signed_t<Type> val1{0};
+    const Type val2{static_cast<Type>(std::numeric_limits<typename std::make_signed_t<Type>>::max()) + 1U};
+    Helper::ExpectSuccess(Subtract<kMode>(val1, val2), std::numeric_limits<typename std::make_signed_t<Type>>::min());
 }
 
 TYPED_TEST(SubtractTest, SubtractUnsignedFromNegativeSignedWorks)
 {
-    const auto lowest{std::numeric_limits<typename std::make_signed_t<TypeParam>>::lowest()};
-    const TypeParam val2{2U};
-    const auto val1{lowest + static_cast<typename std::make_signed_t<TypeParam>>(val2)};
-    const auto result = Subtract(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), lowest);
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const auto lowest{std::numeric_limits<typename std::make_signed_t<Type>>::lowest()};
+    const Type val2{2U};
+    const auto val1{lowest + static_cast<typename std::make_signed_t<Type>>(val2)};
+    using ExpectedType = ExtractValueType_t<decltype(Subtract<kMode>(val1, val2))>;
+    Helper::ExpectSuccess(Subtract<kMode>(val1, val2), static_cast<ExpectedType>(lowest));
 }
 
 TEST(SubtractTestAddition, SubtractUnsignedFromNegativeSignedReturnsErrorOnOverflow)
@@ -266,34 +373,42 @@ TEST(SubtractTestAddition, SubtractUnsignedFromNegativeSignedReturnsErrorOnOverf
 
 TYPED_TEST(SubtractTest, SubtractNegativeSignedFromSignedWorks)
 {
-    const typename std::make_signed_t<TypeParam> val1{0};
-    const typename std::make_signed_t<TypeParam> val2{-2};
-    const auto result = Subtract(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), Abs(val2));
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const typename std::make_signed_t<Type> val1{0};
+    const typename std::make_signed_t<Type> val2{-2};
+    using ExpectedType = ExtractValueType_t<decltype(Subtract<kMode>(val1, val2))>;
+    Helper::ExpectSuccess(Subtract<kMode>(val1, val2), static_cast<ExpectedType>(Abs(val2)));
 }
 
 TYPED_TEST(SubtractTest, SubtractLowestNegativeSignedFromSignedWorks)
 {
-    const auto lowest{std::numeric_limits<typename std::make_signed_t<TypeParam>>::lowest()};
-    const typename std::make_signed_t<TypeParam> val1{0};
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const auto lowest{std::numeric_limits<typename std::make_signed_t<Type>>::lowest()};
+    const typename std::make_signed_t<Type> val1{0};
     const auto val2{lowest};
-    const auto result = Subtract<TypeParam>(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), Abs(val2));
+    Helper::ExpectSuccess(Subtract<kMode, Type>(val1, val2), Abs(val2));
 }
 
 TYPED_TEST(SubtractTest, SubtractPositiveSignedMaximumFromSignedZeroWorks)
 {
-    const auto max{std::numeric_limits<typename std::make_signed_t<TypeParam>>::max()};
-    const typename std::make_signed_t<TypeParam> val1{0};
+    using Type = typename TypeParam::Type;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const auto max{std::numeric_limits<typename std::make_signed_t<Type>>::max()};
+    const typename std::make_signed_t<Type> val1{0};
     const auto val2{max};
-    const auto result = Subtract(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), Negate(max).value());
+    auto expected_result = Negate<kMode>(max);
+    Helper::ExpectSuccess(Subtract<kMode>(val1, val2), Helper::GetValue(expected_result));
 }
 
-template <typename>
+template <typename TypePairWithModeParam>
 class SubtractionMultipleTypesTest : public ::testing::Test
 {
 };
@@ -302,65 +417,140 @@ TYPED_TEST_SUITE_P(SubtractionMultipleTypesTest);
 
 TYPED_TEST_P(SubtractionMultipleTypesTest, SubtractionWorks)
 {
-    const typename TypeParam::first_type val1{3};
-    const typename TypeParam::second_type val2{2};
-    const auto result = Subtract(val1, val2);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), 1);
+    using TypePair = typename TypeParam::TypePair;
+    constexpr auto kMode = TypeParam::kMode;
+    using Helper = ReturnModeTestHelper<kMode>;
+
+    const typename TypePair::first_type val1{3};
+    const typename TypePair::second_type val2{2};
+    Helper::ExpectSuccess(Subtract<kMode>(val1, val2), typename TypePair::first_type{1});
 }
 
 REGISTER_TYPED_TEST_SUITE_P(SubtractionMultipleTypesTest, SubtractionWorks);
 
-INSTANTIATE_TYPED_TEST_SUITE_P(UnsignedTypes, SubtractionMultipleTypesTest, UnsignedTypePairs, /* unused */);
-INSTANTIATE_TYPED_TEST_SUITE_P(SignedTypes, SubtractionMultipleTypesTest, SignedTypePairs, /* unused */);
-INSTANTIATE_TYPED_TEST_SUITE_P(SignedToUnsignedTypes, SubtractionMultipleTypesTest, SignedUnsignedTypePairs,
+INSTANTIATE_TYPED_TEST_SUITE_P(UnsignedTypesReturnResult,
+                               SubtractionMultipleTypesTest,
+                               WithBothModesPairs<UnsignedTypePairs>::type,
                                /* unused */);
-INSTANTIATE_TYPED_TEST_SUITE_P(UnsignedToSignedTypes, SubtractionMultipleTypesTest, UnsignedSignedTypePairs,
+INSTANTIATE_TYPED_TEST_SUITE_P(SignedTypesReturnResult,
+                               SubtractionMultipleTypesTest,
+                               WithBothModesPairs<SignedTypePairs>::type,
+                               /* unused */);
+INSTANTIATE_TYPED_TEST_SUITE_P(SignedToUnsignedTypesReturnResult,
+                               SubtractionMultipleTypesTest,
+                               WithBothModesPairs<SignedUnsignedTypePairs>::type,
+                               /* unused */);
+INSTANTIATE_TYPED_TEST_SUITE_P(UnsignedToSignedTypesReturnResult,
+                               SubtractionMultipleTypesTest,
+                               WithBothModesPairs<UnsignedSignedTypePairs>::type,
                                /* unused */);
 
-TEST(SubtractionFloatingPointsTest, CanSubtractTwoFloats)
+template <typename ModeConstant>
+class SubtractionFloatingPointsTest : public ::testing::Test
 {
+};
+
+TYPED_TEST_SUITE(SubtractionFloatingPointsTest, ReturnModes, /* unused */);
+
+TYPED_TEST(SubtractionFloatingPointsTest, CanSubtractTwoFloats)
+{
+    constexpr auto kMode = TypeParam::value;
+    using Helper = ReturnModeTestHelper<kMode>;
+
     const double lhs{3.1};
     const double rhs{2.2};
-    const auto result = Subtract(lhs, rhs);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), lhs - rhs);
+    const auto result = Subtract<kMode>(lhs, rhs);
+    Helper::ExpectSuccess(result, lhs - rhs);
 }
 
-TEST(SubtractionFloatingPointsTest, CanSubtractIntegerFromFloat)
+TYPED_TEST(SubtractionFloatingPointsTest, CanSubtractIntegerFromFloat)
 {
+    constexpr auto kMode = TypeParam::value;
+    using Helper = ReturnModeTestHelper<kMode>;
+
     const double lhs{3.1};
     const std::uint32_t rhs{2U};
-    const auto result = Subtract(lhs, rhs);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), 1.1);
+    const auto result = Subtract<kMode>(lhs, rhs);
+    Helper::ExpectSuccess(result, 1.1);
 }
 
-TEST(SubtractionFloatingPointsTest, SubtractionFailsIfRhsIntegerCanNotBeRepresentedInFloat)
+TYPED_TEST(SubtractionFloatingPointsTest, SubtractionFailsIfRhsIntegerCanNotBeRepresentedInFloat)
 {
+    constexpr auto kMode = TypeParam::value;
+    using Helper = ReturnModeTestHelper<kMode>;
+
     const double lhs{3.1};
     const auto rhs{std::numeric_limits<std::uint64_t>::max()};
-    const auto result = Subtract(lhs, rhs);
-    ASSERT_FALSE(result.has_value());
-    EXPECT_EQ(result.error(), ErrorCode::kImplicitRounding);
+    Helper::ExpectErrorFromOperation(
+        [&]() {
+            return Subtract<kMode>(lhs, rhs);
+        },
+        ErrorCode::kImplicitRounding);
 }
 
-TEST(SubtractionFloatingPointsTest, CanSubtractFloatFromInteger)
+TYPED_TEST(SubtractionFloatingPointsTest, CanSubtractFloatFromInteger)
 {
+    constexpr auto kMode = TypeParam::value;
+    using Helper = ReturnModeTestHelper<kMode>;
+
     const std::uint32_t lhs{2U};
     const double rhs{3.1};
-    const auto result = Subtract(lhs, rhs);
-    ASSERT_TRUE(result.has_value()) << "Error: " << result.error();
-    EXPECT_EQ(result.value(), -1.1);
+    const auto result = Subtract<kMode>(lhs, rhs);
+    Helper::ExpectSuccess(result, -1.1);
 }
 
-TEST(SubtractionFloatingPointsTest, SubtractionFailsIfLhsIntegerCanNotBeRepresentedInFloat)
+TYPED_TEST(SubtractionFloatingPointsTest, SubtractionFailsIfLhsIntegerCanNotBeRepresentedInFloat)
 {
+    constexpr auto kMode = TypeParam::value;
+    using Helper = ReturnModeTestHelper<kMode>;
+
     const auto lhs{std::numeric_limits<std::uint64_t>::max()};
     const double rhs{3.1};
-    const auto result = Subtract(lhs, rhs);
-    ASSERT_FALSE(result.has_value());
-    EXPECT_EQ(result.error(), ErrorCode::kImplicitRounding);
+    Helper::ExpectErrorFromOperation(
+        [&]() {
+            return Subtract<kMode>(lhs, rhs);
+        },
+        ErrorCode::kImplicitRounding);
+}
+
+TEST(AddTypefirstConvenienceOverloadTest, AddWithExplicitReturnTypeUsesDefaultReturnMode)
+{
+    using Helper = ReturnModeTestHelper<ReturnMode::kReturnResultOnError>;
+
+    const std::int32_t val1{2};
+    const std::int32_t val2{3};
+    const auto result = Add<std::int64_t>(val1, val2);
+    Helper::ExpectSuccess(result, std::int64_t{5});
+}
+
+TEST(AddTypefirstConvenienceOverloadTest, AddOverflowWithExplicitReturnTypeReturnsError)
+{
+    using Helper = ReturnModeTestHelper<ReturnMode::kReturnResultOnError>;
+
+    const std::int32_t val1{std::numeric_limits<std::int32_t>::max()};
+    const std::int32_t val2{1};
+    const auto result = Add<std::int32_t>(val1, val2);
+    Helper::ExpectError(result, ErrorCode::kExceedsNumericLimits);
+}
+
+TEST(SubtractTypefirstConvenienceOverloadTest, SubtractWithExplicitReturnTypeUsesDefaultReturnMode)
+{
+    using Helper = ReturnModeTestHelper<ReturnMode::kReturnResultOnError>;
+
+    const std::int32_t val1{5};
+    const std::int32_t val2{3};
+    const auto result = Subtract<std::int64_t>(val1, val2);
+    Helper::ExpectSuccess(result, std::int64_t{2});
+}
+
+TEST(SubtractTypefirstConvenienceOverloadTest, SubtractUnderflowWithExplicitReturnTypeReturnsError)
+{
+    using Helper = ReturnModeTestHelper<ReturnMode::kReturnResultOnError>;
+
+    const std::uint32_t val1{0U};
+    const std::uint32_t val2{1U};
+    const auto result = Subtract<std::uint32_t>(val1, val2);
+    Helper::ExpectError(result, ErrorCode::kExceedsNumericLimits);
 }
 
 }  // namespace

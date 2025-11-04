@@ -12,6 +12,7 @@
  ********************************************************************************/
 #include "score/language/safecpp/safe_math/details/floating_point_environment.h"
 #include "score/language/safecpp/safe_math/error.h"
+#include "score/language/safecpp/safe_math/return_mode.h"
 
 #include <score/callback.hpp>
 
@@ -79,22 +80,41 @@ TEST_F(FloatingPointEnvironmentTest, ErrorsWillNotLeakIntoEnvironment)
     EXPECT_FALSE(std::fetestexcept(FE_ALL_EXCEPT) || (errno == EDOM) || (errno == ERANGE));
 }
 
-TEST_F(FloatingPointEnvironmentTest, CalculateAndVerifyWillReturnCorrectResult)
+TEST_F(FloatingPointEnvironmentTest, CalculateAndVerifyWillReturnCorrectResultWhenModeIsReturnResultOnError)
 {
     const auto result = valid_operation_();
-
-    const auto verified_result = details::FloatingPointEnvironment::CalculateAndVerify(valid_operation_);
-
+    const auto verified_result =
+        details::FloatingPointEnvironment::CalculateAndVerify<ReturnMode::kReturnResultOnError>(valid_operation_);
     ASSERT_TRUE(verified_result.has_value());
     EXPECT_EQ(verified_result.value(), result);
 }
 
-TEST_F(FloatingPointEnvironmentTest, CalculateAndVerifyWillReturnErrorWhenOperationFailed)
+TEST_F(FloatingPointEnvironmentTest, CalculateAndVerifyWillReturnErrorWhenModeIsReturnResultOnError)
 {
-    const auto verified_result = details::FloatingPointEnvironment::CalculateAndVerify(invalid_operation_);
-
+    const auto verified_result =
+        details::FloatingPointEnvironment::CalculateAndVerify<ReturnMode::kReturnResultOnError>(invalid_operation_);
     ASSERT_FALSE(verified_result.has_value());
     EXPECT_EQ(verified_result.error(), ErrorCode::kUnknown);
+}
+
+TEST_F(FloatingPointEnvironmentTest, CalculateAndVerifyWillReturnCorrectValueWhenModeIsAbortOnError)
+{
+    // Given, CalculateAndVerify is configured in AbortOnError mode with a valid operation
+    const auto result = valid_operation_();
+    // When, A valid floating point operation is executed through CalculateAndVerify
+    const auto verified_result =
+        details::FloatingPointEnvironment::CalculateAndVerify<ReturnMode::kAbortOnError>(valid_operation_);
+    // Then, The function should return the computed value directly without Result wrapper
+    EXPECT_EQ(verified_result, result);
+}
+
+TEST_F(FloatingPointEnvironmentTest, CalculateAndVerifyWillAbortWhenModeIsAbortOnError)
+{
+    // Given, CalculateAndVerify is configured in AbortOnError mode with an invalid operation
+    // When, An invalid floating point operation (division by zero) is executed through CalculateAndVerify
+    // Then, The function should call std::abort() instead of returning an error
+    EXPECT_DEATH(details::FloatingPointEnvironment::CalculateAndVerify<ReturnMode::kAbortOnError>(invalid_operation_),
+                 ".*");
 }
 
 }  // namespace

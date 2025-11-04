@@ -20,9 +20,11 @@
 #include "score/language/safecpp/safe_math/details/negate/negate.h"
 #include "score/language/safecpp/safe_math/details/type_traits/type_traits.h"
 #include "score/language/safecpp/safe_math/error.h"
+#include "score/language/safecpp/safe_math/return_mode.h"
 
 #include "score/result/result.h"
 
+#include <cstdlib>
 #include <limits>
 #include <type_traits>
 
@@ -31,18 +33,19 @@ namespace score::safe_math
 
 // We use this template trick to make an intelligent default choice for the return type while allowing a user to
 // specify the return type without having to specify the parameter types.
-template <class TempR = void,
+template <ReturnMode return_mode = kDefaultReturnMode,
+          class TempR = void,
           class LHS,
           class RHS,
           class R = prefer_first_type_t<TempR, LHS>,
           typename std::enable_if_t<std::is_integral<LHS>::value && std::is_integral<RHS>::value &&
                                         std::is_integral<R>::value,
                                     bool> = true>
-score::Result<R> Multiply(LHS lhs, RHS rhs) noexcept
+auto Multiply(LHS lhs, RHS rhs) noexcept -> ModeBasedReturnType<R, return_mode>
 {
     if (CmpEqual(lhs, 0) || CmpEqual(rhs, 0))
     {
-        return Cast<R>(0);
+        return Cast<return_mode, R>(0);
     }
 
     using UnsignedLHS = std::make_unsigned_t<LHS>;
@@ -55,35 +58,36 @@ score::Result<R> Multiply(LHS lhs, RHS rhs) noexcept
     const auto numeric_limit = static_cast<CommonType>(std::numeric_limits<CommonType>::max() / abs_rhs);
     if (CmpGreater(abs_lhs, numeric_limit))
     {
-        return score::MakeUnexpected<R>(ErrorCode::kExceedsNumericLimits);
+        return HandleError<R, return_mode>(score::MakeUnexpected(ErrorCode::kExceedsNumericLimits));
     }
     const auto result = static_cast<CommonType>(abs_lhs * abs_rhs);
 
     if (CmpLess(lhs, 0) == CmpLess(rhs, 0))
     {
         // Inputs in {}: {lhs} * {rhs} = lhs * rhs and {-lhs} * {-rhs} = lhs * rhs
-        return Cast<R>(result);
+        return Cast<return_mode, R>(result);
     }
     else
     {
         // Inputs in {}: {-lhs} * {rhs} = -(lhs * rhs) and {lhs} * {-rhs} = -(lhs * rhs)
-        return Negate<R>(result);
+        return Negate<return_mode, R>(result);
     }
 }
 
-template <class TempR = void,
+template <ReturnMode return_mode = kDefaultReturnMode,
+          class TempR = void,
           class FloatingLHS,
           class FloatingRHS,
           class R = prefer_first_type_t<TempR, bigger_type_t<FloatingLHS, FloatingRHS>>,
           typename std::enable_if_t<std::is_floating_point<FloatingLHS>::value &&
                                         std::is_floating_point<FloatingRHS>::value && std::is_floating_point<R>::value,
                                     bool> = true>
-score::Result<R> Multiply(FloatingLHS lhs_floating, FloatingRHS rhs_floating) noexcept
+auto Multiply(FloatingLHS lhs_floating, FloatingRHS rhs_floating) noexcept -> ModeBasedReturnType<R, return_mode>
 {
     static_assert(std::numeric_limits<FloatingLHS>::is_iec559 && std::numeric_limits<FloatingRHS>::is_iec559,
                   "Operands must adhere to IEEE 754 for ensured accuracy of results");
 
-    return details::FloatingPointEnvironment::CalculateAndVerify(
+    return details::FloatingPointEnvironment::CalculateAndVerify<return_mode>(
         // Suppress "AUTOSAR C++14 A7-1-7", The rule states: "Each expression statement and identifier
         // declaration shall be placed on a separate line." The code here is present in single line to avoid
         // clang format failure.
@@ -93,7 +97,8 @@ score::Result<R> Multiply(FloatingLHS lhs_floating, FloatingRHS rhs_floating) no
         });
 }
 
-template <class TempR = void,
+template <ReturnMode return_mode = kDefaultReturnMode,
+          class TempR = void,
           class FloatingLHS,
           class IntegralRHS,
           class R = prefer_first_type_t<TempR, FloatingLHS>,
@@ -109,28 +114,35 @@ template <class TempR = void,
 // coverity[fun_call_w_exception]
 // coverity[uncaught_exception]
 // coverity[autosar_cpp14_a15_5_3_violation]
-score::Result<R> Multiply(FloatingLHS lhs_floating, IntegralRHS rhs_integral) noexcept
+auto Multiply(FloatingLHS lhs_floating, IntegralRHS rhs_integral) noexcept -> ModeBasedReturnType<R, return_mode>
 {
-    const auto rhs_floating = Cast<R>(rhs_integral);
+    const auto rhs_floating = Cast<return_mode, R>(rhs_integral);
 
-    if (!rhs_floating.has_value())
-    {
-        return rhs_floating;
-    }
-
-    return Multiply<R>(lhs_floating, rhs_floating.value());
+    const auto multiply = [&lhs_floating](R rhs_casted) noexcept -> ModeBasedReturnType<R, return_mode> {
+        return Multiply<return_mode, R>(lhs_floating, rhs_casted);
+    };
+    return PerformActionBasedOnReturnMode<return_mode, R>(multiply, rhs_floating);
 }
 
-template <class TempR = void,
+template <ReturnMode return_mode = kDefaultReturnMode,
+          class TempR = void,
           class IntegralLHS,
           class FloatingRHS,
           class R = prefer_first_type_t<TempR, FloatingRHS>,
           typename std::enable_if_t<std::is_integral<IntegralLHS>::value &&
                                         std::is_floating_point<FloatingRHS>::value && std::is_floating_point<R>::value,
                                     bool> = true>
-score::Result<R> Multiply(IntegralLHS lhs_integral, FloatingRHS rhs_floating) noexcept
+auto Multiply(IntegralLHS lhs_integral, FloatingRHS rhs_floating) noexcept -> ModeBasedReturnType<R, return_mode>
 {
-    return Multiply<R>(rhs_floating, lhs_integral);
+    return Multiply<return_mode, R>(rhs_floating, lhs_integral);
+}
+
+// Type-first convenience overload: allows specifying only the return type (TempR) without explicitly restating the
+// default ReturnMode.
+template <class TempR, class LHS, class RHS>
+auto Multiply(LHS lhs, RHS rhs) noexcept -> decltype(Multiply<kDefaultReturnMode, TempR>(lhs, rhs))
+{
+    return Multiply<kDefaultReturnMode, TempR>(lhs, rhs);
 }
 
 }  // namespace score::safe_math

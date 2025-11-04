@@ -19,9 +19,11 @@
 #include "score/language/safecpp/safe_math/details/negate/negate.h"
 #include "score/language/safecpp/safe_math/details/type_traits/type_traits.h"
 #include "score/language/safecpp/safe_math/error.h"
+#include "score/language/safecpp/safe_math/return_mode.h"
 
 #include "score/result/result.h"
 
+#include <cstdlib>
 #include <limits>
 #include <type_traits>
 
@@ -30,18 +32,19 @@ namespace score::safe_math
 
 // We use this template trick to make an intelligent default choice for the return type while allowing a user to
 // specify the return type without having to specify the parameter types.
-template <class TempR = void,
+template <ReturnMode return_mode = kDefaultReturnMode,
+          class TempR = void,
           class LHS,
           class RHS,
           class R = prefer_first_type_t<TempR, LHS>,
           typename std::enable_if_t<std::is_integral<LHS>::value && std::is_integral<RHS>::value &&
                                         std::is_integral<R>::value,
                                     bool> = true>
-score::Result<R> Divide(LHS lhs, RHS rhs) noexcept
+auto Divide(LHS lhs, RHS rhs) noexcept -> ModeBasedReturnType<R, return_mode>
 {
     if (CmpEqual(rhs, 0))
     {
-        return score::MakeUnexpected(ErrorCode::kDivideByZero);
+        return HandleError<R, return_mode>(score::MakeUnexpected(ErrorCode::kDivideByZero));
     }
 
     using UnsignedLHS = std::make_unsigned_t<LHS>;
@@ -53,39 +56,40 @@ score::Result<R> Divide(LHS lhs, RHS rhs) noexcept
 
     if ((abs_lhs % abs_rhs) != 0U)
     {
-        return score::MakeUnexpected(ErrorCode::kImplicitRounding);
+        return HandleError<R, return_mode>(score::MakeUnexpected(ErrorCode::kImplicitRounding));
     }
     const auto result = static_cast<CommonType>(abs_lhs / abs_rhs);
 
     if (CmpLess(lhs, 0) == CmpLess(rhs, 0))
     {
-        return Cast<R>(result);
+        return Cast<return_mode, R>(result);
     }
     else
     {
-        return Negate<R>(result);
+        return Negate<return_mode, R>(result);
     }
 }
 
-template <class TempR = void,
+template <ReturnMode return_mode = kDefaultReturnMode,
+          class TempR = void,
           class FloatingLHS,
           class FloatingRHS,
           class R = prefer_first_type_t<TempR, bigger_type_t<FloatingLHS, FloatingRHS>>,
           typename std::enable_if_t<std::is_floating_point<FloatingLHS>::value &&
                                         std::is_floating_point<FloatingRHS>::value && std::is_floating_point<R>::value,
                                     bool> = true>
-score::Result<R> Divide(FloatingLHS lhs_floating, FloatingRHS rhs_floating) noexcept
+auto Divide(FloatingLHS lhs_floating, FloatingRHS rhs_floating) noexcept -> ModeBasedReturnType<R, return_mode>
 {
     if (rhs_floating == 0.0)
     {
         // This goes against IEEE 754 but is the mathematical correct solution.
-        return score::MakeUnexpected(ErrorCode::kDivideByZero);
+        return HandleError<R, return_mode>(score::MakeUnexpected(ErrorCode::kDivideByZero));
     }
 
     static_assert(std::numeric_limits<FloatingLHS>::is_iec559 && std::numeric_limits<FloatingRHS>::is_iec559,
                   "Operands must adhere to IEEE 754 for ensured accuracy of results");
 
-    return details::FloatingPointEnvironment::CalculateAndVerify(
+    return details::FloatingPointEnvironment::CalculateAndVerify<return_mode>(
         // Suppress "AUTOSAR C++14 A7-1-7", The rule states: "Each expression statement and identifier
         // declaration shall be placed on a separate line." The code here is present in single line to avoid
         // clang format failure.
@@ -95,7 +99,8 @@ score::Result<R> Divide(FloatingLHS lhs_floating, FloatingRHS rhs_floating) noex
         });
 }
 
-template <class TempR = void,
+template <ReturnMode return_mode = kDefaultReturnMode,
+          class TempR = void,
           class FloatingLHS,
           class IntegralRHS,
           class R = prefer_first_type_t<TempR, FloatingLHS>,
@@ -111,19 +116,18 @@ template <class TempR = void,
 // coverity[fun_call_w_exception]
 // coverity[uncaught_exception]
 // coverity[autosar_cpp14_a15_5_3_violation]
-score::Result<R> Divide(FloatingLHS lhs_floating, IntegralRHS rhs_integral) noexcept
+auto Divide(FloatingLHS lhs_floating, IntegralRHS rhs_integral) noexcept -> ModeBasedReturnType<R, return_mode>
 {
-    const auto rhs_floating = Cast<R>(rhs_integral);
+    const auto rhs_floating = Cast<return_mode, R>(rhs_integral);
 
-    if (!rhs_floating.has_value())
-    {
-        return rhs_floating;
-    }
-
-    return Divide<R>(lhs_floating, rhs_floating.value());
+    const auto divide = [&lhs_floating](R rhs_casted) noexcept -> ModeBasedReturnType<R, return_mode> {
+        return Divide<return_mode, R>(lhs_floating, rhs_casted);
+    };
+    return PerformActionBasedOnReturnMode<return_mode, R>(divide, rhs_floating);
 }
 
-template <class TempR = void,
+template <ReturnMode return_mode = kDefaultReturnMode,
+          class TempR = void,
           class IntegralLHS,
           class FloatingRHS,
           class R = prefer_first_type_t<TempR, FloatingRHS>,
@@ -139,16 +143,22 @@ template <class TempR = void,
 // coverity[fun_call_w_exception]
 // coverity[uncaught_exception]
 // coverity[autosar_cpp14_a15_5_3_violation]
-score::Result<R> Divide(IntegralLHS lhs_integral, FloatingRHS rhs_floating) noexcept
+auto Divide(IntegralLHS lhs_integral, FloatingRHS rhs_floating) noexcept -> ModeBasedReturnType<R, return_mode>
 {
-    const auto lhs_floating = Cast<R>(lhs_integral);
+    const auto lhs_floating = Cast<return_mode, R>(lhs_integral);
 
-    if (!lhs_floating.has_value())
-    {
-        return lhs_floating;
-    }
+    const auto divide = [&rhs_floating](R lhs_casted) noexcept -> ModeBasedReturnType<R, return_mode> {
+        return Divide<return_mode, R>(lhs_casted, rhs_floating);
+    };
+    return PerformActionBasedOnReturnMode<return_mode, R>(divide, lhs_floating);
+}
 
-    return Divide<R>(lhs_floating.value(), rhs_floating);
+// Type-first convenience overload: allows specifying only the return type (TempR) without explicitly restating the
+// default ReturnMode.
+template <class TempR, class LHS, class RHS>
+auto Divide(LHS lhs, RHS rhs) noexcept -> decltype(Divide<kDefaultReturnMode, TempR>(lhs, rhs))
+{
+    return Divide<kDefaultReturnMode, TempR>(lhs, rhs);
 }
 
 }  // namespace score::safe_math

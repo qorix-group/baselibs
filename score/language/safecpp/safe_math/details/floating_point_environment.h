@@ -13,8 +13,10 @@
 #ifndef SCORE_LIB_SAFE_MATH_DETAILS_FLOATING_POINT_ENVIRONMENT_H
 #define SCORE_LIB_SAFE_MATH_DETAILS_FLOATING_POINT_ENVIRONMENT_H
 
+#include "score/language/safecpp/safe_math/return_mode.h"
 #include "score/result/result.h"
 
+#include <cstdlib>
 #include <type_traits>
 
 namespace score::safe_math::details
@@ -40,8 +42,8 @@ class FloatingPointEnvironment
     /// \tparam F Type of calculation
     /// \param calculation The calculation to perform
     /// \return The result or error
-    template <class F, class T = std::invoke_result_t<F>>
-    static score::Result<T> CalculateAndVerify(const F& calculation) noexcept
+    template <ReturnMode return_mode = kDefaultReturnMode, class F, class T = std::invoke_result_t<F>>
+    static auto CalculateAndVerify(const F& calculation) noexcept -> ModeBasedReturnType<T, return_mode>
     {
         FloatingPointEnvironment floating_point_environment{};
         const T result = calculation();
@@ -49,7 +51,7 @@ class FloatingPointEnvironment
         score::ResultBlank potential_error = floating_point_environment.Test();
         if (!potential_error.has_value())
         {
-            return score::MakeUnexpected<T>(potential_error.error());
+            return HandleError<T, return_mode>(score::MakeUnexpected<T>(potential_error.error()));
         }
         return result;
     }

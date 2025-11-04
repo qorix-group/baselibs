@@ -59,3 +59,17 @@ cc_library(
     ],
     deps = ["@googletest//:gtest"],
 )
+
+cc_library(
+    name = "return_mode_test_helper",
+    testonly = True,
+    hdrs = ["return_mode_test_helper.h"],
+    features = COMPILER_WARNING_FEATURES,
+    visibility = ["@score_baselibs//score/language/safecpp/safe_math/details:__subpackages__"],
+    deps = [
+        "@googletest//:gtest",
+        "@score_baselibs//score/language/safecpp/safe_math:error",
+        "@score_baselibs//score/language/safecpp/safe_math:return_mode",
+        "@score_baselibs//score/result",
+    ],
+)
