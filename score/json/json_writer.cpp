@@ -21,6 +21,13 @@
 #include <array>
 #include <iterator>
 #include <limits>
+// NOLINTNEXTLINE(score-banned-include) std::locale provides functionalities (e.g. facets) to customize parts of iostream
+//                                    implementation. In this case it is used for serializing integers efficiently.
+//                                    An implementation without std::locale might require (massive) amounts of code
+//                                    duplication. Furthermore, this header is allowed to be used for character
+//                                    conversion purposes if and it must be ensured that libcatalog is not linked using
+//                                    the target toolchain, which is the case for libjson.
+//                                    Reference: broken_link_c/issue/4600528
 #include <locale>
 #include <sstream>
 #include <string_view>
@@ -200,6 +207,7 @@ score::Result<std::string> ToBufferInternal(const T& json_data)
     // This line must be hit when the function is called. Since other parts of this function show line coverage,
     // this line must also be hit. Missing coverage is due to a bug in the coverage tool
     std::ostringstream string_stream{};  // LCOV_EXCL_LINE
+    // NOLINTNEXTLINE(score-no-dynamic-raw-memory) std::num_put is reference counted and std::locale does manage it.
     const static std::locale loc(std::locale(), new OptimizedNumPut());
     score::cpp::ignore = string_stream.imbue(loc);
 
