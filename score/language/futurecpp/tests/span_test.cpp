@@ -58,6 +58,18 @@ TEST(span, OneDimensionalCArray)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#9338069
+TEST(span, OneDimensionalCArrayConst)
+{
+    const std::int32_t data[]{23, 42, 72};
+    const span<const std::int32_t> view{data};
+
+    EXPECT_EQ(3U, view.size());
+    EXPECT_EQ(3, (view.end() - view.begin()));
+    EXPECT_EQ(72, view.data()[2]);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
 TEST(span, StdArray_NonConstToNonConst)
 {
     std::array<std::int32_t, 3U> data{23, 42, 72};
@@ -148,13 +160,84 @@ TEST(span, StdArrayWithStaticExtent_WithWrongStaticExtend_CannotConstruct)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#9338069
-TEST(span, RangeWithStaticExtent)
+TEST(span, Range_NonConstToNonConst)
+{
+    std::vector<std::int32_t> data{23, 42, 72};
+    span<std::int32_t> view{data};
+
+    EXPECT_EQ(data.data(), view.data());
+    EXPECT_EQ(3U, view.size());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, Range_NonConstToConst)
+{
+    std::vector<std::int32_t> data{23, 42, 72};
+    span<const std::int32_t> view{data}; // the standard calls this "qualification conversion"
+
+    EXPECT_EQ(data.data(), view.data());
+    EXPECT_EQ(3U, view.size());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, Range_ConstToConst)
+{
+    const std::vector<std::int32_t> data{23, 42, 72};
+    span<const std::int32_t> view{data};
+
+    EXPECT_EQ(data.data(), view.data());
+    EXPECT_EQ(3U, view.size());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, Range_ConstToNonConst_CannotConstruct)
+{
+    // cannot convert from `const` to non-`const`
+    static_assert(!std::is_constructible_v<span<std::int32_t>, const std::vector<std::int32_t>&>);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, RangeWithStaticExtent_NonConstToNonConst)
+{
+    std::vector<std::int32_t> data{23, 42, 72};
+    span<std::int32_t, 3U> view{data};
+
+    EXPECT_EQ(data.data(), view.data());
+    EXPECT_EQ(3U, view.size());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, RangeWithStaticExtent_NonConstToConst)
+{
+    std::vector<std::int32_t> data{23, 42, 72};
+    span<const std::int32_t, 3U> view{data}; // the standard calls this "qualification conversion"
+
+    EXPECT_EQ(data.data(), view.data());
+    EXPECT_EQ(3U, view.size());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, RangeWithStaticExtent_ConstToConst)
 {
     const std::vector<std::int32_t> data{23, 42, 72};
     span<const std::int32_t, 3U> view{data};
 
     EXPECT_EQ(data.data(), view.data());
     EXPECT_EQ(3U, view.size());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, RangeWithStaticExtent_ConstToNonConst_CannotConstruct)
+{
+    // cannot convert from `const` to non-`const`
+    static_assert(!std::is_constructible_v<span<std::int32_t, 3U>, const std::vector<std::int32_t>&>);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -217,18 +300,6 @@ TEST(span, OneDimensionalPointerSizeWithStaticExtent_SizeDoesNotMatch)
 {
     std::int32_t data[]{23, 42, 72};
     SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED((span<const std::int32_t, 3U>{data, 2}));
-}
-
-/// @testmethods TM_REQUIREMENT
-/// @requirement CB-#9338069
-TEST(span, OneDimensionalConst)
-{
-    const std::int32_t data[]{23, 42, 72};
-    const span<const std::int32_t> view{data};
-
-    EXPECT_EQ(3U, view.size());
-    EXPECT_EQ(3, (view.end() - view.begin()));
-    EXPECT_EQ(72, view.data()[2]);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -546,46 +617,6 @@ TEST(span, first)
         EXPECT_TRUE(unit.data() == view.data());
         EXPECT_TRUE(unit.size() == count);
     }
-}
-
-/// @testmethods TM_REQUIREMENT
-/// @requirement CB-#9338069
-TEST(span, WhenNonConstRangeIsPassedToNonConstSpan)
-{
-    std::vector<std::int32_t> data{12, 5, -5, -6};
-    const span<std::int32_t> view{data};
-
-    EXPECT_EQ(view.size(), data.size());
-    EXPECT_EQ(view.data(), data.data());
-}
-
-/// @testmethods TM_REQUIREMENT
-/// @requirement CB-#9338069
-TEST(span, WhenConstRangeIsPassedToConstSpan)
-{
-    const std::vector<std::int32_t> data{12, 5, -5, -6};
-    const span<const std::int32_t> view{data};
-
-    EXPECT_EQ(view.size(), data.size());
-    EXPECT_EQ(view.data(), data.data());
-}
-
-/// @testmethods TM_REQUIREMENT
-/// @requirement CB-#9338069
-TEST(span, WhenNonConstRangeIsPassedToConstSpan)
-{
-    std::vector<std::int32_t> data{12, 5, -5, -6};
-    const span<const std::int32_t> view{data};
-
-    EXPECT_EQ(view.size(), data.size());
-    EXPECT_EQ(view.data(), data.data());
-}
-
-/// @testmethods TM_REQUIREMENT
-/// @requirement CB-#9338069
-TEST(span, WhenConstRangeIsPassedToNonConstSpan)
-{
-    static_assert(!std::is_convertible<const std::vector<std::int32_t>&, const span<std::int32_t>>::value, "Failed.");
 }
 
 int test_range_overload_set(const span<const float>) { return 0; }
