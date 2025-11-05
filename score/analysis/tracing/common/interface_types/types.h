@@ -137,9 +137,19 @@ static constexpr ShmObjectHandle kInvalidSharedObjectIndex{-1};
 // being given values that are not subsequently used"
 // False positive, variable is used.
 // coverity[autosar_cpp14_a0_1_1_violation : FALSE]
-static constexpr std::size_t kApplicationIdentifierLength{8U};
-/// Type used to store the truncated application identifer
+static constexpr std::size_t kApplicationIdentifierLength{255U};
+/// Type used to store the max size for application identifier it's choosen based on
+/// max allowed file name in QNX which is 255 chars.
 using AppIdType = std::array<char, kApplicationIdentifierLength>;
+
+// Suppress "AUTOSAR C++14 A0-1-1" rule finds: "A project shall not contain instances of non-volatile variables
+// being given values that are not subsequently used"
+// False positive, variable is used.
+// coverity[autosar_cpp14_a0_1_1_violation : FALSE]
+static constexpr std::size_t kAraComMetaInfoApplicationIdentifierLength{8U};
+/// Type used to store the max size for application identifier it's choosen based on
+/// "ad_make_40ms_asil_b_low_level_perception" which is 40 chars + 10 chars if a new client would have a newername
+using AraComMetaInfoAppIdType = std::array<char, kAraComMetaInfoApplicationIdentifierLength>;
 
 /// We use a ScopedFunction so that the tracing runtime controls the scope during which the callback can
 /// be called.
