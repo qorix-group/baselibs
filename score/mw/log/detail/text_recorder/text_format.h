@@ -185,7 +185,7 @@ static void PutFormattedNumber(PT& payload, const T data) noexcept
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg) safe to use std::snprintf
                 FormattingFunctionReturnCast(std::snprintf(buffer.data(), buffer.size(), format, data));
 
-            const std::size_t num_written = std::min(written, buffer.size() - 1U);
+            const std::size_t num_written = std::min(written, buffer.size() - std::size_t{1});
             buffer.first(num_written + 1U).back() = ' ';
             return written;
         }
