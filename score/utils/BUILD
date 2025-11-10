@@ -35,16 +35,6 @@ cc_library(
 )
 
 cc_library(
-    name = "payloadvalidation",
-    srcs = ["src/PayloadValidation.cpp"],
-    hdrs = ["src/PayloadValidation.h"],
-    features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        "//visibility:public",
-    ],
-)
-
-cc_library(
     name = "scoped_operation",
     hdrs = ["src/scoped_operation.h"],
     features = COMPILER_WARNING_FEATURES,
@@ -95,13 +85,6 @@ cc_gtest_unit_test(
 )
 
 cc_gtest_unit_test(
-    name = "payloadvalidation_test",
-    srcs = ["test/payloadvalidationtest.cpp"],
-    features = COMPILER_WARNING_FEATURES,
-    deps = [":payloadvalidation"],
-)
-
-cc_gtest_unit_test(
     name = "scoped_operation_test",
     srcs = ["test/scoped_operation_test.cpp"],
     features = COMPILER_WARNING_FEATURES,
@@ -113,7 +96,6 @@ cc_unit_test_suites_for_host_and_qnx(
     cc_unit_tests = [
         ":base64_unit_test",
         ":pimpl_ptr_test",
-        ":payloadvalidation_test",
         ":scoped_operation_test",
     ],
     visibility = [
