@@ -258,7 +258,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/analysis/tracing/common/flexible_circular_allocator:__subpackages__",
+        "@score_baselibs//score/analysis:__subpackages__",
         "@score_baselibs//score/language/safecpp/string_view:__subpackages__",
         "@score_baselibs//score/mw/log:__subpackages__",
     ],

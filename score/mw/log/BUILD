@@ -76,7 +76,7 @@ alias(
     actual = "@score_baselibs//score/mw/log/detail:recorder_factory_stub",
     visibility = [
         "//visibility:public",  # platform_only
-        "@score_baselibs//score/analysis/tracing/common/flexible_circular_allocator:__subpackages__",
+        "@score_baselibs//score/analysis:__subpackages__",
         "@score_baselibs//score/language/safecpp/string_view:__subpackages__",
     ],
 )
