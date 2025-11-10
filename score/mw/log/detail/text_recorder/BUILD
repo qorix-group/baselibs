@@ -115,8 +115,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
+        "//visibility:public",
     ],
     deps = [
         "@score_baselibs//score/mw/log/detail:log_data_types",
@@ -136,8 +135,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log:__pkg__",
-        "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
+        "//visibility:public",
     ],
     deps = [
         ":message_builder_interface",
@@ -184,7 +182,7 @@ cc_library(
     hdrs = ["mock/message_builder_mock.h"],
     features = COMPILER_WARNING_FEATURES,
     visibility = [
-        "@score_baselibs//score/mw/log/detail/file_recorder:__pkg__",
+        "//visibility:public",
     ],
     deps = [
         ":non_blocking_writer",
