@@ -78,6 +78,7 @@ cc_library(
     deps = [
         "@score_baselibs//score/analysis/tracing/common/interface_types:generic_trace_api_types",
         "@score_baselibs//score/memory/shared:types",
+        "@score_baselibs//score/mw/log:backend_stub_testutil",
         "@score_baselibs//score/mw/log:frontend",
     ],
 )
