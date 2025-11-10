@@ -467,7 +467,6 @@ cc_library(
         "fs_crypto_impl.h",
     ],
     features = COMPILER_WARNING_FEATURES,
-    tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
         "//platform/aas/intc/configure_persistency:__subpackages__",
