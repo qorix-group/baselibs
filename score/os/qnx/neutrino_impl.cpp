@@ -114,6 +114,16 @@ std::uint64_t NeutrinoImpl::ClockCycles() const noexcept
     return ::ClockCycles();
 }
 
+score::cpp::expected<std::int32_t, Error> NeutrinoImpl::ClockId(pid_t pid, std::int32_t tid) const noexcept
+{
+    const std::int32_t result = ::ClockId(pid, tid);
+    if (result == -1)
+    {
+        return score::cpp::make_unexpected(score::os::Error::createFromErrno());
+    }
+    return result;
+}
+
 // This is intented, we don't force users to fill the otime parameter unless needed
 // NOLINTNEXTLINE(google-default-arguments): See above
 score::cpp::expected<std::int32_t, Error> NeutrinoImpl::TimerTimeout(

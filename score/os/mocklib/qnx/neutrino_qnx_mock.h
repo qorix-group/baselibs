@@ -53,6 +53,10 @@ class NeutrinoMock : public Neutrino
         (const, noexcept, override));
     MOCK_METHOD(std::uint64_t, ClockCycles, (), (const, noexcept, override));
     MOCK_METHOD((score::cpp::expected<std::int32_t, Error>),
+                ClockId,
+                (pid_t pid, std::int32_t tid),
+                (const, noexcept, override));
+    MOCK_METHOD((score::cpp::expected<std::int32_t, Error>),
                 TimerTimeout,
                 (const ClockType clock_type,
                  const TimerTimeoutFlag flags,

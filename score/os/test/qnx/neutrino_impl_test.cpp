@@ -364,3 +364,18 @@ TEST_F(NeutrinoImplFixture, ClockCyclesElapsedTime)
     const auto end = neutrino_.ClockCycles();
     ASSERT_GT(end, start);
 }
+
+TEST_F(NeutrinoImplFixture, ClockIdSuccess)
+{
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+    pid_t pid = ::getpid();
+    int32_t tid = ::gettid();
+
+    const auto clock_id = neutrino_.ClockId(pid, tid);
+    ASSERT_TRUE(clock_id.has_value());
+    ASSERT_GE(clock_id.value(), 0);
+}

@@ -115,6 +115,8 @@ class Neutrino : public ObjectSeam<Neutrino>
 
     virtual std::uint64_t ClockCycles() const noexcept = 0;
 
+    virtual score::cpp::expected<std::int32_t, Error> ClockId(pid_t pid, std::int32_t tid) const noexcept = 0;
+
     [[deprecated(
         "SPP_DEPRECATION: Please use other overloads of the \'TimerTimeout\'")]] virtual score::cpp::expected<std::int32_t,
                                                                                                        Error>
