@@ -39,6 +39,7 @@ constexpr auto kBlockSize = 64U;
 // coverity[autosar_cpp14_a0_1_1_violation]
 constexpr std::uint8_t kMaxChunksPerOneTraceRequest = 10U;
 
+// Number of ShmRingBuffer elements should not exceed the value 0x7FFFU by it's alogrithm design
 // Suppress "AUTOSAR C++14 A0-1-1" rule finding. This rule states: "A project shall not contain
 // instances of non-volatile variables being given values that are not subsequently used."
 // The variable kNumberOfElements is declared and given value that is used in multiple files

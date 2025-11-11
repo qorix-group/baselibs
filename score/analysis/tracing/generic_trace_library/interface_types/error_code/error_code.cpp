@@ -88,9 +88,6 @@ std::string_view score::analysis::tracing::GenericTraceAPIErrorDomain::MessageFo
         case ErrorCode::kRingBufferInvalidStateRecoverable:
             error_message = "Invalid state of ring buffer";
             break;
-        case ErrorCode::kRingBufferTooLargeRecoverable:
-            error_message = "Not enough space to allocate ring buffer with desired size";
-            break;
         case ErrorCode::kRingBufferInvalidMemoryResourceRecoverable:
             error_message = "Invalid memory resource passed to constructor";
             break;
@@ -112,15 +109,9 @@ std::string_view score::analysis::tracing::GenericTraceAPIErrorDomain::MessageFo
         case ErrorCode::kRingBufferSharedMemoryMapFatal:
             error_message = "Failed to to map memory region of shared memory ring buffer";
             break;
-        case ErrorCode::kRingBufferSharedMemoryFlexibleAllocatorFatal:
-            error_message = "Failed to to create flexible allocator in shared memory ring buffer";
-            break;
         case ErrorCode::kRingBufferSharedMemorySizeCalculationFatal:
             error_message =
                 "Calculated shared memory size doesn't match the size of the original created shared memory";
-            break;
-        case ErrorCode::kRingBufferSharedMemoryAllocationFatal:
-            error_message = "Failed to allocate shared memory inside shm ring buffer";
             break;
         case ErrorCode::kNoSpaceLeftForAllocationRecoverable:
             error_message = "No space to allocate in TMD shared memory";
@@ -281,7 +272,6 @@ bool score::analysis::tracing::IsErrorRecoverable(const score::analysis::tracing
         case ErrorCode::kRingBufferNotInitializedRecoverable:
         case ErrorCode::kRingBufferInitializedRecoverable:
         case ErrorCode::kRingBufferInvalidStateRecoverable:
-        case ErrorCode::kRingBufferTooLargeRecoverable:
         case ErrorCode::kRingBufferInvalidMemoryResourceRecoverable:
         case ErrorCode::kCallbackAlreadyRegisteredRecoverable:
         case ErrorCode::kNoFreeSlotToSaveTheCallbackRecoverable:
@@ -335,9 +325,7 @@ bool score::analysis::tracing::IsErrorRecoverable(const score::analysis::tracing
         case ErrorCode::kRingBufferSharedMemoryHandleOpenFatal:
         case ErrorCode::kRingBufferSharedMemoryFstatFatal:
         case ErrorCode::kRingBufferSharedMemoryMapFatal:
-        case ErrorCode::kRingBufferSharedMemoryFlexibleAllocatorFatal:
         case ErrorCode::kRingBufferSharedMemorySizeCalculationFatal:
-        case ErrorCode::kRingBufferSharedMemoryAllocationFatal:
         default:
             error = false;
             break;
