@@ -168,8 +168,12 @@ class basic_mask<T, Abi, true>
     template <typename G, typename std::size_t... Is>
     static constexpr bool is_generator_invocable(std::index_sequence<Is...>)
     {
-        return conjunction_v<score::cpp::is_invocable<G, std::integral_constant<std::size_t, Is>>...> &&
-               conjunction_v<std::is_same<bool, score::cpp::invoke_result_t<G, std::integral_constant<std::size_t, Is>>>...>;
+        if constexpr ((... && std::is_invocable_v<G, std::integral_constant<std::size_t, Is>>))
+        {
+            return (... &&
+                    std::is_same_v<bool, decltype(std::declval<G>()(std::integral_constant<std::size_t, Is>()))>);
+        }
+        return false;
     }
 
 public:
@@ -197,8 +201,9 @@ public:
     ///
     /// [parallel] none
     template <typename G,
-              typename = std::enable_if_t<!is_forwarding_ref_overload<G>::value &&
-                                          is_generator_invocable<G>(std::make_index_sequence<size.value>{})>>
+              typename = std::enable_if_t<!is_forwarding_ref_overload<G>::value                                //
+                                          && is_generator_invocable<G>(std::make_index_sequence<size.value>{}) //
+                                          >>
     explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_mask(G&& gen) noexcept
         : v_{Abi::mask_impl::init(std::forward<G>(gen), std::make_index_sequence<size()>{})}
     {
@@ -332,8 +337,12 @@ class basic_vec<T, Abi, true>
     template <typename G, typename std::size_t... Is>
     static constexpr bool is_generator_invocable(std::index_sequence<Is...>)
     {
-        return conjunction_v<score::cpp::is_invocable<G, std::integral_constant<std::size_t, Is>>...> &&
-               conjunction_v<std::is_same<T, score::cpp::invoke_result_t<G, std::integral_constant<std::size_t, Is>>>...>;
+        if constexpr ((... && std::is_invocable_v<G, std::integral_constant<std::size_t, Is>>))
+        {
+            // standard says "value preserving". currently be more strict with `is_same`
+            return (... && std::is_same_v<T, decltype(std::declval<G>()(std::integral_constant<std::size_t, Is>()))>);
+        }
+        return false;
     }
 
     template <typename From>
@@ -381,8 +390,9 @@ public:
     ///
     /// [parallel] 9.6.4 5, 6 and 7
     template <typename G,
-              typename = std::enable_if_t<!is_forwarding_ref_overload<G>::value &&
-                                          is_generator_invocable<G>(std::make_index_sequence<size.value>{})>>
+              typename = std::enable_if_t<!is_forwarding_ref_overload<G>::value                                //
+                                          && is_generator_invocable<G>(std::make_index_sequence<size.value>{}) //
+                                          >>
     explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(G&& gen) noexcept
         : v_{Abi::impl::init(std::forward<G>(gen), std::make_index_sequence<size()>{})}
     {
