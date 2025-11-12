@@ -29,7 +29,6 @@ cc_library(
     name = "mqueue",
     srcs = ["mqueue.cpp"],
     features = COMPILER_WARNING_FEATURES,
-    tags = ["FFI"],
     visibility = ["//visibility:public"],
     deps = [
         ":mqueue_headers",
