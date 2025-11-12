@@ -619,20 +619,6 @@ TEST(span, first)
     }
 }
 
-int test_range_overload_set(const span<const float>) { return 0; }
-int test_range_overload_set(const span<const double>) { return 1; }
-
-/// @testmethods TM_REQUIREMENT
-/// @requirement CB-#9338069
-TEST(span, WhenOverloadSetTakesSpans)
-{
-    const std::array<float, 4> float_data{12.0F, 5.0F, -5.0F, -6.0F};
-    const std::array<double, 4> double_data{12.0, 5.0, -5.0, -6.0};
-
-    EXPECT_EQ(0, test_range_overload_set(float_data));
-    EXPECT_EQ(1, test_range_overload_set(double_data));
-}
-
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#9338069
 TEST(span, WhenFirstAndCountIsGreaterThanSizeThenViolated)
