@@ -144,5 +144,8 @@ config_setting(
         "//ecu/xpad/xpad-shared/platform_tests:__subpackages__",
         "//ecu/xpad/xpad-shared/vendor_tests:__subpackages__",
         "//visibility:public",  # platform_only
+        # "@ddad//ecu/ipnext/tests:__subpackages__",
+        # "@ddad//ecu/xpad/xpad-shared/platform_tests:__subpackages__",
+        # "@ddad//ecu/xpad/xpad-shared/vendor_tests:__subpackages__",
     ],
 )
