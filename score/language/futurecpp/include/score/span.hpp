@@ -151,7 +151,6 @@ public:
     template <std::size_t Size, typename = std::enable_if_t<(Extent == dynamic_extent) || (Extent == Size)>>
     span(T (&array)[Size]) noexcept : base_{score::cpp::data(array), Size}
     {
-        static_assert(Size >= 0, "Size must be positive.");
     }
 
     /// \brief Constructs a span that is a view over the supplied array
