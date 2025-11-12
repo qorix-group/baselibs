@@ -224,6 +224,49 @@ public:
     }
     /// \}
 
+    /// \brief Converting constructor from another span `other`
+    ///
+    /// The resulting span has `size() == other.size()` and `data() == other.data()`.
+    ///
+    /// This overload participates in overload resolution only if elements of the other span are convertible to this
+    /// span's element type and the following size requirements are fulfilled
+    /// `(Extent == dynamic_extent) || (N == dynamic_extent) || (Extent == N)`
+    ///
+    /// \pre (Extent == dynamic_extent) || (Extent == other.size())
+    ///
+    /// \tparam U element type of the other span
+    /// \param other other span
+    /// \{
+    template <typename U,
+              std::size_t N,
+              typename std::enable_if_t<(Extent != dynamic_extent) && (N == dynamic_extent)                           //
+                                            && ((Extent == dynamic_extent) || (N == dynamic_extent) || (Extent == N)) //
+                                            && std::is_convertible_v<U (*)[], T (*)[]>                                //
+                                        ,
+                                        bool> = true>
+    explicit span(const span<U, N>& other) : base_{other.data(), other.size()}
+    {
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION((Extent == dynamic_extent) || (Extent == other.size()));
+    }
+    template <typename U,
+              std::size_t N,
+              typename std::enable_if_t<!((Extent != dynamic_extent) && (N == dynamic_extent))                        //
+                                            && ((Extent == dynamic_extent) || (N == dynamic_extent) || (Extent == N)) //
+                                            && std::is_convertible_v<U (*)[], T (*)[]>                                //
+                                        ,
+                                        bool> = true>
+    span(const span<U, N>& other) : base_{other.data(), other.size()}
+    {
+        // keep the precondition although it can never fail. it is essentially a side effect of our pre-C++20
+        // explicit/non-explicit split while keeping the conditions as defined by the standard.
+        // this ctor covers the following cases:
+        //   1. "dynamic -> dynamic" => precondition will never fail because of first term
+        //   2. "static -> static" => enable_if will fail because of `(Extent == N)`
+        //   3. "static -> dynamic" => precondition will never fail because of first term
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION((Extent == dynamic_extent) || (Extent == other.size()));
+    }
+    /// \}
+
     /// \brief Returns the number elements in the row - when combined with a two-dimensional span the number of
     /// columns.
     ///

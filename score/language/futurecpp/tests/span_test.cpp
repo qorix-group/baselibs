@@ -258,6 +258,87 @@ TEST(span, Range_Explicit)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#9338069
+TEST(span, SpanQualificationConversion_FromDynamicToDynamic)
+{
+    std::vector<std::int32_t> data{23, 42, 72};
+    span<const std::int32_t> view{span<std::int32_t>{data}};
+
+    EXPECT_EQ(data.data(), view.data());
+    EXPECT_EQ(3U, view.size());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, SpanQualificationConversion_FromStaticToDynamic)
+{
+    std::vector<std::int32_t> data{23, 42, 72};
+    span<const std::int32_t> view{span<std::int32_t, 3U>{data}};
+
+    EXPECT_EQ(data.data(), view.data());
+    EXPECT_EQ(3U, view.size());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, SpanQualificationConversion_FromDynamicToStatic)
+{
+    std::vector<std::int32_t> data{23, 42, 72};
+    span<const std::int32_t, 3U> view{span<std::int32_t>{data}};
+
+    EXPECT_EQ(data.data(), view.data());
+    EXPECT_EQ(3U, view.size());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, SpanQualificationConversion_FromStaticToStatic)
+{
+    std::vector<std::int32_t> data{23, 42, 72};
+    span<const std::int32_t, 3U> view{span<std::int32_t, 3U>{data}};
+
+    EXPECT_EQ(data.data(), view.data());
+    EXPECT_EQ(3U, view.size());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, SpanQualificationConversion_ConstToNonConst_CannotConstruct)
+{
+    // cannot convert from `const` to non-`const`
+    static_assert(!std::is_constructible_v<span<std::int32_t>, span<const std::int32_t>>);
+    static_assert(!std::is_constructible_v<span<std::int32_t, 3U>, span<const std::int32_t>>);
+    static_assert(!std::is_constructible_v<span<std::int32_t>, span<const std::int32_t, 3U>>);
+    static_assert(!std::is_constructible_v<span<std::int32_t, 3U>, span<const std::int32_t, 3U>>);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, SpanQualificationConversion_FromStaticToStaticWithMismatchedSize_CannotConstruct)
+{
+    static_assert(std::is_constructible_v<span<const std::int32_t, 3U>, span<std::int32_t, 3U>>); // sanity check
+    static_assert(!std::is_constructible_v<span<const std::int32_t, 3U>, span<std::int32_t, 2U>>);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, SpanQualificationConversion_FromDynamicToStaticWithMismatchedSize_ContractViolaion)
+{
+    std::vector<std::int32_t> data{23, 42};
+    SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED((span<const std::int32_t, 3U>{span<std::int32_t>{data}}));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, SpanWithStaticExtent_Explicit)
+{
+    static_assert(std::is_convertible_v<span<std::int32_t>, span<const std::int32_t>>);
+    static_assert(std::is_convertible_v<span<std::int32_t, 3U>, span<const std::int32_t>>);
+    static_assert(std::is_convertible_v<span<std::int32_t, 3U>, span<const std::int32_t, 3U>>);
+    static_assert(!std::is_convertible_v<span<std::int32_t>, span<const std::int32_t, 3U>>);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
 TEST(span, OneDimensionalPointerSize)
 {
     std::int32_t data[]{23, 42, 72};
