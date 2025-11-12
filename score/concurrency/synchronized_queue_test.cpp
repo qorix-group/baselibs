@@ -164,6 +164,91 @@ TEST(SynchronizedQueue, CallPushWhenPopIsWaitingForTimeout)
     sender_thread.join();
 }
 
+TEST(SynchronizedQueue, CallPushWithConstValueWhenPopIsWaitingForTimeout)
+{
+    RecordProperty("ASIL", "QM");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of boundary values");
+    RecordProperty("Verifies", "::score::platform::aas::lib::concurrency::SynchronizedQueue");
+    RecordProperty("Description",
+                   "This test check that SynchronizedQueue::Pop() would return the value "
+                   "if it's in waiting state and QueueSender pushes new const value into the queue");
+
+    const int max_queue_length = 5;
+    const auto sleep_duration = 100ms;
+    const auto postpone_push_duration = 10ms;
+
+    // Create synchonized queue with max queue length = 5
+    SynchronizedQueue<int32_t> sync_queue(max_queue_length);
+
+    // Create sender to queue
+    auto sender = sync_queue.CreateSender();
+
+    score::cpp::stop_source st_source;
+    const score::cpp::stop_token st_token = st_source.get_token();
+
+    std::thread receiver_thread([&sync_queue, &sleep_duration, &st_token]() noexcept {
+        auto result = sync_queue.Pop(sleep_duration, st_token);
+        // That Pop() returns value from queue if this value was pushed to the queue
+        // after Pop() was called
+        EXPECT_TRUE(result.has_value());
+        EXPECT_EQ(1, result.value());
+    });
+
+    const int32_t push_value = 1;
+
+    std::thread sender_thread([&sender, &postpone_push_duration, &push_value]() noexcept {
+        std::this_thread::sleep_for(postpone_push_duration);
+        sender.push(push_value);
+    });
+
+    receiver_thread.join();
+    sender_thread.join();
+}
+
+TEST(SynchronizedQueue, CallPushAndPopAtForNoneEmptyQueue)
+{
+    RecordProperty("ASIL", "QM");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of boundary values");
+    RecordProperty("Verifies", "::score::platform::aas::lib::concurrency::SynchronizedQueue");
+    RecordProperty("Description",
+                   "This test check that SynchronizedQueue::Pop() would return the value "
+                   "in the case of none empty queue");
+
+    const int max_queue_length = 5;
+    const auto sleep_duration = 100ms;
+    const auto postpone_push_duration = 10ms;
+
+    // Create synchonized queue with max queue length = 5
+    SynchronizedQueue<int32_t> sync_queue(max_queue_length);
+
+    // Create sender to queue
+    auto sender = sync_queue.CreateSender();
+
+    score::cpp::stop_source st_source;
+    const score::cpp::stop_token st_token = st_source.get_token();
+
+    std::thread receiver_thread([&sync_queue, &sleep_duration, &st_token]() noexcept {
+        auto first_push_result = sync_queue.Pop(sleep_duration, st_token);
+        EXPECT_TRUE(first_push_result.has_value());
+        EXPECT_EQ(1, first_push_result.value());
+
+        auto second_push_result = sync_queue.Pop(sleep_duration, st_token);
+        EXPECT_TRUE(second_push_result.has_value());
+        EXPECT_EQ(2, second_push_result.value());
+    });
+
+    std::thread sender_thread([&sender, &postpone_push_duration]() noexcept {
+        std::this_thread::sleep_for(postpone_push_duration);
+        sender.push(1);
+        sender.push(2);
+    });
+
+    receiver_thread.join();
+    sender_thread.join();
+}
+
 TEST(SynchronizedQueue, MakeStressTestForPushingFromMultipleThreads)
 {
 #ifdef __SANITIZE_ADDRESS__
