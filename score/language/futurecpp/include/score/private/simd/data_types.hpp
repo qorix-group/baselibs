@@ -345,12 +345,6 @@ class basic_vec<T, Abi, true>
         return false;
     }
 
-    template <typename From>
-    static constexpr bool is_convertible()
-    {
-        return (!std::is_same<value_type, From>::value) && (native_abi<From>::impl::width == size());
-    }
-
 public:
     using value_type = T;
     using mask_type = basic_mask<T, Abi>;
@@ -373,7 +367,7 @@ public:
     /// \note This constructor does not allow conversion to `value_type` as opposed to standard.
     ///
     /// [parallel] 9.6.4 1 and 2
-    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const value_type v) noexcept : v_{Abi::impl::broadcast(v)} {}
+    SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const value_type v) noexcept : v_{Abi::impl::broadcast(v)} {}
 
     /// \brief Initializes the ith element with static_cast<T>(x[i]) for all i in the range of [0, size()).
     ///
@@ -381,7 +375,7 @@ public:
     ///
     /// [simd.ctor] 29.10.7.2 (C++26)
     template <typename U, typename UAbi, typename = std::enable_if_t<size() == basic_vec<U, UAbi>::size()>>
-    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const basic_vec<U, UAbi> v) noexcept
+    explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const basic_vec<U, UAbi>& v) noexcept
         : v_{UAbi::impl::convert(static_cast<typename UAbi::impl::type>(v), value_type{})}
     {
     }
@@ -420,11 +414,14 @@ public:
     /// @pre v shall point to storage aligned to alignof(value_type).
     ///
     /// [parallel] 9.6.4 8, 9 and 10
-    template <typename U, typename = std::enable_if_t<!is_forwarding_ref_overload<U>::value && is_convertible<U>()>>
+    template <typename U,
+              typename = std::enable_if_t<!is_forwarding_ref_overload<U>::value   //
+                                          && native_abi<U>::impl::width == size() //
+                                          >>
     SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const U* const v, vector_aligned_tag)
         : v_{native_abi<U>::impl::convert(native_abi<U>::impl::load_aligned(v), value_type{})}
     {
-        static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value, "U not a vectorizable type");
+        static_assert(std::is_integral<U>::value || std::is_floating_point<U>::value, "U not a vectorizable type");
     }
 
     /// \brief Constructs the elements from an unaligned memory address.
@@ -432,11 +429,14 @@ public:
     /// @pre [v, v + size()) is a valid range.
     ///
     /// [parallel] 9.6.4 8, 9 and 10
-    template <typename U, typename = std::enable_if_t<!is_forwarding_ref_overload<U>::value && is_convertible<U>()>>
+    template <typename U,
+              typename = std::enable_if_t<!is_forwarding_ref_overload<U>::value   //
+                                          && native_abi<U>::impl::width == size() //
+                                          >>
     SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE basic_vec(const U* const v, element_aligned_tag = {})
         : v_{native_abi<U>::impl::convert(native_abi<U>::impl::load(v), value_type{})}
     {
-        static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value, "U not a vectorizable type");
+        static_assert(std::is_integral<U>::value || std::is_floating_point<U>::value, "U not a vectorizable type");
     }
 
     /// \brief Convert from platform specific type, e.g., _m128 for SSE4.2.
