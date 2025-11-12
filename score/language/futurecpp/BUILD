@@ -105,6 +105,7 @@ cc_library(
         "include/score/private/execution/thread_pool.hpp",
         "include/score/private/execution/thread_pool_queue.hpp",
         "include/score/private/execution/thread_pool_worker_count.hpp",
+        "include/score/private/functional/bind_front.hpp",
         "include/score/private/functional/identity.hpp",
         "include/score/private/functional/invoke.hpp",
         "include/score/private/functional/move_only_function.hpp",
