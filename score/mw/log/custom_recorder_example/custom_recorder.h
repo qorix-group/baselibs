@@ -10,34 +10,28 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef SCORE_MW_LOG_LOG_MODE_H
-#define SCORE_MW_LOG_LOG_MODE_H
+#ifndef SCORE_MW_LOG_CUSTOM_RECORDER_H_2
+#define SCORE_MW_LOG_CUSTOM_RECORDER_H_2
 
-#include <cstdint>
+#include "score/mw/log/custom_recorder_example/custom_recorder_factory_impl.h"
+#include "score/mw/log/custom_recorder_example/custom_recorder_impl.h"
 
 namespace score
 {
 namespace mw
 {
-
-///
-/// \brief Log mode. Flags, used to configure the sink for log messages.
-/// \public
-/// \details Flags can be combined.
-///
-/// \Requirement{SWS_LOG_00019}
-////
-enum class LogMode : uint8_t
+namespace log
 {
-    kRemote = 0x01,   ///< Sent remotely
-    kFile = 0x02,     ///< Save to file
-    kConsole = 0x04,  ///< Forward to console,
-    kSystem = 0x08,   ///< QNX: forward to slog,
-    kCustom = 0x10,   ///< Custom log mode,
-    kInvalid = 0xff   ///< Invalid log mode,
-};
+namespace detail
+{
 
+// the user should provide these two alias based on their implementation
+using CustomRecorder = user::specific::impl::detail::CustomRecorderImpl;
+using CustomRecorderFactory = user::specific::impl::detail::CustomRecorderFactoryImpl;
+
+}  // namespace detail
+}  // namespace log
 }  // namespace mw
 }  // namespace score
 
-#endif  // SCORE_MW_LOG_LOG_MODE_H
+#endif  // SCORE_MW_LOG_CUSTOM_RECORDER_H

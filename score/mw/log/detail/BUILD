@@ -57,6 +57,9 @@ cc_library(
     }) + select({
         "@score_baselibs//score/mw/log/flags:Remote_Logging": ["KREMOTE_LOGGING"],
         "//conditions:default": [],
+    }) + select({
+        "@score_baselibs//score/mw/log/flags:Custom_Logging": ["KCUSTOM_LOGGING"],
+        "//conditions:default": [],
     }),
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
@@ -85,6 +88,11 @@ cc_library(
             "@score_baselibs//score/mw/log/detail/data_router:remote_dlt_recorder_factory",
         ],
         "//conditions:default": [],
+    }) + select({
+        "@score_baselibs//score/mw/log/flags:Custom_Logging": [
+            "@score_baselibs//score/mw/log/flags:custom_recorder_impl",
+        ],
+        "//conditions:default": [],
     }),
 )
 
@@ -96,7 +104,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "@score_baselibs//score/mw/log:__subpackages__",
+        "//visibility:public",
     ],
     deps = [
         "@score_baselibs//score/language/futurecpp",

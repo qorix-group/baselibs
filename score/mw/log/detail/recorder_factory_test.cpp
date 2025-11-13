@@ -245,6 +245,14 @@ TEST_F(RecorderFactoryConfigFixture, ConsoleConfiguredShallReturnConsoleRecorder
     EXPECT_TRUE(IsRecorderOfType<ConsoleRecorderType>(recorder));
 }
 
+TEST_F(RecorderFactoryConfigFixture, CustomConfiguredShallReturnCustomRecorder)
+{
+    SetConfigurationWithLogMode({LogMode::kCustom});
+    auto recorder = CreateFromConfiguration();
+
+    EXPECT_TRUE(IsRecorderOfType<CustomRecorderType>(recorder));
+}
+
 TEST_F(RecorderFactoryConfigFixture, InvalidLogModeShallReturnEmptyRecorder)
 {
     RecordProperty("Requirement", "SCR-861534");
