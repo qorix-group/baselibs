@@ -68,7 +68,7 @@ TEST_F(SharedListFixture, PushBackSingleElement)
 
     EXPECT_CALL(*flexible_allocator_mock_, Deallocate(_, _)).WillOnce([](void* const address, const std::size_t) {
         free(address);  // Simulate deallocation
-        return true;
+        return score::Blank{};
     });
 
     shared::List<std::uint8_t> list(flexible_allocator_mock_);
@@ -115,7 +115,7 @@ TEST_F(SharedListFixture, PushBackMultipleElementsAndClear)
         .Times(number_of_elements)
         .WillRepeatedly([](void* const address, const std::size_t) {
             free(address);  // Simulate deallocation
-            return true;
+            return score::Blank{};
         });
 
     shared::List<std::uint8_t> list(flexible_allocator_mock_);
@@ -145,7 +145,7 @@ TEST_F(SharedListFixture, EmplaceBack)
 
     EXPECT_CALL(*flexible_allocator_mock_, Deallocate(_, _)).WillOnce([](void* const address, const std::size_t) {
         free(address);  // Simulate deallocation
-        return true;
+        return score::Blank{};
     });
 
     shared::List<std::pair<std::uint32_t, std::uint32_t>> list(flexible_allocator_mock_);
@@ -170,7 +170,7 @@ TEST_F(SharedListFixture, AtIndex)
 
     EXPECT_CALL(*flexible_allocator_mock_, Deallocate(_, _)).WillRepeatedly([](void* const address, const std::size_t) {
         free(address);  // Simulate deallocation
-        return true;
+        return score::Blank{};
     });
 
     shared::List<std::uint8_t> list(flexible_allocator_mock_);
@@ -200,7 +200,7 @@ TEST_F(SharedListFixture, Iterators)
 
     EXPECT_CALL(*flexible_allocator_mock_, Deallocate(_, _)).WillRepeatedly([](void* const address, const std::size_t) {
         free(address);  // Simulate deallocation
-        return true;
+        return score::Blank{};
     });
 
     EXPECT_CALL(*flexible_allocator_mock_, IsInBounds(_, _)).WillRepeatedly(Return(true));
@@ -230,7 +230,7 @@ TEST_F(SharedListFixture, ArrowOperatorAccessesMember)
 
     EXPECT_CALL(*flexible_allocator_mock_, Deallocate(_, _)).WillRepeatedly([](void* const address, const std::size_t) {
         free(address);  // Simulate deallocation
-        return true;
+        return score::Blank{};
     });
 
     EXPECT_CALL(*flexible_allocator_mock_, IsInBounds(_, _)).WillRepeatedly(Return(true));
@@ -319,7 +319,7 @@ TEST_F(SharedListFixture, SharedMemoryChunk)
         memory_pointer_.get(), kFlexibleAllocatorSize);
 
     void* const vector_shm_raw_pointer =
-        flexible_allocator->Allocate(sizeof(ShmChunkVector), alignof(std::max_align_t));
+        flexible_allocator->Allocate(sizeof(ShmChunkVector), alignof(std::max_align_t)).value();
     if (nullptr == vector_shm_raw_pointer)
     {
         std::cout << "ErrorCode::kNotEnoughMemoryRecoverable" << std::endl;
@@ -399,7 +399,7 @@ TEST_F(SharedListFixture, ListMagicNumberCorruptionSimulated)
         memory_pointer_.get(), kFlexibleAllocatorSize);
 
     void* const vector_shm_raw_pointer =
-        flexible_allocator->Allocate(sizeof(ShmChunkVector), alignof(std::max_align_t));
+        flexible_allocator->Allocate(sizeof(ShmChunkVector), alignof(std::max_align_t)).value();
     ASSERT_NE(nullptr, vector_shm_raw_pointer);
 
     auto vector = new (vector_shm_raw_pointer) ShmChunkVector(flexible_allocator);
@@ -432,7 +432,7 @@ TEST_F(SharedListFixture, SharedMemoryChunkCanaryDetection)
         memory_pointer_.get(), kFlexibleAllocatorSize);
 
     void* const vector_shm_raw_pointer =
-        flexible_allocator->Allocate(sizeof(ShmChunkVector), alignof(std::max_align_t));
+        flexible_allocator->Allocate(sizeof(ShmChunkVector), alignof(std::max_align_t)).value();
     ASSERT_NE(nullptr, vector_shm_raw_pointer);
 
     auto vector = new (vector_shm_raw_pointer) ShmChunkVector(flexible_allocator);
@@ -471,7 +471,7 @@ TEST_F(SharedListFixture, ListEndCanaryCorruption)
         memory_pointer_.get(), kFlexibleAllocatorSize);
 
     void* const vector_shm_raw_pointer =
-        flexible_allocator->Allocate(sizeof(ShmChunkVector), alignof(std::max_align_t));
+        flexible_allocator->Allocate(sizeof(ShmChunkVector), alignof(std::max_align_t)).value();
     ASSERT_NE(nullptr, vector_shm_raw_pointer);
 
     auto vector = new (vector_shm_raw_pointer) ShmChunkVector(flexible_allocator);
@@ -526,7 +526,7 @@ TEST_F(SharedListFixture, SharedMemoryChunkCorruptionInList)
         memory_pointer_.get(), kFlexibleAllocatorSize);
 
     void* const vector_shm_raw_pointer =
-        flexible_allocator->Allocate(sizeof(ShmChunkVector), alignof(std::max_align_t));
+        flexible_allocator->Allocate(sizeof(ShmChunkVector), alignof(std::max_align_t)).value();
     ASSERT_NE(nullptr, vector_shm_raw_pointer);
 
     auto vector = new (vector_shm_raw_pointer) ShmChunkVector(flexible_allocator);
@@ -578,12 +578,12 @@ TEST_F(SharedListFixture, AtMethodOutOfBoundsDetection)
 {
     EXPECT_CALL(*flexible_allocator_mock_, Allocate(_, _)).WillOnce([](const std::size_t size, const std::size_t) {
         auto allocated_memory = malloc(size);
-        return allocated_memory;
+        return score::Result<void*>{allocated_memory};
     });
 
     EXPECT_CALL(*flexible_allocator_mock_, Deallocate(_, _)).WillOnce([](void* const address, const std::size_t) {
         free(address);
-        return true;
+        return score::Blank{};
     });
 
     EXPECT_CALL(*flexible_allocator_mock_, IsInBounds(_, _)).WillOnce(Return(false));
@@ -604,12 +604,12 @@ TEST_F(SharedListFixture, AtMethodNullCurrentAfterTraversal)
 {
     EXPECT_CALL(*flexible_allocator_mock_, Allocate(_, _)).WillOnce([](const std::size_t size, const std::size_t) {
         auto allocated_memory = malloc(size);
-        return allocated_memory;
+        return score::Result<void*>{allocated_memory};
     });
 
     EXPECT_CALL(*flexible_allocator_mock_, Deallocate(_, _)).WillOnce([](void* const address, const std::size_t) {
         free(address);
-        return true;
+        return score::Blank{};
     });
 
     EXPECT_CALL(*flexible_allocator_mock_, IsInBounds(_, _)).WillOnce(Return(true));

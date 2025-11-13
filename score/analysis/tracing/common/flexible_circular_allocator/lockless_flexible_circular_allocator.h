@@ -12,7 +12,7 @@
  ********************************************************************************/
 #ifndef SCORE_ANALYSIS_TRACING_COMMON_LOCKLESS_FLEXIBLE_CIRCULAR_ALLOCATOR_H
 #define SCORE_ANALYSIS_TRACING_COMMON_LOCKLESS_FLEXIBLE_CIRCULAR_ALLOCATOR_H
-#include "score/analysis/tracing/common/flexible_circular_allocator/error_code.h"
+#include "score/analysis/tracing/common/flexible_circular_allocator/error_code/lockless_flexible_circular_allocator/error_code.h"
 #include "score/analysis/tracing/common/flexible_circular_allocator/flexible_circular_allocator_interface.h"
 #include "score/analysis/tracing/common/flexible_circular_allocator/lockless_flexible_circular_allocator_types.h"
 #include "score/memory/shared/atomic_indirector.h"
@@ -33,30 +33,27 @@ class LocklessFlexibleCircularAllocator : public IFlexibleCircularAllocator
 {
   public:
     LocklessFlexibleCircularAllocator(void* base_address, std::size_t size);
-    void* Allocate(const std::size_t size, const std::size_t alignment_size) noexcept override;
-    bool Deallocate(void* const addr, const std::size_t) noexcept override;
+    score::Result<void*> Allocate(const std::size_t size, const std::size_t alignment_size) noexcept override;
+    ResultBlank Deallocate(void* const addr, const std::size_t) noexcept override;
     std::size_t GetAvailableMemory() noexcept override;
     void GetTmdMemUsage(TmdStatistics& tmd_stats) noexcept override;
     void* GetBaseAddress() const noexcept override;
     std::size_t GetSize() const noexcept override;
     bool IsInBounds(const void* const address, const std::size_t size) const noexcept override;
-    score::result::Error GetLastError() const noexcept;
-    void ClearError() noexcept;
 
   private:
     std::uint32_t BufferQueueSize();
-    void FreeBlock(BufferBlock& current_block);
+    ResultBlank FreeBlock(BufferBlock& current_block);
     std::uint32_t GetListQueueNextHead();
-    uint8_t* AllocateWithWrapAround(std::uint32_t aligned_size, std::uint32_t list_entry_element_index);
-    uint8_t* AllocateWithNoWrapAround(std::uint32_t aligned_size, std::uint32_t list_entry_element_index);
+    score::Result<uint8_t*> AllocateWithWrapAround(std::uint32_t aligned_size, std::uint32_t list_entry_element_index);
+    score::Result<uint8_t*> AllocateWithNoWrapAround(std::uint32_t aligned_size, std::uint32_t list_entry_element_index);
     bool ValidateListEntryIndex(const std::uint32_t& index) const;
     void ResetBufferQueuTail();
-    void MarkListEntryAsFree(const BufferBlock* meta);
-    bool IsRequestedBlockAtBufferQueueTail(const BufferBlock* meta) const;
-    void IterateBlocksToDeallocate();
-    void SetError(FlexibleAllocatorErrorCode error_code) const noexcept;
+    ResultBlank MarkListEntryAsFree(const BufferBlock* meta);
+    score::Result<bool> IsRequestedBlockAtBufferQueueTail(const BufferBlock* meta) const;
+    ResultBlank IterateBlocksToDeallocate();
     template <typename OffsetT>
-    uint8_t* GetBufferPositionAt(OffsetT offset) const noexcept;
+    score::Result<uint8_t*> GetBufferPositionAt(OffsetT offset) const noexcept;
 
     void* base_address_{nullptr};
     std::uint32_t total_size_{0};
@@ -75,7 +72,6 @@ class LocklessFlexibleCircularAllocator : public IFlexibleCircularAllocator
     std::atomic<std::uint64_t> allocate_retry_cntr_{0};
     std::atomic<std::uint64_t> allocate_call_cntr_{0};
     std::atomic<bool> tmd_stats_enabled_{false};
-    mutable std::atomic<score::result::ErrorCode> last_error_code_;
 };
 
 }  // namespace tracing
