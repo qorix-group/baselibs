@@ -135,12 +135,12 @@ public:
     template <std::size_t Size = Extent, typename std::enable_if_t<Size != dynamic_extent, bool> = true>
     explicit span(T* const array, const size_type size) : base_{array, size}
     {
-        SCORE_LANGUAGE_FUTURECPP_PRECONDITION((Extent == dynamic_extent) || (Extent == size));
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((Extent == dynamic_extent) || (Extent == size));
     }
     template <std::size_t Size = Extent, typename std::enable_if_t<Size == dynamic_extent, bool> = true>
     span(T* const array, const size_type size) : base_{array, size}
     {
-        SCORE_LANGUAGE_FUTURECPP_PRECONDITION((Extent == dynamic_extent) || (Extent == size));
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((Extent == dynamic_extent) || (Extent == size));
     }
     /// \}
 
@@ -204,7 +204,7 @@ public:
                                         bool> = true>
     explicit span(Range&& range) : base_{score::cpp::data(range), range.size()}
     {
-        SCORE_LANGUAGE_FUTURECPP_PRECONDITION((Extent == dynamic_extent) || (Extent == range.size()));
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((Extent == dynamic_extent) || (Extent == range.size()));
     }
     template <typename Range,
               std::size_t Size = Extent,
@@ -220,7 +220,7 @@ public:
                                         bool> = true>
     span(Range&& range) : base_{score::cpp::data(range), range.size()}
     {
-        SCORE_LANGUAGE_FUTURECPP_PRECONDITION((Extent == dynamic_extent) || (Extent == range.size()));
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((Extent == dynamic_extent) || (Extent == range.size()));
     }
     /// \}
 
@@ -246,7 +246,7 @@ public:
                                         bool> = true>
     explicit span(const span<U, N>& other) : base_{other.data(), other.size()}
     {
-        SCORE_LANGUAGE_FUTURECPP_PRECONDITION((Extent == dynamic_extent) || (Extent == other.size()));
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((Extent == dynamic_extent) || (Extent == other.size()));
     }
     template <typename U,
               std::size_t N,
@@ -263,7 +263,7 @@ public:
         //   1. "dynamic -> dynamic" => precondition will never fail because of first term
         //   2. "static -> static" => enable_if will fail because of `(Extent == N)`
         //   3. "static -> dynamic" => precondition will never fail because of first term
-        SCORE_LANGUAGE_FUTURECPP_PRECONDITION((Extent == dynamic_extent) || (Extent == other.size()));
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((Extent == dynamic_extent) || (Extent == other.size()));
     }
     /// \}
 
