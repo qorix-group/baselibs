@@ -43,6 +43,26 @@ cc_unit_test(
 )
 
 cc_unit_test(
+    name = "non_relocatable_vector_test",
+    srcs = ["non_relocatable_vector_test.cpp"],
+    features = COMPILER_WARNING_FEATURES + [
+        # These tests catch exceptions instead of using gtest EXPECT_DEATH so we disable aborts_upon_exception.
+        "-aborts_upon_exception",
+    ],
+    deps = [
+        ":non_relocatable_vector",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+        "@score_baselibs//score/containers/test:allocator_test_type_helpers",
+        "@score_baselibs//score/containers/test:container_test_types",
+        "@score_baselibs//score/language/futurecpp:futurecpp_test_support",
+        "@score_baselibs//score/memory/shared:types",
+        "@score_baselibs//score/memory/shared/fake:fake_memory_resources",
+        "@score_baselibs//score/mw/log:backend_stub_testutil",
+    ],
+)
+
+cc_unit_test(
     name = "non_relocatable_vector_special_member_funcs_test",
     srcs = ["non_relocatable_vector_special_member_funcs_test.cpp"],
     features = COMPILER_WARNING_FEATURES + [
@@ -127,6 +147,7 @@ cc_unit_test_suites_for_host_and_qnx(
     name = "unit_test_suite",
     cc_unit_tests = [
         ":dynamic_array_test",
+        ":non_relocatable_vector_test",
         ":non_relocatable_vector_emplace_back_test",
         ":non_relocatable_vector_special_member_funcs_test",
         ":intrusive_list_test",

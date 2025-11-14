@@ -196,6 +196,23 @@ class NonRelocatableVector
     /// NonRelocatableVector is in shared memory) while getting the iterator
     static auto GetLastElement(const pointer dynamic_array, const std::size_t non_relocatable_vector_size) -> iterator;
 
+    constexpr void swap(NonRelocatableVector<ElementType, Allocator>& other) noexcept
+    {
+        // Use std::swap if no other swap is found using ADL
+        using std::swap;
+
+        swap(size_, other.size_);
+        swap(alloc_, other.alloc_);
+        swap(non_relocatable_vector_, other.non_relocatable_vector_);
+        swap(capacity_, other.capacity_);
+    }
+
+    friend constexpr void swap(NonRelocatableVector<ElementType, Allocator>& lhs,
+                               NonRelocatableVector<ElementType, Allocator>& rhs) noexcept
+    {
+        lhs.swap(rhs);
+    }
+
     typename std::allocator_traits<Allocator>::pointer non_relocatable_vector_;
     Allocator alloc_;
     size_type size_;
@@ -252,11 +269,7 @@ auto NonRelocatableVector<ElementType, Allocator>::operator=(NonRelocatableVecto
 {
     if (this != &other)
     {
-        std::swap(size_, other.size_);
-        std::swap(alloc_, other.alloc_);
-        // coverity[autosar_cpp14_a6_2_1_violation] false-positive: no side effects
-        std::swap(non_relocatable_vector_, other.non_relocatable_vector_);
-        std::swap(capacity_, other.capacity_);
+        swap(other);
     }
     return *this;
 }
