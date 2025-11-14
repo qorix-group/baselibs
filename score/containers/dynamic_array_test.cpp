@@ -59,7 +59,7 @@ class DynamicArrayTestFixture : public ::testing::Test
 using AllocatorTypes = ::testing::Types<std::allocator<TrivialType>, PolymorphicOffsetPtrAllocator<TrivialType>>;
 TYPED_TEST_SUITE(DynamicArrayTestFixture, AllocatorTypes, );
 
-TYPED_TEST(DynamicArrayTestFixture, ConstructTrivial)
+TYPED_TEST(DynamicArrayTestFixture, CanConstructWithTrivialType)
 {
     DynamicArray<TrivialType, TypeParam> unit{kNonEmptyArraySize,
                                               GetAllocator<TrivialType, TypeParam>(this->memory_resource_)};
