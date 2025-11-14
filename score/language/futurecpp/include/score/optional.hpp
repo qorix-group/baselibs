@@ -240,7 +240,7 @@ public:
         // issue because our code currently always moves construct and doesn't implement the table from
         // https://en.cppreference.com/w/cpp/utility/optional/operator%3D
         // issue: broken_link_g/swh/amp/issues/385
-        static_assert(std::is_copy_constructible<T>::value /*&& std::is_copy_assignable<T>::value*/, "failed");
+        static_assert(std::is_copy_constructible<T>::value && std::is_copy_assignable<T>::value, "failed");
 
         if (other.has_value())
         {
