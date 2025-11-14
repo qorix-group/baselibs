@@ -54,6 +54,7 @@ TEST(span, OneDimensionalCArray)
     EXPECT_EQ(3, (view.end() - view.begin()));
     EXPECT_EQ(72, view.data()[2]);
     EXPECT_EQ(72, at(view, 2));
+    EXPECT_EQ(72, view[2U]);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -66,6 +67,8 @@ TEST(span, OneDimensionalCArrayConst)
     EXPECT_EQ(3U, view.size());
     EXPECT_EQ(3, (view.end() - view.begin()));
     EXPECT_EQ(72, view.data()[2]);
+    EXPECT_EQ(72, at(view, 2));
+    EXPECT_EQ(72, view[2U]);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -152,9 +155,9 @@ TEST(span, StdArrayWithStaticExtent_ConstToNonConst_CannotConstruct)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#9338069
-TEST(span, StdArrayWithStaticExtent_WithWrongStaticExtend_CannotConstruct)
+TEST(span, StdArrayWithStaticExtent_WithWrongStaticExtent_CannotConstruct)
 {
-    // cannot convert from `std::array` with size 3 to different static extend size
+    // cannot convert from `std::array` with size 3 to different static extent size
     static_assert(!std::is_constructible_v<span<std::int32_t, 2U>, std::array<std::int32_t, 3U>&>);
 }
 
@@ -344,10 +347,8 @@ TEST(span, OneDimensionalPointerSize)
     std::int32_t data[]{23, 42, 72};
     span<const std::int32_t> view{&data[0], score::cpp::size(data)};
 
+    EXPECT_EQ(&data[0], view.data());
     EXPECT_EQ(3U, view.size());
-    EXPECT_EQ(3, (view.end() - view.begin()));
-    EXPECT_EQ(72, view.data()[2]);
-    EXPECT_EQ(72, at(view, 2));
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -569,6 +570,27 @@ TEST(span, ConstCorrectness1d)
         static_assert(std::is_same<const char&, decltype(*std::declval<T>().crend())>::value, "Failed.");
         static_assert(std::is_same<const char*, decltype(std::declval<T>().data())>::value, "Failed.");
     }
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, ElementAccess)
+{
+    const std::vector<std::int32_t> data{42, 0, -1, -6};
+    const span<const std::int32_t> unit{data};
+
+    EXPECT_EQ(unit[0U], 42);
+    EXPECT_EQ(unit[3U], -6);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9338069
+TEST(span, WhenElementAccessOutOfBound_ThenViolated)
+{
+    const std::vector<std::int32_t> data{42, 0, -1, -6};
+    const span<const std::int32_t> unit{data};
+
+    SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(unit[4U]);
 }
 
 /// @testmethods TM_REQUIREMENT

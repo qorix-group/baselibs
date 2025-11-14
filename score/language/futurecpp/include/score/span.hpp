@@ -12,6 +12,7 @@
 #include <score/private/iterator/size.hpp>     // IWYU pragma: export
 #include <score/private/type_traits/is_span.hpp>
 #include <score/private/type_traits/is_std_array.hpp>
+#include <score/private/type_traits/type_identity.hpp>
 
 #include <array>
 #include <cstddef>
@@ -148,8 +149,8 @@ public:
     ///
     /// \tparam Size Number of elements in the one-dimensional span
     /// \param array Pointer to the array
-    template <std::size_t Size, typename = std::enable_if_t<(Extent == dynamic_extent) || (Extent == Size)>>
-    span(T (&array)[Size]) noexcept : base_{score::cpp::data(array), Size}
+    template <std::size_t N, typename = std::enable_if_t<(Extent == dynamic_extent) || (Extent == N)>>
+    span(score::cpp::type_identity_t<T> (&array)[N]) noexcept : base_{score::cpp::data(array), N}
     {
     }
 
@@ -317,6 +318,18 @@ public:
     reverse_iterator rend() const noexcept { return reverse_iterator{begin()}; }
     const_reverse_iterator crend() const noexcept { return const_reverse_iterator{cbegin()}; }
     /// \}
+
+    /// \brief Returns a reference to the `i`th element
+    ///
+    /// \pre i < size()
+    ///
+    /// \param i the index of the element to access
+    /// \return ith element
+    constexpr reference operator[](const size_type i) const
+    {
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG(i < size());
+        return *(data() + i);
+    }
 
     /// \brief Returns a reference to the first element in the span
     ///
