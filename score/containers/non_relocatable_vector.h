@@ -291,14 +291,11 @@ NonRelocatableVector<ElementType, Allocator>::~NonRelocatableVector() noexcept
         return;
     }
     using alloc_traits = std::allocator_traits<decltype(alloc_)>;
-    if (size_ != 0U)
+    auto cur_pointer = non_relocatable_vector_;
+    for (size_type i = 0U; i < size_; i++)
     {
-        auto cur_pointer = non_relocatable_vector_;
-        for (size_type i = 0U; i < size_; i++)
-        {
-            alloc_traits::destroy(alloc_, detail::to_address(cur_pointer));
-            std::advance(cur_pointer, 1);
-        }
+        alloc_traits::destroy(alloc_, detail::to_address(cur_pointer));
+        std::advance(cur_pointer, 1);
     }
     alloc_traits::deallocate(alloc_, non_relocatable_vector_, capacity_);
 }
@@ -307,7 +304,9 @@ template <typename ElementType, typename Allocator>
 template <typename... Args>
 auto NonRelocatableVector<ElementType, Allocator>::emplace_back(Args&&... args) -> ElementType&
 {
-    SCORE_LANGUAGE_FUTURECPP_PRECONDITION_PRD(size_ < capacity_);
+    SCORE_LANGUAGE_FUTURECPP_PRECONDITION_PRD_MESSAGE(
+        size_ < capacity_,
+        "Capacity of vector set in constructor has already been reached. Cannot emplace another element.");
 
     auto* current_storage_pointer = detail::to_address(non_relocatable_vector_);
     std::advance(current_storage_pointer, size_);
