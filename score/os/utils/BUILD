@@ -41,29 +41,6 @@ cc_library(
 )
 
 cc_library(
-    name = "semaphore_headers",
-    hdrs = ["semaphore.h"],
-    features = COMPILER_WARNING_FEATURES,
-    visibility = ["@score_baselibs//score/os/utils/mocklib:__subpackages__"],
-    deps = [
-        "@score_baselibs//score/utils:pimpl_ptr",
-    ],
-)
-
-cc_library(
-    name = "semaphore",
-    srcs = ["semaphore.cpp"],
-    features = COMPILER_WARNING_FEATURES,
-    visibility = ["//visibility:public"],
-    deps = [
-        ":semaphore_headers",
-        "@score_baselibs//score/language/futurecpp",
-        "@score_baselibs//score/os:semaphore",
-        "@score_baselibs//score/os:socket",
-    ],
-)
-
-cc_library(
     name = "signal_headers",
     hdrs = [
         "signal.h",
