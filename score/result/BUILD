@@ -98,6 +98,9 @@ rust_library(
         },
         no_match_error = "Unsupported platform for result_rs crate",
     ),
+    visibility = [
+        "//visibility:public",  # platform_only
+    ],
     deps = ["@crate_index//:libc"],
 )
 
