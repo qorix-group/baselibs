@@ -284,7 +284,10 @@ score::mw::log::detail::AddArgumentResult TryStore(score::mw::log::detail::Verbo
                                                  const std::uint64_t max_string_len_incl_null,
                                                  const std::string_view data) noexcept
 {
+    // LCOV_EXCL_START : see below
+    // Defensive programming, this local function never called with max_string_len_incl_null == 0
     const std::uint64_t max_string_len = (max_string_len_incl_null > 0ULL) ? max_string_len_incl_null - 1ULL : 0ULL;
+    // LCOV_EXCL_STOP
 
     const std::size_t data_size = data.size();
 
