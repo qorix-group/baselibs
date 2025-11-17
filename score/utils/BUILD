@@ -15,16 +15,6 @@ load("@score_baselibs//:bazel/unit_tests.bzl", "cc_gtest_unit_test", "cc_unit_te
 load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
 cc_library(
-    name = "string_hash",
-    srcs = ["string_hash.cpp"],
-    hdrs = ["string_hash.h"],
-    features = COMPILER_WARNING_FEATURES,
-    visibility = [
-        "@score_baselibs//score/os/utils:__subpackages__",
-    ],
-)
-
-cc_library(
     name = "scoped_operation",
     hdrs = ["src/scoped_operation.h"],
     features = COMPILER_WARNING_FEATURES,

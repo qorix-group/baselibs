@@ -12,10 +12,6 @@ the single classes of `lib/utils`, but rather how single classes operate.
 
 Only one function that is standalone as such.
 
-## StringHash
-
-Helper to calculate string hash.
-
 ## ScopedOperation
 
 Is a small helper class that follows the ideas of https://en.cppreference.com/w/cpp/experimental/scope_exit where you

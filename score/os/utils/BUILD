@@ -36,7 +36,6 @@ cc_library(
         "@score_baselibs//score/language/futurecpp",
         "@score_baselibs//score/os:mqueue",
         "@score_baselibs//score/os:stat",
-        "@score_baselibs//score/utils:string_hash",
     ],
 )
 
