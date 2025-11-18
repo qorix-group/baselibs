@@ -10,20 +10,15 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
 
-name: Documentation Cleanup
+rust_library(
+    name = "log",
+    srcs = glob(["src/**/*.rs"]),
+    visibility = ["//visibility:public"],
+)
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-
-on:
-  schedule:
-    - cron: "0 0 * * *" # Runs every day at midnight UTC
-
-jobs:
-  docs-cleanup:
-    uses: eclipse-score/cicd-workflows/.github/workflows/docs-cleanup.yml@main
-    secrets:
-      token: ${{ secrets.GITHUB_TOKEN }}
+rust_test(
+    name = "log_tests",
+    crate = ":log",
+)
