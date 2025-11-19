@@ -182,18 +182,24 @@ This approach ensures that only required dependencies are included per target, a
 
 Note: Test and application binaries that depend on frontend only library targets require an explicit backend implementation. Choose either:
 
-Stub backend – for minimal overhead
-Console backend – for standard output logging
+### mock backend - for unit testing
+```bazel
+deps = [
+    "//platform/aas/mw/log:recorder_mock",
+],
+```
 
+### stub backend – for minimal overhead
 ```bazel
 deps = [
     "//platform/aas/mw/log:backend_stub_testutil",
 ],
 ```
 
+### console backend – for standard console logging
 ```bazel
 deps = [
-    "//platform/aas/mw/log:backend_console",
+    "//score/mw/log/test/console_logging_environment",
 ],
 ```
 
