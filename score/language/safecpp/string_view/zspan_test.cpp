@@ -419,5 +419,22 @@ TEST(ZSpan, BackInvokedWhileViolatingPrecondition)
     EXPECT_EXIT(score::cpp::ignore = const_span.back(), ::testing::KilledBySignal{SIGABRT}, "");
 }
 
+TEST(ZSpan, AtInvokedWhileViolatingPrecondition)
+{
+    // Given a default-constructed modifiable `zspan`
+    zspan<char> span{};
+
+    // When invoking `at()`
+    // Then immediate termination is expected due to precondition violation
+    EXPECT_THROW(score::cpp::ignore = span.at(0), std::out_of_range);
+
+    // Given a default-constructed non-modifiable `zspan`
+    const zspan<char> const_span{};
+
+    // When invoking `at()`
+    // Then immediate termination is expected due to precondition violation
+    EXPECT_THROW(score::cpp::ignore = const_span.at(0), std::out_of_range);
+}
+
 }  // namespace
 }  // namespace score::safecpp::details
