@@ -162,9 +162,6 @@ If one wants to use `mw::log`, the following include shall be necessary:
 #include "score/mw/log/logging.h"
 ```
 
-Its generally a good practice for library targets that use mw::log logging to depend on the frontend only. This reduces library footprint by avoiding unnecessary mw::log backends and transitive dependencies.
-NOTE: However for [baselibs](broken_link_g/swh/safe-posix-platform/tree/master/platform/aas/lib) this is mandatory. Since baselibs should be self contained and not depend on external dependencies for example different logging backends in this case.
-
 And the following bazel dependency as well:
 
 ```bazel
