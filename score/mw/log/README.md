@@ -162,6 +162,7 @@ If one wants to use `mw::log`, the following include shall be necessary:
 #include "score/mw/log/logging.h"
 ```
 
+Production targets that depend on mw::log should use the frontend only.
 Following bazel dependency must be added for using the logging frontend:
 
 ```bazel
@@ -170,18 +171,24 @@ deps = [
 ],
 ```
 
-For the test targets which should be migrated to score-baselibs using the logging, a lightweight console recorder must be added as a bazel dependency along with logging frontend:
+Test and binary targets can select the appropriate mw::log backend based on their test setup.
+This split of logging frontend and backend reduces library footprint by avoiding unnecessary mw::log backends and transitive
+dependencies. Only the required deps are included for each target, preventing heavier bundles due to unused backends.
+
+To use a lightweight console recorder in test setup, backend_stub_testutil can be added as a bazel dependency along with logging frontend:
 
 ```bazel
 deps = [
+    "//platform/aas/mw/log:frontend",
     "//platform/aas/mw/log:backend_stub_testutil",
 ],
-```
 
-To use logging recorders, recorder_factory must be added as a bazel dependency along with logging frontend:
+```
+To access the recorders from logging backend, recorder_factory must be added as a bazel dependency along with logging frontend:
 
 ```bazel
 deps = [
+    "//platform/aas/mw/log:frontend",
     "//score/mw/log/detail/common:recorder_factory",
 ],
 ```
