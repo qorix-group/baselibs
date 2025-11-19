@@ -162,7 +162,9 @@ If one wants to use `mw::log`, the following include shall be necessary:
 #include "score/mw/log/logging.h"
 ```
 
-Production targets that depend on mw::log should use the frontend only.
+Its generally a good practice for library targets that use mw::log logging to depend on the frontend only. This reduces library footprint by avoiding unnecessary mw::log backends and transitive dependencies.
+NOTE: However for [baselibs](broken_link_g/swh/safe-posix-platform/tree/master/platform/aas/lib) this is mandatory. Since baselibs should be self contained and not depend on external dependencies for example different logging backends in this case.
+
 Following bazel dependency must be added for using the logging frontend:
 
 ```bazel
@@ -184,7 +186,7 @@ deps = [
 ],
 
 ```
-To access the recorders from logging backend, recorder_factory must be added as a bazel dependency along with logging frontend:
+Application binaries (binary targets) can use the recorder_factory that will pull the required backends based on the enabled [feature flags](broken_link_g/swh/safe-posix-platform/tree/depa_swp_207197_2/platform/aas/mw/log#feature-flags):
 
 ```bazel
 deps = [
