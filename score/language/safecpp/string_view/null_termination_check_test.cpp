@@ -258,6 +258,13 @@ TEST(NullTerminationCheck, ViolationPolicies)
     test_with(score::cpp::span<const char>{});
     test_with(std::add_const_t<score::cpp::span<char>>{});
     test_with(std::add_const_t<score::cpp::span<const char>>{});
+
+#if defined(__cpp_lib_span)
+    test_with(std::span<char>{});
+    test_with(std::span<const char>{});
+    test_with(std::add_const_t<std::span<char>>{});
+    test_with(std::add_const_t<std::span<const char>>{});
+#endif
 }
 
 ///
