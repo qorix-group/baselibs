@@ -16,6 +16,7 @@
 #include "score/language/safecpp/string_view/zstring_view.h"
 
 #include <score/string.hpp>
+#include <score/utility.hpp>
 
 #include <gtest/gtest.h>
 
@@ -382,6 +383,23 @@ TEST(ZSpan, TypeTraits)
     EXPECT_TRUE((std::is_trivially_copy_constructible_v<zspan>));
     EXPECT_TRUE((std::is_trivially_move_constructible_v<zspan>));
     EXPECT_TRUE((std::is_trivially_destructible_v<zspan>));
+}
+
+TEST(ZSpan, FrontInvokedWhileViolatingPrecondition)
+{
+    // Given a default-constructed modifiable `zspan`
+    zspan<char> span{};
+
+    // When invoking `front()`
+    // Then immediate termination is expected due to precondition violation
+    EXPECT_EXIT(score::cpp::ignore = span.front(), ::testing::KilledBySignal{SIGABRT}, "");
+
+    // Given a default-constructed non-modifiable `zspan`
+    const zspan<char> const_span{};
+
+    // When invoking `front()`
+    // Then immediate termination is expected due to precondition violation
+    EXPECT_EXIT(score::cpp::ignore = const_span.front(), ::testing::KilledBySignal{SIGABRT}, "");
 }
 
 }  // namespace
