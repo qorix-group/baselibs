@@ -436,5 +436,22 @@ TEST(ZSpan, AtInvokedWhileViolatingPrecondition)
     EXPECT_THROW(score::cpp::ignore = const_span.at(0), std::out_of_range);
 }
 
+TEST(ZSpan, SubscriptOperatorInvokedWhileViolatingPrecondition)
+{
+    // Given a default-constructed modifiable `zspan`
+    zspan<char> span{};
+
+    // When invoking `operator[]`
+    // Then immediate termination is expected due to precondition violation
+    EXPECT_EXIT(score::cpp::ignore = span[0], ::testing::KilledBySignal{SIGABRT}, "");
+
+    // Given a default-constructed non-modifiable `zspan`
+    const zspan<char> const_span{};
+
+    // When invoking `operator[]`
+    // Then immediate termination is expected due to precondition violation
+    EXPECT_EXIT(score::cpp::ignore = const_span[0], ::testing::KilledBySignal{SIGABRT}, "");
+}
+
 }  // namespace
 }  // namespace score::safecpp::details
