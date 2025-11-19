@@ -402,5 +402,22 @@ TEST(ZSpan, FrontInvokedWhileViolatingPrecondition)
     EXPECT_EXIT(score::cpp::ignore = const_span.front(), ::testing::KilledBySignal{SIGABRT}, "");
 }
 
+TEST(ZSpan, BackInvokedWhileViolatingPrecondition)
+{
+    // Given a default-constructed modifiable `zspan`
+    zspan<char> span{};
+
+    // When invoking `back()`
+    // Then immediate termination is expected due to precondition violation
+    EXPECT_EXIT(score::cpp::ignore = span.back(), ::testing::KilledBySignal{SIGABRT}, "");
+
+    // Given a default-constructed non-modifiable `zspan`
+    const zspan<char> const_span{};
+
+    // When invoking `back()`
+    // Then immediate termination is expected due to precondition violation
+    EXPECT_EXIT(score::cpp::ignore = const_span.back(), ::testing::KilledBySignal{SIGABRT}, "");
+}
+
 }  // namespace
 }  // namespace score::safecpp::details
