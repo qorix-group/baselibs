@@ -237,9 +237,16 @@ TEST(NullTerminationCheck, ViolationPolicies)
     };
 
     auto test_with = [&perform_test](auto violating_span) {
-        decltype(violating_span) empty_span{};
+        decltype(violating_span) empty_span{violating_span.data(), 0U};
+        ASSERT_NE(nullptr, empty_span.data());
+        ASSERT_TRUE(empty_span.empty());
+
+        decltype(violating_span) null_span{};
+        ASSERT_EQ(nullptr, null_span.data());
+
         perform_test(violating_span);
         perform_test(empty_span);
+        perform_test(null_span);
     };
 
     char buffer[] = {'h', 'e', 'l', 'l', 'o'};  // not null-terminated
