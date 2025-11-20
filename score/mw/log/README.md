@@ -180,30 +180,15 @@ deps = [
 
 This approach ensures that only required dependencies are included per target, avoiding bloat from unused logging backends.
 
-Note: Test and application binaries that depend on frontend only library targets require an explicit backend implementation. Choose either:
+Note: Test binaries that depend on frontend only library targets require an explicit backend implementation. For this you can provide a basic console backend:
 
-### mock backend - for unit testing
-```bazel
-deps = [
-    "//platform/aas/mw/log:recorder_mock",
-],
-```
-
-### stub backend – for minimal overhead
 ```bazel
 deps = [
     "//platform/aas/mw/log:backend_stub_testutil",
 ],
 ```
 
-### console backend – for standard console logging
-```bazel
-deps = [
-    "//score/mw/log/test/console_logging_environment",
-],
-```
-
-[Baselibs](broken_link_g/swh/safe-posix-platform/tree/master/platform/aas/lib) follow best practices by using only the mw::log frontend in their library targets, maintaining self-containment and avoiding unnecessary dependencies like logging backends that may not be utilized by consumers.
+[Baselibs](broken_link_g/swh/safe-posix-platform/tree/master/platform/aas/lib) follow this approach by using only the mw::log frontend in their library targets, maintaining self-containment and avoiding unnecessary dependencies. However users of those libraries could see linker errors while building binaries (cc_binary) if a backend is not provided. For this you can use the `//platform/aas/mw/log:log` as a dependency that includes all the backends depending on the [feature flags](#feature-flags) configuration.
 
 ### How to log something the most easy way?
 
