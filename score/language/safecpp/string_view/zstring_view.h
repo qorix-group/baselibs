@@ -15,6 +15,7 @@
 
 #include "score/language/safecpp/string_view/zspan.h"
 
+#include <cstddef>
 #include <string_view>
 #include <type_traits>
 #include <utility>
@@ -53,6 +54,13 @@ class basic_zstring_view : private details::zspan<std::add_const_t<CharType>>
 
     using value_type = typename base::value_type;
     using size_type = typename base::size_type;
+
+    /// @brief Constructs a `basic_zstring_view` as view over character array.
+    /// @details will invoke `std::abort()` in case such character array is not null-terminated at its last element
+    template <std::size_t N>
+    constexpr basic_zstring_view(const CharType (&str)[N]) noexcept : base(str, N, typename violation_policies::abort{})
+    {
+    }
 
     /// @brief Constructs a `basic_zstring_view` as view over null-terminated \p StringType;.
     /// @details type \p StringType; is required to guarantee null-termination of its underlying buffer
