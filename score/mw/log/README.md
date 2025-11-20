@@ -170,7 +170,7 @@ deps = [
 ],
 ```
 
-Note: This target bundles all supported logging backends, introducing additional dependencies determined by [feature flags](broken_link_g/swh/safe-posix-platform/tree/depa_swp_207197_2/platform/aas/mw/log#feature-flags) configuration. For projects or targets requiring minimal footprint, depend exclusively on the logging frontend to avoid including unused backends and their transitive dependencies.
+Note: This target bundles all supported logging backends, introducing additional dependencies determined by [feature flags](#feature-flags) configuration. For projects or targets requiring minimal footprint, depend exclusively on the logging frontend to avoid including unused backends and their transitive dependencies.
 
 ```bazel
 deps = [
