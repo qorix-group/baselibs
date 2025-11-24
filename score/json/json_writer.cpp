@@ -129,6 +129,8 @@ template <typename T>
     return std::string_view(&*it, static_cast<std::size_t>(std::distance(it, buffer.end())));
 }
 
+// This specialization of std::num_put<char> ignores parameter widths (see std::setw) as this feature is neither useful
+// nor used for serializing JSON.
 class OptimizedNumPut : public std::num_put<char>
 {
   public:
@@ -156,17 +158,10 @@ class OptimizedNumPut : public std::num_put<char>
 
   private:
     template <typename T>
-    iter_type OptimizedPutForInts(iter_type out, std::ios_base& str, char_type fill, T val) const
+    iter_type OptimizedPutForInts(iter_type out, std::ios_base&, char_type, T val) const
     {
         std::array<char, kIntBufLen<T>> buf{};
         const auto sv = integer_to_chars<T>(buf, val);
-
-        const auto width = static_cast<std::size_t>(str.width());
-        const auto n = sv.size();
-        if (width > n)
-        {
-            out = std::fill_n(out, width - n, fill);
-        }
         return std::copy(sv.begin(), sv.end(), out);
     }
 };
