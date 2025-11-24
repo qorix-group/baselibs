@@ -271,24 +271,16 @@ public:
     /// Using this assignment operator, an optional is built containing a value if other.has_value else empty
     ///
     /// \param other Containing the value to be placed into the newly built object.
-    optional& operator=(optional&& other) noexcept(
+    template <typename U = T,
+              typename = typename std::enable_if_t<std::is_move_constructible_v<U> && std::is_move_assignable_v<U>>>
+    optional& operator=(optional<U>&& other) noexcept(
         std::is_nothrow_move_assignable<T>::value&& std::is_nothrow_move_constructible<T>::value)
     {
-        // currently downstream code doesn't compile if `is_move_assignable` is checked. for now not an
-        // issue because our code currently always moves construct and doesn't implement the table from
-        // https://en.cppreference.com/w/cpp/utility/optional/operator%3D
-        // issue: broken_link_g/swh/amp/issues/385
-        static_assert(std::is_move_constructible<T>::value /*&& std::is_move_assignable<T>::value*/, "failed");
-
         if (other.has_value())
         {
             if (this->has_value())
-            { // should be: data_ = std::move(*other);
-                if (this != &other)
-                {
-                    reset();
-                    construct(std::move(*other));
-                }
+            {
+                data_ = std::move(*other);
             }
             else
             {
