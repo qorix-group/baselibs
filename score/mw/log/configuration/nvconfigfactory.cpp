@@ -32,12 +32,33 @@ class NvConfigErrorDomain final : public score::result::ErrorDomain
 
     std::string_view MessageFor(const score::result::ErrorCode& code) const noexcept override
     {
+        /*
+        Deviation from Rules M6-4-5 and M6-4-3
+        - The rule states: "An unconditional throw or break statement shall terminate every nonempty switch-clause." and
+        "A switch statement shall be a well-formed switch statement.", respectively.
+        Justification:
+        - The `return` statements in this case clause unconditionally exits the switch case, making an additional
+        `break` statement redundant.
+
+        Deviation from Rule A7-2-1:
+        - An expression with enum underlying type shall only have values
+        corresponding to the enumerators of the enumeration.
+        Justification:
+        - static_cast is necessary to convert
+        from score::result::ErrorDomain to NvConfigErrorDomain.
+        This conversion required because score::result::ErrorDomain is error type from base class.
+        */
+        // coverity[autosar_cpp14_m6_4_3_violation]
+        // coverity[autosar_cpp14_a7_2_1_violation]
         switch (static_cast<NvConfigErrorCode>(code))
         {
+            // coverity[autosar_cpp14_m6_4_5_violation] Return will terminate this switch clause
             case NvConfigErrorCode::kParseError:
                 return "Failed to parse JSON configuration file";
+            // coverity[autosar_cpp14_m6_4_5_violation] Return will terminate this switch clause
             case NvConfigErrorCode::kContentError:
                 return "Invalid JSON content - missing required fields";
+            // coverity[autosar_cpp14_m6_4_5_violation] Return will terminate this switch clause
             default:
                 return "Unknown NvConfig error";
         }
@@ -46,17 +67,33 @@ class NvConfigErrorDomain final : public score::result::ErrorDomain
 
 constexpr NvConfigErrorDomain kNvConfigErrorDomain{};
 
-}  // anonymous namespace
-
 // MakeError function for NvConfigErrorCode (for ADL)
+/*
+Deviation from Rule A2-10-4
+- The rule states: The identifier name of a non-member object with static storage duration or static function
+shall not be reused within a namespace.
+Justification:
+- Using unnamed namespaces for internal linkage ensures that the identifiers within the unnamed namespace are unique
+to their translation unit and are not accessible or reusable within other translation units or namespaces.
+MakeError() is common function name to generate error as score::result::Error
+*/
+// coverity[autosar_cpp14_a2_10_4_violation]
 constexpr score::result::Error MakeError(NvConfigErrorCode code, std::string_view user_message) noexcept
 {
     return score::result::Error{static_cast<score::result::ErrorCode>(code), kNvConfigErrorDomain, user_message};
 }
 
+}  // anonymous namespace
+
 constexpr mw::log::LogLevel kDefaultLogLevel = mw::log::LogLevel::kInfo;
-// Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
-// std::terminate() will not  implicitly be called from GetMsgDescriptor as it declared as noexcept.
+/*
+Deviation from Rule A15-5-3
+- The rule states: "The std::terminate() function shall not be called implicitly".
+Justification:
+- Issue comes from score::json::Object, Any()::operator== (std::bad_variant_access exception),
+exception is covered by SCORE_LANGUAGE_FUTURECPP_ASSERT_PRD() macro and function is declared as noexcept,
+so suppressing this warning
+*/
 // coverity[autosar_cpp14_a15_5_3_violation]
 config::NvMsgDescriptor NvConfigFactory::GetMsgDescriptor(
     const std::uint32_t id,
@@ -85,6 +122,14 @@ score::Result<NvConfig> NvConfigFactory::CreateAndInit(const std::string& file_p
     if (!typemap_result.has_value())
     {
         const auto& error = typemap_result.error();
+        /*
+        Deviation from Rule M8-4-4
+        - The rule states: "A function identifier shall either be used to call the function
+        or it shall be preceded by &."
+        Justification:
+        - std::endl is used with the stream insertion operator, which invokes the function
+        */
+        // coverity[autosar_cpp14_m8_4_4_violation]
         std::cerr << "NvConfig error: " << error.Message() << std::endl;
         return score::MakeUnexpected<NvConfig>(error);
     }
@@ -96,6 +141,16 @@ NvConfig NvConfigFactory::CreateEmpty() noexcept
     return NvConfig{TypeMap{}};
 }
 
+/*
+Deviation from Rule A15-5-3
+- The rule states: "The std::terminate() function shall not be called implicitly".
+Justification:
+- Issue comes from score::json::Any (used by score::json::JsonParser),
+Any()::operator== (std::bad_variant_access exception),
+exception is covered by SCORE_LANGUAGE_FUTURECPP_ASSERT_PRD() macro and function is declared as noexcept,
+so suppressing this warning
+*/
+// coverity[autosar_cpp14_a15_5_3_violation]
 score::Result<NvConfigFactory::TypeMap> NvConfigFactory::ParseFromJson(const std::string& json_path) noexcept
 {
     const score::json::JsonParser json_parser_obj;
@@ -134,6 +189,15 @@ score::Result<NvConfigFactory::TypeMap> NvConfigFactory::ParseFromJson(const std
     }
 }
 
+/*
+Deviation from Rule A15-5-3
+- The rule states: "The std::terminate() function shall not be called implicitly".
+Justification:
+- Issue comes from score::json::Object, Any()::operator== (std::bad_variant_access exception),
+exception is covered by SCORE_LANGUAGE_FUTURECPP_ASSERT_PRD() macro and function is declared as noexcept,
+so suppressing this warning
+*/
+// coverity[autosar_cpp14_a15_5_3_violation]
 INvConfig::ReadResult NvConfigFactory::HandleParseResult(const score::json::Object& parse_result,
                                                          NvConfigFactory::TypeMap& typemap) noexcept
 {
