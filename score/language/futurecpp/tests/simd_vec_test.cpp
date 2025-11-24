@@ -176,7 +176,7 @@ TYPED_TEST(simd_vec_fixture, InitializeWithGenerator)
 TYPED_TEST(simd_vec_fixture, InitializeByDefaultIsUnaligned)
 {
     const auto scalars{integer_sequence<TypeParam>()};
-    const TypeParam vector{scalars.data()};
+    const TypeParam vector{scalars};
 
     for (std::size_t i{0U}; i < vector.size(); ++i)
     {
@@ -189,7 +189,7 @@ TYPED_TEST(simd_vec_fixture, InitializeByDefaultIsUnaligned)
 TYPED_TEST(simd_vec_fixture, InitializeUnaligned)
 {
     const auto scalars{integer_sequence<TypeParam>()};
-    const TypeParam vector{scalars.data(), score::cpp::simd::element_aligned};
+    const TypeParam vector{scalars, score::cpp::simd::element_aligned};
 
     for (std::size_t i{0U}; i < vector.size(); ++i)
     {
@@ -202,12 +202,20 @@ TYPED_TEST(simd_vec_fixture, InitializeUnaligned)
 TYPED_TEST(simd_vec_fixture, InitializeAligned)
 {
     alignas(score::cpp::simd::alignment_v<TypeParam>) const auto scalars{integer_sequence<TypeParam>()};
-    const TypeParam vector{scalars.data(), score::cpp::simd::vector_aligned};
+    const TypeParam vector{scalars, score::cpp::simd::vector_aligned};
 
     for (std::size_t i{0U}; i < vector.size(); ++i)
     {
         EXPECT_EQ(scalars[i], vector[i]);
     }
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18398050
+TYPED_TEST(simd_vec_fixture, CannotConstructWhenSizeIsNotAConstantExpression)
+{
+    static_assert(!std::is_constructible_v<score::cpp::simd::vec<std::int32_t>, std::vector<std::int32_t>>);
+    static_assert(!std::is_constructible_v<score::cpp::simd::vec<std::int32_t>, score::cpp::span<std::int32_t>>);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -273,7 +281,7 @@ TYPED_TEST(simd_vec_fixture, LoadAligned_WhenCopyingFromUnalignedMemory_ThenPrec
 TYPED_TEST(simd_vec_fixture, StoreByDefaultIsUnaligned)
 {
     const auto scalars{integer_sequence<TypeParam>()};
-    const TypeParam vector{scalars.data()};
+    const TypeParam vector{scalars};
     std::array<typename TypeParam::value_type, vector.size()> result;
     vector.copy_to(result.data());
 
@@ -285,7 +293,7 @@ TYPED_TEST(simd_vec_fixture, StoreByDefaultIsUnaligned)
 TYPED_TEST(simd_vec_fixture, StoreUnaligned)
 {
     const auto scalars{integer_sequence<TypeParam>()};
-    const TypeParam vector{scalars.data()};
+    const TypeParam vector{scalars};
     std::array<typename TypeParam::value_type, vector.size()> result;
     vector.copy_to(result.data(), score::cpp::simd::element_aligned);
 
@@ -298,7 +306,7 @@ TYPED_TEST(simd_vec_fixture, StoreAligned)
 {
     using value_type = typename TypeParam::value_type;
     const auto scalars{integer_sequence<TypeParam>()};
-    const TypeParam vector{scalars.data()};
+    const TypeParam vector{scalars};
     alignas(score::cpp::simd::alignment_v<TypeParam>) std::array<value_type, vector.size()> result;
     vector.copy_to(result.data(), score::cpp::simd::vector_aligned);
 
@@ -337,7 +345,7 @@ TYPED_TEST(simd_vec_fixture, Add)
 {
     using value_type = typename TypeParam::value_type;
     const auto seq = integer_sequence<TypeParam>();
-    const TypeParam a{seq.data()};
+    const TypeParam a{seq};
 
     const auto r = a + TypeParam{value_type{1}};
     for (std::size_t i{0U}; i < r.size(); ++i)
@@ -371,7 +379,7 @@ TYPED_TEST(simd_vec_fixture, AssignmentAdd)
 {
     using value_type = typename TypeParam::value_type;
     const auto seq = integer_sequence<TypeParam>();
-    TypeParam a{seq.data()};
+    TypeParam a{seq};
     a += TypeParam{value_type{1}};
 
     for (std::size_t i{0U}; i < a.size(); ++i)
@@ -386,7 +394,7 @@ TYPED_TEST(simd_vec_fixture, Subtract)
 {
     using value_type = typename TypeParam::value_type;
     const auto seq = integer_sequence<TypeParam>();
-    const TypeParam a{seq.data()};
+    const TypeParam a{seq};
 
     const auto r = a - TypeParam{value_type{1}};
     for (std::size_t i{0U}; i < r.size(); ++i)
@@ -421,7 +429,7 @@ TYPED_TEST(simd_vec_fixture, AssignmentSubtract)
 {
     using value_type = typename TypeParam::value_type;
     const auto seq = integer_sequence<TypeParam>();
-    TypeParam a{seq.data()};
+    TypeParam a{seq};
     a -= TypeParam{value_type{1}};
 
     for (std::size_t i{0U}; i < a.size(); ++i)
@@ -436,7 +444,7 @@ TYPED_TEST(simd_vec_fixture, Multiply)
 {
     using value_type = typename TypeParam::value_type;
     const auto seq = integer_sequence<TypeParam>();
-    const TypeParam a{seq.data()};
+    const TypeParam a{seq};
 
     const auto r = a * TypeParam{value_type{2}};
     for (std::size_t i{0U}; i < r.size(); ++i)
@@ -475,7 +483,7 @@ TYPED_TEST(simd_vec_fixture, AssignmentMultiply)
 {
     using value_type = typename TypeParam::value_type;
     const auto seq = integer_sequence<TypeParam>();
-    TypeParam a{seq.data()};
+    TypeParam a{seq};
     a *= TypeParam{value_type{2}};
 
     for (std::size_t i{0U}; i < a.size(); ++i)
@@ -490,7 +498,7 @@ TYPED_TEST(simd_vec_fixture, Divide)
 {
     using value_type = typename TypeParam::value_type;
     const auto seq = integer_sequence<TypeParam>();
-    const TypeParam a{seq.data()};
+    const TypeParam a{seq};
 
     const auto r = a / TypeParam{value_type{2}};
     for (std::size_t i{0U}; i < r.size(); ++i)
@@ -530,7 +538,7 @@ TYPED_TEST(simd_vec_fixture, AssignmentDivide)
 {
     using value_type = typename TypeParam::value_type;
     const auto seq = integer_sequence<TypeParam>();
-    TypeParam a{seq.data()};
+    TypeParam a{seq};
     a /= TypeParam{value_type{2}};
 
     for (std::size_t i{0U}; i < a.size(); ++i)
@@ -544,7 +552,7 @@ TYPED_TEST(simd_vec_fixture, AssignmentDivide)
 TYPED_TEST(simd_vec_fixture, Negate)
 {
     const auto seq = integer_sequence<TypeParam>();
-    const TypeParam a{seq.data()};
+    const TypeParam a{seq};
 
     const auto r = -a;
     for (std::size_t i{0U}; i < r.size(); ++i)
@@ -582,7 +590,7 @@ TYPED_TEST(simd_floating_point_fixture, NegateFloatSpecialValues)
 TYPED_TEST(simd_vec_fixture, Equal_SameValue)
 {
     const auto seq = integer_sequence<TypeParam>();
-    const TypeParam a{seq.data()};
+    const TypeParam a{seq};
 
     const auto r = a == a;
     for (std::size_t i{0U}; i < r.size(); ++i)
@@ -598,8 +606,8 @@ TYPED_TEST(simd_vec_fixture, Equal_DifferentValue)
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = alternating_integer_sequence<TypeParam>();
 
-    const TypeParam a{seq_a.data()};
-    const TypeParam b{seq_b.data()};
+    const TypeParam a{seq_a};
+    const TypeParam b{seq_b};
 
     const auto r = a == b;
     const auto expected = alternating_boolean_sequence<TypeParam::size()>();
@@ -636,7 +644,7 @@ TYPED_TEST(simd_floating_point_fixture, EqualFloatSpecialValues)
 TYPED_TEST(simd_vec_fixture, NotEqual_SameValue)
 {
     const auto seq = integer_sequence<TypeParam>();
-    const TypeParam a{seq.data()};
+    const TypeParam a{seq};
 
     const auto r = a != a;
     for (std::size_t i{0U}; i < r.size(); ++i)
@@ -652,8 +660,8 @@ TYPED_TEST(simd_vec_fixture, NotEqual_DifferentValue)
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = alternating_integer_sequence<TypeParam>();
 
-    const TypeParam a{seq_a.data()};
-    const TypeParam b{seq_b.data()};
+    const TypeParam a{seq_a};
+    const TypeParam b{seq_b};
 
     const auto r = a != b;
     const auto expected = alternating_boolean_sequence<TypeParam::size()>();
@@ -690,7 +698,7 @@ TYPED_TEST(simd_floating_point_fixture, NotEqualFloatSpecialValues)
 TYPED_TEST(simd_vec_fixture, LessThan_SameValue)
 {
     const auto seq = integer_sequence<TypeParam>();
-    const TypeParam a{seq.data()};
+    const TypeParam a{seq};
 
     const auto r = a < a;
     for (std::size_t i{0U}; i < r.size(); ++i)
@@ -706,8 +714,8 @@ TYPED_TEST(simd_vec_fixture, LessThan_DifferentValue)
     const auto seq_a = alternating_integer_sequence<TypeParam>();
     const auto seq_b = integer_sequence<TypeParam>();
 
-    const TypeParam a{seq_a.data()};
-    const TypeParam b{seq_b.data()};
+    const TypeParam a{seq_a};
+    const TypeParam b{seq_b};
 
     const auto r = a < b;
     const auto expected = alternating_boolean_sequence<TypeParam::size()>();
@@ -746,7 +754,7 @@ TYPED_TEST(simd_floating_point_fixture, LessThanFloatSpecialValues)
 TYPED_TEST(simd_vec_fixture, LessEqual_SameValue)
 {
     const auto seq = integer_sequence<TypeParam>();
-    const TypeParam a{seq.data()};
+    const TypeParam a{seq};
 
     const auto r = a <= a;
     for (std::size_t i{0U}; i < r.size(); ++i)
@@ -762,8 +770,8 @@ TYPED_TEST(simd_vec_fixture, LessEqual_DifferentValue)
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = alternating_integer_sequence<TypeParam>();
 
-    const TypeParam a{seq_a.data()};
-    const TypeParam b{seq_b.data()};
+    const TypeParam a{seq_a};
+    const TypeParam b{seq_b};
 
     const auto r = a <= b;
     const auto expected = alternating_boolean_sequence<TypeParam::size()>();
@@ -800,7 +808,7 @@ TYPED_TEST(simd_floating_point_fixture, LessEqualFloatSpecialValues)
 TYPED_TEST(simd_vec_fixture, GreateThan_SameValue)
 {
     const auto seq = integer_sequence<TypeParam>();
-    const TypeParam a{seq.data()};
+    const TypeParam a{seq};
 
     const auto r = a > a;
     for (std::size_t i{0U}; i < r.size(); ++i)
@@ -816,8 +824,8 @@ TYPED_TEST(simd_vec_fixture, GreaterThan_DifferentValue)
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = alternating_integer_sequence<TypeParam>();
 
-    const TypeParam a{seq_a.data()};
-    const TypeParam b{seq_b.data()};
+    const TypeParam a{seq_a};
+    const TypeParam b{seq_b};
 
     const auto r = a > b;
     const auto expected = alternating_boolean_sequence<TypeParam::size()>();
@@ -854,7 +862,7 @@ TYPED_TEST(simd_floating_point_fixture, GreaterThanFloatSpecialValues)
 TYPED_TEST(simd_vec_fixture, GreateEqual_SameValue)
 {
     const auto seq = integer_sequence<TypeParam>();
-    const TypeParam a{seq.data()};
+    const TypeParam a{seq};
 
     const auto r = a >= a;
     for (std::size_t i{0U}; i < r.size(); ++i)
@@ -870,8 +878,8 @@ TYPED_TEST(simd_vec_fixture, GreaterEqual_DifferentValue)
     const auto seq_a = alternating_integer_sequence<TypeParam>();
     const auto seq_b = integer_sequence<TypeParam>();
 
-    const TypeParam a{seq_a.data()};
-    const TypeParam b{seq_b.data()};
+    const TypeParam a{seq_a};
+    const TypeParam b{seq_b};
 
     const auto r = a >= b;
     const auto expected = alternating_boolean_sequence<TypeParam::size()>();
@@ -910,8 +918,8 @@ TYPED_TEST(simd_vec_fixture, Min)
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = negative_integer_sequence<TypeParam>();
 
-    const TypeParam a{seq_a.data()};
-    const TypeParam b{seq_b.data()};
+    const TypeParam a{seq_a};
+    const TypeParam b{seq_b};
 
     const auto r = min(a, b);
     const auto r_swapped = min(b, a);
@@ -944,8 +952,8 @@ TYPED_TEST(simd_vec_fixture, Max)
     const auto seq_a = integer_sequence<TypeParam>();
     const auto seq_b = negative_integer_sequence<TypeParam>();
 
-    const TypeParam a{seq_a.data()};
-    const TypeParam b{seq_b.data()};
+    const TypeParam a{seq_a};
+    const TypeParam b{seq_b};
 
     const auto r = max(a, b);
     const auto r_swapped = max(b, a);
@@ -1002,7 +1010,7 @@ TYPED_TEST(simd_vec_fixture, Clscore_future_cpp_WhenNoValidBoundaryInterval_Then
 TEST(simd_vec, ConvertFloatToInt)
 {
     const auto seq = integer_sequence<score::cpp::simd::vec<float>>();
-    const score::cpp::simd::vec<std::int32_t> b{score::cpp::simd::vec<float>{seq.data()}};
+    const score::cpp::simd::vec<std::int32_t> b{score::cpp::simd::vec<float>{seq}};
 
     for (std::size_t i{0U}; i < b.size(); ++i)
     {
@@ -1015,7 +1023,7 @@ TEST(simd_vec, ConvertFloatToInt)
 TEST(simd_vec, ConvertIntToFloat)
 {
     const auto seq = integer_sequence<score::cpp::simd::vec<std::int32_t>>();
-    const score::cpp::simd::vec<float> b{score::cpp::simd::vec<std::int32_t>{seq.data()}};
+    const score::cpp::simd::vec<float> b{score::cpp::simd::vec<std::int32_t>{seq}};
 
     for (std::size_t i{0U}; i < b.size(); ++i)
     {
@@ -1027,9 +1035,13 @@ TEST(simd_vec, ConvertIntToFloat)
 /// @requirement CB-#18398050
 TEST(simd_vec, ConvertCharToFloat)
 {
-    const std::array<std::uint8_t, 32> seq{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-    const rebind<float, score::cpp::simd::vec<std::uint8_t>>::type b{seq.data()};
-    static_assert(b.size() < seq.size());
+    const auto seq = []() {
+        std::array<std::uint8_t, rebind<float, score::cpp::simd::vec<std::uint8_t>>::type::size()> v;
+        std::iota(v.begin(), v.end(), 1U);
+        return v;
+    }();
+    const rebind<float, score::cpp::simd::vec<std::uint8_t>>::type b{seq};
+    static_assert(b.size() == seq.size());
 
     for (std::size_t i{0U}; i < b.size(); ++i)
     {
@@ -1045,10 +1057,10 @@ TYPED_TEST(simd_vec_fixture, WhereAssignment)
     const auto seq_b = negative_integer_sequence<TypeParam>();
     const auto seq_mask = alternating_boolean_sequence<TypeParam::size()>();
 
-    TypeParam a{seq_a.data()};
+    TypeParam a{seq_a};
     const typename TypeParam::mask_type mask{generator<typename TypeParam::mask_type>{seq_mask}};
 
-    where(mask, a) = TypeParam{seq_b.data()};
+    where(mask, a) = TypeParam{seq_b};
 
     for (std::size_t i{0U}; i < a.size(); ++i)
     {
@@ -1064,10 +1076,10 @@ TYPED_TEST(simd_vec_fixture, WhereAssignmentAdd)
     const auto seq_b = negative_integer_sequence<TypeParam>();
     const auto seq_mask = alternating_boolean_sequence<TypeParam::size()>();
 
-    TypeParam a{seq_a.data()};
+    TypeParam a{seq_a};
     const typename TypeParam::mask_type mask{generator<typename TypeParam::mask_type>{seq_mask}};
 
-    where(mask, a) += TypeParam{seq_b.data()};
+    where(mask, a) += TypeParam{seq_b};
 
     for (std::size_t i{0U}; i < a.size(); ++i)
     {
@@ -1083,10 +1095,10 @@ TYPED_TEST(simd_vec_fixture, WhereAssignmentSubtract)
     const auto seq_b = negative_integer_sequence<TypeParam>();
     const auto seq_mask = alternating_boolean_sequence<TypeParam::size()>();
 
-    TypeParam a{seq_a.data()};
+    TypeParam a{seq_a};
     const typename TypeParam::mask_type mask{generator<typename TypeParam::mask_type>{seq_mask}};
 
-    where(mask, a) -= TypeParam{seq_b.data()};
+    where(mask, a) -= TypeParam{seq_b};
 
     for (std::size_t i{0U}; i < a.size(); ++i)
     {
@@ -1102,10 +1114,10 @@ TYPED_TEST(simd_vec_fixture, WhereAssignmentMultiply)
     const auto seq_b = negative_integer_sequence<TypeParam>();
     const auto seq_mask = alternating_boolean_sequence<TypeParam::size()>();
 
-    TypeParam a{seq_a.data()};
+    TypeParam a{seq_a};
     const typename TypeParam::mask_type mask{generator<typename TypeParam::mask_type>{seq_mask}};
 
-    where(mask, a) *= TypeParam{seq_b.data()};
+    where(mask, a) *= TypeParam{seq_b};
 
     for (std::size_t i{0U}; i < a.size(); ++i)
     {
@@ -1121,10 +1133,10 @@ TYPED_TEST(simd_vec_fixture, WhereAssignmentDivide)
     const auto seq_b = negative_integer_sequence<TypeParam>();
     const auto seq_mask = alternating_boolean_sequence<TypeParam::size()>();
 
-    TypeParam a{seq_a.data()};
+    TypeParam a{seq_a};
     const typename TypeParam::mask_type mask{generator<typename TypeParam::mask_type>{seq_mask}};
 
-    where(mask, a) /= TypeParam{seq_b.data()};
+    where(mask, a) /= TypeParam{seq_b};
 
     for (std::size_t i{0U}; i < a.size(); ++i)
     {
