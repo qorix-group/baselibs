@@ -73,12 +73,27 @@ class basic_zstring_view : private details::zspan<std::add_const_t<CharType>>
     {
     }
 
+    /// @brief Constructs a `basic_zstring_view` as view over character range pointed to by pointer \p str;.
+    /// @details will invoke `std::abort()` in case such character range is not null-terminated at index \p len; - 1
+    constexpr basic_zstring_view(const CharType* str, size_type len) noexcept
+        : base(str, len, typename violation_policies::abort{})
+    {
+    }
+
+    /// @note Constructor from char ptr w/o length info is omitted since its null-termination cannot be checked safely.
+    /// @details We can also not mark the corresponding constructor as `= delete` since that would lead to ambiguities.
+    ///          Hence, a constructor like the below one is simply not provided at all.
+    // constexpr basic_zstring_view(CharType*) = delete;
+
     /// @brief Constructs a `basic_zstring_view` from base type (i.e. `zspan<const CharType>`)
     // NOLINTNEXTLINE(google-explicit-constructor) allow implicit conversions from base type `zspan` (are always safe)
     constexpr basic_zstring_view(base other) noexcept : base(other) {}
 
     /// @brief Prohibits construction of a `basic_zstring_view` from `std::basic_string_view`
     constexpr basic_zstring_view(std::basic_string_view<CharType>) = delete;
+
+    /// @brief Prohibits construction from `std::nullptr_t`
+    constexpr basic_zstring_view(std::nullptr_t) = delete;
 
     /// @brief Default constructs a `basic_zstring_view`.
     constexpr basic_zstring_view() noexcept = default;
