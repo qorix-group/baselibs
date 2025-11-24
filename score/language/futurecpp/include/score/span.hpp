@@ -150,7 +150,7 @@ public:
     /// \tparam Size Number of elements in the one-dimensional span
     /// \param array Pointer to the array
     template <std::size_t N, typename = std::enable_if_t<(Extent == dynamic_extent) || (Extent == N)>>
-    span(score::cpp::type_identity_t<T> (&array)[N]) noexcept : base_{score::cpp::data(array), N}
+    span(score::cpp::type_identity_t<T> (&array)[N]) noexcept : base_{std::data(array), N}
     {
     }
 
@@ -181,8 +181,8 @@ public:
     }
     /// \}
 
-    /// \brief Constructs a span that is a view over \p range; the resulting span has size() == range.size() and
-    /// data() == score::cpp::data(range).
+    /// \brief Constructs a span that is a view over \p range; the resulting span has size() == std::size(range) and
+    /// data() == std::data(range).
     ///
     /// This overload participates in overload resolution only if Range is iterable, not a span or an array and elements
     /// of the range are convertible to this span's element_type.
@@ -202,9 +202,9 @@ public:
                                             && (!std::is_array<R>::value)                   //
                                         ,
                                         bool> = true>
-    explicit span(Range&& range) : base_{score::cpp::data(range), range.size()}
+    explicit span(Range&& range) : base_{std::data(range), std::size(range)}
     {
-        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((Extent == dynamic_extent) || (Extent == range.size()));
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((Extent == dynamic_extent) || (Extent == std::size(range)));
     }
     template <typename Range,
               std::size_t Size = Extent,
@@ -218,9 +218,9 @@ public:
                                             && (!std::is_array<R>::value)                   //
                                         ,
                                         bool> = true>
-    span(Range&& range) : base_{score::cpp::data(range), range.size()}
+    span(Range&& range) : base_{std::data(range), std::size(range)}
     {
-        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((Extent == dynamic_extent) || (Extent == range.size()));
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((Extent == dynamic_extent) || (Extent == std::size(range)));
     }
     /// \}
 
