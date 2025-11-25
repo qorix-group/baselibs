@@ -211,58 +211,8 @@ TYPED_TEST(simd_vec_fixture, InitializeAligned)
 }
 
 /// @testmethods TM_REQUIREMENT
-/// @requirement CB-#18398050
-TYPED_TEST(simd_vec_fixture, CannotConstructWhenSizeIsNotAConstantExpression)
-{
-    static_assert(!std::is_constructible_v<score::cpp::simd::vec<std::int32_t>, std::vector<std::int32_t>>);
-    static_assert(!std::is_constructible_v<score::cpp::simd::vec<std::int32_t>, score::cpp::span<std::int32_t>>);
-}
-
-/// @testmethods TM_REQUIREMENT
 /// @requirement CB-#18398050, CB-#18397902
-TYPED_TEST(simd_vec_fixture, LoadByDefaultIsUnaligned)
-{
-    const auto scalars{integer_sequence<TypeParam>()};
-    TypeParam vector;
-    vector.copy_from(scalars.data());
-
-    for (std::size_t i{0U}; i < vector.size(); ++i)
-    {
-        EXPECT_EQ(scalars[i], vector[i]);
-    }
-}
-
-/// @testmethods TM_REQUIREMENT
-/// @requirement CB-#18398050, CB-#18397902
-TYPED_TEST(simd_vec_fixture, LoadUnaligned)
-{
-    const auto scalars{integer_sequence<TypeParam>()};
-    TypeParam vector;
-    vector.copy_from(scalars.data(), score::cpp::simd::element_aligned);
-
-    for (std::size_t i{0U}; i < vector.size(); ++i)
-    {
-        EXPECT_EQ(scalars[i], vector[i]);
-    }
-}
-
-/// @testmethods TM_REQUIREMENT
-/// @requirement CB-#18398050, CB-#18397902
-TYPED_TEST(simd_vec_fixture, LoadAligned)
-{
-    alignas(score::cpp::simd::alignment_v<TypeParam>) const auto scalars{integer_sequence<TypeParam>()};
-    TypeParam vector;
-    vector.copy_from(scalars.data(), score::cpp::simd::vector_aligned);
-
-    for (std::size_t i{0U}; i < vector.size(); ++i)
-    {
-        EXPECT_EQ(scalars[i], vector[i]);
-    }
-}
-
-/// @testmethods TM_REQUIREMENT
-/// @requirement CB-#18398050, CB-#18397902
-TYPED_TEST(simd_vec_fixture, LoadAligned_WhenCopyingFromUnalignedMemory_ThenPreconditionViolated)
+TYPED_TEST(simd_vec_fixture, InitializeAligned_WhenCopyingFromUnalignedMemory_ThenPreconditionViolated)
 {
     if (score::cpp::simd::alignment_v<TypeParam> == alignof(typename TypeParam::value_type))
     {
@@ -270,10 +220,18 @@ TYPED_TEST(simd_vec_fixture, LoadAligned_WhenCopyingFromUnalignedMemory_ThenPrec
     }
 
     using value_type = typename TypeParam::value_type;
-    TypeParam vector;
-    alignas(score::cpp::simd::alignment_v<TypeParam>) const std::array<value_type, vector.size() + 1> scalars{};
+    alignas(score::cpp::simd::alignment_v<TypeParam>) const std::array<value_type, TypeParam::size() + 1U> scalars{};
+    const score::cpp::span<const value_type, TypeParam::size()> r{&scalars[1U], TypeParam::size()};
 
-    SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(vector.copy_from(&scalars[1], score::cpp::simd::vector_aligned));
+    SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED((TypeParam{r, score::cpp::simd::vector_aligned}));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18398050
+TYPED_TEST(simd_vec_fixture, CannotConstructWhenSizeIsNotAConstantExpression)
+{
+    static_assert(!std::is_constructible_v<score::cpp::simd::vec<std::int32_t>, std::vector<std::int32_t>>);
+    static_assert(!std::is_constructible_v<score::cpp::simd::vec<std::int32_t>, score::cpp::span<std::int32_t>>);
 }
 
 /// @testmethods TM_REQUIREMENT

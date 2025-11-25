@@ -476,31 +476,6 @@ public:
     /// @pre [v, v + size()) is a valid range.
     /// @pre v shall point to storage aligned to score::cpp::simd::alignment_v<basic_vec>.
     ///
-    /// [parallel] 9.6.5 1, 2 and 3
-    void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE copy_from(const value_type* const v, vector_aligned_tag)
-    {
-        static_assert(detail::is_simd_flag_type_v<vector_aligned_tag>, "vector_aligned_tag not a simd flag type tag");
-        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((score::cpp::bit_cast<std::uintptr_t>(v) % alignment_v<basic_vec>) == 0U);
-        v_ = Abi::impl::load_aligned(v);
-    }
-
-    /// \brief Replaces the elements of the simd object from an unaligned memory address.
-    ///
-    /// @pre [v, v + size()) is a valid range.
-    /// @pre v shall point to storage aligned to alignof(value_type).
-    ///
-    /// [parallel] 9.6.5 1, 2 and 3
-    void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE copy_from(const value_type* const v, element_aligned_tag = {})
-    {
-        static_assert(detail::is_simd_flag_type_v<element_aligned_tag>, "element_aligned_tag not a simd flag type tag");
-        v_ = Abi::impl::load(v);
-    }
-
-    /// \brief Replaces the elements of the simd object from an aligned memory address.
-    ///
-    /// @pre [v, v + size()) is a valid range.
-    /// @pre v shall point to storage aligned to score::cpp::simd::alignment_v<basic_vec>.
-    ///
     /// [parallel] 9.6.5 4, 5 and 6
     void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE copy_to(value_type* const v, vector_aligned_tag) const
     {
