@@ -98,7 +98,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     visibility = [
         "//platform/aas/pas/logging:__pkg__",
-        "//platform/aas/pas/logging/test:__pkg__",
+        "//platform/aas/pas/logging/test:__subpackages__",
     ],
     deps = [
         "@score_baselibs//score/mw/log:shared_types",
