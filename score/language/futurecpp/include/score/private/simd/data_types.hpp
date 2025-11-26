@@ -471,31 +471,6 @@ public:
     /// [parallel] 9.6.1 4
     explicit SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE operator typename Abi::impl::type() const { return v_; }
 
-    /// \brief Replaces the elements of the simd object from an aligned memory address.
-    ///
-    /// @pre [v, v + size()) is a valid range.
-    /// @pre v shall point to storage aligned to score::cpp::simd::alignment_v<basic_vec>.
-    ///
-    /// [parallel] 9.6.5 4, 5 and 6
-    void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE copy_to(value_type* const v, vector_aligned_tag) const
-    {
-        static_assert(detail::is_simd_flag_type_v<vector_aligned_tag>, "vector_aligned_tag not a simd flag type tag");
-        SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((score::cpp::bit_cast<std::uintptr_t>(v) % alignment_v<basic_vec>) == 0U);
-        Abi::impl::store_aligned(v, v_);
-    }
-
-    /// \brief Replaces the elements of the simd object from an unaligned memory address.
-    ///
-    /// @pre [v, v + size()) is a valid range.
-    /// @pre v shall point to storage aligned to alignof(value_type).
-    ///
-    /// [parallel] 9.6.5 4, 5 and 6
-    void SCORE_LANGUAGE_FUTURECPP_SIMD_ALWAYS_INLINE copy_to(value_type* const v, element_aligned_tag = {}) const
-    {
-        static_assert(detail::is_simd_flag_type_v<element_aligned_tag>, "element_aligned_tag not a simd flag type tag");
-        Abi::impl::store(v, v_);
-    }
-
     /// \brief The value of the ith element.
     ///
     /// @pre i < size()
@@ -788,6 +763,47 @@ inline where_expression<basic_mask<T, Abi>, basic_vec<T, Abi>> where(const typen
                                                                      basic_vec<T, Abi>& v) noexcept
 {
     return {m, v};
+}
+
+/// \brief Stores the elements of the simd object to an aligned range.
+///
+/// Note: `R` is currently more constrained than the standard requires. It expects `r` be convertible to
+/// `span<T, N>{r}` with static_extent `N`, where `N` is `basic_vec<T, Abi>::size()`. The current definition of `span`
+/// essentially restricts the value type of `R` to be also `T` and the size of `R` to be a constant expression.
+///
+/// @pre r shall point to storage aligned to score::cpp::simd::alignment_v<basic_vec>.
+///
+/// [parallel] 9.6.5 4, 5 and 6
+template <typename T,
+          typename Abi,
+          typename R,
+          typename = std::enable_if_t<std::is_constructible_v<span<T, basic_vec<T, Abi>::size()>, R>  //
+                                      && std::is_convertible_v<R, span<T, basic_vec<T, Abi>::size()>> //
+                                      >>
+inline void unchecked_store(const basic_vec<T, Abi>& v, R&& r, vector_aligned_tag)
+{
+    SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((score::cpp::bit_cast<std::uintptr_t>(std::data(r)) % alignment_v<basic_vec<T, Abi>>) == 0U);
+    Abi::impl::store_aligned(std::data(std::forward<R>(r)), static_cast<typename Abi::impl::type>(v));
+}
+
+/// \brief Store the elements of the simd object to an unaligned range.
+///
+/// Note: `R` is currently more constrained than the standard requires. It expects `r` be convertible to
+/// `span<T, N>{r}` with static_extent `N`, where `N` is `basic_vec<T, Abi>::size()`. The current definition of `span`
+/// essentially restricts the value type of `R` to be also `T` and the size of `R` to be a constant expression.
+///
+/// @pre r shall point to storage aligned to alignof(value_type).
+///
+/// [parallel] 9.6.5 4, 5 and 6
+template <typename T,
+          typename Abi,
+          typename R,
+          typename = std::enable_if_t<std::is_constructible_v<span<T, basic_vec<T, Abi>::size()>, R>  //
+                                      && std::is_convertible_v<R, span<T, basic_vec<T, Abi>::size()>> //
+                                      >>
+inline void unchecked_store(const basic_vec<T, Abi>& v, R&& r, element_aligned_tag = {})
+{
+    Abi::impl::store(std::data(std::forward<R>(r)), static_cast<typename Abi::impl::type>(v));
 }
 
 } // namespace simd

@@ -241,7 +241,7 @@ TYPED_TEST(simd_vec_fixture, StoreByDefaultIsUnaligned)
     const auto scalars{integer_sequence<TypeParam>()};
     const TypeParam vector{scalars};
     std::array<typename TypeParam::value_type, vector.size()> result;
-    vector.copy_to(result.data());
+    score::cpp::simd::unchecked_store(vector, result);
 
     EXPECT_EQ(result, scalars);
 }
@@ -253,7 +253,7 @@ TYPED_TEST(simd_vec_fixture, StoreUnaligned)
     const auto scalars{integer_sequence<TypeParam>()};
     const TypeParam vector{scalars};
     std::array<typename TypeParam::value_type, vector.size()> result;
-    vector.copy_to(result.data(), score::cpp::simd::element_aligned);
+    score::cpp::simd::unchecked_store(vector, result, score::cpp::simd::element_aligned);
 
     EXPECT_EQ(result, scalars);
 }
@@ -266,7 +266,7 @@ TYPED_TEST(simd_vec_fixture, StoreAligned)
     const auto scalars{integer_sequence<TypeParam>()};
     const TypeParam vector{scalars};
     alignas(score::cpp::simd::alignment_v<TypeParam>) std::array<value_type, vector.size()> result;
-    vector.copy_to(result.data(), score::cpp::simd::vector_aligned);
+    score::cpp::simd::unchecked_store(vector, result, score::cpp::simd::vector_aligned);
 
     EXPECT_EQ(result, scalars);
 }
@@ -283,8 +283,38 @@ TYPED_TEST(simd_vec_fixture, StoreAligned_WhenCopyingToUnalignedMemory_ThenPreco
     using value_type = typename TypeParam::value_type;
     const TypeParam vector{value_type{23}};
     alignas(score::cpp::simd::alignment_v<TypeParam>) std::array<value_type, vector.size() + 1U> scalars;
+    const score::cpp::span<value_type, TypeParam::size()> result{&scalars[1U], vector.size()};
 
-    SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(vector.copy_to(&scalars[1], score::cpp::simd::vector_aligned));
+    SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(score::cpp::simd::unchecked_store(vector, result, score::cpp::simd::vector_aligned));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#18398050
+TYPED_TEST(simd_vec_fixture, CannotConstruct_WhenSizeIsNotAConstantExpression)
+{
+    const auto test = [](auto&& r) -> decltype(score::cpp::simd::unchecked_store(std::declval<TypeParam>(),
+                                                                          std::forward<decltype(r)>(r))) {};
+
+    using value_type = typename TypeParam::value_type;
+
+    { // cannot call `unchecked_store` because types have runtime size
+        static_assert(!std::is_invocable_v<decltype(test), std::vector<value_type>>);
+        static_assert(!std::is_invocable_v<decltype(test), std::vector<value_type>&>);
+        static_assert(!std::is_invocable_v<decltype(test), score::cpp::span<value_type>>);
+        static_assert(!std::is_invocable_v<decltype(test), score::cpp::span<value_type>&>);
+    }
+
+    { // cannot store to range because it is `const`, i.e., non-modifiable
+        static_assert(!std::is_invocable_v<decltype(test), score::cpp::span<const value_type, TypeParam::size()>>);
+        static_assert(!std::is_invocable_v<decltype(test), score::cpp::span<const value_type, TypeParam::size()>&>);
+        static_assert(!std::is_invocable_v<decltype(test), std::array<value_type, TypeParam::size()>>);
+    }
+
+    { // sanity check that test works
+        static_assert(std::is_invocable_v<decltype(test), score::cpp::span<value_type, TypeParam::size()>>);
+        static_assert(std::is_invocable_v<decltype(test), score::cpp::span<value_type, TypeParam::size()>&>);
+        static_assert(std::is_invocable_v<decltype(test), std::array<value_type, TypeParam::size()>&>);
+    }
 }
 
 /// @testmethods TM_REQUIREMENT
