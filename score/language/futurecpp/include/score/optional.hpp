@@ -112,11 +112,11 @@ public:
     ///
     /// \param other The value to be placed into the newly built object.
     template <typename U = std::remove_cv_t<T>,
-              typename = typename std::enable_if_t<!std::is_same_v<optional, score::cpp::remove_cvref_t<U>>      //
-                                                   && !std::is_same_v<in_place_t, score::cpp::remove_cvref_t<U>> //
-                                                   && !is_expected<std::decay_t<U>>::value                //
-                                                   && std::is_constructible_v<T, U>                       //
-                                                   >>
+              typename = typename std::enable_if<!std::is_same<optional, score::cpp::remove_cvref_t<U>>::value      //
+                                                 && !std::is_same<in_place_t, score::cpp::remove_cvref_t<U>>::value //
+                                                 && !is_expected<std::decay_t<U>>::value                     //
+                                                 && std::is_constructible<T, U>::value                       //
+                                                 >::type>
     // NOLINTNEXTLINE(google-explicit-constructor) follows C++ Standard
     constexpr optional(U&& other) : null_state_{}, has_value_{false}
     {
@@ -211,13 +211,13 @@ public:
     /// Replaces contents of *this with the contents of the passed value.
     ///
     /// \param other The value to be placed into the newly built object.
-    template <typename U = std::remove_cv_t<T>,
-              typename = typename std::enable_if_t<!std::is_same_v<optional, score::cpp::remove_cvref_t<U>>                //
-                                                   && std::is_constructible_v<T, U>                                 //
-                                                   && std::is_assignable_v<T&, U>                                   //
-                                                   && (!std::is_scalar_v<T> || !std::is_same_v<std::decay_t<U>, T>) //
-                                                   &&!is_expected<std::decay_t<U>>::value                           //
-                                                   >>
+    template <
+        typename U = std::remove_cv_t<T>,
+        typename = typename std::enable_if<!std::is_same<optional, score::cpp::remove_cvref_t<U>>::value                     //
+                                           && std::is_constructible<T, U>::value && std::is_assignable<T&, U>::value  //
+                                           && (!std::is_scalar<T>::value || !std::is_same<std::decay_t<U>, T>::value) //
+                                           && !is_expected<std::decay_t<U>>::value                                    //
+                                           >::type>
     optional& operator=(U&& other)
     {
         if (this->has_value())
