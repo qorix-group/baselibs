@@ -13,7 +13,7 @@
 #ifndef SCORE_LANGUAGE_SAFECPP_STRING_VIEW_ZSTRING_VIEW_H
 #define SCORE_LANGUAGE_SAFECPP_STRING_VIEW_ZSTRING_VIEW_H
 
-#include "score/language/safecpp/string_view/zspan.h"
+#include "score/language/safecpp/string_view/details/zspan.h"
 
 #include <cstddef>
 #include <string_view>

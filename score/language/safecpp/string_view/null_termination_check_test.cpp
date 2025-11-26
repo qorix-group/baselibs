@@ -13,7 +13,7 @@
 #include "score/language/safecpp/string_view/null_termination_check.h"
 #include "score/language/safecpp/string_view/null_termination_violation_policies.h"
 
-#include "score/language/safecpp/string_view/zspan.h"
+#include "score/language/safecpp/string_view/details/zspan.h"
 #include "score/language/safecpp/string_view/zstring_view.h"
 
 #include <score/span.hpp>
