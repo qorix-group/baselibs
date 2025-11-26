@@ -262,7 +262,7 @@ cc_test(
 )
 
 cc_test(
-    name = "runtime_test",  # leave
+    name = "runtime_test",
     srcs = [
         ":runtime_test.cpp",
     ],
@@ -274,7 +274,7 @@ cc_test(
         "@googletest//:gtest_main",
         "@score_baselibs//score/mw/log:frontend",
         "@score_baselibs//score/mw/log:recorder_mock",
-        "@score_baselibs//score/mw/log/detail/common:recorder_factory",
+        "@score_baselibs//score/mw/log/detail:recorder_factory_stub",
     ],
 )
 
@@ -340,7 +340,7 @@ cc_test(
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
-        "@score_baselibs//score/mw/log/detail/common:recorder_factory",
+        "@score_baselibs//score/mw/log/detail:recorder_factory_stub",
         "@score_baselibs//score/mw/log/test/my_custom_lib:my_custom_type_mw_log",
     ],
 )
@@ -358,8 +358,8 @@ cc_test(
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
+        "@score_baselibs//score/mw/log/detail:recorder_factory_stub",
         "@score_baselibs//score/mw/log/detail:thread_local_guard",
-        "@score_baselibs//score/mw/log/detail/common:recorder_factory",
     ],
 )
 
