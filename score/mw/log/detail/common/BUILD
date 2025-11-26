@@ -310,7 +310,7 @@ cc_test(
 cc_test(
     name = "log_stream_test",
     srcs = [
-        ":log_stream_test.cpp",
+        "@score_baselibs//score/mw/log:log_stream_test.cpp",
     ],
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
@@ -328,7 +328,7 @@ cc_test(
 cc_test(
     name = "log_stream_factory_test",
     srcs = [
-        "log_stream_factory_test.cpp",
+        "@score_baselibs//score/mw/log:log_stream_factory_test.cpp",
     ],
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",

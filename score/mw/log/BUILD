@@ -345,6 +345,13 @@ cc_test(
     ],
 )
 
+# Allows unit testing with production code running with the recorder_factory
+# that includes all the backends supporting coverage and qualification.
+exports_files(
+    ["log_stream_test.cpp"],
+    visibility = ["//visibility:public"],
+)
+
 cc_test(
     name = "log_stream_factory_test",
     srcs = [
@@ -361,6 +368,13 @@ cc_test(
         "@score_baselibs//score/mw/log/detail:recorder_factory_stub",
         "@score_baselibs//score/mw/log/detail:thread_local_guard",
     ],
+)
+
+# Allows unit testing with production code running with the recorder_factory
+# that includes all the backends supporting coverage and qualification.
+exports_files(
+    ["log_stream_factory_test.cpp"],
+    visibility = ["//visibility:public"],
 )
 
 cc_test(
