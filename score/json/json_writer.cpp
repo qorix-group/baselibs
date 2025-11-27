@@ -154,16 +154,22 @@ class OptimizedNumPut : public std::num_put<char>
     }
     // Coverity thinks this function is unused, wheras it is used for std::locale
     // coverity[autosar_cpp14_a0_1_3_violation]
+    // LCOV_EXCL_START see SCORE_LANGUAGE_FUTURECPP_UNREACHABLE_MESSAGE
     iter_type do_put(iter_type out, std::ios_base& s, char_type fill, long long v) const override
     {
+        SCORE_LANGUAGE_FUTURECPP_UNREACHABLE_MESSAGE("This code is unreachable with tested toolchains and target platforms");
         return OptimizedPutForInts(out, s, fill, v);
     }
+    // LCOV_EXCL_STOP
     // Coverity thinks this function is unused, wheras it is used for std::locale
     // coverity[autosar_cpp14_a0_1_3_violation]
+    // LCOV_EXCL_START see SCORE_LANGUAGE_FUTURECPP_UNREACHABLE_MESSAGE
     iter_type do_put(iter_type out, std::ios_base& s, char_type fill, unsigned long long v) const override
     {
+        SCORE_LANGUAGE_FUTURECPP_UNREACHABLE_MESSAGE("This code is unreachable with tested toolchains and target platforms");
         return OptimizedPutForInts(out, s, fill, v);
     }
+    // LCOV_EXCL_STOP
 
   private:
     template <typename T>
