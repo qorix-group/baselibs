@@ -21,13 +21,12 @@
 #include <array>
 #include <iterator>
 #include <limits>
-// NOLINTNEXTLINE(score-banned-include) std::locale provides functionalities (e.g. facets) to customize parts of iostream
-//                                    implementation. In this case it is used for serializing integers efficiently.
-//                                    An implementation without std::locale might require (massive) amounts of code
-//                                    duplication. Furthermore, this header is allowed to be used for character
-//                                    conversion purposes if and it must be ensured that libcatalog is not linked using
-//                                    the target toolchain, which is the case for libjson.
-//                                    Reference: broken_link_c/issue/4600528
+// std::locale provides functionalities (e.g. facets) to customize parts of iostream implementation. In this case it is
+// used for serializing integers efficiently. An implementation without std::locale might require (massive) amounts of
+// code duplication. Furthermore, this header is allowed to be used for character conversion purposes if and it must be
+// ensured that libcatalog is not linked using the target toolchain, which is the case for libjson.
+// Reference: broken_link_c/issue/4600528
+// NOLINTNEXTLINE(score-banned-include): see rationale above
 #include <locale>
 #include <sstream>
 #include <string_view>
