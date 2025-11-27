@@ -144,14 +144,24 @@ class OptimizedNumPut : public std::num_put<char>
     // coverity[autosar_cpp14_a0_1_3_violation]
     iter_type do_put(iter_type out, std::ios_base& s, char_type fill, long v) const override
     {
-        static_assert(sizeof(v) == 8, "32-bit platforms require an overload for long long.");
         return OptimizedPutForInts(out, s, fill, v);
     }
     // Coverity thinks this function is unused, wheras it is used for std::locale
     // coverity[autosar_cpp14_a0_1_3_violation]
     iter_type do_put(iter_type out, std::ios_base& s, char_type fill, unsigned long v) const override
     {
-        static_assert(sizeof(v) == 8, "32-bit platforms require an overload for unsigned long long.");
+        return OptimizedPutForInts(out, s, fill, v);
+    }
+    // Coverity thinks this function is unused, wheras it is used for std::locale
+    // coverity[autosar_cpp14_a0_1_3_violation]
+    iter_type do_put(iter_type out, std::ios_base& s, char_type fill, long long v) const override
+    {
+        return OptimizedPutForInts(out, s, fill, v);
+    }
+    // Coverity thinks this function is unused, wheras it is used for std::locale
+    // coverity[autosar_cpp14_a0_1_3_violation]
+    iter_type do_put(iter_type out, std::ios_base& s, char_type fill, unsigned long long v) const override
+    {
         return OptimizedPutForInts(out, s, fill, v);
     }
 
