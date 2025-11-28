@@ -41,6 +41,27 @@ cc_gtest_unit_test(
 )
 
 cc_library(
+    name = "synchronized",
+    hdrs = ["synchronized.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "//visibility:public",
+    ],
+)
+
+cc_gtest_unit_test(
+    name = "synchronized_tests",
+    srcs = ["synchronized_test.cpp"],
+    features = COMPILER_WARNING_FEATURES + [
+        "aborts_upon_exception",
+    ],
+    deps = [
+        ":synchronized",
+    ],
+)
+
+cc_library(
     name = "destruction_guard",
     srcs = ["destruction_guard.cpp"],
     hdrs = ["destruction_guard.h"],
@@ -437,6 +458,7 @@ cc_library(
         ":long_running_threads_container",
         ":notification",
         ":periodic_task",
+        ":synchronized",
         ":synchronized_queue",
         ":thread_pool",
         "@score_baselibs//score/concurrency/timed_executor",
@@ -454,6 +476,7 @@ cc_unit_test_suites_for_host_and_qnx(
         ":interruptible_wait_tests",
         ":notification_tests",
         ":periodic_task_tests",
+        ":synchronized_tests",
         ":thread_pool_tests",
         ":long_running_threads_container_tests",
         ":synchronized_queue_test",
