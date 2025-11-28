@@ -360,9 +360,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
-    visibility = [
-        "@score_baselibs//score/os/qnx:__subpackages__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         "@//third_party/libslog2",
         "@score_baselibs//score/os:errno",
@@ -373,9 +371,7 @@ cc_library(
 alias(
     name = "slog2",
     actual = "slog2_impl",
-    visibility = [
-        "//visibility:public",  # platform_only
-    ],
+    visibility = ["//visibility:public"],
 )
 
 cc_library(
@@ -477,7 +473,8 @@ cc_library(
         "//third_party/fscrypto",
         "@score_baselibs//score/os:errno",
     ] + select({
-        "//bazel/platforms/qnx_version:qnx8": [
+        # qnx_version:qnx8
+        "@platforms//os:qnx": [
             "//third_party/qcrypto",
         ],
         "//conditions:default": [],

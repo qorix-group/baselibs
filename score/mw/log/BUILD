@@ -19,22 +19,7 @@ COMPILER_WARNING_FEATURES = [
     "strict_warnings",
 ]
 
-cc_library(
-    name = "log",
-    features = COMPILER_WARNING_FEATURES,
-    tags = ["FFI"],
-    visibility = ["//visibility:public"],
-    deps = [
-        ":frontend",
-    ] + select({
-        "@score_baselibs//score/mw/log/detail/flags:config_KUse_Stub_Implementation_Only": [
-            "@score_baselibs//score/mw/log/detail:recorder_factory_stub",
-        ],
-        "//conditions:default": [
-            "@score_baselibs//score/mw/log/detail/common:recorder_factory",
-        ],
-    }),
-)
+# mw/log target with all available backends is now available in @score_logging
 
 cc_library(
     name = "frontend",
@@ -191,7 +176,8 @@ cc_test(
     ],
     tags = ["unit"],
     deps = [
-        ":log",
+        ":backend_stub_testutil",
+        ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
     ],
@@ -207,7 +193,8 @@ cc_test(
     ],
     tags = ["unit"],
     deps = [
-        ":log",
+        ":backend_stub_testutil",
+        ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
         "@score_baselibs//score/mw/log/detail/wait_free_stack",
@@ -224,7 +211,8 @@ cc_test(
     ],
     tags = ["unit"],
     deps = [
-        ":log",
+        ":backend_stub_testutil",
+        ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
     ],
@@ -240,7 +228,8 @@ cc_test(
     ],
     tags = ["unit"],
     deps = [
-        ":log",
+        ":backend_stub_testutil",
+        ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
         "@score_baselibs//score/mw/log/detail/wait_free_stack",
@@ -274,7 +263,8 @@ cc_test(
     ],
     tags = ["unit"],
     deps = [
-        ":log",
+        ":backend_stub_testutil",
+        ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
         "@score_baselibs//score/mw/log/detail/wait_free_stack",
@@ -291,7 +281,8 @@ cc_test(
     ],
     tags = ["unit"],
     deps = [
-        ":log",
+        ":backend_stub_testutil",
+        ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
         "@score_baselibs//score/mw/log/detail/wait_free_stack",
@@ -398,7 +389,7 @@ cc_unit_test_suites_for_host_and_qnx(
         "@score_baselibs//score/mw/log/configuration:unit_tests",
         "@score_baselibs//score/mw/log/detail:unit_tests",
         #"@score_baselibs//score/mw/log/legacy_non_verbose_api:unit_tests",
-        "@score_baselibs//score/mw/log/test:unit_test_suite",
+        #"@score_baselibs//score/mw/log/test:unit_test_suite",
     ],
     visibility = [
         "//platform/aas/mw:__pkg__",
