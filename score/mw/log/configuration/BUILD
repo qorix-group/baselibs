@@ -70,9 +70,6 @@ cc_library(
         "target_config_reader.h",
     ],
     features = COMPILER_WARNING_FEATURES,
-    implementation_deps = [
-        "@score_baselibs//score/language/safecpp/string_view:null_termination_check",
-    ],
     tags = ["FFI"],
     visibility = [
         "//visibility:public",
@@ -81,6 +78,7 @@ cc_library(
         ":configuration",
         ":configuration_interface",
         "@score_baselibs//score/json",
+        "@score_baselibs//score/language/safecpp/string_view:zstring_view",
         "@score_baselibs//score/memory:split_string_view",
         "@score_baselibs//score/mw/log/detail:initialization_reporter",
         "@score_baselibs//score/mw/log/detail:types_and_errors",
