@@ -75,7 +75,7 @@ std::size_t ShmDataChunkList::Size() const
 
 void ShmDataChunkList::Clear()
 {
-    list_.fill(SharedMemoryChunk{{0, 0U}, 0U});
+    list_.fill(SharedMemoryChunk(SharedMemoryLocation{0, 0U}, 0U));
     number_of_chunks_ = 0U;
 }
 
@@ -149,6 +149,14 @@ score::Result<SharedMemoryLocation> ShmDataChunkList::SaveToSharedMemory(
     auto* const vector = new (vector_shm_raw_pointer_result.value()) ShmChunkVector(flexible_allocator);
     // NOLINTEND(score-no-dynamic-raw-memory) Usage of placement new is intended here to allocate the shared list
 
+    auto list_data = vector->GetData();
+    if (!list_data.has_value())
+    {
+        score::cpp::ignore = flexible_allocator->Deallocate(vector_shm_raw_pointer_result.value(), sizeof(ShmChunkVector));
+        return score::MakeUnexpected(ErrorCode::kMemoryCorruptionDetectedFatal);
+    }
+    auto& list = list_data.value().get();
+
     const std::size_t offset = GetOffsetFromPointer(vector, memory_resource).value();
     SharedMemoryLocation result{handle, offset};
     // Tooling issue: as reported from quality team that cases where branch coverage is 100% but decision couldn't be
@@ -159,10 +167,10 @@ score::Result<SharedMemoryLocation> ShmDataChunkList::SaveToSharedMemory(
         // not be implicitly converted to a different underlying type"
         // False positive, right hand value is the same type.
         // coverity[autosar_cpp14_m5_0_3_violation]
-        auto emplace_result = vector->emplace_back(list_.at(i));
+        auto emplace_result = list.emplace_back(list_.at(i));
         if (!emplace_result.has_value())
         {
-            vector->clear();
+            list.clear();
             score::cpp::ignore = flexible_allocator->Deallocate(vector_shm_raw_pointer_result.value(), sizeof(ShmChunkVector));
             return score::MakeUnexpected(ErrorCode::kNotEnoughMemoryRecoverable);
         }

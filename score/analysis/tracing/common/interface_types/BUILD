@@ -76,5 +76,6 @@ cc_library(
     deps = [
         ":generic_trace_api_types",
         ":shared_memory_location",
+        "@score_baselibs//score/analysis/tracing/common/canary_wrapper",
     ],
 )

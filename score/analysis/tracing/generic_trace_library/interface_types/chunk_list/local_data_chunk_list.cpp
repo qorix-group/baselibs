@@ -162,6 +162,12 @@ score::Result<SharedMemoryLocation> LocalDataChunkList::FillVectorInSharedMemory
     const std::shared_ptr<IFlexibleCircularAllocator>& flexible_allocator,
     void* vector_shm_raw_pointer)
 {
+    auto list_data = vector->GetData();
+    if (!list_data.has_value())
+    {
+        return score::MakeUnexpected(ErrorCode::kMemoryCorruptionDetectedFatal);
+    }
+    auto& list = list_data.value().get();
     // coverity[autosar_cpp14_m8_5_2_violation] kept for the sake of zero-initialization
     std::array<std::pair<void*, std::size_t>, kMaxChunksPerOneTraceRequest> allocated_data{};
     std::uint8_t index = 0U;
@@ -199,11 +205,10 @@ score::Result<SharedMemoryLocation> LocalDataChunkList::FillVectorInSharedMemory
         {
             index = 0U;
         }
-
         CopyDataToSharedMemory(element, shm_pointer_result.value());
-        auto result = vector->push_back(
-            {SharedMemoryLocation{handle, GetOffsetFromPointer(shm_pointer_result.value(), memory_resource).value()},
-             element.size});
+        auto result = list.push_back(SharedMemoryChunk(
+            SharedMemoryLocation{handle, GetOffsetFromPointer(shm_pointer_result.value(), memory_resource).value()},
+            element.size));
         if (!result.has_value())
         {
             CleanupAllocatedData(allocated_data, flexible_allocator, vector, vector_shm_raw_pointer);
@@ -274,7 +279,11 @@ void LocalDataChunkList::CleanupAllocatedData(
     {
         std::ignore = flexible_allocator->Deallocate(data.first, sizeof(data.first));
     }
-    vector->clear();
+    auto list_data = vector->GetData();
+    if (list_data.has_value())
+    {
+        list_data.value().get().clear();
+    }
     std::ignore = flexible_allocator->Deallocate(vector_shm_raw_pointer, sizeof(vector_shm_raw_pointer));
 }
 

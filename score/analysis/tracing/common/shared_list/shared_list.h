@@ -13,6 +13,7 @@
 #ifndef SCORE_ANALYSIS_TRACING_COMMON_SHARED_LIST_H
 #define SCORE_ANALYSIS_TRACING_COMMON_SHARED_LIST_H
 #include "score/analysis/tracing/common/flexible_circular_allocator/flexible_circular_allocator_interface.h"
+#include "score/analysis/tracing/common/interface_types/shared_memory_chunk.h"
 #include "score/analysis/tracing/generic_trace_library/interface_types/error_code/error_code.h"
 #include "score/memory/shared/atomic_indirector.h"
 #include <cstdint>
@@ -26,14 +27,13 @@ namespace analysis
 namespace tracing
 {
 
-// Forward declaration for type trait
-class SharedMemoryChunk;
-
 namespace shared
 {
 
 /**
  * @brief A custom doubly linked list implementation that uses flexible memory allocator.
+ *
+ * This class can be wrapped with CanaryWrapper<List<T>> for memory corruption detection.
  *
  * @tparam T The type of the elements stored in the list.
  */
@@ -147,34 +147,13 @@ class alignas(std::max_align_t) List
             }
         }
     }
-    std::uint64_t canary_start_ = kCanaryStart;                       ///< Start canary.
+
     std::shared_ptr<IFlexibleCircularAllocator> flexible_allocator_;  ///< Allocator for shared memory.
     std::atomic<std::ptrdiff_t> head_offset_;                         ///< Offset of the head node.
     std::atomic<std::ptrdiff_t> tail_offset_;                         ///< Offset of the tail node.
-    std::atomic_size_t size_;
-    std::uint64_t canary_end_ = kCanaryEnd;
+    std::atomic_size_t size_;                                         ///< Number of elements in the list.
 
   public:
-    static constexpr std::uint64_t kCanaryStart = 0xDEADBEEFCAFEBABEULL;
-    static constexpr std::uint64_t kCanaryEnd = 0xBABECAFEBEEFDEADULL;
-
-    /**
-     * @brief Validate list integrity by checking magic numbers
-     * @return true if valid, false if corrupted
-     */
-    bool IsValid() const noexcept
-    {
-        if (canary_start_ != kCanaryStart)
-        {
-            return false;
-        }
-        if (canary_end_ != kCanaryEnd)
-        {
-            return false;
-        }
-        return true;
-    }
-
     /**
      * @brief Custom Iterator class for the List.
      */
@@ -229,7 +208,7 @@ class alignas(std::max_align_t) List
         pointer operator->()
         {
             // Suppress "AUTOSAR C++14 A9-3-1" rule finding. This rule states:"Member functions shall not return
-            // non-const “raw” pointers or references to private or protected data owned by the class.".
+            // non-const "raw" pointers or references to private or protected data owned by the class.".
             // Justification: As with a normal container, an underlying item should be accessible as a non-const
             // reference from outside by index. The result reference remains valid as long as the SharedList instance is
             // alive.
@@ -298,12 +277,7 @@ class alignas(std::max_align_t) List
                   std::ptrdiff_t head_offset,
                   std::ptrdiff_t tail_offset,
                   std::size_t size)
-        : canary_start_(kCanaryStart),
-          flexible_allocator_(flexible_allocator),
-          head_offset_(head_offset),
-          tail_offset_(tail_offset),
-          size_(size),
-          canary_end_(kCanaryEnd)
+        : flexible_allocator_(flexible_allocator), head_offset_(head_offset), tail_offset_(tail_offset), size_(size)
     {
     }
 
@@ -386,17 +360,6 @@ class alignas(std::max_align_t) List
      */
     void clear()
     {
-        // Validate list integrity before attempting to clear
-        // If list is corrupted, skip deallocation to prevent crash
-        if (!IsValid())
-        {
-            // List is corrupted - just reset pointers without deallocating
-            AtomicIndirectorType<std::ptrdiff_t>::store(tail_offset_, 0U);
-            AtomicIndirectorType<std::ptrdiff_t>::store(head_offset_, 0U);
-            AtomicIndirectorType<std::size_t>::store(size_, 0U);
-            return;
-        }
-
         while (ResolveOffset(AtomicIndirectorType<std::ptrdiff_t>::load(head_offset_)) != nullptr)
         {
             Node* temp = ResolveOffset(AtomicIndirectorType<std::ptrdiff_t>::load(head_offset_));
@@ -405,8 +368,8 @@ class alignas(std::max_align_t) List
             DeallocateNode(temp);
         }
         flexible_allocator_.reset();
-        AtomicIndirectorType<std::ptrdiff_t>::store(tail_offset_, 0U);
-        AtomicIndirectorType<std::ptrdiff_t>::store(head_offset_, 0U);
+        AtomicIndirectorType<std::ptrdiff_t>::store(tail_offset_, 0);
+        AtomicIndirectorType<std::ptrdiff_t>::store(head_offset_, 0);
         AtomicIndirectorType<std::size_t>::store(size_, 0U);
     }
 
@@ -463,11 +426,6 @@ class alignas(std::max_align_t) List
      */
     score::Result<T> at(std::size_t index)
     {
-        if (!IsValid())
-        {
-            return score::MakeUnexpected(ErrorCode::kMemoryCorruptionDetectedFatal);
-        }
-
         if (index >= AtomicIndirectorType<std::size_t>::load(size_))
         {
             return score::MakeUnexpected(ErrorCode::kIndexOutOfBoundsInSharedListRecoverable);
@@ -496,7 +454,7 @@ class alignas(std::max_align_t) List
 
         if constexpr (std::is_same<T, SharedMemoryChunk>::value)
         {
-            if (current->data.IsCorrupted())
+            if (!current->data.GetData().has_value())
             {
                 return score::MakeUnexpected(ErrorCode::kMemoryCorruptionDetectedFatal);
             }
