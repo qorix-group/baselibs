@@ -39,7 +39,6 @@ constexpr auto kBlockSize = 64U;
 // coverity[autosar_cpp14_a0_1_1_violation]
 constexpr std::uint8_t kMaxChunksPerOneTraceRequest = 10U;
 
-// Number of ShmRingBuffer elements should not exceed the value 0x7FFFU by it's alogrithm design
 // Suppress "AUTOSAR C++14 A0-1-1" rule finding. This rule states: "A project shall not contain
 // instances of non-volatile variables being given values that are not subsequently used."
 // The variable kNumberOfElements is declared and given value that is used in multiple files
@@ -190,10 +189,15 @@ static constexpr std::int32_t kSharedMemoryRingBufferObjectOpenFlags{O_RDWR};
 // Suppress "AUTOSAR C++14 A0-1-1" rule finds: "A project shall not contain instances of non-volatile variables
 // being given values that are not subsequently used"
 // False positive, variable is used.
+// Suppress "autosar_cpp14_m5_0_21_violation" rule finding. This rule states: "Bitwise operators
+// shall only be applied to operands of unsigned underlying type."
+// QNX mode permission macros (S_IRUSR, S_IWUSR, etc.) are defined as signed integers by the standard.
+// Only bitwise OR operations are performed - no right shifts that could cause implementation-defined behavior.
+// clang-format off
+// coverity[autosar_cpp14_m5_0_21_violation]
 // coverity[autosar_cpp14_a0_1_1_violation : FALSE]
-//  coverity[autosar_cpp14_m5_0_21_violation]
-static constexpr std::int32_t kSharedMemoryRingBufferObjectOpenModes{S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH |
-                                                                     S_IWOTH};
+static constexpr std::uint32_t kSharedMemoryRingBufferObjectOpenModes{static_cast<std::uint32_t>(S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH)};
+// clang-format on
 
 }  // namespace tracing
 }  // namespace analysis
