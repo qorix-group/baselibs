@@ -72,9 +72,12 @@ bazel test --config=bl-x86_64-linux //...
 #### Building for x86_64 QNX 8.0 SDP
 
 ```bash
-# Build all targets
-bazel build --credential_helper="*.qnx.com=$(pwd)/.git/tools/qnx_credential_helper.py" --config=bl-x86_64-qnx //...
+# Build all targets (with a few exceptions)
+bazel build --credential_helper="*.qnx.com=$(pwd)/.git/tools/qnx_credential_helper.py" --config=bl-x86_64-qnx -- //score/... -//score/os/mocklib/qnx:secpolev_mock -//score/os/qnx:pci_safety -//score/language/futurecpp/tests:jthread_test -//score/language/futurecpp/tests:math_test
 ```
+
+> [!NOTE]
+> Some targets do not currently compile on QNX and are therefore excluded with the `-//` prefix in the target list.
 
 ### Generating Documentation
 

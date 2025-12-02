@@ -12,18 +12,9 @@
 # *******************************************************************************
 
 cc_library(
-    name = "libfsnotify",
+    name = "libpcap",
     linkopts = [
-        "-lfsnotify",
-    ],
-    target_compatible_with = ["@platforms//os:qnx"],
-    visibility = ["//visibility:public"],
-)
-
-cc_library(
-    name = "libsecpolev",
-    linkopts = [
-        "-lsecpolev",
+        "-lpcap",
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],

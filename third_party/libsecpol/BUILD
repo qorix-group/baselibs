@@ -12,18 +12,9 @@
 # *******************************************************************************
 
 cc_library(
-    name = "libfsnotify",
+    name = "libsecpol",
     linkopts = [
-        "-lfsnotify",
-    ],
-    target_compatible_with = ["@platforms//os:qnx"],
-    visibility = ["//visibility:public"],
-)
-
-cc_library(
-    name = "libsecpolev",
-    linkopts = [
-        "-lsecpolev",
+        "-lsecpol",
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],

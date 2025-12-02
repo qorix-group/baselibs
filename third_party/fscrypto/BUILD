@@ -12,18 +12,9 @@
 # *******************************************************************************
 
 cc_library(
-    name = "libfsnotify",
+    name = "fscrypto",
     linkopts = [
-        "-lfsnotify",
-    ],
-    target_compatible_with = ["@platforms//os:qnx"],
-    visibility = ["//visibility:public"],
-)
-
-cc_library(
-    name = "libsecpolev",
-    linkopts = [
-        "-lsecpolev",
+        "-lfscrypto",
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
