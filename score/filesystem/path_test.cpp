@@ -36,6 +36,12 @@ TEST(Path, DefaultConstructedPathIsEmpty)
 
 TEST(Path, ConstructedByStdString)
 {
+    RecordProperty("Verifies", "comp_req__filesystem__path_utilities");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description","constructing Path by std::string");
+    RecordProperty("TestType", "Requirements-based test");
+    RecordProperty("DerivationTechnique", "Analysis of requirements");
+
     // Given a Path that is constructed by a std::string
     Path unit = std::string{"/some/path"};
 
