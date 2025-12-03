@@ -44,17 +44,17 @@ class MockChannel : public Channel
 
     MOCK_METHOD((score::cpp::expected_blank<score::os::Error>),
                 MsgReply,
-                (std::int32_t rcvid, std::int64_t status, const void* msg, std::size_t bytes),
+                (rcvid_t rcvid, std::int64_t status, const void* msg, std::size_t bytes),
                 (const, noexcept, override));
 
     MOCK_METHOD((score::cpp::expected_blank<score::os::Error>),
                 MsgReplyv,
-                (std::int32_t rcvid, std::int64_t status, const iov_t* riov, std::size_t rparts),
+                (rcvid_t rcvid, std::int64_t status, const iov_t* riov, std::size_t rparts),
                 (const, noexcept, override));
 
     MOCK_METHOD((score::cpp::expected_blank<score::os::Error>),
                 MsgError,
-                (std::int32_t rcvid, std::int32_t err),
+                (rcvid_t rcvid, std::int32_t err),
                 (const, noexcept, override));
 
     MOCK_METHOD((score::cpp::expected<std::int64_t, score::os::Error>),
@@ -83,7 +83,7 @@ class MockChannel : public Channel
 
     MOCK_METHOD((score::cpp::expected_blank<score::os::Error>),
                 MsgDeliverEvent,
-                (std::int32_t rcvid, const struct sigevent* event),
+                (rcvid_t rcvid, const struct sigevent* event),
                 (const, noexcept, override));
 
     MOCK_METHOD((score::cpp::expected_blank<score::os::Error>),

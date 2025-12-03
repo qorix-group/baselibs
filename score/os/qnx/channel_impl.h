@@ -51,22 +51,21 @@ class ChannelImpl final : public Channel
     /* KW_SUPPRESS_END:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
 
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    score::cpp::expected_blank<score::os::Error> MsgReply(const std::int32_t rcvid,
+    score::cpp::expected_blank<score::os::Error> MsgReply(const rcvid_t rcvid,
                                                  const std::int64_t status,
                                                  const void* const msg,
                                                  const std::size_t bytes) const noexcept override;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    score::cpp::expected_blank<score::os::Error> MsgReplyv(const std::int32_t rcvid,
+    score::cpp::expected_blank<score::os::Error> MsgReplyv(const rcvid_t rcvid,
                                                   const std::int64_t status,
                                                   const iov_t* const riov,
                                                   const std::size_t rparts) const noexcept override;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    score::cpp::expected_blank<score::os::Error> MsgError(const std::int32_t rcvid,
-                                                 const std::int32_t err) const noexcept override;
+    score::cpp::expected_blank<score::os::Error> MsgError(const rcvid_t rcvid, const std::int32_t err) const noexcept override;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
@@ -104,7 +103,7 @@ class ChannelImpl final : public Channel
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    score::cpp::expected_blank<score::os::Error> MsgDeliverEvent(const std::int32_t rcvid,
+    score::cpp::expected_blank<score::os::Error> MsgDeliverEvent(const rcvid_t rcvid,
                                                         const struct sigevent* const event) const noexcept override;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 

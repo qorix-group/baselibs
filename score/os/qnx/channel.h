@@ -29,6 +29,15 @@ namespace score
 namespace os
 {
 
+// From migration guide from QNX7 to QNX8
+// https://www.qnx.com/developers/docs/8.0/com.qnx.doc.qnxsdp.migration/topic/kernel.html#rcvid_t
+// Cross-version compatibility for QNX 7 and QNX 8.
+// In QNX 8, rcvid_t is a native type (int64_t).
+// QNX 7 doesn't have a distinct type for receive id, but expects it to be int.
+#ifndef __RCVID_T_SIZE
+typedef int rcvid_t;
+#endif
+
 class Channel : public ObjectSeam<Channel>
 {
   public:
@@ -68,21 +77,21 @@ class Channel : public ObjectSeam<Channel>
     /* KW_SUPPRESS_END:MISRA.USE.EXPANSION:Using library-defined macro to ensure correct operation */
 
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    virtual score::cpp::expected_blank<score::os::Error> MsgReply(const std::int32_t rcvid,
+    virtual score::cpp::expected_blank<score::os::Error> MsgReply(const rcvid_t rcvid,
                                                          const std::int64_t status,
                                                          const void* const msg,
                                                          const std::size_t bytes) const noexcept = 0;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    virtual score::cpp::expected_blank<score::os::Error> MsgReplyv(const std::int32_t rcvid,
+    virtual score::cpp::expected_blank<score::os::Error> MsgReplyv(const rcvid_t rcvid,
                                                           const std::int64_t status,
                                                           const iov_t* const riov,
                                                           const std::size_t rparts) const noexcept = 0;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    virtual score::cpp::expected_blank<score::os::Error> MsgError(const std::int32_t rcvid,
+    virtual score::cpp::expected_blank<score::os::Error> MsgError(const rcvid_t rcvid,
                                                          const std::int32_t err) const noexcept = 0;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 
@@ -121,7 +130,7 @@ class Channel : public ObjectSeam<Channel>
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 
     /* KW_SUPPRESS_START:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
-    virtual score::cpp::expected_blank<score::os::Error> MsgDeliverEvent(const std::int32_t rcvid,
+    virtual score::cpp::expected_blank<score::os::Error> MsgDeliverEvent(const rcvid_t rcvid,
                                                                 const struct sigevent* const event) const noexcept = 0;
     /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Wrapper function is identifiable through namespace usage */
 
