@@ -56,7 +56,7 @@ constexpr inline std::size_t strip_trailing_spaces(const char (&pretty_name)[N],
         return end;
     }
 
-    std::size_t last_character_index = end - 1UL;
+    std::size_t last_character_index = (end - 1UL);
 
     while (last_character_index > begin)
     {
@@ -75,7 +75,7 @@ constexpr inline std::size_t strip_trailing_spaces(const char (&pretty_name)[N],
     }
 
     // The end is one increment past the last character.
-    end = last_character_index + 1UL;
+    end = (last_character_index + 1UL);
 
     return end;
 }
@@ -90,13 +90,13 @@ constexpr inline std::pair<std::size_t, std::size_t> visitor_extract_type_span(c
     //     static_assert(check_type_span("q<erty", 2, 6), "abnormal logic - with left bracket");
     // lcov complains about FALSE case didn't taken, it's false positive.
     size_t first = 0UL;
-    size_t second = N - 1UL;
-    for (std::size_t i = 0UL; i < N - 1UL; ++i)  // LCOV_EXCL_BR_LINE: COMMON_ARGUMENTATION
+    size_t second = (N - 1UL);
+    for (std::size_t i = 0UL; i < (N - 1UL); ++i)  // LCOV_EXCL_BR_LINE: COMMON_ARGUMENTATION
     {
         if (pretty_name[i] == '<')
         {
-            first = i + 1UL;
-            for (std::size_t j = N - 1UL; j >= first; --j)  // LCOV_EXCL_BR_LINE: COMMON_ARGUMENTATION
+            first = (i + 1UL);
+            for (std::size_t j = (N - 1UL); j >= first; --j)  // LCOV_EXCL_BR_LINE: COMMON_ARGUMENTATION
             {
                 if (pretty_name[j] == '>')
                 {
@@ -208,7 +208,7 @@ using struct_visitable = decltype(get_struct_visitable<T>());
                 ::score::common::visitor::detail::tuple_to_array(TUPLE_OF_NAMES);                                        \
             /* NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index) Index is evaluated in macros and thus    \
              * not given for user to control. */                                                                       \
-            return (i < fields ? names[i] : nullptr);                                                                  \
+            return ((i < fields) ? names[i] : nullptr);                                                                  \
             /* NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index) Index is evaluated in macros and thus not  \
              * given for user to control. */                                                                           \
         }                                                                                                              \
