@@ -55,7 +55,7 @@ class NeutrinoImpl final : public Neutrino
     [[deprecated(
         "SPP_DEPRECATION: Please use other overloads of the \'TimerTimeout\'")]] score::cpp::expected<std::int32_t, Error>
     TimerTimeout(clockid_t id,
-                 std::int32_t flags,
+                 TimerFlagsType flags,
                  const sigevent* notify,
                  const std::uint64_t* ntime,
                  std::uint64_t* otime) const noexcept override;
