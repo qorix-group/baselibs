@@ -123,6 +123,47 @@ impl<T, S: Storage<T>> GenericVec<T, S> {
             }
         }
     }
+
+    /// Manually sets the length of the vector.
+    ///
+    /// # Safety
+    ///
+    /// - `new_len <= self.capacity()` must hold
+    /// - if `new_len` is greater than the current length, the elements in the new range must have been initialized
+    pub(super) unsafe fn set_len(&mut self, new_len: usize) {
+        debug_assert!(new_len <= self.capacity());
+        self.len = new_len as u32;
+    }
+}
+
+impl<T: Copy, S: Storage<T>> GenericVec<T, S> {
+    /// Tries to append a copy of the given slice to the end of the vector.
+    ///
+    /// If the vector has sufficient spare capacity, the operation succeeds and a reference to those elements is returned;
+    /// otherwise, `Err(VectorFull)` is returned.
+    pub fn extend_from_slice(&mut self, other: &[T]) -> Result<&mut [T], VectorFull> {
+        let new_len = (self.len as usize).checked_add(other.len()).ok_or(VectorFull)?;
+        if new_len <= self.capacity() {
+            let new_len = new_len as u32; // No overflow, because new_len <= capacity <= u32::MAX
+            // SAFETY:
+            // - `self.len <= new_len``, because the addition didn't overflow
+            // - `new_len <= self.capacity()` as per check above
+            let target = unsafe { self.storage.subslice_mut(self.len, new_len) };
+            // SAFETY:
+            // - `other.as_ptr()` is valid for reads of `other.len()` elements, because it's a valid slice reference
+            // - `target` is valid for writes of `other.len()` elements, because we got it from `subslice_mut()`,
+            //   and `new_len - self.len == other.len()`
+            // - the memory regions don't overlap, because `&mut self` precludes `other: &[T]` from overlapping
+            unsafe {
+                (target as *mut T).copy_from_nonoverlapping(other.as_ptr(), other.len());
+            }
+            self.len = new_len;
+            // SAFETY: the memory in the `target` slice has now been initialized
+            Ok(unsafe { &mut *target })
+        } else {
+            Err(VectorFull)
+        }
+    }
 }
 
 impl<T, S: Storage<T>> ops::Deref for GenericVec<T, S> {
