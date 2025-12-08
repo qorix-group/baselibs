@@ -17,6 +17,7 @@ use core::mem::needs_drop;
 use core::ops;
 use core::ptr;
 
+use crate::InsufficientCapacity;
 use crate::storage::Storage;
 
 #[repr(C)]
@@ -88,14 +89,14 @@ impl<T, S: Storage<T>> GenericVec<T, S> {
     /// Tries to push an element to the back of the vector.
     ///
     /// If the vector has spare capacity, the push succeeds and a reference to that element
-    /// is returned; otherwise, `Err(VectorFull)` is returned.
-    pub fn push(&mut self, value: T) -> Result<&mut T, VectorFull> {
+    /// is returned; otherwise, `Err(InsufficientCapacity)` is returned.
+    pub fn push(&mut self, value: T) -> Result<&mut T, InsufficientCapacity> {
         if self.len < self.storage.capacity() {
             let element = unsafe { self.storage.element_mut(self.len) }.write(value);
             self.len += 1;
             Ok(element)
         } else {
-            Err(VectorFull)
+            Err(InsufficientCapacity)
         }
     }
 
@@ -140,9 +141,9 @@ impl<T: Copy, S: Storage<T>> GenericVec<T, S> {
     /// Tries to append a copy of the given slice to the end of the vector.
     ///
     /// If the vector has sufficient spare capacity, the operation succeeds and a reference to those elements is returned;
-    /// otherwise, `Err(VectorFull)` is returned.
-    pub fn extend_from_slice(&mut self, other: &[T]) -> Result<&mut [T], VectorFull> {
-        let new_len = (self.len as usize).checked_add(other.len()).ok_or(VectorFull)?;
+    /// otherwise, `Err(InsufficientCapacity)` is returned.
+    pub fn extend_from_slice(&mut self, other: &[T]) -> Result<&mut [T], InsufficientCapacity> {
+        let new_len = (self.len as usize).checked_add(other.len()).ok_or(InsufficientCapacity)?;
         if new_len <= self.capacity() {
             let new_len = new_len as u32; // No overflow, because new_len <= capacity <= u32::MAX
             // SAFETY:
@@ -161,7 +162,7 @@ impl<T: Copy, S: Storage<T>> GenericVec<T, S> {
             // SAFETY: the memory in the `target` slice has now been initialized
             Ok(unsafe { &mut *target })
         } else {
-            Err(VectorFull)
+            Err(InsufficientCapacity)
         }
     }
 }
@@ -185,18 +186,6 @@ impl<T: fmt::Debug, S: Storage<T>> fmt::Debug for GenericVec<T, S> {
         fmt::Debug::fmt(self.as_slice(), f)
     }
 }
-
-/// Indicates that an operation failed because the vector would exceed its maximum capacity.
-#[derive(Clone, Copy, Default, Debug)]
-pub struct VectorFull;
-
-impl fmt::Display for VectorFull {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "vector is full")
-    }
-}
-
-impl core::error::Error for VectorFull {}
 
 #[cfg(test)]
 mod tests {

@@ -16,6 +16,7 @@ use core::ops;
 use core::str;
 
 use super::vec::GenericVec;
+use crate::InsufficientCapacity;
 use crate::storage::Storage;
 
 /// A UTF-8 encoded string which is generic over its storage method.
@@ -94,19 +95,19 @@ impl<S: Storage<u8>> GenericString<S> {
 
     /// Tries to append the given character to the end of the string.
     ///
-    /// If the string has sufficient spare capacity, the operation succeeds; otherwise, `Err(StringFull)` is returned.
-    pub fn push(&mut self, ch: char) -> Result<(), StringFull> {
+    /// If the string has sufficient spare capacity, the operation succeeds; otherwise, `Err(InsufficientCapacity)` is returned.
+    pub fn push(&mut self, ch: char) -> Result<(), InsufficientCapacity> {
         let mut buffer = [0_u8; 4];
         self.push_str(ch.encode_utf8(&mut buffer))
     }
 
     /// Tries to append the given string slice to the end of the string.
     ///
-    /// If the string has sufficient spare capacity, the operation succeeds; otherwise, `Err(StringFull)` is returned.
-    pub fn push_str(&mut self, other: &str) -> Result<(), StringFull> {
+    /// If the string has sufficient spare capacity, the operation succeeds; otherwise, `Err(InsufficientCapacity)` is returned.
+    pub fn push_str(&mut self, other: &str) -> Result<(), InsufficientCapacity> {
         match self.vec.extend_from_slice(other.as_bytes()) {
             Ok(_) => Ok(()),
-            Err(_) => Err(StringFull),
+            Err(_) => Err(InsufficientCapacity),
         }
     }
 
@@ -150,18 +151,6 @@ impl<S: Storage<u8>> fmt::Debug for GenericString<S> {
         fmt::Debug::fmt(self.as_str(), f)
     }
 }
-
-/// Indicates that an operation failed because the string would exceed its maximum capacity.
-#[derive(Clone, Copy, Default, Debug)]
-pub struct StringFull;
-
-impl fmt::Display for StringFull {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "string is full")
-    }
-}
-
-impl core::error::Error for StringFull {}
 
 #[cfg(test)]
 mod tests {
