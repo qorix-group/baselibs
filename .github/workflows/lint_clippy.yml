@@ -11,7 +11,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-name: rustfmt and clippy check
+name: clippy check
 
 on:
   pull_request:
@@ -21,7 +21,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
-  lint-fmt-clippy:
+  lint-clippy:
     timeout-minutes: 6 # 6 minutes is the maximum allowed for a cold run
     runs-on: ${{ vars.REPO_RUNNER_LABELS && fromJSON(vars.REPO_RUNNER_LABELS) || 'ubuntu-latest' }}
     steps:
@@ -42,9 +42,9 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             target
-          key: ${{ runner.os }}-cargo-lint-fmt-clippy-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-lint-clippy-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
-            ${{ runner.os }}-cargo-lint-fmt-clippy-
+            ${{ runner.os }}-cargo-lint-clippy-
 
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
@@ -52,13 +52,7 @@ jobs:
           profile: minimal
           toolchain: 1.90.0
           override: true
-          components: rustfmt, clippy
-
-      - name: check code format (rustfmt)
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: -- --check
+          components: clippy
 
       - name: check clippy errors
         uses: actions-rs/cargo@v1

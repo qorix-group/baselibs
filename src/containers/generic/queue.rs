@@ -128,7 +128,11 @@ impl<T, S: Storage<T>> GenericQueue<T, S> {
     pub fn push_front(&mut self, value: T) -> Result<&mut T, QueueFull> {
         let capacity = self.storage.capacity();
         if self.len < capacity {
-            let write_pos = if self.front_index > 0 { self.front_index - 1 } else { capacity - 1 };
+            let write_pos = if self.front_index > 0 {
+                self.front_index - 1
+            } else {
+                capacity - 1
+            };
             let element = unsafe { self.storage.element_mut(write_pos).write(value) };
             self.len += 1;
             self.front_index = write_pos;
