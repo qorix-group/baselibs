@@ -263,12 +263,12 @@ TEST(bind_front, call_args_value_categories_and_constness)
     EXPECT_EQ(4, d.data);
 }
 
-int fn(float a, double b, int c) { return static_cast<int>(a) + static_cast<int>(b) + c; }
+int fn(type_a a, type_b b, type_c c) { return a.data + b.data + c.data; }
 
 struct foo
 {
-    int operator()(float a, double b, int c) const { return fn(a, b, c); }
-    int bar(float a, double b, int c) const { return fn(a, b, c); }
+    int operator()(type_a a, type_b b, type_c c) const { return fn(a, b, c); }
+    int bar(type_a a, type_b b, type_c c) const { return fn(a, b, c); }
     int baz{42};
 };
 
@@ -276,9 +276,9 @@ struct foo
 /// @requirement CB-#0815
 TEST(bind_front, lambda)
 {
-    const auto f = [](float a, double b, int c) { return fn(a, b, c); };
-    const auto g = score::cpp::bind_front(f, 1.0F, 2.0);
-    EXPECT_EQ(6, g(3));
+    const auto f = [](type_a a, type_b b, type_c c) { return fn(a, b, c); };
+    const auto g = score::cpp::bind_front(f, type_a{1}, type_b{2});
+    EXPECT_EQ(6, g(type_c{3}));
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -286,8 +286,8 @@ TEST(bind_front, lambda)
 TEST(bind_front, function_object)
 {
     const foo f{};
-    const auto g = score::cpp::bind_front(f, 1.0F, 2.0);
-    EXPECT_EQ(6, g(3));
+    const auto g = score::cpp::bind_front(f, type_a{1}, type_b{2});
+    EXPECT_EQ(6, g(type_c{3}));
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -295,8 +295,8 @@ TEST(bind_front, function_object)
 TEST(bind_front, member_function)
 {
     const foo f{};
-    const auto g = score::cpp::bind_front(&foo::bar, f, 1.0F, 2.0);
-    EXPECT_EQ(6, g(3));
+    const auto g = score::cpp::bind_front(&foo::bar, f, type_a{1}, type_b{2});
+    EXPECT_EQ(6, g(type_c{3}));
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -313,8 +313,8 @@ TEST(bind_front, member_variable)
 TEST(bind_front, free_function)
 {
     const auto f = &fn;
-    const auto g = score::cpp::bind_front(f, 1.0F, 2.0);
-    EXPECT_EQ(6, g(3));
+    const auto g = score::cpp::bind_front(f, type_a{1}, type_b{2});
+    EXPECT_EQ(6, g(type_c{3}));
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -349,6 +349,240 @@ TEST(bind_front, fully_applied)
 {
     const auto f = [](int x) { return x; };
     const auto g = score::cpp::bind_front(f, 42);
+    EXPECT_EQ(42, g());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#62590909
+TEST(bind_back, call_operator_noexcept)
+{
+    using wrapper_never_throws = decltype(score::cpp::bind_back(std::declval<never_throws>()));
+    using wrapper_may_throw = decltype(score::cpp::bind_back(std::declval<may_throw>()));
+
+    static_assert(noexcept(std::declval<wrapper_never_throws&>()()));
+    static_assert(!noexcept(std::declval<wrapper_may_throw&>()()));
+
+    static_assert(noexcept(std::declval<const wrapper_never_throws&>()()));
+    static_assert(!noexcept(std::declval<const wrapper_may_throw&>()()));
+
+    static_assert(noexcept(std::declval<wrapper_never_throws&&>()()));
+    static_assert(!noexcept(std::declval<wrapper_may_throw&&>()()));
+
+    static_assert(noexcept(std::declval<const wrapper_never_throws&&>()()));
+    static_assert(!noexcept(std::declval<const wrapper_may_throw&&>()()));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#62590909
+TEST(bind_back, constructor_function_value_categories_and_constness)
+{
+    {
+        move_copy_counter f{};
+        move_copy_counter::reset();
+
+        std::ignore = score::cpp::bind_back(f);
+
+        EXPECT_EQ(0, move_copy_counter::move_count);
+        EXPECT_EQ(1, move_copy_counter::copy_count);
+
+        move_copy_counter::reset();
+
+        std::ignore = score::cpp::bind_back(std::move(f));
+
+        EXPECT_EQ(1, move_copy_counter::move_count);
+        EXPECT_EQ(0, move_copy_counter::copy_count);
+    }
+    {
+        const move_copy_counter f{};
+        move_copy_counter::reset();
+
+        std::ignore = score::cpp::bind_back(f);
+
+        EXPECT_EQ(0, move_copy_counter::move_count);
+        EXPECT_EQ(1, move_copy_counter::copy_count);
+
+        move_copy_counter::reset();
+
+        std::ignore = score::cpp::bind_back(std::move(f));
+
+        EXPECT_EQ(1, move_copy_counter::move_count);
+        EXPECT_EQ(0, move_copy_counter::copy_count);
+    }
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#62590909
+TEST(bind_back, constructor_bound_args_value_categories_and_constness)
+{
+    const auto fn = [](move_copy_counter) {};
+
+    {
+        move_copy_counter arg{};
+        move_copy_counter::reset();
+
+        std::ignore = score::cpp::bind_back(fn, arg);
+
+        EXPECT_EQ(0, move_copy_counter::move_count);
+        EXPECT_EQ(1, move_copy_counter::copy_count);
+
+        move_copy_counter::reset();
+
+        std::ignore = score::cpp::bind_back(fn, std::move(arg));
+
+        EXPECT_EQ(1, move_copy_counter::move_count);
+        EXPECT_EQ(0, move_copy_counter::copy_count);
+    }
+    {
+        const move_copy_counter arg{};
+        move_copy_counter::reset();
+
+        std::ignore = score::cpp::bind_back(fn, arg);
+
+        EXPECT_EQ(0, move_copy_counter::move_count);
+        EXPECT_EQ(1, move_copy_counter::copy_count);
+
+        move_copy_counter::reset();
+
+        std::ignore = score::cpp::bind_back(fn, std::move(arg));
+
+        EXPECT_EQ(1, move_copy_counter::move_count);
+        EXPECT_EQ(0, move_copy_counter::copy_count);
+    }
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#62590909
+TEST(bind_back, callable_ref_qualifiers)
+{
+    auto f = score::cpp::bind_back(functor_with_overload_on_ref_qualifier{});
+    const auto const_f = score::cpp::bind_back(functor_with_overload_on_ref_qualifier{});
+
+    const type_a a{f()};
+    const type_b b{const_f()};
+    const type_c c{std::move(f)()};
+    const type_d d{std::move(const_f)()};
+
+    EXPECT_EQ(1, a.data);
+    EXPECT_EQ(2, b.data);
+    EXPECT_EQ(3, c.data);
+    EXPECT_EQ(4, d.data);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#62590909
+TEST(bind_back, bound_args_value_categories_and_constness)
+{
+    auto f = score::cpp::bind_back(functor_with_overload_on_signature{}, 0);
+    const auto const_f = score::cpp::bind_back(functor_with_overload_on_signature{}, 0);
+
+    const type_a a{f()};
+    const type_b b{const_f()};
+    const type_c c{std::move(f)()};
+    const type_d d{std::move(const_f)()};
+
+    EXPECT_EQ(1, a.data);
+    EXPECT_EQ(2, b.data);
+    EXPECT_EQ(3, c.data);
+    EXPECT_EQ(4, d.data);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#62590909
+TEST(bind_back, call_args_value_categories_and_constness)
+{
+    const auto f = score::cpp::bind_back(functor_with_overload_on_signature{});
+
+    int x{};
+    const int y{};
+
+    const type_a a{f(x)};
+    const type_b b{f(y)};
+    const type_c c{f(std::move(x))};
+    const type_d d{f(std::move(y))};
+
+    EXPECT_EQ(1, a.data);
+    EXPECT_EQ(2, b.data);
+    EXPECT_EQ(3, c.data);
+    EXPECT_EQ(4, d.data);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#62590909
+TEST(bind_back, lambda)
+{
+    const auto f = [](type_a a, type_b b, type_c c) { return fn(a, b, c); };
+    const auto g = score::cpp::bind_back(f, type_b{2}, type_c{3});
+    EXPECT_EQ(6, g(type_a{1}));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#62590909
+TEST(bind_back, function_object)
+{
+    const foo f{};
+    const auto g = score::cpp::bind_back(f, type_b{2}, type_c{3});
+    EXPECT_EQ(6, g(type_a{1}));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#62590909
+TEST(bind_back, member_function)
+{
+    const foo f{};
+    const auto g = score::cpp::bind_back(&foo::bar, type_b{2}, type_c{3});
+    EXPECT_EQ(6, g(f, type_a{1}));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#62590909
+TEST(bind_back, member_variable)
+{
+    const foo f{};
+    const auto g = score::cpp::bind_back(&foo::baz, f);
+    EXPECT_EQ(42, g());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#62590909
+TEST(bind_back, free_function)
+{
+    const auto f = &fn;
+    const auto g = score::cpp::bind_back(f, type_b{2}, type_c{3});
+    EXPECT_EQ(6, g(type_a{1}));
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#62590909
+TEST(bind_back, mutable_arg)
+{
+    int a{1};
+    int b{2};
+    const auto f = [](int& lhs, int& rhs) { std::swap(lhs, rhs); };
+    score::cpp::bind_back(f, std::reference_wrapper<int>(a))(b);
+    EXPECT_EQ(2, a);
+    EXPECT_EQ(1, b);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#62590909
+TEST(bind_back, mutable_callable)
+{
+    auto f = [x = 0](int n) mutable {
+        const int res{x};
+        x += n;
+        return res;
+    };
+    const auto g = score::cpp::bind_back(std::reference_wrapper<decltype(f)>(f), 42);
+    EXPECT_EQ(0, g());
+    EXPECT_EQ(42, g());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#62590909
+TEST(bind_back, fully_applied)
+{
+    const auto f = [](int x) { return x; };
+    const auto g = score::cpp::bind_back(f, 42);
     EXPECT_EQ(42, g());
 }
 
