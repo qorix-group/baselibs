@@ -157,7 +157,7 @@ platform(
 platform(
     name = "x86_64-qnx8",
     constraint_values = [
-        "//bazel/platforms/qnx_version:qnx8",
+        "@score_bazel_platforms//:qnx8_0",
     ],
     parents = [
         "@swf_platforms//:x86_64-qnx-adaptive",
@@ -168,7 +168,7 @@ platform(
     name = "x86_64-qnx8-qemu",
     constraint_values = [
         "//bazel/platforms/environment:qemu",
-        "//bazel/platforms/qnx_version:qnx8",
+        "@score_bazel_platforms//:qnx8_0",
     ],
     parents = [
         "@swf_platforms//:x86_64-qnx-adaptive",
@@ -190,7 +190,7 @@ platform(
     name = "arm64-qnx8-hardware",
     constraint_values = [
         "//bazel/platforms/environment:hardware",
-        "//bazel/platforms/qnx_version:qnx8",
+        "@score_bazel_platforms//:qnx8_0",
     ],
     parents = [
         "@swf_platforms//:arm64-qnx-adaptive",
@@ -234,7 +234,7 @@ platform(
     name = "arm64-qnx8-qqvp",
     constraint_values = [
         "//bazel/platforms/environment:qqvp",
-        "//bazel/platforms/qnx_version:qnx8",
+        "@score_bazel_platforms//:qnx8_0",
     ],
     parents = [
         "@swf_platforms//:arm64-qnx-adaptive",
@@ -256,7 +256,7 @@ platform(
     name = "arm64-qnx8-qemu",
     constraint_values = [
         "//bazel/platforms/environment:qemu",
-        "//bazel/platforms/qnx_version:qnx8",
+        "@score_bazel_platforms//:qnx8_0",
     ],
     parents = [
         "@swf_platforms//:arm64-qnx-adaptive",

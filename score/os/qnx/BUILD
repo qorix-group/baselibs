@@ -362,9 +362,9 @@ cc_library(
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = ["//visibility:public"],
     deps = [
-        "@//third_party/libslog2",
         "@score_baselibs//score/os:errno",
         "@score_baselibs//score/os:object_seam",
+        "@score_baselibs//third_party/libslog2",
     ],
 )
 

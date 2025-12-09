@@ -53,7 +53,7 @@ py_unittest_qnx_test(
     test_suites = [
         "@score_baselibs//score/os/utils/qnx/resource_manager:unit_tests_qnx",
     ],
-    visibility = ["//platform/aas:__subpackages__"],
+    visibility = ["//visibility:public"],  # platform_only
 )
 
 cc_test(

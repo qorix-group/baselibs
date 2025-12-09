@@ -98,7 +98,7 @@ config_setting(
         "@platforms//cpu:arm64",
         "@platforms//os:qnx",
         "//bazel/platforms/environment:hardware",
-        "//bazel/platforms/qnx_version:qnx8",
+        "@score_bazel_platforms//:qnx8_0",
     ],
 )
 
@@ -109,7 +109,7 @@ config_setting(
         "@platforms//cpu:arm64",
         "@platforms//os:qnx",
         "//bazel/platforms/environment:virtual",
-        "//bazel/platforms/qnx_version:qnx8",
+        "@score_bazel_platforms//:qnx8_0",
     ],
 )
 
@@ -136,7 +136,7 @@ config_setting(
         "@platforms//cpu:x86_64",
         "@platforms//os:qnx",
         "//bazel/platforms/environment:qemu",
-        "//bazel/platforms/qnx_version:qnx8",
+        "@score_bazel_platforms//:qnx8_0",
     ],
     visibility = [
         "//ecu/ipnext/tests:__subpackages__",
