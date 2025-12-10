@@ -63,6 +63,7 @@ class basic_zstring_view : private details::zspan<std::add_const_t<CharType>>
     /// @brief Constructs a `basic_zstring_view` as view over character array.
     /// @details will invoke `std::abort()` in case such character array is not null-terminated at its last element
     template <std::size_t N>
+    // NOLINTNEXTLINE(google-explicit-constructor, modernize-avoid-c-arrays) allow implicit creation from C-style arrays
     constexpr basic_zstring_view(const CharType (&str)[N]) noexcept : base(str, typename violation_policies::abort{})
     {
     }
