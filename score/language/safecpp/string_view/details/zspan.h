@@ -109,32 +109,42 @@ class zspan
     using const_reference = std::add_lvalue_reference_t<std::add_const_t<value_type>>;
     using violation_policies = null_termination_violation_policies;
 
+  private:
     ///
-    /// @brief helper type for encapsulating references to single elements of the `zspan`'s underlying sequence
+    /// @brief private helper type for encapsulating references to single elements of the `zspan`'s underlying sequence
     /// @details Rationale is to facilitate element access while hiding the non-const pointer to the underlying sequence
     ///          and at the same time protecting against write accesses to adjacent elements. This helps a) to maintain
     ///          full control over which elements exactly shall get modified and, as a result, b) protects the
     ///          trailing null-terminator of the underyling sequence from getting overwritten.
     ///
-    class element_accessor
+    template <bool is_read_only>
+    class basic_element_accessor
     {
       public:
-        /// @brief constructs an `element_accessor` for provided \p data; at position \p index;
-        constexpr explicit element_accessor(pointer data, size_type index) noexcept : element_{&data[index]} {}
+        /// @brief constructs an `basic_element_accessor` for provided \p data; at position \p index;
+        constexpr basic_element_accessor(pointer data, size_type index) noexcept : element_{&data[index]} {}
 
-        /// @brief given that value types are assignable, assigns provided \p value;
-        template <typename ValueType, std::enable_if_t<std::is_assignable_v<reference, ValueType>, bool> = true>
-        constexpr element_accessor& operator=(ValueType value) noexcept(
-            std::is_nothrow_assignable_v<reference, ValueType>)
+        /// @brief given that assigments are permitted and value types are assignable, assigns provided \p value;
+        template <typename ValueType>
+        constexpr std::enable_if_t<std::is_assignable_v<reference, ValueType>, basic_element_accessor&> operator=(
+            ValueType value) noexcept(std::is_nothrow_assignable_v<reference, ValueType>)
         {
+            static_assert(not(is_read_only),
+                          "safecpp::details::zspan::basic_element_accessor: assignments "
+                          "are not permitted for this readonly element accessor type");
             *element_ = std::move(value);
             return *this;
         }
 
-        /// @brief value assignments on const `element_accessor` type are prohibited
-        template <typename ValueType,
-                  std::enable_if_t<std::negation_v<std::is_same<ValueType, element_accessor>>, bool> = true>
-        constexpr element_accessor& operator=(ValueType) const noexcept = delete;
+        /// @brief given that assigments are permitted, performs assignment of the underlying element
+        constexpr basic_element_accessor& operator=(const basic_element_accessor& other) noexcept
+        {
+            static_assert(not(is_read_only),
+                          "safecpp::details::zspan::basic_element_accessor: assignments "
+                          "are not permitted for this readonly element accessor type");
+            *element_ = *other.element_;
+            return *this;
+        }
 
         /// @brief provides read-only access to the underlying element
         /// @note for write access to elements, above-defined `operator=` shall be used
@@ -149,6 +159,10 @@ class zspan
     };
 
   public:
+    /// @brief type aliases for readonly as well as modifiable element accessors
+    using readonly_element_accessor = basic_element_accessor<true>;
+    using element_accessor = basic_element_accessor<false>;
+
     ///
     /// @brief Constructs `zspan` as view over a guaranteed null-terminated \p range;.
     ///
@@ -264,14 +278,14 @@ class zspan
         {
             std::invoke(violation_policies::abort{}, "score::safecpp::zspan::front(): zspan is empty");
         }
-        return element_accessor{data_, 0U};
+        return {data_, 0U};
     }
 
     ///
     /// @brief Returns a non-modifiable `element_accessor` to the first element of the span.
     /// @note aborts program execution in case the `zspan` is empty
     ///
-    [[nodiscard]] constexpr const element_accessor front() const noexcept
+    [[nodiscard]] constexpr readonly_element_accessor front() const noexcept
     {
         if (empty())
 #if __cplusplus >= 202002L  // C++20
@@ -280,7 +294,7 @@ class zspan
         {
             std::invoke(violation_policies::abort{}, "score::safecpp::zspan::front(): zspan is empty");
         }
-        return element_accessor{data_, 0U};
+        return {data_, 0U};
     }
 
     ///
@@ -296,14 +310,14 @@ class zspan
         {
             std::invoke(violation_policies::abort{}, "score::safecpp::zspan::back(): zspan is empty");
         }
-        return element_accessor{data_, size_ - 1U};
+        return {data_, size_ - 1U};
     }
 
     ///
     /// @brief Returns a non-modifiable `element_accessor` to the last element of the span.
     /// @note aborts program execution in case the `zspan` is empty
     ///
-    [[nodiscard]] constexpr const element_accessor back() const noexcept
+    [[nodiscard]] constexpr readonly_element_accessor back() const noexcept
     {
         if (empty())
 #if __cplusplus >= 202002L  // C++20
@@ -312,7 +326,7 @@ class zspan
         {
             std::invoke(violation_policies::abort{}, "score::safecpp::zspan::back(): zspan is empty");
         }
-        return element_accessor{data_, size_ - 1U};
+        return {data_, size_ - 1U};
     }
 
     ///
@@ -330,7 +344,7 @@ class zspan
             std::invoke(violation_policies::throw_exception<std::out_of_range>{},
                         "score::safecpp::zspan::at(): index out of bounds");
         }
-        return element_accessor{data_, index};
+        return {data_, index};
     }
 
     ///
@@ -338,7 +352,7 @@ class zspan
     /// @param index index of the element to get accessed
     /// @note throws `std::out_of_range` in case \p index; is out of the `zspan`'s range
     ///
-    [[nodiscard]] constexpr const element_accessor at(size_type index) const
+    [[nodiscard]] constexpr readonly_element_accessor at(size_type index) const
     {
         if (index >= size_)
 #if __cplusplus >= 202002L  // C++20
@@ -348,7 +362,7 @@ class zspan
             std::invoke(violation_policies::throw_exception<std::out_of_range>{},
                         "score::safecpp::zspan::at(): index out of bounds");
         }
-        return element_accessor{data_, index};
+        return {data_, index};
     }
 
     ///
@@ -365,7 +379,7 @@ class zspan
         {
             std::invoke(violation_policies::abort{}, "score::safecpp::zspan::operator[]: index out of bounds");
         }
-        return element_accessor{data_, index};
+        return {data_, index};
     }
 
     ///
@@ -373,7 +387,7 @@ class zspan
     /// @param index index of the element to get accessed
     /// @note aborts program execution in case \p index; is out of the `zspan`'s range
     ///
-    [[nodiscard]] constexpr const element_accessor operator[](size_type index) const noexcept
+    [[nodiscard]] constexpr readonly_element_accessor operator[](size_type index) const noexcept
     {
         if (index >= size_)
 #if __cplusplus >= 202002L  // C++20
@@ -382,7 +396,7 @@ class zspan
         {
             std::invoke(violation_policies::abort{}, "score::safecpp::zspan::operator[]: index out of bounds");
         }
-        return element_accessor{data_, index};
+        return {data_, index};
     }
 
     /// @brief Disallow implicit conversions back to `std::span` since its `data()` method exposes a non-const pointer.
