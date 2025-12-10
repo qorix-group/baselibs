@@ -80,6 +80,12 @@ TEST(ZSpan, CanAssignElements)
 
     // Then the `zspan`'s underlying buffer must have gotten modified accordingly
     EXPECT_STREQ(buffer, "kello folks");
+
+    // When swapping two of the `zspan`'s elements
+    swap(span[1], span[7]);
+
+    // Then the `zspan`'s underlying buffer must have gotten modified accordingly
+    EXPECT_STREQ(buffer, "kollo felks");
 }
 
 TEST(ZSpan, CanAccessUnderlyingSequenceOnlyViaPointerToConst)

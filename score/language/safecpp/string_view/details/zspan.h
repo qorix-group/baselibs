@@ -146,6 +146,18 @@ class zspan
             return *this;
         }
 
+        /// @brief swap operator for `basic_element_accessor`
+        /// @details swaps the _underlying_ elements being referenced by \p lhs; and \p rhs;
+        friend constexpr void swap(basic_element_accessor lhs, basic_element_accessor rhs) noexcept
+        {
+            static_assert(not(is_read_only),
+                          "safecpp::details::zspan::basic_element_accessor: swapping "
+                          "is not permitted for this readonly element accessor type");
+            auto tmp = std::move(*lhs.element_);
+            *lhs.element_ = std::move(*rhs.element_);
+            *rhs.element_ = std::move(tmp);
+        }
+
         /// @brief provides read-only access to the underlying element
         /// @note for write access to elements, above-defined `operator=` shall be used
         // NOLINTNEXTLINE(google-explicit-constructor) allow implicit conversion to `const_reference`
