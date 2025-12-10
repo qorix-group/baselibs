@@ -79,6 +79,10 @@ bazel build --credential_helper="*.qnx.com=$(pwd)/.git/tools/qnx_credential_help
 > [!NOTE]
 > Some targets do not currently compile on QNX and are therefore excluded with the `-//` prefix in the target list.
 
+#### Building for AArch64 QNX 8.0 SDP
+
+Use the same command as for x86_64 QNX, but replace `--config=bl-x86_64-qnx` with `--config=bl-aarch64-qnx`.
+
 ### Generating Documentation
 
 To generate the documentation locally:
