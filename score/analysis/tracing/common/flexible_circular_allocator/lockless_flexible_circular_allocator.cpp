@@ -120,6 +120,8 @@ void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::GetTmdMemUsage(Tmd
     tmd_stats.tmd_average = cumulative_usage_.exchange(0U) / number_of_allocations;
     tmd_stats.tmd_alloc_rate =
         static_cast<float>(dealloc_cntr_.exchange(0U)) / static_cast<float>(number_of_allocations);
+    tmd_stats.tmd_allocate_retry_cntr = allocate_retry_cntr_.exchange(0);
+    tmd_stats.tmd_allocate_call_cntr = allocate_call_cntr_.exchange(0);
 }
 
 template <template <class> class AtomicIndirectorType>
@@ -129,6 +131,9 @@ template <template <class> class AtomicIndirectorType>
 void* LocklessFlexibleCircularAllocator<AtomicIndirectorType>::Allocate(const std::size_t size,
                                                                         const std::size_t alignment_size) noexcept
 {
+    allocate_call_cntr_++;
+
+    // Clear any previous error state
     ClearError();
     // Suppress "AUTOSAR C++14 A4-7-1" rule finding. This rule states: "An integer expression shall
     // not lead to data loss.".
@@ -164,6 +169,10 @@ void* LocklessFlexibleCircularAllocator<AtomicIndirectorType>::Allocate(const st
         {
             list_entry_element_index = new_list_queue_head;
             break;
+        }
+        else
+        {
+            allocate_retry_cntr_++;
         }
 
         if (retries == kMaxRetries - 1U)

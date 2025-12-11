@@ -813,7 +813,9 @@ TEST(SpawnImpl, posix_spawnattr_getxflags_failure)
     const auto get_result = score::os::Spawn::instance().posix_spawnattr_getxflags(&attr, &get_flags);
     ASSERT_FALSE(get_result.has_value());
 }
-
+#if __QNX__ >= 800
+// - Unit tests for QNX 8 runmask APIs will be added in a follow-up PR
+#else
 TEST_F(SpawnTest, posix_spawnattr_getrunmask_success)
 {
     RecordProperty("Verifies", "SCR-46010294");
@@ -884,6 +886,7 @@ TEST(SpawnImpl, posix_spawnattr_getrunmask_failure)
     const auto get_result = score::os::Spawn::instance().posix_spawnattr_getrunmask(&attr, &runmask);
     ASSERT_FALSE(get_result.has_value());
 }
+#endif  // __QNX__ < 800
 
 TEST_F(SpawnTest, posix_spawnattr_setsigignore_success)
 {
