@@ -33,7 +33,10 @@ impl<T> FixedCapacityQueue<T> {
     /// - Panics if the memory allocation fails.
     #[must_use]
     pub fn new(capacity: usize) -> Self {
-        assert!(capacity <= u32::MAX as usize, "FixedQueue can hold at most u32::MAX elements");
+        assert!(
+            capacity <= u32::MAX as usize,
+            "FixedQueue can hold at most u32::MAX elements"
+        );
         Self {
             inner: GenericQueue::new(capacity as u32),
         }

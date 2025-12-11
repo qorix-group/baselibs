@@ -11,9 +11,9 @@
 // SPDX-License-Identifier: Apache-2.0
 // *******************************************************************************
 
-use alloc::alloc::Layout;
 use alloc::alloc::alloc;
 use alloc::alloc::dealloc;
+use alloc::alloc::Layout;
 use core::marker::PhantomData;
 use core::mem::MaybeUninit;
 use core::ptr;
@@ -50,8 +50,12 @@ impl<T> Storage<T> for Heap<T> {
                 )
             });
             // SAFETY: `layout` has a non-zero size (because `capacity` is > 0)
-            NonNull::new(unsafe { alloc(layout) })
-                .unwrap_or_else(|| panic!("failed to allocate {capacity} elements of {typ}", typ = core::any::type_name::<T>()))
+            NonNull::new(unsafe { alloc(layout) }).unwrap_or_else(|| {
+                panic!(
+                    "failed to allocate {capacity} elements of {typ}",
+                    typ = core::any::type_name::<T>()
+                )
+            })
         } else {
             NonNull::dangling()
         };
@@ -141,11 +145,20 @@ mod tests {
             if capacity > 2 {
                 let partial_slice = unsafe { instance.subslice(1, 2) };
                 assert_eq!(partial_slice.len(), 1);
-                assert_eq!(partial_slice as *const T, instance.elements.as_ptr().wrapping_add(1));
+                assert_eq!(
+                    partial_slice as *const T,
+                    instance.elements.as_ptr().wrapping_add(1)
+                );
 
                 let end_slice = unsafe { instance.subslice(capacity - 1, capacity) };
                 assert_eq!(end_slice.len(), 1);
-                assert_eq!(end_slice as *const T, instance.elements.as_ptr().wrapping_add(capacity as usize - 1));
+                assert_eq!(
+                    end_slice as *const T,
+                    instance
+                        .elements
+                        .as_ptr()
+                        .wrapping_add(capacity as usize - 1)
+                );
             }
         }
 
@@ -172,11 +185,20 @@ mod tests {
             if capacity >= 2 {
                 let partial_slice = unsafe { instance.subslice_mut(1, 2) };
                 assert_eq!(partial_slice.len(), 1);
-                assert_eq!(partial_slice as *mut T, instance.elements.as_ptr().wrapping_add(1));
+                assert_eq!(
+                    partial_slice as *mut T,
+                    instance.elements.as_ptr().wrapping_add(1)
+                );
 
                 let end_slice = unsafe { instance.subslice_mut(capacity - 1, capacity) };
                 assert_eq!(end_slice.len(), 1);
-                assert_eq!(end_slice as *mut T, instance.elements.as_ptr().wrapping_add(capacity as usize - 1));
+                assert_eq!(
+                    end_slice as *mut T,
+                    instance
+                        .elements
+                        .as_ptr()
+                        .wrapping_add(capacity as usize - 1)
+                );
             }
         }
 
@@ -197,15 +219,30 @@ mod tests {
                 assert_eq!(first_element.as_ptr(), instance.elements.as_ptr());
 
                 let last_element = unsafe { instance.element(capacity - 1) };
-                assert_eq!(last_element.as_ptr(), instance.elements.as_ptr().wrapping_add(capacity as usize - 1));
+                assert_eq!(
+                    last_element.as_ptr(),
+                    instance
+                        .elements
+                        .as_ptr()
+                        .wrapping_add(capacity as usize - 1)
+                );
             }
 
             if capacity >= 2 {
                 let second_element = unsafe { instance.element(1) };
-                assert_eq!(second_element.as_ptr(), instance.elements.as_ptr().wrapping_add(1));
+                assert_eq!(
+                    second_element.as_ptr(),
+                    instance.elements.as_ptr().wrapping_add(1)
+                );
 
                 let last_element = unsafe { instance.element(capacity - 2) };
-                assert_eq!(last_element.as_ptr(), instance.elements.as_ptr().wrapping_add(capacity as usize - 2));
+                assert_eq!(
+                    last_element.as_ptr(),
+                    instance
+                        .elements
+                        .as_ptr()
+                        .wrapping_add(capacity as usize - 2)
+                );
             }
         }
 
@@ -226,15 +263,30 @@ mod tests {
                 assert_eq!(first_element.as_ptr(), instance.elements.as_ptr());
 
                 let last_element = unsafe { instance.element_mut(capacity - 1) };
-                assert_eq!(last_element.as_ptr(), instance.elements.as_ptr().wrapping_add(capacity as usize - 1));
+                assert_eq!(
+                    last_element.as_ptr(),
+                    instance
+                        .elements
+                        .as_ptr()
+                        .wrapping_add(capacity as usize - 1)
+                );
             }
 
             if capacity >= 2 {
                 let second_element = unsafe { instance.element_mut(1) };
-                assert_eq!(second_element.as_ptr(), instance.elements.as_ptr().wrapping_add(1));
+                assert_eq!(
+                    second_element.as_ptr(),
+                    instance.elements.as_ptr().wrapping_add(1)
+                );
 
                 let last_element = unsafe { instance.element_mut(capacity - 2) };
-                assert_eq!(last_element.as_ptr(), instance.elements.as_ptr().wrapping_add(capacity as usize - 2));
+                assert_eq!(
+                    last_element.as_ptr(),
+                    instance
+                        .elements
+                        .as_ptr()
+                        .wrapping_add(capacity as usize - 2)
+                );
             }
         }
 
