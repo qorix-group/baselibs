@@ -18,6 +18,16 @@ bazel_dep(name="score_baselibs", version="x.x.x")
 
 Replace `x.x.x` with a version from the [S-CORE Bazel Registry](https://github.com/eclipse-score/bazel_registry/tree/main/modules/score_baselibs), where all available releases are listed.
 
+### Required Configuration Options
+
+To use Base Libraries properly, you need to set the following build settings in your `.bazelrc` file or pass them to the `bazel` command:
+
+```bash
+--@score_baselibs//score/json:base_library=nlohmann
+--@score_baselibs//score/memory/shared/flags:use_typedshmd=False
+--@score_baselibs//score/mw/log/flags:KRemote_Logging=False
+```
+
 ### Using Unreleased Versions
 
 To depend on an unreleased version (e.g., for testing or development), you can use a [non-registry override](https://bazel.build/external/module#non-registry_overrides) in your `MODULE.bazel` file, for example `git_override`:
