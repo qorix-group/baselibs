@@ -78,6 +78,7 @@ cc_library(
     deps = [
         "@score_baselibs//score/language/futurecpp",
         "@score_baselibs//score/os:socket",
+        "@score_baselibs//score/os:version",
     ],
 )
 
