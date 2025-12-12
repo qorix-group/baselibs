@@ -60,7 +60,8 @@ jobs:
             -//score/os/mocklib/qnx:secpolev_mock \
             -//score/os/qnx:pci_safety \
             -//score/language/futurecpp/tests:jthread_test \
-            -//score/language/futurecpp/tests:math_test
+            -//score/language/futurecpp/tests:math_test \
+            -//score/mw/log/rust:log
       - name: Cleanup QNX License
         if: always()
         run: rm -rf /opt/score_qnx
