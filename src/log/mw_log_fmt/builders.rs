@@ -253,7 +253,10 @@ impl<'a> DebugSet<'a> {
 
     /// Finishes output and returns any error encountered.
     pub fn finish(&mut self) -> Result {
-        self.inner.result = self.inner.result.and_then(|_| self.inner.writer.write_str("}", &FormatSpec::new()));
+        self.inner.result = self
+            .inner
+            .result
+            .and_then(|_| self.inner.writer.write_str("}", &FormatSpec::new()));
         self.inner.result
     }
 }
@@ -323,7 +326,10 @@ impl<'a> DebugList<'a> {
 
     /// Finishes output and returns any error encountered.
     pub fn finish(&mut self) -> Result {
-        self.inner.result = self.inner.result.and_then(|_| self.inner.writer.write_str("]", &FormatSpec::new()));
+        self.inner.result = self
+            .inner
+            .result
+            .and_then(|_| self.inner.writer.write_str("]", &FormatSpec::new()));
         self.inner.result
     }
 }
@@ -542,7 +548,9 @@ mod tests {
 
         let mut writer = StringWriter::new();
         let spec = FormatSpec::new();
-        let _ = DebugStruct::new(&mut writer, &spec, "X").finish().map_err(|_| panic!("failed to finish"));
+        let _ = DebugStruct::new(&mut writer, &spec, "X")
+            .finish()
+            .map_err(|_| panic!("failed to finish"));
 
         assert_eq!(writer.get(), format!("{:?}", v));
     }
@@ -594,7 +602,9 @@ mod tests {
     fn test_tuple_empty_finish() {
         let mut writer = StringWriter::new();
         let spec = FormatSpec::new();
-        let _ = DebugTuple::new(&mut writer, &spec, "").finish().map_err(|_| panic!("failed to finish"));
+        let _ = DebugTuple::new(&mut writer, &spec, "")
+            .finish()
+            .map_err(|_| panic!("failed to finish"));
 
         assert_eq!(writer.get(), "");
     }
