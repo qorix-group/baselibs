@@ -21,9 +21,9 @@ bazel_dep(name = "score_toolchains_gcc", version = "0.5", dev_dependency = True)
 
 gcc = use_extension("@score_toolchains_gcc//extentions:gcc.bzl", "gcc", dev_dependency = True)
 gcc.toolchain(
-    sha256 = "457f5f20f57528033cb840d708b507050d711ae93e009388847e113b11bf3600",
+    sha256 = "8fa85c2a93a6bef1cf866fa658495a2416dfeec692e4246063b791abf18da083",
     strip_prefix = "x86_64-unknown-linux-gnu",
-    url = "https://github.com/eclipse-score/toolchains_gcc_packages/releases/download/0.0.1/x86_64-unknown-linux-gnu_gcc12.tar.gz",
+    url = "https://github.com/eclipse-score/toolchains_gcc_packages/releases/download/v0.0.3/x86_64-unknown-linux-gnu_gcc12.tar.gz",
 )
 gcc.extra_features(
     features = [
@@ -74,16 +74,15 @@ bazel_dep(name = "rules_python", version = "1.4.1")
 
 PYTHON_VERSION = "3.12"
 
-python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+python = use_extension("@rules_python//python/extensions:python.bzl", "python", dev_dependency = True)
 python.toolchain(
     #configure_coverage_tool = True,
     is_default = True,
     python_version = PYTHON_VERSION,
 )
 
-# Additional Python rules provided by aspect, e.g. an improved version of
-bazel_dep(name = "aspect_rules_py", version = "1.4.0")
-bazel_dep(name = "buildifier_prebuilt", version = "8.2.0.2")
+bazel_dep(name = "aspect_rules_py", version = "1.4.0", dev_dependency = True)
+bazel_dep(name = "buildifier_prebuilt", version = "8.2.0.2", dev_dependency = True)
 
 deb = use_repo_rule("@download_utils//download/deb:defs.bzl", "download_deb")
 

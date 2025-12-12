@@ -6419,7 +6419,7 @@
     "@@score_toolchains_gcc+//extentions:gcc.bzl%gcc": {
       "general": {
         "bzlTransitiveDigest": "o/+Ff/fsotFJMxOHvFi205VRu+OlBnf0grk+/5KWhFU=",
-        "usagesDigest": "kw7GshkN6HRXINFt1+ks/eeWH9Y2nIIgzSD4RXzkteU=",
+        "usagesDigest": "HMVKyChYgFHS/fJt5jDybGrc5EvaXt/VrzJaN83fSHc=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -6428,10 +6428,10 @@
             "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_archive",
             "attributes": {
               "urls": [
-                "https://github.com/eclipse-score/toolchains_gcc_packages/releases/download/0.0.1/x86_64-unknown-linux-gnu_gcc12.tar.gz"
+                "https://github.com/eclipse-score/toolchains_gcc_packages/releases/download/v0.0.3/x86_64-unknown-linux-gnu_gcc12.tar.gz"
               ],
               "build_file": "@@score_toolchains_gcc+//toolchain/third_party:gcc.BUILD",
-              "sha256": "457f5f20f57528033cb840d708b507050d711ae93e009388847e113b11bf3600",
+              "sha256": "8fa85c2a93a6bef1cf866fa658495a2416dfeec692e4246063b791abf18da083",
               "strip_prefix": "x86_64-unknown-linux-gnu"
             }
           },
