@@ -36,6 +36,7 @@ enum class ErrorCode : score::result::ErrorCode
     kNotEnoughMemoryRecoverable,             ///< Not enough memory for allocation (Recoverable)
     kNoMetaInfoProvidedRecoverable,          ///< No meta info were provided (Recoverable)
     kNotEnoughMemoryInContainerRecoverable,  ///< Not enough memory in trace job container (Recoverable)
+    kOffsetCalculationFailedRecoverable,     ///< Offset calculation failed (Recoverable)
 
     kAtomicRingBufferFullRecoverable,        ///< Atomic ring buffer full (Recoverable)
     kAtomicRingBufferEmptyRecoverable,       ///< Atomic ring buffer empty (Recoverable)

@@ -46,6 +46,9 @@ std::string_view score::analysis::tracing::GenericTraceAPIErrorDomain::MessageFo
         case ErrorCode::kNotEnoughMemoryInContainerRecoverable:
             error_message = "Not enough memory in trace job container";
             break;
+        case ErrorCode::kOffsetCalculationFailedRecoverable:
+            error_message = "Offset calculation failed";
+            break;
         case ErrorCode::kAtomicRingBufferFullRecoverable:
             error_message = "Atomic ring buffer full";
             break;
@@ -236,6 +239,7 @@ bool score::analysis::tracing::IsErrorRecoverable(const score::analysis::tracing
         case ErrorCode::kNotEnoughMemoryRecoverable:
         case ErrorCode::kNoMetaInfoProvidedRecoverable:
         case ErrorCode::kNotEnoughMemoryInContainerRecoverable:
+        case ErrorCode::kOffsetCalculationFailedRecoverable:
         case ErrorCode::kAtomicRingBufferFullRecoverable:
         case ErrorCode::kAtomicRingBufferEmptyRecoverable:
         case ErrorCode::kAtomicRingBufferMaxRetriesRecoverable:
