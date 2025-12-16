@@ -121,6 +121,15 @@ class zspan
     class basic_element_accessor
     {
       public:
+        /// @brief destructor
+        ~basic_element_accessor() noexcept = default;
+
+        /// @brief move construction is prohibited
+        constexpr basic_element_accessor(basic_element_accessor&&) noexcept = delete;
+
+        /// @brief copy construction is prohibited
+        constexpr basic_element_accessor(const basic_element_accessor&) noexcept = delete;
+
         /// @brief constructs an `basic_element_accessor` for provided \p data; at position \p index;
         constexpr basic_element_accessor(pointer data, size_type index) noexcept : element_{&data[index]} {}
 
@@ -149,6 +158,13 @@ class zspan
             return *this;
         }
 
+        /// @brief given that assigments are permitted, performs assignment of the underlying element
+        constexpr basic_element_accessor& operator=(basic_element_accessor&& other) noexcept
+        {
+            this->operator=(other);
+            return *this;
+        }
+
         /// @brief swap operator for `basic_element_accessor`
         /// @details swaps the _underlying_ elements being referenced by \p lhs; and \p rhs;
         friend constexpr void swap(basic_element_accessor lhs, basic_element_accessor rhs) noexcept
@@ -167,6 +183,15 @@ class zspan
         constexpr operator const_reference() const noexcept
         {
             return *element_;
+        }
+
+      private:
+        /// @brief operator for taking the address of `basic_element_accessor` is marked private
+        /// @details Rationale is to prevent exposing any (non-const) pointer to the underlying sequence
+        ///          which can potentially be used to overwrite the trailing null-terminator.
+        const basic_element_accessor* operator&() const noexcept
+        {
+            return this;
         }
 
       private:
