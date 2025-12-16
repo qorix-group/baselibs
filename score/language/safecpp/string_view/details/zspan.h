@@ -134,9 +134,9 @@ class zspan
         constexpr basic_element_accessor(pointer data, size_type index) noexcept : element_{&data[index]} {}
 
         /// @brief given that assigments are permitted and value types are assignable, assigns provided \p value;
-        template <typename ValueType>
-        constexpr std::enable_if_t<std::is_assignable_v<reference, ValueType>, basic_element_accessor&> operator=(
-            ValueType value) noexcept(std::is_nothrow_assignable_v<reference, ValueType>)
+        template <typename ValueType, std::enable_if_t<std::is_assignable_v<reference, ValueType>, bool> = true>
+        constexpr basic_element_accessor& operator=(ValueType value) noexcept(
+            std::is_nothrow_assignable_v<reference, ValueType>)
         {
             static_assert(not(is_read_only),
                           "safecpp::details::zspan::basic_element_accessor: assignments "
