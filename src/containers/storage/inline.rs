@@ -123,17 +123,11 @@ mod tests {
 
             let empty_slice = unsafe { instance.subslice(0, 0) };
             assert_eq!(empty_slice.len(), 0);
-            assert_eq!(
-                empty_slice as *const T,
-                instance.elements.as_ptr() as *const T
-            );
+            assert_eq!(empty_slice as *const T, instance.elements.as_ptr() as *const T);
 
             let full_slice = unsafe { instance.subslice(0, capacity) };
             assert_eq!(full_slice.len(), capacity as usize);
-            assert_eq!(
-                full_slice as *const T,
-                instance.elements.as_ptr() as *const T
-            );
+            assert_eq!(full_slice as *const T, instance.elements.as_ptr() as *const T);
 
             if capacity > 2 {
                 let partial_slice = unsafe { instance.subslice(1, 2) };
@@ -147,10 +141,7 @@ mod tests {
                 assert_eq!(end_slice.len(), 1);
                 assert_eq!(
                     end_slice as *const T,
-                    instance
-                        .elements
-                        .as_ptr()
-                        .wrapping_add(capacity as usize - 1) as *const T
+                    instance.elements.as_ptr().wrapping_add(capacity as usize - 1) as *const T
                 );
             }
         }
@@ -190,10 +181,7 @@ mod tests {
                 assert_eq!(end_slice.len(), 1);
                 assert_eq!(
                     end_slice as *mut T,
-                    instance
-                        .elements
-                        .as_ptr()
-                        .wrapping_add(capacity as usize - 1) as *mut T
+                    instance.elements.as_ptr().wrapping_add(capacity as usize - 1) as *mut T
                 );
             }
         }
@@ -215,18 +203,12 @@ mod tests {
 
             if capacity >= 1 {
                 let first_element = unsafe { instance.element(0) };
-                assert_eq!(
-                    first_element.as_ptr(),
-                    instance.elements.as_ptr() as *const T
-                );
+                assert_eq!(first_element.as_ptr(), instance.elements.as_ptr() as *const T);
 
                 let last_element = unsafe { instance.element(capacity - 1) };
                 assert_eq!(
                     last_element.as_ptr(),
-                    instance
-                        .elements
-                        .as_ptr()
-                        .wrapping_add(capacity as usize - 1) as *const T,
+                    instance.elements.as_ptr().wrapping_add(capacity as usize - 1) as *const T,
                 );
             }
 
@@ -240,10 +222,7 @@ mod tests {
                 let last_element = unsafe { instance.element(capacity - 2) };
                 assert_eq!(
                     last_element.as_ptr(),
-                    instance
-                        .elements
-                        .as_ptr()
-                        .wrapping_add(capacity as usize - 2) as *const T,
+                    instance.elements.as_ptr().wrapping_add(capacity as usize - 2) as *const T,
                 );
             }
         }
@@ -270,10 +249,7 @@ mod tests {
                 let last_element = unsafe { instance.element_mut(capacity - 1) };
                 assert_eq!(
                     last_element.as_ptr(),
-                    instance
-                        .elements
-                        .as_ptr()
-                        .wrapping_add(capacity as usize - 1) as *mut T,
+                    instance.elements.as_ptr().wrapping_add(capacity as usize - 1) as *mut T,
                 );
             }
 
@@ -287,10 +263,7 @@ mod tests {
                 let last_element = unsafe { instance.element_mut(capacity - 2) };
                 assert_eq!(
                     last_element.as_ptr(),
-                    instance
-                        .elements
-                        .as_ptr()
-                        .wrapping_add(capacity as usize - 2) as *mut T,
+                    instance.elements.as_ptr().wrapping_add(capacity as usize - 2) as *mut T,
                 );
             }
         }

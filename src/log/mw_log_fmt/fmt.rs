@@ -164,7 +164,9 @@ mod tests {
 
         let result = ScoreDebug::fmt(&args, &mut w, &FormatSpec::new());
         assert!(result == Ok(()));
-        assert!(w.get() == "test_true123.4432.2-100-1234-123456-120000000000000000012312341234561200000000000000000_string")
+        assert!(
+            w.get() == "test_true123.4432.2-100-1234-123456-120000000000000000012312341234561200000000000000000_string"
+        )
     }
 
     #[test]
