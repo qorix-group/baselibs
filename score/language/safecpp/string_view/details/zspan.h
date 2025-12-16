@@ -142,7 +142,10 @@ class zspan
             static_assert(not(is_read_only),
                           "safecpp::details::zspan::basic_element_accessor: assignments "
                           "are not permitted for this readonly element accessor type");
-            *element_ = *other.element_;
+            if (this != &other)
+            {
+                *element_ = *other.element_;
+            }
             return *this;
         }
 
