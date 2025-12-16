@@ -130,7 +130,9 @@ class zspan
         /// @brief copy construction is prohibited
         constexpr basic_element_accessor(const basic_element_accessor&) noexcept = delete;
 
-        /// @brief constructs an `basic_element_accessor` for provided \p data; at position \p index;
+        /// @brief constructs a `basic_element_accessor` for provided \p data; at position \p index;
+        /// @note assumes that \p data; is a valid pointer and \p index; is in bounds
+        /// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic) see above note as justification
         constexpr basic_element_accessor(pointer data, size_type index) noexcept : element_{&data[index]} {}
 
         /// @brief given that assigments are permitted and value types are assignable, assigns provided \p value;
