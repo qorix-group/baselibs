@@ -51,6 +51,36 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "safe_result",
+    hdrs = ["safe_result.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "//visibility:public",  # platform_only
+    ],
+    deps = [
+        ":error",
+        ":result",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/result/details/expected",
+        "@score_baselibs//score/result/details/expected:extensions",
+    ],
+)
+
+cc_binary(
+    name = "safe_result_example",
+    srcs = ["safe_result_example.cpp"],
+    features = COMPILER_WARNING_FEATURES,
+    deps = [
+        ":error",
+        ":safe_result",
+        "@score_baselibs//score/language/futurecpp",
+        "@score_baselibs//score/result/details/expected",
+        "@score_baselibs//score/result/details/expected:extensions",
+    ],
+)
+
 cc_gtest_unit_test(
     name = "tests",
     srcs = [

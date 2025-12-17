@@ -3,10 +3,45 @@
 // Example usage of SafeResult with compile-time type signature verification
 // Demonstrates the type-safety guarantees provided by CRC32 checksums
 
-#include <iostream>
+#include "score/result/error.h"
+#include "score/result/error_code.h"
 #include "score/result/safe_result.h"
 
+#include <iostream>
+#include <cassert>
+#include <string_view>
+
 namespace example {
+
+enum class ExampleErrorCode : score::result::ErrorCode
+{
+    kInvalidArgument,
+    kOutOfRange,
+};
+
+class ExampleErrorDomain final : public score::result::ErrorDomain
+{
+  public:
+    std::string_view MessageFor(const score::result::ErrorCode& code) const noexcept override
+    {
+        switch (static_cast<ExampleErrorCode>(code))
+        {
+            case ExampleErrorCode::kInvalidArgument:
+                return "Invalid Argument";
+            case ExampleErrorCode::kOutOfRange:
+                return "Out of Range";
+            default:
+                return "Unknown Error";
+        }
+    }
+};
+
+constexpr ExampleErrorDomain example_error_domain;
+
+score::result::Error MakeError(ExampleErrorCode code, std::string_view user_message = "") noexcept
+{
+    return {static_cast<score::result::ErrorCode>(code), example_error_domain, user_message};
+}
 
 using namespace score::result;
 
@@ -34,7 +69,7 @@ SafeResult<bool> CheckConfiguration() {
 SafeResult<int> ReadConfigurationValue(const std::string& key) {
   if (key.empty()) {
     return SafeResult<int>(
-        MakeUnexpected(ErrorCode::kInvalidArgument, "Key is empty"));
+        score::MakeUnexpected(ExampleErrorCode::kInvalidArgument, std::string_view("Key is empty")));
   }
 
   // Simulate reading a value
@@ -103,7 +138,7 @@ SafeResult<float> CalculateTemperature(float rawSensorValue) {
   // Validate input
   if (rawSensorValue < -50.0f || rawSensorValue > 150.0f) {
     return SafeResult<float>(
-        MakeUnexpected(ErrorCode::kOutOfRange, "Sensor value out of range"));
+        score::MakeUnexpected(ExampleErrorCode::kOutOfRange, std::string_view("Sensor value out of range")));
   }
 
   // Perform calculation
@@ -113,7 +148,7 @@ SafeResult<float> CalculateTemperature(float rawSensorValue) {
 
 /// Client code that uses the SafeResult
 void UseTemperatureResult() {
-  auto temp_result = CalculateTemperature(25.0f);
+  SafeResult<float> temp_result = CalculateTemperature(25.0f);
 
   // Verify the type signature (this should always pass if C++ and Rust agree)
   if (!temp_result.VerifyChecksum()) {
@@ -205,10 +240,31 @@ extern "C" SafeResult<bool> FFIFunctionReturnsResult() {
   return SafeResult<bool>(true);
 }
 
-// To call from Rust:
-//   let safe_result = ffi::ffi_function_returns_result();
-//   safe_result.verify_type_signature()?;  // Will return ChecksumMismatch if wrong
-//   let result: Result<bool, Error> = safe_result.into();
+// ============================================================================
+// Example 9: FFI Functions for Rust Type Mismatch Testing
+// ============================================================================
+
+/// C++ function that returns SafeResult<int>
+/// Used by Rust example to test type mismatch detection
+extern "C" SafeResult<int> cpp_read_configuration_value(const char* key) {
+  if (key == nullptr || *key == '\0') {
+    return SafeResult<int>(
+        score::MakeUnexpected(ExampleErrorCode::kInvalidArgument,
+                           std::string_view("Key is empty")));
+  }
+
+  // Simulate reading a configuration value
+  int config_value = 42;
+  return SafeResult<int>(config_value);
+}
+
+/// C++ function that returns SafeResult<bool>
+/// Used by Rust example to test successful type verification
+extern "C" SafeResult<bool> cpp_check_configuration() {
+  // Simulate configuration check
+  bool is_valid = true;
+  return SafeResult<bool>(is_valid);
+}
 
 }  // namespace example
 

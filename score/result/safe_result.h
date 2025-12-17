@@ -165,8 +165,8 @@ constexpr std::array<uint32_t, 256> kCrc32Table =
 /// Computes CRC32 of a string at compile time
 constexpr uint32_t Crc32(std::string_view data) {
   uint32_t crc = ~0U;
-  for (unsigned char byte : data) {
-    crc = kCrc32Table[(crc ^ byte) & 0xFF] ^ (crc >> 8);
+  for (char byte : data) {
+    crc = kCrc32Table[(crc ^ static_cast<unsigned char>(byte)) & 0xFF] ^ (crc >> 8);
   }
   return ~crc;
 }
