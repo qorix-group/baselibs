@@ -23,12 +23,27 @@ namespace score
 namespace concurrency
 {
 
+template <typename T, typename = void, typename = void>
+struct is_basic_lockable : std::false_type
+{
+};
+
+template <typename T>
+struct is_basic_lockable<T,
+                         std::void_t<decltype(std::declval<T&>().lock())>,
+                         std::void_t<decltype(std::declval<T&>().unlock())>> : std::true_type
+{
+};
+
+template <typename T>
+using is_basic_lockable_t = typename is_basic_lockable<T>::type;
+
 /**
  * @file synchronized.h
  * @brief Small helper providing serialized access to an object.
  *
  * @section what What is Synchronized?
- * Synchronized<T, Mutex> wraps an object of type T together with a Mutex
+ * Synchronized<T, Lockable> wraps an object of type T together with a Lockable
  * (std::mutex by default) and provides RAII-based, mutex-protected access
  * to that object. All reads and writes are expected to go through lock()
  * or with_lock(), making the relationship between the object and its lock
@@ -36,7 +51,7 @@ namespace concurrency
  *
  * @section how How does it work?
  * - Internally stores:
- *     - mutable Mutex mut;
+ *     - mutable Lockable mut;
  *     - T obj;
  * - lock():
  *     - Acquires mut via std::unique_lock.
@@ -76,7 +91,7 @@ namespace concurrency
  * @endcode
  *
  * @note
- * - The default Mutex is std::mutex, which is non-recursive.
+ * - The default Lockable is std::mutex, which is non-recursive.
  *   Locking the same mutex multiple times from the same thread has
  *   undefined behaviour
  *   (see https://en.cppreference.com/w/cpp/thread/mutex/lock).
@@ -89,7 +104,10 @@ namespace concurrency
  * f.with_lock([](Foo& x) { x.do_something(); });
  * @endcode
  */
-template <typename T, typename Mutex = std::mutex>
+template <typename T,
+          typename Lockable = std::mutex,
+          typename = std::enable_if_t<std::is_default_constructible_v<Lockable> && std::is_destructible_v<Lockable>,
+                                      is_basic_lockable_t<Lockable>>>
 class Synchronized
 {
   public:
@@ -132,7 +150,7 @@ class Synchronized
     }
 
   private:
-    mutable Mutex mut;
+    mutable Lockable mut;
     T obj;
 };
 
