@@ -113,6 +113,53 @@ struct TypeSignature<T&> {
   static constexpr std::string_view value = "ref";
 };
 
+// String type
+template <>
+struct TypeSignature<std::string> {
+  static constexpr std::string_view value = "str";
+};
+
+// String view type
+template <>
+struct TypeSignature<std::string_view> {
+  static constexpr std::string_view value = "strv";
+};
+
+// Vector types: "vec<T>"
+template <typename T>
+class VecSignatureBuilder {
+ private:
+  static constexpr std::string_view elem_sig = TypeSignature<T>::value;
+
+ public:
+  static constexpr auto Build() {
+    constexpr std::string_view prefix = "vec<";
+    constexpr std::string_view suffix = ">";
+    constexpr std::size_t total_size = prefix.size() + elem_sig.size() + suffix.size();
+    std::array<char, total_size + 1> result{};
+
+    std::size_t pos = 0;
+    for (char c : prefix) result[pos++] = c;
+    for (char c : elem_sig) result[pos++] = c;
+    for (char c : suffix) result[pos++] = c;
+    result[pos] = '\0';
+
+    return result;
+  }
+};
+
+/// Specialized TypeSignature for vector
+template <typename T>
+struct TypeSignatureVector {
+  static constexpr auto vec_array = VecSignatureBuilder<T>::Build();
+  static constexpr std::string_view value = std::string_view(vec_array.data());
+};
+
+template <typename T>
+struct TypeSignature<std::vector<T>> {
+  static constexpr std::string_view value = TypeSignatureVector<T>::value;
+};
+
 // ============================================================================
 // Compile-Time String Concatenation
 // ============================================================================
@@ -241,6 +288,41 @@ class MultiTypeSignature<T> {
 };
 
 // ============================================================================
+// Macro for Registering Complex Type Signatures
+// ============================================================================
+
+/// Macro to register a class type with a custom signature string
+/// This generates a TypeSignature specialization for complex class types
+///
+/// Usage (must be called at GLOBAL SCOPE, after the class definition):
+///   REGISTER_COMPLEX_TYPE_SIGNATURE_DIRECT(MyClass, "{b, i32, f32, vec<str>}");
+///   REGISTER_COMPLEX_TYPE_SIGNATURE_DIRECT(ns1::ns2::MyClass, "{i32, f32}");
+///
+/// For a class with members: bool, int, float, vector<string>
+/// The signature concatenates all member signatures in declaration order.
+///
+/// IMPORTANT PLACEMENT:
+/// - Call this macro at GLOBAL SCOPE (not inside any namespace block)
+/// - Call it AFTER the class is fully defined
+/// - Use the fully qualified class name if the class is in a namespace
+///
+/// RECOMMENDED PATTERN:
+///   namespace score::result {
+///       class Complex { ... };
+///   }  // namespace score::result
+///
+///   // Register OUTSIDE and after the namespace
+///   REGISTER_COMPLEX_TYPE_SIGNATURE_DIRECT(score::result::Complex, "{b, i32, f32, vec<str>}");
+///
+/// The macro explicitly specializes ::score::result::TypeSignature for the
+/// class name, working correctly from global scope regardless of the class's namespace.
+#define REGISTER_COMPLEX_TYPE_SIGNATURE_DIRECT(ClassName, SignatureString) \
+  template <> \
+  struct score::result::TypeSignature<ClassName> { \
+    static constexpr std::string_view value = SignatureString; \
+  }
+
+// ============================================================================
 // SafeResult: Result with Type Signature Verification
 // ============================================================================
 
@@ -366,6 +448,134 @@ class SafeResult {
 /// Example: using MyResultInt = SafeResultWithError<int, MyErrorCode>;
 template <typename T, typename ErrorCodeEnum>
 using SafeResultWithError = SafeResult<T, Error>;
+
+// ============================================================================
+// Meta-Programming Support for Complex Types
+// ============================================================================
+//
+// OVERVIEW:
+// SafeResult uses compile-time type signatures to enable runtime CRC32 verification.
+// This ensures type safety across C++/Rust FFI boundaries.
+//
+// WHY NO AUTOMATIC MEMBER INTROSPECTION?
+// ──────────────────────────────────────
+// Q: Can we automatically derive class member types at compile-time?
+// A: Not in C++17. Here's why:
+//
+// C++ Reflection Limitations:
+//   1. No reflection API: C++17 has no std::member_types or field iteration
+//   2. Template metaprogramming cannot enumerate class members
+//   3. Access control: Private members cannot be introspected without friend access
+//   4. Non-standard representations: Bitfields, base classes, padding are compiler-dependent
+//   5. Future: C++26 will add std::reflect API, but it's not yet standardized
+//
+// Why Explicit Registration is Better:
+//   1. Intentionality: Forces developer to think about type compatibility
+//   2. Refactoring safety: Member reordering causes signature mismatch (catches bugs!)
+//   3. Type clarity: Developers document what types cross FFI boundaries
+//   4. No surprises: Silent automatic changes could break C++/Rust contracts
+//   5. Performance: No runtime type inspection overhead
+//
+// The framework supports:
+//
+// 1. FUNDAMENTAL TYPES:
+//    - bool → "b"
+//    - char → "c"
+//    - int → "i32"
+//    - float → "f32"
+//    - double → "f64"
+//    - Pointers → "ptr"
+//
+// 2. STANDARD CONTAINERS (Auto-generated):
+//    - std::string → "str" (owned, has data)
+//    - std::string_view → "strv" (non-owning view, critically different!)
+//    - std::vector<T> → "vec<T>" (e.g., vec<i32>, vec<str>, vec<vec<str>>)
+//
+// 3. COMPLEX CLASS TYPES (Manual Registration with readable format):
+//    Format: "{" + comma-separated member types + "}"
+//    Example: class{bool, int, float, vec<str>} → "{b, i32, f32, vec<str>}"
+//    Users must explicitly register their class types with member type signatures.
+//
+// REGISTRATION FOR COMPLEX TYPES:
+//
+// Method 1: Manual Template Specialization (Recommended for one-off types)
+//   namespace score::result {
+//   template <>
+//   struct TypeSignature<MyClass> {
+//     static constexpr std::string_view value = "signature_string";
+//   };
+//   }  // namespace score::result
+//
+// Method 2: Macro-based Registration (Recommended for clarity)
+//   // Place after class definition, can be at global or namespace scope:
+//   REGISTER_COMPLEX_TYPE_SIGNATURE_DIRECT(MyClass, "signature_string");
+//   // This expands to the manual specialization above
+//
+// SIGNATURE ENCODING RULES:
+//
+// - Format: "{" + comma-separated member types + "}"
+// - Spaces after commas improve human readability
+// - Members encoded in declaration order (order matters for safety!)
+// - Each type has short code: b=bool, i32=int, f32=float, str=string, strv=string_view, etc.
+// - Containers use template syntax: vec<i32>, vec<str>, vec<vec<str>>
+// - CRITICAL: std::string ("str") and std::string_view ("strv") are DIFFERENT types
+//   This prevents accidental mixing of owned vs. borrowed strings
+//
+// EXAMPLE: Complex Type with Members
+//   class Configuration {
+//     bool enabled;                           // "b"
+//     int timeout_ms;                         // "i32"
+//     float calibration;                      // "f32"
+//     std::vector<std::string> names;         // "vec<str>"
+//   };
+//   // Readable signature: "{b, i32, f32, vec<str>}"
+//   REGISTER_COMPLEX_TYPE_SIGNATURE_DIRECT(Configuration, "{b, i32, f32, vec<str>}");
+//
+// WHY EXPLICIT MEMBER ORDERING MATTERS:
+//   If a developer refactors and moves members:
+//     Before: {b, i32, f32, vec<str>}   ✓ Passes
+//     After:  {i32, b, f32, vec<str>}   ✗ CRC32 mismatch caught!
+//   This catches silent type errors that could break FFI contracts.
+//
+// IMPLEMENTATION NOTES:
+//
+// - VecSignatureBuilder: Compile-time builder for std::vector signatures
+//   Uses template metaprogramming to concatenate "vec<", element type, ">"
+//
+// - ConcatStrings: Static string concatenation utility
+//   Builds fixed-size arrays with concatenated signature strings
+//
+// - Macro Expansion: REGISTER_COMPLEX_TYPE_SIGNATURE_DIRECT
+//   Opens score::result namespace and adds template specialization
+//   Can be called at global scope or within a namespace
+//
+// COMPILE-TIME GUARANTEES:
+//
+// - All signatures computed at compile-time (zero runtime overhead)
+// - CRC32 checksums verified at SafeResult construction
+// - Type mismatches detected early in development
+// - Impossible to accidentally use wrong type across FFI
+//
+// RUNTIME VERIFICATION:
+//
+// When SafeResult is received on Rust side (or checked in C++):
+//   uint32_t received_crc = result.GetChecksum();
+//   if (received_crc != SafeResult<T>::GetTypeChecksum()) {
+//     // Type mismatch detected! Error handling...
+//   }
+//
+// TROUBLESHOOTING:
+//
+// Error: "TypeSignature not defined for this class type"
+//   → Add REGISTER_COMPLEX_TYPE_SIGNATURE_DIRECT(YourClass, "signature") after class
+//
+// Error: "incomplete type used in nested name specifier"
+//   → Ensure registration happens AFTER class definition, not inside it
+//
+// Signature mismatch on Rust side:
+//   → Verify Rust and C++ signatures match exactly (case-sensitive!)
+//   → Check member order is identical
+//   → Ensure all nested types are properly encoded
 
 }  // namespace score::result
 

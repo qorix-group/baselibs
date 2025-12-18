@@ -6,10 +6,13 @@
 #include "score/result/error.h"
 #include "score/result/error_code.h"
 #include "score/result/safe_result.h"
+#include "score/result/safe_result_example_ffi.h"
 
 #include <iostream>
 #include <cassert>
 #include <string_view>
+#include <vector>
+#include <string>
 
 namespace example {
 
@@ -18,6 +21,10 @@ enum class ExampleErrorCode : score::result::ErrorCode
     kInvalidArgument,
     kOutOfRange,
 };
+
+}  // namespace example (closed temporarily for Complex TypeSignature registration)
+
+namespace example {  // Reopen namespace for remaining code
 
 class ExampleErrorDomain final : public score::result::ErrorDomain
 {
@@ -38,12 +45,12 @@ class ExampleErrorDomain final : public score::result::ErrorDomain
 
 constexpr ExampleErrorDomain example_error_domain;
 
+using namespace score::result;
+
 score::result::Error MakeError(ExampleErrorCode code, std::string_view user_message = "") noexcept
 {
     return {static_cast<score::result::ErrorCode>(code), example_error_domain, user_message};
 }
-
-using namespace score::result;
 
 // ============================================================================
 // Example 1: Simple SafeResult with bool
@@ -218,6 +225,8 @@ void DemoTypeVariations() {
   assert(checksum_bool != checksum_float);
 }
 
+}  // namespace example
+
 // ============================================================================
 // Example 8: FFI Boundary with Type Verification
 // ============================================================================
@@ -235,38 +244,15 @@ void DemoTypeVariations() {
 /// - If mismatch, returns ChecksumMismatch error
 /// - Otherwise, safely converts to std::result::Result<T, E>
 
-extern "C" SafeResult<bool> FFIFunctionReturnsResult() {
+extern "C" score::result::SafeResult<bool> FFIFunctionReturnsResult() {
   // The CRC32 is embedded here
-  return SafeResult<bool>(true);
+  return score::result::SafeResult<bool>(true);
 }
 
 // ============================================================================
-// Example 9: FFI Functions for Rust Type Mismatch Testing
+// Example 10: Complex type
 // ============================================================================
 
-/// C++ function that returns SafeResult<int>
-/// Used by Rust example to test type mismatch detection
-extern "C" SafeResult<int> cpp_read_configuration_value(const char* key) {
-  if (key == nullptr || *key == '\0') {
-    return SafeResult<int>(
-        score::MakeUnexpected(ExampleErrorCode::kInvalidArgument,
-                           std::string_view("Key is empty")));
-  }
-
-  // Simulate reading a configuration value
-  int config_value = 42;
-  return SafeResult<int>(config_value);
-}
-
-/// C++ function that returns SafeResult<bool>
-/// Used by Rust example to test successful type verification
-extern "C" SafeResult<bool> cpp_check_configuration() {
-  // Simulate configuration check
-  bool is_valid = true;
-  return SafeResult<bool>(is_valid);
-}
-
-}  // namespace example
 
 int main() {
   std::cout << "SafeResult Examples\n"
@@ -282,6 +268,8 @@ int main() {
   std::cout << "\n";
 
   example::DemoTypeVariations();
+
+  score::result::SafeResult<score::result::Complex> complex_result = cpp_get_complex_configuration();
 
   return 0;
 }
