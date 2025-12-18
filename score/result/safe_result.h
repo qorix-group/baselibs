@@ -331,14 +331,13 @@ class MultiTypeSignature<T> {
 ///
 /// Layout (for Result<bool>):
 /// ┌─────────────────────────────────┐
-/// │ uint32_t crc32_checksum         │ Offset 0, size 4
+/// │ Result<T, E> result             │ Offset 0, size 33+ (depends on types)
 /// ├─────────────────────────────────┤
-/// │ uint32_t padding                │ Offset 4, size 4 (alignment)
-/// ├─────────────────────────────────┤
-/// │ Result<T, E> result             │ Offset 8, size 33+ (depends on types)
+/// │ uint32_t crc32_checksum         │ Offset var, size 4
 /// └─────────────────────────────────┘
 ///
-/// The CRC32 is computed from the concatenated type signatures of T and E.
+/// The CRC32 is placed at the END to avoid unnecessary padding bytes.
+/// This is an optimization over traditional layouts with checksum at front.
 template <typename T, typename E = Error>
 class SafeResult {
  public:
@@ -352,11 +351,10 @@ class SafeResult {
     return ComputeCrc32(GetTypeSignature());
   }
 
-  // Storage layout: CRC32 first, then the Result
+  // Storage layout: Result first, then CRC32 at the end (no padding needed)
   struct Storage {
-    uint32_t crc32_checksum;  // Verification checksum
-    uint32_t padding;         // Alignment to 8 bytes (for FFI stability)
-    Result<T> result;         // The actual Result<T, E>
+    Result<T> result;         // The actual Result<T, E> (variable size)
+    uint32_t crc32_checksum;  // Verification checksum (at end, no padding)
   };
 
   // ========================================================================
@@ -365,15 +363,15 @@ class SafeResult {
 
   /// Construct with a value
   constexpr explicit SafeResult(T value) noexcept
-      : storage_{GetTypeChecksum(), 0, Result<T>(std::move(value))} {}
+      : storage_{Result<T>(std::move(value)), GetTypeChecksum()} {}
 
   /// Construct with an error
   constexpr explicit SafeResult(Unexpected error) noexcept
-      : storage_{GetTypeChecksum(), 0, Result<T>(error)} {}
+      : storage_{Result<T>(error), GetTypeChecksum()} {}
 
   /// Construct with a Result directly
   constexpr explicit SafeResult(Result<T> result) noexcept
-      : storage_{GetTypeChecksum(), 0, std::move(result)} {}
+      : storage_{std::move(result), GetTypeChecksum()} {}
 
   /// Default constructor (deleted - must be explicit)
   SafeResult() = delete;
