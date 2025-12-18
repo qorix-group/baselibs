@@ -18,10 +18,6 @@
 //!
 //! Results are compared with Rust built-in `Debug` derive macro.
 
-// TODO: tests fail for `+nightly-2025-05-30` and older.
-// Remove `#[cfg(not(miri))]` once updated in CI.
-// https://github.com/eclipse-score/baselibs_rust/issues/31
-
 mod utils;
 
 use crate::utils::StringWriter;
@@ -29,7 +25,6 @@ use mw_log_fmt::{write, ScoreDebug};
 use mw_log_fmt_macro::{mw_log_format_args, ScoreDebug};
 
 #[test]
-#[cfg(not(miri))]
 fn test_struct_named() {
     #[derive(Debug, ScoreDebug)]
     struct Point {
@@ -54,7 +49,6 @@ fn test_struct_named() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_struct_unnamed() {
     #[derive(Debug, ScoreDebug)]
     struct Point(i32, i32, String);
@@ -71,7 +65,6 @@ fn test_struct_unnamed() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_struct_unit() {
     #[derive(Debug, ScoreDebug)]
     struct UnitStruct;
@@ -88,7 +81,6 @@ fn test_struct_unit() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_struct_generics() {
     #[derive(Debug, ScoreDebug)]
     // #[derive(Debug)]
@@ -112,7 +104,6 @@ fn test_struct_generics() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_enum_plain() {
     #[allow(dead_code)]
     #[derive(Debug, ScoreDebug)]
@@ -134,7 +125,6 @@ fn test_enum_plain() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_enum_nested() {
     #[allow(dead_code)]
     #[derive(Debug, ScoreDebug)]
