@@ -18,10 +18,6 @@
 //!
 //! Results are compared with Rust built-in `format_args` macro.
 
-// TODO: tests fail for `+nightly-2025-05-30` and older.
-// Remove `#[cfg(not(miri))]` once updated in CI.
-// https://github.com/eclipse-score/baselibs_rust/issues/31
-
 mod utils;
 
 use crate::utils::StringWriter;
@@ -63,7 +59,6 @@ fn test_escaped_braces() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_single_placeholder() {
     let mw_log_args = mw_log_format_args!("{}", 123);
     let core_fmt_args = format_args!("{}", 123);
@@ -71,7 +66,6 @@ fn test_single_placeholder() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_mixed_literals_and_placeholders() {
     let mw_log_args = mw_log_format_args!("test_{}_string", 321);
     let core_fmt_args = format_args!("test_{}_string", 321);
@@ -79,7 +73,6 @@ fn test_mixed_literals_and_placeholders() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_arg_index() {
     let mw_log_args = mw_log_format_args!("test_{2}_{1}_{0}", 123, 234, 345);
     let core_fmt_args = format_args!("test_{2}_{1}_{0}", 123, 234, 345);
@@ -87,7 +80,6 @@ fn test_arg_index() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_arg_pos_and_index() {
     let mw_log_args = mw_log_format_args!("test_{2}_{}_{1}_{}_{0}", 123, 234, 345);
     let core_fmt_args = format_args!("test_{2}_{}_{1}_{}_{0}", 123, 234, 345);
@@ -95,7 +87,6 @@ fn test_arg_pos_and_index() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_arg_name() {
     let x1 = 123;
     let x2 = 234;
@@ -109,7 +100,6 @@ fn test_arg_name() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_arg_name_alias() {
     let x1 = 123;
     let x2 = 234;
@@ -120,7 +110,6 @@ fn test_arg_name_alias() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_arg_pos_and_name() {
     let x1 = 123;
     let x2 = 234;
@@ -134,7 +123,6 @@ fn test_arg_pos_and_name() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_arg_mixed() {
     let x1 = 111;
     let x2 = 222;
@@ -144,7 +132,6 @@ fn test_arg_mixed() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_format_spec_empty() {
     let args = mw_log_format_args!("{:}", 123);
 
@@ -166,7 +153,6 @@ fn test_format_spec_empty() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_format_spec_all() {
     let args = mw_log_format_args!("{:c<-#0333.555x}", 123);
 
@@ -188,7 +174,6 @@ fn test_format_spec_all() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_format_spec_debug() {
     let args = mw_log_format_args!("{:#X?}", 123);
 
@@ -210,7 +195,6 @@ fn test_format_spec_debug() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_format_spec_display_hint_octal() {
     let args = mw_log_format_args!("{:o}", 123);
 
@@ -224,7 +208,6 @@ fn test_format_spec_display_hint_octal() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_format_spec_display_hint_lower_hex() {
     let args = mw_log_format_args!("{:x}", 123);
 
@@ -238,7 +221,6 @@ fn test_format_spec_display_hint_lower_hex() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_format_spec_display_hint_upper_hex() {
     let args = mw_log_format_args!("{:X}", 123);
 
@@ -252,7 +234,6 @@ fn test_format_spec_display_hint_upper_hex() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_format_spec_display_hint_pointer() {
     let args = mw_log_format_args!("{:p}", 123);
 
@@ -266,7 +247,6 @@ fn test_format_spec_display_hint_pointer() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_format_spec_display_hint_binary() {
     let args = mw_log_format_args!("{:b}", 123);
 
@@ -280,7 +260,6 @@ fn test_format_spec_display_hint_binary() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_format_spec_display_hint_lower_exp() {
     let args = mw_log_format_args!("{:e}", 123);
 
@@ -294,7 +273,6 @@ fn test_format_spec_display_hint_lower_exp() {
 }
 
 #[test]
-#[cfg(not(miri))]
 fn test_format_spec_display_hint_upper_exp() {
     let args = mw_log_format_args!("{:E}", 123);
 
