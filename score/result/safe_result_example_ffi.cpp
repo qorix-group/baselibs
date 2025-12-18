@@ -18,4 +18,11 @@ extern "C" SafeResult<Complex> cpp_get_complex_configuration() {
   return SafeResult<Complex>(std::move(config));
 }
 
+// This is an "alias" to force an invalid type signature for testing
+// On the Rust side, this will cause a checksum mismatch as the type
+// will be defined differently.
+extern "C" SafeResult<Complex> cpp_get_complex_configuration_force_invalid() {
+  return cpp_get_complex_configuration();
+}
+
 }

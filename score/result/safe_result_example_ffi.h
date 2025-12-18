@@ -42,6 +42,7 @@ REGISTER_COMPLEX_TYPE_SIGNATURE_DIRECT(score::result::Complex, "{b, i32, f32, ve
 extern "C" {
     score::result::SafeResult<bool> cpp_check_configuration_valid();
     score::result::SafeResult<score::result::Complex> cpp_get_complex_configuration();
+    score::result::SafeResult<score::result::Complex> cpp_get_complex_configuration_force_invalid();
 }
 
 #endif  // SCORE_LIB_RESULT_SAFE_RESULT_EXAMPLE_FFI_H_
