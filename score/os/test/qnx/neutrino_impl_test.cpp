@@ -369,7 +369,7 @@ TEST_F(NeutrinoImplFixture, ClockIdSuccess)
 {
     RecordProperty("ParentRequirement", "SCR-46010294");
     RecordProperty("ASIL", "B");
-    RecordProperty("Description", "");
+    RecordProperty("Description", "Test Clock Id Success");
     RecordProperty("TestingTechnique", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
     pid_t pid = ::getpid();
@@ -378,4 +378,18 @@ TEST_F(NeutrinoImplFixture, ClockIdSuccess)
     const auto clock_id = neutrino_.ClockId(pid, tid);
     ASSERT_TRUE(clock_id.has_value());
     ASSERT_GE(clock_id.value(), 0);
+}
+
+TEST_F(NeutrinoImplFixture, ClockIdFailure)
+{
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Clock Id Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+    pid_t invalid_pid{0};
+    int32_t invalid_tid{-1};
+
+    const auto clock_id = neutrino_.ClockId(invalid_pid, invalid_tid);
+    ASSERT_FALSE(clock_id.has_value());
 }
