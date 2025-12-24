@@ -117,6 +117,13 @@ class Synchronized
     {
     }
 
+    template <typename U>
+    explicit Synchronized(std::initializer_list<U> ilist) noexcept(
+        std::is_nothrow_constructible_v<T, std::initializer_list<U>>)
+        : obj(ilist)
+    {
+    }
+
     // Explicitly non-copyable and non-movable (by design)
     Synchronized(const Synchronized&) = delete;
     Synchronized(Synchronized&&) = delete;

@@ -12,7 +12,9 @@
  ********************************************************************************/
 #include "synchronized.h"
 
+#include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include <string>
 #include <thread>
 #include <vector>
 
@@ -20,6 +22,21 @@ using score::concurrency::Synchronized;
 
 namespace test
 {
+
+namespace
+{
+constexpr auto clone = [](const auto& obj) noexcept(std::is_nothrow_copy_constructible_v<std::decay_t<decltype(obj)>>) {
+    static_assert(std::is_copy_constructible_v<std::decay_t<decltype(obj)>>,
+                  "clone requires a copy-constructible type");
+    return obj;
+};
+
+template <template <typename> class Synced, typename T>
+auto clone_synced(const Synced<T>& sync)
+{
+    return sync.with_lock(clone);
+}
+}  // namespace
 
 struct TestStruct
 {
@@ -423,6 +440,31 @@ TEST_F(SynchronizedUtilityTest, TestParameterizedConstruction)
         return obj.Sum();
     });
     EXPECT_EQ(result, 40);
+}
+
+TEST(SynchronizedTest, TestCtadConstruction)
+{
+    std::vector reference_vec{"one", "two", "three"};
+    Synchronized<std::vector<std::string>> sync_vec_ctad(begin(reference_vec), end(reference_vec));
+    EXPECT_THAT(clone_synced(sync_vec_ctad), ::testing::ElementsAreArray(reference_vec));
+}
+
+TEST(SynchronizedTest, TestInitializerListConstruction)
+{
+    using namespace std::string_literals;
+
+    Synchronized<std::vector<int>> sync_vi{1, 2, 3, 4, 5};
+    EXPECT_THAT(clone_synced(sync_vi), ::testing::ElementsAre(1, 2, 3, 4, 5));
+
+    Synchronized<std::vector<std::string>> sync_vs{"un"s, "deux"s, "trois"s};
+    EXPECT_THAT(clone_synced(sync_vs), ::testing::ElementsAre("un"s, "deux"s, "trois"s));
+
+    std::initializer_list<std::string> il_str = {"ten"s, "twenty"s, "thirty"s};
+    Synchronized<std::vector<std::string>> sync_vs2(il_str);
+    EXPECT_THAT(clone_synced(sync_vs2), ::testing::ElementsAreArray(il_str));
+
+    Synchronized<std::string> sync_str{'H', 'e', 'l', 'l', 'o'};
+    EXPECT_EQ(clone_synced(sync_str), "Hello");
 }
 
 TEST_F(SynchronizedUtilityTest, TestConstOperations)
