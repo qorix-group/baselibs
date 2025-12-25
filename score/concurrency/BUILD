@@ -48,6 +48,9 @@ cc_library(
     visibility = [
         "//visibility:public",
     ],
+    deps = [
+        "//platform/aas/lib/type_traits",
+    ],
 )
 
 cc_gtest_unit_test(

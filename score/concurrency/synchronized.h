@@ -13,6 +13,8 @@
 #ifndef SCORE_LIB_CONCURRENCY_SYNCHRONIZED_H
 #define SCORE_LIB_CONCURRENCY_SYNCHRONIZED_H
 
+#include "platform/aas/lib/type_traits/type_traits.h"
+
 #include <functional>
 #include <memory>
 #include <mutex>
@@ -22,21 +24,6 @@ namespace score
 {
 namespace concurrency
 {
-
-template <typename T, typename = void, typename = void>
-struct is_basic_lockable : std::false_type
-{
-};
-
-template <typename T>
-struct is_basic_lockable<T,
-                         std::void_t<decltype(std::declval<T&>().lock())>,
-                         std::void_t<decltype(std::declval<T&>().unlock())>> : std::true_type
-{
-};
-
-template <typename T>
-using is_basic_lockable_t = typename is_basic_lockable<T>::type;
 
 /**
  * @file synchronized.h
@@ -106,8 +93,8 @@ using is_basic_lockable_t = typename is_basic_lockable<T>::type;
  */
 template <typename T,
           typename Lockable = std::mutex,
-          typename = std::enable_if_t<std::is_default_constructible_v<Lockable> && std::is_destructible_v<Lockable>,
-                                      is_basic_lockable_t<Lockable>>>
+          typename = std::enable_if_t<std::is_default_constructible_v<Lockable> && std::is_destructible_v<Lockable> &&
+                                      is_basic_lockable_v<Lockable>>>
 class Synchronized
 {
   public:
