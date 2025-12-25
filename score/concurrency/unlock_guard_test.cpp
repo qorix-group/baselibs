@@ -1,0 +1,98 @@
+/********************************************************************************
+ * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Apache License Version 2.0 which is available at
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ ********************************************************************************/
+#include "score/concurrency/unlock_guard.h"
+
+#include "gmock/gmock.h"
+#include "gtest/gtest.h"
+// #include "score/utils/src/scoped_operation.h"
+
+#include <functional>
+#include <mutex>
+#include <shared_mutex>
+
+namespace test
+{
+
+using namespace score::concurrency;
+
+// UnlockGuard should be instantiable with standard mutex types
+static_assert(std::is_constructible_v<UnlockGuard<std::mutex>, std::mutex&>,
+              "UnlockGuard should be constructible with a std::mutex&");
+static_assert(std::is_constructible_v<UnlockGuard<std::timed_mutex>, std::timed_mutex&>,
+              "UnlockGuard should be constructible with a std::timed_mutex&");
+static_assert(std::is_constructible_v<UnlockGuard<std::recursive_timed_mutex>, std::recursive_timed_mutex&>,
+              "UnlockGuard should be constructible with a std::recursive_timed_mutex&");
+static_assert(std::is_constructible_v<UnlockGuard<std::recursive_mutex>, std::recursive_mutex&>,
+              "UnlockGuard should be constructible with a std::recursive_mutex&");
+static_assert(std::is_constructible_v<UnlockGuard<std::shared_mutex>, std::shared_mutex&>,
+              "UnlockGuard should be constructible with a std::shared_mutex&");
+static_assert(std::is_constructible_v<UnlockGuard<std::unique_lock<std::mutex>>, std::unique_lock<std::mutex>&>,
+              "UnlockGuard should be constructible with a std::unique_lock<std::mutex>&");
+
+namespace
+{
+class MockMutex
+{
+  public:
+    void lock()
+    {
+        locked_ = true;
+    }
+    void unlock()
+    {
+        locked_ = false;
+    }
+    bool is_locked() const
+    {
+        return locked_;
+    }
+
+  private:
+    bool locked_{false};
+};
+}  // namespace
+
+static_assert(std::is_constructible_v<UnlockGuard<MockMutex>, MockMutex&>,
+              "UnlockGuard should be constructible with a MockMutex&");
+
+TEST(UnlockGuardTest, MutexUnlocksOnConstructionLocksOnDestruction)
+{
+    MockMutex mut;
+    mut.lock();
+    // ScopedOperation not made public!?
+    // utils::ScopedOperation on_test_exit{[&mut]() { mut.unlock(); }};
+    auto unlocker = std::mem_fn(&MockMutex::unlock);
+    std::unique_ptr<MockMutex, decltype(unlocker)> unlock_on_test_exit{&mut, unlocker};
+
+    {
+        UnlockGuard guard{mut};
+        EXPECT_FALSE(mut.is_locked());
+    }
+
+    EXPECT_TRUE(mut.is_locked());
+}
+
+TEST(UnlockGuardTest, UniqueLockUnlocksOnConstructionLocksOnDestruction)
+{
+    std::mutex mut;
+    std::unique_lock ul{mut};
+
+    {
+        UnlockGuard guard{ul};
+        EXPECT_FALSE(ul.owns_lock());
+    }
+
+    EXPECT_TRUE(ul.owns_lock());
+}
+
+}  // namespace test

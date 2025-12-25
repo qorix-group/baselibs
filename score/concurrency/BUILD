@@ -62,6 +62,27 @@ cc_gtest_unit_test(
 )
 
 cc_library(
+    name = "unlock_guard",
+    hdrs = ["unlock_guard.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "//visibility:public",
+    ],
+)
+
+cc_gtest_unit_test(
+    name = "unlock_guard_tests",
+    srcs = ["unlock_guard_test.cpp"],
+    features = COMPILER_WARNING_FEATURES + [
+        "aborts_upon_exception",
+    ],
+    deps = [
+        ":unlock_guard",
+    ],
+)
+
+cc_library(
     name = "destruction_guard",
     srcs = ["destruction_guard.cpp"],
     hdrs = ["destruction_guard.h"],
