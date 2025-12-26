@@ -95,6 +95,15 @@ struct ParameterizedObject
     }
 };
 
+class MockMutexParameterized
+{
+  public:
+    MockMutexParameterized(const std::string&, int) {}
+
+    MOCK_METHOD(void, lock, (), ());
+    MOCK_METHOD(void, unlock, (), ());
+};
+
 // Basic test fixture for synchronized utility
 class SynchronizedUtilityTest : public ::testing::Test
 {
@@ -465,6 +474,18 @@ TEST(SynchronizedTest, TestInitializerListConstruction)
 
     Synchronized<std::string> sync_str{'H', 'e', 'l', 'l', 'o'};
     EXPECT_EQ(clone_synced(sync_str), "Hello");
+}
+
+TEST(SynchronizedTest, TestPiecewiseConstruction)
+{
+    using namespace std::string_literals;
+
+    Synchronized<std::string, MockMutexParameterized> sync_piecewise(
+        std::piecewise_construct,
+        std::forward_as_tuple(5, 'Z'),                      // string args
+        std::forward_as_tuple("Literal for mutex"s, 100));  // MockMutexParameterized args
+
+    EXPECT_EQ(sync_piecewise.with_lock(clone), "ZZZZZ");
 }
 
 TEST_F(SynchronizedUtilityTest, TestConstOperations)

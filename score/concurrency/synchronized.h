@@ -18,6 +18,7 @@
 #include <functional>
 #include <memory>
 #include <mutex>
+#include <tuple>
 #include <type_traits>
 
 namespace score
@@ -93,8 +94,10 @@ namespace concurrency
  */
 template <typename T,
           typename Lockable = std::mutex,
-          typename = std::enable_if_t<std::is_default_constructible_v<Lockable> && std::is_destructible_v<Lockable> &&
-                                      is_basic_lockable_v<Lockable>>>
+          // std::is_default_constructible_v<Lockable> applies to Mutex Named Requirement
+          // but not for non-standard non-default constructible Lockable
+          typename = std::enable_if_t<  // std::is_default_constructible_v<Lockable> &&
+              std::is_destructible_v<Lockable> && is_basic_lockable_v<Lockable>>>
 class Synchronized
 {
   public:
@@ -108,6 +111,24 @@ class Synchronized
     explicit Synchronized(std::initializer_list<U> ilist) noexcept(
         std::is_nothrow_constructible_v<T, std::initializer_list<U>>)
         : obj(ilist)
+    {
+    }
+
+    /**
+     * @brief Piecewise constructor for Synchronized.
+     * Allows constructing T and Lockable with separate argument lists.
+     *
+     * @param t_args Arguments for constructing T
+     * @param lockable_args Arguments for constructing Lockable
+     */
+    template <typename... TArgs,
+              typename... LockableArgs,
+              typename = std::enable_if_t<std::is_constructible_v<T, TArgs...>>,
+              typename = std::enable_if_t<std::is_constructible_v<Lockable, LockableArgs...>>>
+    explicit Synchronized(std::piecewise_construct_t,
+                          std::tuple<TArgs...> t_args,
+                          std::tuple<LockableArgs...> lockable_args)
+        : mut(std::make_from_tuple<Lockable>(lockable_args)), obj(std::make_from_tuple<T>(t_args))
     {
     }
 
