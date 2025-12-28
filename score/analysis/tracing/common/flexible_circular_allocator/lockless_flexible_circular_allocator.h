@@ -57,15 +57,29 @@ class LocklessFlexibleCircularAllocator : public IFlexibleCircularAllocator
     std::uint32_t BufferQueueSize();
     ResultBlank FreeBlock(BufferBlock& current_block);
     std::uint32_t GetListQueueNextHead();
+    score::Result<std::uint32_t> AcquireListQueueEntry() noexcept;
     score::Result<uint8_t*> AllocateWithWrapAround(std::uint32_t aligned_size, std::uint32_t list_entry_element_index);
     score::Result<uint8_t*> AllocateWithNoWrapAround(std::uint32_t aligned_size, std::uint32_t list_entry_element_index);
     bool ValidateListEntryIndex(const std::uint32_t& index) const;
-    void ResetBufferQueuTail();
+    bool ResetBufferQueuTail();
+    void ResetBufferTailAndClearGapAddress();
     ResultBlank MarkListEntryAsFree(const BufferBlock* meta);
     score::Result<bool> IsRequestedBlockAtBufferQueueTail(const BufferBlock* meta) const;
     ResultBlank IterateBlocksToDeallocate();
     template <typename OffsetT>
     score::Result<uint8_t*> GetBufferPositionAt(OffsetT offset) const noexcept;
+    score::Result<std::uint32_t> ValidateAndReserveMemory(std::size_t size, std::size_t alignment_size) noexcept;
+    void UpdateAllocationStatistics() noexcept;
+    score::Result<std::uint32_t> AcquireWrapAroundBufferHead(std::uint32_t aligned_size) noexcept;
+    score::Result<std::uint32_t> AcquireNoWrapAroundBufferHead(std::uint32_t aligned_size) noexcept;
+    score::Result<uint8_t*> SetupBlockMetadata(std::uint32_t offset,
+                                             std::uint32_t aligned_size,
+                                             std::uint32_t list_entry_element_index) noexcept;
+    bool UpdateListEntryForAllocation(std::size_t list_entry_index,
+                                      std::uint16_t aligned_size,
+                                      std::uint32_t offset) noexcept;
+    score::Result<BufferBlock*> GetValidatedBlock(std::uint32_t offset) noexcept;
+    bool ShouldResetBufferTail(std::uint32_t current_tail) const noexcept;
     void IncrementAvailableSize(std::uint32_t delta) noexcept;
 
     void* base_address_;
@@ -85,7 +99,6 @@ class LocklessFlexibleCircularAllocator : public IFlexibleCircularAllocator
     std::atomic<std::uint64_t> allocate_retry_cntr_;
     std::atomic<std::uint64_t> allocate_call_cntr_;
     std::atomic<bool> tmd_stats_enabled_;
-    mutable std::atomic<score::result::ErrorCode> last_error_code_;
 };
 
 }  // namespace tracing
