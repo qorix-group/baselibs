@@ -175,6 +175,146 @@ TEST(TimeImplTest, LocaltimeRSuccess)
     EXPECT_EQ(local_time->tm_isdst, local_time_test->tm_isdst);
 }
 
+TEST(TimeImplTest, TimerCreateAndDeleteSuccess)
+{
+    RecordProperty("Verifies", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "TimeImplTest Timer Create Success");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
+    timer_t timerid{};
+    sigevent sev{};
+    sev.sigev_notify = SIGEV_NONE;
+
+    const auto create_result = Time::instance().timer_create(CLOCK_REALTIME, &sev, &timerid);
+    EXPECT_TRUE(create_result.has_value());
+    EXPECT_EQ(create_result.value(), 0);
+
+    const auto delete_result = Time::instance().timer_delete(timerid);
+    EXPECT_TRUE(delete_result.has_value());
+    EXPECT_EQ(delete_result.value(), 0);
+}
+
+TEST(TimeImplTest, TimerCreateFailsWithInvalidClockId)
+{
+    RecordProperty("Verifies", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "TimeImplTest Timer Create Fails With Invalid Clock Id");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
+    timer_t timerid{};
+    sigevent sev{};
+    sev.sigev_notify = SIGEV_NONE;
+    constexpr auto kInvalidClockId{-1};
+
+    const auto result = Time::instance().timer_create(kInvalidClockId, &sev, &timerid);
+    EXPECT_FALSE(result.has_value());
+}
+
+TEST(TimeImplTest, TimerDeleteFailsWithInvalidTimerId)
+{
+    RecordProperty("Verifies", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "TimeImplTest Timer Delete Fails With Invalid Timer Id");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
+    // create an invalid timer_t by using a value that's unlikely to be valid
+    timer_t invalid_timerid{};
+    std::memset(&invalid_timerid, 0xFF, sizeof(timer_t));
+
+    const auto result = Time::instance().timer_delete(invalid_timerid);
+    EXPECT_FALSE(result.has_value());
+}
+
+TEST(TimeImplTest, TimerSettimeSuccess)
+{
+    RecordProperty("Verifies", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "TimeImplTest Timer Settime Success");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
+    timer_t timerid{};
+    sigevent sev{};
+    sev.sigev_notify = SIGEV_NONE;
+
+    const auto create_result = Time::instance().timer_create(CLOCK_REALTIME, &sev, &timerid);
+    ASSERT_TRUE(create_result.has_value());
+
+    itimerspec new_value{};
+    new_value.it_value.tv_sec = 1;
+    new_value.it_value.tv_nsec = 0;
+    new_value.it_interval.tv_sec = 0;
+    new_value.it_interval.tv_nsec = 0;
+
+    itimerspec old_value{};
+    const auto settime_result = Time::instance().timer_settime(timerid, 0, &new_value, &old_value);
+    EXPECT_TRUE(settime_result.has_value());
+    EXPECT_EQ(settime_result.value(), 0);
+
+    Time::instance().timer_delete(timerid);
+}
+
+TEST(TimeImplTest, TimerSettimeFailsWithInvalidTimerId)
+{
+    RecordProperty("Verifies", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "TimeImplTest Timer Settime Fails With Invalid Timer Id");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
+    timer_t invalid_timerid{};
+    std::memset(&invalid_timerid, 0xFF, sizeof(timer_t));
+
+    itimerspec new_value{};
+    new_value.it_value.tv_sec = 1;
+    new_value.it_value.tv_nsec = 0;
+    new_value.it_interval.tv_sec = 0;
+    new_value.it_interval.tv_nsec = 0;
+
+    const auto result = Time::instance().timer_settime(invalid_timerid, 0, &new_value, nullptr);
+    EXPECT_FALSE(result.has_value());
+}
+
+TEST(TimeImplTest, ClockGetCpuClockIdSuccess)
+{
+    RecordProperty("Verifies", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "TimeImplTest Clock Get Cpu Clock Id Success");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
+    clockid_t clock_id{};
+    const pid_t current_pid = 1;
+
+    const auto result = Time::instance().clock_getcpuclockid(current_pid, clock_id);
+    EXPECT_TRUE(result.has_value());
+    EXPECT_EQ(result.value(), 0);
+
+    // verify that the obtained clock_id is valid by using it
+    struct timespec ts{};
+    const auto gettime_result = Time::instance().clock_gettime(clock_id, &ts);
+    EXPECT_TRUE(gettime_result.has_value());
+}
+
+TEST(TimeImplTest, ClockGetCpuClockIdFailsWithInvalidPid)
+{
+    RecordProperty("Verifies", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "TimeImplTest Clock Get Cpu Clock Id Failure");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
+    clockid_t clock_id{};
+    const pid_t current_pid = -1;
+
+    const auto result = Time::instance().clock_getcpuclockid(current_pid, clock_id);
+    EXPECT_FALSE(result.has_value());
+}
+
 }  // namespace
 }  // namespace os
 }  // namespace score
