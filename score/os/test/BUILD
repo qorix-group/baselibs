@@ -432,6 +432,7 @@ cc_test(
     deps = [
         "@googletest//:gtest_main",
         "@score_baselibs//score/os:spawn",
+        "@score_baselibs//score/os:version",
     ],
 )
 
