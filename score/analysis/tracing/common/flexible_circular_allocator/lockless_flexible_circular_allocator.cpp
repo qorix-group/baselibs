@@ -77,10 +77,17 @@ LocklessFlexibleCircularAllocator<AtomicIndirectorType>::LocklessFlexibleCircula
       lowest_size_(total_size_),
       alloc_cntr_(0U),
       dealloc_cntr_(0U),
-      tmd_stats_enabled_(false)
+      allocate_retry_cntr_(0U),
+      allocate_call_cntr_(0U),
+      tmd_stats_enabled_(false),
+      last_error_code_(0)
 {
+    // Suppress "AUTOSAR C++14 A0-1-1" rule finds: "A project shall not contain instances of non-volatile variables
+    // being given values that are not subsequently used"
+    // False positive, no declarations here.
+    // coverity[autosar_cpp14_a0_1_1_violation : FALSE]
     SCORE_LANGUAGE_FUTURECPP_PRECONDITION_PRD_MESSAGE(list_queue_head_.is_always_lock_free == true, "ListQueue head is not lock free");
-    SCORE_LANGUAGE_FUTURECPP_PRECONDITION_PRD_MESSAGE(list_queue_head_.is_always_lock_free == true, "ListQueue tail is not lock free");
+    SCORE_LANGUAGE_FUTURECPP_PRECONDITION_PRD_MESSAGE(list_queue_tail_.is_always_lock_free == true, "ListQueue tail is not lock free");
     SCORE_LANGUAGE_FUTURECPP_PRECONDITION_PRD_MESSAGE(buffer_queue_head_.is_always_lock_free == true, "BufferQueue head is not lock free");
     SCORE_LANGUAGE_FUTURECPP_PRECONDITION_PRD_MESSAGE(buffer_queue_tail_.is_always_lock_free == true, "BufferQueue tail is not lock free");
     SCORE_LANGUAGE_FUTURECPP_PRECONDITION_PRD_MESSAGE(std::atomic<ListEntry>{}.is_always_lock_free == true,
@@ -118,8 +125,8 @@ void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::GetTmdMemUsage(Tmd
     tmd_stats.tmd_average = cumulative_usage_.exchange(0U) / number_of_allocations;
     tmd_stats.tmd_alloc_rate =
         static_cast<float>(dealloc_cntr_.exchange(0U)) / static_cast<float>(number_of_allocations);
-    tmd_stats.tmd_allocate_retry_cntr = allocate_retry_cntr_.exchange(0);
-    tmd_stats.tmd_allocate_call_cntr = allocate_call_cntr_.exchange(0);
+    tmd_stats.tmd_allocate_retry_cntr = allocate_retry_cntr_.exchange(0U);
+    tmd_stats.tmd_allocate_call_cntr = allocate_call_cntr_.exchange(0U);
 }
 
 template <template <class> class AtomicIndirectorType>
@@ -616,7 +623,6 @@ score::Result<uint8_t*> LocklessFlexibleCircularAllocator<AtomicIndirectorType>:
     std::uint32_t aligned_size,
     std::uint32_t list_entry_element_index)
 {
-    score::Result<uint8_t*> allocated_address = nullptr;
     auto new_buffer_queue_head = 0U;
     for (uint8_t retries = 0U; retries < kMaxRetries; retries++)
     {
@@ -656,10 +662,9 @@ score::Result<uint8_t*> LocklessFlexibleCircularAllocator<AtomicIndirectorType>:
     auto block_meta_data = block_meta_data_result.value();
     block_meta_data->list_entry_offset = list_entry_element_index;
     block_meta_data->block_length = static_cast<uint32_t>(aligned_size);
-    allocated_address = GetBufferPositionAt(static_cast<std::size_t>(new_buffer_queue_head) -
-                                            static_cast<std::size_t>(aligned_size) + sizeof(BufferBlock));
-
-    // TODO: Ticket-230467
+    score::Result<uint8_t*> allocated_address = GetBufferPositionAt(
+        static_cast<std::size_t>(new_buffer_queue_head) - static_cast<std::size_t>(aligned_size) + sizeof(BufferBlock));
+    // broken_link_j/Ticket-230467 investagation_ticket
     // LCOV_EXCL_START
     if ((!allocated_address.has_value()) || (allocated_address == nullptr))
     {
@@ -707,7 +712,6 @@ score::Result<uint8_t*> LocklessFlexibleCircularAllocator<AtomicIndirectorType>:
     std::uint32_t aligned_size,
     std::uint32_t list_entry_element_index)
 {
-    score::Result<uint8_t*> allocated_address = nullptr;
     auto offset = 0U;
 
     for (uint8_t retries = 0U; retries < kMaxRetries; retries++)
@@ -765,8 +769,9 @@ score::Result<uint8_t*> LocklessFlexibleCircularAllocator<AtomicIndirectorType>:
     auto block_meta_data = block_meta_data_result.value();
     block_meta_data->list_entry_offset = list_entry_element_index;
     block_meta_data->block_length = static_cast<std::uint32_t>(aligned_size);
-    allocated_address = GetBufferPositionAt(static_cast<std::size_t>(offset) + sizeof(BufferBlock));
-    // TODO: Ticket-230467
+    score::Result<uint8_t*> allocated_address =
+        GetBufferPositionAt(static_cast<std::size_t>(offset) + sizeof(BufferBlock));
+    // broken_link_j/Ticket-230467 investagation_ticket
     // LCOV_EXCL_START
     if ((!allocated_address.has_value()) || (allocated_address.value() == nullptr))
     {
@@ -839,7 +844,7 @@ score::Result<uint8_t*> LocklessFlexibleCircularAllocator<AtomicIndirectorType>:
     // "A non-type specifier shall be placed before a type specifier in a declaration."
     // Rationale: Not a typical use case of this rule. Here, we are using constexpr before
     // if condition, not in declaration context. (false positive).
-    // coverity[autosar_cpp14_a7_1_8_violation: False]
+    // coverity[autosar_cpp14_a7_1_8_violation: FALSE]
     if constexpr (std::is_signed_v<OffsetT>)
     {
         if (offset < 0)
