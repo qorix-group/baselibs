@@ -54,7 +54,7 @@ struct never_throws
 };
 
 /// @testmethods TM_REQUIREMENT
-/// @requirement CB-#0815
+/// @requirement CB-#62587763
 TEST(bind_front, call_operator_noexcept)
 {
     using wrapper_never_throws = decltype(score::cpp::bind_front(std::declval<never_throws>()));
@@ -94,7 +94,7 @@ struct move_copy_counter
 };
 
 /// @testmethods TM_REQUIREMENT
-/// @requirement CB-#0815
+/// @requirement CB-#62587763
 TEST(bind_front, constructor_function_value_categories_and_constness)
 {
     {
@@ -132,7 +132,7 @@ TEST(bind_front, constructor_function_value_categories_and_constness)
 }
 
 /// @testmethods TM_REQUIREMENT
-/// @requirement CB-#0815
+/// @requirement CB-#62587763
 TEST(bind_front, constructor_bound_args_value_categories_and_constness)
 {
     const auto fn = [](move_copy_counter) {};
@@ -208,7 +208,7 @@ struct functor_with_overload_on_signature
 };
 
 /// @testmethods TM_REQUIREMENT
-/// @requirement CB-#0815
+/// @requirement CB-#62587763
 TEST(bind_front, callable_ref_qualifiers)
 {
     auto f = score::cpp::bind_front(functor_with_overload_on_ref_qualifier{});
@@ -226,7 +226,7 @@ TEST(bind_front, callable_ref_qualifiers)
 }
 
 /// @testmethods TM_REQUIREMENT
-/// @requirement CB-#0815
+/// @requirement CB-#62587763
 TEST(bind_front, bound_args_value_categories_and_constness)
 {
     auto f = score::cpp::bind_front(functor_with_overload_on_signature{}, 0);
@@ -244,7 +244,7 @@ TEST(bind_front, bound_args_value_categories_and_constness)
 }
 
 /// @testmethods TM_REQUIREMENT
-/// @requirement CB-#0815
+/// @requirement CB-#62587763
 TEST(bind_front, call_args_value_categories_and_constness)
 {
     const auto f = score::cpp::bind_front(functor_with_overload_on_signature{});
@@ -273,7 +273,7 @@ struct foo
 };
 
 /// @testmethods TM_REQUIREMENT
-/// @requirement CB-#0815
+/// @requirement CB-#62587763
 TEST(bind_front, lambda)
 {
     const auto f = [](type_a a, type_b b, type_c c) { return fn(a, b, c); };
@@ -282,7 +282,7 @@ TEST(bind_front, lambda)
 }
 
 /// @testmethods TM_REQUIREMENT
-/// @requirement CB-#0815
+/// @requirement CB-#62587763
 TEST(bind_front, function_object)
 {
     const foo f{};
@@ -291,7 +291,7 @@ TEST(bind_front, function_object)
 }
 
 /// @testmethods TM_REQUIREMENT
-/// @requirement CB-#0815
+/// @requirement CB-#62587763
 TEST(bind_front, member_function)
 {
     const foo f{};
@@ -300,7 +300,7 @@ TEST(bind_front, member_function)
 }
 
 /// @testmethods TM_REQUIREMENT
-/// @requirement CB-#0815
+/// @requirement CB-#62587763
 TEST(bind_front, member_variable)
 {
     const foo f{};
@@ -309,7 +309,7 @@ TEST(bind_front, member_variable)
 }
 
 /// @testmethods TM_REQUIREMENT
-/// @requirement CB-#0815
+/// @requirement CB-#62587763
 TEST(bind_front, free_function)
 {
     const auto f = &fn;
@@ -318,7 +318,7 @@ TEST(bind_front, free_function)
 }
 
 /// @testmethods TM_REQUIREMENT
-/// @requirement CB-#0815
+/// @requirement CB-#62587763
 TEST(bind_front, mutable_arg)
 {
     int a{1};
@@ -330,7 +330,7 @@ TEST(bind_front, mutable_arg)
 }
 
 /// @testmethods TM_REQUIREMENT
-/// @requirement CB-#0815
+/// @requirement CB-#62587763
 TEST(bind_front, mutable_callable)
 {
     auto f = [x = 0](int n) mutable {
@@ -344,7 +344,7 @@ TEST(bind_front, mutable_callable)
 }
 
 /// @testmethods TM_REQUIREMENT
-/// @requirement CB-#0815
+/// @requirement CB-#62587763
 TEST(bind_front, fully_applied)
 {
     const auto f = [](int x) { return x; };
