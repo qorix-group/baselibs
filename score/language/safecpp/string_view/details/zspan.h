@@ -118,6 +118,8 @@ class zspan
     ///          trailing null-terminator of the underyling sequence from getting overwritten.
     ///
     template <bool is_read_only>
+    // For class `basic_element_accessor`, move-assignment operator does explicitly not get defined for below reason.
+    // NOLINTNEXTLINE(cppcoreguidelines-special-member-functions) intentional, move-assign shall default to copy-assign
     class basic_element_accessor
     {
       public:
@@ -158,14 +160,6 @@ class zspan
             {
                 *element_ = *other.element_;
             }
-            return *this;
-        }
-
-        /// @brief given that assigments are permitted, performs assignment of the underlying element
-        constexpr basic_element_accessor& operator=(basic_element_accessor&& other) noexcept(
-            noexcept(std::declval<basic_element_accessor>().operator=(std::declval<const basic_element_accessor&>())))
-        {
-            this->operator=(other);
             return *this;
         }
 
