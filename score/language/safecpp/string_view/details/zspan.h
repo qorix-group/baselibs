@@ -148,7 +148,8 @@ class zspan
         }
 
         /// @brief given that assigments are permitted, performs assignment of the underlying element
-        constexpr basic_element_accessor& operator=(const basic_element_accessor& other) noexcept
+        constexpr basic_element_accessor& operator=(const basic_element_accessor& other) noexcept(
+            std::is_nothrow_assignable_v<reference, reference>)
         {
             static_assert(not(is_read_only),
                           "safecpp::details::zspan::basic_element_accessor: assignments "
@@ -161,7 +162,8 @@ class zspan
         }
 
         /// @brief given that assigments are permitted, performs assignment of the underlying element
-        constexpr basic_element_accessor& operator=(basic_element_accessor&& other) noexcept
+        constexpr basic_element_accessor& operator=(basic_element_accessor&& other) noexcept(
+            noexcept(std::declval<basic_element_accessor>().operator=(std::declval<const basic_element_accessor&>())))
         {
             this->operator=(other);
             return *this;
@@ -169,7 +171,8 @@ class zspan
 
         /// @brief swap operator for `basic_element_accessor`
         /// @details swaps the _underlying_ elements being referenced by \p lhs; and \p rhs;
-        friend constexpr void swap(basic_element_accessor lhs, basic_element_accessor rhs) noexcept
+        friend constexpr void swap(basic_element_accessor lhs, basic_element_accessor rhs) noexcept(
+            std::is_nothrow_assignable_v<reference, reference>)
         {
             static_assert(not(is_read_only),
                           "safecpp::details::zspan::basic_element_accessor: swapping "
