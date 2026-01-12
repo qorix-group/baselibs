@@ -112,4 +112,7 @@ extern "C" void LibResultErrorDomainGetMessageForErrorCode(const score::result::
                                                            score::result::ErrorCode code,
                                                            std::string_view& result) noexcept;
 
+/// Allows for runtime introspection about which C++ stdlib the code was linked against.
+extern "C" std::uint64_t get_runtime_identifier() noexcept;
+
 #endif  // SCORE_LIB_RESULT_RESULT_H

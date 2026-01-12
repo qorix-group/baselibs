@@ -8,13 +8,14 @@
 #include "score/result/safe_result.h"
 #include "score/result/safe_result_example_ffi.h"
 
-#include <iostream>
 #include <cassert>
+#include <iostream>
+#include <string>
 #include <string_view>
 #include <vector>
-#include <string>
 
-namespace example {
+namespace example
+{
 
 enum class ExampleErrorCode : score::result::ErrorCode
 {
@@ -22,9 +23,10 @@ enum class ExampleErrorCode : score::result::ErrorCode
     kOutOfRange,
 };
 
-}  // namespace example (closed temporarily for Complex TypeSignature registration)
+}  // namespace example
 
-namespace example {  // Reopen namespace for remaining code
+namespace example
+{  // Reopen namespace for remaining code
 
 class ExampleErrorDomain final : public score::result::ErrorDomain
 {
@@ -60,9 +62,10 @@ score::result::Error MakeError(ExampleErrorCode code, std::string_view user_mess
 /// The type signature is computed at compile time as:
 /// - TypeSignature<bool>::value = "b"
 /// - CRC32("b") = computed at compile time
-SafeResult<bool> CheckConfiguration() {
-  // ... perform checks ...
-  return SafeResult<bool>(true);
+SafeResult<bool> CheckConfiguration()
+{
+    // ... perform checks ...
+    return SafeResult<bool>(true);
 }
 
 // ============================================================================
@@ -73,41 +76,48 @@ SafeResult<bool> CheckConfiguration() {
 /// Type signature:
 /// - TypeSignature<int>::value = "i32"
 /// - CRC32("i32") = computed at compile time
-SafeResult<int> ReadConfigurationValue(const std::string& key) {
-  if (key.empty()) {
-    return SafeResult<int>(
-        score::MakeUnexpected(ExampleErrorCode::kInvalidArgument, std::string_view("Key is empty")));
-  }
+SafeResult<int> ReadConfigurationValue(const std::string& key)
+{
+    if (key.empty())
+    {
+        return SafeResult<int>(
+            score::MakeUnexpected(ExampleErrorCode::kInvalidArgument, std::string_view("Key is empty")));
+    }
 
-  // Simulate reading a value
-  int value = 42;
-  return SafeResult<int>(value);
+    // Simulate reading a value
+    int value = 42;
+    return SafeResult<int>(value);
 }
 
 // ============================================================================
 // Example 3: Accessing SafeResult
 // ============================================================================
 
-void DemoAccessPatterns() {
-  // Create a SafeResult<bool>
-  auto result = CheckConfiguration();
+void DemoAccessPatterns()
+{
+    // Create a SafeResult<bool>
+    auto result = CheckConfiguration();
 
-  // Verify the type signature checksum
-  std::cout << "Checksum: 0x" << std::hex << result.GetChecksum() << "\n";
+    // Verify the type signature checksum
+    std::cout << "Checksum: 0x" << std::hex << result.GetChecksum() << "\n";
 
-  if (result.VerifyChecksum()) {
-    std::cout << "Type signature verified!\n";
-  } else {
-    std::cout << "ERROR: Type signature mismatch!\n";
-    return;
-  }
+    if (result.VerifyChecksum())
+    {
+        std::cout << "Type signature verified!\n";
+    }
+    else
+    {
+        std::cout << "ERROR: Type signature mismatch!\n";
+        return;
+    }
 
-  // Access the underlying Result
-  if (result.HasValue()) {
-    std::cout << "Configuration is valid\n";
-    bool value = result.ExtractValue();
-    std::cout << "Value: " << (value ? "true" : "false") << "\n";
-  }
+    // Access the underlying Result
+    if (result.HasValue())
+    {
+        std::cout << "Configuration is valid\n";
+        bool value = result.ExtractValue();
+        std::cout << "Value: " << (value ? "true" : "false") << "\n";
+    }
 }
 
 // ============================================================================
@@ -115,24 +125,25 @@ void DemoAccessPatterns() {
 // ============================================================================
 
 /// Demonstrates compile-time type signature generation
-void DemoCompileTimeSignatures() {
-  // These are all constexpr and computed at compile time:
+void DemoCompileTimeSignatures()
+{
+    // These are all constexpr and computed at compile time:
 
-  constexpr std::string_view bool_sig = TypeSignature<bool>::value;
-  std::cout << "bool signature: " << bool_sig << "\n";  // Output: "b"
+    constexpr std::string_view bool_sig = TypeSignature<bool>::value;
+    std::cout << "bool signature: " << bool_sig << "\n";  // Output: "b"
 
-  constexpr std::string_view int_sig = TypeSignature<int>::value;
-  std::cout << "int signature: " << int_sig << "\n";  // Output: "i32"
+    constexpr std::string_view int_sig = TypeSignature<int>::value;
+    std::cout << "int signature: " << int_sig << "\n";  // Output: "i32"
 
-  constexpr std::string_view float_sig = TypeSignature<float>::value;
-  std::cout << "float signature: " << float_sig << "\n";  // Output: "f32"
+    constexpr std::string_view float_sig = TypeSignature<float>::value;
+    std::cout << "float signature: " << float_sig << "\n";  // Output: "f32"
 
-  // CRC32 checksums are computed at compile time
-  constexpr uint32_t bool_crc = ComputeCrc32(bool_sig);
-  constexpr uint32_t int_crc = ComputeCrc32(int_sig);
+    // CRC32 checksums are computed at compile time
+    constexpr uint32_t bool_crc = ComputeCrc32(bool_sig);
+    constexpr uint32_t int_crc = ComputeCrc32(int_sig);
 
-  std::cout << "bool CRC32: 0x" << std::hex << bool_crc << "\n";
-  std::cout << "int CRC32: 0x" << std::hex << int_crc << "\n";
+    std::cout << "bool CRC32: 0x" << std::hex << bool_crc << "\n";
+    std::cout << "int CRC32: 0x" << std::hex << int_crc << "\n";
 }
 
 // ============================================================================
@@ -141,35 +152,42 @@ void DemoCompileTimeSignatures() {
 
 /// A more realistic example with error handling
 /// This function returns SafeResult<float> with full type verification
-SafeResult<float> CalculateTemperature(float rawSensorValue) {
-  // Validate input
-  if (rawSensorValue < -50.0f || rawSensorValue > 150.0f) {
-    return SafeResult<float>(
-        score::MakeUnexpected(ExampleErrorCode::kOutOfRange, std::string_view("Sensor value out of range")));
-  }
+SafeResult<float> CalculateTemperature(float rawSensorValue)
+{
+    // Validate input
+    if (rawSensorValue < -50.0f || rawSensorValue > 150.0f)
+    {
+        return SafeResult<float>(
+            score::MakeUnexpected(ExampleErrorCode::kOutOfRange, std::string_view("Sensor value out of range")));
+    }
 
-  // Perform calculation
-  float calibrated = rawSensorValue * 1.05f;  // Apply calibration
-  return SafeResult<float>(calibrated);
+    // Perform calculation
+    float calibrated = rawSensorValue * 1.05f;  // Apply calibration
+    return SafeResult<float>(calibrated);
 }
 
 /// Client code that uses the SafeResult
-void UseTemperatureResult() {
-  SafeResult<float> temp_result = CalculateTemperature(25.0f);
+void UseTemperatureResult()
+{
+    SafeResult<float> temp_result = CalculateTemperature(25.0f);
 
-  // Verify the type signature (this should always pass if C++ and Rust agree)
-  if (!temp_result.VerifyChecksum()) {
-    std::cerr << "Type mismatch detected!\n";
-    return;
-  }
+    // Verify the type signature (this should always pass if C++ and Rust agree)
+    if (!temp_result.VerifyChecksum())
+    {
+        std::cerr << "Type mismatch detected!\n";
+        return;
+    }
 
-  // Now safely use the result
-  if (temp_result.HasValue()) {
-    float temp = temp_result.ExtractValue();
-    std::cout << "Temperature: " << temp << "°C\n";
-  } else {
-    std::cout << "Failed to read temperature\n";
-  }
+    // Now safely use the result
+    if (temp_result.HasValue())
+    {
+        float temp = temp_result.ExtractValue();
+        std::cout << "Temperature: " << temp << "°C\n";
+    }
+    else
+    {
+        std::cout << "Failed to read temperature\n";
+    }
 }
 
 // ============================================================================
@@ -195,9 +213,10 @@ void UseTemperatureResult() {
 // Result: ChecksumMismatch error
 
 /// This function intentionally creates a type mismatch for demonstration
-SafeResult<int> IntentionalMismatch() {
-  // This is SafeResult<int>, but Rust might expect SafeResult<bool>
-  return SafeResult<int>(42);
+SafeResult<int> IntentionalMismatch()
+{
+    // This is SafeResult<int>, but Rust might expect SafeResult<bool>
+    return SafeResult<int>(42);
 }
 
 // ============================================================================
@@ -206,23 +225,21 @@ SafeResult<int> IntentionalMismatch() {
 
 /// Demonstrates that different type combinations produce different checksums
 
-void DemoTypeVariations() {
-  // Different types → Different checksums
-  const uint32_t checksum_bool = SafeResult<bool>::GetTypeChecksum();
-  const uint32_t checksum_int = SafeResult<int>::GetTypeChecksum();
-  const uint32_t checksum_float = SafeResult<float>::GetTypeChecksum();
+void DemoTypeVariations()
+{
+    // Different types → Different checksums
+    const uint32_t checksum_bool = SafeResult<bool>::GetTypeChecksum();
+    const uint32_t checksum_int = SafeResult<int>::GetTypeChecksum();
+    const uint32_t checksum_float = SafeResult<float>::GetTypeChecksum();
 
-  std::cout << "SafeResult<bool> checksum: 0x" << std::hex << checksum_bool
-            << "\n";
-  std::cout << "SafeResult<int> checksum: 0x" << std::hex << checksum_int
-            << "\n";
-  std::cout << "SafeResult<float> checksum: 0x" << std::hex << checksum_float
-            << "\n";
+    std::cout << "SafeResult<bool> checksum: 0x" << std::hex << checksum_bool << "\n";
+    std::cout << "SafeResult<int> checksum: 0x" << std::hex << checksum_int << "\n";
+    std::cout << "SafeResult<float> checksum: 0x" << std::hex << checksum_float << "\n";
 
-  // All should be different
-  assert(checksum_bool != checksum_int);
-  assert(checksum_int != checksum_float);
-  assert(checksum_bool != checksum_float);
+    // All should be different
+    assert(checksum_bool != checksum_int);
+    assert(checksum_int != checksum_float);
+    assert(checksum_bool != checksum_float);
 }
 
 }  // namespace example
@@ -244,32 +261,33 @@ void DemoTypeVariations() {
 /// - If mismatch, returns ChecksumMismatch error
 /// - Otherwise, safely converts to std::result::Result<T, E>
 
-extern "C" score::result::SafeResult<bool> FFIFunctionReturnsResult() {
-  // The CRC32 is embedded here
-  return score::result::SafeResult<bool>(true);
+extern "C" score::result::SafeResult<bool> FFIFunctionReturnsResult()
+{
+    // The CRC32 is embedded here
+    return score::result::SafeResult<bool>(true);
 }
 
 // ============================================================================
 // Example 10: Complex type
 // ============================================================================
 
+int main()
+{
+    std::cout << "SafeResult Examples\n"
+              << "===================\n\n";
 
-int main() {
-  std::cout << "SafeResult Examples\n"
-            << "===================\n\n";
+    example::DemoCompileTimeSignatures();
+    std::cout << "\n";
 
-  example::DemoCompileTimeSignatures();
-  std::cout << "\n";
+    example::DemoAccessPatterns();
+    std::cout << "\n";
 
-  example::DemoAccessPatterns();
-  std::cout << "\n";
+    example::UseTemperatureResult();
+    std::cout << "\n";
 
-  example::UseTemperatureResult();
-  std::cout << "\n";
+    example::DemoTypeVariations();
 
-  example::DemoTypeVariations();
+    score::result::SafeResult<score::result::Complex> complex_result = cpp_get_complex_configuration();
 
-  score::result::SafeResult<score::result::Complex> complex_result = cpp_get_complex_configuration();
-
-  return 0;
+    return 0;
 }
