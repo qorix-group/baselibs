@@ -23,6 +23,11 @@ namespace score
 namespace os
 {
 
+// Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
+// Rationale: Constructor is intentionally noexcept and performs mandatory
+// dependency creation using std::make_shared. Exception propagation is not
+// allowed, unrecoverable construction failure may terminate.
+// coverity[autosar_cpp14_a15_5_3_violation]
 InotifyInstanceImpl::InotifyInstanceImpl() noexcept
     : InotifyInstanceImpl{std::make_shared<InotifyImpl>(),
                           std::make_shared<FcntlImpl>(),
@@ -50,6 +55,10 @@ InotifyInstanceImpl::InotifyInstanceImpl(const std::shared_ptr<Inotify>& inotify
     }
     inotify_file_descriptor_ = std::move(expected_inotify_file_descriptor.value());
 
+    // Suppress "AUTOSAR C++14 A8-5-0", The rule states: "All memory shall be initialized before it is read."
+    // Rationale: IsValid() returns construction_error_, which is explicitly
+    // value-initialized in the constructor. No uninitialized memory is read.
+    // coverity[autosar_cpp14_a8_5_0_violation]
     const auto valid_reader = reader_.IsValid();
     if (!(valid_reader.has_value()))
     {
@@ -127,6 +136,7 @@ score::cpp::expected_blank<Error> InotifyInstanceImpl::RemoveWatch(InotifyWatchD
 }
 
 score::cpp::expected<score::cpp::static_vector<InotifyEvent, InotifyInstanceImpl::max_events>, Error>
+// coverity[autosar_cpp14_m7_3_1_violation] false-positive: function implementation inside a namespace (Ticket-234468)
 InotifyInstanceImpl::Read() noexcept
 {
     if (!(IsValid().has_value()))
