@@ -36,7 +36,7 @@ namespace score::safecpp
 ///       Further note: the above-mentioned draft paper got meanwhile superseded by a revised one which itself is also
 ///       subject to further changes at any time. The current draft version can be found here: https://wg21.link/p3655.
 ///
-template <typename CharType>
+template <typename CharType, typename CharTraits = std::char_traits<CharType>>
 class basic_zstring_view : private details::zspan<std::add_const_t<CharType>>
 {
     using base = const details::zspan<std::add_const_t<CharType>>;
@@ -95,8 +95,9 @@ class basic_zstring_view : private details::zspan<std::add_const_t<CharType>>
     // NOLINTNEXTLINE(google-explicit-constructor) allow implicit conversions from base type `zspan` (are always safe)
     constexpr basic_zstring_view(base other) noexcept : base(other) {}
 
-    /// @brief Prohibits construction of a `basic_zstring_view` from `std::basic_string_view`
-    constexpr basic_zstring_view(std::basic_string_view<CharType>) = delete;
+    /// @brief Prohibits construction of a `safecpp::basic_zstring_view` from `std::basic_string_view`
+    template <typename SomeCharType, typename SomeCharTraits>
+    constexpr basic_zstring_view(std::basic_string_view<SomeCharType, SomeCharTraits>) = delete;
 
     /// @brief Prohibits construction from `std::nullptr_t`
     constexpr basic_zstring_view(std::nullptr_t) = delete;
@@ -130,25 +131,25 @@ class basic_zstring_view : private details::zspan<std::add_const_t<CharType>>
     /// @brief implicit conversion operator from `safecpp::basic_zstring_view` to `std::basic_string_view`
     ///
     // NOLINTNEXTLINE(google-explicit-constructor) allow impl. conversions to `std::basic_string_view` (const view type)
-    [[nodiscard]] constexpr operator std::basic_string_view<CharType>() const noexcept
+    [[nodiscard]] constexpr operator std::basic_string_view<CharType, CharTraits>() const noexcept
     {
-        return std::basic_string_view<CharType>{data(), size()};
+        return std::basic_string_view<CharType, CharTraits>{data(), size()};
     }
 
     ///
     /// @brief `std::ostream` output operator for `safecpp::basic_zstring_view`
     ///
-    friend std::basic_ostream<CharType>& operator<<(std::basic_ostream<CharType>& os,
-                                                    safecpp::basic_zstring_view<CharType> sv)
+    friend std::basic_ostream<CharType, CharTraits>& operator<<(std::basic_ostream<CharType, CharTraits>& os,
+                                                                safecpp::basic_zstring_view<CharType, CharTraits> sv)
     {
-        return os << std::basic_string_view<CharType>{sv};
+        return os << std::basic_string_view<CharType, CharTraits>{sv};
     }
 
     ///
     /// @brief swap operator for `safecpp::basic_zstring_view`
     ///
-    friend constexpr void swap(safecpp::basic_zstring_view<CharType>& lhs,
-                               safecpp::basic_zstring_view<CharType>& rhs) noexcept
+    friend constexpr void swap(safecpp::basic_zstring_view<CharType, CharTraits>& lhs,
+                               safecpp::basic_zstring_view<CharType, CharTraits>& rhs) noexcept
     {
         auto tmp = lhs;
         lhs = rhs;
