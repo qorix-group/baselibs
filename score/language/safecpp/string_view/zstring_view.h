@@ -308,6 +308,33 @@ template <typename CharType, typename CharTraits>
     return lhs <= std::basic_string_view<CharType, CharTraits>{rhs};
 }
 
+// #####################################################################################################################
+// # greater-than comparison operators for `safecpp::basic_zstring_view` (also incorporating `std::basic_string_view`) #
+// #####################################################################################################################
+/// @brief Performs greater-than comparison for the underlying character sequences.
+template <typename CharType, typename CharTraits>
+[[nodiscard]] constexpr bool operator>(safecpp::basic_zstring_view<CharType, CharTraits> lhs,
+                                       safecpp::basic_zstring_view<CharType, CharTraits> rhs) noexcept
+{
+    return std::basic_string_view<CharType, CharTraits>{lhs} > std::basic_string_view<CharType, CharTraits>{rhs};
+}
+
+/// @brief Performs greater-than comparison with `std::basic_string_view`.
+template <typename CharType, typename CharTraits>
+[[nodiscard]] constexpr bool operator>(safecpp::basic_zstring_view<CharType, CharTraits> lhs,
+                                       std::basic_string_view<CharType, CharTraits> rhs) noexcept
+{
+    return std::basic_string_view<CharType, CharTraits>{lhs} > rhs;
+}
+
+/// @brief Performs greater-than comparison with `std::basic_string_view` (reversed operands).
+template <typename CharType, typename CharTraits>
+[[nodiscard]] constexpr bool operator>(std::basic_string_view<CharType, CharTraits> lhs,
+                                       safecpp::basic_zstring_view<CharType, CharTraits> rhs) noexcept
+{
+    return lhs > std::basic_string_view<CharType, CharTraits>{rhs};
+}
+
 }  // namespace score::safecpp
 
 // NOLINTEND(readability-identifier-naming)
