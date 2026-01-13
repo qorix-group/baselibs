@@ -344,7 +344,6 @@ TEST(ZStringView, CanCompareWithStringView)
 
     // When attempting, then comparison checks with `std::string_view` must be possible
     EXPECT_TRUE(view > std::string_view{"hell"});
-    EXPECT_FALSE(view < std::string_view{"hello"});
     EXPECT_TRUE(view <= std::string_view{"hello"});
     EXPECT_FALSE(view > std::string_view{"hello world"});
     EXPECT_FALSE(view >= std::string_view{"hello world"});
@@ -388,6 +387,29 @@ TEST(ZStringView, CanCompareNotEqual)
     EXPECT_TRUE(view != different_view);
     EXPECT_TRUE(view != std::string_view{different_view});
     EXPECT_TRUE(std::string_view{view} != different_view);
+}
+
+TEST(ZStringView, CanCompareLessThan)
+{
+    // Given two equivalent `zstring_view`s
+    auto view = "hello"_zsv;
+    auto other_view = "hello"_zsv;
+
+    // Then less-than comparison is expected to fail
+    EXPECT_FALSE(view < other_view);
+    EXPECT_FALSE(view < std::string_view{other_view});
+    EXPECT_FALSE(std::string_view{view} < other_view);
+
+    // Given a differing `zstring_view`
+    auto different_view = "hello world"_zsv;
+
+    // Then less than comparison must work as expected
+    EXPECT_TRUE(view < different_view);
+    EXPECT_TRUE(view < std::string_view{different_view});
+    EXPECT_TRUE(std::string_view{view} < different_view);
+    EXPECT_FALSE(different_view < view);
+    EXPECT_FALSE(different_view < std::string_view{view});
+    EXPECT_FALSE(std::string_view{different_view} < view);
 }
 
 TEST(ZStringView, CanOutputToOStream)
