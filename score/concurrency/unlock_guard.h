@@ -13,13 +13,14 @@
 #ifndef SCORE_LIB_CONCURRENCY_UNLOCK_GUARD_H
 #define SCORE_LIB_CONCURRENCY_UNLOCK_GUARD_H
 
+#include "platform/aas/lib/type_traits/type_traits.h"
 // #include "score/concurrency/scoped_operation.h"
 // #include <functional>
 
 namespace score::concurrency
 {
 
-template <typename Lockable>
+template <typename Lockable, typename = std::enable_if_t<is_basic_lockable_v<Lockable>>>
 class UnlockGuard
 {
   public:

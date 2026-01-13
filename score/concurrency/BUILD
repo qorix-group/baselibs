@@ -41,6 +41,17 @@ cc_gtest_unit_test(
 )
 
 cc_library(
+    name = "test_types",
+    testonly = True,
+    hdrs = ["test_types.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "//visibility:public",  # platform_only
+    ],
+)
+
+cc_library(
     name = "synchronized",
     hdrs = ["synchronized.h"],
     features = COMPILER_WARNING_FEATURES,
@@ -49,6 +60,7 @@ cc_library(
         "//visibility:public",
     ],
     deps = [
+        ":locked_ptr",
         "//platform/aas/lib/type_traits",
     ],
 )
@@ -60,7 +72,38 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     deps = [
+        ":locked_ptr",
         ":synchronized",
+        ":test_types",
+        ":unlock_guard",
+        "//platform/aas/lib/type_traits",
+    ],
+)
+
+cc_library(
+    name = "locked_ptr",
+    hdrs = ["locked_ptr.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        ":unlock_guard",
+    ],
+)
+
+cc_gtest_unit_test(
+    name = "locked_ptr_tests",
+    srcs = ["locked_ptr_test.cpp"],
+    features = COMPILER_WARNING_FEATURES + [
+        "aborts_upon_exception",
+    ],
+    deps = [
+        ":locked_ptr",
+        ":test_types",
+        ":unlock_guard",
+        "//platform/aas/lib/type_traits",
     ],
 )
 
@@ -81,7 +124,9 @@ cc_gtest_unit_test(
         "aborts_upon_exception",
     ],
     deps = [
+        ":test_types",
         ":unlock_guard",
+        "//platform/aas/lib/type_traits",
     ],
 )
 

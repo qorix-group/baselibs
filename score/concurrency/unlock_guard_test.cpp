@@ -20,10 +20,18 @@
 #include <mutex>
 #include <shared_mutex>
 
+#include "test_types.h"
+
 namespace test
 {
 
-using namespace score::concurrency;
+using score::concurrency::UnlockGuard;
+
+// UnlockGuard should be instantiable with types adhering to is_basic_lockable
+static_assert(std::is_constructible_v<UnlockGuard<BasicLockableArchetype>, BasicLockableArchetype&>,
+              "UnlockGuard should be constructible with a BasicLockableArchetype&");
+static_assert(std::is_constructible_v<UnlockGuard<MockMutex>, MockMutex&>,
+              "UnlockGuard should be constructible with a MockMutex&");
 
 // UnlockGuard should be instantiable with standard mutex types
 static_assert(std::is_constructible_v<UnlockGuard<std::mutex>, std::mutex&>,
@@ -38,32 +46,6 @@ static_assert(std::is_constructible_v<UnlockGuard<std::shared_mutex>, std::share
               "UnlockGuard should be constructible with a std::shared_mutex&");
 static_assert(std::is_constructible_v<UnlockGuard<std::unique_lock<std::mutex>>, std::unique_lock<std::mutex>&>,
               "UnlockGuard should be constructible with a std::unique_lock<std::mutex>&");
-
-namespace
-{
-class MockMutex
-{
-  public:
-    void lock()
-    {
-        locked_ = true;
-    }
-    void unlock()
-    {
-        locked_ = false;
-    }
-    bool is_locked() const
-    {
-        return locked_;
-    }
-
-  private:
-    bool locked_{false};
-};
-}  // namespace
-
-static_assert(std::is_constructible_v<UnlockGuard<MockMutex>, MockMutex&>,
-              "UnlockGuard should be constructible with a MockMutex&");
 
 TEST(UnlockGuardTest, MutexUnlocksOnConstructionLocksOnDestruction)
 {
