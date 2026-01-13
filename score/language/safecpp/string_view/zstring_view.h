@@ -26,6 +26,31 @@
 namespace score::safecpp
 {
 
+namespace details
+{
+
+template <typename T, typename V = void, typename = void>
+class is_null_terminated_string_type : public std::false_type
+{
+};
+template <typename T, typename V>
+class is_null_terminated_string_type<
+    T,
+    V,
+    std::void_t<decltype(std::declval<T>().c_str()), decltype(std::declval<T>().size())>>
+    : public std::is_convertible<decltype(*std::declval<T>().c_str()), V>
+{
+};
+template <typename T>
+class is_null_terminated_string_type<
+    T,
+    void,
+    std::void_t<decltype(std::declval<T>().c_str()), decltype(std::declval<T>().size())>> : public std::true_type
+{
+};
+
+}  // namespace details
+
 ///
 /// @brief non-modifiable view type over guaranteed null-terminated contiguous sequence of characters
 /// @note This implementation was originally motivated by the following C++ standard draft paper:
@@ -40,19 +65,6 @@ template <typename CharType, typename CharTraits = std::char_traits<CharType>>
 class basic_zstring_view : private details::zspan<std::add_const_t<CharType>>
 {
     using base = const details::zspan<std::add_const_t<CharType>>;
-
-    template <typename T, typename S, typename = void>
-    class is_null_terminated_string_type : public std::false_type
-    {
-    };
-    template <typename T, typename S>
-    class is_null_terminated_string_type<
-        T,
-        S,
-        std::void_t<decltype(std::declval<T>().c_str()), decltype(std::declval<T>().size())>>
-        : public std::is_convertible<decltype(*std::declval<T>().c_str()), S>
-    {
-    };
 
   public:
     using violation_policies = typename base::violation_policies;
@@ -71,7 +83,7 @@ class basic_zstring_view : private details::zspan<std::add_const_t<CharType>>
     /// @brief Constructs a `basic_zstring_view` as view over null-terminated \p StringType;.
     /// @details type \p StringType; is required to guarantee null-termination of its underlying buffer
     template <typename StringType,
-              std::enable_if_t<is_null_terminated_string_type<StringType, CharType>::value, bool> = true>
+              std::enable_if_t<details::is_null_terminated_string_type<StringType, CharType>::value, bool> = true>
     // NOLINTNEXTLINE(google-explicit-constructor) allow implicit conversions from `StringType` which is null-terminated
     constexpr basic_zstring_view(const StringType& str) noexcept
         // `StringType` guarantees null-termination of `c_str()` and hence we use `set_empty` as dummy policy here
