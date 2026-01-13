@@ -342,10 +342,6 @@ TEST(ZStringView, CanCompareWithStringView)
     // Given a preconstructed `zstring_view`
     auto view = "hello"_zsv;
 
-    // When attempting, then equality checks with `std::string_view` must be possible
-    EXPECT_FALSE(view != std::string_view{"hello"});
-    EXPECT_TRUE(view != std::string_view{"hello world"});
-
     // When attempting, then comparison checks with `std::string_view` must be possible
     EXPECT_TRUE(view > std::string_view{"hell"});
     EXPECT_FALSE(view < std::string_view{"hello"});
@@ -372,6 +368,26 @@ TEST(ZStringView, CanCompareEqual)
     EXPECT_FALSE(view == different_view);
     EXPECT_FALSE(view == std::string_view{different_view});
     EXPECT_FALSE(std::string_view{view} == different_view);
+}
+
+TEST(ZStringView, CanCompareNotEqual)
+{
+    // Given two equivalent `zstring_view`s
+    auto view = "hello"_zsv;
+    auto other_view = "hello"_zsv;
+
+    // Then inequality comparison is expected to fail
+    EXPECT_FALSE(view != other_view);
+    EXPECT_FALSE(view != std::string_view{other_view});
+    EXPECT_FALSE(std::string_view{view} != other_view);
+
+    // Given a differing `zstring_view`
+    auto different_view = "hello world"_zsv;
+
+    // Then inequality comparison is expected to succeed
+    EXPECT_TRUE(view != different_view);
+    EXPECT_TRUE(view != std::string_view{different_view});
+    EXPECT_TRUE(std::string_view{view} != different_view);
 }
 
 TEST(ZStringView, CanOutputToOStream)
