@@ -25,7 +25,6 @@ To use Base Libraries properly, you need to set the following build settings in 
 ```bash
 --@score_baselibs//score/json:base_library=nlohmann
 --@score_baselibs//score/memory/shared/flags:use_typedshmd=False
---@score_baselibs//score/mw/log/flags:KRemote_Logging=False
 ```
 
 ### Using Unreleased Versions
