@@ -27,8 +27,6 @@ namespace score::cpp
 namespace detail
 {
 
-constexpr stop_state::stop_callback_id stop_state::default_stop_callback_id;
-
 void stop_state::register_callback(stop_callback* const cb)
 {
     std::unique_lock<std::mutex> lock{callback_mutex_};
