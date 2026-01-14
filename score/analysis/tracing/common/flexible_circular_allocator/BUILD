@@ -29,7 +29,7 @@ cc_library(
     ],
     deps = [
         "flexible_circular_allocator_interface",
-        "@score_baselibs//score/analysis/tracing/common/flexible_circular_allocator/error_code/flexible_circular_allocator:error_code",
+        "@score_baselibs//score/analysis/tracing/common/flexible_circular_allocator/error_codes/flexible_circular_allocator:error_code",
         "@score_baselibs//score/analysis/tracing/common/interface_types:generic_trace_api_types",
         "@score_baselibs//score/analysis/tracing/generic_trace_library/interface_types/error_code",
         "@score_baselibs//score/language/futurecpp",
@@ -55,7 +55,7 @@ cc_library(
     ],
     deps = [
         "flexible_circular_allocator_interface",
-        "@score_baselibs//score/analysis/tracing/common/flexible_circular_allocator/error_code/lockless_flexible_circular_allocator:error_code",
+        "@score_baselibs//score/analysis/tracing/common/flexible_circular_allocator/error_codes/lockless_flexible_circular_allocator:error_code",
         "@score_baselibs//score/analysis/tracing/common/interface_types:generic_trace_api_types",
         "@score_baselibs//score/analysis/tracing/generic_trace_library/interface_types/error_code",
         "@score_baselibs//score/language/futurecpp",
@@ -94,7 +94,7 @@ cc_library(
     deps = [
         "flexible_circular_allocator",
         "flexible_circular_allocator_factory_interface",
-        "@score_baselibs//score/analysis/tracing/common/flexible_circular_allocator/error_code/factory:error_code",
+        "@score_baselibs//score/analysis/tracing/common/flexible_circular_allocator/error_codes/factory:error_code",
     ],
 )
 
@@ -111,7 +111,7 @@ cc_library(
     deps = [
         "flexible_circular_allocator_factory_interface",
         "lockless_flexible_circular_allocator",
-        "@score_baselibs//score/analysis/tracing/common/flexible_circular_allocator/error_code/factory:error_code",
+        "@score_baselibs//score/analysis/tracing/common/flexible_circular_allocator/error_codes/factory:error_code",
     ],
 )
 

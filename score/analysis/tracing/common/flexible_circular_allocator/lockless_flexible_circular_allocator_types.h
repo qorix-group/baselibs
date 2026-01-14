@@ -13,7 +13,7 @@
 #ifndef SCORE_ANALYSIS_TRACING_COMMON_LOCKLESS_FLEXIBLE_CIRCULAR_ALLOCATOR_TYPES_H
 #define SCORE_ANALYSIS_TRACING_COMMON_LOCKLESS_FLEXIBLE_CIRCULAR_ALLOCATOR_TYPES_H
 
-#include "score/analysis/tracing/common/flexible_circular_allocator/error_code/lockless_flexible_circular_allocator/error_code.h"
+#include "score/analysis/tracing/common/flexible_circular_allocator/error_codes/lockless_flexible_circular_allocator/error_code.h"
 namespace score
 {
 namespace analysis
