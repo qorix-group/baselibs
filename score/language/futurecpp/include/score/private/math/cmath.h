@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (c) 2023, Contributors to the Eclipse Foundation
+ * Copyright (c) 2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -13,7 +13,7 @@
 
 ///
 /// \file
-/// \copyright Copyright (c) 2023, Contributors to the Eclipse Foundation
+/// \copyright Copyright (c) 2023 Contributors to the Eclipse Foundation
 ///
 /// The safety manual (broken_link_c/issue/3871296) for QNX requires to compile math functions
 /// with `-fno-builtin`. `amp` is taking care of this by providing for

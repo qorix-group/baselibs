@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (c) 2023, Contributors to the Eclipse Foundation
+ * Copyright (c) 2023 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -12,7 +12,7 @@
  ********************************************************************************/
 
 ///
-/// @copyright Copyright (c) 2023, Contributors to the Eclipse Foundation
+/// @copyright Copyright (c) 2023 Contributors to the Eclipse Foundation
 ///
 
 #include <score/hash.hpp>

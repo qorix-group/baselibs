@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (c) 2019, Contributors to the Eclipse Foundation
+ * Copyright (c) 2019 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -13,7 +13,7 @@
 
 ///
 /// \file
-/// \copyright Copyright (c) 2019, Contributors to the Eclipse Foundation
+/// \copyright Copyright (c) 2019 Contributors to the Eclipse Foundation
 ///
 /// \brief Score.Futurecpp.Functional Component
 ///

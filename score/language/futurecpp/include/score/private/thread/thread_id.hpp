@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 
 /********************************************************************************
- * Copyright (c) 2021-2024, Contributors to the Eclipse Foundation
+ * Copyright (c) 2021 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -21,7 +21,7 @@
 
 ///
 /// \file
-/// \copyright Copyright (c) 2021-2024, Contributors to the Eclipse Foundation
+/// \copyright Copyright (c) 2021 Contributors to the Eclipse Foundation
 ///
 /// The implementation is based on \c std::thread from https://github.com/llvm/llvm-project/tree/main/libcxx with
 /// modifications listed in \c LICENSE.txt.
