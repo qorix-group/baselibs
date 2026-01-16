@@ -131,7 +131,6 @@ TEST(range_pair, range_pair_in_range_based_for_loop)
     std::int32_t const a[5] = {0, 1, 2, 3, 4};
     auto const rp = score::cpp::make_range_pair(a, a + 5U);
 
-#if __cplusplus >= 201103L
     // the actual reason for this class
     std::int32_t i = 0;
     for (auto k : rp)
@@ -140,7 +139,5 @@ TEST(range_pair, range_pair_in_range_based_for_loop)
         ++i;
     }
     EXPECT_EQ(i, 5U);
-#endif
-
     EXPECT_EQ(std::accumulate(rp.begin(), rp.end(), 0), 10U);
 }
