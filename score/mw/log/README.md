@@ -697,7 +697,7 @@ Note, however, that other limitation like total bandwidth of network or processi
 Dropped log messages can be monitored and reported by the DLT-Daemon backend.
 
 ### DLT-Daemon backend (Datarouter) security policy (secpol) configuration
-For the [message exchange between Logging Clients and the Datarouter](broken_link_g/swh/ddad_platform/tree/master/aas/mw/log/design/datarouter_backend#message-exchange-between-logging-clients-and-datarouter), it is crucial that the secpol for the Datarouter (datarouter.secpol) contains the secpol type of the client process in its channel connect configuration. Otherwise, the Datarouter will be unable to establish a connection with the client, and consequently, it cannot forward the logs to remote.
+For the [message exchange between Logging Clients and the Datarouter](broken_link_g/swh/safe-posix-platform/tree/master/score/mw/log/design/datarouter_backend#message-exchange-between-logging-clients-and-datarouter), it is crucial that the secpol for the Datarouter (datarouter.secpol) contains the secpol type of the client process in its channel connect configuration. Otherwise, the Datarouter will be unable to establish a connection with the client, and consequently, it cannot forward the logs to remote.
 
 ```
 allow datarouter_t {
