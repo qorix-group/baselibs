@@ -204,11 +204,18 @@ impl StdoutLoggerBuilder {
 
     /// Build the `StdoutLogger` and set it as the default logger.
     pub fn set_as_default_logger(self) {
-        let logger = self.build();
-        score_log::set_max_level(logger.log_level());
-        if let Err(e) = score_log::set_global_logger(Box::new(logger)) {
+        if let Err(e) = self.try_set_as_default_logger() {
             panic!("unable to set logger: {e}");
         }
+    }
+
+    /// Build the `StdoutLogger` and try to set it as the default logger.
+    pub fn try_set_as_default_logger(self) -> core::result::Result<(), score_log::SetLoggerError> {
+        let logger = self.build();
+        let level = logger.log_level();
+        score_log::set_global_logger(Box::new(logger))?;
+        score_log::set_max_level(level);
+        Ok(())
     }
 }
 
@@ -291,6 +298,8 @@ impl Log for StdoutLogger {
     }
 
     fn flush(&self) {
-        // No-op.
+        use std::io::Write;
+        let mut stdout = std::io::stdout();
+        stdout.flush().unwrap();
     }
 }
