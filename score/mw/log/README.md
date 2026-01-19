@@ -174,7 +174,7 @@ Note: This target bundles all supported logging backends, introducing additional
 
 ```bazel
 deps = [
-    "@score_logging//score/mw/log:frontend",
+    "@score_baselibs//score/mw/log:frontend",
 ],
 ```
 
@@ -184,7 +184,7 @@ Note: Test binaries that depend on frontend only library targets require an expl
 
 ```bazel
 deps = [
-    "@score_logging//score/mw/log:backend_stub_testutil",
+    "@score_baselibs//score/mw/log:backend_stub_testutil",
 ],
 ```
 
@@ -388,7 +388,7 @@ cc_library(
 cc_test(
     ...
     deps = [
-        "@score_logging//score/mw/log",
+        "//platform/aas/mw/log",
     ],
 )
 ```
