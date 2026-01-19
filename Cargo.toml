@@ -21,6 +21,7 @@ default-members = [
     "src/elementary",
     "src/log/score_log_fmt_macro",
     "src/log/stdout_logger",
+    "src/testing_macros",
 ]
 # Include tests and examples as a member for IDE support and Bazel builds.
 members = [
@@ -31,6 +32,7 @@ members = [
     "src/log/score_log_fmt",
     "src/log/score_log_fmt_macro",
     "src/log/stdout_logger",
+    "src/testing_macros",
     "examples/log_builtin",
     "examples/log_custom",
 ]
@@ -47,6 +49,7 @@ score_log_fmt = { path = "src/log/score_log_fmt" }
 score_log_fmt_macro = { path = "src/log/score_log_fmt_macro" }
 stdout_logger = { path = "src/log/stdout_logger" }
 elementary = { path = "src/elementary" }
+testing_macros = { path = "src/testing_macros" }
 
 [workspace.lints.clippy]
 std_instead_of_core = "warn"
