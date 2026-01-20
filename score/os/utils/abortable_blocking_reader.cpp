@@ -256,7 +256,7 @@ score::cpp::expected_blank<Error> AbortableBlockingReader::WaitForData(
 // #ifdef, (3) #if, (4) #if defined, (5) #elif, (6) #else, (7) #define, (8) #endif, (9) #include.".
 // Checks whether we run over QNX or linux to choose the appropriate timeout.
 // coverity[autosar_cpp14_a16_0_1_violation]
-#ifdef __QNXNTO__
+#if defined(__QNX__) && __QNX__ >= 800
     // QNX8 workaround until Ticket-221150 is resolved : add finite timeout so we don't sleep forever if the
     // resource manager fails to wake pollers; keep true blocking elsewhere.
     constexpr std::int8_t kPollTimeoutMs = 50;  // tuneable: 10–100 ms
