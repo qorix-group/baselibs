@@ -37,7 +37,7 @@ the verbose logging configuration and omit the non-verbose aspect.
 
 The use case diagram below shows three typical use cases supported by the design:
 
-![Use Case Diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/configuration_use_cases.uxf)
+<img alt="Use Case Diagram" src="https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/eclipse-score/baselibs/refs/heads/main/score/mw/log/design/configuration_use_cases.puml">
 
 ## Class Diagram
 
@@ -89,7 +89,7 @@ file discoverer.
 The sequence diagram below depicts the initialization that takes place once when
 the user makes the first invokes `mw::log`:
 
-![Class diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/configuration_sequence.uxf)
+<img alt="Class diagram" src="https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/eclipse-score/baselibs/refs/heads/main/score/mw/log/design/configuration_sequence.puml">
 
 In the diagram, the user calls `mw::log::Error()` to send the first log message
 of the program. The `LogStreamFactory` then calls `GetRecorder()` on the
