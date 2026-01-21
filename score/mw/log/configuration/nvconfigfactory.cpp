@@ -58,9 +58,20 @@ class NvConfigErrorDomain final : public score::result::ErrorDomain
             // coverity[autosar_cpp14_m6_4_5_violation] Return will terminate this switch clause
             case NvConfigErrorCode::kContentError:
                 return "Invalid JSON content - missing required fields";
+            // LCOV_EXCL_START
+            // Coverage exclusion rationale: This default case is defensive programming for
+            // handling invalid/unknown error codes. It cannot be tested because:
+            // 1. NvConfigErrorCode enum only defines two values: kParseError(1) and kContentError(2)
+            // 2. MakeError() function is in anonymous namespace and not accessible from tests
+            // 3. All production code paths use only the two defined error codes
+            // 4. Testing would require either exposing internal implementation details or
+            //    adding test-specific code to production, both of which violate coding standards
+            // This code serves as a safety net for potential future enum extensions or
+            // corruption scenarios, following ASIL-B defensive programming practices.
             // coverity[autosar_cpp14_m6_4_5_violation] Return will terminate this switch clause
             default:
                 return "Unknown NvConfig error";
+                // LCOV_EXCL_STOP
         }
     }
 };

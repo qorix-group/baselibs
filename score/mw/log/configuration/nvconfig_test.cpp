@@ -281,4 +281,43 @@ TEST_F(NonVerboseConfig, NvConfigReturnsErrorIfIdDataTypeIsWrong)
     EXPECT_EQ(static_cast<uint8_t>(score::mw::log::NvConfigErrorCode::kContentError), *result.error());
 }
 
+TEST_F(NonVerboseConfig, NvConfigReturnsNullptrForNonExistentTypeName)
+{
+    RecordProperty("Requirement", "SCR-1633147");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description",
+                   "Verifies that getDltMsgDesc returns nullptr when type name is not found in configuration.");
+    RecordProperty("TestingTechnique", "Requirements-based test");
+    RecordProperty("DerivationTechnique", "Analysis of requirements");
+
+    auto result = NvConfigFactory::CreateAndInit(JSON_PATH());
+    ASSERT_TRUE(result.has_value());  // Verify config was created successfully
+    auto& nvc = result.value();
+
+    // Test with a type name that doesn't exist in the configuration
+    const score::mw::log::config::NvMsgDescriptor* desc = nvc.getDltMsgDesc("NonExistentTypeName");
+    EXPECT_EQ(nullptr, desc);  // Should return nullptr for non-existent type
+}
+
+TEST_F(NonVerboseConfig, CreateEmptyReturnsValidEmptyConfig)
+{
+    RecordProperty("Requirement", "SCR-1633147");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Verifies that CreateEmpty creates a valid NvConfig with no message descriptors.");
+    RecordProperty("TestingTechnique", "Requirements-based test");
+    RecordProperty("DerivationTechnique", "Analysis of requirements");
+
+    // Create an empty configuration
+    NvConfig empty_config = NvConfigFactory::CreateEmpty();
+
+    // Verify that any lookup returns nullptr since the config is empty
+    const score::mw::log::config::NvMsgDescriptor* desc = empty_config.getDltMsgDesc("AnyTypeName");
+    EXPECT_EQ(nullptr, desc);  // Should return nullptr for any type in empty config
+
+    // Try with another type name to be thorough
+    const score::mw::log::config::NvMsgDescriptor* desc2 =
+        empty_config.getDltMsgDesc("score::logging::PersistentLogFileEvent");
+    EXPECT_EQ(nullptr, desc2);  // Should also return nullptr
+}
+
 }  // namespace
