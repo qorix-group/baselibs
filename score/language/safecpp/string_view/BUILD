@@ -77,6 +77,9 @@ cc_library(
     visibility = [
         "//visibility:public",  # platform_only
     ],
+    deps = [
+        "@score_baselibs//score/quality/compiler_warnings",
+    ],
 )
 
 cc_library(
