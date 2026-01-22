@@ -69,6 +69,17 @@ cc_gtest_unit_test(
 )
 
 cc_library(
+    name = "char_traits_wrapper",
+    srcs = ["char_traits_wrapper.cpp"],
+    hdrs = ["char_traits_wrapper.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "//visibility:public",  # platform_only
+    ],
+)
+
+cc_library(
     name = "zstring_view",
     srcs = ["zstring_view.cpp"],
     hdrs = ["zstring_view.h"],
@@ -78,6 +89,7 @@ cc_library(
         "//visibility:public",  # platform_only
     ],
     deps = [
+        "@score_baselibs//score/language/safecpp/string_view:char_traits_wrapper",
         "@score_baselibs//score/language/safecpp/string_view/details:zspan",
     ],
 )

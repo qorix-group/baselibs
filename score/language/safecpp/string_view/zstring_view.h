@@ -13,6 +13,7 @@
 #ifndef SCORE_LANGUAGE_SAFECPP_STRING_VIEW_ZSTRING_VIEW_H
 #define SCORE_LANGUAGE_SAFECPP_STRING_VIEW_ZSTRING_VIEW_H
 
+#include "score/language/safecpp/string_view/char_traits_wrapper.h"
 #include "score/language/safecpp/string_view/details/zspan.h"
 
 #include <cstddef>
@@ -49,21 +50,6 @@ class is_null_terminated_string_type<
 {
 };
 
-template <typename CharType>
-struct char_traits
-{
-    static_assert(std::disjunction_v<std::is_same<CharType, char>,
-                                     std::is_same<CharType, wchar_t>,
-#ifdef __cpp_char8_t
-                                     std::is_same<CharType, char8_t>,
-#endif
-                                     std::is_same<CharType, char16_t>,
-                                     std::is_same<CharType, char32_t>>,
-                  "Instantiating the class template `safecpp::details::char_traits` with a character type other "
-                  "than char, wchar_t, char8_t, char16_t or char32_t is non-standard and therefore not permitted.");
-    using traits_type = std::char_traits<CharType>;
-};
-
 }  // namespace details
 
 ///
@@ -76,7 +62,7 @@ struct char_traits
 ///       Further note: the above-mentioned draft paper got meanwhile superseded by a revised one which itself is also
 ///       subject to further changes at any time. The current draft version can be found here: https://wg21.link/p3655.
 ///
-template <typename CharType, typename CharTraits = typename safecpp::details::char_traits<CharType>::traits_type>
+template <typename CharType, typename CharTraits = typename safecpp::char_traits_wrapper<CharType>::traits_type>
 class basic_zstring_view : private details::zspan<std::add_const_t<CharType>>
 {
     using base = const details::zspan<std::add_const_t<CharType>>;
