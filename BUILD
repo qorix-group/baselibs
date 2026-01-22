@@ -12,7 +12,7 @@
 # *******************************************************************************
 
 load("@score_docs_as_code//:docs.bzl", "docs")
-load("@score_tooling//:defs.bzl", "copyright_checker")
+load("@score_tooling//:defs.bzl", "copyright_checker", "use_format_targets")
 
 docs(
     data = [
@@ -35,3 +35,7 @@ copyright_checker(
     template = "@score_tooling//cr_checker/resources:templates",
     visibility = ["//visibility:public"],
 )
+
+load("@score_format_checker//:macros.bzl", "use_format_targets")
+
+use_format_targets()
