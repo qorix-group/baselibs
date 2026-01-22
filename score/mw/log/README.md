@@ -362,7 +362,7 @@ The key sections of this implementation are going to be described in this docume
 The primary assumption is to **have separate library** for each custom user type.
 Thus the first step is to create separate directory. For the purpose of presenting
 an example there was a directory created inside `mw/log` test directory, e.g.:
-`aas/mw/log/test/my_custom_lib` and create `BUILD` file there, e.g.:
+`mw/log/test/my_custom_lib` and create `BUILD` file there, e.g.:
 
 ```bazel
 cc_library(
@@ -388,7 +388,7 @@ cc_library(
 cc_test(
     ...
     deps = [
-        "//platform/aas/mw/log",
+        "@score_logging//score/mw/log:log",
     ],
 )
 ```
@@ -421,8 +421,8 @@ The content of C++ files are declaration and definition of `operator<<` needed
 for logging, e.g. header `my_custom_type_mw_log.h`:
 
 ```c++
-#include "score/mw/log/log_stream.h"
-#include "score/mw/log/test/my_custom_lib/my_custom_type.h"
+#include "mw/log/log_stream.h"
+#include "mw/log/test/my_custom_lib/my_custom_type.h"
 
 namespace my
 {
@@ -480,7 +480,7 @@ cc_library(
     ...
     visibility = [
         ...
-        "//score/mw/log/my_custom_lib:__pkg__",
+        "//mw/log/my_custom_lib:__pkg__",
     ],
 ```
 
@@ -511,8 +511,8 @@ cc_library(
 **2.** Add the overload in header file:
 
 ```c++
-#include "platform/aas/ara/log/inc/ara/log/logstream.h"
-#include "score/mw/log/test/my_custom_lib/my_custom_type.h"
+#include "mw/log/logstream.h"
+#include "mw/log/test/my_custom_lib/my_custom_type.h"
 
 namespace my
 {
