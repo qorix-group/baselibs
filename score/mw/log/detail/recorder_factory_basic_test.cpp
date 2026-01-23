@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/recorder_factory_stub.h"
+#include "score/mw/log/detail/recorder_factory_basic.h"
 #include "score/mw/log/detail/empty_recorder.h"
 #include "score/mw/log/detail/text_recorder/text_recorder.h"
 

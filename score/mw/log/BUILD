@@ -67,6 +67,12 @@ alias(
     visibility = ["//visibility:public"],
 )
 
+alias(
+    name = "console_backend",
+    actual = "@score_baselibs//score/mw/log/detail:recorder_factory_basic",
+    visibility = ["//visibility:public"],
+)
+
 cc_library(
     name = "recorder_interface",
     srcs = ["irecorder_factory.cpp"],
@@ -254,7 +260,7 @@ cc_test(
         "@googletest//:gtest_main",
         "@score_baselibs//score/mw/log:frontend",
         "@score_baselibs//score/mw/log:recorder_mock",
-        "@score_baselibs//score/mw/log/detail:recorder_factory_stub",
+        "@score_baselibs//score/mw/log/detail:recorder_factory_basic",
     ],
 )
 
@@ -322,7 +328,7 @@ cc_test(
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
-        "@score_baselibs//score/mw/log/detail:recorder_factory_stub",
+        "@score_baselibs//score/mw/log/detail:recorder_factory_basic",
         "@score_baselibs//score/mw/log/test/my_custom_lib:my_custom_type_mw_log",
     ],
 )
@@ -347,7 +353,7 @@ cc_test(
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
-        "@score_baselibs//score/mw/log/detail:recorder_factory_stub",
+        "@score_baselibs//score/mw/log/detail:recorder_factory_basic",
         "@score_baselibs//score/mw/log/detail:thread_local_guard",
     ],
 )

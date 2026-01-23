@@ -249,12 +249,33 @@ cc_library(
 cc_library(
     name = "recorder_factory_stub",
     srcs = [
-        "recorder_factory_stub.cpp",
+        "recorder_factory_basic.cpp",
     ],
     hdrs = [
-        "recorder_factory_stub.h",
+        "recorder_factory_basic.h",
     ],
     defines = ["KUSE_STUB_IMPLEMENTATION_ONLY"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "@score_baselibs//score/mw/log:__subpackages__",
+    ],
+    deps = [
+        ":empty_recorder",
+        "@score_baselibs//score/mw/log:recorder_interface",
+        "@score_baselibs//score/mw/log/detail/text_recorder",
+    ],
+    alwayslink = True,
+)
+
+cc_library(
+    name = "recorder_factory_basic",
+    srcs = [
+        "recorder_factory_basic.cpp",
+    ],
+    hdrs = [
+        "recorder_factory_basic.h",
+    ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
@@ -455,16 +476,15 @@ cc_test(
 )
 
 cc_test(
-    name = "recorder_factory_stub_test",
-    srcs = ["recorder_factory_stub_test.cpp"],
-    defines = ["KUSE_STUB_IMPLEMENTATION_ONLY"],
+    name = "recorder_factory_basic_test",
+    srcs = ["recorder_factory_basic_test.cpp"],
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
-        "@score_baselibs//score/mw/log/detail:recorder_factory_stub",
+        "@score_baselibs//score/mw/log/detail:recorder_factory_basic",
     ],
 )
 
@@ -493,7 +513,7 @@ cc_unit_test_suites_for_host_and_qnx(
         ":dlt_argument_counter_test",
         ":empty_recorder_factory_test",
         ":thread_local_guard_test",
-        ":recorder_factory_stub_test",
+        ":recorder_factory_basic_test",
         ":empty_recorder_test",
         ":error_test",
         ":helper_functions_test",
