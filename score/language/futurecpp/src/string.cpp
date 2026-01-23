@@ -78,11 +78,14 @@ string to_string_impl(const T value, memory_resource* const resource)
         remaining_value /= unsigned_t{10};
     } while (remaining_value != 0);
 
-    if (value < 0)
+    if constexpr (std::is_signed_v<T>)
     {
-        SCORE_LANGUAGE_FUTURECPP_ASSERT_DBG(current_place != result.begin());
-        --current_place;
-        *current_place = '-';
+        if (value < 0)
+        {
+            SCORE_LANGUAGE_FUTURECPP_ASSERT_DBG(current_place != result.begin());
+            --current_place;
+            *current_place = '-';
+        }
     }
 
     return string{current_place, result.end(), resource};
