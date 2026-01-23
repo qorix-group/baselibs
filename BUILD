@@ -33,6 +33,7 @@ copyright_checker(
     ],
     config = "@score_tooling//cr_checker/resources:config",
     template = "@score_tooling//cr_checker/resources:templates",
+    exclusion = "//:cr_checker_exclusion",
     visibility = ["//visibility:public"],
 )
 
