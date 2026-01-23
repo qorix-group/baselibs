@@ -508,6 +508,7 @@ cc_test(
     deps = [
         "@googletest//:gtest_main",
         "@score_baselibs//score/os:fcntl",
+        "@score_baselibs//score/os:version",
     ],
 )
 

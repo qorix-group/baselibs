@@ -12,6 +12,7 @@
  ********************************************************************************/
 #include "score/os/ObjectSeam.h"
 #include "gtest/gtest.h"
+#include "score/os/version.h"
 
 namespace score
 {
@@ -76,6 +77,44 @@ TEST(ObjectSeamTest, MoveConstructor)
     EXPECT_EQ(&TestableBase<MockObject>::test_select_instance(mock), &mock);
     TestableBase<MockObject>::restore_instance();
 }
+
+#ifdef SPP_OS_QNX8
+TEST(ObjectSeamTest, CopyAssignment)
+{
+    RecordProperty("Verifies", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "ObjectSeamTest Copy Assignment");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
+    MockObject mock("Testing Copy Assignment");
+    TestableBase<MockObject> b1;
+    TestableBase<MockObject> b2;
+    b2 = b1;  // Copy assignment
+
+    EXPECT_NO_THROW(TestableBase<MockObject>::set_testing_instance(mock));
+    EXPECT_EQ(&TestableBase<MockObject>::test_select_instance(mock), &mock);
+    TestableBase<MockObject>::restore_instance();
+}
+
+TEST(ObjectSeamTest, MoveAssignment)
+{
+    RecordProperty("Verifies", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "ObjectSeamTest Move Assignment");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
+    MockObject mock("Testing Move Assignment");
+    TestableBase<MockObject> b1;
+    TestableBase<MockObject> b2;
+    b2 = std::move(b1);  // Move assignment
+
+    EXPECT_NO_THROW(TestableBase<MockObject>::set_testing_instance(mock));
+    EXPECT_EQ(&TestableBase<MockObject>::test_select_instance(mock), &mock);
+    TestableBase<MockObject>::restore_instance();
+}
+#endif  // SPP_OS_QNX8
 
 }  // namespace test
 }  // namespace os

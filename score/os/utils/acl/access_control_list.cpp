@@ -291,7 +291,10 @@ auto ::score::os::AccessControlList::FindFirstEntry(F&& predicate) const noexcep
     // for errors during construction, which is the only reason why this call can fail with EINVAL besides giving a bad
     // element iteration value.
     score::cpp::optional<Acl::Entry> entry{operating_system.acl_get_entry(acl_, Acl::kAclFirstEntry).value()};
-    while (entry.has_value())
+    // GCovr false negative: Gcovr cannot analyse the loop statement,
+    // it shows "0/1" decisions cannot be analysed, but the loop certainly executed
+    // as there's coverage for its body.
+    while (entry.has_value())  // LCOV_EXCL_LINE False positive, see above for rationale.
     {
         // Suppress "AUTOSAR C++14 A18-9-2" rule findings. This rule stated: "Forwarding values to other functions
         // shall be done via: (1) std::move if the value is an rvalue reference,
