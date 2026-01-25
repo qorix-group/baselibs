@@ -42,6 +42,18 @@ class LocklessFlexibleCircularAllocator : public IFlexibleCircularAllocator
     bool IsInBounds(const void* const address, const std::size_t size) const noexcept override;
 
   private:
+// Suppress "autosar_cpp14_a16_0_1_violation" rule finding. This rule states: "The pre-processor shall only be used for
+// unconditional and conditional file inclusion and include guards, and using the following directives: (1) #ifndef, (2)
+// #ifdef, (3) #if, (4) #if defined, (5) #elif, (6) #else, (7) #define, (8) #endif, (9) #include."
+// No harm in using this preprocessor.
+// Test-only access: internal helper branches are unreachable via the public API because
+// bounds/alignment checks prevent corrupted pointers and metadata tampering.
+// and this friend keyword will be removed after working on this ticket broken_link_j/Ticket-228578.
+// coverity[autosar_cpp14_a16_0_1_violation]
+#ifdef UNIT_TEST_BUILD
+    friend class LocklessFlexibleCircularAllocatorTestAccessor;
+// coverity[autosar_cpp14_a16_0_1_violation]
+#endif
     std::uint32_t BufferQueueSize();
     ResultBlank FreeBlock(BufferBlock& current_block);
     std::uint32_t GetListQueueNextHead();
