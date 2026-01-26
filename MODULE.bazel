@@ -87,6 +87,8 @@ python.toolchain(
 bazel_dep(name = "aspect_rules_py", version = "1.4.0", dev_dependency = True)
 bazel_dep(name = "buildifier_prebuilt", version = "8.2.0.2", dev_dependency = True)
 
+bazel_dep(name = "aspect_rules_lint", version = "1.0.3")
+
 deb = use_repo_rule("@download_utils//download/deb:defs.bzl", "download_deb")
 
 deb(
