@@ -32,8 +32,8 @@ copyright_checker(
         "//:MODULE.bazel",
     ],
     config = "@score_tooling//cr_checker/resources:config",
-    template = "@score_tooling//cr_checker/resources:templates",
     exclusion = "//:cr_checker_exclusion",
+    template = "@score_tooling//cr_checker/resources:templates",
     visibility = ["//visibility:public"],
 )
 
