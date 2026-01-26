@@ -32,6 +32,9 @@ pub struct Heap<T> {
     _marker: PhantomData<T>,
 }
 
+// SAFETY: `Heap<T>` can be sent to another thread if `T` can be sent to another thread. It's because we use system allocation which is send-safe.
+unsafe impl<T: Send> Send for Heap<T> {}
+
 impl<T> Heap<T> {
     fn layout(capacity: u32) -> Option<Layout> {
         (capacity as usize)
