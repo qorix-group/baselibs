@@ -467,7 +467,7 @@ TEST(inplace_vector_test, capacity)
 {
     {
         using capacity_one_vector = score::cpp::inplace_vector<std::int32_t, 1U>;
-        static_assert(1U == capacity_one_vector::capacity(), "");
+        static_assert(1U == capacity_one_vector::capacity());
     }
     {
         score::cpp::inplace_vector<std::int32_t, 10> vector{};
@@ -484,7 +484,7 @@ TEST(inplace_vector_test, max_size)
 {
     {
         using max_size_one_vector = score::cpp::inplace_vector<std::int32_t, 1U>;
-        static_assert(1U == max_size_one_vector::max_size(), "");
+        static_assert(1U == max_size_one_vector::max_size());
     }
     {
         score::cpp::inplace_vector<std::int32_t, 10> vector{};
@@ -1189,7 +1189,7 @@ TEST(inplace_vector_test, iterator_conversion_from_non_const_to_const_iterator)
     score::cpp::inplace_vector<std::int32_t, 20> container(20, 23);
     score::cpp::inplace_vector<std::int32_t, 20>::const_iterator it{container.begin()};
 
-    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "failure");
+    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -1362,8 +1362,7 @@ TEST(inplace_vector_test, crbegin_and_crend)
     score::cpp::inplace_vector<std::int32_t, 999U> vector(5, 23);
     std::iota(vector.begin(), vector.end(), 0);
 
-    static_assert(std::is_same<decltype(*vector.crbegin()), const std::int32_t&>::value,
-                  "crbegin should return a constant iterator");
+    static_assert(std::is_same<decltype(*vector.crbegin()), const std::int32_t&>::value);
     auto rit = vector.crbegin();
     const auto ret = vector.crend();
 
@@ -1402,8 +1401,8 @@ TEST(inplace_vector_test, construction_with_iterators_precondition_violation)
 /// @requirement CB-#17893146
 TEST(inplace_vector_test, is_inplace_vector)
 {
-    static_assert(score::cpp::is_inplace_vector<score::cpp::inplace_vector<std::int32_t, 2>>::value, "failure");
-    static_assert(!score::cpp::is_inplace_vector<std::vector<std::int32_t>>::value, "failure");
+    static_assert(score::cpp::is_inplace_vector<score::cpp::inplace_vector<std::int32_t, 2>>::value);
+    static_assert(!score::cpp::is_inplace_vector<std::vector<std::int32_t>>::value);
     EXPECT_TRUE((score::cpp::is_inplace_vector<score::cpp::inplace_vector<std::int32_t, 2>>::value));
     EXPECT_FALSE((score::cpp::is_inplace_vector<std::vector<std::int32_t>>::value));
 }
@@ -1452,11 +1451,10 @@ struct noexcept_move_assign_and_ctor
 /// @requirement CB-#17893146
 TEST(inplace_vector_test, move_assign_noexcept)
 {
-    static_assert(std::is_nothrow_move_assignable<score::cpp::inplace_vector<noexcept_move_assign_and_ctor, 2>>::value,
-                  "failed");
-    static_assert(!std::is_nothrow_move_assignable<score::cpp::inplace_vector<without_noexcept, 2>>::value, "failed");
-    static_assert(!std::is_nothrow_move_assignable<score::cpp::inplace_vector<noexcept_move_ctor, 2>>::value, "failed");
-    static_assert(!std::is_nothrow_move_assignable<score::cpp::inplace_vector<noexcept_move_assign, 2>>::value, "failed");
+    static_assert(std::is_nothrow_move_assignable<score::cpp::inplace_vector<noexcept_move_assign_and_ctor, 2>>::value);
+    static_assert(!std::is_nothrow_move_assignable<score::cpp::inplace_vector<without_noexcept, 2>>::value);
+    static_assert(!std::is_nothrow_move_assignable<score::cpp::inplace_vector<noexcept_move_ctor, 2>>::value);
+    static_assert(!std::is_nothrow_move_assignable<score::cpp::inplace_vector<noexcept_move_assign, 2>>::value);
 }
 
 } // namespace

@@ -31,14 +31,14 @@ namespace
 {
 
 // Named requirements
-static_assert(!std::is_copy_constructible<score::cpp::jthread>::value, "");
-static_assert(!std::is_copy_assignable<score::cpp::jthread>::value, "");
-static_assert(std::is_move_constructible<score::cpp::jthread>::value, "");
-static_assert(std::is_move_assignable<score::cpp::jthread>::value, "");
-static_assert(std::is_trivially_copyable<score::cpp::jthread::id>::value, "");
+static_assert(!std::is_copy_constructible<score::cpp::jthread>::value);
+static_assert(!std::is_copy_assignable<score::cpp::jthread>::value);
+static_assert(std::is_move_constructible<score::cpp::jthread>::value);
+static_assert(std::is_move_assignable<score::cpp::jthread>::value);
+static_assert(std::is_trivially_copyable<score::cpp::jthread::id>::value);
 
 // https://github.com/llvm/llvm-project/blob/main/libcxx/test/libcxx/thread/thread.threads/thread.thread.class/types.pass.cpp
-static_assert(std::is_same<score::cpp::jthread::native_handle_type, pthread_t>::value, "");
+static_assert(std::is_same<score::cpp::jthread::native_handle_type, pthread_t>::value);
 
 class tracker
 {

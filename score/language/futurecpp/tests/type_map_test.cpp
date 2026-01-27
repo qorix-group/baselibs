@@ -34,7 +34,7 @@ TEST(type_mapping, entry_storage_key_field)
     double validation_value_type;
     score::cpp::type_map_entry<decltype(validation_key_type), decltype(validation_value_type)> entry;
     constexpr bool has_key_field = std::is_same<decltype(validation_key_type), decltype(entry)::key_type>::value;
-    static_assert(has_key_field, "Entry does not have a key_type field (via using)");
+    static_assert(has_key_field);
     EXPECT_TRUE(has_key_field);
 }
 
@@ -46,7 +46,7 @@ TEST(type_mapping, entry_storage_value_field)
     double validation_value_type;
     score::cpp::type_map_entry<decltype(validation_key_type), decltype(validation_value_type)> entry;
     constexpr bool has_value_field = std::is_same<decltype(validation_value_type), decltype(entry)::value_type>::value;
-    static_assert(has_value_field, "Entry does not have a key_type field (via using)");
+    static_assert(has_value_field);
     EXPECT_TRUE(has_value_field);
 }
 
@@ -64,8 +64,7 @@ TEST(type_mapping, extract_entry)
     constexpr bool is_second_validation_value =
         std::is_same<decltype(validation_value2_type),
                      score::cpp::type_map_t<decltype(validation_key2_type), mapping>::value_type>::value;
-    static_assert(is_second_validation_value,
-                  "The look-up is not correct, since the requested value-type for the given key does not match");
+    static_assert(is_second_validation_value);
     EXPECT_TRUE(is_second_validation_value);
 }
 
@@ -76,19 +75,19 @@ TEST(type_mapping, consistency)
     {
         constexpr score::cpp::detail::consistency<score::cpp::type_map_entry<int, int>, score::cpp::type_map_entry<float, int>> c{};
 
-        static_assert(c.are_all_keys_unique(), "failure");
+        static_assert(c.are_all_keys_unique());
         EXPECT_TRUE(c.are_all_keys_unique());
     }
     {
         constexpr score::cpp::detail::consistency<score::cpp::type_map_entry<int, int>, score::cpp::type_map_entry<int, int>> c{};
 
-        static_assert(!c.are_all_keys_unique(), "failure");
+        static_assert(!c.are_all_keys_unique());
         EXPECT_FALSE(c.are_all_keys_unique());
     }
     {
         constexpr score::cpp::detail::consistency<score::cpp::type_map_entry<int, int>, score::cpp::type_map_entry<int, float>> c{};
 
-        static_assert(!c.are_all_keys_unique(), "failure");
+        static_assert(!c.are_all_keys_unique());
         EXPECT_FALSE(c.are_all_keys_unique());
     }
 }

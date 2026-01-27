@@ -80,7 +80,7 @@ TEST(MemoryTest, MakeShared_DefaultConstructsWithoutArguments)
     }
     {
         const auto x = score::cpp::pmr::make_shared<const int>(score::cpp::pmr::new_delete_resource());
-        static_assert(std::is_same<const std::shared_ptr<const int>, decltype(x)>::value, "failed");
+        static_assert(std::is_same<const std::shared_ptr<const int>, decltype(x)>::value);
         EXPECT_EQ(*x, 0);
     }
 }
@@ -97,7 +97,7 @@ TEST(MemoryTest, MakeShared_ConstructsWithArguments)
     {
         const int expected{42};
         const auto x = score::cpp::pmr::make_shared<const int>(score::cpp::pmr::new_delete_resource(), expected);
-        static_assert(std::is_same<const std::shared_ptr<const int>, decltype(x)>::value, "failed");
+        static_assert(std::is_same<const std::shared_ptr<const int>, decltype(x)>::value);
         EXPECT_EQ(*x, expected);
     }
 }

@@ -485,8 +485,8 @@ TEST(optional, move_construct)
 /// @requirement CB-#9337998
 TEST(optional, move_construct_noexcept)
 {
-    static_assert(std::is_nothrow_move_constructible<score::cpp::optional<noexcept_move_ctor>>::value, "failed");
-    static_assert(!std::is_nothrow_move_constructible<score::cpp::optional<without_noexcept>>::value, "failed");
+    static_assert(std::is_nothrow_move_constructible<score::cpp::optional<noexcept_move_ctor>>::value);
+    static_assert(!std::is_nothrow_move_constructible<score::cpp::optional<without_noexcept>>::value);
 }
 
 ///
@@ -519,10 +519,10 @@ TEST(optional, move_assign)
 /// @requirement CB-#9337998
 TEST(optional, move_assign_noexcept)
 {
-    static_assert(std::is_nothrow_move_assignable<score::cpp::optional<noexcept_move_assign_and_ctor>>::value, "failed");
-    static_assert(!std::is_nothrow_move_assignable<score::cpp::optional<without_noexcept>>::value, "failed");
-    static_assert(!std::is_nothrow_move_assignable<score::cpp::optional<noexcept_move_ctor>>::value, "failed");
-    static_assert(!std::is_nothrow_move_assignable<score::cpp::optional<noexcept_move_assign>>::value, "failed");
+    static_assert(std::is_nothrow_move_assignable<score::cpp::optional<noexcept_move_assign_and_ctor>>::value);
+    static_assert(!std::is_nothrow_move_assignable<score::cpp::optional<without_noexcept>>::value);
+    static_assert(!std::is_nothrow_move_assignable<score::cpp::optional<noexcept_move_ctor>>::value);
+    static_assert(!std::is_nothrow_move_assignable<score::cpp::optional<noexcept_move_assign>>::value);
 }
 
 ///
@@ -1998,11 +1998,11 @@ TEST(make_optional, creates_const_correct_optional)
 {
     {
         const auto result = score::cpp::make_optional<std::int32_t>(1001);
-        static_assert(std::is_same<const score::cpp::optional<std::int32_t>, decltype(result)>::value, "failed");
+        static_assert(std::is_same<const score::cpp::optional<std::int32_t>, decltype(result)>::value);
     }
     {
         const auto result = score::cpp::make_optional<const std::int32_t>(1001);
-        static_assert(std::is_same<const score::cpp::optional<const std::int32_t>, decltype(result)>::value, "failed");
+        static_assert(std::is_same<const score::cpp::optional<const std::int32_t>, decltype(result)>::value);
     }
 }
 

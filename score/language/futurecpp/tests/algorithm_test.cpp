@@ -108,49 +108,49 @@ TEST(algorithm_test, clamp)
 /// @requirement CB-#15969146
 TEST(algorithm_test, constexpr_clamp)
 {
-    static_assert(score::cpp::equals_bitexact(5.0 - score::cpp::clamp(0.0, 5.0, 5.0, std::greater<double>()), 0.0), "");
+    static_assert(score::cpp::equals_bitexact(5.0 - score::cpp::clamp(0.0, 5.0, 5.0, std::greater<double>()), 0.0));
 
     // floating point
-    static_assert(score::cpp::equals_bitexact(5.0F - score::cpp::clamp(0.0F, 5.0F, 5.0F), 0.0F), "");
+    static_assert(score::cpp::equals_bitexact(5.0F - score::cpp::clamp(0.0F, 5.0F, 5.0F), 0.0F));
 
-    static_assert(score::cpp::equals_bitexact(5.0F - score::cpp::clamp(4.0F, 5.0F, 9.0F), 0.0F), "");
-    static_assert(score::cpp::equals_bitexact(-5.0F - score::cpp::clamp(-9.0F, -5.0F, -1.0F), 0.0F), "");
+    static_assert(score::cpp::equals_bitexact(5.0F - score::cpp::clamp(4.0F, 5.0F, 9.0F), 0.0F));
+    static_assert(score::cpp::equals_bitexact(-5.0F - score::cpp::clamp(-9.0F, -5.0F, -1.0F), 0.0F));
 
-    static_assert(score::cpp::equals_bitexact(5.0F - score::cpp::clamp(-4.0F, 5.0F, 9.0F), 0.0F), "");
-    static_assert(score::cpp::equals_bitexact(-5.0F - score::cpp::clamp(-9.0F, -5.0F, 9.0F), 0.0F), "");
+    static_assert(score::cpp::equals_bitexact(5.0F - score::cpp::clamp(-4.0F, 5.0F, 9.0F), 0.0F));
+    static_assert(score::cpp::equals_bitexact(-5.0F - score::cpp::clamp(-9.0F, -5.0F, 9.0F), 0.0F));
 
-    static_assert(score::cpp::equals_bitexact(5.0F - score::cpp::clamp(5.0F, 5.0F, 9.0F), 0.0F), "");
-    static_assert(score::cpp::equals_bitexact(-5.0F - score::cpp::clamp(-5.0F, -5.0F, 9.0F), 0.0F), "");
+    static_assert(score::cpp::equals_bitexact(5.0F - score::cpp::clamp(5.0F, 5.0F, 9.0F), 0.0F));
+    static_assert(score::cpp::equals_bitexact(-5.0F - score::cpp::clamp(-5.0F, -5.0F, 9.0F), 0.0F));
 
-    static_assert(score::cpp::equals_bitexact(7.0F - score::cpp::clamp(7.0F, 5.0F, 9.0F), 0.0F), "");
-    static_assert(score::cpp::equals_bitexact(-7.0F - score::cpp::clamp(-7.0F, -9.0F, -5.0F), 0.0F), "");
+    static_assert(score::cpp::equals_bitexact(7.0F - score::cpp::clamp(7.0F, 5.0F, 9.0F), 0.0F));
+    static_assert(score::cpp::equals_bitexact(-7.0F - score::cpp::clamp(-7.0F, -9.0F, -5.0F), 0.0F));
 
-    static_assert(score::cpp::equals_bitexact(9.0F - score::cpp::clamp(9.0F, 5.0F, 9.0F), 0.0F), "");
-    static_assert(score::cpp::equals_bitexact(-5.0F - score::cpp::clamp(-5.0F, -9.0F, -5.0F), 0.0F), "");
+    static_assert(score::cpp::equals_bitexact(9.0F - score::cpp::clamp(9.0F, 5.0F, 9.0F), 0.0F));
+    static_assert(score::cpp::equals_bitexact(-5.0F - score::cpp::clamp(-5.0F, -9.0F, -5.0F), 0.0F));
 
-    static_assert(score::cpp::equals_bitexact(9.0F - score::cpp::clamp(10.0F, 5.0F, 9.0F), 0.0F), "");
-    static_assert(score::cpp::equals_bitexact(-5.0F - score::cpp::clamp(-2.0F, -9.0F, -5.0F), 0.0F), "");
+    static_assert(score::cpp::equals_bitexact(9.0F - score::cpp::clamp(10.0F, 5.0F, 9.0F), 0.0F));
+    static_assert(score::cpp::equals_bitexact(-5.0F - score::cpp::clamp(-2.0F, -9.0F, -5.0F), 0.0F));
 
     // integral
-    static_assert(5 == score::cpp::clamp(0, 5, 5), "");
+    static_assert(5 == score::cpp::clamp(0, 5, 5));
 
-    static_assert(5 == score::cpp::clamp(4, 5, 9), "");
-    static_assert(-5 == score::cpp::clamp(-9, -5, -1), "");
+    static_assert(5 == score::cpp::clamp(4, 5, 9));
+    static_assert(-5 == score::cpp::clamp(-9, -5, -1));
 
-    static_assert(5 == score::cpp::clamp(-4, 5, 9), "");
-    static_assert(-5 == score::cpp::clamp(-9, -5, 9), "");
+    static_assert(5 == score::cpp::clamp(-4, 5, 9));
+    static_assert(-5 == score::cpp::clamp(-9, -5, 9));
 
-    static_assert(5 == score::cpp::clamp(5, 5, 9), "");
-    static_assert(-5 == score::cpp::clamp(-5, -5, 9), "");
+    static_assert(5 == score::cpp::clamp(5, 5, 9));
+    static_assert(-5 == score::cpp::clamp(-5, -5, 9));
 
-    static_assert(7 == score::cpp::clamp(7, 5, 9), "");
-    static_assert(-7 == score::cpp::clamp(-7, -9, -5), "");
+    static_assert(7 == score::cpp::clamp(7, 5, 9));
+    static_assert(-7 == score::cpp::clamp(-7, -9, -5));
 
-    static_assert(9 == score::cpp::clamp(9, 5, 9), "");
-    static_assert(-5 == score::cpp::clamp(-5, -9, -5), "");
+    static_assert(9 == score::cpp::clamp(9, 5, 9));
+    static_assert(-5 == score::cpp::clamp(-5, -9, -5));
 
-    static_assert(9 == score::cpp::clamp(10, 5, 9), "");
-    static_assert(-5 == score::cpp::clamp(-2, -9, -5), "");
+    static_assert(9 == score::cpp::clamp(10, 5, 9));
+    static_assert(-5 == score::cpp::clamp(-2, -9, -5));
 }
 
 } // namespace

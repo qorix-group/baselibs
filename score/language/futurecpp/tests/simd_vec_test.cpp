@@ -131,15 +131,15 @@ TYPED_TEST_SUITE(simd_floating_point_fixture, ElementFloatingPointTypes, /*unuse
 /// @requirement CB-#18398050
 TYPED_TEST(simd_vec_fixture, TrivialAndStandardLayout)
 {
-    static_assert(std::is_standard_layout<TypeParam>::value, "failed");
-    static_assert(std::is_trivial<TypeParam>::value, "failed");
-    static_assert(std::is_trivially_copyable<TypeParam>::value, "failed");
-    static_assert(std::is_trivially_default_constructible<TypeParam>::value, "failed");
-    static_assert(std::is_trivially_copy_constructible<TypeParam>::value, "failed");
-    static_assert(std::is_trivially_move_constructible<TypeParam>::value, "failed");
-    static_assert(std::is_trivially_copy_assignable<TypeParam>::value, "failed");
-    static_assert(std::is_trivially_move_assignable<TypeParam>::value, "failed");
-    static_assert(std::is_trivially_destructible<TypeParam>::value, "failed");
+    static_assert(std::is_standard_layout<TypeParam>::value);
+    static_assert(std::is_trivial<TypeParam>::value);
+    static_assert(std::is_trivially_copyable<TypeParam>::value);
+    static_assert(std::is_trivially_default_constructible<TypeParam>::value);
+    static_assert(std::is_trivially_copy_constructible<TypeParam>::value);
+    static_assert(std::is_trivially_move_constructible<TypeParam>::value);
+    static_assert(std::is_trivially_copy_assignable<TypeParam>::value);
+    static_assert(std::is_trivially_move_assignable<TypeParam>::value);
+    static_assert(std::is_trivially_destructible<TypeParam>::value);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -572,7 +572,7 @@ TYPED_TEST(simd_floating_point_fixture, NegateFloatSpecialValues)
     const value_type inf{std::numeric_limits<value_type>::infinity()};
     const value_type zero{0};
 
-    static_assert(std::is_floating_point<value_type>::value, "failed");
+    static_assert(std::is_floating_point<value_type>::value);
     using bits = std::conditional_t<std::is_same<float, value_type>::value, std::uint32_t, std::uint64_t>;
 
     for (std::size_t i{0U}; i < TypeParam::size(); ++i)

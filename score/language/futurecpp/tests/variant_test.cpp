@@ -151,12 +151,12 @@ TEST_F(variant_fixture, variant_capacity)
 TEST_F(variant_fixture, variant_alternative)
 {
     using v = score::cpp::variant<argh, double, int>;
-    static_assert(std::is_same<argh, score::cpp::variant_alternative_t<0U, v>>::value, "failed");
-    static_assert(std::is_same<double, score::cpp::variant_alternative_t<1U, v>>::value, "failed");
-    static_assert(std::is_same<int, score::cpp::variant_alternative_t<2U, v>>::value, "failed");
-    static_assert(std::is_same<const argh, score::cpp::variant_alternative_t<0U, const v>>::value, "failed");
-    static_assert(std::is_same<const double, score::cpp::variant_alternative_t<1U, const v>>::value, "failed");
-    static_assert(std::is_same<const int, score::cpp::variant_alternative_t<2U, const v>>::value, "failed");
+    static_assert(std::is_same<argh, score::cpp::variant_alternative_t<0U, v>>::value);
+    static_assert(std::is_same<double, score::cpp::variant_alternative_t<1U, v>>::value);
+    static_assert(std::is_same<int, score::cpp::variant_alternative_t<2U, v>>::value);
+    static_assert(std::is_same<const argh, score::cpp::variant_alternative_t<0U, const v>>::value);
+    static_assert(std::is_same<const double, score::cpp::variant_alternative_t<1U, const v>>::value);
+    static_assert(std::is_same<const int, score::cpp::variant_alternative_t<2U, const v>>::value);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -434,8 +434,8 @@ TEST_F(variant_fixture, variant_with_big_object)
 TEST_F(variant_fixture, sizeof_variant)
 {
     typedef variant<int[100 * 100 * 10], double, int> big_variant;
-    static_assert(sizeof(big_variant::storage_type) == (sizeof(int) * 100 * 100 * 10), "");
-    static_assert(big_variant::storage_size == (sizeof(int) * 100 * 100 * 10), "");
+    static_assert(sizeof(big_variant::storage_type) == (sizeof(int) * 100 * 100 * 10));
+    static_assert(big_variant::storage_size == (sizeof(int) * 100 * 100 * 10));
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -443,13 +443,13 @@ TEST_F(variant_fixture, sizeof_variant)
 TEST_F(variant_fixture, alignment)
 {
     typedef variant<std::uint8_t, std::uint32_t*, std::uint16_t> variant_a;
-    static_assert(variant_a::storage_alignment == sizeof(std::uint32_t*), "");
+    static_assert(variant_a::storage_alignment == sizeof(std::uint32_t*));
     typedef variant<std::uint8_t, std::uint16_t, std::uint32_t> variant_b;
-    static_assert(variant_b::storage_alignment == 4, "");
+    static_assert(variant_b::storage_alignment == 4);
     typedef variant<std::uint16_t, std::uint8_t> variant_c;
-    static_assert(variant_c::storage_alignment == 2, "");
+    static_assert(variant_c::storage_alignment == 2);
     typedef variant<std::uint8_t> variant_d;
-    static_assert(variant_d::storage_alignment == 1, "");
+    static_assert(variant_d::storage_alignment == 1);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -457,9 +457,9 @@ TEST_F(variant_fixture, alignment)
 TEST_F(variant_fixture, variant_alternatives)
 {
     typedef variant<char, short, int, long int, float, double> variant_a;
-    static_assert(score::cpp::variant_size<variant_a>::value == 6, "");
+    static_assert(score::cpp::variant_size<variant_a>::value == 6);
     typedef variant<char> variant_b;
-    static_assert(score::cpp::variant_size<variant_b>::value == 1, "");
+    static_assert(score::cpp::variant_size<variant_b>::value == 1);
 }
 
 struct variant_visitor

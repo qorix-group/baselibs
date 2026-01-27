@@ -164,25 +164,25 @@ TEST(HasSingleBitTest, Spec)
 /// @requirement CB-#10039075
 TEST(HasSingleBitTest, Constexpr)
 {
-    static_assert(score::cpp::has_single_bit(std::uint8_t{0b00000001}), "");
-    static_assert(score::cpp::has_single_bit(std::uint8_t{0b00000010}), "");
-    static_assert(score::cpp::has_single_bit(std::uint8_t{0b00000100}), "");
-    static_assert(score::cpp::has_single_bit(std::uint8_t{0b00001000}), "");
-    static_assert(score::cpp::has_single_bit(std::uint8_t{0b00010000}), "");
-    static_assert(score::cpp::has_single_bit(std::uint8_t{0b00100000}), "");
-    static_assert(score::cpp::has_single_bit(std::uint8_t{0b01000000}), "");
-    static_assert(score::cpp::has_single_bit(std::uint8_t{0b10000000}), "");
+    static_assert(score::cpp::has_single_bit(std::uint8_t{0b00000001}));
+    static_assert(score::cpp::has_single_bit(std::uint8_t{0b00000010}));
+    static_assert(score::cpp::has_single_bit(std::uint8_t{0b00000100}));
+    static_assert(score::cpp::has_single_bit(std::uint8_t{0b00001000}));
+    static_assert(score::cpp::has_single_bit(std::uint8_t{0b00010000}));
+    static_assert(score::cpp::has_single_bit(std::uint8_t{0b00100000}));
+    static_assert(score::cpp::has_single_bit(std::uint8_t{0b01000000}));
+    static_assert(score::cpp::has_single_bit(std::uint8_t{0b10000000}));
 
-    static_assert(!score::cpp::has_single_bit(std::uint8_t{0b00000000}), "");
-    static_assert(!score::cpp::has_single_bit(std::uint8_t{0b00000011}), "");
-    static_assert(!score::cpp::has_single_bit(std::uint8_t{0b00000101}), "");
-    static_assert(!score::cpp::has_single_bit(std::uint8_t{0b00000110}), "");
-    static_assert(!score::cpp::has_single_bit(std::uint8_t{0b00000111}), "");
-    static_assert(!score::cpp::has_single_bit(std::uint8_t{0b00001001}), "");
+    static_assert(!score::cpp::has_single_bit(std::uint8_t{0b00000000}));
+    static_assert(!score::cpp::has_single_bit(std::uint8_t{0b00000011}));
+    static_assert(!score::cpp::has_single_bit(std::uint8_t{0b00000101}));
+    static_assert(!score::cpp::has_single_bit(std::uint8_t{0b00000110}));
+    static_assert(!score::cpp::has_single_bit(std::uint8_t{0b00000111}));
+    static_assert(!score::cpp::has_single_bit(std::uint8_t{0b00001001}));
 
-    static_assert(score::cpp::has_single_bit(std::uint16_t{1U << 15}), "");
-    static_assert(score::cpp::has_single_bit(1U << 31), "");
-    static_assert(score::cpp::has_single_bit(1_UZ << 63), "");
+    static_assert(score::cpp::has_single_bit(std::uint16_t{1U << 15}));
+    static_assert(score::cpp::has_single_bit(1U << 31));
+    static_assert(score::cpp::has_single_bit(1_UZ << 63));
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -218,29 +218,29 @@ TEST(BitWidthTest, Spec)
 /// @requirement CB-#10039075
 TEST(BitWidthTest, Constexpr)
 {
-    static_assert(score::cpp::bit_width(std::uint8_t{0b00000000}) == 0U, "");
-    static_assert(score::cpp::bit_width(std::uint8_t{0b00000001}) == 1U, "");
-    static_assert(score::cpp::bit_width(std::uint8_t{0b00000011}) == 2U, "");
-    static_assert(score::cpp::bit_width(std::uint8_t{0b00000111}) == 3U, "");
-    static_assert(score::cpp::bit_width(std::uint8_t{0b00001111}) == 4U, "");
-    static_assert(score::cpp::bit_width(std::uint8_t{0b00011111}) == 5U, "");
-    static_assert(score::cpp::bit_width(std::uint8_t{0b00111111}) == 6U, "");
-    static_assert(score::cpp::bit_width(std::uint8_t{0b01111111}) == 7U, "");
-    static_assert(score::cpp::bit_width(std::uint8_t{0b11111111}) == 8U, "");
+    static_assert(score::cpp::bit_width(std::uint8_t{0b00000000}) == 0U);
+    static_assert(score::cpp::bit_width(std::uint8_t{0b00000001}) == 1U);
+    static_assert(score::cpp::bit_width(std::uint8_t{0b00000011}) == 2U);
+    static_assert(score::cpp::bit_width(std::uint8_t{0b00000111}) == 3U);
+    static_assert(score::cpp::bit_width(std::uint8_t{0b00001111}) == 4U);
+    static_assert(score::cpp::bit_width(std::uint8_t{0b00011111}) == 5U);
+    static_assert(score::cpp::bit_width(std::uint8_t{0b00111111}) == 6U);
+    static_assert(score::cpp::bit_width(std::uint8_t{0b01111111}) == 7U);
+    static_assert(score::cpp::bit_width(std::uint8_t{0b11111111}) == 8U);
 
-    static_assert(score::cpp::bit_width(std::uint8_t{0b00000000}) == 0U, "");
-    static_assert(score::cpp::bit_width(std::uint8_t{0b00000001}) == 1U, "");
-    static_assert(score::cpp::bit_width(std::uint8_t{0b00000010}) == 2U, "");
-    static_assert(score::cpp::bit_width(std::uint8_t{0b00000100}) == 3U, "");
-    static_assert(score::cpp::bit_width(std::uint8_t{0b00001000}) == 4U, "");
-    static_assert(score::cpp::bit_width(std::uint8_t{0b00010000}) == 5U, "");
-    static_assert(score::cpp::bit_width(std::uint8_t{0b00100000}) == 6U, "");
-    static_assert(score::cpp::bit_width(std::uint8_t{0b01000000}) == 7U, "");
-    static_assert(score::cpp::bit_width(std::uint8_t{0b10000000}) == 8U, "");
+    static_assert(score::cpp::bit_width(std::uint8_t{0b00000000}) == 0U);
+    static_assert(score::cpp::bit_width(std::uint8_t{0b00000001}) == 1U);
+    static_assert(score::cpp::bit_width(std::uint8_t{0b00000010}) == 2U);
+    static_assert(score::cpp::bit_width(std::uint8_t{0b00000100}) == 3U);
+    static_assert(score::cpp::bit_width(std::uint8_t{0b00001000}) == 4U);
+    static_assert(score::cpp::bit_width(std::uint8_t{0b00010000}) == 5U);
+    static_assert(score::cpp::bit_width(std::uint8_t{0b00100000}) == 6U);
+    static_assert(score::cpp::bit_width(std::uint8_t{0b01000000}) == 7U);
+    static_assert(score::cpp::bit_width(std::uint8_t{0b10000000}) == 8U);
 
-    static_assert(score::cpp::bit_width(std::numeric_limits<std::uint16_t>::max()) == 16, "");
-    static_assert(score::cpp::bit_width(std::numeric_limits<std::uint32_t>::max()) == 32, "");
-    static_assert(score::cpp::bit_width(std::numeric_limits<std::uint64_t>::max()) == 64, "");
+    static_assert(score::cpp::bit_width(std::numeric_limits<std::uint16_t>::max()) == 16);
+    static_assert(score::cpp::bit_width(std::numeric_limits<std::uint32_t>::max()) == 32);
+    static_assert(score::cpp::bit_width(std::numeric_limits<std::uint64_t>::max()) == 64);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -285,38 +285,38 @@ TEST(BitCeilTest, Spec)
 /// @requirement CB-#10039075
 TEST(BitCeilTest, Constexpr)
 {
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00000000}) == 0b00000001, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00000001}) == 0b00000001, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00000010}) == 0b00000010, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00000011}) == 0b00000100, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00000100}) == 0b00000100, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00000101}) == 0b00001000, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00000111}) == 0b00001000, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00001000}) == 0b00001000, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00001001}) == 0b00010000, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00001111}) == 0b00010000, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00010000}) == 0b00010000, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00010001}) == 0b00100000, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00011111}) == 0b00100000, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00100000}) == 0b00100000, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00100001}) == 0b01000000, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00111111}) == 0b01000000, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b01000000}) == 0b01000000, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b01000001}) == 0b10000000, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b01111111}) == 0b10000000, "");
-    static_assert(score::cpp::bit_ceil(std::uint8_t{0b10000000}) == 0b10000000, "");
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00000000}) == 0b00000001);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00000001}) == 0b00000001);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00000010}) == 0b00000010);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00000011}) == 0b00000100);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00000100}) == 0b00000100);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00000101}) == 0b00001000);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00000111}) == 0b00001000);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00001000}) == 0b00001000);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00001001}) == 0b00010000);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00001111}) == 0b00010000);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00010000}) == 0b00010000);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00010001}) == 0b00100000);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00011111}) == 0b00100000);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00100000}) == 0b00100000);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00100001}) == 0b01000000);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b00111111}) == 0b01000000);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b01000000}) == 0b01000000);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b01000001}) == 0b10000000);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b01111111}) == 0b10000000);
+    static_assert(score::cpp::bit_ceil(std::uint8_t{0b10000000}) == 0b10000000);
 
-    static_assert(score::cpp::bit_ceil(static_cast<std::uint16_t>((1U << 14) + 1U)) == (1U << 15), "");
-    static_assert(score::cpp::bit_ceil((1U << 30) + 1U) == (1U << 31), "");
-    static_assert(score::cpp::bit_ceil((1_UZ << 62) + 1U) == (1_UZ << 63), "");
+    static_assert(score::cpp::bit_ceil(static_cast<std::uint16_t>((1U << 14) + 1U)) == (1U << 15));
+    static_assert(score::cpp::bit_ceil((1U << 30) + 1U) == (1U << 31));
+    static_assert(score::cpp::bit_ceil((1_UZ << 62) + 1U) == (1_UZ << 63));
 
-    static_assert(score::cpp::bit_ceil(static_cast<std::uint16_t>((1U << 15) - 1U)) == (1U << 15), "");
-    static_assert(score::cpp::bit_ceil((1U << 31) - 1U) == (1U << 31), "");
-    static_assert(score::cpp::bit_ceil((1_UZ << 63) - 1U) == (1_UZ << 63), "");
+    static_assert(score::cpp::bit_ceil(static_cast<std::uint16_t>((1U << 15) - 1U)) == (1U << 15));
+    static_assert(score::cpp::bit_ceil((1U << 31) - 1U) == (1U << 31));
+    static_assert(score::cpp::bit_ceil((1_UZ << 63) - 1U) == (1_UZ << 63));
 
-    static_assert(score::cpp::bit_ceil(static_cast<std::uint16_t>(1U << 15)) == (1U << 15), "");
-    static_assert(score::cpp::bit_ceil(1U << 31) == (1U << 31), "");
-    static_assert(score::cpp::bit_ceil(1_UZ << 63) == (1_UZ << 63), "");
+    static_assert(score::cpp::bit_ceil(static_cast<std::uint16_t>(1U << 15)) == (1U << 15));
+    static_assert(score::cpp::bit_ceil(1U << 31) == (1U << 31));
+    static_assert(score::cpp::bit_ceil(1_UZ << 63) == (1_UZ << 63));
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -373,40 +373,40 @@ TEST(BitFloorTest, Spec)
 /// @requirement CB-#10039075
 TEST(BitFloorTest, Constexpr)
 {
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b00000000}) == 0b00000000, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b00000001}) == 0b00000001, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b00000010}) == 0b00000010, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b00000011}) == 0b00000010, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b00000100}) == 0b00000100, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b00000101}) == 0b00000100, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b00000111}) == 0b00000100, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b00001000}) == 0b00001000, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b00001001}) == 0b00001000, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b00001111}) == 0b00001000, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b00010000}) == 0b00010000, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b00010001}) == 0b00010000, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b00011111}) == 0b00010000, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b00100000}) == 0b00100000, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b00100001}) == 0b00100000, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b00111111}) == 0b00100000, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b01000000}) == 0b01000000, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b01000001}) == 0b01000000, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b01111111}) == 0b01000000, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b10000000}) == 0b10000000, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b10000001}) == 0b10000000, "");
-    static_assert(score::cpp::bit_floor(std::uint8_t{0b11111111}) == 0b10000000, "");
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b00000000}) == 0b00000000);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b00000001}) == 0b00000001);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b00000010}) == 0b00000010);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b00000011}) == 0b00000010);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b00000100}) == 0b00000100);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b00000101}) == 0b00000100);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b00000111}) == 0b00000100);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b00001000}) == 0b00001000);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b00001001}) == 0b00001000);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b00001111}) == 0b00001000);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b00010000}) == 0b00010000);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b00010001}) == 0b00010000);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b00011111}) == 0b00010000);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b00100000}) == 0b00100000);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b00100001}) == 0b00100000);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b00111111}) == 0b00100000);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b01000000}) == 0b01000000);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b01000001}) == 0b01000000);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b01111111}) == 0b01000000);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b10000000}) == 0b10000000);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b10000001}) == 0b10000000);
+    static_assert(score::cpp::bit_floor(std::uint8_t{0b11111111}) == 0b10000000);
 
-    static_assert(score::cpp::bit_floor(std::uint16_t{1U << 15}) == (1U << 15), "");
-    static_assert(score::cpp::bit_floor(std::uint16_t{(1U << 15) + 1U}) == (1U << 15), "");
-    static_assert(score::cpp::bit_floor(std::numeric_limits<std::uint16_t>::max()) == (1U << 15), "");
+    static_assert(score::cpp::bit_floor(std::uint16_t{1U << 15}) == (1U << 15));
+    static_assert(score::cpp::bit_floor(std::uint16_t{(1U << 15) + 1U}) == (1U << 15));
+    static_assert(score::cpp::bit_floor(std::numeric_limits<std::uint16_t>::max()) == (1U << 15));
 
-    static_assert(score::cpp::bit_floor(1U << 31) == (1U << 31), "");
-    static_assert(score::cpp::bit_floor((1U << 31) + 1U) == (1U << 31), "");
-    static_assert(score::cpp::bit_floor(std::numeric_limits<std::uint32_t>::max()) == (1U << 31), "");
+    static_assert(score::cpp::bit_floor(1U << 31) == (1U << 31));
+    static_assert(score::cpp::bit_floor((1U << 31) + 1U) == (1U << 31));
+    static_assert(score::cpp::bit_floor(std::numeric_limits<std::uint32_t>::max()) == (1U << 31));
 
-    static_assert(score::cpp::bit_floor(1_UZ << 63) == (1_UZ << 63), "");
-    static_assert(score::cpp::bit_floor((1_UZ << 63) + 1U) == (1_UZ << 63), "");
-    static_assert(score::cpp::bit_floor(std::numeric_limits<std::uint64_t>::max()) == (1_UZ << 63), "");
+    static_assert(score::cpp::bit_floor(1_UZ << 63) == (1_UZ << 63));
+    static_assert(score::cpp::bit_floor((1_UZ << 63) + 1U) == (1_UZ << 63));
+    static_assert(score::cpp::bit_floor(std::numeric_limits<std::uint64_t>::max()) == (1_UZ << 63));
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -447,31 +447,31 @@ TEST(CountLZeroTest, Spec)
 /// @requirement CB-#10039075
 TEST(CountLZeroTest, Constexpr)
 {
-    static_assert(score::cpp::countl_zero(std::uint8_t{0b00000000}) == 8, "");
-    static_assert(score::cpp::countl_zero(std::uint8_t{0b00000001}) == 7, "");
-    static_assert(score::cpp::countl_zero(std::uint8_t{0b00000010}) == 6, "");
-    static_assert(score::cpp::countl_zero(std::uint8_t{0b00000011}) == 6, "");
-    static_assert(score::cpp::countl_zero(std::uint8_t{0b00000100}) == 5, "");
-    static_assert(score::cpp::countl_zero(std::uint8_t{0b00000111}) == 5, "");
-    static_assert(score::cpp::countl_zero(std::uint8_t{0b00001000}) == 4, "");
-    static_assert(score::cpp::countl_zero(std::uint8_t{0b00001111}) == 4, "");
-    static_assert(score::cpp::countl_zero(std::uint8_t{0b00010000}) == 3, "");
-    static_assert(score::cpp::countl_zero(std::uint8_t{0b00011111}) == 3, "");
-    static_assert(score::cpp::countl_zero(std::uint8_t{0b00100000}) == 2, "");
-    static_assert(score::cpp::countl_zero(std::uint8_t{0b00111111}) == 2, "");
-    static_assert(score::cpp::countl_zero(std::uint8_t{0b01000000}) == 1, "");
-    static_assert(score::cpp::countl_zero(std::uint8_t{0b01111111}) == 1, "");
-    static_assert(score::cpp::countl_zero(std::uint8_t{0b10000000}) == 0, "");
-    static_assert(score::cpp::countl_zero(std::uint8_t{0b11111111}) == 0, "");
+    static_assert(score::cpp::countl_zero(std::uint8_t{0b00000000}) == 8);
+    static_assert(score::cpp::countl_zero(std::uint8_t{0b00000001}) == 7);
+    static_assert(score::cpp::countl_zero(std::uint8_t{0b00000010}) == 6);
+    static_assert(score::cpp::countl_zero(std::uint8_t{0b00000011}) == 6);
+    static_assert(score::cpp::countl_zero(std::uint8_t{0b00000100}) == 5);
+    static_assert(score::cpp::countl_zero(std::uint8_t{0b00000111}) == 5);
+    static_assert(score::cpp::countl_zero(std::uint8_t{0b00001000}) == 4);
+    static_assert(score::cpp::countl_zero(std::uint8_t{0b00001111}) == 4);
+    static_assert(score::cpp::countl_zero(std::uint8_t{0b00010000}) == 3);
+    static_assert(score::cpp::countl_zero(std::uint8_t{0b00011111}) == 3);
+    static_assert(score::cpp::countl_zero(std::uint8_t{0b00100000}) == 2);
+    static_assert(score::cpp::countl_zero(std::uint8_t{0b00111111}) == 2);
+    static_assert(score::cpp::countl_zero(std::uint8_t{0b01000000}) == 1);
+    static_assert(score::cpp::countl_zero(std::uint8_t{0b01111111}) == 1);
+    static_assert(score::cpp::countl_zero(std::uint8_t{0b10000000}) == 0);
+    static_assert(score::cpp::countl_zero(std::uint8_t{0b11111111}) == 0);
 
-    static_assert(score::cpp::countl_zero(std::uint16_t{0}) == 16, "");
-    static_assert(score::cpp::countl_zero(std::numeric_limits<std::uint16_t>::max()) == 0, "");
+    static_assert(score::cpp::countl_zero(std::uint16_t{0}) == 16);
+    static_assert(score::cpp::countl_zero(std::numeric_limits<std::uint16_t>::max()) == 0);
 
-    static_assert(score::cpp::countl_zero(0U) == 32, "");
-    static_assert(score::cpp::countl_zero(std::numeric_limits<std::uint32_t>::max()) == 0, "");
+    static_assert(score::cpp::countl_zero(0U) == 32);
+    static_assert(score::cpp::countl_zero(std::numeric_limits<std::uint32_t>::max()) == 0);
 
-    static_assert(score::cpp::countl_zero(0_UZ) == 64, "");
-    static_assert(score::cpp::countl_zero(std::numeric_limits<std::uint64_t>::max()) == 0, "");
+    static_assert(score::cpp::countl_zero(0_UZ) == 64);
+    static_assert(score::cpp::countl_zero(std::numeric_limits<std::uint64_t>::max()) == 0);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -509,31 +509,31 @@ TEST(CountLOneTest, Spec)
 /// @requirement CB-#10039075
 TEST(CountLOneTest, Constexpr)
 {
-    static_assert(score::cpp::countl_one(std::uint8_t{0b11111111}) == 8, "");
-    static_assert(score::cpp::countl_one(std::uint8_t{0b11111110}) == 7, "");
-    static_assert(score::cpp::countl_one(std::uint8_t{0b11111101}) == 6, "");
-    static_assert(score::cpp::countl_one(std::uint8_t{0b11111100}) == 6, "");
-    static_assert(score::cpp::countl_one(std::uint8_t{0b11111011}) == 5, "");
-    static_assert(score::cpp::countl_one(std::uint8_t{0b11111000}) == 5, "");
-    static_assert(score::cpp::countl_one(std::uint8_t{0b11110111}) == 4, "");
-    static_assert(score::cpp::countl_one(std::uint8_t{0b11110000}) == 4, "");
-    static_assert(score::cpp::countl_one(std::uint8_t{0b11101111}) == 3, "");
-    static_assert(score::cpp::countl_one(std::uint8_t{0b11100000}) == 3, "");
-    static_assert(score::cpp::countl_one(std::uint8_t{0b11011111}) == 2, "");
-    static_assert(score::cpp::countl_one(std::uint8_t{0b11000000}) == 2, "");
-    static_assert(score::cpp::countl_one(std::uint8_t{0b10111111}) == 1, "");
-    static_assert(score::cpp::countl_one(std::uint8_t{0b10000000}) == 1, "");
-    static_assert(score::cpp::countl_one(std::uint8_t{0b01111111}) == 0, "");
-    static_assert(score::cpp::countl_one(std::uint8_t{0b00000000}) == 0, "");
+    static_assert(score::cpp::countl_one(std::uint8_t{0b11111111}) == 8);
+    static_assert(score::cpp::countl_one(std::uint8_t{0b11111110}) == 7);
+    static_assert(score::cpp::countl_one(std::uint8_t{0b11111101}) == 6);
+    static_assert(score::cpp::countl_one(std::uint8_t{0b11111100}) == 6);
+    static_assert(score::cpp::countl_one(std::uint8_t{0b11111011}) == 5);
+    static_assert(score::cpp::countl_one(std::uint8_t{0b11111000}) == 5);
+    static_assert(score::cpp::countl_one(std::uint8_t{0b11110111}) == 4);
+    static_assert(score::cpp::countl_one(std::uint8_t{0b11110000}) == 4);
+    static_assert(score::cpp::countl_one(std::uint8_t{0b11101111}) == 3);
+    static_assert(score::cpp::countl_one(std::uint8_t{0b11100000}) == 3);
+    static_assert(score::cpp::countl_one(std::uint8_t{0b11011111}) == 2);
+    static_assert(score::cpp::countl_one(std::uint8_t{0b11000000}) == 2);
+    static_assert(score::cpp::countl_one(std::uint8_t{0b10111111}) == 1);
+    static_assert(score::cpp::countl_one(std::uint8_t{0b10000000}) == 1);
+    static_assert(score::cpp::countl_one(std::uint8_t{0b01111111}) == 0);
+    static_assert(score::cpp::countl_one(std::uint8_t{0b00000000}) == 0);
 
-    static_assert(score::cpp::countl_one(std::numeric_limits<std::uint16_t>::max()) == 16, "");
-    static_assert(score::cpp::countl_one(std::uint16_t{0}) == 0, "");
+    static_assert(score::cpp::countl_one(std::numeric_limits<std::uint16_t>::max()) == 16);
+    static_assert(score::cpp::countl_one(std::uint16_t{0}) == 0);
 
-    static_assert(score::cpp::countl_one(std::numeric_limits<std::uint32_t>::max()) == 32, "");
-    static_assert(score::cpp::countl_one(0U) == 0, "");
+    static_assert(score::cpp::countl_one(std::numeric_limits<std::uint32_t>::max()) == 32);
+    static_assert(score::cpp::countl_one(0U) == 0);
 
-    static_assert(score::cpp::countl_one(std::numeric_limits<std::uint64_t>::max()) == 64, "");
-    static_assert(score::cpp::countl_one(0_UZ) == 0, "");
+    static_assert(score::cpp::countl_one(std::numeric_limits<std::uint64_t>::max()) == 64);
+    static_assert(score::cpp::countl_one(0_UZ) == 0);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -574,31 +574,31 @@ TEST(CountRZeroTest, Spec)
 /// @requirement CB-#10039075
 TEST(CountRZeroTest, Constexpr)
 {
-    static_assert(score::cpp::countr_zero(std::uint8_t{0b00000001}) == 0, "");
-    static_assert(score::cpp::countr_zero(std::uint8_t{0b11111111}) == 0, "");
-    static_assert(score::cpp::countr_zero(std::uint8_t{0b00000010}) == 1, "");
-    static_assert(score::cpp::countr_zero(std::uint8_t{0b11111110}) == 1, "");
-    static_assert(score::cpp::countr_zero(std::uint8_t{0b00000100}) == 2, "");
-    static_assert(score::cpp::countr_zero(std::uint8_t{0b11111100}) == 2, "");
-    static_assert(score::cpp::countr_zero(std::uint8_t{0b00001000}) == 3, "");
-    static_assert(score::cpp::countr_zero(std::uint8_t{0b11111000}) == 3, "");
-    static_assert(score::cpp::countr_zero(std::uint8_t{0b00010000}) == 4, "");
-    static_assert(score::cpp::countr_zero(std::uint8_t{0b11110000}) == 4, "");
-    static_assert(score::cpp::countr_zero(std::uint8_t{0b00100000}) == 5, "");
-    static_assert(score::cpp::countr_zero(std::uint8_t{0b11100000}) == 5, "");
-    static_assert(score::cpp::countr_zero(std::uint8_t{0b01000000}) == 6, "");
-    static_assert(score::cpp::countr_zero(std::uint8_t{0b11000000}) == 6, "");
-    static_assert(score::cpp::countr_zero(std::uint8_t{0b10000000}) == 7, "");
-    static_assert(score::cpp::countr_zero(std::uint8_t{0b00000000}) == 8, "");
+    static_assert(score::cpp::countr_zero(std::uint8_t{0b00000001}) == 0);
+    static_assert(score::cpp::countr_zero(std::uint8_t{0b11111111}) == 0);
+    static_assert(score::cpp::countr_zero(std::uint8_t{0b00000010}) == 1);
+    static_assert(score::cpp::countr_zero(std::uint8_t{0b11111110}) == 1);
+    static_assert(score::cpp::countr_zero(std::uint8_t{0b00000100}) == 2);
+    static_assert(score::cpp::countr_zero(std::uint8_t{0b11111100}) == 2);
+    static_assert(score::cpp::countr_zero(std::uint8_t{0b00001000}) == 3);
+    static_assert(score::cpp::countr_zero(std::uint8_t{0b11111000}) == 3);
+    static_assert(score::cpp::countr_zero(std::uint8_t{0b00010000}) == 4);
+    static_assert(score::cpp::countr_zero(std::uint8_t{0b11110000}) == 4);
+    static_assert(score::cpp::countr_zero(std::uint8_t{0b00100000}) == 5);
+    static_assert(score::cpp::countr_zero(std::uint8_t{0b11100000}) == 5);
+    static_assert(score::cpp::countr_zero(std::uint8_t{0b01000000}) == 6);
+    static_assert(score::cpp::countr_zero(std::uint8_t{0b11000000}) == 6);
+    static_assert(score::cpp::countr_zero(std::uint8_t{0b10000000}) == 7);
+    static_assert(score::cpp::countr_zero(std::uint8_t{0b00000000}) == 8);
 
-    static_assert(score::cpp::countr_zero(std::numeric_limits<std::uint16_t>::max()) == 0, "");
-    static_assert(score::cpp::countr_zero(std::uint16_t{0}) == 16, "");
+    static_assert(score::cpp::countr_zero(std::numeric_limits<std::uint16_t>::max()) == 0);
+    static_assert(score::cpp::countr_zero(std::uint16_t{0}) == 16);
 
-    static_assert(score::cpp::countr_zero(std::numeric_limits<std::uint32_t>::max()) == 0, "");
-    static_assert(score::cpp::countr_zero(0U) == 32, "");
+    static_assert(score::cpp::countr_zero(std::numeric_limits<std::uint32_t>::max()) == 0);
+    static_assert(score::cpp::countr_zero(0U) == 32);
 
-    static_assert(score::cpp::countr_zero(std::numeric_limits<std::uint64_t>::max()) == 0, "");
-    static_assert(score::cpp::countr_zero(0_UZ) == 64, "");
+    static_assert(score::cpp::countr_zero(std::numeric_limits<std::uint64_t>::max()) == 0);
+    static_assert(score::cpp::countr_zero(0_UZ) == 64);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -636,31 +636,31 @@ TEST(CountROneTest, Spec)
 /// @requirement CB-#10039075
 TEST(CountROneTest, Constexpr)
 {
-    static_assert(score::cpp::countr_one(std::uint8_t{0b00000000}) == 0, "");
-    static_assert(score::cpp::countr_one(std::uint8_t{0b11111110}) == 0, "");
-    static_assert(score::cpp::countr_one(std::uint8_t{0b00000001}) == 1, "");
-    static_assert(score::cpp::countr_one(std::uint8_t{0b11111101}) == 1, "");
-    static_assert(score::cpp::countr_one(std::uint8_t{0b00000011}) == 2, "");
-    static_assert(score::cpp::countr_one(std::uint8_t{0b11111011}) == 2, "");
-    static_assert(score::cpp::countr_one(std::uint8_t{0b00000111}) == 3, "");
-    static_assert(score::cpp::countr_one(std::uint8_t{0b11110111}) == 3, "");
-    static_assert(score::cpp::countr_one(std::uint8_t{0b00001111}) == 4, "");
-    static_assert(score::cpp::countr_one(std::uint8_t{0b11101111}) == 4, "");
-    static_assert(score::cpp::countr_one(std::uint8_t{0b00011111}) == 5, "");
-    static_assert(score::cpp::countr_one(std::uint8_t{0b11011111}) == 5, "");
-    static_assert(score::cpp::countr_one(std::uint8_t{0b00111111}) == 6, "");
-    static_assert(score::cpp::countr_one(std::uint8_t{0b10111111}) == 6, "");
-    static_assert(score::cpp::countr_one(std::uint8_t{0b01111111}) == 7, "");
-    static_assert(score::cpp::countr_one(std::uint8_t{0b11111111}) == 8, "");
+    static_assert(score::cpp::countr_one(std::uint8_t{0b00000000}) == 0);
+    static_assert(score::cpp::countr_one(std::uint8_t{0b11111110}) == 0);
+    static_assert(score::cpp::countr_one(std::uint8_t{0b00000001}) == 1);
+    static_assert(score::cpp::countr_one(std::uint8_t{0b11111101}) == 1);
+    static_assert(score::cpp::countr_one(std::uint8_t{0b00000011}) == 2);
+    static_assert(score::cpp::countr_one(std::uint8_t{0b11111011}) == 2);
+    static_assert(score::cpp::countr_one(std::uint8_t{0b00000111}) == 3);
+    static_assert(score::cpp::countr_one(std::uint8_t{0b11110111}) == 3);
+    static_assert(score::cpp::countr_one(std::uint8_t{0b00001111}) == 4);
+    static_assert(score::cpp::countr_one(std::uint8_t{0b11101111}) == 4);
+    static_assert(score::cpp::countr_one(std::uint8_t{0b00011111}) == 5);
+    static_assert(score::cpp::countr_one(std::uint8_t{0b11011111}) == 5);
+    static_assert(score::cpp::countr_one(std::uint8_t{0b00111111}) == 6);
+    static_assert(score::cpp::countr_one(std::uint8_t{0b10111111}) == 6);
+    static_assert(score::cpp::countr_one(std::uint8_t{0b01111111}) == 7);
+    static_assert(score::cpp::countr_one(std::uint8_t{0b11111111}) == 8);
 
-    static_assert(score::cpp::countr_one(std::uint16_t{0}) == 0, "");
-    static_assert(score::cpp::countr_one(std::numeric_limits<std::uint16_t>::max()) == 16, "");
+    static_assert(score::cpp::countr_one(std::uint16_t{0}) == 0);
+    static_assert(score::cpp::countr_one(std::numeric_limits<std::uint16_t>::max()) == 16);
 
-    static_assert(score::cpp::countr_one(0U) == 0, "");
-    static_assert(score::cpp::countr_one(std::numeric_limits<std::uint32_t>::max()) == 32, "");
+    static_assert(score::cpp::countr_one(0U) == 0);
+    static_assert(score::cpp::countr_one(std::numeric_limits<std::uint32_t>::max()) == 32);
 
-    static_assert(score::cpp::countr_one(0_UZ) == 0, "");
-    static_assert(score::cpp::countr_one(std::numeric_limits<std::uint64_t>::max()) == 64, "");
+    static_assert(score::cpp::countr_one(0_UZ) == 0);
+    static_assert(score::cpp::countr_one(std::numeric_limits<std::uint64_t>::max()) == 64);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -699,27 +699,27 @@ TEST(PopcountTest, Spec)
 /// @requirement CB-#10039075
 TEST(PopcountTest, Constexpr)
 {
-    static_assert(score::cpp::popcount(std::uint8_t{0b00000000}) == 0, "");
-    static_assert(score::cpp::popcount(std::uint8_t{0b00010000}) == 1, "");
-    static_assert(score::cpp::popcount(std::uint8_t{0b00010100}) == 2, "");
-    static_assert(score::cpp::popcount(std::uint8_t{0b00101010}) == 3, "");
-    static_assert(score::cpp::popcount(std::uint8_t{0b00111100}) == 4, "");
-    static_assert(score::cpp::popcount(std::uint8_t{0b00111011}) == 5, "");
-    static_assert(score::cpp::popcount(std::uint8_t{0b11110101}) == 6, "");
-    static_assert(score::cpp::popcount(std::uint8_t{0b11110111}) == 7, "");
-    static_assert(score::cpp::popcount(std::uint8_t{0b11111111}) == 8, "");
+    static_assert(score::cpp::popcount(std::uint8_t{0b00000000}) == 0);
+    static_assert(score::cpp::popcount(std::uint8_t{0b00010000}) == 1);
+    static_assert(score::cpp::popcount(std::uint8_t{0b00010100}) == 2);
+    static_assert(score::cpp::popcount(std::uint8_t{0b00101010}) == 3);
+    static_assert(score::cpp::popcount(std::uint8_t{0b00111100}) == 4);
+    static_assert(score::cpp::popcount(std::uint8_t{0b00111011}) == 5);
+    static_assert(score::cpp::popcount(std::uint8_t{0b11110101}) == 6);
+    static_assert(score::cpp::popcount(std::uint8_t{0b11110111}) == 7);
+    static_assert(score::cpp::popcount(std::uint8_t{0b11111111}) == 8);
 
-    static_assert(score::cpp::popcount(std::uint16_t{0}) == 0, "");
-    static_assert(score::cpp::popcount(static_cast<std::uint16_t>(1U << 15)) == 1, "");
-    static_assert(score::cpp::popcount(std::numeric_limits<std::uint16_t>::max()) == 16, "");
+    static_assert(score::cpp::popcount(std::uint16_t{0}) == 0);
+    static_assert(score::cpp::popcount(static_cast<std::uint16_t>(1U << 15)) == 1);
+    static_assert(score::cpp::popcount(std::numeric_limits<std::uint16_t>::max()) == 16);
 
-    static_assert(score::cpp::popcount(0U) == 0, "");
-    static_assert(score::cpp::popcount(1U << 31) == 1, "");
-    static_assert(score::cpp::popcount(std::numeric_limits<std::uint32_t>::max()) == 32, "");
+    static_assert(score::cpp::popcount(0U) == 0);
+    static_assert(score::cpp::popcount(1U << 31) == 1);
+    static_assert(score::cpp::popcount(std::numeric_limits<std::uint32_t>::max()) == 32);
 
-    static_assert(score::cpp::popcount(0_UZ) == 0, "");
-    static_assert(score::cpp::popcount(1_UZ << 63) == 1, "");
-    static_assert(score::cpp::popcount(std::numeric_limits<std::uint64_t>::max()) == 64, "");
+    static_assert(score::cpp::popcount(0_UZ) == 0);
+    static_assert(score::cpp::popcount(1_UZ << 63) == 1);
+    static_assert(score::cpp::popcount(std::numeric_limits<std::uint64_t>::max()) == 64);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -808,60 +808,60 @@ TEST(AlignUpTest, Spec)
 /// @requirement CB-#10039104
 TEST(AlignUpTest, Constexpr)
 {
-    static_assert(score::cpp::align_up<std::uint8_t>(0U, 1U) == 0U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(1U, 1U) == 1U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(2U, 1U) == 2U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(3U, 1U) == 3U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(253U, 1U) == 253U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(254U, 1U) == 254U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(255U, 1U) == 255U, "");
+    static_assert(score::cpp::align_up<std::uint8_t>(0U, 1U) == 0U);
+    static_assert(score::cpp::align_up<std::uint8_t>(1U, 1U) == 1U);
+    static_assert(score::cpp::align_up<std::uint8_t>(2U, 1U) == 2U);
+    static_assert(score::cpp::align_up<std::uint8_t>(3U, 1U) == 3U);
+    static_assert(score::cpp::align_up<std::uint8_t>(253U, 1U) == 253U);
+    static_assert(score::cpp::align_up<std::uint8_t>(254U, 1U) == 254U);
+    static_assert(score::cpp::align_up<std::uint8_t>(255U, 1U) == 255U);
 
-    static_assert(score::cpp::align_up<std::uint8_t>(0U, 2U) == 0U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(1U, 2U) == 2U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(2U, 2U) == 2U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(3U, 2U) == 4U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(252U, 2U) == 252U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(253U, 2U) == 254U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(254U, 2U) == 254U, "");
+    static_assert(score::cpp::align_up<std::uint8_t>(0U, 2U) == 0U);
+    static_assert(score::cpp::align_up<std::uint8_t>(1U, 2U) == 2U);
+    static_assert(score::cpp::align_up<std::uint8_t>(2U, 2U) == 2U);
+    static_assert(score::cpp::align_up<std::uint8_t>(3U, 2U) == 4U);
+    static_assert(score::cpp::align_up<std::uint8_t>(252U, 2U) == 252U);
+    static_assert(score::cpp::align_up<std::uint8_t>(253U, 2U) == 254U);
+    static_assert(score::cpp::align_up<std::uint8_t>(254U, 2U) == 254U);
 
-    static_assert(score::cpp::align_up<std::uint8_t>(0U, 4U) == 0U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(1U, 4U) == 4U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(2U, 4U) == 4U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(3U, 4U) == 4U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(4U, 4U) == 4U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(5U, 4U) == 8U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(248U, 4U) == 248U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(249U, 4U) == 252U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(250U, 4U) == 252U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(251U, 4U) == 252U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(252U, 4U) == 252U, "");
+    static_assert(score::cpp::align_up<std::uint8_t>(0U, 4U) == 0U);
+    static_assert(score::cpp::align_up<std::uint8_t>(1U, 4U) == 4U);
+    static_assert(score::cpp::align_up<std::uint8_t>(2U, 4U) == 4U);
+    static_assert(score::cpp::align_up<std::uint8_t>(3U, 4U) == 4U);
+    static_assert(score::cpp::align_up<std::uint8_t>(4U, 4U) == 4U);
+    static_assert(score::cpp::align_up<std::uint8_t>(5U, 4U) == 8U);
+    static_assert(score::cpp::align_up<std::uint8_t>(248U, 4U) == 248U);
+    static_assert(score::cpp::align_up<std::uint8_t>(249U, 4U) == 252U);
+    static_assert(score::cpp::align_up<std::uint8_t>(250U, 4U) == 252U);
+    static_assert(score::cpp::align_up<std::uint8_t>(251U, 4U) == 252U);
+    static_assert(score::cpp::align_up<std::uint8_t>(252U, 4U) == 252U);
 
-    static_assert(score::cpp::align_up<std::uint8_t>(0U, 128U) == 0U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(1U, 128U) == 128U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(2U, 128U) == 128U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(127U, 128U) == 128U, "");
-    static_assert(score::cpp::align_up<std::uint8_t>(128U, 128U) == 128U, "");
+    static_assert(score::cpp::align_up<std::uint8_t>(0U, 128U) == 0U);
+    static_assert(score::cpp::align_up<std::uint8_t>(1U, 128U) == 128U);
+    static_assert(score::cpp::align_up<std::uint8_t>(2U, 128U) == 128U);
+    static_assert(score::cpp::align_up<std::uint8_t>(127U, 128U) == 128U);
+    static_assert(score::cpp::align_up<std::uint8_t>(128U, 128U) == 128U);
 
-    static_assert(score::cpp::align_up<std::uint16_t>((1U << 7U) + 1U, 1U << 7U) == (1U << 8U), "");
-    static_assert(score::cpp::align_up<std::uint16_t>(0U, 1U << 15U) == 0U, "");
-    static_assert(score::cpp::align_up<std::uint16_t>(1U, 1U << 15U) == 1U << 15U, "");
-    static_assert(score::cpp::align_up<std::uint16_t>(2U, 1U << 15U) == 1U << 15U, "");
-    static_assert(score::cpp::align_up<std::uint16_t>((1U << 15U) - 1U, 1U << 15U) == 1U << 15U, "");
-    static_assert(score::cpp::align_up<std::uint16_t>(1U << 15U, 1U << 15U) == 1U << 15U, "");
+    static_assert(score::cpp::align_up<std::uint16_t>((1U << 7U) + 1U, 1U << 7U) == (1U << 8U));
+    static_assert(score::cpp::align_up<std::uint16_t>(0U, 1U << 15U) == 0U);
+    static_assert(score::cpp::align_up<std::uint16_t>(1U, 1U << 15U) == 1U << 15U);
+    static_assert(score::cpp::align_up<std::uint16_t>(2U, 1U << 15U) == 1U << 15U);
+    static_assert(score::cpp::align_up<std::uint16_t>((1U << 15U) - 1U, 1U << 15U) == 1U << 15U);
+    static_assert(score::cpp::align_up<std::uint16_t>(1U << 15U, 1U << 15U) == 1U << 15U);
 
-    static_assert(score::cpp::align_up((1U << 15U) + 1U, 1U << 15U) == (1U << 16U), "");
-    static_assert(score::cpp::align_up(0U, 1U << 31U) == 0U, "");
-    static_assert(score::cpp::align_up(1U, 1U << 31U) == (1U << 31U), "");
-    static_assert(score::cpp::align_up(2U, 1U << 31U) == (1U << 31U), "");
-    static_assert(score::cpp::align_up((1U << 31U) - 1U, 1U << 31U) == (1U << 31U), "");
-    static_assert(score::cpp::align_up((1U << 31U), 1U << 31U) == (1U << 31U), "");
+    static_assert(score::cpp::align_up((1U << 15U) + 1U, 1U << 15U) == (1U << 16U));
+    static_assert(score::cpp::align_up(0U, 1U << 31U) == 0U);
+    static_assert(score::cpp::align_up(1U, 1U << 31U) == (1U << 31U));
+    static_assert(score::cpp::align_up(2U, 1U << 31U) == (1U << 31U));
+    static_assert(score::cpp::align_up((1U << 31U) - 1U, 1U << 31U) == (1U << 31U));
+    static_assert(score::cpp::align_up((1U << 31U), 1U << 31U) == (1U << 31U));
 
-    static_assert(score::cpp::align_up((1_UZ << 31U) + 1U, 1_UZ << 31U) == 1_UZ << 32U, "");
-    static_assert(score::cpp::align_up(0_UZ, 1_UZ << 63U) == 0_UZ, "");
-    static_assert(score::cpp::align_up(1_UZ, 1_UZ << 63U) == (1_UZ << 63U), "");
-    static_assert(score::cpp::align_up(2_UZ, 1_UZ << 63U) == (1_UZ << 63U), "");
-    static_assert(score::cpp::align_up((1_UZ << 63U) - 1U, 1_UZ << 63U) == (1_UZ << 63U), "");
-    static_assert(score::cpp::align_up((1_UZ << 63U), 1_UZ << 63U) == (1_UZ << 63U), "");
+    static_assert(score::cpp::align_up((1_UZ << 31U) + 1U, 1_UZ << 31U) == 1_UZ << 32U);
+    static_assert(score::cpp::align_up(0_UZ, 1_UZ << 63U) == 0_UZ);
+    static_assert(score::cpp::align_up(1_UZ, 1_UZ << 63U) == (1_UZ << 63U));
+    static_assert(score::cpp::align_up(2_UZ, 1_UZ << 63U) == (1_UZ << 63U));
+    static_assert(score::cpp::align_up((1_UZ << 63U) - 1U, 1_UZ << 63U) == (1_UZ << 63U));
+    static_assert(score::cpp::align_up((1_UZ << 63U), 1_UZ << 63U) == (1_UZ << 63U));
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -943,66 +943,65 @@ TEST(AlignDownTest, Spec)
 /// @requirement CB-#10039104
 TEST(AlignDownTest, Constexpr)
 {
-    static_assert(score::cpp::align_down<std::uint8_t>(0U, 1U) == 0U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(1U, 1U) == 1U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(2U, 1U) == 2U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(3U, 1U) == 3U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(253U, 1U) == 253U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(254U, 1U) == 254U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(255U, 1U) == 255U, "");
+    static_assert(score::cpp::align_down<std::uint8_t>(0U, 1U) == 0U);
+    static_assert(score::cpp::align_down<std::uint8_t>(1U, 1U) == 1U);
+    static_assert(score::cpp::align_down<std::uint8_t>(2U, 1U) == 2U);
+    static_assert(score::cpp::align_down<std::uint8_t>(3U, 1U) == 3U);
+    static_assert(score::cpp::align_down<std::uint8_t>(253U, 1U) == 253U);
+    static_assert(score::cpp::align_down<std::uint8_t>(254U, 1U) == 254U);
+    static_assert(score::cpp::align_down<std::uint8_t>(255U, 1U) == 255U);
 
-    static_assert(score::cpp::align_down<std::uint8_t>(0U, 2U) == 0U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(1U, 2U) == 0U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(2U, 2U) == 2U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(3U, 2U) == 2U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(252U, 2U) == 252U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(253U, 2U) == 252U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(254U, 2U) == 254U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(255U, 2U) == 254U, "");
+    static_assert(score::cpp::align_down<std::uint8_t>(0U, 2U) == 0U);
+    static_assert(score::cpp::align_down<std::uint8_t>(1U, 2U) == 0U);
+    static_assert(score::cpp::align_down<std::uint8_t>(2U, 2U) == 2U);
+    static_assert(score::cpp::align_down<std::uint8_t>(3U, 2U) == 2U);
+    static_assert(score::cpp::align_down<std::uint8_t>(252U, 2U) == 252U);
+    static_assert(score::cpp::align_down<std::uint8_t>(253U, 2U) == 252U);
+    static_assert(score::cpp::align_down<std::uint8_t>(254U, 2U) == 254U);
+    static_assert(score::cpp::align_down<std::uint8_t>(255U, 2U) == 254U);
 
-    static_assert(score::cpp::align_down<std::uint8_t>(0U, 4U) == 0U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(1U, 4U) == 0U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(2U, 4U) == 0U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(3U, 4U) == 0U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(4U, 4U) == 4U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(5U, 4U) == 4U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(251U, 4U) == 248U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(252U, 4U) == 252U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(253U, 4U) == 252U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(254U, 4U) == 252U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(255U, 4U) == 252U, "");
+    static_assert(score::cpp::align_down<std::uint8_t>(0U, 4U) == 0U);
+    static_assert(score::cpp::align_down<std::uint8_t>(1U, 4U) == 0U);
+    static_assert(score::cpp::align_down<std::uint8_t>(2U, 4U) == 0U);
+    static_assert(score::cpp::align_down<std::uint8_t>(3U, 4U) == 0U);
+    static_assert(score::cpp::align_down<std::uint8_t>(4U, 4U) == 4U);
+    static_assert(score::cpp::align_down<std::uint8_t>(5U, 4U) == 4U);
+    static_assert(score::cpp::align_down<std::uint8_t>(251U, 4U) == 248U);
+    static_assert(score::cpp::align_down<std::uint8_t>(252U, 4U) == 252U);
+    static_assert(score::cpp::align_down<std::uint8_t>(253U, 4U) == 252U);
+    static_assert(score::cpp::align_down<std::uint8_t>(254U, 4U) == 252U);
+    static_assert(score::cpp::align_down<std::uint8_t>(255U, 4U) == 252U);
 
-    static_assert(score::cpp::align_down<std::uint8_t>(0U, 128U) == 0U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(1U, 128U) == 0U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(2U, 128U) == 0U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(127U, 128U) == 0U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(128U, 128U) == 128U, "");
-    static_assert(score::cpp::align_down<std::uint8_t>(255U, 128U) == 128U, "");
+    static_assert(score::cpp::align_down<std::uint8_t>(0U, 128U) == 0U);
+    static_assert(score::cpp::align_down<std::uint8_t>(1U, 128U) == 0U);
+    static_assert(score::cpp::align_down<std::uint8_t>(2U, 128U) == 0U);
+    static_assert(score::cpp::align_down<std::uint8_t>(127U, 128U) == 0U);
+    static_assert(score::cpp::align_down<std::uint8_t>(128U, 128U) == 128U);
+    static_assert(score::cpp::align_down<std::uint8_t>(255U, 128U) == 128U);
 
-    static_assert(score::cpp::align_down<std::uint16_t>(1U << 8U, 1U << 8U) == (1U << 8U), "");
-    static_assert(score::cpp::align_down<std::uint16_t>(0U, 1U << 15U) == 0U, "");
-    static_assert(score::cpp::align_down<std::uint16_t>(1U, 1U << 15U) == 0U, "");
-    static_assert(score::cpp::align_down<std::uint16_t>(2U, 1U << 15U) == 0U, "");
-    static_assert(score::cpp::align_down<std::uint16_t>((1U << 15U) - 1U, 1U << 15U) == 0U, "");
-    static_assert(score::cpp::align_down<std::uint16_t>((1U << 15U), 1U << 15U) == (1U << 15U), "");
-    static_assert(score::cpp::align_down<std::uint16_t>(std::numeric_limits<std::uint16_t>::max(), 1U << 15U) == (1U << 15U),
-                  "");
+    static_assert(score::cpp::align_down<std::uint16_t>(1U << 8U, 1U << 8U) == (1U << 8U));
+    static_assert(score::cpp::align_down<std::uint16_t>(0U, 1U << 15U) == 0U);
+    static_assert(score::cpp::align_down<std::uint16_t>(1U, 1U << 15U) == 0U);
+    static_assert(score::cpp::align_down<std::uint16_t>(2U, 1U << 15U) == 0U);
+    static_assert(score::cpp::align_down<std::uint16_t>((1U << 15U) - 1U, 1U << 15U) == 0U);
+    static_assert(score::cpp::align_down<std::uint16_t>((1U << 15U), 1U << 15U) == (1U << 15U));
+    static_assert(score::cpp::align_down<std::uint16_t>(std::numeric_limits<std::uint16_t>::max(), 1U << 15U) == (1U << 15U));
 
-    static_assert(score::cpp::align_down(1U << 16U, 1U << 16U) == (1U << 16U), "");
-    static_assert(score::cpp::align_down(0U, 1U << 31U) == 0U, "");
-    static_assert(score::cpp::align_down(1U, 1U << 31U) == 0U, "");
-    static_assert(score::cpp::align_down(2U, 1U << 31U) == 0U, "");
-    static_assert(score::cpp::align_down((1U << 31U) - 1U, 1U << 31U) == 0U, "");
-    static_assert(score::cpp::align_down((1U << 31U), 1U << 31U) == (1U << 31U), "");
-    static_assert(score::cpp::align_down(std::numeric_limits<std::uint32_t>::max(), 1U << 31U) == (1U << 31U), "");
+    static_assert(score::cpp::align_down(1U << 16U, 1U << 16U) == (1U << 16U));
+    static_assert(score::cpp::align_down(0U, 1U << 31U) == 0U);
+    static_assert(score::cpp::align_down(1U, 1U << 31U) == 0U);
+    static_assert(score::cpp::align_down(2U, 1U << 31U) == 0U);
+    static_assert(score::cpp::align_down((1U << 31U) - 1U, 1U << 31U) == 0U);
+    static_assert(score::cpp::align_down((1U << 31U), 1U << 31U) == (1U << 31U));
+    static_assert(score::cpp::align_down(std::numeric_limits<std::uint32_t>::max(), 1U << 31U) == (1U << 31U));
 
-    static_assert(score::cpp::align_down(1_UZ << 32U, 1_UZ << 32U) == (1_UZ << 32U), "");
-    static_assert(score::cpp::align_down(0_UZ, 1_UZ << 63U) == 0_UZ, "");
-    static_assert(score::cpp::align_down(1_UZ, 1_UZ << 63U) == 0_UZ, "");
-    static_assert(score::cpp::align_down(2_UZ, 1_UZ << 63U) == 0_UZ, "");
-    static_assert(score::cpp::align_down((1_UZ << 63U) - 1U, 1_UZ << 63U) == 0_UZ, "");
-    static_assert(score::cpp::align_down((1_UZ << 63U), 1_UZ << 63U) == (1_UZ << 63U), "");
-    static_assert(score::cpp::align_down(std::numeric_limits<std::uint64_t>::max(), 1_UZ << 63U) == (1_UZ << 63U), "");
+    static_assert(score::cpp::align_down(1_UZ << 32U, 1_UZ << 32U) == (1_UZ << 32U));
+    static_assert(score::cpp::align_down(0_UZ, 1_UZ << 63U) == 0_UZ);
+    static_assert(score::cpp::align_down(1_UZ, 1_UZ << 63U) == 0_UZ);
+    static_assert(score::cpp::align_down(2_UZ, 1_UZ << 63U) == 0_UZ);
+    static_assert(score::cpp::align_down((1_UZ << 63U) - 1U, 1_UZ << 63U) == 0_UZ);
+    static_assert(score::cpp::align_down((1_UZ << 63U), 1_UZ << 63U) == (1_UZ << 63U));
+    static_assert(score::cpp::align_down(std::numeric_limits<std::uint64_t>::max(), 1_UZ << 63U) == (1_UZ << 63U));
 }
 
 } // namespace

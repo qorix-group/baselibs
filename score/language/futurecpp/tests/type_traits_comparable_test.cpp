@@ -55,17 +55,12 @@ using test_less_than_comparable_5 = std::tuple<test_less_than_comparable_1, test
 /// @requirement CB-#17770042
 TEST(is_less_than_comparable, when_less_than_comparable)
 {
-    static_assert(score::cpp::is_less_than_comparable_v<test_less_than_comparable_1>,
-                  "Error: the given data type should be LessThanComparable.");
-    static_assert(score::cpp::is_less_than_comparable_v<test_less_than_comparable_2>,
-                  "Error: the given data type should be LessThanComparable.");
-    static_assert(score::cpp::is_less_than_comparable_v<test_less_than_comparable_3>,
-                  "Error: the given data type should be LessThanComparable.");
-    static_assert(score::cpp::is_less_than_comparable_v<test_less_than_comparable_4>,
-                  "Error: the given data type should be LessThanComparable.");
-    static_assert(score::cpp::is_less_than_comparable_v<test_less_than_comparable_5>,
-                  "Error: the given data type should be LessThanComparable.");
-    static_assert(score::cpp::is_less_than_comparable_v<double>, "Error: the given data type should be LessThanComparable.");
+    static_assert(score::cpp::is_less_than_comparable_v<test_less_than_comparable_1>);
+    static_assert(score::cpp::is_less_than_comparable_v<test_less_than_comparable_2>);
+    static_assert(score::cpp::is_less_than_comparable_v<test_less_than_comparable_3>);
+    static_assert(score::cpp::is_less_than_comparable_v<test_less_than_comparable_4>);
+    static_assert(score::cpp::is_less_than_comparable_v<test_less_than_comparable_5>);
+    static_assert(score::cpp::is_less_than_comparable_v<double>);
 }
 
 class test_not_less_than_comparable
@@ -79,8 +74,7 @@ public:
 /// @requirement CB-#17770042
 TEST(is_less_than_comparable, when_not_less_than_comparable)
 {
-    static_assert(!score::cpp::is_less_than_comparable_v<test_not_less_than_comparable>,
-                  "Error: the given data type should NOT be LessThanComparable.");
+    static_assert(!score::cpp::is_less_than_comparable_v<test_not_less_than_comparable>);
 }
 
 class test_less_than_or_equal_to_comparable_1
@@ -129,18 +123,12 @@ using test_less_than_or_equal_to_comparable_5 =
 /// @requirement CB-#17770042
 TEST(is_less_than_or_equal_to_comparable, when_less_than_or_equal_to_comparable)
 {
-    static_assert(score::cpp::is_less_than_or_equal_to_comparable_v<test_less_than_or_equal_to_comparable_1>,
-                  "Error: the given data type should be LessThanOrEqualToComparable.");
-    static_assert(score::cpp::is_less_than_or_equal_to_comparable_v<test_less_than_or_equal_to_comparable_2>,
-                  "Error: the given data type should be LessThanOrEqualToComparable.");
-    static_assert(score::cpp::is_less_than_or_equal_to_comparable_v<test_less_than_or_equal_to_comparable_3>,
-                  "Error: the given data type should be LessThanOrEqualToComparable.");
-    static_assert(score::cpp::is_less_than_or_equal_to_comparable_v<test_less_than_or_equal_to_comparable_4>,
-                  "Error: the given data type should be LessThanOrEqualToComparable.");
-    static_assert(score::cpp::is_less_than_or_equal_to_comparable_v<test_less_than_or_equal_to_comparable_5>,
-                  "Error: the given data type should be LessThanOrEqualToComparable.");
-    static_assert(score::cpp::is_less_than_or_equal_to_comparable_v<double>,
-                  "Error: the given data type should be LessThanOrEqualToComparable.");
+    static_assert(score::cpp::is_less_than_or_equal_to_comparable_v<test_less_than_or_equal_to_comparable_1>);
+    static_assert(score::cpp::is_less_than_or_equal_to_comparable_v<test_less_than_or_equal_to_comparable_2>);
+    static_assert(score::cpp::is_less_than_or_equal_to_comparable_v<test_less_than_or_equal_to_comparable_3>);
+    static_assert(score::cpp::is_less_than_or_equal_to_comparable_v<test_less_than_or_equal_to_comparable_4>);
+    static_assert(score::cpp::is_less_than_or_equal_to_comparable_v<test_less_than_or_equal_to_comparable_5>);
+    static_assert(score::cpp::is_less_than_or_equal_to_comparable_v<double>);
 }
 
 class test_not_less_than_or_equal_to_comparable
@@ -154,8 +142,7 @@ public:
 /// @requirement CB-#17770042
 TEST(is_less_than_or_equal_to_comparable, when_not_less_than_or_equal_to_comparable)
 {
-    static_assert(!score::cpp::is_less_than_comparable_v<test_not_less_than_or_equal_to_comparable>,
-                  "Error: the given data type should NOT be LessThanOrEqualToComparable.");
+    static_assert(!score::cpp::is_less_than_comparable_v<test_not_less_than_or_equal_to_comparable>);
 }
 
 } // namespace

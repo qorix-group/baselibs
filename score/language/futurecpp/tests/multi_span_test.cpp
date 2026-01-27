@@ -996,7 +996,7 @@ TYPED_TEST_SUITE(multi_span_fixture, ranks_of_interest, /*unused*/);
 /// @requirement CB-#18694884
 TYPED_TEST(multi_span_fixture, multi_span_copy_construct_is_trivial)
 {
-    static_assert(std::is_trivially_copy_constructible<score::cpp::multi_span<int, TypeParam::value>>::value, "");
+    static_assert(std::is_trivially_copy_constructible<score::cpp::multi_span<int, TypeParam::value>>::value);
 }
 
 ///

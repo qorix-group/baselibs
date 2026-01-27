@@ -30,11 +30,11 @@ namespace
 /// @requirement CB-#17893146
 TEST(static_vector_test, backward_compatible)
 {
-    static_assert(std::is_same<score::cpp::static_vector<bool, 1>, score::cpp::inplace_vector<bool, 1>>::value, "failed");
-    static_assert(score::cpp::is_inplace_vector<score::cpp::static_vector<bool, 1>>::value, "failed");
-    static_assert(score::cpp::is_inplace_vector<score::cpp::inplace_vector<bool, 1>>::value, "failed");
-    static_assert(score::cpp::is_static_vector<score::cpp::static_vector<bool, 1>>::value, "failed");
-    static_assert(score::cpp::is_static_vector<score::cpp::inplace_vector<bool, 1>>::value, "failed");
+    static_assert(std::is_same<score::cpp::static_vector<bool, 1>, score::cpp::inplace_vector<bool, 1>>::value);
+    static_assert(score::cpp::is_inplace_vector<score::cpp::static_vector<bool, 1>>::value);
+    static_assert(score::cpp::is_inplace_vector<score::cpp::inplace_vector<bool, 1>>::value);
+    static_assert(score::cpp::is_static_vector<score::cpp::static_vector<bool, 1>>::value);
+    static_assert(score::cpp::is_static_vector<score::cpp::inplace_vector<bool, 1>>::value);
 }
 
 } // namespace

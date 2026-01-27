@@ -162,39 +162,25 @@ TEST(utility_test, to_underlying_enum_uint64)
 TEST(is_maplike_container, check_trait_equivalence_classes)
 {
     {
-        static_assert(score::cpp::detail::is_maplike_container<std::map<int, double>>::value,
-                      "wrong classification in associative containers");
-        static_assert(score::cpp::detail::is_maplike_container<std::multimap<int, double>>::value,
-                      "wrong classification in associative containers");
-        static_assert(score::cpp::detail::is_maplike_container<std::unordered_map<int, double>>::value,
-                      "wrong classification in unordered associative containers");
-        static_assert(score::cpp::detail::is_maplike_container<std::unordered_multimap<int, double>>::value,
-                      "wrong classification in unordered associative containers");
+        static_assert(score::cpp::detail::is_maplike_container<std::map<int, double>>::value);
+        static_assert(score::cpp::detail::is_maplike_container<std::multimap<int, double>>::value);
+        static_assert(score::cpp::detail::is_maplike_container<std::unordered_map<int, double>>::value);
+        static_assert(score::cpp::detail::is_maplike_container<std::unordered_multimap<int, double>>::value);
     }
     {
-        static_assert(!score::cpp::detail::is_maplike_container<std::set<int>>::value,
-                      "wrong classification in associative containers");
-        static_assert(!score::cpp::detail::is_maplike_container<std::multiset<int>>::value,
-                      "wrong classification in associative containers");
-        static_assert(!score::cpp::detail::is_maplike_container<std::unordered_set<int>>::value,
-                      "wrong classification in unordered associative containers");
-        static_assert(!score::cpp::detail::is_maplike_container<std::unordered_multiset<int>>::value,
-                      "wrong classification in unordered associative containers");
+        static_assert(!score::cpp::detail::is_maplike_container<std::set<int>>::value);
+        static_assert(!score::cpp::detail::is_maplike_container<std::multiset<int>>::value);
+        static_assert(!score::cpp::detail::is_maplike_container<std::unordered_set<int>>::value);
+        static_assert(!score::cpp::detail::is_maplike_container<std::unordered_multiset<int>>::value);
 
-        static_assert(!score::cpp::detail::is_maplike_container<std::array<int, 2>>::value,
-                      "wrong classification in sequence containers");
-        static_assert(!score::cpp::detail::is_maplike_container<std::vector<int>>::value,
-                      "wrong classification in sequence containers");
-        static_assert(!score::cpp::detail::is_maplike_container<std::list<int>>::value,
-                      "wrong classification in sequence containers");
+        static_assert(!score::cpp::detail::is_maplike_container<std::array<int, 2>>::value);
+        static_assert(!score::cpp::detail::is_maplike_container<std::vector<int>>::value);
+        static_assert(!score::cpp::detail::is_maplike_container<std::list<int>>::value);
 
-        static_assert(!score::cpp::detail::is_maplike_container<std::stack<int>>::value,
-                      "wrong classification in container adapters");
-        static_assert(!score::cpp::detail::is_maplike_container<std::queue<int>>::value,
-                      "wrong classification in container adapters");
+        static_assert(!score::cpp::detail::is_maplike_container<std::stack<int>>::value);
+        static_assert(!score::cpp::detail::is_maplike_container<std::queue<int>>::value);
 
-        static_assert(!score::cpp::detail::is_maplike_container<std::string>::value,
-                      "wrong classification in pseudo container");
+        static_assert(!score::cpp::detail::is_maplike_container<std::string>::value);
     }
 }
 
@@ -310,12 +296,12 @@ TEST(at, constness_c_array)
     {
         const int array[1] = {};
         using ReturnType = decltype(score::cpp::at(array, 0));
-        static_assert(std::is_same<const int&, ReturnType>::value, "Wrong return type.");
+        static_assert(std::is_same<const int&, ReturnType>::value);
     }
     {
         int array[1] = {};
         using ReturnType = decltype(score::cpp::at(array, 0));
-        static_assert(std::is_same<int&, ReturnType>::value, "Wrong return type.");
+        static_assert(std::is_same<int&, ReturnType>::value);
     }
 }
 
@@ -327,12 +313,12 @@ TEST(at, constness_stl_array)
     {
         const std::array<int, 1> array = {};
         using ReturnType = decltype(score::cpp::at(array, 0));
-        static_assert(std::is_same<const int&, ReturnType>::value, "Wrong return type.");
+        static_assert(std::is_same<const int&, ReturnType>::value);
     }
     {
         std::array<int, 1> array = {};
         using ReturnType = decltype(score::cpp::at(array, 0));
-        static_assert(std::is_same<int&, ReturnType>::value, "Wrong return type.");
+        static_assert(std::is_same<int&, ReturnType>::value);
     }
 }
 
@@ -344,12 +330,12 @@ TEST(at, constness_unordered_map)
     {
         const std::map<int, double> map = {};
         using ReturnType = decltype(score::cpp::at(map, 0));
-        static_assert(std::is_same<const double&, ReturnType>::value, "Wrong return type.");
+        static_assert(std::is_same<const double&, ReturnType>::value);
     }
     {
         std::map<int, double> map = {};
         using ReturnType = decltype(score::cpp::at(map, 0));
-        static_assert(std::is_same<double&, ReturnType>::value, "Wrong return type.");
+        static_assert(std::is_same<double&, ReturnType>::value);
     }
 }
 

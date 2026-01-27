@@ -652,11 +652,11 @@ TEST(circular_buffer_test, difference_type_matches_with_iterator)
 TEST(circular_buffer_test, const_correctness_when_non_const_container)
 {
     circular_buffer<std::int32_t, test_max_size> buffer;
-    static_assert(std::is_same<std::int32_t&, decltype(buffer[0U])>::value, "failure");
-    static_assert(std::is_same<std::int32_t&, decltype(*buffer.begin())>::value, "failure");
-    static_assert(std::is_same<std::int32_t&, decltype(*buffer.end())>::value, "failure");
-    static_assert(std::is_same<std::int32_t&, decltype(*buffer.rbegin())>::value, "failure");
-    static_assert(std::is_same<std::int32_t&, decltype(*buffer.rend())>::value, "failure");
+    static_assert(std::is_same<std::int32_t&, decltype(buffer[0U])>::value);
+    static_assert(std::is_same<std::int32_t&, decltype(*buffer.begin())>::value);
+    static_assert(std::is_same<std::int32_t&, decltype(*buffer.end())>::value);
+    static_assert(std::is_same<std::int32_t&, decltype(*buffer.rbegin())>::value);
+    static_assert(std::is_same<std::int32_t&, decltype(*buffer.rend())>::value);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -664,15 +664,15 @@ TEST(circular_buffer_test, const_correctness_when_non_const_container)
 TEST(circular_buffer_test, const_correctness_when_const_container)
 {
     const circular_buffer<std::int32_t, test_max_size> buffer;
-    static_assert(std::is_same<const std::int32_t&, decltype(buffer[0U])>::value, "failure");
-    static_assert(std::is_same<const std::int32_t&, decltype(*buffer.begin())>::value, "failure");
-    static_assert(std::is_same<const std::int32_t&, decltype(*buffer.end())>::value, "failure");
-    static_assert(std::is_same<const std::int32_t&, decltype(*buffer.rbegin())>::value, "failure");
-    static_assert(std::is_same<const std::int32_t&, decltype(*buffer.rend())>::value, "failure");
-    static_assert(std::is_same<const std::int32_t&, decltype(*buffer.cbegin())>::value, "failure");
-    static_assert(std::is_same<const std::int32_t&, decltype(*buffer.cend())>::value, "failure");
-    static_assert(std::is_same<const std::int32_t&, decltype(*buffer.crbegin())>::value, "failure");
-    static_assert(std::is_same<const std::int32_t&, decltype(*buffer.crend())>::value, "failure");
+    static_assert(std::is_same<const std::int32_t&, decltype(buffer[0U])>::value);
+    static_assert(std::is_same<const std::int32_t&, decltype(*buffer.begin())>::value);
+    static_assert(std::is_same<const std::int32_t&, decltype(*buffer.end())>::value);
+    static_assert(std::is_same<const std::int32_t&, decltype(*buffer.rbegin())>::value);
+    static_assert(std::is_same<const std::int32_t&, decltype(*buffer.rend())>::value);
+    static_assert(std::is_same<const std::int32_t&, decltype(*buffer.cbegin())>::value);
+    static_assert(std::is_same<const std::int32_t&, decltype(*buffer.cend())>::value);
+    static_assert(std::is_same<const std::int32_t&, decltype(*buffer.crbegin())>::value);
+    static_assert(std::is_same<const std::int32_t&, decltype(*buffer.crend())>::value);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -841,7 +841,7 @@ TEST(circular_buffer_test, capacity)
 {
     {
         using capacity_one_buffer = circular_buffer<std::int32_t, 1U>;
-        static_assert(1U == capacity_one_buffer::capacity(), "");
+        static_assert(1U == capacity_one_buffer::capacity());
     }
     {
         circular_buffer<std::int32_t, 10U> buffer;
@@ -858,7 +858,7 @@ TEST(circular_buffer_test, max_size)
 {
     {
         using max_size_one_buffer = circular_buffer<std::int32_t, 1U>;
-        static_assert(1U == max_size_one_buffer::max_size(), "");
+        static_assert(1U == max_size_one_buffer::max_size());
     }
     {
         circular_buffer<std::int32_t, 10U> buffer;

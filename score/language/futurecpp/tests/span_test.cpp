@@ -268,8 +268,8 @@ TEST(span, RangeWithStaticExtent_SizeDoesNotMatch)
 /// @requirement CB-#9338069
 TEST(span, Range_Explicit)
 {
-    static_assert(std::is_convertible_v<std::vector<std::int32_t>, span<std::int32_t>>, "failed");
-    static_assert(!std::is_convertible_v<std::vector<std::int32_t>, span<std::int32_t, 2U>>, "failed");
+    static_assert(std::is_convertible_v<std::vector<std::int32_t>, span<std::int32_t>>);
+    static_assert(!std::is_convertible_v<std::vector<std::int32_t>, span<std::int32_t, 2U>>);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -385,8 +385,8 @@ TEST(span, OneDimensionalPointerSize_Explicit)
     const auto test = [](auto to, float* p, std::size_t s) -> decltype(implicit_conversion_test<decltype(to)>({p, s})) {
     };
 
-    static_assert(std::is_invocable_v<decltype(test), span<float>, float*, std::size_t>, "failed");
-    static_assert(!std::is_invocable_v<decltype(test), span<float, 3U>, float*, std::size_t>, "failed");
+    static_assert(std::is_invocable_v<decltype(test), span<float>, float*, std::size_t>);
+    static_assert(!std::is_invocable_v<decltype(test), span<float, 3U>, float*, std::size_t>);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -537,51 +537,51 @@ TEST(span, ConstCorrectness1d)
 {
     {
         using T = span<char>;
-        static_assert(std::is_same<char&, decltype(*std::declval<T>().begin())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().cbegin())>::value, "Failed.");
-        static_assert(std::is_same<char&, decltype(*std::declval<T>().end())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().cend())>::value, "Failed.");
-        static_assert(std::is_same<char&, decltype(*std::declval<T>().rbegin())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().crbegin())>::value, "Failed.");
-        static_assert(std::is_same<char&, decltype(*std::declval<T>().rend())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().crend())>::value, "Failed.");
-        static_assert(std::is_same<char*, decltype(std::declval<T>().data())>::value, "Failed.");
+        static_assert(std::is_same<char&, decltype(*std::declval<T>().begin())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().cbegin())>::value);
+        static_assert(std::is_same<char&, decltype(*std::declval<T>().end())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().cend())>::value);
+        static_assert(std::is_same<char&, decltype(*std::declval<T>().rbegin())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().crbegin())>::value);
+        static_assert(std::is_same<char&, decltype(*std::declval<T>().rend())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().crend())>::value);
+        static_assert(std::is_same<char*, decltype(std::declval<T>().data())>::value);
     }
     {
         using T = span<const char>;
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().begin())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().cbegin())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().end())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().cend())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().rbegin())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().crbegin())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().rend())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().crend())>::value, "Failed.");
-        static_assert(std::is_same<const char*, decltype(std::declval<T>().data())>::value, "Failed.");
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().begin())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().cbegin())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().end())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().cend())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().rbegin())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().crbegin())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().rend())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().crend())>::value);
+        static_assert(std::is_same<const char*, decltype(std::declval<T>().data())>::value);
     }
     {
         using T = const span<char>;
-        static_assert(std::is_same<char&, decltype(*std::declval<T>().begin())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().cbegin())>::value, "Failed.");
-        static_assert(std::is_same<char&, decltype(*std::declval<T>().end())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().cend())>::value, "Failed.");
-        static_assert(std::is_same<char&, decltype(*std::declval<T>().rbegin())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().crbegin())>::value, "Failed.");
-        static_assert(std::is_same<char&, decltype(*std::declval<T>().rend())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().crend())>::value, "Failed.");
-        static_assert(std::is_same<char*, decltype(std::declval<T>().data())>::value, "Failed.");
+        static_assert(std::is_same<char&, decltype(*std::declval<T>().begin())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().cbegin())>::value);
+        static_assert(std::is_same<char&, decltype(*std::declval<T>().end())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().cend())>::value);
+        static_assert(std::is_same<char&, decltype(*std::declval<T>().rbegin())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().crbegin())>::value);
+        static_assert(std::is_same<char&, decltype(*std::declval<T>().rend())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().crend())>::value);
+        static_assert(std::is_same<char*, decltype(std::declval<T>().data())>::value);
     }
     {
         using T = const span<const char>;
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().begin())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().cbegin())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().end())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().cend())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().rbegin())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().crbegin())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().rend())>::value, "Failed.");
-        static_assert(std::is_same<const char&, decltype(*std::declval<T>().crend())>::value, "Failed.");
-        static_assert(std::is_same<const char*, decltype(std::declval<T>().data())>::value, "Failed.");
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().begin())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().cbegin())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().end())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().cend())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().rbegin())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().crbegin())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().rend())>::value);
+        static_assert(std::is_same<const char&, decltype(*std::declval<T>().crend())>::value);
+        static_assert(std::is_same<const char*, decltype(std::declval<T>().data())>::value);
     }
 }
 
@@ -826,7 +826,7 @@ TEST(span, iterator_conversion_from_non_const_to_const_iterator)
     span<std::int32_t> view{data};
     span<std::int32_t>::const_iterator it{view.begin()};
 
-    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "failure");
+    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value);
 }
 
 template <typename T>
@@ -845,14 +845,14 @@ TYPED_TEST(span_associated_type_test, that_type_traits_api_is_compatible_with_st
     using GivenSpan = span<ElementType>;
     using ExpectedValueType = std::remove_cv_t<ElementType>;
 
-    static_assert(std::is_same<typename GivenSpan::size_type, std::size_t>::value, "");
-    static_assert(std::is_same<typename GivenSpan::difference_type, std::ptrdiff_t>::value, "");
-    static_assert(std::is_same<typename GivenSpan::value_type, ExpectedValueType>::value, "");
-    static_assert(std::is_same<typename GivenSpan::element_type, ElementType>::value, "");
-    static_assert(std::is_same<typename GivenSpan::pointer, ElementType*>::value, "");
-    static_assert(std::is_same<typename GivenSpan::const_pointer, const ElementType*>::value, "");
-    static_assert(std::is_same<typename GivenSpan::reference, ElementType&>::value, "");
-    static_assert(std::is_same<typename GivenSpan::const_reference, const ElementType&>::value, "");
+    static_assert(std::is_same<typename GivenSpan::size_type, std::size_t>::value);
+    static_assert(std::is_same<typename GivenSpan::difference_type, std::ptrdiff_t>::value);
+    static_assert(std::is_same<typename GivenSpan::value_type, ExpectedValueType>::value);
+    static_assert(std::is_same<typename GivenSpan::element_type, ElementType>::value);
+    static_assert(std::is_same<typename GivenSpan::pointer, ElementType*>::value);
+    static_assert(std::is_same<typename GivenSpan::const_pointer, const ElementType*>::value);
+    static_assert(std::is_same<typename GivenSpan::reference, ElementType&>::value);
+    static_assert(std::is_same<typename GivenSpan::const_reference, const ElementType&>::value);
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -862,10 +862,10 @@ TEST(span, noexcept_non_std20_api)
     using GivenSomeElementType = const double;
     using GivenSpan = span<GivenSomeElementType>;
 
-    static_assert(noexcept(GivenSpan().cbegin()), "");
-    static_assert(noexcept(GivenSpan().cend()), "");
-    static_assert(noexcept(GivenSpan().crbegin()), "");
-    static_assert(noexcept(GivenSpan().crend()), "");
+    static_assert(noexcept(GivenSpan().cbegin()));
+    static_assert(noexcept(GivenSpan().cend()));
+    static_assert(noexcept(GivenSpan().crbegin()));
+    static_assert(noexcept(GivenSpan().crend()));
 }
 
 /// @testmethods TM_REQUIREMENT
@@ -877,18 +877,18 @@ TEST(span, that_noexcept_api_is_compatible_with_std20_span)
 
     constexpr GivenSomeElementType x[1] = {{}};
 
-    static_assert(noexcept(GivenSpan()), "");
-    static_assert(noexcept(GivenSpan(x)), "");
-    static_assert(noexcept(GivenSpan().size()), "");
-    static_assert(noexcept(GivenSpan().empty()), "");
-    static_assert(noexcept(GivenSpan().data()), "");
+    static_assert(noexcept(GivenSpan()));
+    static_assert(noexcept(GivenSpan(x)));
+    static_assert(noexcept(GivenSpan().size()));
+    static_assert(noexcept(GivenSpan().empty()));
+    static_assert(noexcept(GivenSpan().data()));
 
-    static_assert(noexcept(GivenSpan().begin()), "");
-    static_assert(noexcept(GivenSpan().end()), "");
-    static_assert(noexcept(GivenSpan().rbegin()), "");
-    static_assert(noexcept(GivenSpan().rend()), "");
+    static_assert(noexcept(GivenSpan().begin()));
+    static_assert(noexcept(GivenSpan().end()));
+    static_assert(noexcept(GivenSpan().rbegin()));
+    static_assert(noexcept(GivenSpan().rend()));
 
-    static_assert(noexcept(as_bytes(GivenSpan())), "");
+    static_assert(noexcept(as_bytes(GivenSpan())));
 }
 
 } // namespace

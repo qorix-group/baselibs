@@ -433,7 +433,7 @@ TEST(StringViewTest, GivenStringLiteral_ExpectCorrectView)
     EXPECT_EQ(score::cpp::string_view("abc\0\0def"), score::cpp::string_view("abc"));
 
     // check for evaluation in constexpr-context
-    static_assert("abc\0\0def"_sv.size() == 8U, "failure");
+    static_assert("abc\0\0def"_sv.size() == 8U);
 }
 
 /// @testmethods TM_REQUIREMENT

@@ -54,10 +54,9 @@ struct non_copyable_test_type
 };
 
 static_assert(!std::is_copy_constructible<non_copyable_test_type>::value &&
-                  !std::is_copy_assignable<non_copyable_test_type>::value,
-              "must be non-copyable for this test");
-static_assert(!std::is_trivial<non_trivial_test_type>::value, "must be non-trivial for this test");
-static_assert(std::is_trivial<trivial_test_type>::value, "must be trivial for this test");
+              !std::is_copy_assignable<non_copyable_test_type>::value);
+static_assert(!std::is_trivial<non_trivial_test_type>::value);
+static_assert(std::is_trivial<trivial_test_type>::value);
 using test_types = ::testing::Types<trivial_test_type, non_trivial_test_type, non_copyable_test_type>;
 
 template <typename T>

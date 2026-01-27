@@ -34,11 +34,11 @@ TEST(functional_test, identity)
     EXPECT_EQ(1, score::cpp::identity{}(1));
 
     int a{23};
-    static_assert(std::is_same<decltype(score::cpp::identity{}(a)), int&>::value, "Mismatch.");
+    static_assert(std::is_same<decltype(score::cpp::identity{}(a)), int&>::value);
     EXPECT_EQ(23, score::cpp::identity{}(a));
 
     const int b{42};
-    static_assert(std::is_same<decltype(score::cpp::identity{}(b)), const int&>::value, "Mismatch.");
+    static_assert(std::is_same<decltype(score::cpp::identity{}(b)), const int&>::value);
     EXPECT_EQ(42, score::cpp::identity{}(b));
 }
 

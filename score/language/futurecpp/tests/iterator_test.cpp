@@ -120,8 +120,7 @@ TEST(iterator_test, CanMoveConstructConstIteratorFromIterator)
 TEST(iterator_test, CannotConstructIteratorFromConstIterator)
 {
     static_assert(!std::is_constructible<score::cpp::detail::iterator<std::array<std::uint8_t, 2>, false>,
-                                         score::cpp::detail::iterator<std::array<std::uint8_t, 2>, true>>::value,
-                  "It must be impossible to construct an iterator from a const iterator");
+                                         score::cpp::detail::iterator<std::array<std::uint8_t, 2>, true>>::value);
 }
 
 // NOTRACING
@@ -257,19 +256,19 @@ TEST(iterator_test, ConstNonConstOverloadResolutionWorks)
 TEST(iterator_test, IteratorTraitsProduceExpectedTypes)
 {
     using IteratorTraits = std::iterator_traits<score::cpp::detail::iterator<std::array<std::uint8_t, 2>, false>>;
-    static_assert(std::is_same<typename IteratorTraits::difference_type, std::ptrdiff_t>::value, "");
-    static_assert(std::is_same<typename IteratorTraits::value_type, std::uint8_t>::value, "");
-    static_assert(std::is_same<typename IteratorTraits::pointer, std::uint8_t*>::value, "");
-    static_assert(std::is_same<typename IteratorTraits::reference, std::uint8_t&>::value, "");
-    static_assert(std::is_same<typename IteratorTraits::iterator_category, std::random_access_iterator_tag>::value, "");
+    static_assert(std::is_same<typename IteratorTraits::difference_type, std::ptrdiff_t>::value);
+    static_assert(std::is_same<typename IteratorTraits::value_type, std::uint8_t>::value);
+    static_assert(std::is_same<typename IteratorTraits::pointer, std::uint8_t*>::value);
+    static_assert(std::is_same<typename IteratorTraits::reference, std::uint8_t&>::value);
+    static_assert(std::is_same<typename IteratorTraits::iterator_category, std::random_access_iterator_tag>::value);
 
     using ConstIteratorTraits = std::iterator_traits<score::cpp::detail::iterator<std::array<std::uint8_t, 2>, true>>;
-    static_assert(std::is_same<typename ConstIteratorTraits::difference_type, std::ptrdiff_t>::value, "");
-    static_assert(std::is_same<typename ConstIteratorTraits::value_type, std::uint8_t>::value, "");
-    static_assert(std::is_same<typename ConstIteratorTraits::pointer, const std::uint8_t*>::value, "");
-    static_assert(std::is_same<typename ConstIteratorTraits::reference, const std::uint8_t&>::value, "");
-    static_assert(std::is_same<typename ConstIteratorTraits::iterator_category, std::random_access_iterator_tag>::value,
-                  "");
+    static_assert(std::is_same<typename ConstIteratorTraits::difference_type, std::ptrdiff_t>::value);
+    static_assert(std::is_same<typename ConstIteratorTraits::value_type, std::uint8_t>::value);
+    static_assert(std::is_same<typename ConstIteratorTraits::pointer, const std::uint8_t*>::value);
+    static_assert(std::is_same<typename ConstIteratorTraits::reference, const std::uint8_t&>::value);
+    static_assert(
+        std::is_same<typename ConstIteratorTraits::iterator_category, std::random_access_iterator_tag>::value);
 }
 
 // NOTRACING
@@ -277,7 +276,7 @@ TEST(iterator_test, iterator_when_mutable_container_non_const_type_mutable_itera
 {
     std::array<std::int32_t, 2> a{42, 72};
     score::cpp::detail::iterator<decltype(a), false> it{a, true};
-    static_assert(std::is_same<std::int32_t&, decltype(*it)>::value, "Failed.");
+    static_assert(std::is_same<std::int32_t&, decltype(*it)>::value);
 }
 
 // NOTRACING
@@ -285,7 +284,7 @@ TEST(iterator_test, iterator_when_mutable_container_non_const_type_immutable_ite
 {
     std::array<std::int32_t, 2> a{42, 72};
     const score::cpp::detail::iterator<decltype(a), false> it{a, true};
-    static_assert(std::is_same<std::int32_t&, decltype(*it)>::value, "Failed.");
+    static_assert(std::is_same<std::int32_t&, decltype(*it)>::value);
 }
 
 // NOTRACING
@@ -293,7 +292,7 @@ TEST(iterator_test, iterator_when_mutable_container_non_const_type_mutable_itera
 {
     std::array<std::int32_t, 2> a{42, 72};
     score::cpp::detail::iterator<decltype(a), true> it{a, true};
-    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
+    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value);
 }
 
 // NOTRACING
@@ -301,7 +300,7 @@ TEST(iterator_test, iterator_when_mutable_container_non_const_type_immutable_ite
 {
     std::array<std::int32_t, 2> a{42, 72};
     const score::cpp::detail::iterator<decltype(a), true> it{a, true};
-    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
+    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value);
 }
 
 // NOTRACING
@@ -309,7 +308,7 @@ TEST(iterator_test, iterator_when_mutable_container_const_type_mutable_iterator_
 {
     std::array<const std::int32_t, 2> a{42, 72};
     score::cpp::detail::iterator<decltype(a), false> it{a, true};
-    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
+    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value);
 }
 
 // NOTRACING
@@ -317,7 +316,7 @@ TEST(iterator_test, iterator_when_mutable_container_const_type_immutable_iterato
 {
     std::array<const std::int32_t, 2> a{42, 72};
     const score::cpp::detail::iterator<decltype(a), false> it{a, true};
-    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
+    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value);
 }
 
 // NOTRACING
@@ -325,7 +324,7 @@ TEST(iterator_test, iterator_when_mutable_container_const_type_mutable_iterator_
 {
     std::array<const std::int32_t, 2> a{42, 72};
     score::cpp::detail::iterator<decltype(a), true> it{a, true};
-    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
+    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value);
 }
 
 // NOTRACING
@@ -333,7 +332,7 @@ TEST(iterator_test, iterator_when_mutable_container_const_type_immutable_iterato
 {
     std::array<const std::int32_t, 2> a{42, 72};
     const score::cpp::detail::iterator<decltype(a), true> it{a, true};
-    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
+    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value);
 }
 
 // NOTRACING
@@ -355,7 +354,7 @@ TEST(iterator_test, iterator_when_immutable_container_non_const_type_mutable_ite
 {
     const std::array<std::int32_t, 2> a{42, 72};
     score::cpp::detail::iterator<std::remove_const_t<decltype(a)>, true> it{a, true};
-    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
+    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value);
 }
 
 // NOTRACING
@@ -363,7 +362,7 @@ TEST(iterator_test, iterator_when_immutable_container_non_const_type_immutable_i
 {
     const std::array<std::int32_t, 2> a{42, 72};
     const score::cpp::detail::iterator<std::remove_const_t<decltype(a)>, true> it{a, true};
-    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
+    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value);
 }
 
 // NOTRACING
@@ -371,7 +370,7 @@ TEST(iterator_test, iterator_when_immutable_container_const_type_mutable_iterato
 {
     const std::array<const std::int32_t, 2> a{42, 72};
     score::cpp::detail::iterator<std::remove_const_t<decltype(a)>, false> it{a, true};
-    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
+    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value);
 }
 
 // NOTRACING
@@ -379,7 +378,7 @@ TEST(iterator_test, iterator_when_immutable_container_const_type_immutable_itera
 {
     const std::array<const std::int32_t, 2> a{42, 72};
     const score::cpp::detail::iterator<std::remove_const_t<decltype(a)>, false> it{a, true};
-    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
+    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value);
 }
 
 // NOTRACING
@@ -387,7 +386,7 @@ TEST(iterator_test, iterator_when_immutable_container_const_type_mutable_iterato
 {
     const std::array<const std::int32_t, 2> a{42, 72};
     score::cpp::detail::iterator<std::remove_const_t<decltype(a)>, true> it{a, true};
-    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
+    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value);
 }
 
 // NOTRACING
@@ -395,7 +394,7 @@ TEST(iterator_test, iterator_when_immutable_container_const_type_immutable_itera
 {
     const std::array<const std::int32_t, 2> a{42, 72};
     const score::cpp::detail::iterator<std::remove_const_t<decltype(a)>, true> it{a, true};
-    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value, "Failed.");
+    static_assert(std::is_same<const std::int32_t&, decltype(*it)>::value);
 }
 
 } // namespace

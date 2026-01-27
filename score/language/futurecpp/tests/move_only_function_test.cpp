@@ -280,8 +280,7 @@ TEST(move_only_function, empty)
 TEST(move_only_function, noexcept_test)
 {
     score::cpp::move_only_function<int()> func(return_42);
-    static_assert(std::is_nothrow_move_constructible<decltype(func)>::value,
-                  "Noexcept on move constructor is missing.");
+    static_assert(std::is_nothrow_move_constructible<decltype(func)>::value);
 }
 
 struct non_trivial_destructor
@@ -412,14 +411,11 @@ TEST(move_only_function, does_not_accept_ref_qualified_callables)
         void operator()() &;
         void operator()() &&;
     };
-    static_assert(std::is_constructible<score::cpp::move_only_function<void()>, foo_without_ref_qualification>::value, "");
-    static_assert(!std::is_constructible<score::cpp::move_only_function<void()>, foo_with_lvalue_ref_qualification>::value,
-                  "");
-    static_assert(!std::is_constructible<score::cpp::move_only_function<void()>, foo_with_rvalue_ref_qualification>::value,
-                  "");
+    static_assert(std::is_constructible<score::cpp::move_only_function<void()>, foo_without_ref_qualification>::value);
+    static_assert(!std::is_constructible<score::cpp::move_only_function<void()>, foo_with_lvalue_ref_qualification>::value);
+    static_assert(!std::is_constructible<score::cpp::move_only_function<void()>, foo_with_rvalue_ref_qualification>::value);
     static_assert(
-        std::is_constructible<score::cpp::move_only_function<void()>, foo_with_lvalue_and_rvalue_ref_qualification>::value,
-        "");
+        std::is_constructible<score::cpp::move_only_function<void()>, foo_with_lvalue_and_rvalue_ref_qualification>::value);
 }
 
 } // namespace

@@ -515,8 +515,7 @@ TEST(PmrTest, ResourceApaptor_AllocateDeallocate)
     score::cpp::pmr::resource_adaptor<test_allocator<char>> ra{};
 
     constexpr std::size_t low_alignment = 8;
-    static_assert(low_alignment < alignof(std::max_align_t),
-                  "Alignment must be below maximum natural alignment for this test.");
+    static_assert(low_alignment < alignof(std::max_align_t));
     bool was_called = false;
     mock_allocate = [&was_called](std::size_t size, std::size_t align) {
         EXPECT_EQ(size, 512 / sizeof(decltype(ra)::allocator_type::value_type));
@@ -589,8 +588,7 @@ TEST(PmrTest, ResourceApaptor_AllocateDeallocateExtendedAlignment)
     score::cpp::pmr::resource_adaptor<test_allocator<std::max_align_t>> ra{};
 
     constexpr std::size_t high_alignment = 64;
-    static_assert(high_alignment > alignof(std::max_align_t),
-                  "Alignment must be above maximum natural alignment for this test.");
+    static_assert(high_alignment > alignof(std::max_align_t));
 
     bool was_called = false;
     void* orig_ptr = nullptr;

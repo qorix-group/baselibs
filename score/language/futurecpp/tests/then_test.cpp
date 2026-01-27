@@ -158,8 +158,8 @@ TEST(then_receiver, set_stopped_GivenReceiverIsStopped_ExpectInvocableNotCalled)
 template <typename Receiver>
 struct inline_scheduler_op_state
 {
-    static_assert(std::is_object<Receiver>::value, "receiver is not an object type");
-    static_assert(is_receiver<Receiver>::value, "not a receiver");
+    static_assert(std::is_object<Receiver>::value);
+    static_assert(is_receiver<Receiver>::value);
 
     using operation_state_concept = operation_state_t;
 
@@ -176,7 +176,7 @@ struct inline_scheduler_sender
     template <typename Receiver>
     inline_scheduler_op_state<score::cpp::remove_cvref_t<Receiver>> connect(Receiver&& r) const
     {
-        static_assert(is_receiver<Receiver>::value, "not a receiver");
+        static_assert(is_receiver<Receiver>::value);
         return {std::forward<Receiver>(r)};
     }
 };
@@ -195,8 +195,8 @@ struct get_result_receiver
 template <typename R, typename Sender>
 R get_result(Sender&& sender)
 {
-    static_assert(is_sender<Sender>::value, "not a sender");
-    static_assert(!std::is_same<void, R>::value, "must not be void");
+    static_assert(is_sender<Sender>::value);
+    static_assert(!std::is_same<void, R>::value);
 
     R result{};
     auto op = connect(std::forward<Sender>(sender), get_result_receiver<R>{&result});

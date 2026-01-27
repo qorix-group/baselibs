@@ -38,9 +38,9 @@ using forward_container = std::forward_list<test_struct>;
 using bidirecional_container = std::list<test_struct>;
 using random_access_container = std::vector<test_struct>;
 
-static_assert(score::cpp::detail::is_forward_iterator<forward_container::iterator>::value, "");
-static_assert(score::cpp::detail::is_bidirectional_iterator<bidirecional_container::iterator>::value, "");
-static_assert(score::cpp::detail::is_random_access_iterator<random_access_container::iterator>::value, "");
+static_assert(score::cpp::detail::is_forward_iterator<forward_container::iterator>::value);
+static_assert(score::cpp::detail::is_bidirectional_iterator<bidirecional_container::iterator>::value);
+static_assert(score::cpp::detail::is_random_access_iterator<random_access_container::iterator>::value);
 
 template <typename ContainerT>
 class container_test : public ::testing::Test
