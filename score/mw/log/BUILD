@@ -61,15 +61,15 @@ cc_library(
 )
 
 alias(
-    name = "backend_stub_testutil",
-    testonly = True,
-    actual = "@score_baselibs//score/mw/log/detail:recorder_factory_stub",
+    name = "console_only_backend",
+    actual = "@score_baselibs//score/mw/log/detail:console_only_recorder_factory",
     visibility = ["//visibility:public"],
 )
 
 alias(
-    name = "console_backend",
-    actual = "@score_baselibs//score/mw/log/detail:recorder_factory_basic",
+    name = "backend_stub_testutil",
+    testonly = True,
+    actual = "@score_baselibs//score/mw/log/detail:console_only_recorder_factory",
     visibility = ["//visibility:public"],
 )
 
@@ -260,7 +260,7 @@ cc_test(
         "@googletest//:gtest_main",
         "@score_baselibs//score/mw/log:frontend",
         "@score_baselibs//score/mw/log:recorder_mock",
-        "@score_baselibs//score/mw/log/detail:recorder_factory_basic",
+        "@score_baselibs//score/mw/log/detail:console_only_recorder_factory",
     ],
 )
 
@@ -272,12 +272,16 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
+    local_defines = select({
+        "@score_baselibs//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
+        "//conditions:default": [],
+    }),
     tags = ["unit"],
     deps = [
-        ":backend_stub_testutil",
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
+        "@score_baselibs//score/mw/log/detail:console_only_recorder_factory",
         "@score_baselibs//score/mw/log/detail/wait_free_stack",
     ],
 )
@@ -328,7 +332,7 @@ cc_test(
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
-        "@score_baselibs//score/mw/log/detail:recorder_factory_basic",
+        "@score_baselibs//score/mw/log/detail:console_only_recorder_factory",
         "@score_baselibs//score/mw/log/test/my_custom_lib:my_custom_type_mw_log",
     ],
 )
@@ -353,7 +357,7 @@ cc_test(
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
-        "@score_baselibs//score/mw/log/detail:recorder_factory_basic",
+        "@score_baselibs//score/mw/log/detail:console_only_recorder_factory",
         "@score_baselibs//score/mw/log/detail:thread_local_guard",
     ],
 )
