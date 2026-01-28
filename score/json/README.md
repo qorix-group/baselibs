@@ -40,7 +40,7 @@ Additionally, there is [another](#declarative-parsing-of-json-data) Bazel target
 #include "score/json/json_parser.h"
 
 score::json::JsonParser json_parser_obj;
-auto const root = json_parser_obj.FromFile("platform/aas/lib/json/examples/example.json");
+auto const root = json_parser_obj.FromFile("score/json/examples/example.json");
 if (!root.has_value())
 {
     score::mw::log::LogError() << "Failed to load json: " << root.error();
@@ -375,6 +375,6 @@ This library supports usage of vector json library and nhlomann json library. By
 
 In order to make use of nlohmann json library, feature flag needs to be set. Please see an example below.
 
-bazel test --config=spp_host_clang //platform/aas/lib/json/... --//platform/aas/lib/json:base_library="nlohmann"
+bazel test --config=spp_host_clang //score/json/... --//platform/aas/lib/json:base_library="nlohmann"
 
 nlohmann json library do not supports hexadecimal. As it is not part of json standard.
