@@ -3,14 +3,14 @@
 namespace score::result
 {
 
-extern "C" SafeResult<bool> cpp_check_configuration_valid()
+extern "C" void cpp_check_configuration_valid(SafeResult<bool>* result)
 {
     // Simulate configuration check
     bool is_valid = true;
-    return SafeResult<bool>(is_valid);
+    new (result) SafeResult(is_valid);
 }
 
-extern "C" SafeResult<Complex> cpp_get_complex_configuration()
+extern "C" void cpp_get_complex_configuration(SafeResult<Complex>* result)
 {
     Complex config;
     config.SetFlag(true);
@@ -18,15 +18,15 @@ extern "C" SafeResult<Complex> cpp_get_complex_configuration()
     config.SetDecimal(3.14f);
     config.AddText("example");
     config.AddText("configuration");
-    return SafeResult<Complex>(std::move(config));
+    new (result) SafeResult(std::move(config));
 }
 
 // This is an "alias" to force an invalid type signature for testing
 // On the Rust side, this will cause a checksum mismatch as the type
 // will be defined differently.
-extern "C" SafeResult<Complex> cpp_get_complex_configuration_force_invalid()
+extern "C" void cpp_get_complex_configuration_force_invalid(SafeResult<Complex>* result)
 {
-    return cpp_get_complex_configuration();
+    cpp_get_complex_configuration(result);
 }
 
 }  // namespace score::result

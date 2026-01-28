@@ -10,9 +10,9 @@ class Complex
   public:
     Complex() : flag_(false), number_(0), decimal_(0.0f), texts_(std::make_unique<std::vector<std::string>>()) {}
 
-    Complex(const Complex&) = default;
+    Complex(const Complex&) = delete;
     Complex(Complex&&) = default;
-    Complex& operator=(const Complex&) = default;
+    Complex& operator=(const Complex&) = delete;
     Complex& operator=(Complex&&) = default;
 
     ~Complex() = default;
@@ -65,9 +65,9 @@ REGISTER_COMPLEX_TYPE_SIGNATURE_DIRECT(score::result::Complex, "{b, i32, f32, ve
 
 // FFI functions that C++ exposes (must be at global scope for extern "C")
 extern "C" {
-score::result::SafeResult<bool> cpp_check_configuration_valid();
-score::result::SafeResult<score::result::Complex> cpp_get_complex_configuration();
-score::result::SafeResult<score::result::Complex> cpp_get_complex_configuration_force_invalid();
+void cpp_check_configuration_valid(score::result::SafeResult<bool>* result);
+void cpp_get_complex_configuration(score::result::SafeResult<score::result::Complex>* result);
+void cpp_get_complex_configuration_force_invalid(score::result::SafeResult<score::result::Complex>* result);
 }
 
 #endif  // SCORE_LIB_RESULT_SAFE_RESULT_EXAMPLE_FFI_H_

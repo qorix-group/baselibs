@@ -481,14 +481,14 @@ class SafeResult
     }
 
     /// Extract the error (move semantics)
-    [[nodiscard]] constexpr Error ExtractError() noexcept
+    [[nodiscard]] constexpr E ExtractError() noexcept
     {
         if (!storage_.result.has_value())
         {
-            return Error();  // Default error
+            return {};  // Default error
         }
         // In practice, you'd want to get the error from storage_.result
-        return Error();
+        return {};
     }
 
   private:

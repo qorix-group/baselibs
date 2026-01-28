@@ -244,33 +244,7 @@ void DemoTypeVariations()
 
 }  // namespace example
 
-// ============================================================================
-// Example 8: FFI Boundary with Type Verification
-// ============================================================================
-
-/// Demonstrates SafeResult at the C++/Rust boundary
-///
-/// On the C++ side:
-/// - Creates SafeResult<bool> with CRC32 computed at compile time
-/// - Embeds CRC32 in the return value
-/// - Returns by value across calling convention
-///
-/// On the Rust side:
-/// - Receives the SafeResult as #[repr(C)] struct
-/// - Extracts and verifies CRC32 matches expected type signature
-/// - If mismatch, returns ChecksumMismatch error
-/// - Otherwise, safely converts to std::result::Result<T, E>
-
-extern "C" score::result::SafeResult<bool> FFIFunctionReturnsResult()
-{
-    // The CRC32 is embedded here
-    return score::result::SafeResult<bool>(true);
-}
-
-// ============================================================================
-// Example 10: Complex type
-// ============================================================================
-
+// Run examples one after the other
 int main()
 {
     std::cout << "SafeResult Examples\n"
@@ -286,8 +260,6 @@ int main()
     std::cout << "\n";
 
     example::DemoTypeVariations();
-
-    score::result::SafeResult<score::result::Complex> complex_result = cpp_get_complex_configuration();
 
     return 0;
 }
