@@ -13,8 +13,8 @@
 #ifndef SCORE_LIB_CONCURRENCY_LOCKED_PTR_H
 #define SCORE_LIB_CONCURRENCY_LOCKED_PTR_H
 
+#include "score/concurrency/type_traits.h"
 #include "score/concurrency/unlock_guard.h"
-#include "platform/aas/lib/type_traits/type_traits.h"
 
 #include <utility>
 
@@ -51,7 +51,8 @@ namespace concurrency
  */
 template <typename T,
           typename Lock,
-          typename = std::enable_if_t<is_basic_lockable_v<Lock> && !std::is_reference_v<Lock>>>
+          typename =
+              std::enable_if_t<std::conjunction_v<is_basic_lockable<Lock>, std::negation<std::is_reference<Lock>>>>>
 class LockedPtr
 {
   public:
@@ -78,7 +79,8 @@ class LockedPtr
      * @post The moved-from LockedPtr, other, does not point to any object (other == nullptr is true)
      *       and the lock is in a moved-out state.
      */
-    LockedPtr(LockedPtr&& other) noexcept : ptr_(other.ptr_), lock_(std::move(other.lock_))
+    LockedPtr(LockedPtr&& other) noexcept(std::is_nothrow_move_constructible_v<Lock>)
+        : ptr_(other.ptr_), lock_(std::move(other.lock_))
     {
         other.ptr_ = nullptr;
     }
@@ -89,9 +91,14 @@ class LockedPtr
      * @post The moved-from LockedPtr, other, does not point to any object (other == nullptr is true)
      *       and the lock is in a moved-out state.
      */
-    LockedPtr& operator=(LockedPtr&& other) noexcept
+    LockedPtr& operator=(LockedPtr&& other) noexcept(std::is_nothrow_move_assignable_v<Lock>)
     {
-        LockedPtr{std::move(other)}.swap(*this);
+        if (this != &other)
+        {
+            ptr_ = std::exchange(other.ptr_, nullptr);
+            lock_ = std::move(other.lock_);
+        }
+
         return *this;
     }
 
@@ -99,7 +106,7 @@ class LockedPtr
      * @brief Swaps the contents of this LockedPtr with another.
      * @param other The LockedPtr to swap with.
      */
-    void swap(LockedPtr& other) noexcept
+    void swap(LockedPtr& other) noexcept(std::is_nothrow_swappable_v<Lock>)
     {
         std::swap(ptr_, other.ptr_);
         std::swap(lock_, other.lock_);

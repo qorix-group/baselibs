@@ -52,6 +52,27 @@ cc_library(
 )
 
 cc_library(
+    name = "type_traits",
+    hdrs = ["type_traits.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "//visibility:public",
+    ],
+)
+
+cc_gtest_unit_test(
+    name = "type_traits_tests",
+    srcs = ["type_traits_test.cpp"],
+    features = COMPILER_WARNING_FEATURES + [
+        "aborts_upon_exception",
+    ],
+    deps = [
+        ":type_traits",
+    ],
+)
+
+cc_library(
     name = "synchronized",
     hdrs = ["synchronized.h"],
     features = COMPILER_WARNING_FEATURES,
@@ -61,7 +82,7 @@ cc_library(
     ],
     deps = [
         ":locked_ptr",
-        "//platform/aas/lib/type_traits",
+        ":type_traits",
     ],
 )
 
@@ -75,8 +96,8 @@ cc_gtest_unit_test(
         ":locked_ptr",
         ":synchronized",
         ":test_types",
+        ":type_traits",
         ":unlock_guard",
-        "//platform/aas/lib/type_traits",
     ],
 )
 
@@ -102,8 +123,8 @@ cc_gtest_unit_test(
     deps = [
         ":locked_ptr",
         ":test_types",
+        ":type_traits",
         ":unlock_guard",
-        "//platform/aas/lib/type_traits",
     ],
 )
 
@@ -125,8 +146,8 @@ cc_gtest_unit_test(
     ],
     deps = [
         ":test_types",
+        ":type_traits",
         ":unlock_guard",
-        "//platform/aas/lib/type_traits",
     ],
 )
 
@@ -547,6 +568,7 @@ cc_unit_test_suites_for_host_and_qnx(
         ":periodic_task_tests",
         ":synchronized_tests",
         ":thread_pool_tests",
+        ":type_traits_tests",
         ":long_running_threads_container_tests",
         ":synchronized_queue_test",
     ],

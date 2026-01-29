@@ -13,7 +13,7 @@
 #ifndef SCORE_LIB_CONCURRENCY_UNLOCK_GUARD_H
 #define SCORE_LIB_CONCURRENCY_UNLOCK_GUARD_H
 
-#include "platform/aas/lib/type_traits/type_traits.h"
+#include "score/concurrency/type_traits.h"
 
 namespace score::concurrency
 {

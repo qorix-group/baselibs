@@ -14,7 +14,6 @@
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-// #include "score/utils/src/scoped_operation.h"
 
 #include <functional>
 #include <mutex>
@@ -27,32 +26,33 @@ namespace test
 
 using score::concurrency::UnlockGuard;
 
-// UnlockGuard should be instantiable with types adhering to is_basic_lockable
-static_assert(std::is_constructible_v<UnlockGuard<BasicLockableArchetype>, BasicLockableArchetype&>,
-              "UnlockGuard should be constructible with a BasicLockableArchetype&");
-static_assert(std::is_constructible_v<UnlockGuard<MockMutex>, MockMutex&>,
-              "UnlockGuard should be constructible with a MockMutex&");
+TEST(UnlockGuardTest, ConstructionWithTypes)
+{
+    // UnlockGuard should be instantiable with types adhering to is_basic_lockable
+    EXPECT_TRUE((std::is_constructible_v<UnlockGuard<BasicLockableArchetype>, BasicLockableArchetype&>))
+        << "UnlockGuard should be constructible with a BasicLockableArchetype&";
+    EXPECT_TRUE((std::is_constructible_v<UnlockGuard<MockMutex>, MockMutex&>))
+        << "UnlockGuard should be constructible with a MockMutex&";
 
-// UnlockGuard should be instantiable with standard mutex types
-static_assert(std::is_constructible_v<UnlockGuard<std::mutex>, std::mutex&>,
-              "UnlockGuard should be constructible with a std::mutex&");
-static_assert(std::is_constructible_v<UnlockGuard<std::timed_mutex>, std::timed_mutex&>,
-              "UnlockGuard should be constructible with a std::timed_mutex&");
-static_assert(std::is_constructible_v<UnlockGuard<std::recursive_timed_mutex>, std::recursive_timed_mutex&>,
-              "UnlockGuard should be constructible with a std::recursive_timed_mutex&");
-static_assert(std::is_constructible_v<UnlockGuard<std::recursive_mutex>, std::recursive_mutex&>,
-              "UnlockGuard should be constructible with a std::recursive_mutex&");
-static_assert(std::is_constructible_v<UnlockGuard<std::shared_mutex>, std::shared_mutex&>,
-              "UnlockGuard should be constructible with a std::shared_mutex&");
-static_assert(std::is_constructible_v<UnlockGuard<std::unique_lock<std::mutex>>, std::unique_lock<std::mutex>&>,
-              "UnlockGuard should be constructible with a std::unique_lock<std::mutex>&");
+    // UnlockGuard should be instantiable with standard mutex types
+    EXPECT_TRUE((std::is_constructible_v<UnlockGuard<std::mutex>, std::mutex&>))
+        << "UnlockGuard should be constructible with a std::mutex&";
+    EXPECT_TRUE((std::is_constructible_v<UnlockGuard<std::timed_mutex>, std::timed_mutex&>))
+        << "UnlockGuard should be constructible with a std::timed_mutex&";
+    EXPECT_TRUE((std::is_constructible_v<UnlockGuard<std::recursive_mutex>, std::recursive_mutex&>))
+        << "UnlockGuard should be constructible with a std::recursive_mutex&";
+    EXPECT_TRUE((std::is_constructible_v<UnlockGuard<std::recursive_timed_mutex>, std::recursive_timed_mutex&>))
+        << "UnlockGuard should be constructible with a std::recursive_timed_mutex&";
+    EXPECT_TRUE((std::is_constructible_v<UnlockGuard<std::shared_mutex>, std::shared_mutex&>))
+        << "UnlockGuard should be constructible with a std::shared_mutex&";
+    EXPECT_TRUE((std::is_constructible_v<UnlockGuard<std::unique_lock<std::mutex>>, std::unique_lock<std::mutex>&>))
+        << "UnlockGuard should be constructible with a std::unique_lock<std::mutex>&";
+}
 
 TEST(UnlockGuardTest, MutexUnlocksOnConstructionLocksOnDestruction)
 {
     MockMutex mut;
     mut.lock();
-    // ScopedOperation not made public!?
-    // utils::ScopedOperation on_test_exit{[&mut]() { mut.unlock(); }};
     auto unlocker = std::mem_fn(&MockMutex::unlock);
     std::unique_ptr<MockMutex, decltype(unlocker)> unlock_on_test_exit{&mut, unlocker};
 

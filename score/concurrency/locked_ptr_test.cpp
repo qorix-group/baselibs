@@ -38,83 +38,88 @@ struct IntWrapper
 };
 }  // namespace
 
-// Test the generic functions & types of LockedPtr
+TEST(LockedPtrTest, ConstructionWithTypes)
+{
+    EXPECT_TRUE((std::is_constructible_v<LockedPtr<int, BasicLockableArchetype>, int*, BasicLockableArchetype>))
+        << "LockedPtr should be constructible with BasicLockableArchetype";
+    EXPECT_TRUE(
+        (std::is_constructible_v<LockedPtr<const int, BasicLockableArchetype>, const int*, BasicLockableArchetype>))
+        << "LockedPtr should be constructible with BasicLockableArchetype";
+    EXPECT_TRUE(
+        (std::is_constructible_v<LockedPtr<int, std::unique_lock<std::mutex>>, int*, std::unique_lock<std::mutex>>))
+        << "LockedPtr should be constructible with std::unique_lock<std::mutex>";
+    EXPECT_TRUE(
+        (std::is_constructible_v<LockedPtr<int, std::shared_lock<std::mutex>>, int*, std::shared_lock<std::mutex>>))
+        << "LockedPtr should be constructible with std::shared_lock<std::mutex>";
 
-// Negative cases
-// static_assert(!std::is_constructible_v<LockedPtr<int, HasLockOnly>, &int, HasLockOnly>, "LockedPtr should not be
-// constructible with HasLockOnly"); static_assert(!std::is_constructible_v<LockedPtr<int, HasUnlockOnly>, &int,
-// HasUnlockOnly>, "LockedPtr should not be constructible with HasUnlockOnly");
-// static_assert(!std::is_constructible_v<LockedPtr<int, HasLockAndUnlockMismatchedSignature>, int*,
-// HasLockAndUnlockMismatchedSignature>, "LockedPtr should not be constructible with
-// HasLockAndUnlockMismatchedSignature");
+    EXPECT_TRUE((!std::is_copy_constructible_v<LockedPtr<int, BasicLockableArchetype>>))
+        << "LockedPtr should not be copy-constructible";
+    EXPECT_TRUE((!std::is_copy_assignable_v<LockedPtr<int, BasicLockableArchetype>>))
+        << "LockedPtr should not be copy-assignable";
+    EXPECT_TRUE((std::is_move_constructible_v<LockedPtr<int, BasicLockableArchetype>>))
+        << "LockedPtr should be move-constructible";
+    EXPECT_TRUE((std::is_move_assignable_v<LockedPtr<int, BasicLockableArchetype>>))
+        << "LockedPtr should be move-assignable";
+}
 
-// Construction
-static_assert(std::is_constructible_v<LockedPtr<int, BasicLockableArchetype>, int*, BasicLockableArchetype>,
-              "LockedPtr should be constructible with BasicLockableArchetype");
-static_assert(std::is_constructible_v<LockedPtr<const int, BasicLockableArchetype>, const int*, BasicLockableArchetype>,
-              "LockedPtr should be constructible with BasicLockableArchetype");
-static_assert(std::is_constructible_v<LockedPtr<int, std::unique_lock<std::mutex>>, int*, std::unique_lock<std::mutex>>,
-              "LockedPtr should be constructible with std::unique_lock<std::mutex>");
-static_assert(std::is_constructible_v<LockedPtr<int, std::shared_lock<std::mutex>>, int*, std::shared_lock<std::mutex>>,
-              "LockedPtr should be constructible with std::shared_lock<std::mutex>");
-static_assert(!std::is_copy_constructible_v<LockedPtr<int, BasicLockableArchetype>>,
-              "LockedPtr should not be copy-constructible");
-static_assert(!std::is_copy_assignable_v<LockedPtr<int, BasicLockableArchetype>>,
-              "LockedPtr should not be copy-assignable");
-static_assert(std::is_move_constructible_v<LockedPtr<int, BasicLockableArchetype>>,
-              "LockedPtr should be move-constructible");
-static_assert(std::is_move_assignable_v<LockedPtr<int, BasicLockableArchetype>>, "LockedPtr should be move-assignable");
+TEST(LockedPtrTest, SwappingWithTypes)
+{
+    EXPECT_TRUE((std::is_swappable_v<LockedPtr<int, BasicLockableArchetype>>))
+        << "LockedPtr with BasicLockableArchetype should be swappable";
+    EXPECT_TRUE((std::is_swappable_v<LockedPtr<int, std::unique_lock<std::mutex>>>))
+        << "LockedPtr with unique_lock should be swappable";
+    EXPECT_TRUE((std::is_swappable_v<LockedPtr<int, std::shared_lock<std::shared_mutex>>>))
+        << "LockedPtr with shared_lock should be swappable";
+}
 
-// Swapping
-static_assert(std::is_swappable_v<LockedPtr<int, BasicLockableArchetype>>,
-              "LockedPtr with BasicLockableArchetype should be swappable");
-static_assert(std::is_swappable_v<LockedPtr<int, std::unique_lock<std::mutex>>>,
-              "LockedPtr with unique_lock should be swappable");
-static_assert(std::is_swappable_v<LockedPtr<int, std::shared_lock<std::shared_mutex>>>,
-              "LockedPtr with shared_lock should be swappable");
+TEST(LockedPtrTest, TFunctionsWithTypes)
+{
+    // Functions working with T
+    EXPECT_TRUE((std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<int, BasicLockableArchetype>::operator*),
+                                                     LockedPtr<int, BasicLockableArchetype>*>,
+                                int&>))
+        << "LockedPtr::operator*() should return int&";
+    EXPECT_TRUE((std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<const int, BasicLockableArchetype>::operator*),
+                                                     LockedPtr<const int, BasicLockableArchetype>*>,
+                                const int&>))
+        << "LockedPtr::operator*() should return const int&";
+    EXPECT_TRUE((std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<int, BasicLockableArchetype>::operator->),
+                                                     LockedPtr<int, BasicLockableArchetype>*>,
+                                int*>))
+        << "LockedPtr::operator->() should return int*";
+    EXPECT_TRUE(
+        (std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<const int, BasicLockableArchetype>::operator->),
+                                             LockedPtr<const int, BasicLockableArchetype>*>,
+                        const int*>))
+        << "LockedPtr::operator->() should return const int*";
+    EXPECT_TRUE((std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<int, BasicLockableArchetype>::get),
+                                                     LockedPtr<int, BasicLockableArchetype>*>,
+                                int*>))
+        << "LockedPtr::get() should return int*";
+    EXPECT_TRUE((std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<const int, BasicLockableArchetype>::get),
+                                                     LockedPtr<const int, BasicLockableArchetype>*>,
+                                const int*>))
+        << "LockedPtr::get() should return const int*";
+}
 
-// Functions working with T
-static_assert(std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<int, BasicLockableArchetype>::operator*),
-                                                  LockedPtr<int, BasicLockableArchetype>*>,
-                             int&>,
-              "LockedPtr::operator*() should return int&");
-static_assert(std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<const int, BasicLockableArchetype>::operator*),
-                                                  LockedPtr<const int, BasicLockableArchetype>*>,
-                             const int&>,
-              "LockedPtr::operator*() should return const int&");
-
-static_assert(std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<int, BasicLockableArchetype>::operator->),
-                                                  LockedPtr<int, BasicLockableArchetype>*>,
-                             int*>,
-              "LockedPtr::operator->() should return int*");
-static_assert(std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<const int, BasicLockableArchetype>::operator->),
-                                                  LockedPtr<const int, BasicLockableArchetype>*>,
-                             const int*>,
-              "LockedPtr::operator->() should return const int*");
-
-static_assert(std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<int, BasicLockableArchetype>::get),
-                                                  LockedPtr<int, BasicLockableArchetype>*>,
-                             int*>,
-              "LockedPtr::get() should return int*");
-static_assert(std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<const int, BasicLockableArchetype>::get),
-                                                  LockedPtr<const int, BasicLockableArchetype>*>,
-                             const int*>,
-              "LockedPtr::get() should return const int*");
-
-// Functions working with Lock
-static_assert(std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<int, BasicLockableArchetype>::unlock_guard),
-                                                  LockedPtr<int, BasicLockableArchetype>*>,
-                             UnlockGuard<BasicLockableArchetype>>,
-              "LockedPtr::unlock_guard() should return UnlockGuard<BasicLockableArchetype>");
-static_assert(std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<int, std::unique_lock<std::mutex>>::unlock_guard),
-                                                  LockedPtr<int, std::unique_lock<std::mutex>>*>,
-                             UnlockGuard<std::unique_lock<std::mutex>>>,
-              "LockedPtr::unlock_guard() should return UnlockGuard<unique_lock>");
-static_assert(
-    std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<int, std::shared_lock<std::shared_mutex>>::unlock_guard),
-                                        LockedPtr<int, std::shared_lock<std::shared_mutex>>*>,
-                   UnlockGuard<std::shared_lock<std::shared_mutex>>>,
-    "LockedPtr::unlock_guard() should return UnlockGuard<shared_lock>");
+TEST(LockedPtrTest, LockFunctionsWithTypes)
+{
+    // Functions working with Lock
+    EXPECT_TRUE((std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<int, BasicLockableArchetype>::unlock_guard),
+                                                     LockedPtr<int, BasicLockableArchetype>*>,
+                                UnlockGuard<BasicLockableArchetype>>))
+        << "LockedPtr::unlock_guard() should return UnlockGuard<BasicLockableArchetype>";
+    EXPECT_TRUE(
+        (std::is_same_v<std::invoke_result_t<decltype(&LockedPtr<int, std::unique_lock<std::mutex>>::unlock_guard),
+                                             LockedPtr<int, std::unique_lock<std::mutex>>*>,
+                        UnlockGuard<std::unique_lock<std::mutex>>>))
+        << "LockedPtr::unlock_guard() should return UnlockGuard<unique_lock>";
+    EXPECT_TRUE((std::is_same_v<
+                 std::invoke_result_t<decltype(&LockedPtr<int, std::shared_lock<std::shared_mutex>>::unlock_guard),
+                                      LockedPtr<int, std::shared_lock<std::shared_mutex>>*>,
+                 UnlockGuard<std::shared_lock<std::shared_mutex>>>))
+        << "LockedPtr::unlock_guard() should return UnlockGuard<shared_lock>";
+}
 
 TEST(LockedPtrTest, NonConstWithUniqueLock)
 {
