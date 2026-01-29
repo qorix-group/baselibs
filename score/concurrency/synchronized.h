@@ -161,13 +161,13 @@ class Synchronized
     }
 
     template <typename Func, typename = std::enable_if_t<std::is_invocable_v<Func, pointer>>>
-    auto with_lock(Func&& f) noexcept(std::is_nothrow_invocable_v<Func, pointer>)
+    auto with_lock(Func&& f)
     {
         return std::invoke(std::forward<Func>(f), lock());
     }
 
     template <typename Func, typename = std::enable_if_t<std::is_invocable_v<Func, const_pointer>>>
-    auto with_lock(Func&& f) const noexcept(std::is_nothrow_invocable_v<Func, const_pointer>)
+    auto with_lock(Func&& f) const
     {
         return std::invoke(std::forward<Func>(f), lock());
     }
