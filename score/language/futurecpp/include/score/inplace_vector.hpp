@@ -102,161 +102,6 @@ private:
     std::size_t size_;
 };
 
-template <typename T, std::size_t MaxSize, bool = std::is_trivially_copy_constructible_v<T>>
-struct copy_base : public destructor_base<T, MaxSize>
-{
-    static_assert(std::is_trivially_copy_constructible_v<T>);
-};
-
-template <typename T, std::size_t MaxSize>
-class copy_base<T, MaxSize, false> : public destructor_base<T, MaxSize>
-{
-    static_assert(!std::is_trivially_copy_constructible_v<T>);
-
-public:
-    copy_base() = default;
-    copy_base& operator=(const copy_base&) = default;
-    copy_base(copy_base&&) = default;
-    copy_base& operator=(copy_base&&) = default;
-    ~copy_base() = default;
-
-    copy_base(const copy_base& other) : destructor_base<T, MaxSize>{}
-    {
-        try
-        {
-            this->set_size(other.size());
-            score::cpp::ignore = std::uninitialized_copy_n(other.data(), other.size(), this->data());
-        }
-        catch (...)
-        {
-            this->set_size(0U);
-        }
-    }
-};
-
-template <typename T,
-          std::size_t MaxSize,
-          bool = std::is_trivially_destructible_v<T>&& std::is_trivially_copy_constructible_v<T>&&
-              std::is_trivially_copy_assignable_v<T>>
-struct copy_assign_base : public copy_base<T, MaxSize>
-{
-    static_assert(std::is_trivially_destructible_v<T> && std::is_trivially_copy_constructible_v<T> &&
-                  std::is_trivially_copy_assignable_v<T>);
-};
-
-template <typename T, std::size_t MaxSize>
-class copy_assign_base<T, MaxSize, false> : public copy_base<T, MaxSize>
-{
-    static_assert(!(std::is_trivially_destructible_v<T> && std::is_trivially_copy_constructible_v<T> &&
-                    std::is_trivially_copy_assignable_v<T>));
-
-public:
-    copy_assign_base() = default;
-    copy_assign_base(const copy_assign_base&) = default;
-    copy_assign_base(copy_assign_base&&) = default;
-    copy_assign_base& operator=(copy_assign_base&&) = default;
-    ~copy_assign_base() = default;
-
-    copy_assign_base& operator=(const copy_assign_base& other)
-    {
-        if (this != &other)
-        {
-            try
-            {
-                score::cpp::ignore = std::destroy_n(this->data(), this->size());
-                this->set_size(other.size());
-                score::cpp::ignore = std::uninitialized_copy_n(other.data(), other.size(), this->data());
-            }
-            catch (...)
-            {
-                this->set_size(0U);
-            }
-        }
-        return *this;
-    }
-};
-
-template <typename T, std::size_t MaxSize, bool = std::is_trivially_move_constructible_v<T>>
-struct move_base : public copy_assign_base<T, MaxSize>
-{
-    static_assert(std::is_trivially_move_constructible_v<T>);
-};
-
-template <typename T, std::size_t MaxSize>
-class move_base<T, MaxSize, false> : public copy_assign_base<T, MaxSize>
-{
-    static_assert(!std::is_trivially_move_constructible_v<T>);
-
-public:
-    move_base() = default;
-    move_base(const move_base&) = default;
-    move_base& operator=(const move_base&) = default;
-    move_base& operator=(move_base&&) = default;
-    ~move_base() = default;
-
-    move_base(move_base&& other) noexcept((MaxSize == 0) || std::is_nothrow_move_constructible<T>::value)
-        : copy_assign_base<T, MaxSize>{}
-    {
-        try
-        {
-            this->set_size(other.size());
-            score::cpp::ignore = score::cpp::uninitialized_move_n(other.data(), other.size(), this->data());
-        }
-        catch (...)
-        {
-            this->set_size(0U);
-        }
-        score::cpp::ignore = std::destroy_n(other.data(), other.size());
-        other.set_size(0U);
-    }
-};
-
-template <typename T,
-          std::size_t MaxSize,
-          bool = std::is_trivially_destructible_v<T>&& std::is_trivially_move_constructible_v<T>&&
-              std::is_trivially_move_assignable_v<T>>
-struct move_assign_base : public move_base<T, MaxSize>
-{
-    static_assert(std::is_trivially_destructible_v<T> && std::is_trivially_move_constructible_v<T> &&
-                  std::is_trivially_move_assignable_v<T>);
-};
-
-template <typename T, std::size_t MaxSize>
-class move_assign_base<T, MaxSize, false> : public move_base<T, MaxSize>
-{
-    static_assert(!(std::is_trivially_destructible_v<T> && std::is_trivially_move_constructible_v<T> &&
-                    std::is_trivially_move_assignable_v<T>));
-
-public:
-    move_assign_base() = default;
-    move_assign_base(const move_assign_base&) = default;
-    move_assign_base& operator=(const move_assign_base&) = default;
-    move_assign_base(move_assign_base&&) = default;
-    ~move_assign_base() = default;
-
-    move_assign_base& operator=(move_assign_base&& other) noexcept((MaxSize == 0) ||
-                                                                   (std::is_nothrow_move_assignable<T>::value &&
-                                                                    std::is_nothrow_move_constructible<T>::value))
-    {
-        if (this != &other)
-        {
-            try
-            {
-                score::cpp::ignore = std::destroy_n(this->data(), this->size());
-                this->set_size(other.size());
-                score::cpp::ignore = score::cpp::uninitialized_move_n(other.data(), other.size(), this->data());
-            }
-            catch (...)
-            {
-                this->set_size(0U);
-            }
-            score::cpp::ignore = std::destroy_n(other.data(), other.size());
-            other.set_size(0U);
-        }
-        return *this;
-    }
-};
-
 } // namespace inplace_vector
 } // namespace detail
 
@@ -269,9 +114,9 @@ public:
 /// \tparam T Specifies the value type of a single element of a row.
 /// \tparam MaxSize Specifies maximum size of the internal array.
 template <typename T, std::size_t MaxSize>
-class inplace_vector : private detail::inplace_vector::move_assign_base<T, MaxSize>
+class inplace_vector : private detail::inplace_vector::destructor_base<T, MaxSize>
 {
-    using base_t = detail::inplace_vector::move_assign_base<T, MaxSize>;
+    using base_t = detail::inplace_vector::destructor_base<T, MaxSize>;
 
 public:
     /// \brief The type of the array elements.
@@ -361,6 +206,79 @@ public:
     inplace_vector(const std::initializer_list<T> initializer_list)
         : inplace_vector(initializer_list.begin(), initializer_list.end())
     {
+    }
+
+    /// \brief Copy construction from inplace_vector.
+    inplace_vector(const inplace_vector& other) : base_t{}
+    {
+        try
+        {
+            this->set_size(other.size());
+            score::cpp::ignore = std::uninitialized_copy_n(other.data(), other.size(), this->data());
+        }
+        catch (...)
+        {
+            this->set_size(0U);
+        }
+    }
+
+    /// \brief Copy assignment from inplace_vector.
+    inplace_vector& operator=(const inplace_vector& other)
+    {
+        if (this != &other)
+        {
+            try
+            {
+                score::cpp::ignore = std::destroy_n(this->data(), this->size());
+                this->set_size(other.size());
+                score::cpp::ignore = std::uninitialized_copy_n(other.data(), other.size(), this->data());
+            }
+            catch (...)
+            {
+                this->set_size(0U);
+            }
+        }
+        return *this;
+    }
+
+    /// \brief Move construction from inplace_vector.
+    inplace_vector(inplace_vector&& other) noexcept((MaxSize == 0) || std::is_nothrow_move_constructible<T>::value)
+        : base_t{}
+    {
+        try
+        {
+            this->set_size(other.size());
+            score::cpp::ignore = score::cpp::uninitialized_move_n(other.data(), other.size(), this->data());
+        }
+        catch (...)
+        {
+            this->set_size(0U);
+        }
+        score::cpp::ignore = std::destroy_n(other.data(), other.size());
+        other.set_size(0U);
+    }
+
+    /// \brief Move assignment from inplace_vector.
+    inplace_vector& operator=(inplace_vector&& other) noexcept((MaxSize == 0) ||
+                                                               (std::is_nothrow_move_assignable<T>::value &&
+                                                                std::is_nothrow_move_constructible<T>::value))
+    {
+        if (this != &other)
+        {
+            try
+            {
+                score::cpp::ignore = std::destroy_n(this->data(), this->size());
+                this->set_size(other.size());
+                score::cpp::ignore = score::cpp::uninitialized_move_n(other.data(), other.size(), this->data());
+            }
+            catch (...)
+            {
+                this->set_size(0U);
+            }
+            score::cpp::ignore = std::destroy_n(other.data(), other.size());
+            other.set_size(0U);
+        }
+        return *this;
     }
 
     /// \brief Mimics std::vector<>::clear()
