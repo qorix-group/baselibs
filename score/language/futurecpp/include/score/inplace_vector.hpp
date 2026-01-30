@@ -209,7 +209,8 @@ public:
     }
 
     /// \brief Copy construction from inplace_vector.
-    inplace_vector(const inplace_vector& other) : base_t{}
+    inplace_vector(const inplace_vector& other) noexcept((MaxSize == 0) || std::is_nothrow_copy_constructible<T>::value)
+        : base_t{}
     {
         try
         {
@@ -223,7 +224,9 @@ public:
     }
 
     /// \brief Copy assignment from inplace_vector.
-    inplace_vector& operator=(const inplace_vector& other)
+    inplace_vector& operator=(const inplace_vector& other) noexcept((MaxSize == 0) ||
+                                                                    (std::is_nothrow_copy_assignable<T>::value &&
+                                                                     std::is_nothrow_copy_constructible<T>::value))
     {
         if (this != &other)
         {
