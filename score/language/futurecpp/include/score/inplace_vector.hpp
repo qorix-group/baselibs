@@ -37,6 +37,229 @@
 namespace score::cpp
 {
 
+namespace detail
+{
+namespace inplace_vector
+{
+
+template <typename T, std::size_t MaxSize, bool = std::is_trivially_destructible_v<T>>
+class destructor_base
+{
+    static_assert(std::is_trivially_destructible_v<T>);
+
+public:
+    destructor_base() noexcept : size_{0}
+    {
+        // activate the union member. `start_lifetime_as_array` does not exist in C++17
+        // With C++26 trivial union paper wg21.link/p3074 + wg21.link/p3726 this isn't needed
+        // https://en.cppreference.com/w/cpp/memory/start_lifetime_as.html says
+        // "`new (void_ptr) unsigned char[size]` or ... works as an untyped version of
+        // `std::start_lifetime_as`, but it does not keep the object representation."
+        score::cpp::ignore = ::new (score::cpp::detail::voidify(array_)) std::uint8_t[sizeof(T) * MaxSize];
+    }
+
+    void set_size(const std::size_t n) { size_ = n; }
+    std::size_t size() const { return size_; }
+    T* data() { return array_; }
+    const T* data() const { return array_; }
+
+private:
+    union
+    {
+        // NOLINTNEXTLINE(readability-identifier-naming) keep `_` to make clear it is a member variable
+        T array_[MaxSize];
+    };
+    std::size_t size_;
+};
+
+template <typename T, std::size_t MaxSize>
+class destructor_base<T, MaxSize, false>
+{
+    static_assert(!std::is_trivially_destructible_v<T>);
+
+public:
+    destructor_base() noexcept : size_{0}
+    {
+        score::cpp::ignore = ::new (score::cpp::detail::voidify(array_)) std::uint8_t[sizeof(T) * MaxSize];
+    }
+    destructor_base(const destructor_base&) = default;
+    destructor_base& operator=(const destructor_base&) = default;
+    destructor_base(destructor_base&&) = default;
+    destructor_base& operator=(destructor_base&&) = default;
+    ~destructor_base() { score::cpp::ignore = std::destroy_n(data(), size()); }
+
+    void set_size(const std::size_t n) { size_ = n; }
+    std::size_t size() const { return size_; }
+    T* data() { return array_; }
+    const T* data() const { return array_; }
+
+private:
+    union
+    {
+        // NOLINTNEXTLINE(readability-identifier-naming) keep `_` to make clear it is a member variable
+        T array_[MaxSize];
+    };
+    std::size_t size_;
+};
+
+template <typename T, std::size_t MaxSize, bool = std::is_trivially_copy_constructible_v<T>>
+struct copy_base : public destructor_base<T, MaxSize>
+{
+    static_assert(std::is_trivially_copy_constructible_v<T>);
+};
+
+template <typename T, std::size_t MaxSize>
+class copy_base<T, MaxSize, false> : public destructor_base<T, MaxSize>
+{
+    static_assert(!std::is_trivially_copy_constructible_v<T>);
+
+public:
+    copy_base() = default;
+    copy_base& operator=(const copy_base&) = default;
+    copy_base(copy_base&&) = default;
+    copy_base& operator=(copy_base&&) = default;
+    ~copy_base() = default;
+
+    copy_base(const copy_base& other) : destructor_base<T, MaxSize>{}
+    {
+        try
+        {
+            this->set_size(other.size());
+            score::cpp::ignore = std::uninitialized_copy_n(other.data(), other.size(), this->data());
+        }
+        catch (...)
+        {
+            this->set_size(0U);
+        }
+    }
+};
+
+template <typename T,
+          std::size_t MaxSize,
+          bool = std::is_trivially_destructible_v<T>&& std::is_trivially_copy_constructible_v<T>&&
+              std::is_trivially_copy_assignable_v<T>>
+struct copy_assign_base : public copy_base<T, MaxSize>
+{
+    static_assert(std::is_trivially_destructible_v<T> && std::is_trivially_copy_constructible_v<T> &&
+                  std::is_trivially_copy_assignable_v<T>);
+};
+
+template <typename T, std::size_t MaxSize>
+class copy_assign_base<T, MaxSize, false> : public copy_base<T, MaxSize>
+{
+    static_assert(!(std::is_trivially_destructible_v<T> && std::is_trivially_copy_constructible_v<T> &&
+                    std::is_trivially_copy_assignable_v<T>));
+
+public:
+    copy_assign_base() = default;
+    copy_assign_base(const copy_assign_base&) = default;
+    copy_assign_base(copy_assign_base&&) = default;
+    copy_assign_base& operator=(copy_assign_base&&) = default;
+    ~copy_assign_base() = default;
+
+    copy_assign_base& operator=(const copy_assign_base& other)
+    {
+        if (this != &other)
+        {
+            try
+            {
+                score::cpp::ignore = std::destroy_n(this->data(), this->size());
+                this->set_size(other.size());
+                score::cpp::ignore = std::uninitialized_copy_n(other.data(), other.size(), this->data());
+            }
+            catch (...)
+            {
+                this->set_size(0U);
+            }
+        }
+        return *this;
+    }
+};
+
+template <typename T, std::size_t MaxSize, bool = std::is_trivially_move_constructible_v<T>>
+struct move_base : public copy_assign_base<T, MaxSize>
+{
+    static_assert(std::is_trivially_move_constructible_v<T>);
+};
+
+template <typename T, std::size_t MaxSize>
+class move_base<T, MaxSize, false> : public copy_assign_base<T, MaxSize>
+{
+    static_assert(!std::is_trivially_move_constructible_v<T>);
+
+public:
+    move_base() = default;
+    move_base(const move_base&) = default;
+    move_base& operator=(const move_base&) = default;
+    move_base& operator=(move_base&&) = default;
+    ~move_base() = default;
+
+    move_base(move_base&& other) noexcept((MaxSize == 0) || std::is_nothrow_move_constructible<T>::value)
+        : copy_assign_base<T, MaxSize>{}
+    {
+        try
+        {
+            this->set_size(other.size());
+            score::cpp::ignore = score::cpp::uninitialized_move_n(other.data(), other.size(), this->data());
+        }
+        catch (...)
+        {
+            this->set_size(0U);
+        }
+        score::cpp::ignore = std::destroy_n(other.data(), other.size());
+        other.set_size(0U);
+    }
+};
+
+template <typename T,
+          std::size_t MaxSize,
+          bool = std::is_trivially_destructible_v<T>&& std::is_trivially_move_constructible_v<T>&&
+              std::is_trivially_move_assignable_v<T>>
+struct move_assign_base : public move_base<T, MaxSize>
+{
+    static_assert(std::is_trivially_destructible_v<T> && std::is_trivially_move_constructible_v<T> &&
+                  std::is_trivially_move_assignable_v<T>);
+};
+
+template <typename T, std::size_t MaxSize>
+class move_assign_base<T, MaxSize, false> : public move_base<T, MaxSize>
+{
+    static_assert(!(std::is_trivially_destructible_v<T> && std::is_trivially_move_constructible_v<T> &&
+                    std::is_trivially_move_assignable_v<T>));
+
+public:
+    move_assign_base() = default;
+    move_assign_base(const move_assign_base&) = default;
+    move_assign_base& operator=(const move_assign_base&) = default;
+    move_assign_base(move_assign_base&&) = default;
+    ~move_assign_base() = default;
+
+    move_assign_base& operator=(move_assign_base&& other) noexcept((MaxSize == 0) ||
+                                                                   (std::is_nothrow_move_assignable<T>::value &&
+                                                                    std::is_nothrow_move_constructible<T>::value))
+    {
+        if (this != &other)
+        {
+            try
+            {
+                score::cpp::ignore = std::destroy_n(this->data(), this->size());
+                this->set_size(other.size());
+                score::cpp::ignore = score::cpp::uninitialized_move_n(other.data(), other.size(), this->data());
+            }
+            catch (...)
+            {
+                this->set_size(0U);
+            }
+            score::cpp::ignore = std::destroy_n(other.data(), other.size());
+            other.set_size(0U);
+        }
+        return *this;
+    }
+};
+
+} // namespace inplace_vector
+} // namespace detail
+
 /// \brief Compile-time fixed capacity vector
 ///
 /// Can be used as replacement for std::vector when maximum size of vector is known at compile time.
@@ -46,8 +269,10 @@ namespace score::cpp
 /// \tparam T Specifies the value type of a single element of a row.
 /// \tparam MaxSize Specifies maximum size of the internal array.
 template <typename T, std::size_t MaxSize>
-class inplace_vector
+class inplace_vector : private detail::inplace_vector::move_assign_base<T, MaxSize>
 {
+    using base_t = detail::inplace_vector::move_assign_base<T, MaxSize>;
+
 public:
     /// \brief The type of the array elements.
     using value_type = T;
@@ -81,14 +306,14 @@ public:
     using const_pointer = const T*;
 
     /// \brief Default constructor. Constructs an empty container.
-    inplace_vector() noexcept : size_{0U} {}
+    inplace_vector() noexcept : base_t{} {}
 
     /// \brief Constructs the container with count copies of elements with default value.
     ///
     /// \pre count <= MaxSize
     ///
     /// \param count The number of copies of value.
-    explicit inplace_vector(const size_type count) : size_{0U}
+    explicit inplace_vector(const size_type count) : base_t{}
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(count <= MaxSize);
         append(count);
@@ -100,7 +325,7 @@ public:
     ///
     /// \param count The number of copies of value.
     /// \param value The value to initialize elements of the container with.
-    explicit inplace_vector(const size_type count, const_reference value) : size_{0U}
+    explicit inplace_vector(const size_type count, const_reference value) : base_t{}
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(count <= MaxSize);
         append(count, value);
@@ -113,56 +338,19 @@ public:
     /// \pre the distance between the input iterators shall be in a range of [0, MaxSize]
     template <typename InputIterator,
               typename = decltype(*std::declval<InputIterator&>(), ++std::declval<InputIterator&>())>
-    explicit inplace_vector(InputIterator begin, InputIterator end) : size_{0U}
+    explicit inplace_vector(InputIterator begin, InputIterator end) : base_t{}
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(std::distance(begin, end) >= 0);
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(static_cast<std::size_t>(std::distance(begin, end)) <= MaxSize);
         try
         {
             const auto new_end = std::uninitialized_copy(begin, end, std::begin(*this));
-            size_ = static_cast<std::size_t>(new_end - std::begin(*this));
+            base_t::set_size(static_cast<std::size_t>(new_end - std::begin(*this)));
         }
         catch (...)
         {
             // do nothing
         }
-    }
-
-    /// \brief Copy construction from inplace_vector.
-    inplace_vector(const inplace_vector& other) noexcept : size_{other.size_}
-    {
-        try
-        {
-            score::cpp::ignore = std::uninitialized_copy_n(other.data(), size_, this->data());
-        }
-        catch (...)
-        {
-            size_ = 0U;
-        }
-    }
-
-    /// \brief Move construction from inplace_vector.
-    ///
-    /// Constructs the container with the contents of other using move semantics. After the move, other is guaranteed to
-    /// be empty().
-    ///
-    /// If an exception is thrown during the move,
-    ///  - the objects already moved are destroyed
-    ///  - other is guaranteed to be empty()
-    ///  - *this is guaranteed to be empty()
-    ///
-    /// This gives basic exception guarantee.
-    inplace_vector(inplace_vector&& other) noexcept : size_{other.size_}
-    {
-        try
-        {
-            score::cpp::ignore = score::cpp::uninitialized_move_n(other.data(), size_, this->data());
-        }
-        catch (...)
-        {
-            size_ = 0U;
-        }
-        other.clear();
     }
 
     /// \brief Constructor with initializer list.
@@ -174,67 +362,6 @@ public:
         : inplace_vector(initializer_list.begin(), initializer_list.end())
     {
     }
-
-    /// \brief Copy assignment from inplace_vector
-    ///
-    /// Gives basic exception guarantee
-    ///
-    /// \param other The vector to copy from
-    inplace_vector& operator=(const inplace_vector& other)
-    {
-        if (this != &other)
-        {
-            try
-            {
-                clear();
-                size_ = other.size_;
-                score::cpp::ignore = std::uninitialized_copy_n(other.data(), size_, this->data());
-            }
-            catch (...)
-            {
-                size_ = 0U;
-            }
-        }
-        return *this;
-    }
-
-    /// \brief move assignment operator
-    ///
-    ///
-    /// Replaces the contents with those of other using move semantics, i.e., the data in other is moved from other into
-    /// this container. After the move, other is guaranteed to be empty().
-    ///
-    /// If an exception is thrown during the move,
-    ///  - the objects already moved are destroyed
-    ///  - other is guaranteed to be empty()
-    ///  - *this is guaranteed to be empty()
-    ///
-    /// This gives basic exception guarantee.
-    ///
-    /// \param other The vector to move from
-    inplace_vector& operator=(inplace_vector&& other) noexcept((MaxSize == 0) ||
-                                                               (std::is_nothrow_move_assignable<T>::value &&
-                                                                std::is_nothrow_move_constructible<T>::value))
-    {
-        if (this != &other)
-        {
-            try
-            {
-                clear();
-                size_ = other.size_;
-                score::cpp::ignore = score::cpp::uninitialized_move_n(other.data(), size_, this->data());
-            }
-            catch (...)
-            {
-                size_ = 0U;
-            }
-            other.clear();
-        }
-        return *this;
-    }
-
-    /// \brief Clears the vector.
-    ~inplace_vector() { clear(); }
 
     /// \brief Mimics std::vector<>::clear()
     void clear() { shrink(0U); }
@@ -318,14 +445,14 @@ public:
     /// \brief Returns the number elements in the vector
     ///
     /// \return The number of elements in the container.
-    size_type size() const { return size_; }
+    size_type size() const { return base_t::size(); }
 
     /// \brief Returns a pointer to the first element of the internal array.
     ///
     /// \return Pointer to the first element of the internal array.
     /// \{
-    T* data() { return reinterpret_cast<T*>(array_); }
-    const T* data() const { return reinterpret_cast<const T*>(array_); }
+    T* data() { return base_t::data(); }
+    const T* data() const { return base_t::data(); }
     /// \}
 
     /// \brief Returns an iterator to the beginning
@@ -404,12 +531,12 @@ public:
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(std::cbegin(*this) <= where);
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(where <= std::cend(*this));
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(std::distance(first, last) >= 0);
-        SCORE_LANGUAGE_FUTURECPP_PRECONDITION((static_cast<std::size_t>(std::distance(first, last)) + size_) <= MaxSize);
+        SCORE_LANGUAGE_FUTURECPP_PRECONDITION((static_cast<std::size_t>(std::distance(first, last)) + size()) <= MaxSize);
 
         const auto old_end = end();
         const auto new_end = std::uninitialized_copy(first, last, std::end(*this));
         const difference_type num_new_elements{new_end - old_end};
-        size_ += static_cast<std::size_t>(num_new_elements);
+        base_t::set_size(size() + static_cast<std::size_t>(num_new_elements));
         const iterator it{const_iterator_cast(where)};
         score::cpp::ignore = std::rotate(it, old_end, new_end);
 
@@ -479,7 +606,7 @@ public:
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(size() < MaxSize);
         score::cpp::ignore = ::new (data() + size()) T{std::forward<Ts>(arguments)...};
-        ++size_;
+        base_t::set_size(size() + 1U);
         SCORE_LANGUAGE_FUTURECPP_ASSERT(size() <= MaxSize);
     }
 
@@ -490,7 +617,7 @@ public:
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(!empty());
         back().~T();
-        --size_;
+        base_t::set_size(size() - 1U);
         SCORE_LANGUAGE_FUTURECPP_ASSERT(size() < MaxSize);
     }
 
@@ -556,7 +683,7 @@ private:
         {
             (data() + i)->~T();
         }
-        size_ = new_size;
+        base_t::set_size(new_size);
     }
 
     /// \brief Appends `n` default-inserted `T`s.
@@ -564,7 +691,7 @@ private:
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((size() + n) <= MaxSize);
         score::cpp::ignore = score::cpp::uninitialized_value_construct_n(data() + size(), n);
-        size_ += n;
+        base_t::set_size(size() + n);
     }
 
     /// \brief Appends `n` copies of `value`.
@@ -572,14 +699,8 @@ private:
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((size() + n) <= MaxSize);
         score::cpp::ignore = std::uninitialized_fill_n(data() + size(), n, value);
-        size_ += n;
+        base_t::set_size(size() + n);
     }
-
-    /// \brief Internal data array
-    typename std::aligned_storage<sizeof(T), std::alignment_of<T>::value>::type array_[MaxSize];
-
-    /// \brief Used size of data array
-    std::size_t size_;
 };
 
 /// \brief Mimics std::vector operator==
