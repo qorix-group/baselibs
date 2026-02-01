@@ -188,7 +188,7 @@ score::Result<NvConfigFactory::TypeMap> NvConfigFactory::ParseFromJson(const std
     {
         return typemap;
     }
-    else if (result_code == INvConfig::ReadResult::kERROR_CONTENT)
+    else if (result_code == INvConfig::ReadResult::kErrorContent)
     {
         return score::MakeUnexpected<TypeMap>(
             MakeError(NvConfigErrorCode::kContentError, "Invalid JSON content in file: " + json_path));
@@ -212,37 +212,37 @@ so suppressing this warning
 INvConfig::ReadResult NvConfigFactory::HandleParseResult(const score::json::Object& parse_result,
                                                          NvConfigFactory::TypeMap& typemap) noexcept
 {
-    for (auto& result_iterator : parse_result)
+    for (const auto& result_iterator : parse_result)
     {
         auto object_array_result = result_iterator.second.As<score::json::Object>();
         if (!object_array_result.has_value())
         {
-            return INvConfig::ReadResult::kERROR_PARSE;
+            return INvConfig::ReadResult::kErrorParse;
         }
 
-        auto& object_array_value = object_array_result.value().get();
+        const auto& object_array_value = object_array_result.value().get();
         const auto& object_ctxid_iterator = object_array_value.find("ctxid");
         if (object_ctxid_iterator == object_array_value.end())
         {
-            return INvConfig::ReadResult::kERROR_CONTENT;
+            return INvConfig::ReadResult::kErrorContent;
         }
 
         const auto& object_id_iterator = object_array_value.find("id");
         if (object_id_iterator == object_array_value.end())
         {
-            return INvConfig::ReadResult::kERROR_CONTENT;
+            return INvConfig::ReadResult::kErrorContent;
         }
 
         const auto& object_appid_iterator = object_array_value.find("appid");
         if (object_appid_iterator == object_array_value.end())
         {
-            return INvConfig::ReadResult::kERROR_CONTENT;
+            return INvConfig::ReadResult::kErrorContent;
         }
 
         auto id = object_id_iterator->second.As<std::uint32_t>();
         if (id.has_value() == false)
         {
-            return INvConfig::ReadResult::kERROR_CONTENT;
+            return INvConfig::ReadResult::kErrorContent;
         }
 
         auto object_name = result_iterator.first.GetAsStringView();
