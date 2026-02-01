@@ -139,6 +139,9 @@ score::Result<void*> LocklessFlexibleCircularAllocator<AtomicIndirectorType>::Al
 {
     allocate_call_cntr_++;
 
+    // Note: size is std::size_t (unsigned). Negative values are not representable.
+    // Zero-sized allocations are allowed but still reserve metadata (BufferBlock).
+
     // Suppress "AUTOSAR C++14 A4-7-1" rule finding. This rule states: "An integer expression shall
     // not lead to data loss.".
     // Rationale: The addition of 'size' and 'sizeof(BufferBlock)' is performed using std::size_t arithmetic.
@@ -160,11 +163,23 @@ score::Result<void*> LocklessFlexibleCircularAllocator<AtomicIndirectorType>::Al
     }
     // LCOV_EXCL_STOP
     const std::size_t aligned_size = aligned_size_result.value();
-    if (aligned_size >= GetAvailableMemory())
+    // available_size_ tracks remaining bytes in the TMD memory pool (payload + BufferBlock metadata).
+    // The list_array_ tracks allocation metadata entries; each allocation consumes one list entry.
+    // To avoid underflow on concurrent allocations, use an atomic compare-exchange loop.
+    std::uint32_t available = available_size_.load(std::memory_order_seq_cst);
+    const auto aligned_size_u32 = static_cast<std::uint32_t>(aligned_size);
+    while (true)
     {
-        return MakeUnexpected(LocklessFlexibleAllocatorErrorCode::kNotEnoughMemory);
+        if (aligned_size_u32 >= available)
+        {
+            return MakeUnexpected(LocklessFlexibleAllocatorErrorCode::kNotEnoughMemory);
+        }
+        if (available_size_.compare_exchange_weak(
+                available, available - aligned_size_u32, std::memory_order_seq_cst, std::memory_order_seq_cst))
+        {
+            break;
+        }
     }
-    std::ignore = available_size_.fetch_sub(static_cast<std::uint32_t>(aligned_size), std::memory_order_seq_cst);
 
     std::uint32_t list_entry_element_index = 0U;
     for (uint8_t retries = 0U; retries < kMaxRetries; retries++)
@@ -235,7 +250,7 @@ score::Result<void*> LocklessFlexibleCircularAllocator<AtomicIndirectorType>::Al
     if (!allocated_address.has_value())
     {
         // Rollback available size on failure
-        score::cpp::ignore = available_size_.fetch_add(static_cast<unsigned int>(aligned_size), std::memory_order_seq_cst);
+        IncrementAvailableSize(aligned_size_u32);
         return MakeUnexpected<void*>(allocated_address.error());
     }
 
@@ -519,8 +534,7 @@ ResultBlank LocklessFlexibleCircularAllocator<AtomicIndirectorType>::FreeBlock(B
         if (AtomicIndirectorType<decltype(buffer_queue_tail_.load())>::compare_exchange_strong(
                 buffer_queue_tail_, old_buffer_queue_tail, new_buffer_queue_tail, std::memory_order_seq_cst) == true)
         {
-            std::ignore = available_size_.fetch_add(static_cast<std::uint32_t>(current_block.block_length),
-                                                    std::memory_order_seq_cst);
+            IncrementAvailableSize(static_cast<std::uint32_t>(current_block.block_length));
             break;
         }
     }
@@ -876,6 +890,16 @@ score::Result<uint8_t*> LocklessFlexibleCircularAllocator<AtomicIndirectorType>:
     // coverity[autosar_cpp14_m5_0_15_violation]
     return &byte_ptr[offset];  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic): Array indexing is used for
                                // pointer arithmetic
+}
+
+template <template <class> class AtomicIndirectorType>
+void LocklessFlexibleCircularAllocator<AtomicIndirectorType>::IncrementAvailableSize(std::uint32_t delta) noexcept
+{
+    auto current = available_size_.load(std::memory_order_seq_cst);
+    while (!available_size_.compare_exchange_weak(
+        current, current + delta, std::memory_order_seq_cst, std::memory_order_seq_cst))
+    {
+    }
 }
 
 template class LocklessFlexibleCircularAllocator<score::memory::shared::AtomicIndirectorReal>;

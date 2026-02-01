@@ -54,6 +54,7 @@ class LocklessFlexibleCircularAllocator : public IFlexibleCircularAllocator
     ResultBlank IterateBlocksToDeallocate();
     template <typename OffsetT>
     score::Result<uint8_t*> GetBufferPositionAt(OffsetT offset) const noexcept;
+    void IncrementAvailableSize(std::uint32_t delta) noexcept;
 
     void* base_address_;
     std::uint32_t total_size_;
