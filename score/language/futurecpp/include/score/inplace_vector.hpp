@@ -22,9 +22,8 @@
 #define SCORE_LANGUAGE_FUTURECPP_INPLACE_VECTOR_HPP
 
 #include <score/private/iterator/iterator.hpp> // IWYU pragma: export
+#include <score/private/memory/voidify.hpp>
 
-#include <score/private/memory/uninitialized_move.hpp>
-#include <score/private/memory/uninitialized_value_construct.hpp>
 #include <score/assert.hpp>
 #include <score/utility.hpp>
 
@@ -252,7 +251,7 @@ public:
         try
         {
             this->set_size(other.size());
-            score::cpp::ignore = score::cpp::uninitialized_move_n(other.data(), other.size(), this->data());
+            score::cpp::ignore = std::uninitialized_move_n(other.data(), other.size(), this->data());
         }
         catch (...)
         {
@@ -273,7 +272,7 @@ public:
             {
                 score::cpp::ignore = std::destroy_n(this->data(), this->size());
                 this->set_size(other.size());
-                score::cpp::ignore = score::cpp::uninitialized_move_n(other.data(), other.size(), this->data());
+                score::cpp::ignore = std::uninitialized_move_n(other.data(), other.size(), this->data());
             }
             catch (...)
             {
@@ -634,7 +633,7 @@ private:
     void append(const size_type n)
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION_DBG((size() + n) <= MaxSize);
-        score::cpp::ignore = score::cpp::uninitialized_value_construct_n(data() + size(), n);
+        score::cpp::ignore = std::uninitialized_value_construct_n(data() + size(), n);
         base_t::set_size(size() + n);
     }
 

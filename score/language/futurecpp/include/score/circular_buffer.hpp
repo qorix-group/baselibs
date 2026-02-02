@@ -22,7 +22,6 @@
 #define SCORE_LANGUAGE_FUTURECPP_CIRCULAR_BUFFER_HPP
 
 #include <score/private/container/circular_buffer_iterator.hpp> // IWYU pragma: export
-#include <score/private/memory/uninitialized_move.hpp>
 #include <score/private/utility/ignore.hpp>
 #include <score/assert.hpp>
 #include <score/utility.hpp>
@@ -106,7 +105,7 @@ public:
     {
         try
         {
-            score::cpp::ignore = score::cpp::uninitialized_move(std::begin(other), std::end(other), std::begin(*this));
+            score::cpp::ignore = std::uninitialized_move(std::begin(other), std::end(other), std::begin(*this));
         }
         catch (...)
         {
@@ -150,7 +149,7 @@ public:
                 head_ = rhs.head_;
                 tail_ = rhs.tail_;
                 size_ = rhs.size_;
-                score::cpp::ignore = score::cpp::uninitialized_move(std::begin(rhs), std::end(rhs), std::begin(*this));
+                score::cpp::ignore = std::uninitialized_move(std::begin(rhs), std::end(rhs), std::begin(*this));
             }
             catch (...)
             {

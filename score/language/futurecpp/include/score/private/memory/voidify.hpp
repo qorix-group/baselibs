@@ -18,29 +18,23 @@
 
 // IWYU pragma: private
 
-#ifndef SCORE_LANGUAGE_FUTURECPP_PRIVATE_MEMORY_CONSTRUCT_AT_HPP
-#define SCORE_LANGUAGE_FUTURECPP_PRIVATE_MEMORY_CONSTRUCT_AT_HPP
+#ifndef SCORE_LANGUAGE_FUTURECPP_PRIVATE_MEMORY_VOIDIFY_HPP
+#define SCORE_LANGUAGE_FUTURECPP_PRIVATE_MEMORY_VOIDIFY_HPP
 
-#include <score/private/memory/voidify.hpp>
-
-#include <utility>
+#include <memory>
 
 namespace score::cpp
 {
 namespace detail
 {
 
-/// \brief Creates a `T` object initialized with arguments `args...` at given address `p`.
-///
-/// Implements https://isocpp.org/files/papers/N4860.pdf#subsection.25.11.7
-/// Non-conforming: Not constexpr and not constrained.
-template <typename T, typename... Args, typename = decltype(::new (std::declval<void*>()) T(std::declval<Args>()...))>
-T* construct_at(T* const p, Args&&... args)
+template <typename T>
+constexpr void* voidify(T& obj) noexcept
 {
-    return ::new (score::cpp::detail::voidify(*p)) T(std::forward<Args>(args)...);
+    return std::addressof(obj);
 }
 
 } // namespace detail
 } // namespace score::cpp
 
-#endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_MEMORY_CONSTRUCT_AT_HPP
+#endif // SCORE_LANGUAGE_FUTURECPP_PRIVATE_MEMORY_VOIDIFY_HPP

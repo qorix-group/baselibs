@@ -74,8 +74,6 @@ googletest_tests = [
     "type_traits_comparable_test",
     "type_traits_test",
     "uninitialized_construct_using_allocator_test",
-    "uninitialized_move_test",
-    "uninitialized_value_construct_test",
     "uses_allocator_construction_args_test",
     "utility_test",
     "utility_in_range_test",
