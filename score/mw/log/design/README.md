@@ -92,6 +92,10 @@ Because of the similarity between TextRecorder and FileRecorder it is decided to
 
 ![DataRouterRecorder class diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/mw_log_datarouter_recorder.uxf)
 
+### WriterFactory Design
+
+![WriterFactory Design](./write_factory_design.puml)
+
 ### High Level Component Diagram - Remote Logging
 ![Remote logging](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/remote_logging.plantuml)
 
