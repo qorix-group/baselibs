@@ -155,9 +155,9 @@ public:
 
     /// \brief Constructs the container with count copies of elements with default value.
     ///
-    /// \pre count <= MaxSize
-    ///
     /// \param count The number of copies of value.
+    ///
+    /// \pre count <= MaxSize
     explicit inplace_vector(const size_type count) : base_t{}
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(count <= MaxSize);
@@ -166,10 +166,10 @@ public:
 
     /// \brief Constructs the container with count copies of elements with value value.
     ///
-    /// \pre count <= MaxSize
-    ///
     /// \param count The number of copies of value.
     /// \param value The value to initialize elements of the container with.
+    ///
+    /// \pre count <= MaxSize
     explicit inplace_vector(const size_type count, const_reference value) : base_t{}
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(count <= MaxSize);
@@ -180,6 +180,7 @@ public:
     ///
     /// \param begin an iterator pointing to the start of the source container.
     /// \param end an iterator pointing to the end of the source container.
+    ///
     /// \pre the distance between the input iterators shall be in a range of [0, MaxSize]
     template <typename InputIterator,
               typename = decltype(*std::declval<InputIterator&>(), ++std::declval<InputIterator&>())>
@@ -200,9 +201,9 @@ public:
 
     /// \brief Constructor with initializer list.
     ///
-    /// \pre initializer_list.size() <= MaxSize
+    /// \param initializer_list The initializer_list to construct the inplace_vector from
     ///
-    /// @param initializer_list The initializer_list to construct the inplace_vector from
+    /// \pre initializer_list.size() <= MaxSize
     inplace_vector(const std::initializer_list<T> initializer_list)
         : inplace_vector(initializer_list.begin(), initializer_list.end())
     {
@@ -288,6 +289,11 @@ public:
     void clear() { shrink(0U); }
 
     /// \brief Mimics std::vector<>::assign(size_type count, const T& value).
+    ///
+    /// \param count Number of elements to assign.
+    /// \param value Value to assign to the elements.
+    ///
+    /// \pre count <= MaxSize
     void assign(const size_type count, const_reference value)
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(count <= MaxSize);
@@ -296,6 +302,10 @@ public:
     }
 
     /// \brief Mimics std::vector<>::resize(size_type count).
+    ///
+    /// \param count New size of the vector.
+    ///
+    /// \pre count <= MaxSize
     void resize(const size_type count)
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(count <= MaxSize);
@@ -310,6 +320,11 @@ public:
     }
 
     /// \brief Mimics std::vector<>::resize(size_type count, const T& value).
+    ///
+    /// \param count New size of the vector.
+    /// \param value Value to initialize new elements with.
+    ///
+    /// \pre count <= MaxSize
     void resize(const size_type count, const_reference value)
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(count <= MaxSize);
@@ -334,6 +349,8 @@ public:
     static constexpr std::size_t max_size() { return MaxSize; }
 
     /// \brief Mimics std::vector<>::empty()
+    ///
+    /// \return True if vector is empty - otherwise false.
     bool empty() const { return (0U == size()); }
 
     /// \brief Returns true if vector is full.
@@ -344,6 +361,9 @@ public:
     /// \brief Mimics std::vector<>::operator[]()
     ///
     /// \pre n < size()
+    ///
+    /// \return Reference to the n-th element.
+    /// \{
     reference operator[](const size_type n)
     {
         static_assert(MaxSize < static_cast<size_type>(std::numeric_limits<difference_type>::max()), "Overflow");
@@ -351,10 +371,6 @@ public:
         // The following static_cast is valid because of static_assert above.
         return *(std::begin(*this) + static_cast<difference_type>(n));
     }
-
-    /// \brief Mimics std::vector<>::operator[]()
-    ///
-    /// \pre n < size()
     const_reference operator[](const size_type n) const
     {
         static_assert(MaxSize < static_cast<size_type>(std::numeric_limits<difference_type>::max()), "Overflow");
@@ -362,6 +378,7 @@ public:
         // The following static_cast is valid because of static_assert above.
         return *(std::cbegin(*this) + static_cast<difference_type>(n));
     }
+    /// \}
 
     /// \brief Returns the number elements in the vector
     ///
@@ -418,32 +435,32 @@ public:
 
     /// \brief Inserts new element in vector at specified position
     ///
-    /// \pre std::cbegin(*this) <= where <= std::cend(*this)
-    ///
     /// \param where Position in the vector where the new element is inserted.
     /// \param value Value to be copied to the inserted elements.
+    ///
+    /// \pre std::cbegin(*this) <= where <= std::cend(*this)
     ///
     /// \return An iterator that points to the the newly inserted element.
     iterator insert(const const_iterator where, const_reference value) { return insert_impl(where, value); }
 
     /// \brief Inserts new rvalue element in vector at specified position
     ///
-    /// \pre std::cbegin(*this) <= where <= std::cend(*this)
-    ///
     /// \param where Position in the vector where the new element is inserted.
     /// \param value Value to be moved to the inserted elements.
+    ///
+    /// \pre std::cbegin(*this) <= where <= std::cend(*this)
     ///
     /// \return An iterator that points to the the newly inserted element.
     iterator insert(const const_iterator where, value_type&& value) { return insert_impl(where, std::move(value)); }
 
     /// \brief Inserts elements from range [first, last) before a specific position
     ///
-    /// \pre std::cbegin(*this) <= where <= std::cend(*this)
-    /// \pre the distance between the input iterators shall be in the range of [0, MaxSize - current_size]
-    ///
     /// \param where Position in the vector before which the new elements are inserted.
     /// \param first The start of the range of elements to insert
     /// \param last The end of the range of elements to insert
+    ///
+    /// \pre std::cbegin(*this) <= where <= std::cend(*this)
+    /// \pre the distance between the input iterators shall be in the range of [0, MaxSize - current_size]
     ///
     /// \return An iterator pointing to the first element inserted, or where if first==last.
     template <typename InputIterator>
@@ -466,9 +483,9 @@ public:
 
     /// \brief Removes the element at where.
     ///
-    /// \pre std::cbegin(*this) <= where < std::cend(*this)
-    ///
     /// \param where Iterator pointing to a single element to be removed from the vector.
+    ///
+    /// \pre std::cbegin(*this) <= where < std::cend(*this)
     ///
     /// \return An iterator pointing to the new location of the element that followed the last element erased by the
     /// function call.
@@ -484,12 +501,12 @@ public:
 
     /// \brief Removes the elements in the range [first, last).
     ///
+    /// \param first Iterator pointing to the first element to be removed from the vector.
+    /// \param last Iterator pointing to the last element to be removed from the vector.
+    ///
     /// \pre first <= last
     /// \pre std::cbegin(*this) <= first
     /// \pre last <= std::cend(*this)
-    ///
-    /// \param first Iterator pointing to the first element to be removed from the vector.
-    /// \param last Iterator pointing to the last element to be removed from the vector.
     ///
     /// \return Iterator pointing to the new location of the element that followed the last element erased by the
     /// function call.
@@ -511,15 +528,21 @@ public:
 
     /// \brief Mimics std::vector<>::push_back()
     ///
+    /// \param value Value to be copied to the new element.
+    ///
     /// \pre size() < MaxSize
     void push_back(const_reference value) { emplace_back(value); }
 
     /// \brief Mimics std::vector<>::push_back() for rvalues
     ///
+    /// \param value Value to be moved to the new element.
+    ///
     /// \pre size() < MaxSize
     void push_back(value_type&& value) { emplace_back(std::move(value)); }
 
     /// \brief Mimics std::vector<>::emplace_back()
+    ///
+    /// \param arguments Arguments forwarded to the constructor of T.
     ///
     /// \pre size() < MaxSize
     template <typename... Ts>
@@ -545,38 +568,38 @@ public:
     /// \brief Mimics std::vector<>::back()
     ///
     /// \pre !empty()
+    ///
+    /// \return Reference to the last element.
+    /// \{
     reference back()
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(!empty());
         return (*this)[size() - 1U];
     }
-
-    /// \brief Mimics std::vector<>::back()
-    ///
-    /// \pre !empty()
     const_reference back() const
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(!empty());
         return (*this)[size() - 1U];
     }
+    /// \}
 
     /// \brief Mimics std::vector<>::front()
     ///
     /// \pre !empty()
+    ///
+    /// \return Reference to the first element.
+    /// \{
     reference front()
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(!empty());
         return (*this)[0U];
     }
-
-    /// \brief Mimics std::vector<>::front()
-    ///
-    /// \pre !empty()
     const_reference front() const
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(!empty());
         return (*this)[0U];
     }
+    /// \}
 
 private:
     /// \brief Removes (cast away) constness from iterator.
