@@ -538,9 +538,11 @@ cc_test(
 cc_test(
     name = "asil_qm_test",
     srcs = [
-        "mmanTest.cpp",
         "unistdTest.cpp",
-    ],
+    ] + select({
+        "@score_bazel_platforms//:qnx8_0": [],  #to be fixed in Ticket-242122
+        "//conditions:default": ["mmanTest.cpp"],
+    }),
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
