@@ -116,16 +116,19 @@ class alignas(std::max_align_t) List
      */
     score::Result<Node*> AllocateNewNode(const T& value)
     {
-        auto node_address_result = flexible_allocator_->Allocate(sizeof(Node), alignof(Node));
-        if ((node_address_result.has_value()) && (nullptr != node_address_result.value()))
+        if (flexible_allocator_)
         {
-            // Usage of placement new is intended here and safe as we explicitly construct the node
-            // in the pre-allocated memory provided by the flexible allocator
-            // NOLINTBEGIN(score-no-dynamic-raw-memory): Tolerated see above
-            //  coverity[autosar_cpp14_a18_5_10_violation]
-            auto node = new (node_address_result.value()) Node(value);
-            // NOLINTEND(score-no-dynamic-raw-memory): Tolerated see above
-            return node;
+            auto node_address_result = flexible_allocator_->Allocate(sizeof(Node), alignof(Node));
+            if ((node_address_result.has_value()) && (nullptr != node_address_result.value()))
+            {
+                // Usage of placement new is intended here and safe as we explicitly construct the node
+                // in the pre-allocated memory provided by the flexible allocator
+                // NOLINTBEGIN(score-no-dynamic-raw-memory): Tolerated see above
+                //  coverity[autosar_cpp14_a18_5_10_violation]
+                auto node = new (node_address_result.value()) Node(value);
+                // NOLINTEND(score-no-dynamic-raw-memory): Tolerated see above
+                return node;
+            }
         }
         return score::MakeUnexpected(ErrorCode::kNoSpaceLeftForAllocationRecoverable);
     }
@@ -244,6 +247,12 @@ class alignas(std::max_align_t) List
             iterator temp = *this;
             --(*this);
             return temp;
+        }
+
+        // Validity check for the iterator
+        bool IsValid() const
+        {
+            return (current_ != nullptr);
         }
 
         // Define the non-member comparison operators

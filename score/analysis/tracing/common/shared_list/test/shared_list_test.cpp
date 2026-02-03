@@ -812,3 +812,31 @@ TEST_F(SharedListFixture, CalculateOffsetWithNonNullNode)
 
     list.clear();
 }
+
+TEST_F(SharedListFixture, ValidIterator)
+{
+    EXPECT_CALL(*flexible_allocator_mock_, Allocate(_, _)).WillOnce([](const std::size_t size, const std::size_t) {
+        auto allocated_memory = malloc(size);
+        return allocated_memory;
+    });
+
+    EXPECT_CALL(*flexible_allocator_mock_, IsInBounds(_, _)).WillRepeatedly(Return(true));
+
+    EXPECT_CALL(*flexible_allocator_mock_, Deallocate(_, _)).WillOnce([](void* const address, const std::size_t) {
+        free(address);  // Simulate deallocation
+        return score::ResultBlank{};
+    });
+
+    shared::List<std::uint8_t> list(flexible_allocator_mock_);
+    list.push_back(1);
+    auto it = list.begin();
+    std::cout << "Iterator value: " << *it << std::endl;
+    EXPECT_TRUE(it.IsValid());
+}
+
+TEST_F(SharedListFixture, IteratorWithNullCurrent)
+{
+    shared::List<int> list;
+    auto it = list.begin();
+    EXPECT_FALSE(it.IsValid());
+}
