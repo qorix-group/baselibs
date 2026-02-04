@@ -530,27 +530,30 @@ public:
     /// \param value Value to be copied to the new element.
     ///
     /// \pre size() < MaxSize
-    void push_back(const_reference value) { emplace_back(value); }
+    void push_back(const_reference value) { score::cpp::ignore = emplace_back(value); }
 
     /// \brief Mimics std::vector<>::push_back() for rvalues
     ///
     /// \param value Value to be moved to the new element.
     ///
     /// \pre size() < MaxSize
-    void push_back(value_type&& value) { emplace_back(std::move(value)); }
+    void push_back(value_type&& value) { score::cpp::ignore = emplace_back(std::move(value)); }
 
     /// \brief Mimics std::vector<>::emplace_back()
     ///
     /// \param arguments Arguments forwarded to the constructor of T.
     ///
     /// \pre size() < MaxSize
+    ///
+    /// \return Reference to the inserted element.
     template <typename... Ts>
-    void emplace_back(Ts&&... arguments)
+    reference emplace_back(Ts&&... arguments)
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(size() < MaxSize);
-        score::cpp::ignore = ::new (data() + size()) T{std::forward<Ts>(arguments)...};
+        T* ptr{::new (data() + size()) T{std::forward<Ts>(arguments)...}};
         base_t::set_size(size() + 1U);
         SCORE_LANGUAGE_FUTURECPP_ASSERT(size() <= MaxSize);
+        return *ptr;
     }
 
     /// \brief Mimics std::vector<>::pop_back()
@@ -612,7 +615,7 @@ private:
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(std::cbegin(*this) <= where);
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(where <= std::cend(*this));
-        emplace_back(std::forward<U>(value));
+        score::cpp::ignore = emplace_back(std::forward<U>(value));
         const iterator it{const_iterator_cast(where)}; // same as where but non-constant iterator
         score::cpp::ignore = std::rotate(it, std::end(*this) - 1, std::end(*this));
         return it;

@@ -766,6 +766,17 @@ TEST(inplace_vector_test, emplace_back_when_precondition_violated)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#17893146
+TEST(inplace_vector_test, emplace_back_return_value)
+{
+    score::cpp::inplace_vector<std::int32_t, 1> vector{};
+    auto& ref = vector.emplace_back(23);
+    EXPECT_EQ(ref, 23);
+    ref = 42;
+    EXPECT_EQ(vector.back(), 42);
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#17893146
 TEST(inplace_vector_test, pop_back)
 {
     score::cpp::inplace_vector<std::int32_t, 999U> vector;
