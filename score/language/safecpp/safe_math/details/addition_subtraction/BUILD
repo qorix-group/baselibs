@@ -21,6 +21,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
+        "@score_baselibs//score/language/safecpp/safe_atomics:__subpackages__",
         "@score_baselibs//score/language/safecpp/safe_math:__pkg__",
     ],
     deps = [
