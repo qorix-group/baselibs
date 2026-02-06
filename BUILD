@@ -65,8 +65,6 @@ dash_license_checker(
     visibility = ["//visibility:public"],
 )
 
-
-
 rust_coverage_report(
     name = "rust_coverage",
     bazel_configs = [
