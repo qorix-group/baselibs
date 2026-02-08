@@ -46,7 +46,7 @@ from the original `mw::log` [design document](README.md). We omit the details
 for the `Recorder` and `Runtime` classes, and focus on the new classes
 introduced in this design:
 
-![Class diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/configuration_static.uxf)
+<img alt="Class diagram" src="https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/eclipse-score/baselibs/refs/heads/main/score/mw/log/design/configuration_static.puml">
 
 The design is centered around the `RecorderFactory` class, which contains three
 static methods for each major use case. By default for on-target logging the

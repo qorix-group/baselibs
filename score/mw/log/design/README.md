@@ -75,7 +75,7 @@ implementation.
 
 ![Non-Verbose Logging class diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/non_verbose_logging_static.uxf)
 
-![ErrorDomain class diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/error_domain.uxf)
+<img alt="ErrorDomain class diagram" src="https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/eclipse-score/baselibs/refs/heads/main/score/mw/log/design/error_domain.puml">
 
 ### Types of recorders
 
@@ -88,9 +88,9 @@ Following recorders are supported:
 5. EmptyRecoder - used when logging is off.
 Because of the similarity between TextRecorder and FileRecorder it is decided to use the common Backend for both.
 
-![Recorders class diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/mw_log_recorders.uxf)
+<img alt="Recorders class diagram" src="https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/eclipse-score/baselibs/refs/heads/main/score/mw/log/design/mw_log_recorders.puml">
 
-![DataRouterRecorder class diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/mw_log_datarouter_recorder.uxf)
+<img alt="DataRouterRecorder class diagram" src="https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/eclipse-score/baselibs/refs/heads/main/score/mw/log/design/mw_log_datarouter_recorder.puml">
 
 ### WriterFactory Design
 
@@ -103,7 +103,7 @@ Because of the similarity between TextRecorder and FileRecorder it is decided to
 
 ![CircularAllocator::AcquireSlotToWrite Activity diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/circular_buffer_allocator_acquireslottowrite.uxf)
 
-![DatarouterMessageClientImpl::ConnectToDatarouter Activity diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/datarouter_message_client_impl_connecttodatarouter.uxf)
+![DatarouterMessageClientImpl::ConnectToDatarouter Activity diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/datarouter_message_client_impl_connecttodatarouter.puml)
 
 ![SharedMemoryReader::Read Activity diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/shared_memory_reader_read.uxf)
 

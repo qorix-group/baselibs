@@ -31,7 +31,7 @@ or onto the console.
 `MessageBuilder` is responsible for serving data in correct order of flushing
 into file or console and stores some of common parts of the header.
 
-![Static Design](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/mw_log_file_backend.uxf)
+<img alt="Static Design" src="https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/eclipse-score/baselibs/refs/heads/main/score/mw/log/design/mw_log_file_backend.puml">
 
 `SlotDrainer` is responsible for storing and disposal of already serialized
 data. First data gets inserted into circular buffer. After that step program
