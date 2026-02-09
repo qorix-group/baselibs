@@ -677,7 +677,7 @@ TEST_F(FilesystemCopyFile, DestExistsAndNoOptions)
     // Given a file that was already copied
     PrepareDummyFile("");
     stat_mock_->restore_instance();
-    unit_.CopyFile("/tmp/from", "/tmp/to");
+    EXPECT_TRUE(unit_.CopyFile("/tmp/from", "/tmp/to"));
 
     // When copying it again
     const auto result = unit_.CopyFile("/tmp/from", "/tmp/to", CopyOptions::kNone);
@@ -692,7 +692,7 @@ TEST_F(FilesystemCopyFile, DestExistsAndSkipsExisting)
     // Given a file that was already copied
     PrepareDummyFile("");
     stat_mock_->restore_instance();
-    unit_.CopyFile("/tmp/from", "/tmp/to");
+    EXPECT_TRUE(unit_.CopyFile("/tmp/from", "/tmp/to"));
 
     // When copying with skipping if it already exists
     const auto result = unit_.CopyFile("/tmp/from", "/tmp/to", CopyOptions::kSkipExisting);
@@ -706,7 +706,7 @@ TEST_F(FilesystemCopyFile, DestExistsAndOverwrite)
     // Given a file where the destination exists
     PrepareDummyFile("42");
     stat_mock_->restore_instance();
-    unit_.CopyFile("/tmp/from", "/tmp/to");
+    EXPECT_TRUE(unit_.CopyFile("/tmp/from", "/tmp/to"));
     PrepareDummyFile("Hello World.");
 
     // When copying with overwriting enabled
@@ -721,7 +721,7 @@ TEST_F(FilesystemCopyFile, DestExistsAndUpdateExisting)
 {
     // Given a file that is newer then an already existing destination
     PrepareDummyFile("");
-    unit_.CopyFile("/tmp/from", "/tmp/to");
+    std::ignore = unit_.CopyFile("/tmp/from", "/tmp/to");
     PrepareDummyFile("Hello World.");
     ExpectStatWith(time_t{42 + 1}, "/tmp/from");
     ExpectStatWith(time_t{42}, "/tmp/to");
@@ -783,7 +783,7 @@ TEST_F(FilesystemCopyFile, DestExistsAndUpdateExistingNotNecessary)
     // Given a file that is older than an already existing destination
     PrepareDummyFile("");
     stat_mock_->restore_instance();
-    unit_.CopyFile("/tmp/from", "/tmp/to");
+    EXPECT_TRUE(unit_.CopyFile("/tmp/from", "/tmp/to"));
 
     // When copying with updating existing enabled
     const auto result = unit_.CopyFile("/tmp/from", "/tmp/to", CopyOptions::kUpdateExisting);
@@ -875,7 +875,7 @@ TEST_F(FilesystemCopyFile, ErrorForInappropriateOption)
     // Given a dummy file
     PrepareDummyFile("Hello World!");
     stat_mock_->restore_instance();
-    unit_.CopyFile("/tmp/from", "/tmp/to");
+    EXPECT_TRUE(unit_.CopyFile("/tmp/from", "/tmp/to"));
 
     // When copying FROM to TO
     const auto result = unit_.CopyFile("/tmp/from", "/tmp/to", CopyOptions::kDirectoriesOnly);
@@ -1970,7 +1970,7 @@ TEST_F(SymlinkStatusFixture, TargetExists)
 {
     WriteFile("target", "");
     const Path symlink_path = TempFolder() / "symlink";
-    unit_.CreateSymlink(TempFolder() / "target", symlink_path);
+    EXPECT_TRUE(unit_.CreateSymlink(TempFolder() / "target", symlink_path));
 
     const auto result = unit_.SymlinkStatus(symlink_path);
 
@@ -1983,7 +1983,7 @@ TEST_F(SymlinkStatusFixture, TargetDoesntExist)
     const Path target_path = TempFolder() / "non-existed";
     ASSERT_FALSE(unit_.Exists(target_path).value());
     const Path symlink_path = TempFolder() / "symlink";
-    unit_.CreateSymlink(target_path, symlink_path);
+    EXPECT_TRUE(unit_.CreateSymlink(target_path, symlink_path));
 
     const auto result = unit_.SymlinkStatus(symlink_path);
 
@@ -1998,7 +1998,7 @@ TEST_F(StatusFixture, TargetDoesntExist)
     const Path target_path = TempFolder() / "non-existed";
     ASSERT_FALSE(unit_.Exists(target_path).value());
     const Path symlink_path = TempFolder() / "symlink";
-    unit_.CreateSymlink(target_path, symlink_path);
+    EXPECT_TRUE(unit_.CreateSymlink(target_path, symlink_path));
 
     const auto result = unit_.Status(symlink_path);
 
@@ -2011,7 +2011,7 @@ using ReadSymlinkFixture = FilesystemFixtureWithoutMocks;
 TEST_F(SymlinkStatusFixture, SymlinkExists)
 {
     const Path symlink_path = TempFolder() / "symlink";
-    unit_.CreateSymlink("foo/bar", symlink_path);
+    EXPECT_TRUE(unit_.CreateSymlink("foo/bar", symlink_path));
 
     const auto result = unit_.ReadSymlink(symlink_path);
 
@@ -2066,7 +2066,7 @@ using CopySymlinkFixture = FilesystemFixtureWithoutMocks;
 TEST_F(CopySymlinkFixture, NoError)
 {
     const Path from = TempFolder() / "from";
-    unit_.CreateSymlink("foo/bar", from);
+    EXPECT_TRUE(unit_.CreateSymlink("foo/bar", from));
     const Path to = TempFolder() / "to";
 
     const auto result = unit_.CopySymlink(from, to);
@@ -2086,7 +2086,7 @@ TEST_F(CopySymlinkFixture, ErrorDueToNonExisted)
 TEST_F(CopySymlinkFixture, ErrorDueToAlreadyExisted)
 {
     const Path from = TempFolder() / "from";
-    unit_.CreateSymlink("foo/bar", from);
+    EXPECT_TRUE(unit_.CreateSymlink("foo/bar", from));
     const Path to = TempFolder() / "to";
     WriteFile(to, "");
 

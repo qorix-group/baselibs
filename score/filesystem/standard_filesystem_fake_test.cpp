@@ -501,7 +501,7 @@ TEST_F(FilesystemFakeFixture, CopyFile_ErrorWhileAccessingTo)
 TEST_F(FilesystemFakeFixture, CopyFile_ModesOfSourceFileIsCopiedtoDestination)
 {
     CreateFile("/tmp/from");
-    unit_.Permissions("/tmp/from", Perms::kReadUser | Perms::kWriteUser, PermOptions::kReplace);
+    EXPECT_TRUE(unit_.Permissions("/tmp/from", Perms::kReadUser | Perms::kWriteUser, PermOptions::kReplace));
 
     // When copying FROM to TO
     const auto result = unit_.CopyFile("/tmp/from", "/tmp/to", CopyOptions::kNone);
@@ -555,7 +555,7 @@ TEST_F(FilesystemFakeFixture, CopyFile_DestExistsAndNoOptions)
 {
     // Given a file that was already copied
     CreateFile("/tmp/from");
-    unit_.CopyFile("/tmp/from", "/tmp/to", CopyOptions::kNone);
+    EXPECT_TRUE(unit_.CopyFile("/tmp/from", "/tmp/to", CopyOptions::kNone));
 
     // When copying it again
     const auto result = unit_.CopyFile("/tmp/from", "/tmp/to", CopyOptions::kNone);
@@ -583,7 +583,7 @@ TEST_F(FilesystemFakeFixture, CopyFile_DestExistsAndOverwrite)
 {
     // Given a file where the destination exists
     WriteFile("/tmp/from", "42");
-    unit_.CopyFile("/tmp/from", "/tmp/to", CopyOptions::kNone);
+    EXPECT_TRUE(unit_.CopyFile("/tmp/from", "/tmp/to", CopyOptions::kNone));
     WriteFile("/tmp/from", "Hello World.");
 
     // When copying with overwriting enabled
@@ -702,7 +702,7 @@ TEST_F(FilesystemFakeFixture, FileFactory_CreateFileInCurrentFolder)
     CreateDir("/tmp");
 
     // Given the current directory
-    unit_.CurrentPath("/tmp");
+    EXPECT_TRUE(unit_.CurrentPath("/tmp"));
 
     // When creating a file in current directory and writing some data
     {
@@ -715,7 +715,7 @@ TEST_F(FilesystemFakeFixture, FileFactory_CreateFileInCurrentFolder)
     EXPECT_TRUE(unit_.Exists("new_file").value());
     EXPECT_STREQ(GetContent("new_file").c_str(), "foo");
     // and doesn't exist in other directory
-    unit_.CurrentPath("/");
+    EXPECT_TRUE(unit_.CurrentPath("/"));
     EXPECT_FALSE(unit_.Exists("new_file").value());
 }
 
