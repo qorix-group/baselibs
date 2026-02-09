@@ -59,8 +59,8 @@ TEST(ThreadPool, executesSubmittedCallables)
     });
 
     // That both tasks are executed
-    f.Get();
-    f2.Get();
+    EXPECT_TRUE(f.Get());
+    EXPECT_TRUE(f2.Get());
     ASSERT_EQ(counter, 2U);
 }
 
@@ -464,8 +464,8 @@ TEST(ThreadPool, UsingCustomMemoryResource)
 
     // That these tasks are allocated on the custom memory resource
     ASSERT_GT(memory_resource.allocated_memory_, 0);
-    f.Get();
-    f2.Get();
+    EXPECT_TRUE(f.Get());
+    EXPECT_TRUE(f2.Get());
     ASSERT_EQ(counter, 2U);
 }
 

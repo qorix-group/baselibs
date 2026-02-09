@@ -213,7 +213,7 @@ TEST_F(DelayedTaskTest, MakeWithTaskResultCapturesAllArguments)
 
     // Then the future is valid and the task completes successfully
     ASSERT_TRUE(unit.first.Valid());
-    ASSERT_NO_FATAL_FAILURE(unit.first.Get());
+    EXPECT_TRUE(unit.first.Get());
 }
 
 }  // namespace

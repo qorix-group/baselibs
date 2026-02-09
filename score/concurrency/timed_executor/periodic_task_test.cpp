@@ -246,7 +246,7 @@ TEST_F(PeriodicTaskTest, MakeWithTaskResultLeadsToAssociatedTaskAndTaskResult)
 
     // That the future is valid and can be retrieved
     ASSERT_TRUE(unit.first.Valid());
-    ASSERT_NO_FATAL_FAILURE(unit.first.Get());
+    EXPECT_TRUE(unit.first.Get());
 }
 
 TEST_F(PeriodicTaskTest, WillTerminateWhenCalculationOfTimePointForNextExecutionWouldOverflow)
@@ -289,7 +289,7 @@ TEST_F(PeriodicTaskTest, MakeWithTaskResultCapturesAllArguments)
 
     // That the future is valid and can be retrieved
     ASSERT_TRUE(unit.first.Valid());
-    ASSERT_NO_FATAL_FAILURE(unit.first.Get());
+    EXPECT_TRUE(unit.first.Get());
 }
 
 }  // namespace

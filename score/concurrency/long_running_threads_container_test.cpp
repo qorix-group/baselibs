@@ -55,8 +55,8 @@ TEST(ThreadPool, ExecutesSubmittedCallables)
     });
 
     // That both tasks are executed
-    f.Get();
-    f2.Get();
+    EXPECT_TRUE(f.Get());
+    EXPECT_TRUE(f2.Get());
     ASSERT_EQ(counter, 2U);
 }
 

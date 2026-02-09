@@ -42,7 +42,7 @@ TEST_F(TaskResultTest, CanWaitForVoidReturn)
     (*(task.second))(score::cpp::stop_token{});
 
     // When waiting for its results
-    task.first.Get();
+    EXPECT_TRUE(task.first.Get());
 
     // We continue after it is executed
     EXPECT_TRUE(executed);
