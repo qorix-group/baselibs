@@ -273,10 +273,7 @@ cc_test(
     features = COMPILER_WARNING_FEATURES + [
         "aborts_upon_exception",
     ],
-    local_defines = select({
-        "@score_baselibs//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
-        "//conditions:default": [],
-    }),
+    local_defines = ["KCONSOLE_LOGGING"],
     tags = ["unit"],
     deps = [
         ":frontend",
