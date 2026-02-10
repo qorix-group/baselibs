@@ -284,7 +284,11 @@ void LocalDataChunkList::CleanupAllocatedData(
     {
         list_data.value().get().clear();
     }
-    std::ignore = flexible_allocator->Deallocate(vector_shm_raw_pointer, sizeof(vector_shm_raw_pointer));
+    // ShmChunkVector was placement-new'd; its shared::List holds a shared_ptr<IFlexibleCircularAllocator>
+    // that must be released by calling the destructor before freeing the raw memory.
+    // coverity[autosar_cpp14_a18_5_10_violation] explicit destructor call required for placement-new'd object
+    vector->~ShmChunkVector();
+    std::ignore = flexible_allocator->Deallocate(vector_shm_raw_pointer, sizeof(vector));
 }
 
 score::Result<SharedMemoryLocation> LocalDataChunkList::CreateSharedMemoryLocation(ShmChunkVector* vector,

@@ -58,6 +58,9 @@ std::string_view score::analysis::tracing::GenericTraceAPIErrorDomain::MessageFo
         case static_cast<score::result::ErrorCode>(ErrorCode::kModuleNotInitializedRecoverable):
             error_message = "Module not initialized";
             break;
+        case static_cast<score::result::ErrorCode>(ErrorCode::kFailedToCacheEarlyTraceJobRecoverable):
+            error_message = "Failed to cache early trace job during daemon disconnection";
+            break;
         case static_cast<score::result::ErrorCode>(ErrorCode::kModuleInitializedRecoverable):
             error_message = "Module already initialized";
             break;
@@ -250,6 +253,7 @@ bool score::analysis::tracing::IsErrorRecoverable(const score::analysis::tracing
         case ErrorCode::kAtomicRingBufferFullRecoverable:
         case ErrorCode::kAtomicRingBufferEmptyRecoverable:
         case ErrorCode::kAtomicRingBufferMaxRetriesRecoverable:
+        case ErrorCode::kFailedToCacheEarlyTraceJobRecoverable:
         case ErrorCode::kModuleNotInitializedRecoverable:
         case ErrorCode::kModuleInitializedRecoverable:
         case ErrorCode::kDaemonNotConnectedRecoverable:

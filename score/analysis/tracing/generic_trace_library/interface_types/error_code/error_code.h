@@ -41,6 +41,8 @@ enum class ErrorCode : score::result::ErrorCode
     kAtomicRingBufferFullRecoverable,        ///< Atomic ring buffer full (Recoverable)
     kAtomicRingBufferEmptyRecoverable,       ///< Atomic ring buffer empty (Recoverable)
     kAtomicRingBufferMaxRetriesRecoverable,  ///< Atomic ring buffer access failed max retry times (Recoverable)
+    kFailedToCacheEarlyTraceJobRecoverable,  ///< Failed to cache early trace job during daemon disconnection
+                                             ///< (Recoverable)
 
     kDaemonNotConnectedRecoverable,        ///< Daemon is not yet available (Recoverable)
     kRingBufferFullRecoverable,            ///< Ring buffer full (Recoverable)
