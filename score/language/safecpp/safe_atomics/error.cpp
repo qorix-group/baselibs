@@ -19,7 +19,7 @@ std::string_view score::safe_atomics::ErrorDomain::MessageFor(const score::resul
     static_assert(std::is_same_v<ResultErrorCode, std::underlying_type_t<SafeMathErrorCode>>);
 
     // Suppress "AUTOSAR C++14 A7-2-1" as false positive
-    // // Suppress "AUTOSAR C++14 M6-4-5": The `return` statement in this case clause unconditionally exits the
+    // Suppress "AUTOSAR C++14 M6-4-5": The `return` statement in this case clause unconditionally exits the
     // function, making an additional `break` statement redundant.
     // coverity[autosar_cpp14_m6_4_3_violation]
     // coverity[autosar_cpp14_a7_2_1_violation: FALSE]

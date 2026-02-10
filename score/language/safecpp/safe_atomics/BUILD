@@ -20,9 +20,7 @@ cc_library(
     hdrs = ["try_atomic_add.h"],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    visibility = [
-        "@score_baselibs//score/language/safecpp/safe_math:__pkg__",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":error",
         "@score_baselibs//score/language/safecpp/safe_math/details/addition_subtraction",

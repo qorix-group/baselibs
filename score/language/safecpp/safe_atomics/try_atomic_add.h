@@ -46,7 +46,6 @@ score::Result<T> TryAtomicAddImpl(std::atomic<T>& atomic, const T addition_value
         const auto addition_result = safe_math::Add(current_value, addition_value);
         if (!(addition_result.has_value()))
         {
-
             if (addition_result.error() == safe_math::ErrorCode::kExceedsNumericLimits)
             {
                 return MakeUnexpected(ErrorCode::kExceedsNumericLimits);
