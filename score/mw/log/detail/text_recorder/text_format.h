@@ -181,9 +181,11 @@ static void PutFormattedNumber(PT& payload, const T data) noexcept
                               // convenient/related to this condition.
         {
             constexpr score::StringLiteral kFormat = GetFormatSpecifier<const T, i>::kValue;
+            using FormatType = std::conditional_t<std::is_same_v<T, float>, double, T>;
             const auto written =
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg) safe to use std::snprintf
-                FormattingFunctionReturnCast(std::snprintf(buffer.data(), buffer.size(), kFormat, data));
+                FormattingFunctionReturnCast(
+                    std::snprintf(buffer.data(), buffer.size(), kFormat, static_cast<FormatType>(data)));
 
             const std::size_t num_written = std::min(written, buffer.size() - std::size_t{1});
             buffer.first(num_written + 1U).back() = ' ';
