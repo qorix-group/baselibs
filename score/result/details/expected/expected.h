@@ -161,6 +161,13 @@ class unexpected : impl::base_unexpected
         return lhs.error() != rhs.error();
     }
 
+    // IMPORTANT: The member swap function must be declared before the friend
+    // swap function to work around a GCC 15.2 bug where noexcept-specs of friend
+    // functions aren't treated as complete-class contexts, causing name lookup
+    // failures for member functions declared after the friend declaration.
+    // (earlier GCC versions may also be affected).
+    // See: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=122668
+
     constexpr void swap(unexpected& other) noexcept(std::is_nothrow_swappable_v<E>)
     {
         static_assert(std::is_swappable_v<E>);
