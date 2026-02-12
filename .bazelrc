@@ -47,6 +47,7 @@ build:bl-aarch64-linux --config=_bl_toolchain_common
 build:bl-aarch64-linux --platforms=@score_bazel_platforms//:aarch64-linux-gcc_12.2.0-posix
 build:bl-aarch64-linux --extra_toolchains=@score_gcc_aarch64_toolchain//:aarch64-linux-gcc_12.2.0-posix
 test:bl-aarch64-linux --config=_bl_common
+test:bl-aarch64-linux --run_under=//:qemu_aarch64
 
 
 # Target configuration for CPU:x86-64|OS:QNX build (do not use it in case of system toolchains!)

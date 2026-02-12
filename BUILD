@@ -13,6 +13,7 @@
 
 load("@score_docs_as_code//:docs.bzl", "docs")
 load("@score_tooling//:defs.bzl", "copyright_checker", "use_format_targets")
+load(":qemu.bzl", "qemu_aarch64")
 
 docs(
     data = [
@@ -38,3 +39,5 @@ copyright_checker(
 )
 
 use_format_targets()
+
+qemu_aarch64()
