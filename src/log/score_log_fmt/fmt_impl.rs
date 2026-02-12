@@ -194,6 +194,45 @@ impl<T> ScoreDebug for std::sync::PoisonError<T> {
     }
 }
 
+impl<A: ScoreDebug, B: ScoreDebug> ScoreDebug for (A, B) {
+    fn fmt(&self, f: Writer, spec: &FormatSpec) -> Result {
+        DebugTuple::new(f, spec, "").field(&self.0).field(&self.1).finish()
+    }
+}
+
+impl<A: ScoreDebug, B: ScoreDebug, C: ScoreDebug> ScoreDebug for (A, B, C) {
+    fn fmt(&self, f: Writer, spec: &FormatSpec) -> Result {
+        DebugTuple::new(f, spec, "")
+            .field(&self.0)
+            .field(&self.1)
+            .field(&self.2)
+            .finish()
+    }
+}
+
+impl<A: ScoreDebug, B: ScoreDebug, C: ScoreDebug, D: ScoreDebug> ScoreDebug for (A, B, C, D) {
+    fn fmt(&self, f: Writer, spec: &FormatSpec) -> Result {
+        DebugTuple::new(f, spec, "")
+            .field(&self.0)
+            .field(&self.1)
+            .field(&self.2)
+            .field(&self.3)
+            .finish()
+    }
+}
+
+impl<A: ScoreDebug, B: ScoreDebug, C: ScoreDebug, D: ScoreDebug, E: ScoreDebug> ScoreDebug for (A, B, C, D, E) {
+    fn fmt(&self, f: Writer, spec: &FormatSpec) -> Result {
+        DebugTuple::new(f, spec, "")
+            .field(&self.0)
+            .field(&self.1)
+            .field(&self.2)
+            .field(&self.3)
+            .field(&self.4)
+            .finish()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::test_utils::common_test_debug;
@@ -346,5 +385,21 @@ mod tests {
     fn test_poison_error_debug() {
         let pe = std::sync::PoisonError::new(123.0);
         common_test_debug(pe);
+    }
+
+    #[test]
+    fn test_tuples_debug() {
+        common_test_debug((2.1f32, "abc"));
+        common_test_debug((28, Box::new(46), true));
+        common_test_debug((
+            (
+                std::collections::HashMap::from([("x", 123), ("y", 321), ("z", 444)]),
+                "abc",
+            ),
+            Some(123),
+            std::sync::Arc::new(654),
+            vec![987, 654],
+        ));
+        common_test_debug(("a", "b", (r"0x64", 10, false), "0.1", "true"));
     }
 }
