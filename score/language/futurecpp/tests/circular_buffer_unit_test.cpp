@@ -548,6 +548,41 @@ TEST(circular_buffer_test, pop_back_GivenEmptyContainer_ExpectRemainsEmpty)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#17014595
+TEST(circular_buffer_test, iterator_default_constructor)
+{
+    using buffer_t = circular_buffer<std::int32_t, test_max_size>;
+
+    buffer_t buffer;
+    buffer.push_back(42);
+
+    {
+        buffer_t::iterator it{};
+        SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(score::cpp::ignore = *it);
+        it = buffer.begin();
+        EXPECT_EQ(*it, 42);
+    }
+    {
+        buffer_t::const_iterator const_it{};
+        SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(score::cpp::ignore = *const_it);
+        const_it = buffer.cbegin();
+        EXPECT_EQ(*const_it, 42);
+    }
+    {
+        buffer_t::reverse_iterator reverse_it{};
+        SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(score::cpp::ignore = *reverse_it);
+        reverse_it = buffer.rbegin();
+        EXPECT_EQ(*reverse_it, 42);
+    }
+    {
+        buffer_t::const_reverse_iterator const_reverse_it{};
+        SCORE_LANGUAGE_FUTURECPP_EXPECT_CONTRACT_VIOLATED(score::cpp::ignore = *const_reverse_it);
+        const_reverse_it = buffer.crbegin();
+        EXPECT_EQ(*const_reverse_it, 42);
+    }
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#17014595
 TEST(circular_buffer_test, iterator)
 {
     circular_buffer<std::int32_t, test_max_size> buffer;

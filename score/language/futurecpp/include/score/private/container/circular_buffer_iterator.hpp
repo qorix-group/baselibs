@@ -66,6 +66,12 @@ public:
     /// \brief The category of the iterator. Defined by std::iterator_traits.
     using iterator_category = std::random_access_iterator_tag;
 
+    /// \brief Constructs an iterator which is not associated with a container.
+    ///
+    /// The constructed iterator has singular value that is not associated with any container. Most expressions are
+    /// undefined except destruction and assignment.
+    circular_buffer_iterator() : current_{0}, container_{nullptr} {}
+
     /// \brief Constructs a new iterator.
     ///
     /// \param container Reference to the container for which the iterator is constructed.
