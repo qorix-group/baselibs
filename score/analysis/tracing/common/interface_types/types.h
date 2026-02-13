@@ -200,10 +200,10 @@ using RegisterClientResult = score::Result<TraceClientId>;
 using RegisterSharedMemoryObjectResult = score::Result<ShmObjectHandle>;
 
 /// @brief Type used to return from RegisterTraceDoneCB method
-using RegisterTraceDoneCallBackResult = score::Result<Blank>;
+using RegisterTraceDoneCallBackResult = score::ResultBlank;
 
 /// @brief Type used to return from Trace method
-using TraceResult = score::Result<Blank>;
+using TraceResult = score::ResultBlank;
 
 /// @brief Flags to be used when opening client-side SHM objects
 // No harm to do bitwise operations on these values m5_0_21

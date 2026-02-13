@@ -205,7 +205,7 @@ score::ResultBlank ToFileInternalAtomic(const T& json_data,
         .and_then([&json_data](auto filestream) -> score::ResultBlank {
             score::json::JsonSerialize serializer{*filestream};
             auto serializer_result = serializer << json_data;
-            return filestream->Close().and_then([serializer_result](auto) noexcept {
+            return filestream->Close().and_then([serializer_result](auto&&...) noexcept {
                 return serializer_result;
             });
         });

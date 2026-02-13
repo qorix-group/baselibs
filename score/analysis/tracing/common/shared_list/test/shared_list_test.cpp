@@ -69,7 +69,7 @@ TEST_F(SharedListFixture, PushBackSingleElement)
 
     EXPECT_CALL(*flexible_allocator_mock_, Deallocate(_, _)).WillOnce([](void* const address, const std::size_t) {
         free(address);  // Simulate deallocation
-        return score::Blank{};
+        return score::ResultBlank{};
     });
 
     shared::List<std::uint8_t> list(flexible_allocator_mock_);
@@ -116,7 +116,7 @@ TEST_F(SharedListFixture, PushBackMultipleElementsAndClear)
         .Times(number_of_elements)
         .WillRepeatedly([](void* const address, const std::size_t) {
             free(address);  // Simulate deallocation
-            return score::Blank{};
+            return score::ResultBlank{};
         });
 
     shared::List<std::uint8_t> list(flexible_allocator_mock_);
@@ -146,7 +146,7 @@ TEST_F(SharedListFixture, EmplaceBack)
 
     EXPECT_CALL(*flexible_allocator_mock_, Deallocate(_, _)).WillOnce([](void* const address, const std::size_t) {
         free(address);  // Simulate deallocation
-        return score::Blank{};
+        return score::ResultBlank{};
     });
 
     shared::List<std::pair<std::uint32_t, std::uint32_t>> list(flexible_allocator_mock_);
@@ -171,7 +171,7 @@ TEST_F(SharedListFixture, AtIndex)
 
     EXPECT_CALL(*flexible_allocator_mock_, Deallocate(_, _)).WillRepeatedly([](void* const address, const std::size_t) {
         free(address);  // Simulate deallocation
-        return score::Blank{};
+        return score::ResultBlank{};
     });
 
     shared::List<std::uint8_t> list(flexible_allocator_mock_);
@@ -201,7 +201,7 @@ TEST_F(SharedListFixture, Iterators)
 
     EXPECT_CALL(*flexible_allocator_mock_, Deallocate(_, _)).WillRepeatedly([](void* const address, const std::size_t) {
         free(address);  // Simulate deallocation
-        return score::Blank{};
+        return score::ResultBlank{};
     });
 
     EXPECT_CALL(*flexible_allocator_mock_, IsInBounds(_, _)).WillRepeatedly(Return(true));
@@ -231,7 +231,7 @@ TEST_F(SharedListFixture, ArrowOperatorAccessesMember)
 
     EXPECT_CALL(*flexible_allocator_mock_, Deallocate(_, _)).WillRepeatedly([](void* const address, const std::size_t) {
         free(address);  // Simulate deallocation
-        return score::Blank{};
+        return score::ResultBlank{};
     });
 
     EXPECT_CALL(*flexible_allocator_mock_, IsInBounds(_, _)).WillRepeatedly(Return(true));
@@ -581,7 +581,7 @@ TEST_F(SharedListFixture, AtMethodIsInBoundsConditionTrue)
 
     EXPECT_CALL(*flexible_allocator_mock_, Deallocate(_, _)).WillOnce([](void* const address, const std::size_t) {
         free(address);
-        return score::Blank{};
+        return score::ResultBlank{};
     });
 
     shared::List<std::uint8_t> list(flexible_allocator_mock_);
@@ -731,7 +731,7 @@ TEST_F(SharedListFixture, AtMethodNullCurrentAfterTraversal)
 
     EXPECT_CALL(*flexible_allocator_mock_, Deallocate(_, _)).WillOnce([](void* const address, const std::size_t) {
         free(address);
-        return score::Blank{};
+        return score::ResultBlank{};
     });
 
     EXPECT_CALL(*flexible_allocator_mock_, IsInBounds(_, _)).WillOnce(Return(true));
