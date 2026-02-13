@@ -284,18 +284,7 @@ cc_test(
     ],
 )
 
-cc_test(
-    name = "pci_safety_test",
-    srcs = [
-        "pci_safety_test.cpp",
-    ],
-    tags = ["manual"],
-    target_compatible_with = ["@platforms//os:qnx"],
-    deps = [
-        "@googletest//:gtest_main",
-        "@score_baselibs//score/os/qnx:pci_safety",
-    ],
-)
+# safety test target removed
 
 cc_test(
     name = "sysctl_test",

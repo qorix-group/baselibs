@@ -26,7 +26,7 @@ cc_library(
     }),
     visibility = ["@score_baselibs//score/json:__subpackages__"],
     deps = [
-        "//ecu/xpad/ara/vector:vajson",
+        # vajson target removed
         "@score_baselibs//score/json/internal/model",
         "@score_baselibs//score/result",
     ],
