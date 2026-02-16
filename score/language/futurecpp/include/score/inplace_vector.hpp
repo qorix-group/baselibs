@@ -284,6 +284,11 @@ public:
         return *this;
     }
 
+    /// \brief Destruct inplace_vector
+    ///
+    /// The destructor is trivial if `T` is trivial destructible
+    ~inplace_vector() = default;
+
     /// \brief Mimics std::vector<>::clear()
     void clear() { shrink(0U); }
 
