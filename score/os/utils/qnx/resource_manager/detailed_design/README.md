@@ -1,5 +1,5 @@
 # Specification of the core skeleton of QNX resource manager low level design
-This document describes the low level design of the core skeleton of QNX resource manager which intended to be used as ASIL B library serving the need of the platform described in [Specification of the hardware register resource managers architecture design](../../../../../../pas/hw_reg_res_mgrs/doc/score/static_reflection_with_serialization/README.md)
+This document describes the low level design of the core skeleton of QNX resource manager which intended to be used as ASIL B library serving the need of the platform.
 
 ## Introduction
 In general terms, a resource manager is a process that registers a name in the filesystem name space. Other processes use that path to communicate with the resource manager.

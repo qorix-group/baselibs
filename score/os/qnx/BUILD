@@ -205,7 +205,6 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
-        "//platform/aas/pas/hw_reg_res_mgrs:__subpackages__",
         "@score_baselibs//score/analysis/tracing/daemon:__subpackages__",
         "@score_baselibs//score/os/mocklib/qnx:__subpackages__",
         "@score_baselibs//score/os/test/qnx:__subpackages__",
@@ -233,7 +232,6 @@ cc_library(
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],
     visibility = [
-        "//platform/aas/pas/hw_reg_res_mgrs:__subpackages__",
         "@score_baselibs//score/os:__subpackages__",
     ],
     deps = [
