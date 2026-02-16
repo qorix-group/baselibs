@@ -234,6 +234,8 @@ score::Result<void*> LocklessFlexibleCircularAllocator<AtomicIndirectorType>::Al
     auto list_entry_result = AcquireListQueueEntry();
     if (!list_entry_result.has_value())
     {
+        // Rollback available size on failure
+        IncrementAvailableSize(aligned_size);
         return MakeUnexpected<void*>(list_entry_result.error());
     }
     const std::uint32_t list_entry_element_index = list_entry_result.value();
@@ -247,6 +249,8 @@ score::Result<void*> LocklessFlexibleCircularAllocator<AtomicIndirectorType>::Al
     {
         if (buffer_queue_tail_.load(std::memory_order_seq_cst) < static_cast<std::uint32_t>(aligned_size))
         {
+            // Rollback available size on failure
+            IncrementAvailableSize(aligned_size);
             return MakeUnexpected(LocklessFlexibleAllocatorErrorCode::kNotEnoughMemory);
         }
         wrap_around_.store(true);
