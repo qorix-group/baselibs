@@ -112,6 +112,17 @@ In case you are not already using MISRA C++:2023, these are the main reasons why
 
 ## What will you find in the different folders
 
+SafeCPP provides utilities to write safer C++ code for safety-critical systems. The C++ standard library is designed for general-purpose use and lacks some of the stricter semantics required in safety-critical applications. SafeCPP addresses these gaps.
+
+Following components are provided by SafeCPP:
+
+- **aborts_upon_exception**: Globally replaces C++ exception handling with `std::abort()` calls for safety compliance.
+- **coverage_termination_handler**: Ensures coverage data is preserved in GoogleTest death tests.
+- **safe_atomics**: Prevents overflow when adding numbers to atomic variables (thread-safe addition with `TryAtomicAdd`).
+- **safe_math**: Provides overflow-safe arithmetic operations for integral and floating-point types.
+- **scoped_function**: Offers controlled callable execution with explicit lifetime guarantees.
+- **string_view**: Provides null-terminated string view types and safety utilities for secure string handling.
+
 ### Bazel targets for the standard library
 
 In order to properly deal with exceptions, special care needs to be taken.
