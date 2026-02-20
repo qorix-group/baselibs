@@ -12,10 +12,8 @@
 # *******************************************************************************
 
 load("@rules_cc//cc:defs.bzl", "cc_library")
-load("@rules_rust//rust:defs.bzl", "rust_doc", "rust_library", "rust_test")
 load("@score_baselibs//:bazel/unit_tests.bzl", "cc_gtest_unit_test", "cc_unit_test_suites_for_host_and_qnx")
 load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
-load("@swh_bazel_toolchains//bazel/tools/rust_cxxbridge:rust_cxxbridge.bzl", "rust_cxx_bridge")
 load(":toolchain_flip.bzl", "flip_stdlib_cc_library")
 
 cc_library(
