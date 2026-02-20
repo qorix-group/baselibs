@@ -22,7 +22,9 @@
 #define SCORE_LANGUAGE_FUTURECPP_CIRCULAR_BUFFER_HPP
 
 #include <score/private/container/circular_buffer_iterator.hpp> // IWYU pragma: export
+#include <score/private/memory/voidify.hpp>
 #include <score/private/utility/ignore.hpp>
+
 #include <score/assert.hpp>
 #include <score/utility.hpp>
 
@@ -35,14 +37,108 @@
 namespace score::cpp
 {
 
+namespace detail
+{
+namespace circular_buffer
+{
+
+template <typename T, std::size_t MaxSize, bool = std::is_trivially_destructible_v<T>>
+class destructor_base
+{
+    static_assert(std::is_trivially_destructible_v<T>);
+
+public:
+    destructor_base() noexcept : tail_{0U}, head_{0U}, size_{0U}
+    {
+        // activate the union member. `start_lifetime_as_array` does not exist in C++17
+        // With C++26 trivial union paper wg21.link/p3074 + wg21.link/p3726 this isn't needed
+        // https://en.cppreference.com/w/cpp/memory/start_lifetime_as.html says
+        // "`new (void_ptr) unsigned char[size]` or ... works as an untyped version of
+        // `std::start_lifetime_as`, but it does not keep the object representation."
+        score::cpp::ignore = ::new (score::cpp::detail::voidify(array_)) std::uint8_t[sizeof(T) * MaxSize];
+    }
+
+    void set_tail(const std::size_t n) { tail_ = n; }
+    std::size_t tail() const { return tail_; }
+    void set_head(const std::size_t n) { head_ = n; }
+    std::size_t head() const { return head_; }
+    void set_size(const std::size_t n) { size_ = n; }
+    std::size_t size() const { return size_; }
+    T* data() { return array_; }
+    const T* data() const { return array_; }
+
+private:
+    union
+    {
+        // NOLINTNEXTLINE(readability-identifier-naming) keep `_` to make clear it is a member variable
+        T array_[MaxSize];
+    };
+    /// \brief Index of the last valid data in the circular buffer.
+    std::size_t tail_;
+    /// \brief Index of the first valid data in the circular buffer.
+    std::size_t head_;
+    /// \brief Amount of valid elements in the circular buffer.
+    std::size_t size_;
+};
+
+template <typename T, std::size_t MaxSize>
+class destructor_base<T, MaxSize, false>
+{
+    static_assert(!std::is_trivially_destructible_v<T>);
+
+public:
+    destructor_base() noexcept : tail_{0U}, head_{0U}, size_{0U}
+    {
+        score::cpp::ignore = ::new (score::cpp::detail::voidify(array_)) std::uint8_t[sizeof(T) * MaxSize];
+    }
+    destructor_base(const destructor_base&) = default;
+    destructor_base& operator=(const destructor_base&) = default;
+    destructor_base(destructor_base&&) = default;
+    destructor_base& operator=(destructor_base&&) = default;
+    ~destructor_base()
+    {
+        for (std::size_t i{0U}; i < size(); ++i)
+        {
+            std::destroy_at(data() + ((head() + i) % MaxSize));
+        }
+    }
+
+    void set_tail(const std::size_t n) { tail_ = n; }
+    std::size_t tail() const { return tail_; }
+    void set_head(const std::size_t n) { head_ = n; }
+    std::size_t head() const { return head_; }
+    void set_size(const std::size_t n) { size_ = n; }
+    std::size_t size() const { return size_; }
+    T* data() { return array_; }
+    const T* data() const { return array_; }
+
+private:
+    union
+    {
+        // NOLINTNEXTLINE(readability-identifier-naming) keep `_` to make clear it is a member variable
+        T array_[MaxSize];
+    };
+    /// \brief Index of the last valid data in the circular buffer.
+    std::size_t tail_;
+    /// \brief Index of the first valid data in the circular buffer.
+    std::size_t head_;
+    /// \brief Amount of valid elements in the circular buffer.
+    std::size_t size_;
+};
+
+} // namespace circular_buffer
+} // namespace detail
+
 /// \brief Circular buffer can for example be used to generate a history of a certain number of elements and
 /// automatically discard the oldest elements.
 ///
 /// \tparam T Specifies the value type of a single element of a row.
 /// \tparam max_size Specifies maximum size of the internal data storage.
 template <typename T, std::size_t MaxSize>
-class circular_buffer
+class circular_buffer : private detail::circular_buffer::destructor_base<T, MaxSize>
 {
+    using base_t = detail::circular_buffer::destructor_base<T, MaxSize>;
+
 public:
     /// \brief The type of the array elements. This is a requirement of STL compliant types.
     using value_type = T;
@@ -81,37 +177,41 @@ public:
     using container = circular_buffer<T, MaxSize>;
 
     /// \brief Default constructor. Constructs an empty container.
-    circular_buffer() noexcept : tail_{0U}, head_{0U}, size_{0U} {};
+    circular_buffer() noexcept : base_t{} {};
 
     /// \brief Copy construction from circular_buffer.
-    circular_buffer(const circular_buffer& other) noexcept(std::is_nothrow_copy_constructible<T>::value)
-        : tail_{other.tail_}, head_{other.head_}, size_{other.size_}
+    circular_buffer(const circular_buffer& other) noexcept(std::is_nothrow_copy_constructible<T>::value) : base_t{}
     {
         try
         {
+            base_t::set_tail(other.tail());
+            base_t::set_head(other.head());
+            base_t::set_size(other.size());
             score::cpp::ignore = std::uninitialized_copy(std::cbegin(other), std::cend(other), std::begin(*this));
         }
         catch (...)
         {
-            tail_ = 0U;
-            head_ = 0U;
-            size_ = 0U;
+            base_t::set_tail(0U);
+            base_t::set_head(0U);
+            base_t::set_size(0U);
         }
     }
 
     /// \brief Move construction from circular_buffer.
-    circular_buffer(circular_buffer&& other) noexcept(std::is_nothrow_move_constructible<T>::value)
-        : tail_{other.tail_}, head_{other.head_}, size_{other.size_}
+    circular_buffer(circular_buffer&& other) noexcept(std::is_nothrow_move_constructible<T>::value) : base_t{}
     {
         try
         {
+            base_t::set_tail(other.tail());
+            base_t::set_head(other.head());
+            base_t::set_size(other.size());
             score::cpp::ignore = std::uninitialized_move(std::begin(other), std::end(other), std::begin(*this));
         }
         catch (...)
         {
-            tail_ = 0U;
-            head_ = 0U;
-            size_ = 0U;
+            base_t::set_tail(0U);
+            base_t::set_head(0U);
+            base_t::set_size(0U);
         }
     }
 
@@ -123,16 +223,16 @@ public:
             try
             {
                 clear();
-                head_ = rhs.head_;
-                tail_ = rhs.tail_;
-                size_ = rhs.size_;
+                base_t::set_head(rhs.head());
+                base_t::set_tail(rhs.tail());
+                base_t::set_size(rhs.size());
                 score::cpp::ignore = std::uninitialized_copy(std::begin(rhs), std::end(rhs), std::begin(*this));
             }
             catch (...)
             {
-                head_ = 0;
-                tail_ = 0;
-                size_ = 0;
+                base_t::set_head(0U);
+                base_t::set_tail(0U);
+                base_t::set_size(0U);
             }
         }
         return *this;
@@ -146,23 +246,23 @@ public:
             try
             {
                 clear();
-                head_ = rhs.head_;
-                tail_ = rhs.tail_;
-                size_ = rhs.size_;
+                base_t::set_head(rhs.head());
+                base_t::set_tail(rhs.tail());
+                base_t::set_size(rhs.size());
                 score::cpp::ignore = std::uninitialized_move(std::begin(rhs), std::end(rhs), std::begin(*this));
             }
             catch (...)
             {
-                head_ = 0;
-                tail_ = 0;
-                size_ = 0;
+                base_t::set_head(0U);
+                base_t::set_tail(0U);
+                base_t::set_size(0U);
             }
         }
         return *this;
     }
 
     /// \brief Clears all elements from the container.
-    ~circular_buffer() { clear(); }
+    ~circular_buffer() = default;
 
     /// \brief Removes all elements from the container.
     void clear()
@@ -187,7 +287,7 @@ public:
     /// \brief Returns the number elements in the container.
     ///
     /// \return The number of elements in the container.
-    size_type size() const { return size_; }
+    size_type size() const { return base_t::size(); }
 
     /// \brief Returns an iterator to the beginning
     ///
@@ -249,10 +349,9 @@ public:
         {
             pop_front();
         }
-        score::cpp::ignore = ::new (base() + tail_) T{std::forward<Ts>(arguments)...};
-        ++tail_;
-        tail_ %= capacity();
-        ++size_;
+        score::cpp::ignore = ::new (base_t::data() + base_t::tail()) T{std::forward<Ts>(arguments)...};
+        base_t::set_tail((base_t::tail() + 1U) % capacity());
+        base_t::set_size(base_t::size() + 1U);
     }
 
     /// \brief Removes the first element in the container.
@@ -261,9 +360,8 @@ public:
         if (!empty())
         {
             front().~T();
-            ++head_;
-            head_ %= capacity();
-            --size_;
+            base_t::set_head((base_t::head() + 1U) % capacity());
+            base_t::set_size(base_t::size() - 1U);
         }
     }
 
@@ -274,15 +372,15 @@ public:
         {
             back().~T();
 
-            if (tail_ == 0U)
+            if (base_t::tail() == 0U)
             {
-                tail_ = capacity() - 1U;
+                base_t::set_tail(capacity() - 1U);
             }
             else
             {
-                --tail_;
+                base_t::set_tail(base_t::tail() - 1U);
             }
-            --size_;
+            base_t::set_size(base_t::size() - 1U);
         }
     }
 
@@ -357,14 +455,14 @@ public:
     reference operator[](const size_type n)
     {
         SCORE_LANGUAGE_FUTURECPP_ASSERT_DBG(n < size());
-        const size_type wrapped_index{(head_ + n) % capacity()};
-        return *(base() + wrapped_index);
+        const size_type wrapped_index{(base_t::head() + n) % capacity()};
+        return *(base_t::data() + wrapped_index);
     }
     const_reference operator[](const size_type n) const
     {
         SCORE_LANGUAGE_FUTURECPP_ASSERT_DBG(n < size());
-        const size_type wrapped_index{(head_ + n) % capacity()};
-        return *(base() + wrapped_index);
+        const size_type wrapped_index{(base_t::head() + n) % capacity()};
+        return *(base_t::data() + wrapped_index);
     }
     /// \}
 
@@ -377,25 +475,6 @@ public:
     ///
     /// \return Maximum size of the circular buffer.
     static constexpr size_type max_size() { return MaxSize; }
-
-private:
-    /// \brief Returns a pointer to the begin of the internal array.
-    /// \{
-    T* base() { return reinterpret_cast<T*>(array_); }
-    const T* base() const { return reinterpret_cast<const T*>(array_); }
-    /// \}
-
-    /// \brief Internal data array
-    typename std::aligned_storage<sizeof(T), std::alignment_of<T>::value>::type array_[MaxSize];
-
-    /// \brief Index of the last valid data in the circular buffer.
-    size_type tail_;
-
-    /// \brief Index of the first valid data in the circular buffer.
-    size_type head_;
-
-    /// \brief Amount of valid elements in the circular buffer.
-    size_type size_;
 };
 
 } // namespace score::cpp
