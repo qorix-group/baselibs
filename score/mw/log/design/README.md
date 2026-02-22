@@ -98,7 +98,7 @@ Because of the similarity between TextRecorder and FileRecorder it is decided to
 
 ![CircularAllocator::AcquireSlotToWrite Activity diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/circular_buffer_allocator_acquireslottowrite.puml)
 
-![WaitFreeStack::TryPush Activity diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/wait_free_stack_trypush.puml)
+![WaitFreeStack::TryPush Activity diagram](./score/mw/log/design/wait_free_stack_trypush.puml)
 
 ### User-Facing APIs
 
