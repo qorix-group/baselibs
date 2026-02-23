@@ -33,6 +33,7 @@ cc_library(
     deps = [
         "@score_baselibs//score/os:errno",
         "@score_baselibs//score/os:object_seam",
+        "@score_baselibs//score/quality/compiler_warnings",
     ],
 )
 
