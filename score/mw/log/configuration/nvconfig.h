@@ -35,7 +35,7 @@ class NvConfig : public INvConfig
     ~NvConfig() noexcept override = default;
     NvConfig(const NvConfig&) = default;
 
-    NvConfig& operator=(const NvConfig& other) noexcept
+    NvConfig& operator=(const NvConfig& other)
     {
         if (this != &other)
         {
@@ -47,7 +47,7 @@ class NvConfig : public INvConfig
 
     NvConfig(NvConfig&&) noexcept = default;
 
-    NvConfig& operator=(NvConfig&& other) noexcept
+    NvConfig& operator=(NvConfig&& other)
     {
         if (this != &other)
         {

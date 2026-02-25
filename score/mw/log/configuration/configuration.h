@@ -46,13 +46,13 @@ class Configuration final
     void SetAppId(const std::string_view) noexcept;
 
     std::string_view GetAppDescription() const noexcept;
-    void SetAppDescription(const std::string_view) noexcept;
+    void SetAppDescription(const std::string_view);
 
     const std::unordered_set<LogMode>& GetLogMode() const noexcept;
-    void SetLogMode(const std::unordered_set<LogMode>&) noexcept;
+    void SetLogMode(const std::unordered_set<LogMode>&);
 
     std::string_view GetLogFilePath() const noexcept;
-    void SetLogFilePath(const std::string_view) noexcept;
+    void SetLogFilePath(const std::string_view);
 
     LogLevel GetDefaultLogLevel() const noexcept;
     void SetDefaultLogLevel(const LogLevel) noexcept;
@@ -61,7 +61,7 @@ class Configuration final
     void SetDefaultConsoleLogLevel(const LogLevel) noexcept;
 
     const ContextLogLevelMap& GetContextLogLevel() const noexcept;
-    void SetContextLogLevel(const ContextLogLevelMap&) noexcept;
+    void SetContextLogLevel(const ContextLogLevelMap&);
 
     std::size_t GetStackBufferSize() const noexcept;
     void SetStackBufferSize(const std::size_t stack_buffer_size) noexcept;

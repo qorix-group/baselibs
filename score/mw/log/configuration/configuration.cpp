@@ -60,7 +60,7 @@ std::string_view Configuration::GetAppDescription() const noexcept
     return app_description_;
 }
 
-void Configuration::SetAppDescription(const std::string_view app_description) noexcept
+void Configuration::SetAppDescription(const std::string_view app_description)
 {
     app_description_ = ToString(app_description);
 }
@@ -70,7 +70,7 @@ const std::unordered_set<LogMode>& Configuration::GetLogMode() const noexcept
     return log_mode_;
 }
 
-void Configuration::SetLogMode(const std::unordered_set<LogMode>& log_mode) noexcept
+void Configuration::SetLogMode(const std::unordered_set<LogMode>& log_mode)
 {
     log_mode_ = log_mode;
 }
@@ -80,7 +80,7 @@ std::string_view Configuration::GetLogFilePath() const noexcept
     return log_file_path_;
 }
 
-void Configuration::SetLogFilePath(const std::string_view log_file_path) noexcept
+void Configuration::SetLogFilePath(const std::string_view log_file_path)
 {
     log_file_path_ = ToString(log_file_path);
 }
@@ -110,7 +110,7 @@ const ContextLogLevelMap& Configuration::GetContextLogLevel() const noexcept
     return context_log_level_;
 }
 
-void Configuration::SetContextLogLevel(const ContextLogLevelMap& context_log_level) noexcept
+void Configuration::SetContextLogLevel(const ContextLogLevelMap& context_log_level)
 {
     context_log_level_ = context_log_level;
 }
