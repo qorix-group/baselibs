@@ -348,6 +348,7 @@ class LogStream final
 
     detail::LoggingIdentifier context_id_;
     LogLevel log_level_;
+    static constexpr std::string_view kDefaultContextInStream{"DFLT"};
 };
 
 /// \brief Stream operator overload which enables logging to a `LogStream` rvalue.

@@ -25,13 +25,6 @@ namespace mw
 namespace log
 {
 
-namespace
-{
-
-constexpr std::string_view kDefaultContextInStream{"DFLT"};
-
-}  // namespace
-
 LogStream::LogStream(Recorder& recorder,
                      Recorder& fallback_recorder,
                      const LogLevel log_level,
@@ -91,61 +84,170 @@ void LogStream::Flush() noexcept
     slot_ = CallOnRecorder(&Recorder::StartRecord, context_id_.GetStringView(), log_level_);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const bool value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const std::int8_t value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const std::int16_t value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const std::int32_t value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const std::int64_t value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const std::uint8_t value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const std::uint16_t value) noexcept
+
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const std::uint32_t value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const std::uint64_t value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const float value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const double value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const LogString value) noexcept
 {
     if (value.Data() == nullptr)
@@ -155,41 +257,113 @@ LogStream& LogStream::Log(const LogString value) noexcept
     return LogWithRecorder(std::string_view{value.Data(), value.Size()});
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const LogHex8& value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const LogHex16& value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const LogHex32& value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const LogHex64& value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const LogBin8& value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const LogBin16& value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const LogBin32& value) noexcept
 {
     return LogWithRecorder(value);
 }
 
+/*
+Deviation from Rule A0-1-3:
+- Every function defined in an anonymous namespace, or static function with internal linkage,
+    or private member function shall be used.
+Justification:
+- The function is called by the `LogStream::operator<<(const T&)` template in log_stream.h, which dispatches to
+`Log(value)` through overload resolution.
+*/
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see above
 LogStream& LogStream::Log(const LogBin64& value) noexcept
 {
     return LogWithRecorder(value);
@@ -213,6 +387,7 @@ template <>
 // has higher precedence during overload resolution in case the parameter type is string-like.
 // coverity[autosar_cpp14_a14_8_2_violation]
 // coverity[autosar_cpp14_a14_7_2_violation]
+// coverity[autosar_cpp14_a0_1_3_violation : FALSE] see the argumentation for the same suppression above.
 LogStream& LogStream::Log(const LogRawBuffer& value) noexcept
 {
     if (value.data() == nullptr)
