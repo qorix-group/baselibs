@@ -158,8 +158,14 @@ cc_library(
 
 cc_library(
     name = "procmgr",
-    srcs = ["procmgr.cpp"],
-    hdrs = ["procmgr.h"],
+    srcs = [
+        "procmgr.cpp",
+        "procmgr_impl.cpp",
+    ],
+    hdrs = [
+        "procmgr.h",
+        "procmgr_impl.h",
+    ],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     target_compatible_with = ["@platforms//os:qnx"],

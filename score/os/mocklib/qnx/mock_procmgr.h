@@ -45,6 +45,27 @@ class MockProcMgr : public ProcMgr
                 procmgr_daemon,
                 (const std::int32_t status, const std::uint32_t flags),
                 (const, noexcept, override));
+
+    MOCK_METHOD((score::cpp::expected<std::int32_t, score::os::Error>),
+                procmgr_event_notify_add,
+                (const std::uint32_t flags, const struct sigevent* event),
+                (const, noexcept, override));
+
+    MOCK_METHOD((score::cpp::expected_blank<score::os::Error>),
+                procmgr_event_notify_delete,
+                (const std::int32_t handle),
+                (const, noexcept, override));
+
+    MOCK_METHOD(
+        (score::cpp::expected<std::int32_t, score::os::Error>),
+        procmgr_value_notify_add,
+        (const std::uint32_t type, const std::int32_t sub_id, const std::uint64_t value, const struct sigevent* event),
+        (const, noexcept, override));
+
+    MOCK_METHOD((score::cpp::expected<std::uint64_t, score::os::Error>),
+                procmgr_value_current,
+                (const std::int32_t id),
+                (const, noexcept, override));
 };
 
 /* KW_SUPPRESS_END:MISRA.VAR.HIDDEN:Shadowing function name is intended. */

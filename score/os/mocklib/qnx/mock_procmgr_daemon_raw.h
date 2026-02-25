@@ -32,6 +32,8 @@ class MockProcMgrDaemonRaw
 {
   public:
     MOCK_METHOD(int, procmgr_daemon, (int status, unsigned flags), (noexcept));
+    MOCK_METHOD(int, procmgr_event_notify_add, (unsigned flags, const struct sigevent* event), (noexcept));
+    MOCK_METHOD(int, procmgr_event_notify_delete, (int id), (noexcept));
 };
 
 /// Install (or clear with nullptr) the mock that ::procmgr_daemon forwards to.

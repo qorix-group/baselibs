@@ -47,6 +47,22 @@ class ProcMgr : public ObjectSeam<ProcMgr>
     virtual score::cpp::expected_blank<score::os::Error> procmgr_daemon(const std::int32_t status,
                                                                const std::uint32_t flags) const noexcept = 0;
 
+    virtual score::cpp::expected<std::int32_t, score::os::Error> procmgr_event_notify_add(
+        const std::uint32_t flags,
+        const struct sigevent* event) const noexcept = 0;
+
+    virtual score::cpp::expected_blank<score::os::Error> procmgr_event_notify_delete(
+        const std::int32_t handle) const noexcept = 0;
+
+    virtual score::cpp::expected<std::int32_t, score::os::Error> procmgr_value_notify_add(
+        const std::uint32_t type,
+        const std::int32_t sub_id,
+        const std::uint64_t value,
+        const struct sigevent* event) const noexcept = 0;
+
+    virtual score::cpp::expected<std::uint64_t, score::os::Error> procmgr_value_current(
+        const std::int32_t id) const noexcept = 0;
+
     virtual ~ProcMgr() = default;
     // Below special member functions declared to avoid autosar_cpp14_a12_0_1_violation
     ProcMgr(const ProcMgr&) = delete;
