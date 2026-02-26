@@ -176,7 +176,11 @@ TEST(mmap, GetInfoInvalidFD)
     auto info_result = score::os::Mman::instance().posix_typed_mem_get_info(invalid_fd, &info);
 
     EXPECT_FALSE(info_result.has_value());
+#if defined(__QNX__) && __QNX__ >= 800
+    EXPECT_EQ(info_result.error(), Error::Code::kNoSuchProcess);
+#else
     EXPECT_EQ(info_result.error(), Error::Code::kNoSuchFileOrDirectory);
+#endif
 }
 
 TEST(mmap, OpenTypedMemory)
