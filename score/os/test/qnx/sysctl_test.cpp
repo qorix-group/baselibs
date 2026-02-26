@@ -119,7 +119,7 @@ struct SysctlImplTest : ::testing::Test
     score::os::Sysctl& instance_{score::os::Sysctl::instance()};
 };
 
-constexpr std::string_view kSysName{"kern.clockrate"};
+constexpr std::string_view kSysName{"kern.osrelease"};
 
 TEST_F(SysctlImplTest, TestFunction_sysctl_Success)
 {
@@ -131,9 +131,9 @@ TEST_F(SysctlImplTest, TestFunction_sysctl_Success)
 
     std::array<std::int32_t, 2> sys_name = {
         CTL_KERN,
-        KERN_CLOCKRATE,
+        KERN_OSRELEASE,
     };
-    int64_t out;
+    char out[256];
     std::size_t sys_len{sizeof(out)};
 
     auto res = instance_.sysctl(sys_name.data(), sys_name.size(), &out, &sys_len, nullptr, 0);

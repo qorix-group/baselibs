@@ -13,6 +13,7 @@
 #include "score/os/socket.h"
 
 #include "score/os/unistd.h"
+#include "score/os/version.h"
 
 #include <arpa/inet.h>
 #include <gmock/gmock.h>
@@ -229,6 +230,13 @@ TEST_F(SocketTestFixture, ListenShouldFailOnInvalidSocketFd)
 TEST_F(SocketTestFixture, TestAcceptAndConnect)
 {
     CreateServerAndClientSockets();
+}
+
+TEST_F(SocketTestFixture, ConnectToInvalidAddressShouldFail)
+{
+    TestClientSocket();
+    InitServerAddr("255.255.255.255", kDefaultPortForTesting);
+    TestConnect(false);
 }
 
 struct SocketTestSetSockOptFixture : public SocketTestFixture, public ::testing::WithParamInterface<std::int32_t>
@@ -596,6 +604,15 @@ TEST_P(SocketTestFlagFixture, TestSendWithFlags)
 
     auto flag = GetParam();
     auto result = instance_.send(client_fd_, msg_.data(), msg_.size(), flag);
+#if defined(SPP_OS_QNX8)
+    // MSG_EOR (kTerminateRecord) is only supported with SOCK_SEQPACKET on QNX 8
+    // (FreeBSD-based io-sock), not with SOCK_STREAM - so expect failure and return early
+    if (flag == Socket::MessageFlag::kTerminateRecord)
+    {
+        ASSERT_FALSE(result.has_value()) << "MSG_EOR should not be supported with SOCK_STREAM on QNX 8";
+        return;
+    }
+#endif
     ASSERT_TRUE(result.has_value()) << "Failed to call ::send(): " << strerror(errno);
     EXPECT_EQ(result.value(), msg_.size());
 }
@@ -666,7 +683,12 @@ TEST_F(SocketTestFixture, SendZeroMessages)
     InitServerAddr();
     struct mmsghdr msgs[1];
     auto send_result = instance_.sendmmsg(client_fd_, msgs, 0, Socket::MessageFlag::kNone);
+#if defined(SPP_OS_QNX8)
+    // sendmmsg with vlen=0 is not supported on QNX 8
+    EXPECT_FALSE(send_result.has_value()) << "sendmmsg with zero messages should fail on QNX 8";
+#else
     EXPECT_TRUE(send_result.has_value()) << "sendmmsg failed to send zero messages";
+#endif
 }
 
 // Test receiving zero messages

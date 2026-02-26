@@ -294,11 +294,6 @@ cc_test(
         "manual",  # to disable using as host unit test in CI
         "unit",
     ],
-    #TODO: Ticket-215992: Fix disabled tests which failed on qnx8
-    target_compatible_with = [
-        "@platforms//os:qnx",
-        "@score_bazel_platforms//:qnx7_1",
-    ],
     deps = [
         "//third_party/libsocket",
         "@googletest//:gtest_main",

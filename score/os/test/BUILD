@@ -522,18 +522,12 @@ cc_test(
         "aborts_upon_exception",
     ],
     tags = ["unit"],
-    #TODO: Ticket-215992: Fix disabled tests which failed on qnx8
-    target_compatible_with = select({
-        "@platforms//os:linux": [],
-        "@platforms//os:qnx": [
-            "@score_bazel_platforms//:qnx7_1",
-        ],
-    }),
     deps = [
         "@googletest//:gtest_main",
         "@score_baselibs//score/language/futurecpp",
         "@score_baselibs//score/os:socket",
         "@score_baselibs//score/os:unistd",
+        "@score_baselibs//score/os:version",
     ],
 )
 
