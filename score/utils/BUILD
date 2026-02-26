@@ -75,6 +75,9 @@ cc_unit_test_suites_for_host_and_qnx(
         ":base64_unit_test",
         ":scoped_operation_test",
     ],
+    test_suites_from_sub_packages = [
+        "@score_baselibs//score/utils/meyer_singleton:unit_test_suite",
+    ],
     visibility = [
         "//visibility:public",
     ],
