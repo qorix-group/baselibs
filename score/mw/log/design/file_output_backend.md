@@ -31,17 +31,17 @@ or onto the console.
 `MessageBuilder` is responsible for serving data in correct order of flushing
 into file or console and stores some of common parts of the header.
 
-<img alt="Static Design" src="https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/eclipse-score/baselibs/refs/heads/main/score/mw/log/design/mw_log_file_backend.puml">
+![Static Design](./score/mw/log/design/mw_log_file_backend.puml)
 
 `SlotDrainer` is responsible for storing and disposal of already serialized
 data. First data gets inserted into circular buffer. After that step program
 flow enters a loop that iterates over available slots in ring buffer and then
 by means of `NonBlockingWriter` iterates over all spans of each message.
 
-<img alt="Sequence Design" src="https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/eclipse-score/baselibs/refs/heads/main/score/mw/log/design/slot_drainer_sequence_design.puml">
+![Sequence Design](./score/mw/log/design/slot_drainer_sequence_design.puml)
 
 Flush procedure exits whenever all available data is written to the file or
 writing procedure would block i.e. write operation reports that number of bytes
 written is less then requested.
 
-<img alt="Action Diagram" src="https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/eclipse-score/baselibs/refs/heads/main/score/mw/log/design/slot_drainer_action_diagram_design.puml">
+![Action Diagram](./score/mw/log/design/slot_drainer_action_diagram_design.puml)

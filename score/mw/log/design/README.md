@@ -69,13 +69,13 @@ Starting from this basic idea, the static design is divided into four main parts
 This design allows that any content streamed by the user into a `LogStream`, will directly end up in the respective slot
 implementation.
 
-<img alt="Verbose Logging class diagram" src="https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/eclipse-score/baselibs/refs/heads/main/score/mw/log/design/verbose_logging_static.puml">
+![Verbose Logging class diagram](./score/mw/log/design/verbose_logging_static.puml)
 
-<img alt="Verbose Logging sequence diagram" src="https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/eclipse-score/baselibs/refs/heads/main/score/mw/log/design/verbose_logging_sequence.puml">
+![Verbose Logging sequence diagram](./score/mw/log/design/verbose_logging_sequence.puml)
 
-![Non-Verbose Logging class diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/non_verbose_logging_static.puml)
+![Non-Verbose Logging class diagram](./score/mw/log/design/non_verbose_logging_static.puml)
 
-<img alt="ErrorDomain class diagram" src="https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/eclipse-score/baselibs/refs/heads/main/score/mw/log/design/error_domain.puml">
+![ErrorDomain class diagram](./score/mw/log/design/error_domain.puml)
 
 ### Types of recorders
 
@@ -88,7 +88,7 @@ Following recorders are supported:
 5. EmptyRecoder - used when logging is off.
 Because of the similarity between TextRecorder and FileRecorder it is decided to use the common Backend for both.
 
-<img alt="Recorders class diagram" src="https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/eclipse-score/baselibs/refs/heads/main/score/mw/log/design/mw_log_recorders.puml">
+![Recorders class diagram](./score/mw/log/design/mw_log_recorders.puml)
 
 ### High Level Component Diagram - Remote Logging
 
@@ -96,7 +96,7 @@ Because of the similarity between TextRecorder and FileRecorder it is decided to
 
 ### Activity diagrams
 
-![CircularAllocator::AcquireSlotToWrite Activity diagram](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/swh/safe-posix-platform/score/mw/log/design/circular_buffer_allocator_acquireslottowrite.puml)
+![CircularAllocator::AcquireSlotToWrite Activity diagram](./score/mw/log/design/circular_buffer_allocator_acquireslottowrite.puml)
 
 ![WaitFreeStack::TryPush Activity diagram](./score/mw/log/design/wait_free_stack_trypush.puml)
 
