@@ -209,13 +209,13 @@ score::Result<LogMode> LogModeFromString(const std::string_view str) noexcept
 // coverity[autosar_cpp14_a15_5_3_violation]
 score::Result<std::unordered_set<LogMode>> LogModesFromString(const std::string_view str) noexcept
 {
-    const auto segments = score::memory::LazySplitStringView{{str.data(), str.size()}, kLogModeCombineChar};
+    const auto segments = score::memory::LazySplitStringView{str, kLogModeCombineChar};
 
     std::unordered_set<LogMode> result;
 
     for (const auto segment : segments)
     {
-        const auto log_mode = LogModeFromString({segment.data(), segment.size()});
+        const auto log_mode = LogModeFromString(segment);
         if (log_mode.has_value() == false)
         {
             return MakeUnexpected(Error::kInvalidLogModeString);
