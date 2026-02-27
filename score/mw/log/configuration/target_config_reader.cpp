@@ -105,7 +105,7 @@ class GetElementAsImpl
         const auto find_result = obj.find(key);
         if (find_result == obj.end())
         {
-            return score::MakeUnexpected(Error::kConfigurationOptionalJsonKeyNotFound, key);
+            return score::MakeUnexpected(Error::kConfigurationOptionalJsonKeyNotFound, "key not found");
         }
 
         return find_result->second.As<AsType>();

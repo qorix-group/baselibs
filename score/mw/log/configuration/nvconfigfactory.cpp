@@ -171,15 +171,14 @@ score::Result<NvConfigFactory::TypeMap> NvConfigFactory::ParseFromJson(const std
     auto root = json_parser_obj.FromFile(json_path);
     if (!root.has_value())
     {
-        return score::MakeUnexpected<TypeMap>(
-            MakeError(NvConfigErrorCode::kParseError, "Failed to parse JSON file: " + json_path));
+        return score::MakeUnexpected<TypeMap>(MakeError(NvConfigErrorCode::kParseError, "Failed to parse JSON file"));
     }
 
     auto parse_result = root.value().As<score::json::Object>();
     if (!parse_result.has_value())
     {
         return score::MakeUnexpected<TypeMap>(
-            MakeError(NvConfigErrorCode::kParseError, "Invalid JSON structure in file: " + json_path));
+            MakeError(NvConfigErrorCode::kParseError, "Invalid JSON structure in file"));
     }
 
     auto typemap = NvConfigFactory::TypeMap{};
@@ -191,12 +190,11 @@ score::Result<NvConfigFactory::TypeMap> NvConfigFactory::ParseFromJson(const std
     else if (result_code == INvConfig::ReadResult::kErrorContent)
     {
         return score::MakeUnexpected<TypeMap>(
-            MakeError(NvConfigErrorCode::kContentError, "Invalid JSON content in file: " + json_path));
+            MakeError(NvConfigErrorCode::kContentError, "Invalid JSON content in file"));
     }
     else
     {
-        return score::MakeUnexpected<TypeMap>(
-            MakeError(NvConfigErrorCode::kParseError, "Failed to parse JSON file: " + json_path));
+        return score::MakeUnexpected<TypeMap>(MakeError(NvConfigErrorCode::kParseError, "Failed to parse JSON file"));
     }
 }
 
