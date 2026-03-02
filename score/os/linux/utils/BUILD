@@ -27,7 +27,6 @@ cc_library(
         "@score_baselibs//score/os/linux/utils/test:__subpackages__",
     ],
     deps = [
-        "//third_party/libseccomp2",
         "@score_baselibs//score/language/futurecpp",
         "@score_baselibs//score/os:stat",
         "@score_baselibs//score/os/linux",
