@@ -208,23 +208,22 @@ score::cpp::expected<score::cpp::span<std::uint8_t>, Error> AbortableBlockingRea
         return score::cpp::make_unexpected(Error::createFromErrno(EINVAL));
     }
 
-    // Wait until data is available (or timeout/abort). This function loops internally on QNX8.
-    const auto wait_status = WaitForData(file_descriptor);
-    if (!wait_status.has_value())
+    const auto data_available = WaitForData(file_descriptor);
+
+    if (!data_available.has_value())
     {
-        return score::cpp::make_unexpected(wait_status.error());
+        return score::cpp::make_unexpected(data_available.error());
     }
 
     // Suppressed here as it is safely used:
     // Provided error check and safeguard to ensure file descriptor is valid before reading.
     // NOLINTNEXTLINE(score-banned-function) see comment above
-    const auto read_result = unistd_->read(file_descriptor, buffer.data(), buffer.size());
-    if ((!read_result.has_value()) || (read_result.value() < 0))
+    const auto expected_length = unistd_->read(file_descriptor, buffer.data(), buffer.size());
+    if ((!expected_length.has_value()) || (expected_length.value() < 0))
     {
-        return score::cpp::make_unexpected(read_result.error());
+        return score::cpp::make_unexpected(expected_length.error());
     }
-
-    return buffer.first(static_cast<std::size_t>(read_result.value()));
+    return buffer.first(static_cast<std::size_t>(expected_length.value()));
 }
 
 void AbortableBlockingReader::SignalStop() noexcept
@@ -250,57 +249,37 @@ score::cpp::expected_blank<Error> AbortableBlockingReader::WaitForData(
     const NonBlockingFileDescriptor& file_descriptor) noexcept
 {
     std::array<struct pollfd, 2> fds{};
-
-#ifdef __QNXNTO__
-    // QNX8 workaround until Ticket-221150 is resolved : add finite timeout so we don't sleep forever if the
-    // resource manager fails to wake pollers; keep true blocking elsewhere.
-    constexpr std::int8_t kPollTimeoutMs = 50;  // tuneable: 10–100 ms
-#else
-    constexpr std::int8_t kPollTimeoutMs = -1;  // infinite blocking on other OSes
-#endif
+    constexpr std::int8_t kNoTimeout{-1};
 
     fds[0].fd = stop_read_file_descriptor_;
     // Suppress "AUTOSAR C++14 M5-0-21" rule findings. This rule declares: "Bitwise operators shall only be
     // applied to operands of unsigned underlying type."
     // Rationale: Macro POLLIN does not affect the sign of the result.
     // coverity[autosar_cpp14_m5_0_21_violation]
-    fds[0].events = POLLIN;  // self-pipe for abort
+    fds[0].events = POLLIN;
 
     fds[1].fd = file_descriptor.GetUnderlying();
-    // QNX8 often reports only POLLRDNORM for readable inotify fds.
     // Rationale: see comment above
     // coverity[autosar_cpp14_m5_0_21_violation]
-    fds[1].events = (POLLIN | POLLRDNORM);
+    fds[1].events = POLLIN;
 
-    while (true)
+    // coverity[autosar_cpp14_m5_0_6_violation]
+    const auto poll_result = syspoll_->poll(fds.data(), fds.size(), kNoTimeout);
+
+    if (!poll_result.has_value())
     {
-        // coverity[autosar_cpp14_m5_0_6_violation]
-        const auto poll_result = syspoll_->poll(fds.data(), fds.size(), kPollTimeoutMs);
-
-        if (!poll_result.has_value())
-        {
-            return score::cpp::make_unexpected(poll_result.error());
-        }
-
-        // Check return event flag for stop_read_file_descriptor_
-        // Rationale: see comment above
-        // coverity[autosar_cpp14_m5_0_21_violation]
-        if ((static_cast<std::uint32_t>(fds[0].revents) & static_cast<std::uint32_t>(POLLIN)) != 0U)
-        {
-            return score::cpp::make_unexpected(Error::createFromErrno(EINTR));
-        }
-
-        // If the watched fd is readable, we're ready; otherwise it was a timeout/spurious wake.
-        // Rationale: see comment above
-        // coverity[autosar_cpp14_m5_0_21_violation]
-        if ((static_cast<std::uint32_t>(fds[1].revents) &
-             (static_cast<std::uint32_t>(POLLIN) | static_cast<std::uint32_t>(POLLRDNORM))) != 0U)
-        {
-            return {};
-        }
-
-        // No event yet — timeout or spurious wake. Loop again (QNX8 workaround).
+        return score::cpp::make_unexpected(poll_result.error());
     }
+
+    // Check return event flag for stop_read_file_descriptor_
+    // Rationale: see comment above
+    // coverity[autosar_cpp14_m5_0_21_violation]
+    if ((static_cast<std::uint32_t>(fds[0].revents) & static_cast<std::uint32_t>(POLLIN)) != 0U)
+    {
+        return score::cpp::make_unexpected(Error::createFromErrno(EINTR));
+    }
+
+    return {};
 }
 
 score::cpp::expected<std::pair<NonBlockingFileDescriptor, NonBlockingFileDescriptor>, Error>
