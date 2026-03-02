@@ -93,9 +93,11 @@ class basic_zstring_view : private details::zspan<std::add_const_t<CharType>>
     }
 
     /// @brief Constructs a `basic_zstring_view` as view over character range pointed to by pointer \p str;.
-    /// @details will invoke `std::abort()` in case such character range is not null-terminated at index \p len; - 1
+    /// @details will invoke `std::abort()` in case such character range is not null-terminated at index \p len;
+    /// @note the pointed-to character range must have a valid length of  \p len; + 1 since this constructor
+    ///       will access the range's element at index \p len; to perform the null-termination check
     constexpr basic_zstring_view(const CharType* str, size_type len) noexcept
-        : base(str, len, typename violation_policies::abort{})
+        : base(str, len + 1U, typename violation_policies::abort{})
     {
     }
 

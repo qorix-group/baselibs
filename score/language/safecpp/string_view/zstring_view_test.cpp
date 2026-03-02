@@ -83,7 +83,7 @@ TEST(ZStringView, CanConstructFromNullTerminatedBuffer)
     char buffer[] = {'h', 'e', 'l', 'l', 'o', '\0'};
 
     // When constructing a `zstring_view` from it
-    safecpp::zstring_view view{buffer, sizeof(buffer)};
+    safecpp::zstring_view view{buffer, sizeof(buffer) - 1};
 
     // Then it must not be empty
     EXPECT_FALSE(view.empty());
