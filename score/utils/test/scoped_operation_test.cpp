@@ -17,11 +17,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-namespace score
-{
-namespace platform
-{
-namespace ifwi
+namespace score::platform::ifwi
 {
 namespace
 {
@@ -65,6 +61,4 @@ TEST(ScopedOperationTest, CallScopedFunctionOnDestruction)
 }
 
 }  // namespace
-}  // namespace ifwi
-}  // namespace platform
-}  // namespace score
+}  // namespace score::platform::ifwi

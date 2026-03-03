@@ -16,9 +16,7 @@
 #include <string>
 #include <vector>
 
-namespace score::utils
-{
-namespace test
+namespace score::utils::test
 {
 
 TEST(Base64Test, EncodeEmptyString)
@@ -103,5 +101,4 @@ TEST(Base64Test, DecodeMultipleBytes)
     EXPECT_EQ(result, input);
 }
 
-}  // namespace test
-}  // namespace score::utils
+}  // namespace score::utils::test

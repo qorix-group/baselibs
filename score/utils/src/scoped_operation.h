@@ -17,9 +17,7 @@
 
 #include <type_traits>
 
-namespace score
-{
-namespace utils
+namespace score::utils
 {
 
 /// @brief A simple wrapper to call a Callable on scope exit (like std::experimental::scope_exit)
@@ -48,7 +46,6 @@ class ScopedOperation final
     CallbackType fn_;
 };
 
-}  // namespace utils
-}  // namespace score
+}  // namespace score::utils
 
 #endif  // LIB_UTILS_SRC_SCOPED_OPERATION_H
