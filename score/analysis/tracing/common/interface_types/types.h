@@ -51,31 +51,6 @@ static constexpr auto kBlockSize = 64U;
 // coverity[autosar_cpp14_a2_10_4_violation : FALSE]
 static constexpr std::uint8_t kMaxChunksPerOneTraceRequest = 10U;
 
-// Suppress "AUTOSAR C++14 A0-1-1" rule finding. This rule states: "A project shall not contain
-// instances of non-volatile variables being given values that are not subsequently used."
-// The variable kNumberOfElements is declared and given value that is used in multiple files
-// like object_factory.cpp and trace_job_processor_factory.cpp (false positive)
-// Suppress "AUTOSAR C++14 A2-10-4". The rule states: "The identifier name of a
-// non-member object with static storage duration or static function shall not be
-// reused within a namespace"
-// This is a single declaration using constexpr.
-// The identifier is not reused; it's declared once and referenced elsewhere.
-// coverity[autosar_cpp14_a0_1_1_violation: FALSE]
-// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
-static constexpr std::uint16_t kNumberOfElements = 500U;
-// Suppress "AUTOSAR C++14 A0-1-1" rule finding. This rule states: "A project shall not contain
-// instances of non-volatile variables being given values that are not subsequently used."
-// The variable kRingBufferSharedMemorySize is declared and given value that is used in multiple files
-// like shm_ring_buffer.cpp (false positive)
-// Suppress "AUTOSAR C++14 A2-10-4". The rule states: "The identifier name of a
-// non-member object with static storage duration or static function shall not be
-// reused within a namespace"
-// This is a single declaration using constexpr.
-// The identifier is not reused; it's declared once and referenced elsewhere.
-// coverity[autosar_cpp14_a0_1_1_violation: FALSE]
-// coverity[autosar_cpp14_a2_10_4_violation : FALSE]
-static constexpr std::size_t kRingBufferSharedMemorySize = 102400U;
-
 /// @brief Type used to store Trace client Id
 using TraceClientId = std::uint8_t;
 
