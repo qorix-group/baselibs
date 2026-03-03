@@ -85,6 +85,23 @@ public:
     const std::uint32_t& member() const { return member_; }
 };
 
+template <typename T>
+class copy_only_type
+{
+public:
+    copy_only_type() : type_{} {};
+    copy_only_type& operator=(const copy_only_type& x) = default;
+    copy_only_type(const copy_only_type&) = default;
+    copy_only_type& operator=(copy_only_type&&) = delete;
+    copy_only_type(copy_only_type&&) = delete;
+    ~copy_only_type() = default;
+
+    const T& underlying() const { return type_; }
+
+private:
+    T type_;
+};
+
 class move_only
 {
     static std::uint32_t ctor_counter;
@@ -419,8 +436,8 @@ TEST(optional, copy_assignment_deletion)
         EXPECT_EQ(1, non_default_ctor::dtor_count());
         fixture = fixture2;
         EXPECT_EQ(4, non_default_ctor::count());
-        EXPECT_EQ(6, non_default_ctor::ctor_count());
-        EXPECT_EQ(2, non_default_ctor::dtor_count());
+        EXPECT_EQ(5, non_default_ctor::ctor_count());
+        EXPECT_EQ(1, non_default_ctor::dtor_count());
 
         // delete value because of move-assignment of empty optional
         fixture = score::cpp::optional<non_default_ctor>();
@@ -435,13 +452,13 @@ TEST(optional, copy_assignment_deletion)
         // assignment from value
         EXPECT_TRUE(fixture6.has_value());
         EXPECT_EQ(4, non_default_ctor::count());
-        EXPECT_EQ(7, non_default_ctor::ctor_count());
-        EXPECT_EQ(3, non_default_ctor::dtor_count());
+        EXPECT_EQ(6, non_default_ctor::ctor_count());
+        EXPECT_EQ(2, non_default_ctor::dtor_count());
         // we expect that arg will be copy-assigned to the contained value inside fixture6.
         fixture6 = arg;
         EXPECT_EQ(4, non_default_ctor::count());
-        EXPECT_EQ(7, non_default_ctor::ctor_count());
-        EXPECT_EQ(3, non_default_ctor::dtor_count());
+        EXPECT_EQ(6, non_default_ctor::ctor_count());
+        EXPECT_EQ(2, non_default_ctor::dtor_count());
 
         // delete value because of copy-assignment of empty optional
         ASSERT_TRUE(fixture6.has_value());
@@ -449,8 +466,8 @@ TEST(optional, copy_assignment_deletion)
         fixture6 = empty;
         EXPECT_FALSE(fixture6.has_value());
         EXPECT_EQ(3, non_default_ctor::count());
-        EXPECT_EQ(7, non_default_ctor::ctor_count());
-        EXPECT_EQ(4, non_default_ctor::dtor_count());
+        EXPECT_EQ(6, non_default_ctor::ctor_count());
+        EXPECT_EQ(3, non_default_ctor::dtor_count());
     }
 
     EXPECT_EQ(0, non_default_ctor::count());
@@ -1432,6 +1449,20 @@ TEST(optional, perfect_forward_converting_assignment_to_nonempty_optional)
 
 /// @testmethods TM_REQUIREMENT
 /// @requirement CB-#9337998
+TEST(optional, perfect_forward_assignment_fallback_to_copy_if_type_cannot_be_moved)
+{
+    score::cpp::optional<copy_only_type<forward_counter>> value{score::cpp::in_place};
+
+    score::cpp::optional<copy_only_type<forward_counter>> fixture{score::cpp::in_place};
+    fixture = std::move(value);
+    EXPECT_EQ(0, fixture->underlying().move_constructor_calls());
+    EXPECT_EQ(0, fixture->underlying().copy_constructor_calls());
+    EXPECT_EQ(0, fixture->underlying().move_assignment_calls());
+    EXPECT_EQ(1, fixture->underlying().copy_assignment_calls());
+}
+
+/// @testmethods TM_REQUIREMENT
+/// @requirement CB-#9337998
 TEST(optional, perfect_forward_assignment_to_empty_optional)
 {
     score::cpp::optional<forward_counter> value{score::cpp::in_place};
@@ -1466,22 +1497,22 @@ TEST(optional, perfect_forward_assignment_to_nonempty_optional)
 
     score::cpp::optional<forward_counter> fixture_1{score::cpp::in_place};
     fixture_1 = std::move(value);
-    EXPECT_EQ(0, fixture_1->move_assignment_calls());
-    EXPECT_EQ(1, fixture_1->move_constructor_calls());
+    EXPECT_EQ(1, fixture_1->move_assignment_calls());
+    EXPECT_EQ(0, fixture_1->move_constructor_calls());
     EXPECT_EQ(0, fixture_1->copy_constructor_calls());
     EXPECT_EQ(0, fixture_1->copy_assignment_calls());
 
     score::cpp::optional<forward_counter> fixture_2{score::cpp::in_place};
     fixture_2 = value;
-    EXPECT_EQ(0, fixture_2->copy_assignment_calls());
+    EXPECT_EQ(1, fixture_2->copy_assignment_calls());
     EXPECT_EQ(0, fixture_2->move_assignment_calls());
-    EXPECT_EQ(1, fixture_2->copy_constructor_calls());
+    EXPECT_EQ(0, fixture_2->copy_constructor_calls());
     EXPECT_EQ(0, fixture_2->move_constructor_calls());
 
     score::cpp::optional<forward_counter> fixture_3{score::cpp::in_place};
     fixture_3 = score::cpp::optional<forward_counter>{score::cpp::in_place};
-    EXPECT_EQ(0, fixture_3->move_assignment_calls());
-    EXPECT_EQ(1, fixture_3->move_constructor_calls());
+    EXPECT_EQ(1, fixture_3->move_assignment_calls());
+    EXPECT_EQ(0, fixture_3->move_constructor_calls());
     EXPECT_EQ(0, fixture_3->copy_constructor_calls());
     EXPECT_EQ(0, fixture_3->copy_assignment_calls());
 }

@@ -30,6 +30,7 @@
 #include <score/private/utility/ignore.hpp>
 #include <score/private/utility/in_place_t.hpp> // IWYU pragma: export
 #include <initializer_list>
+#include <optional>
 #include <type_traits>
 #include <utility>
 #include <score/assert.hpp>
@@ -90,17 +91,16 @@ public:
     using value_type = T;
 
     /// \brief Construct an empty object, i.e. the value is "not available".
-    constexpr optional() noexcept : null_state_{}, has_value_{false} {}
+    constexpr optional() noexcept : base_{} {}
 
     /// \brief Construct an empty object, i.e. the value is "not available".
     // NOLINTNEXTLINE(google-explicit-constructor) follows C++ Standard
-    constexpr optional(nullopt_t) noexcept : null_state_{}, has_value_{false} {}
+    constexpr optional(nullopt_t) noexcept : base_{std::nullopt} {}
 
     /// \brief Construct an object using direct-initialization.
     template <typename... Args, typename = typename std::enable_if<std::is_constructible<T, Args...>::value>::type>
-    constexpr explicit optional(in_place_t, Args&&... args) : null_state_{}, has_value_{false}
+    constexpr explicit optional(in_place_t, Args&&... args) : base_{std::in_place, std::forward<Args>(args)...}
     {
-        construct(std::forward<Args>(args)...);
     }
 
     /// \brief Construct from a value.
@@ -109,7 +109,7 @@ public:
     ///
     /// \param other The value to be placed into the newly built object.
     // NOLINTNEXTLINE(google-explicit-constructor) follows C++ Standard
-    constexpr optional(const value_type& other) : null_state_{}, has_value_{false} { construct(other); }
+    constexpr optional(const value_type& other) : base_{other} {}
 
     /// \brief Construct from a value.
     ///
@@ -117,7 +117,7 @@ public:
     ///
     /// \param other The value to be placed into the newly built object.
     // NOLINTNEXTLINE(google-explicit-constructor) follows C++ Standard
-    constexpr optional(value_type&& other) : null_state_{}, has_value_{false} { construct(std::move(other)); }
+    constexpr optional(value_type&& other) : base_{std::move(other)} {}
 
     /// \brief Construct from a value.
     ///
@@ -131,39 +131,23 @@ public:
                                                  && std::is_constructible<T, U>::value                       //
                                                  >::type>
     // NOLINTNEXTLINE(google-explicit-constructor) follows C++ Standard
-    constexpr optional(U&& other) : null_state_{}, has_value_{false}
+    constexpr optional(U&& other) : base_{std::forward<U>(other)}
     {
-        construct(std::forward<U>(other));
     }
 
-    /// \brief Copy constructor of optional.
+    /// \brief Construct from an expected.
     ///
-    /// Using this constructor, an optional is built from another optional.
+    /// Using this constructor, an optional is built containing a value if other.has_value else empty
     ///
-    /// \param other The optional to copy from.
-    constexpr optional(const optional& other) : null_state_{}, has_value_{false}
+    /// \param other The value to be placed into the newly built object.
+    template <typename E>
+    optional(const score::cpp::expected<value_type, E>& other) : base_{}
     {
         static_assert(std::is_copy_constructible<T>::value, "failed");
 
         if (other.has_value())
         {
-            construct(other.data_);
-        }
-    }
-
-    /// \brief Move constructor of optional.
-    ///
-    /// Using this constructor, an optional is built from another optional.
-    ///
-    /// \param other The optional to copy from.
-    constexpr optional(optional&& other) noexcept(std::is_nothrow_move_constructible<T>::value)
-        : null_state_{}, has_value_{false}
-    {
-        static_assert(std::is_move_constructible<T>::value, "failed");
-
-        if (other.has_value())
-        {
-            construct(std::move(other.data_));
+            base_.emplace(*other);
         }
     }
 
@@ -173,40 +157,13 @@ public:
     ///
     /// \param other The value to be placed into the newly built object.
     template <typename E>
-    optional(const score::cpp::expected<value_type, E>& other) : null_state_{}, has_value_{false}
-    {
-        static_assert(std::is_copy_constructible<T>::value, "failed");
-
-        if (other.has_value())
-        {
-            construct(other.value());
-        }
-    }
-
-    /// \brief Construct from an expected.
-    ///
-    /// Using this constructor, an optional is built containing a value if other.has_value else empty
-    ///
-    /// \param other The value to be placed into the newly built object.
-    template <typename E>
-    optional(score::cpp::expected<value_type, E>&& other) : null_state_{}, has_value_{false}
+    optional(score::cpp::expected<value_type, E>&& other) : base_{}
     {
         static_assert(std::is_move_constructible<T>::value, "failed");
 
         if (other.has_value())
         {
-            construct(std::move(other).value());
-        }
-    }
-
-    /// \brief Destruct an optional.
-    ///
-    /// When the optional holds a value, this value will be destructed as well.
-    ~optional()
-    {
-        if (has_value())
-        {
-            data_.~value_type();
+            base_.emplace(std::move(*other));
         }
     }
 
@@ -233,85 +190,7 @@ public:
                                            >::type>
     optional& operator=(U&& other)
     {
-        if (this->has_value())
-        {
-            data_ = std::forward<U>(other);
-        }
-        else
-        {
-            construct(std::forward<U>(other));
-        }
-        return *this;
-    }
-
-    /// \brief Assigns from another optional.
-    ///
-    /// Using this assignment operator, an optional is built containing a value if other.has_value else empty
-    ///
-    /// \param other Containing the value to be placed into the newly built object.
-    optional& operator=(const optional& other)
-    {
-        // currently downstream code doesn't compile if `is_move_assignable` is checked. for now not an
-        // issue because our code currently always moves construct and doesn't implement the table from
-        // https://en.cppreference.com/w/cpp/utility/optional/operator%3D
-        // issue: broken_link_g/swh/amp/issues/385
-        static_assert(std::is_copy_constructible<T>::value && std::is_copy_assignable<T>::value, "failed");
-
-        if (other.has_value())
-        {
-            if (this->has_value())
-            { // should be: data_ = *other;
-                if (this != &other)
-                {
-                    reset();
-                    construct(*other);
-                }
-            }
-            else
-            {
-                construct(*other);
-            }
-        }
-        else
-        {
-            reset();
-        }
-        return *this;
-    }
-
-    /// \brief Assigns from another optional.
-    ///
-    /// Using this assignment operator, an optional is built containing a value if other.has_value else empty
-    ///
-    /// \param other Containing the value to be placed into the newly built object.
-    optional& operator=(optional&& other) noexcept(
-        std::is_nothrow_move_assignable<T>::value&& std::is_nothrow_move_constructible<T>::value)
-    {
-        // currently downstream code doesn't compile if `is_move_assignable` is checked. for now not an
-        // issue because our code currently always moves construct and doesn't implement the table from
-        // https://en.cppreference.com/w/cpp/utility/optional/operator%3D
-        // issue: broken_link_g/swh/amp/issues/385
-        static_assert(std::is_move_constructible<T>::value /*&& std::is_move_assignable<T>::value*/, "failed");
-
-        if (other.has_value())
-        {
-            if (this->has_value())
-            { // should be: data_ = std::move(*other);
-                if (this != &other)
-                {
-                    reset();
-                    construct(std::move(*other));
-                }
-            }
-            else
-            {
-                construct(std::move(*other));
-            }
-        }
-        else
-        {
-            reset();
-        }
+        base_ = std::forward<U>(other);
         return *this;
     }
 
@@ -328,7 +207,7 @@ public:
         reset();
         if (other.has_value())
         {
-            construct(other.value());
+            base_.emplace(*other);
         }
         return *this;
     }
@@ -346,10 +225,20 @@ public:
         reset();
         if (other.has_value())
         {
-            construct(other.value());
+            base_.emplace(*other);
         }
         return *this;
     }
+
+    optional(const optional&) = default;
+    optional(optional&&) = default;
+    optional& operator=(const optional&) = default;
+    optional& operator=(optional&&) = default;
+
+    /// \brief Destruct an optional.
+    ///
+    /// When the optional holds a value, this value will be destructed as well.
+    ~optional() {}
 
     /// \brief Constructs the contained value in-place
     ///
@@ -360,9 +249,8 @@ public:
     template <typename... Args>
     value_type& emplace(Args&&... args)
     {
-        reset();
-        construct(std::forward<Args>(args)...);
-        return data_;
+        base_.emplace(std::forward<Args>(args)...);
+        return *base_;
     }
 
     /// \brief Accessor for the value
@@ -376,7 +264,7 @@ public:
     constexpr const value_type& value() const
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION_PRD(has_value());
-        return data_;
+        return base_.value();
     }
 
     /// \brief Accessor for the value
@@ -390,7 +278,7 @@ public:
     value_type& value()
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION_PRD(has_value());
-        return data_;
+        return base_.value();
     }
 
     /// \brief Returns a reference to the contained value.
@@ -404,7 +292,7 @@ public:
     constexpr const value_type& operator*() const
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(has_value());
-        return data_;
+        return base_.operator*();
     }
 
     /// \brief Returns a reference to the contained value.
@@ -418,7 +306,7 @@ public:
     value_type& operator*()
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(has_value());
-        return data_;
+        return base_.operator*();
     }
 
     /// \brief Returns a pointer to the contained value.
@@ -432,7 +320,7 @@ public:
     constexpr const value_type* operator->() const
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(has_value());
-        return &data_;
+        return base_.operator->();
     }
 
     /// \brief Returns a pointer to the contained value.
@@ -446,7 +334,7 @@ public:
     value_type* operator->()
     {
         SCORE_LANGUAGE_FUTURECPP_PRECONDITION(has_value());
-        return &data_;
+        return base_.operator->();
     }
 
     /// \brief Safe version of the direct value accessors. Uses provided default value, if internal value is not
@@ -457,33 +345,23 @@ public:
     ///
     /// \sa value
     /// \return The internal value if available, otherwise return the provided default
-    constexpr const value_type value_or(const value_type& value) const
-    {
-        return this->has_value() ? this->value() : value;
-    }
+    constexpr const value_type value_or(const value_type& value) const { return this->has_value() ? **this : value; }
 
     /// \brief If *this contains a value, destroy that value as if by value().T::~T(). Otherwise, there are no
     /// effects.
     ///
     /// *this does not contain a value after this call.
-    void reset()
-    {
-        if (has_value())
-        {
-            data_.~value_type();
-            has_value_ = false;
-        }
-    }
+    void reset() noexcept { base_.reset(); }
 
     /// \brief Checks whether *this contains a value.
     ///
     /// \return true if *this contains a value, false if *this does not contain a value.
-    constexpr bool has_value() const { return has_value_; }
+    constexpr bool has_value() const noexcept { return base_.has_value(); }
 
     /// \brief Checks whether *this contains a value.
     ///
     /// \return true if *this contains a value, false if *this does not contain a value.
-    constexpr explicit operator bool() const { return has_value(); }
+    constexpr explicit operator bool() const noexcept { return has_value(); }
 
     /// \brief If *this contains a value, invokes f with the contained value as an argument, and returns the result of
     /// that invocation; otherwise, returns an empty score::cpp::optional.
@@ -624,32 +502,13 @@ public:
     // \}
 
 private:
-    template <class... Args>
-    void construct(Args&&... args)
-    {
-        score::cpp::ignore = score::cpp::detail::construct_at(std::addressof(data_), std::forward<Args>(args)...);
-        has_value_ = true;
-    }
-
-    // For performances reason this class is not using `std::variant` but implementing the storage as a raw union. This
-    // class takes care by code review to only read from the active member of the union. The union is only visible
-    // internally and not exposed to the user API.
-    // coverity[misra_cpp_2023_rule_12_3_1_violation : SUPPRESS]
-    union
-    {
-        // NOLINTNEXTLINE(readability-identifier-naming) keep `_` to make clear it is a member variable
-        char null_state_;
-        // NOLINTNEXTLINE(readability-identifier-naming) keep `_` to make clear it is a member variable
-        std::remove_cv_t<value_type> data_;
-    };
-    bool has_value_;
+    std::optional<T> base_;
 };
 
 template <typename U>
 bool operator==(const optional<U>& lhs, const optional<U>& rhs)
 {
-    return (!lhs.has_value() && !rhs.has_value()) ||
-           ((lhs.has_value() && rhs.has_value()) && (lhs.value() == rhs.value()));
+    return (!lhs.has_value() && !rhs.has_value()) || ((lhs.has_value() && rhs.has_value()) && (*lhs == *rhs));
 }
 
 template <typename U>
@@ -661,7 +520,7 @@ bool operator!=(const optional<U>& lhs, const optional<U>& rhs)
 template <typename U>
 bool operator<(const optional<U>& lhs, const optional<U>& rhs)
 {
-    return (lhs.has_value() && rhs.has_value() && (lhs.value() < rhs.value())) || (!lhs.has_value() && rhs.has_value());
+    return (lhs.has_value() && rhs.has_value() && (*lhs < *rhs)) || (!lhs.has_value() && rhs.has_value());
 }
 
 template <typename U>
