@@ -33,14 +33,14 @@ class IAtomic
   public:
     virtual ~IAtomic() = default;
 
-    virtual auto fetch_add(T, std::memory_order) noexcept -> T = 0;
-    virtual auto fetch_sub(T, std::memory_order) noexcept -> T = 0;
-    virtual bool compare_exchange_strong(T&, T, std::memory_order) noexcept = 0;
+    virtual auto fetch_add(T, std::memory_order = std::memory_order_seq_cst) noexcept -> T = 0;
+    virtual auto fetch_sub(T, std::memory_order = std::memory_order_seq_cst) noexcept -> T = 0;
+    virtual bool compare_exchange_strong(T&, T, std::memory_order = std::memory_order_seq_cst) noexcept = 0;
     virtual bool compare_exchange_strong(T&, T, std::memory_order, std::memory_order) noexcept = 0;
-    virtual bool compare_exchange_weak(T&, T, std::memory_order) noexcept = 0;
+    virtual bool compare_exchange_weak(T&, T, std::memory_order = std::memory_order_seq_cst) noexcept = 0;
     virtual bool compare_exchange_weak(T&, T, std::memory_order, std::memory_order) noexcept = 0;
-    virtual void store(T, std::memory_order) noexcept = 0;
-    virtual auto load(std::memory_order) noexcept -> T = 0;
+    virtual void store(T, std::memory_order = std::memory_order_seq_cst) noexcept = 0;
+    virtual auto load(std::memory_order = std::memory_order_seq_cst) noexcept -> T = 0;
 
   protected:
     // Make all special member functions protected to prevent them ever being explicitly called (which can lead to
