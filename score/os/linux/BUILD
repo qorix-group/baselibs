@@ -68,8 +68,7 @@ cc_library(
     visibility = [
         "//platform/aas/ara/tsync:__subpackages__",
         "//platform/aas/pas/crash_handler:__pkg__",
-        "//platform/aas/pas/sysmon:__pkg__",
-        "//platform/aas/pas/sysmon/application:__subpackages__",
+        "//platform/aas/pas/sysmon:__subpackages__",
         "@score_baselibs//score/os:__subpackages__",
     ],
     deps = [
