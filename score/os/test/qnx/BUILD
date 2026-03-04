@@ -207,9 +207,12 @@ cc_test(
     ],
     target_compatible_with = ["@platforms//os:qnx"],
     deps = [
-        "@googletest//:gtest_main",
         "@score_baselibs//score/os/mocklib/qnx:procmgr_mock",
+        # Link-time seam: replaces ::procmgr_daemon so ProcMgrImpl can be tested
+        # without the real QNX syscall.
+        "@score_baselibs//score/os/mocklib/qnx:procmgr_daemon_raw_mock",
         "@score_baselibs//score/os/qnx:procmgr",
+        "@googletest//:gtest_main",
     ],
 )
 

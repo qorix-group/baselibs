@@ -107,6 +107,25 @@ cc_library(
     ],
 )
 
+# Link-time seam that replaces ::procmgr_daemon with a gmock-controlled fake.
+# Link this into test binaries that need to exercise ProcMgrImpl::procmgr_daemon
+# while keeping the QNX syscall out of the picture.
+cc_library(
+    name = "procmgr_daemon_raw_mock",
+    testonly = True,
+    srcs = ["mock_procmgr_daemon_raw.cpp"],
+    hdrs = ["mock_procmgr_daemon_raw.h"],
+    target_compatible_with = ["@platforms//os:qnx"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@googletest//:gtest",
+    ],
+    # alwayslink ensures the linker includes our extern "C" procmgr_daemon
+    # definition even if the only reference to it comes indirectly through
+    # ProcMgrImpl (another archive member).
+    alwayslink = True,
+)
+
 cc_library(
     name = "neutrino_qnx_mock",
     testonly = True,

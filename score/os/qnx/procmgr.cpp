@@ -85,12 +85,9 @@ class ProcMgrImpl final : public ProcMgr
                                                        const std::uint32_t flags) const noexcept override
     {
         std::int32_t result = ::procmgr_daemon(status, flags);
-        // Negative case: It appears to be impossible to test it using a unit test.
-        // Error cases are not provided in qnx documentation.
-        // And passing an invalid flag to procmgr_daemon does not result in error.
-        if (result == -1)  // LCOV_EXCL_BR_LINE: rationale above
+        if (result == -1)
         {
-            return score::cpp::make_unexpected(score::os::Error::createFromErrno(result));  // LCOV_EXCL_LINE
+            return score::cpp::make_unexpected(score::os::Error::createFromErrno(result));
         }
         return {};
     }

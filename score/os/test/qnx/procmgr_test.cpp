@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 #include "score/os/mocklib/qnx/mock_procmgr.h"
+#include "score/os/mocklib/qnx/mock_procmgr_daemon_raw.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -21,7 +22,7 @@ namespace
 constexpr pid_t kCurrentPid{0};
 constexpr pid_t kInvalidPid{INT_MAX};
 
-// Mock test
+// Mock test – uses ObjectSeam to inject a full MockProcMgr (tests the mock hook-up).
 
 struct ProcMgrMockTest : ::testing::Test
 {
@@ -35,6 +36,22 @@ struct ProcMgrMockTest : ::testing::Test
     };
 
     score::os::MockProcMgr procmgrmock;
+};
+
+// Real-impl test – uses the link-time seam to mock only the raw ::procmgr_daemon
+// QNX syscall, so ProcMgrImpl::procmgr_daemon is exercised end-to-end.
+struct ProcMgrRealImplDaemonTest : ::testing::Test
+{
+    void SetUp() override
+    {
+        score::os::SetProcMgrDaemonRawMock(&daemon_raw_mock_);
+    };
+    void TearDown() override
+    {
+        score::os::SetProcMgrDaemonRawMock(nullptr);
+    };
+
+    ::testing::StrictMock<score::os::MockProcMgrDaemonRaw> daemon_raw_mock_;
 };
 
 TEST_F(ProcMgrMockTest, procmgr_ability)
@@ -139,7 +156,7 @@ TEST(ProcMgrTest, procmgr_ability_failure)
     EXPECT_EQ(result.error(), score::os::Error::Code::kNoSuchProcess);
 }
 
-TEST(ProcMgrTest, procmgr_daemon_success)
+TEST_F(ProcMgrRealImplDaemonTest, procmgr_daemon_success)
 {
     RecordProperty("ParentRequirement", "SCR-46010294");
     RecordProperty("ASIL", "B");
@@ -147,10 +164,33 @@ TEST(ProcMgrTest, procmgr_daemon_success)
     RecordProperty("TestingTechnique", "Interface test");
     RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
 
+    EXPECT_CALL(daemon_raw_mock_,
+                procmgr_daemon(kCurrentPid,
+                               PROCMGR_DAEMON_KEEPUMASK | PROCMGR_DAEMON_NOCHDIR | PROCMGR_DAEMON_NOCLOSE |
+                                   PROCMGR_DAEMON_NODEVNULL))
+        .WillOnce(::testing::Return(0));
+
     auto result = score::os::ProcMgr::instance().procmgr_daemon(
         kCurrentPid,
         PROCMGR_DAEMON_KEEPUMASK | PROCMGR_DAEMON_NOCHDIR | PROCMGR_DAEMON_NOCLOSE | PROCMGR_DAEMON_NODEVNULL);
     EXPECT_TRUE(result.has_value());
+}
+
+TEST_F(ProcMgrRealImplDaemonTest, procmgr_daemon_failure)
+{
+    RecordProperty("ParentRequirement", "SCR-46010294");
+    RecordProperty("ASIL", "B");
+    RecordProperty("Description", "Test Procmgr Daemon Failure");
+    RecordProperty("TestingTechnique", "Interface test");
+    RecordProperty("DerivationTechnique", "Generation and analysis of equivalence classes");
+
+    EXPECT_CALL(daemon_raw_mock_, procmgr_daemon(kCurrentPid, 0U)).WillOnce(::testing::Return(-1));
+
+    auto result = score::os::ProcMgr::instance().procmgr_daemon(kCurrentPid, 0U);
+    EXPECT_FALSE(result.has_value());
+    // ProcMgrImpl passes the return value (-1) to createFromErrno rather than errno,
+    // so the error code maps to kUnexpected.
+    EXPECT_EQ(result.error(), score::os::Error::Code::kUnexpected);
 }
 
 }  // namespace
