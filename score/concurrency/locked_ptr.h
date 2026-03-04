@@ -143,8 +143,9 @@ class LockedPtr
     /**
      * @brief Creates an UnlockGuard that temporarily unlocks the Lock.
      * @return An UnlockGuard that unlocks the Lock for its lifetime.
-     * @remarks The returned UnlockGuard must not outlive the LockedPtr and should go out of scope before the LockedPtr.
-     *          The LockedPtr remains valid and will unlock the Lock on destruction.
+     * @remarks It is Undefined Behaviour if the returned UnlockGuard outlives the LockedPtr.
+     *          The UnlockGuard should be destroyed before the LockedPtr is destroyed.
+     *          Moving the LockedPtr while an UnlockGuard exists is also Undefined Behaviour.
      */
     [[nodiscard]] UnlockGuard<Lock> unlock_guard()
     {
@@ -173,6 +174,17 @@ class LockedPtr
     }
 
     /**
+     * @brief Inequality comparison with another LockedPtr.
+     * @param other The LockedPtr to compare with.
+     * @return true if both LockedPtrs point to different objects, false otherwise.
+     * @note The locks of the LockedPtrs are not compared - they are held for the lifetime of the LockedPtr.
+     */
+    [[nodiscard]] bool operator!=(const LockedPtr& other) const noexcept
+    {
+        return !(*this == other);
+    }
+
+    /**
      * @brief Equality comparison with a raw pointer.
      * @param p The raw pointer to compare with.
      * @return true if the LockedPtr points to the same object as the raw pointer, false otherwise.
@@ -184,6 +196,17 @@ class LockedPtr
     }
 
     /**
+     * @brief Inequality comparison with a raw pointer.
+     * @param p The raw pointer to compare with.
+     * @return true if the LockedPtr points to a different object than the raw pointer, false otherwise.
+     * @note This does not check the state of the Lock as they are held for the lifetime of the LockedPtr.
+     */
+    [[nodiscard]] bool operator!=(const T* p) const noexcept
+    {
+        return !(*this == p);
+    }
+
+    /**
      * @brief Equality comparison with nullptr.
      * @param nullptr_t The nullptr to compare with.
      * @return true if the LockedPtr points to nullptr, false otherwise.
@@ -192,6 +215,17 @@ class LockedPtr
     [[nodiscard]] bool operator==(std::nullptr_t) const noexcept
     {
         return ptr_ == nullptr;
+    }
+
+    /**
+     * @brief Inequality comparison with nullptr.
+     * @param nullptr_t The nullptr to compare with.
+     * @return true if the LockedPtr points to a non-nullptr, false otherwise.
+     * @note This does not check the state of the Lock.
+     */
+    [[nodiscard]] bool operator!=(std::nullptr_t) const noexcept
+    {
+        return !(*this == nullptr);
     }
 
   private:

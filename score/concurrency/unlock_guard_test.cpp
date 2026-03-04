@@ -19,7 +19,7 @@
 #include <mutex>
 #include <shared_mutex>
 
-#include "test_types.h"
+#include "score/concurrency/test_types.h"
 
 namespace test
 {

@@ -110,13 +110,15 @@ class Synchronized
     using const_pointer = LockedPtr<const T, std::unique_lock<Lockable>>;
 
     /**
-     * @brief Constructs a Synchronized object with a T obj constructed by forwarding args to T's constructor.
-     * @param args Arguments that construct a T.
+     * @brief Constructs a Synchronized object with a T obj constructed by forwarding t_args to T's constructor.
+     * @param t_args Arguments that construct a T.
      */
     template <typename... ArgsToConstructT>
-    explicit Synchronized(ArgsToConstructT&&... args) noexcept(
+    explicit Synchronized(ArgsToConstructT&&... t_args) noexcept(
         std::is_nothrow_constructible_v<T, ArgsToConstructT...> && std::is_nothrow_constructible_v<Lockable>)
-        : mut{}, obj(std::forward<ArgsToConstructT>(args)...)
+        // std::forward on a parameter pack does not decay arrays
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay) false positive
+        : mut{}, obj(std::forward<ArgsToConstructT>(t_args)...)
     {
     }
 
@@ -127,7 +129,7 @@ class Synchronized
     template <typename U>
     // Forwarding reference overload intentional for template instantiation
     // coverity[autosar_cpp14_a13_3_1_violation]
-    explicit Synchronized(std::initializer_list<U> ilistToConstructT) noexcept(
+    Synchronized(std::initializer_list<U> ilistToConstructT) noexcept(
         std::is_nothrow_constructible_v<T, std::initializer_list<U>> && std::is_nothrow_constructible_v<Lockable>)
         : mut{}, obj(ilistToConstructT)
     {

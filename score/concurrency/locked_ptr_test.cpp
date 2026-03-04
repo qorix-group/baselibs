@@ -10,13 +10,13 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "locked_ptr.h"
+#include "score/concurrency/locked_ptr.h"
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
-#include "test_types.h"
-#include "unlock_guard.h"
+#include "score/concurrency/test_types.h"
+#include "score/concurrency/unlock_guard.h"
 
 #include <functional>
 #include <mutex>

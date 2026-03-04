@@ -10,12 +10,13 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "synchronized.h"
+#include "score/concurrency/synchronized.h"
 
-#include "test_types.h"
+#include "score/concurrency/test_types.h"
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
+
 #include <future>
 #include <string>
 #include <vector>
