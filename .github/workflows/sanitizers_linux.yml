@@ -39,8 +39,4 @@ jobs:
       - name: Bazel Test with Sanitizers
         run: |
           bazel test --config bl-x86_64-linux --config=asan_ubsan_lsan --build_tests_only -- //score/... \
-          -//score/language/safecpp/aborts_upon_exception:abortsuponexception_toolchain_test \
-          -//score/containers:dynamic_array_test \
-          -//score/containers:non_relocatable_vector_emplace_back_test \
-          -//score/containers:non_relocatable_vector_special_member_funcs_test \
-          -//score/containers:non_relocatable_vector_test
+          -//score/language/safecpp/aborts_upon_exception:abortsuponexception_toolchain_test
