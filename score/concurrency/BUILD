@@ -78,7 +78,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public",
+        "//visibility:public",  # platform_only
     ],
     deps = [
         ":locked_ptr",
@@ -107,7 +107,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public",
+        "//visibility:public",  # platform_only
     ],
     deps = [
         ":unlock_guard",
@@ -134,7 +134,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public",
+        "//visibility:public",  # platform_only
     ],
 )
 

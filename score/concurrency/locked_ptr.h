@@ -212,7 +212,7 @@ class LockedPtr
      * @return true if the LockedPtr points to nullptr, false otherwise.
      * @note This does not check the state of the Lock.
      */
-    [[nodiscard]] bool operator==(std::nullptr_t) const noexcept
+    [[nodiscard]] bool operator==(const std::nullptr_t&) const noexcept
     {
         return ptr_ == nullptr;
     }
@@ -223,7 +223,7 @@ class LockedPtr
      * @return true if the LockedPtr points to a non-nullptr, false otherwise.
      * @note This does not check the state of the Lock.
      */
-    [[nodiscard]] bool operator!=(std::nullptr_t) const noexcept
+    [[nodiscard]] bool operator!=(const std::nullptr_t&) const noexcept
     {
         return !(*this == nullptr);
     }
