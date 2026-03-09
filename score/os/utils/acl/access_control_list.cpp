@@ -325,7 +325,10 @@ auto ::score::os::AccessControlList::FindFirstEntry(F&& predicate) const noexcep
     return score::cpp::nullopt;
 }
 
+// Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
+// Rationale: Calling std::terminate() if any exceptions are thrown is expected as per safety requirements
 score::cpp::expected<std::vector<score::os::IAccessControlList::UserIdentifier>, score::os::Error>
+// coverity[autosar_cpp14_a15_5_3_violation]
 score::os::AccessControlList::FindUserIdsWithPermission(const Acl::Permission permission) const noexcept
 {
     if (error_.has_value())

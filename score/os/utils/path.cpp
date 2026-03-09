@@ -16,6 +16,10 @@
 #include "score/os/utils/path_impl.h"
 
 /* LCOV_EXCL_START: false positive, covered by test case "get_base_name.man_page_examples" */
+// Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
+// Rationale_a15_5_3_violation: Calling std::terminate() if any exceptions are thrown is expected as per safety
+// requirements
+// coverity[autosar_cpp14_a15_5_3_violation]
 std::string score::os::PathImpl::get_base_name(const std::string& path) const noexcept
 {
     std::string mutable_path{path};
@@ -25,6 +29,7 @@ std::string score::os::PathImpl::get_base_name(const std::string& path) const no
 }
 /* LCOV_EXCL_STOP */
 
+// coverity[autosar_cpp14_a15_5_3_violation] refer Rationale_a15_5_3_violation
 std::string score::os::PathImpl::get_parent_dir(const std::string& path) const noexcept
 {
     std::string mutable_path{path};

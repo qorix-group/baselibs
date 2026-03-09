@@ -19,6 +19,9 @@
 #include <system_error>
 #include <vector>
 
+// Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
+// Rationale: Calling std::terminate() if any exceptions are thrown is expected as per safety requirements
+// coverity[autosar_cpp14_a15_5_3_violation]
 score::cpp::expected<std::string, score::os::Error> score::os::PathImpl::get_exec_path() const noexcept
 {
 
