@@ -249,8 +249,7 @@ public:
     template <typename... Args>
     value_type& emplace(Args&&... args)
     {
-        score::cpp::ignore = base_.emplace(std::forward<Args>(args)...);
-        return *base_;
+        return base_.emplace(std::forward<Args>(args)...);
     }
 
     /// \brief Accessor for the value
