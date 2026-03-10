@@ -147,7 +147,7 @@ public:
 
         if (other.has_value())
         {
-            base_.emplace(*other);
+            score::cpp::ignore = base_.emplace(*other);
         }
     }
 
@@ -163,7 +163,7 @@ public:
 
         if (other.has_value())
         {
-            base_.emplace(std::move(*other));
+            score::cpp::ignore = base_.emplace(std::move(*other));
         }
     }
 
@@ -207,7 +207,7 @@ public:
         reset();
         if (other.has_value())
         {
-            base_.emplace(*other);
+            score::cpp::ignore = base_.emplace(*other);
         }
         return *this;
     }
@@ -225,7 +225,7 @@ public:
         reset();
         if (other.has_value())
         {
-            base_.emplace(*other);
+            score::cpp::ignore = base_.emplace(*other);
         }
         return *this;
     }
@@ -249,7 +249,7 @@ public:
     template <typename... Args>
     value_type& emplace(Args&&... args)
     {
-        base_.emplace(std::forward<Args>(args)...);
+        score::cpp::ignore = base_.emplace(std::forward<Args>(args)...);
         return *base_;
     }
 
