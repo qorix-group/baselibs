@@ -59,7 +59,7 @@ bool JsonSerialize::SerializeType(const score::json::Any& json_data, const std::
 bool JsonSerialize::SerializeType(const Object& json_data, const std::uint16_t tab_count)
 {
     out_stream_ << "{\n";
-    for (const auto& pair : json_data)
+    for (const auto& pair : json_data)  // LCOV_EXCL_BR_LINE (FP: "Decision couldn't be analyzed" gcov issue)
     {
         SCORE_LANGUAGE_FUTURECPP_ASSERT_PRD(tab_count < std::numeric_limits<std::uint16_t>::max());
         Indent(static_cast<uint16_t>(tab_count + 1U));

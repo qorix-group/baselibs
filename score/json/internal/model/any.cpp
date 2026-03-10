@@ -121,7 +121,7 @@ Any Any::CloneByValue() const noexcept
         Any operator()(const std::unique_ptr<json::Object>& v)
         {
             json::Object object;
-            for (const auto& item : *v)
+            for (const auto& item : *v)  // LCOV_EXCL_BR_LINE (FP: "Decision couldn't be analyzed" gcov issue)
             {
                 object[item.first] = item.second.CloneByValue();
             }
