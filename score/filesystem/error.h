@@ -55,6 +55,7 @@ enum class ErrorCode : score::result::ErrorCode
     kCouldNotRenameFile,
     kCloseFailed,
     kNotImplemented,
+    kWritePermissionDenied,
 };
 
 score::result::Error MakeError(const ErrorCode code, const std::string_view user_message = "") noexcept;

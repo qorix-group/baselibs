@@ -250,6 +250,12 @@ Result<std::unique_ptr<FileStream>> FileFactory::AtomicUpdate(const Path& path,
     const auto metadata = details::GetIdentityMetadata(path);
     const auto create_mode = ExtractMode(metadata);
 
+    // If the original file exists but the calling process cannot write to it, reject early.
+    if (metadata.has_value() && !os::Unistd::instance().access(path.CStr(), os::Unistd::AccessMode::kWrite).has_value())
+    {
+        return MakeUnexpected(ErrorCode::kWritePermissionDenied);
+    }
+
     if (auto file_handle = details::OpenFileHandle(temp_path, mode, create_mode); file_handle.has_value())
     {
         if (metadata.has_value())

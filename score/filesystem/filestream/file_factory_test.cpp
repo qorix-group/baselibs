@@ -286,12 +286,15 @@ TEST_F(FileFactoryTestWithStatMock, OpenForAtomicUpdateWithOwnershipChange)
     Path test_filename = test_tmpdir_ / kTestFileName;
 
     auto set_mode = [](auto, auto& buffer, auto) {
-        buffer.st_mode = mode_t{S_IFREG};
+        buffer.st_mode = mode_t{S_IFREG | S_IWUSR};
         buffer.st_uid = 1234;
         buffer.st_gid = 5678;
         return score::cpp::expected_blank<os::Error>{};
     };
     ON_CALL(*stat_, stat(_, _, _)).WillByDefault(Invoke(set_mode));
+
+    // access(W_OK) confirms write permission
+    EXPECT_CALL(*unistd_, access(_, os::Unistd::AccessMode::kWrite)).WillOnce(Return(score::cpp::expected_blank<os::Error>{}));
 
     // Expecting a call to chown
     EXPECT_CALL(*unistd_, chown(_, _, _)).WillOnce(Return(score::cpp::expected_blank<score::os::Error>{}));
@@ -304,12 +307,13 @@ TEST_F(FileFactoryTestWithStatMock, OpenForAtomicUpdateWithOwnershipChange)
 TEST_F(FileFactoryTestWithStatMock, AtomicUpdateFileHandleFailedOnChown)
 {
     auto set_mode = [](auto, auto& buffer, auto) {
-        buffer.st_mode = mode_t{S_IFREG};
+        buffer.st_mode = mode_t{S_IFREG | S_IWUSR};
         buffer.st_uid = 1234;
         buffer.st_gid = 5678;
         return score::cpp::expected_blank<os::Error>{};
     };
     EXPECT_CALL(*stat_, stat(_, _, _)).WillOnce(Invoke(set_mode));
+    EXPECT_CALL(*unistd_, access(_, os::Unistd::AccessMode::kWrite)).WillOnce(Return(score::cpp::expected_blank<os::Error>{}));
     EXPECT_CALL(*unistd_, chown(_, _, _))
         .WillOnce(Return(score::cpp::make_unexpected(score::os::Error::createUnspecifiedError())));
     static constexpr auto kFaultyTargetFile{"path"};
@@ -318,6 +322,48 @@ TEST_F(FileFactoryTestWithStatMock, AtomicUpdateFileHandleFailedOnChown)
     auto result = unit_.AtomicUpdate(test_tmpdir_, std::ios_base::out);
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), filesystem::ErrorCode::kCouldNotSetPermissions);
+}
+
+TEST_F(FileFactoryTestWithStatMock, AtomicUpdateFailsWhenWriteAccessDenied)
+{
+    // stat returns a regular file
+    auto set_mode = [](auto, auto& buffer, auto) {
+        buffer.st_mode = mode_t{S_IFREG | S_IRUSR | S_IRGRP | S_IROTH};
+        buffer.st_uid = ::getuid();
+        buffer.st_gid = ::getgid();
+        return score::cpp::expected_blank<os::Error>{};
+    };
+    EXPECT_CALL(*stat_, stat(_, _, _)).WillOnce(Invoke(set_mode));
+    // access(W_OK) reports no write permission
+    EXPECT_CALL(*unistd_, access(_, os::Unistd::AccessMode::kWrite))
+        .WillOnce(Return(score::cpp::make_unexpected(score::os::Error::createUnspecifiedError())));
+
+    static constexpr auto kTestFileName{"readonly_file"};
+    Path test_filename = test_tmpdir_ / kTestFileName;
+
+    auto result = unit_.AtomicUpdate(test_filename, std::ios_base::out);
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(result.error(), filesystem::ErrorCode::kWritePermissionDenied);
+}
+
+TEST_F(FileFactoryTestWithStatMock, AtomicUpdateSucceedsWhenWriteAccessGranted)
+{
+    // stat returns a regular file
+    auto set_mode = [](auto, auto& buffer, auto) {
+        buffer.st_mode = mode_t{S_IFREG | S_IWUSR};
+        buffer.st_uid = ::getuid();
+        buffer.st_gid = ::getgid();
+        return score::cpp::expected_blank<os::Error>{};
+    };
+    EXPECT_CALL(*stat_, stat(_, _, _)).WillOnce(Invoke(set_mode));
+    // access(W_OK) confirms write permission
+    EXPECT_CALL(*unistd_, access(_, os::Unistd::AccessMode::kWrite)).WillOnce(Return(score::cpp::expected_blank<os::Error>{}));
+
+    static constexpr auto kTestFileName{"writable_file"};
+    Path test_filename = test_tmpdir_ / kTestFileName;
+
+    auto result = unit_.AtomicUpdate(test_filename, std::ios_base::out);
+    ASSERT_TRUE(result.has_value());
 }
 
 TEST(FileFactoryHelpersTest, ComposeTempFilenameUsesAllParameters)
