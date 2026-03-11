@@ -30,11 +30,12 @@ IFileFactory::~IFileFactory() noexcept = default;
 
 IFileFactory::IFileFactory() noexcept = default;
 
-IFileFactory::IFileFactory(const IFileFactory&) noexcept = default;
+// Different LCOV behavior: covered on Linux but not on QNX8, excluded from coverage for QNX8
+IFileFactory::IFileFactory(const IFileFactory&) noexcept = default;  // LCOV_EXCL_LINE
 
-IFileFactory& IFileFactory::operator=(const IFileFactory&) & noexcept = default;
-IFileFactory::IFileFactory(IFileFactory&&) noexcept = default;
-IFileFactory& IFileFactory::operator=(IFileFactory&&) & noexcept = default;
+IFileFactory& IFileFactory::operator=(const IFileFactory&) & noexcept = default;  // LCOV_EXCL_LINE
+IFileFactory::IFileFactory(IFileFactory&&) noexcept = default;                    // LCOV_EXCL_LINE
+IFileFactory& IFileFactory::operator=(IFileFactory&&) & noexcept = default;       // LCOV_EXCL_LINE
 
 }  // namespace filesystem
 }  // namespace score

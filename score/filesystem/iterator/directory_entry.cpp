@@ -22,7 +22,8 @@ namespace filesystem
 DirectoryEntry::DirectoryEntry() noexcept = default;
 DirectoryEntry::DirectoryEntry(const DirectoryEntry&) noexcept = default;
 DirectoryEntry::DirectoryEntry(DirectoryEntry&&) noexcept = default;
-DirectoryEntry& DirectoryEntry::operator=(const DirectoryEntry&) noexcept = default;
+// Different LCOV behavior: covered on Linux but not on QNX8, excluded from coverage for QNX8
+DirectoryEntry& DirectoryEntry::operator=(const DirectoryEntry&) noexcept = default;  // LCOV_EXCL_LINE
 DirectoryEntry& DirectoryEntry::operator=(DirectoryEntry&&) noexcept = default;
 DirectoryEntry::~DirectoryEntry() noexcept = default;
 

@@ -25,7 +25,8 @@ FileStatus::FileStatus(const FileType type, const Perms permissions) noexcept : 
 FileStatus::FileStatus(const FileStatus&) noexcept = default;
 FileStatus::FileStatus(FileStatus&&) noexcept = default;
 
-FileStatus& FileStatus::operator=(const FileStatus&) noexcept = default;
+// Different LCOV behavior: covered on Linux but not on QNX8, excluded from coverage for QNX8
+FileStatus& FileStatus::operator=(const FileStatus&) noexcept = default;  // LCOV_EXCL_LINE
 FileStatus& FileStatus::operator=(FileStatus&&) noexcept = default;
 
 FileStatus::~FileStatus() noexcept = default;

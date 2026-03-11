@@ -29,7 +29,8 @@ constexpr auto END_OF_DIRECTORY = 0;
 
 DirectoryIterator::DirectoryIterator(const DirectoryIterator&) noexcept = default;
 DirectoryIterator::DirectoryIterator(DirectoryIterator&&) noexcept = default;
-DirectoryIterator& DirectoryIterator::operator=(const DirectoryIterator&) noexcept = default;
+// Different LCOV behavior: covered on Linux but not on QNX8, excluded from coverage for QNX8
+DirectoryIterator& DirectoryIterator::operator=(const DirectoryIterator&) noexcept = default;  // LCOV_EXCL_LINE
 DirectoryIterator& DirectoryIterator::operator=(DirectoryIterator&&) noexcept = default;
 DirectoryIterator::~DirectoryIterator() noexcept = default;
 

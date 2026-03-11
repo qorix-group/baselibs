@@ -28,9 +28,13 @@ RecursiveDirectoryIterator::RecursiveDirectoryIterator() noexcept {}
 // NOLINTEND(modernize-use-equals-default)
 
 RecursiveDirectoryIterator::RecursiveDirectoryIterator(const RecursiveDirectoryIterator&) noexcept = default;
-RecursiveDirectoryIterator::RecursiveDirectoryIterator(RecursiveDirectoryIterator&&) noexcept = default;
-RecursiveDirectoryIterator& RecursiveDirectoryIterator::operator=(const RecursiveDirectoryIterator&) noexcept = default;
-RecursiveDirectoryIterator& RecursiveDirectoryIterator::operator=(RecursiveDirectoryIterator&&) noexcept = default;
+// Different LCOV behavior: covered on Linux but not on QNX8, excluded from coverage for QNX8
+RecursiveDirectoryIterator::RecursiveDirectoryIterator(RecursiveDirectoryIterator&&) noexcept =
+    default;  // LCOV_EXCL_LINE
+RecursiveDirectoryIterator& RecursiveDirectoryIterator::operator=(const RecursiveDirectoryIterator&) noexcept =
+    default;  // LCOV_EXCL_LINE
+RecursiveDirectoryIterator& RecursiveDirectoryIterator::operator=(RecursiveDirectoryIterator&&) noexcept =
+    default;  // LCOV_EXCL_LINE
 RecursiveDirectoryIterator::~RecursiveDirectoryIterator() noexcept = default;
 
 // false-positive: can't create delegate due to defaulted constructors and can't mix init list with in-class init
