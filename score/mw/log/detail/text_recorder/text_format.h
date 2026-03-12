@@ -174,7 +174,7 @@ struct GetFormatSpecifier<const std::int64_t, IntegerRepresentation::kDecimal>
 };
 
 template <IntegerRepresentation i, typename T, typename PT>
-static void PutFormattedNumber(PT& payload, const T data) noexcept
+void PutFormattedNumber(PT& payload, const T data) noexcept
 {
     std::ignore = payload.Put([&data](score::cpp::span<Byte> buffer) noexcept {
         if (!buffer.empty())  // LCOV_EXCL_BR_LINE: lcov complains about lots of uncovered branches here, it is not
@@ -312,9 +312,9 @@ template <typename T, typename PT>
 // LogData function uses Put*Number functions, some of them are also templates
 // Name of Put*Number functions is reused to split implementation for supported/unsupported types
 // coverity[autosar_cpp14_a2_10_4_violation]
-static void LogData(PT& payload,
-                    const T data,
-                    const IntegerRepresentation integral_representation = IntegerRepresentation::kDecimal) noexcept
+void LogData(PT& payload,
+             const T data,
+             const IntegerRepresentation integral_representation = IntegerRepresentation::kDecimal) noexcept
 {
     switch (integral_representation)
     {
