@@ -34,7 +34,6 @@ cc_library(
 
 cc_library(
     name = "result",
-    srcs = ["result.cpp"],
     hdrs = ["result.h"],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
@@ -47,6 +46,33 @@ cc_library(
         "@score_baselibs//score/result/details/expected",
         "@score_baselibs//score/result/details/expected:extensions",
         "@score_baselibs//score/language/futurecpp",
+    ],
+)
+
+cc_library(
+    name = "error_msg_mapping",
+    srcs = ["error_msg_mapping.cpp"],
+    hdrs = ["error_msg_mapping.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "@score_baselibs//score/result:__subpackages__",
+    ],
+    deps = [
+        ":error",
+    ],
+)
+
+cc_gtest_unit_test(
+    name = "error_msg_mapping_test",
+    srcs = [
+        "dummy_error_code.h",
+        "error_msg_mapping_test.cpp",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    deps = [
+        ":error_msg_mapping",
+        ":result",
     ],
 )
 
@@ -98,6 +124,7 @@ cc_binary(
 cc_gtest_unit_test(
     name = "tests",
     srcs = [
+        "dummy_error_code.h",
         "error_test.cpp",
         "result_test.cpp",
     ],
@@ -111,6 +138,7 @@ cc_gtest_unit_test(
 cc_unit_test_suites_for_host_and_qnx(
     name = "unit_test_suite",
     cc_unit_tests = [
+        ":error_msg_mapping_test",
         ":tests",
     ],
     test_suites_from_sub_packages = [
