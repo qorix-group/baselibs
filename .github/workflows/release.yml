@@ -17,6 +17,8 @@
 # maintainers to approve and publish.
 name: Release
 run-name: Release ${{ inputs.tag }}
+permissions:
+  contents: read
 on:
   workflow_dispatch:
     inputs:
