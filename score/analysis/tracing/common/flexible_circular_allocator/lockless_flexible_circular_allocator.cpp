@@ -778,8 +778,7 @@ score::Result<std::uint8_t*> LocklessFlexibleCircularAllocator<AtomicIndirectorT
                                       aligned_size,
                                       new_buffer_queue_head))
     {
-        return MakeUnexpected(
-            LocklessFlexibleAllocatorErrorCode::kViolatedMaximumRetries);  // LCOV_EXCL_LINE : see comment above.
+        return MakeUnexpected(LocklessFlexibleAllocatorErrorCode::kViolatedMaximumRetries);
     }
 
     return allocated_address;
@@ -810,9 +809,12 @@ score::Result<std::uint32_t> LocklessFlexibleCircularAllocator<AtomicIndirectorT
         if (AtomicIndirectorType<decltype(buffer_queue_head_.load())>::compare_exchange_strong(
                 buffer_queue_head_, old_buffer_queue_head, new_buffer_queue_head, std::memory_order_seq_cst) == true)
         {
-            if (new_buffer_queue_head < static_cast<unsigned int>(aligned_size))
+            if (new_buffer_queue_head <
+                static_cast<unsigned int>(
+                    aligned_size))  // LCOV_EXCL_BR_LINE: Defensive check, prior bounds validation prevents overflow
             {
-                return MakeUnexpected(LocklessFlexibleAllocatorErrorCode::kOverFlowOccurred);
+                return MakeUnexpected(                                       // LCOV_EXCL_LINE
+                    LocklessFlexibleAllocatorErrorCode::kOverFlowOccurred);  // LCOV_EXCL_LINE
             }
             offset = new_buffer_queue_head - aligned_size;
             break;
