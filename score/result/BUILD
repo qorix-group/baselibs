@@ -76,51 +76,6 @@ cc_gtest_unit_test(
     ],
 )
 
-cc_library(
-    name = "safe_result",
-    hdrs = ["safe_result.h"],
-    features = COMPILER_WARNING_FEATURES,
-    tags = ["FFI"],
-    visibility = [
-        "//visibility:public",  # platform_only
-    ],
-    deps = [
-        ":error",
-        ":result",
-        "@score_baselibs//score/language/futurecpp",
-        "@score_baselibs//score/result/details/expected",
-        "@score_baselibs//score/result/details/expected:extensions",
-    ],
-)
-
-cc_library(
-    name = "safe_result_example_ffi",
-    srcs = ["safe_result_example_ffi.cpp"],
-    hdrs = ["safe_result_example_ffi.h"],
-    features = COMPILER_WARNING_FEATURES,
-    tags = ["FFI"],
-    visibility = [
-        "//visibility:public",  # platform_only
-    ],
-    deps = [
-        ":safe_result",
-    ],
-)
-
-cc_binary(
-    name = "safe_result_example",
-    srcs = ["safe_result_example.cpp"],
-    features = COMPILER_WARNING_FEATURES,
-    deps = [
-        ":error",
-        ":safe_result",
-        ":safe_result_example_ffi",
-        "@score_baselibs//score/language/futurecpp",
-        "@score_baselibs//score/result/details/expected",
-        "@score_baselibs//score/result/details/expected:extensions",
-    ],
-)
-
 cc_gtest_unit_test(
     name = "tests",
     srcs = [
