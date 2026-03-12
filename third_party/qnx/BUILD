@@ -19,7 +19,7 @@ cc_library(
         "-lfsnotify",
     ],
     target_compatible_with = ["@platforms//os:qnx"],
-    visibility = ["//visibility:public"],
+    visibility = ["//:__subpackages__"],
 )
 
 cc_library(
@@ -28,5 +28,5 @@ cc_library(
         "-lsecpolev",
     ],
     target_compatible_with = ["@platforms//os:qnx"],
-    visibility = ["//visibility:public"],
+    visibility = ["//:__subpackages__"],
 )

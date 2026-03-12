@@ -19,5 +19,5 @@ cc_library(
         "-lsocket",
     ],
     target_compatible_with = ["@platforms//os:qnx"],
-    visibility = ["//visibility:public"],
+    visibility = ["//:__subpackages__"],
 )
