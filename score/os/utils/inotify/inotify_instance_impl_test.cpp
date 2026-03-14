@@ -503,9 +503,19 @@ TEST_F(InotifyInstanceImplTest, ReadReturnsEventsWhenWatchTriggersForMultipleEve
     CreateFile();
     MoveFile();
 
-    auto expected_events = inotify_instance.Read();
-    ASSERT_TRUE(expected_events.has_value());
-    const auto events{std::move(expected_events.value())};
+    // Read() performs a single read() syscall, which may not return all
+    // pending events if the kernel hasn't queued them all yet. Accumulate
+    // events across multiple reads.
+    score::cpp::static_vector<InotifyEvent, InotifyInstanceImpl::max_events> events{};
+    while (events.size() < 2U)
+    {
+        auto expected_events = inotify_instance.Read();
+        ASSERT_TRUE(expected_events.has_value());
+        for (auto& e : expected_events.value())
+        {
+            events.push_back(std::move(e));
+        }
+    }
 
     EXPECT_EQ(events.size(), 2U);
     const auto& event1 = events[0];
