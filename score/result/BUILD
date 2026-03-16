@@ -42,10 +42,23 @@ cc_library(
     ],
     deps = [
         ":error",
-        # stdlib abi guard not available in score
+        "@score_baselibs//score/language/futurecpp",
         "@score_baselibs//score/result/details/expected",
         "@score_baselibs//score/result/details/expected:extensions",
-        "@score_baselibs//score/language/futurecpp",
+    ],
+)
+
+cc_library(
+    name = "result_for_rust",
+    hdrs = ["result.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "//visibility:public",  # platform_only
+    ],
+    deps = [
+        ":result",
+        # stdlib abi guard not available in score
     ],
 )
 
