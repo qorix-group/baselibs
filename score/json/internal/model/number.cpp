@@ -18,8 +18,8 @@
 #include <cstdint>
 #include <limits>
 
-#include "score/math.hpp"
 #include "score/overload.hpp"
+#include <cmath>
 
 namespace score
 {
@@ -49,7 +49,7 @@ class VariantComparator
         if (const auto result = lhs_.As<T>(); result.has_value())
         // LCOV_EXCL_BR_STOP
         {
-            return score::cpp::abs(rhs - *result) < std::numeric_limits<T>::epsilon();
+            return std::abs(rhs - *result) < std::numeric_limits<T>::epsilon();
         }
         return false;  // LCOV_EXCL_LINE Unreachable since types are compared before
     }
