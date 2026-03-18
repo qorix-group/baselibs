@@ -278,7 +278,7 @@ TYPED_TEST_P(ParserTest, EmitsErrorWhenParsingObjectWithValueButNoKey)
     this->RecordProperty("ASIL", "B");
     this->RecordProperty("Description", "failure in parsing an object with no keys, cf. RFC-8259 section 9");
     this->RecordProperty("TestType", "Requirements-based test");
-    this->RecordProperty("DerivationTechnique", "Analysis of requirements");
+    this->RecordProperty("DerivationTechnique", "Error guessing");
     this->RecordProperty("Priority", "3");
 
     std::string buffer{R"(
@@ -300,7 +300,7 @@ TYPED_TEST_P(ParserTest, EmitsErrorWhenParsingObjectWithBinaryValue)
     this->RecordProperty("Description",
                          "failure in parsing an object with binary value element, cf. RFC-8259 section 9");
     this->RecordProperty("TestType", "Requirements-based test");
-    this->RecordProperty("DerivationTechnique", "Analysis of requirements");
+    this->RecordProperty("DerivationTechnique", "Error guessing");
     this->RecordProperty("Priority", "3");
 
     // Binary content - format specific to vaJSON Parser
@@ -334,7 +334,7 @@ TYPED_TEST_P(ParserTest, EmitsErrorWhenParsingTooLargeNumber)
     this->RecordProperty("Description",
                          "failure in parsing an object with very large value element, cf. RFC-8259 section 9");
     this->RecordProperty("TestType", "Requirements-based test");
-    this->RecordProperty("DerivationTechnique", "Analysis of requirements");
+    this->RecordProperty("DerivationTechnique", "Error guessing");
     this->RecordProperty("Priority", "3");
 
     std::string buffer{R"({ "number": 1e+500 })"};

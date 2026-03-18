@@ -84,7 +84,7 @@ TEST(JsonParserTest, ViaErrorLiteral)
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Parsing invalid json object using _json operator, cf. RFC-8259 section 9");
     RecordProperty("TestType", "Requirements-based test");
-    RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("DerivationTechnique", "Error guessing");
     RecordProperty("Priority", "3");
 
     EXPECT_EXIT(JSON_ERROR_INPUT ""_json, ::testing::KilledBySignal(SIGABRT), "");
@@ -119,7 +119,7 @@ TEST(JsonParserTest, FromFileParseError)
     RecordProperty("ASIL", "B");
     RecordProperty("Description", "Parsing invalid json object from file path causes failure, cf. RFC-8259 section 9");
     RecordProperty("TestType", "Requirements-based test");
-    RecordProperty("DerivationTechnique", "Analysis of requirements");
+    RecordProperty("DerivationTechnique", "Error guessing");
     RecordProperty("Priority", "3");
 
     const std::string file_path = std::tmpnam(nullptr);

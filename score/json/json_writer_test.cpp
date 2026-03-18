@@ -239,7 +239,12 @@ TYPED_TEST_SUITE(JsonWriterIntegerTest, IntegralTypes, );
 
 TYPED_TEST(JsonWriterIntegerTest, FormatsIntegralValuesCorrectly)
 {
+    this->RecordProperty("Verifies", "::score::json::JsonWriter::ToBuffer");
+    this->RecordProperty("ASIL", "B");
     this->RecordProperty("Description", "Test integer formatting with type-specific values");
+    this->RecordProperty("TestType", "Interface test");
+    this->RecordProperty("DerivationTechnique", "Analysis of equivalence classes and boundary values");
+    this->RecordProperty("Priority", "3");
 
     using T = TypeParam;
 

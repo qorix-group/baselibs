@@ -52,7 +52,7 @@ void range_test(const ::std::string& underflow, const std::string& overflow)
 
 TEST(Number, Bool)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Test the limits, over-limit and under-limit of bool data-type, cf. RFC-8259 section 9");
@@ -64,7 +64,7 @@ TEST(Number, Bool)
 
 TEST(Number, Uint8)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Test the limits, over-limit and under-limit of uint8 data-type, cf. RFC-8259 section 9");
@@ -76,7 +76,7 @@ TEST(Number, Uint8)
 
 TEST(Number, Uint16)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Test the limits, over-limit and under-limit of uint16 data-type, cf. RFC-8259 section 9");
@@ -88,7 +88,7 @@ TEST(Number, Uint16)
 
 TEST(Number, Uint32)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Test the limits, over-limit and under-limit of uint32 data-type, cf. RFC-8259 section 9");
@@ -100,7 +100,7 @@ TEST(Number, Uint32)
 
 TEST(Number, Uint64)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Test the limits, over-limit and under-limit of uint64 data-type, cf. RFC-8259 section 9");
@@ -112,7 +112,7 @@ TEST(Number, Uint64)
 
 TEST(Number, Int8)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Test the limits, over-limit and under-limit of int8 data-type, cf. RFC-8259 section 9");
@@ -124,7 +124,7 @@ TEST(Number, Int8)
 
 TEST(Number, Int16)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Test the limits, over-limit and under-limit of int16 data-type, cf. RFC-8259 section 9");
@@ -136,7 +136,7 @@ TEST(Number, Int16)
 
 TEST(Number, Int32)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Test the limits, over-limit and under-limit of int32 data-type, cf. RFC-8259 section 9");
@@ -148,7 +148,7 @@ TEST(Number, Int32)
 
 TEST(Number, Int64)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Test the limits, over-limit and under-limit of int64 data-type, cf. RFC-8259 section 9");
@@ -160,7 +160,7 @@ TEST(Number, Int64)
 
 TEST(Number, Float)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Test the limits, over-limit and under-limit of float data-type, cf. RFC-8259 section 9");
@@ -172,7 +172,7 @@ TEST(Number, Float)
 
 TEST(Number, Double)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Test the limits, over-limit and under-limit of double data-type, cf. RFC-8259 section 9");
@@ -184,7 +184,7 @@ TEST(Number, Double)
 
 TEST(Number, WithDecimalPointWithoutFractionalPartCannotBeParsedAsInteger)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Test interpreting number with decimal point as floating point only, cf. RFC-8259 section 9");
@@ -197,7 +197,7 @@ TEST(Number, WithDecimalPointWithoutFractionalPartCannotBeParsedAsInteger)
 
 TEST(Number, WithExponentialNotationWithoutFractionalPartCannotBeParsedAsInteger)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Test interpreting number with exponent notation as floating point only, cf. RFC-8259 section 9");
@@ -211,7 +211,7 @@ TEST(Number, WithExponentialNotationWithoutFractionalPartCannotBeParsedAsInteger
 
 TEST(Number, FloatingPointWithoutDecimalPoint)
 {
-    RecordProperty("Verifies", "SCR-5310867");
+    RecordProperty("Verifies", "5310867");
     RecordProperty("ASIL", "B");
     RecordProperty("Description",
                    "Number without decimal point can be treated as floating point too, cf. RFC-8259 section 9");
