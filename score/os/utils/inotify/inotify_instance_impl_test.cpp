@@ -427,6 +427,9 @@ TEST_F(InotifyInstanceImplTest, ReadReturnsWhenCallingClose)
 
 TEST_F(InotifyInstanceImplTest, EventNameContainsOnlyFileName)
 {
+#if defined(__QNX__) && __QNX__ >= 800 && defined(__x86_64__)
+    GTEST_SKIP() << "Ticket-253098 Inotify not supported on QNX 8 x86_64 filesystem";
+#else
     InotifyInstanceImpl inotify_instance{};
     ASSERT_TRUE(inotify_instance.IsValid().has_value());
 
@@ -442,10 +445,14 @@ TEST_F(InotifyInstanceImplTest, EventNameContainsOnlyFileName)
     EXPECT_EQ(events.size(), 1U);
     const auto& event = events[0];
     EXPECT_EQ(event.GetName(), std::string_view{test_filename});
+#endif
 }
 
 TEST_F(InotifyInstanceImplTest, ReadReturnsEventWhenWatchTriggersForInCreate)
 {
+#if defined(__QNX__) && __QNX__ >= 800 && defined(__x86_64__)
+    GTEST_SKIP() << "Ticket-253098 Inotify not supported on QNX 8 x86_64 filesystem";
+#else
     InotifyInstanceImpl inotify_instance{};
     ASSERT_TRUE(inotify_instance.IsValid().has_value());
 
@@ -464,10 +471,14 @@ TEST_F(InotifyInstanceImplTest, ReadReturnsEventWhenWatchTriggersForInCreate)
     EXPECT_EQ(event.GetWatchDescriptor(), watch);
     EXPECT_EQ(event.GetMask(), InotifyEvent::ReadMask::kInCreate);
     EXPECT_EQ(event.GetName(), std::string_view{test_filename});
+#endif
 }
 
 TEST_F(InotifyInstanceImplTest, ReadReturnsEventWhenWatchTriggersForInDelete)
 {
+#if defined(__QNX__) && __QNX__ >= 800 && defined(__x86_64__)
+    GTEST_SKIP() << "Ticket-253098 Inotify not supported on QNX 8 x86_64 filesystem";
+#else
     CreateFile();
 
     InotifyInstanceImpl inotify_instance{};
@@ -488,10 +499,14 @@ TEST_F(InotifyInstanceImplTest, ReadReturnsEventWhenWatchTriggersForInDelete)
     EXPECT_EQ(event.GetWatchDescriptor(), watch);
     EXPECT_EQ(event.GetMask(), InotifyEvent::ReadMask::kInDelete);
     EXPECT_EQ(event.GetName(), std::string_view{test_filename});
+#endif
 }
 
 TEST_F(InotifyInstanceImplTest, ReadReturnsEventsWhenWatchTriggersForMultipleEvents)
 {
+#if defined(__QNX__) && __QNX__ >= 800 && defined(__x86_64__)
+    GTEST_SKIP() << "Ticket-253098 Inotify not supported on QNX 8 x86_64 filesystem";
+#else
     InotifyInstanceImpl inotify_instance{};
     ASSERT_TRUE(inotify_instance.IsValid().has_value());
 
@@ -527,6 +542,7 @@ TEST_F(InotifyInstanceImplTest, ReadReturnsEventsWhenWatchTriggersForMultipleEve
     EXPECT_EQ(event2.GetWatchDescriptor(), watch);
     EXPECT_EQ(event2.GetMask(), InotifyEvent::ReadMask::kInMovedTo);
     EXPECT_EQ(event2.GetName(), std::string_view{test_moved_filename});
+#endif
 }
 
 }  // namespace
