@@ -185,33 +185,20 @@ static StaticDestructionGuard<MmanImpl> nifty_counter;
 }  // namespace os
 
 template <>
-struct enable_bitmask_operators<os::Mman::Protection>
+struct enable_bitmask_operators<os::Mman::Protection> : public std::true_type
 {
-    // Suppress "AUTOSAR C++14 A0-1-1" rule finding: "A project shall not contain instances of
-    // non-volatile variables being given values that are not subsequently used.”.
-    // Here, variable value is used as part of templatized struct, hence false positive.
-    // coverity[autosar_cpp14_a0_1_1_violation]
-    static constexpr bool value{true};
 };
 
 template <>
-struct enable_bitmask_operators<os::Mman::Map>
+struct enable_bitmask_operators<os::Mman::Map> : public std::true_type
 {
-    // Suppress "AUTOSAR C++14 A0-1-1" rule finding: "A project shall not contain instances of
-    // non-volatile variables being given values that are not subsequently used.”.
-    // Here, variable value is used as part of templatized struct, hence false positive.
-    // coverity[autosar_cpp14_a0_1_1_violation]
-    static constexpr bool value{true};
 };
 
-// coverity[autosar_cpp14_a16_0_1_violation], see above rationale
 #if defined(__EXT_POSIX1_200112)
 template <>
-struct enable_bitmask_operators<os::Mman::PosixTypedMem>
+struct enable_bitmask_operators<os::Mman::PosixTypedMem> : public std::true_type
 {
-    static constexpr bool value{true};
 };
-// coverity[autosar_cpp14_a16_0_1_violation], see above rationale
 #endif
 
 }  // namespace score

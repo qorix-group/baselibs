@@ -174,23 +174,13 @@ class Neutrino : public ObjectSeam<Neutrino>
 }  // namespace os
 
 template <>
-struct enable_bitmask_operators<score::os::qnx::Neutrino::TimerTimeoutFlag>
+struct enable_bitmask_operators<score::os::qnx::Neutrino::TimerTimeoutFlag> : public std::true_type
 {
-    // Suppress "AUTOSAR C++14 A0-1-1" rule finding: "A project shall not contain instances of
-    // non-volatile variables being given values that are not subsequently used.”.
-    // Here, variable value is used as part of templatized struct, hence false positive.
-    // coverity[autosar_cpp14_a0_1_1_violation]
-    static constexpr bool value{true};
 };
 
 template <>
-struct enable_bitmask_operators<score::os::qnx::Neutrino::ChannelFlag>
+struct enable_bitmask_operators<score::os::qnx::Neutrino::ChannelFlag> : public std::true_type
 {
-    // Suppress "AUTOSAR C++14 A0-1-1" rule finding: "A project shall not contain instances of
-    // non-volatile variables being given values that are not subsequently used.”.
-    // Here, variable value is used as part of templatized struct, hence false positive.
-    // coverity[autosar_cpp14_a0_1_1_violation]
-    static constexpr bool value{true};
 };
 
 }  // namespace score

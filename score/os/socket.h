@@ -191,9 +191,8 @@ class Socket : public ObjectSeam<Socket>
 }  // namespace os
 
 template <>
-struct enable_bitmask_operators<score::os::Socket::MessageFlag>
+struct enable_bitmask_operators<score::os::Socket::MessageFlag> : public std::true_type
 {
-    static constexpr bool value{true};
 };
 
 }  // namespace score

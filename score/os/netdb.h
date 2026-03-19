@@ -63,9 +63,8 @@ class Netdb : public ObjectSeam<Netdb>
 }  // namespace os
 
 template <>
-struct enable_bitmask_operators<score::os::Netdb::NameFlag>
+struct enable_bitmask_operators<score::os::Netdb::NameFlag> : public std::true_type
 {
-    static constexpr bool value{true};
 };
 
 }  // namespace score

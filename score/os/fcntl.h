@@ -119,23 +119,13 @@ std::int32_t OperationFlagToInteger(const Fcntl::Operation op) noexcept;
 }  // namespace os
 
 template <>
-struct enable_bitmask_operators<score::os::Fcntl::Open>
+struct enable_bitmask_operators<score::os::Fcntl::Open> : public std::true_type
 {
-    // Suppress "AUTOSAR C++14 A0-1-1" rule finding: "A project shall not contain instances of
-    // non-volatile variables being given values that are not subsequently used.”.
-    // Here, variable value is member of struct, hence this instance is false positive.
-    // coverity[autosar_cpp14_a0_1_1_violation]
-    static constexpr bool value{true};
 };
 
 template <>
-struct enable_bitmask_operators<score::os::Fcntl::Operation>
+struct enable_bitmask_operators<score::os::Fcntl::Operation> : public std::true_type
 {
-    // Suppress "AUTOSAR C++14 A0-1-1" rule finding: "A project shall not contain instances of
-    // non-volatile variables being given values that are not subsequently used.”.
-    // Here, variable value is member of struct, hence this instance is false positive.
-    // coverity[autosar_cpp14_a0_1_1_violation]
-    static constexpr bool value{true};
 };
 
 }  // namespace score

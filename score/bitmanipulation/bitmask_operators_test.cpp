@@ -31,10 +31,8 @@ enum class MyBitmask : std::int32_t
 }  // namespace test
 
 template <>
-class enable_bitmask_operators<test::MyBitmask>
+class enable_bitmask_operators<test::MyBitmask> : public std::true_type
 {
-  public:
-    static constexpr bool value{true};
 };
 
 namespace test

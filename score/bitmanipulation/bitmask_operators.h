@@ -48,10 +48,7 @@ namespace score
 /// Example:
 ///
 ///     template <>
-///     class enable_bitmask_operators<MyType> {
-///        public:
-///         static constexpr bool value{true};
-///     };
+///     class enable_bitmask_operators<MyType> : public std::true_type {};
 ///
 /// @note A shortcoming of this approach is that the specialization of enable_bitmask_operators must be placed in the
 /// same namespace as the primary template (i.e., score::os).
