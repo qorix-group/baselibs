@@ -423,6 +423,24 @@ exports_files(
 )
 
 cc_test(
+    name = "registry_aware_recorder_factory_test",
+    srcs = [
+        "registry_aware_recorder_factory_test.cpp",
+    ],
+    features = COMPILER_WARNING_FEATURES + [
+        "aborts_upon_exception",
+    ],
+    tags = ["unit"],
+    deps = [
+        ":backend_table",
+        ":minimal",
+        "@googletest//:gtest_main",
+        "@score_baselibs//score/mw/log/detail:empty_recorder",
+        "@score_baselibs//score/mw/log/detail/text_recorder",
+    ],
+)
+
+cc_test(
     name = "backend_table_test",
     srcs = [
         "backend_table_test.cpp",
@@ -465,12 +483,14 @@ cc_unit_test_suites_for_host_and_qnx(
         ":logger_container_test",
         ":logger_test",
         ":logging_test",
+        ":registry_aware_recorder_factory_test",
         ":runtime_test",
         ":runtime_test_instance_fallback",
         ":runtime_test_without_pointer_initialization",
         ":slot_handle_test",
     ],
     test_suites_from_sub_packages = [
+        "@score_baselibs//score/mw/log/backend:unit_tests",
         "@score_baselibs//score/mw/log/configuration:unit_tests",
         "@score_baselibs//score/mw/log/detail:unit_tests",
         #"@score_baselibs//score/mw/log/legacy_non_verbose_api:unit_tests",
