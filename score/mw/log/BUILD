@@ -32,50 +32,23 @@ COMPILER_WARNING_FEATURES = [
     "strict_warnings",
 ]
 
-cc_library(
-    name = "backend_table",
-    srcs = ["backend_table.cpp"],
-    hdrs = ["backend_table.h"],
-    features = COMPILER_WARNING_FEATURES,
-    tags = ["FFI"],
-    visibility = ["@score_baselibs//score/mw/log:__subpackages__"],
-    deps = [
-        ":recorder",
-        ":shared_types",
-        "@score_baselibs//score/mw/log/configuration",
-    ],
-)
-
-# Default: Factory + Console (always linked via mw/log:log)
-# Provides CreateRecorderFactory() and console backend registration.
-cc_library(
-    name = "minimal",
-    srcs = [
-        "console_registrant.cpp",
-        "registry_aware_recorder_factory.cpp",
-    ],
-    hdrs = ["registry_aware_recorder_factory.h"],
-    features = COMPILER_WARNING_FEATURES,
-    tags = ["FFI"],
-    visibility = ["//visibility:public"],
-    deps = [
-        ":backend_table",
-        ":recorder_interface",
-        "@score_baselibs//score/mw/log/configuration:configuration_parser",
-        "@score_baselibs//score/mw/log/detail:empty_recorder",
-        "@score_baselibs//score/mw/log/detail:initialization_reporter",
-        "@score_baselibs//score/mw/log/detail:types_and_errors",
-        "@score_baselibs//score/mw/log/detail/common:composite_recorder",
-        "@score_baselibs//score/mw/log/detail/text_recorder:console_recorder_factory",
-    ],
-    alwayslink = True,
-)
-
 alias(
     name = "log",
     actual = ":frontend",
     deprecation = "DEPRECATED: use @score_baselibs//score/mw/log:frontend instead. Refer usage in mw/log/README.md",
     visibility = ["//visibility:public"],
+)
+
+# Provides minimal log target with console logging backend
+cc_library(
+    name = "console",
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":backend_console",
+        ":frontend",
+    ],
 )
 
 cc_library(
@@ -113,29 +86,52 @@ cc_library(
     ],
 )
 
+# Extended visibility for backend registrants that could be setup in different repositories
+alias(
+    name = "backend_table",
+    actual = "@score_baselibs//score/mw/log/detail:backend_table",
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "recorder_config",
+    hdrs = ["recorder_config.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "//visibility:public",  # platform_only  # Extended visibility allowing backends to deps on this target to enable/disable functionality via feature flags
+    ],
+)
+
+# Provides a RegistryAwareRecorderFactory with a console
+# logging backend that excludes the frontend. This target is
+# ideal for cc_test and cc_binary targets that deps on libraries
+# that rely only on the logging frontend
+alias(
+    name = "backend_console",
+    actual = "@score_baselibs//score/mw/log/detail:backend_console",
+    visibility = ["//visibility:public"],
+)
+
 alias(
     name = "console_only_backend",
-    actual = "@score_baselibs//score/mw/log/detail:console_only_recorder_factory",
+    actual = ":backend_console",
+    deprecation = "Deprecated: Please use @score_baselibs//score/mw/log:backend_console instead",
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "backend_stub_testutil",
     testonly = True,
-    actual = "@score_baselibs//score/mw/log/detail:console_only_recorder_factory",
+    actual = ":backend_console",
+    deprecation = "Deprecated: Please use @score_baselibs//score/mw/log:backend_console instead",
     visibility = ["//visibility:public"],
 )
 
-cc_library(
+alias(
     name = "recorder_interface",
-    srcs = ["irecorder_factory.cpp"],
-    hdrs = ["irecorder_factory.h"],
-    features = COMPILER_WARNING_FEATURES,
-    tags = ["FFI"],
-    visibility = [
-        "//visibility:public",
-    ],
-    deps = [":recorder"],
+    actual = "@score_baselibs//score/mw/log/detail:recorder_interface",
+    visibility = ["//visibility:public"],
 )
 
 cc_library(
@@ -215,6 +211,14 @@ cc_library(
     ],
 )
 
+# Exposes empty_recorder for backend targets to deps on
+# in order to provide a safe fallback mechanism
+alias(
+    name = "empty_recorder",
+    actual = "@score_baselibs//score/mw/log/detail:empty_recorder",
+    visibility = ["//visibility:public"],
+)
+
 cc_test(
     name = "log_level_test",
     srcs = [
@@ -240,7 +244,7 @@ cc_test(
     ],
     tags = ["unit"],
     deps = [
-        ":backend_stub_testutil",
+        ":backend_console",
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
@@ -257,7 +261,7 @@ cc_test(
     ],
     tags = ["unit"],
     deps = [
-        ":backend_stub_testutil",
+        ":backend_console",
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
@@ -275,7 +279,7 @@ cc_test(
     ],
     tags = ["unit"],
     deps = [
-        ":backend_stub_testutil",
+        ":backend_console",
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
@@ -292,7 +296,7 @@ cc_test(
     ],
     tags = ["unit"],
     deps = [
-        ":backend_stub_testutil",
+        ":backend_console",
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
@@ -311,9 +315,9 @@ cc_test(
     tags = ["unit"],
     deps = [
         "@googletest//:gtest_main",
+        "@score_baselibs//score/mw/log:backend_console",
         "@score_baselibs//score/mw/log:frontend",
         "@score_baselibs//score/mw/log:recorder_mock",
-        "@score_baselibs//score/mw/log/detail:console_only_recorder_factory",
     ],
 )
 
@@ -331,10 +335,10 @@ cc_test(
     }),
     tags = ["unit"],
     deps = [
+        ":backend_console",
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
-        "@score_baselibs//score/mw/log/detail:console_only_recorder_factory",
         "@score_baselibs//score/mw/log/detail/wait_free_stack",
     ],
 )
@@ -349,7 +353,7 @@ cc_test(
     ],
     tags = ["unit"],
     deps = [
-        ":backend_stub_testutil",
+        ":backend_console",
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
@@ -382,10 +386,10 @@ cc_test(
     ],
     tags = ["unit"],
     deps = [
+        ":backend_console",
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
-        "@score_baselibs//score/mw/log/detail:console_only_recorder_factory",
         "@score_baselibs//score/mw/log/test/my_custom_lib:my_custom_type_mw_log",
     ],
 )
@@ -407,10 +411,10 @@ cc_test(
     ],
     tags = ["unit"],
     deps = [
+        ":backend_console",
         ":frontend",
         ":recorder_mock",
         "@googletest//:gtest_main",
-        "@score_baselibs//score/mw/log/detail:console_only_recorder_factory",
         "@score_baselibs//score/mw/log/detail:thread_local_guard",
     ],
 )
@@ -420,40 +424,6 @@ cc_test(
 exports_files(
     ["log_stream_factory_test.cpp"],
     visibility = ["//visibility:public"],
-)
-
-cc_test(
-    name = "registry_aware_recorder_factory_test",
-    srcs = [
-        "registry_aware_recorder_factory_test.cpp",
-    ],
-    features = COMPILER_WARNING_FEATURES + [
-        "aborts_upon_exception",
-    ],
-    tags = ["unit"],
-    deps = [
-        ":backend_table",
-        ":minimal",
-        "@googletest//:gtest_main",
-        "@score_baselibs//score/mw/log/detail:empty_recorder",
-        "@score_baselibs//score/mw/log/detail/text_recorder",
-    ],
-)
-
-cc_test(
-    name = "backend_table_test",
-    srcs = [
-        "backend_table_test.cpp",
-    ],
-    features = COMPILER_WARNING_FEATURES + [
-        "aborts_upon_exception",
-    ],
-    tags = ["unit"],
-    deps = [
-        ":backend_table",
-        "@googletest//:gtest_main",
-        "@score_baselibs//score/mw/log/detail:empty_recorder",
-    ],
 )
 
 cc_test(
@@ -474,7 +444,6 @@ cc_test(
 cc_unit_test_suites_for_host_and_qnx(
     name = "unit_tests",
     cc_unit_tests = [
-        ":backend_table_test",
         ":log_stream_test",
         ":log_types_test",
         ":log_level_test",
@@ -483,7 +452,6 @@ cc_unit_test_suites_for_host_and_qnx(
         ":logger_container_test",
         ":logger_test",
         ":logging_test",
-        ":registry_aware_recorder_factory_test",
         ":runtime_test",
         ":runtime_test_instance_fallback",
         ":runtime_test_without_pointer_initialization",

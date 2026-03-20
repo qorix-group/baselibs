@@ -10,10 +10,10 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/registry_aware_recorder_factory.h"
+#include "score/mw/log/detail/registry_aware_recorder_factory.h"
 
-#include "score/mw/log/backend_table.h"
 #include "score/mw/log/configuration/target_config_reader.h"
+#include "score/mw/log/detail/backend_table.h"
 #include "score/mw/log/detail/common/composite_recorder.h"
 #include "score/mw/log/detail/empty_recorder.h"
 #include "score/mw/log/detail/error.h"
@@ -27,6 +27,79 @@ namespace log
 {
 namespace detail
 {
+
+std::unique_ptr<Recorder> RegistryAwareRecorderFactory::CreateRecorderFromLogMode(
+    const LogMode& log_mode,
+    const Configuration& config,
+    score::cpp::pmr::memory_resource* memory_resource) const noexcept
+{
+    if (memory_resource == nullptr)
+    {
+        ReportInitializationError(Error::kMemoryResourceError);
+        return CreateStub();
+    }
+
+    auto recorder = CreateRecorderForMode(log_mode, config, memory_resource);
+    if (recorder == nullptr)
+    {
+        ReportInitializationError(Error::kRecorderFactoryUnsupportedLogMode);
+        return CreateStub();
+    }
+
+    return recorder;
+}
+
+/*
+Deviation from Rule A15-5-3:
+- The std::terminate() function shall not be called implicitly.
+Justification:
+- std::terminate() could be invoked as this function is noexcept function but result.value() may throw an exception.
+- However, we only call result.value() after confirming result.has_value(), so there's no scenario where
+std::bad_variant_access can occur.
+- Therefore, it's safe to suppress this warning here.
+*/
+// coverity[autosar_cpp14_a15_5_3_violation]
+std::unique_ptr<Recorder> RegistryAwareRecorderFactory::CreateFromConfiguration(
+    const std::unique_ptr<const ITargetConfigReader> config_reader,
+    score::cpp::pmr::memory_resource* memory_resource) const noexcept
+{
+    if (memory_resource == nullptr)
+    {
+        ReportInitializationError(score::mw::log::detail::Error::kMemoryResourceError);
+        return CreateStub();
+    }
+    const auto result = config_reader->ReadConfig();
+
+    if (!result.has_value())
+    {
+        ReportInitializationError(result.error(), "Failed to load configuration files. Fallback to console logging.");
+        return CreateWithConsoleLoggingOnly(memory_resource);
+    }
+
+    std::vector<std::unique_ptr<Recorder>> recorders;
+    std::ignore = std::for_each(
+        result->GetLogMode().begin(),
+        result->GetLogMode().end(),
+        [this, &result, &recorders, &memory_resource](const auto& log_mode) {
+            // LCOV_EXCL_START : no branches to test
+            std::ignore = recorders.emplace_back(CreateRecorderFromLogMode(log_mode, result.value(), memory_resource));
+            // LCOV_EXCL_STOP
+        });
+
+    if (recorders.empty())
+    {
+        ReportInitializationError(Error::kNoLogModeSpecified);
+        return std::make_unique<EmptyRecorder>();
+    }
+
+    if (recorders.size() == 1U)
+    {
+        return std::move(recorders[0]);
+    }
+
+    // Composite recorder is needed if there are more than one activate recorder.
+    return std::make_unique<CompositeRecorder>(std::move(recorders));
+}
 
 /*
 Deviation from Rule A15-5-3:
@@ -43,7 +116,7 @@ std::unique_ptr<Recorder> RegistryAwareRecorderFactory::CreateFromConfiguration(
     if (memory_resource == nullptr)
     {
         ReportInitializationError(score::mw::log::detail::Error::kMemoryResourceError);
-        return nullptr;
+        return CreateWithConsoleLoggingOnly(memory_resource);
     }
 
     auto config_reader = std::make_unique<TargetConfigReader>(
@@ -127,27 +200,6 @@ std::unique_ptr<Recorder> RegistryAwareRecorderFactory::CreateWithConsoleLogging
 std::unique_ptr<Recorder> RegistryAwareRecorderFactory::CreateStub() const noexcept
 {
     return std::make_unique<EmptyRecorder>();
-}
-
-std::unique_ptr<Recorder> RegistryAwareRecorderFactory::CreateRecorderFromLogMode(
-    const LogMode& log_mode,
-    const Configuration& config,
-    score::cpp::pmr::memory_resource* memory_resource) const noexcept
-{
-    if (memory_resource == nullptr)
-    {
-        ReportInitializationError(Error::kMemoryResourceError);
-        return CreateStub();
-    }
-
-    auto recorder = CreateRecorderForMode(log_mode, config, memory_resource);
-    if (recorder == nullptr)
-    {
-        ReportInitializationError(Error::kRecorderFactoryUnsupportedLogMode);
-        return CreateStub();
-    }
-
-    return recorder;
 }
 
 // The single definition of CreateRecorderFactory() — always linked via backend:minimal.

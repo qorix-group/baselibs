@@ -236,7 +236,7 @@ cc_library(
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
     visibility = [
-        "//visibility:public",
+        "@score_baselibs//score/mw/log:__subpackages__",
     ],
     deps = [
         ":log_data_types",
@@ -257,27 +257,6 @@ cc_library(
     visibility = [
         "//visibility:public",
     ],
-)
-
-cc_library(
-    name = "console_only_recorder_factory",
-    srcs = [
-        "console_only_recorder_factory.cpp",
-    ],
-    hdrs = [
-        "console_only_recorder_factory.h",
-    ],
-    features = COMPILER_WARNING_FEATURES,
-    tags = ["FFI"],
-    visibility = [
-        "@score_baselibs//score/mw/log:__subpackages__",
-    ],
-    deps = [
-        ":empty_recorder",
-        "@score_baselibs//score/mw/log:recorder_interface",
-        "@score_baselibs//score/mw/log/detail/text_recorder",
-    ],
-    alwayslink = True,
 )
 
 cc_library(
@@ -467,19 +446,6 @@ cc_test(
 )
 
 cc_test(
-    name = "console_only_recorder_factory_test",
-    srcs = ["console_only_recorder_factory_test.cpp"],
-    features = COMPILER_WARNING_FEATURES + [
-        "aborts_upon_exception",
-    ],
-    tags = ["unit"],
-    deps = [
-        "@googletest//:gtest_main",
-        "@score_baselibs//score/mw/log/detail:console_only_recorder_factory",
-    ],
-)
-
-cc_test(
     name = "thread_local_guard_test",
     srcs = [
         "thread_local_guard_test.cpp",
@@ -497,19 +463,120 @@ cc_test(
     ],
 )
 
+cc_library(
+    name = "backend_table",
+    srcs = ["backend_table.cpp"],
+    hdrs = ["backend_table.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = ["@score_baselibs//score/mw/log:__subpackages__"],
+    deps = [
+        "@score_baselibs//score/mw/log:recorder",
+        "@score_baselibs//score/mw/log:shared_types",
+        "@score_baselibs//score/mw/log/configuration",
+    ],
+)
+
+cc_library(
+    name = "recorder_interface",
+    srcs = ["irecorder_factory.cpp"],
+    hdrs = ["irecorder_factory.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = ["@score_baselibs//score/mw/log:__subpackages__"],
+    deps = ["@score_baselibs//score/mw/log:recorder"],
+)
+
+cc_library(
+    name = "registry_aware_recorder_factory",
+    srcs = ["registry_aware_recorder_factory.cpp"],
+    hdrs = ["registry_aware_recorder_factory.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "@score_baselibs//score/mw/log:__subpackages__",
+    ],
+    deps = [
+        ":backend_table",
+        ":empty_recorder",
+        ":initialization_reporter",
+        ":recorder_interface",
+        ":types_and_errors",
+        "@score_baselibs//score/mw/log/configuration:configuration_parser",
+        "@score_baselibs//score/mw/log/detail/common:composite_recorder",
+    ],
+    alwayslink = True,
+)
+
+# Provides a RegistryAwareRecorderFactory with a console
+# logging backend that excludes the frontend
+cc_library(
+    name = "backend_console",
+    srcs = ["console_registrant.cpp"],
+    features = COMPILER_WARNING_FEATURES,
+    local_defines = select({
+        "@score_baselibs//score/mw/log/detail/flags:config_KConsole_Logging": ["KCONSOLE_LOGGING"],
+        "//conditions:default": [],
+    }),
+    tags = ["FFI"],
+    visibility = ["@score_baselibs//score/mw/log:__subpackages__"],
+    deps = [
+        ":backend_table",
+        ":empty_recorder",
+        ":registry_aware_recorder_factory",
+        "@score_baselibs//score/mw/log:recorder_config",
+        "@score_baselibs//score/mw/log/detail/text_recorder:console_recorder_factory",
+    ],
+    alwayslink = True,
+)
+
+cc_test(
+    name = "backend_table_test",
+    srcs = ["backend_table_test.cpp"],
+    features = COMPILER_WARNING_FEATURES + [
+        "aborts_upon_exception",
+    ],
+    tags = ["unit"],
+    deps = [
+        ":backend_table",
+        ":empty_recorder",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "registry_aware_recorder_factory_test",
+    srcs = ["registry_aware_recorder_factory_test.cpp"],
+    features = COMPILER_WARNING_FEATURES + [
+        "aborts_upon_exception",
+    ],
+    tags = ["unit"],
+    deps = [
+        ":backend_table",
+        ":empty_recorder",
+        ":types_and_errors",
+        "@googletest//:gtest_main",
+        "@score_baselibs//score/mw/log:console",
+        "@score_baselibs//score/mw/log/configuration:target_config_reader_mock",
+        "@score_baselibs//score/mw/log/detail/common:composite_recorder",
+        "@score_baselibs//score/mw/log/detail/text_recorder",
+    ],
+)
+
 cc_unit_test_suites_for_host_and_qnx(
     name = "unit_tests",
     cc_unit_tests = [
+        ":backend_table_test",
         ":circular_allocator_test",
         ":dlt_argument_counter_test",
         ":empty_recorder_factory_test",
         ":thread_local_guard_test",
-        ":console_only_recorder_factory_test",
         ":empty_recorder_test",
         ":error_test",
         ":helper_functions_test",
         ":log_record_test",
         ":logging_identifier_test",
+        ":registry_aware_recorder_factory_test",
         ":slot_test",
         ":verbose_payload_test",
     ],

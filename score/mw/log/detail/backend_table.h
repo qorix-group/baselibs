@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef SCORE_MW_LOG_BACKEND_TABLE_H
-#define SCORE_MW_LOG_BACKEND_TABLE_H
+#ifndef SCORE_MW_LOG_DETAIL_BACKEND_TABLE_H
+#define SCORE_MW_LOG_DETAIL_BACKEND_TABLE_H
 
 #include "score/mw/log/configuration/configuration.h"
 #include "score/mw/log/log_mode.h"
@@ -122,4 +122,4 @@ struct BackendRegistrant final
 }  // namespace mw
 }  // namespace score
 
-#endif  // SCORE_MW_LOG_BACKEND_TABLE_H
+#endif  // SCORE_MW_LOG_DETAIL_BACKEND_TABLE_H

@@ -10,11 +10,12 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef SCORE_MW_LOG_REGISTRY_AWARE_RECORDER_FACTORY_H
-#define SCORE_MW_LOG_REGISTRY_AWARE_RECORDER_FACTORY_H
+#ifndef SCORE_MW_LOG_DETAIL_REGISTRY_AWARE_RECORDER_FACTORY_H
+#define SCORE_MW_LOG_DETAIL_REGISTRY_AWARE_RECORDER_FACTORY_H
 
 #include "score/mw/log/configuration/configuration.h"
-#include "score/mw/log/irecorder_factory.h"
+#include "score/mw/log/configuration/itarget_config_reader.h"
+#include "score/mw/log/detail/irecorder_factory.h"
 #include "score/mw/log/log_mode.h"
 #include "score/mw/log/recorder.h"
 
@@ -47,6 +48,9 @@ class RegistryAwareRecorderFactory final : public IRecorderFactory
     std::unique_ptr<Recorder> CreateFromConfiguration(
         score::cpp::pmr::memory_resource* memory_resource) const noexcept override;
 
+    std::unique_ptr<Recorder> CreateFromConfiguration(const std::unique_ptr<const ITargetConfigReader> config_reader,
+                                                      score::cpp::pmr::memory_resource* memory_resource) const noexcept;
+
     std::unique_ptr<Recorder> CreateWithConsoleLoggingOnly(
         score::cpp::pmr::memory_resource* memory_resource) const noexcept override;
 
@@ -67,4 +71,4 @@ class RegistryAwareRecorderFactory final : public IRecorderFactory
 }  // namespace mw
 }  // namespace score
 
-#endif  // SCORE_MW_LOG_REGISTRY_AWARE_RECORDER_FACTORY_H
+#endif  // SCORE_MW_LOG_DETAIL_REGISTRY_AWARE_RECORDER_FACTORY_H
