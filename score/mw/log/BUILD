@@ -46,6 +46,31 @@ cc_library(
     ],
 )
 
+# Default: Factory + Console (always linked via mw/log:log)
+# Provides CreateRecorderFactory() and console backend registration.
+cc_library(
+    name = "minimal",
+    srcs = [
+        "console_registrant.cpp",
+        "registry_aware_recorder_factory.cpp",
+    ],
+    hdrs = ["registry_aware_recorder_factory.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":backend_table",
+        ":recorder_interface",
+        "@score_baselibs//score/mw/log/configuration:configuration_parser",
+        "@score_baselibs//score/mw/log/detail:empty_recorder",
+        "@score_baselibs//score/mw/log/detail:initialization_reporter",
+        "@score_baselibs//score/mw/log/detail:types_and_errors",
+        "@score_baselibs//score/mw/log/detail/common:composite_recorder",
+        "@score_baselibs//score/mw/log/detail/text_recorder:console_recorder_factory",
+    ],
+    alwayslink = True,
+)
+
 alias(
     name = "log",
     actual = ":frontend",
@@ -398,6 +423,22 @@ exports_files(
 )
 
 cc_test(
+    name = "backend_table_test",
+    srcs = [
+        "backend_table_test.cpp",
+    ],
+    features = COMPILER_WARNING_FEATURES + [
+        "aborts_upon_exception",
+    ],
+    tags = ["unit"],
+    deps = [
+        ":backend_table",
+        "@googletest//:gtest_main",
+        "@score_baselibs//score/mw/log/detail:empty_recorder",
+    ],
+)
+
+cc_test(
     name = "log_types_test",
     srcs = [
         ":log_types_test.cpp",
@@ -415,6 +456,7 @@ cc_test(
 cc_unit_test_suites_for_host_and_qnx(
     name = "unit_tests",
     cc_unit_tests = [
+        ":backend_table_test",
         ":log_stream_test",
         ":log_types_test",
         ":log_level_test",
