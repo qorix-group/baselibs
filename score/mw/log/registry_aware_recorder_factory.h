@@ -13,7 +13,9 @@
 #ifndef SCORE_MW_LOG_REGISTRY_AWARE_RECORDER_FACTORY_H
 #define SCORE_MW_LOG_REGISTRY_AWARE_RECORDER_FACTORY_H
 
+#include "score/mw/log/configuration/configuration.h"
 #include "score/mw/log/irecorder_factory.h"
+#include "score/mw/log/log_mode.h"
 #include "score/mw/log/recorder.h"
 
 #include <score/memory.hpp>
@@ -49,6 +51,15 @@ class RegistryAwareRecorderFactory final : public IRecorderFactory
         score::cpp::pmr::memory_resource* memory_resource) const noexcept override;
 
     std::unique_ptr<Recorder> CreateStub() const noexcept override;
+
+    /// \brief Create a recorder for a specific log mode using the backend table.
+    ///
+    /// \details Delegates to CreateRecorderForMode() from backend_table.h.
+    /// Returns an EmptyRecorder stub if no backend is registered for the requested mode.
+    std::unique_ptr<Recorder> CreateRecorderFromLogMode(
+        const LogMode& log_mode,
+        const Configuration& config,
+        score::cpp::pmr::memory_resource* memory_resource = score::cpp::pmr::get_default_resource()) const noexcept;
 };
 
 }  // namespace detail

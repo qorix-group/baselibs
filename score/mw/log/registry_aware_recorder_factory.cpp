@@ -129,6 +129,27 @@ std::unique_ptr<Recorder> RegistryAwareRecorderFactory::CreateStub() const noexc
     return std::make_unique<EmptyRecorder>();
 }
 
+std::unique_ptr<Recorder> RegistryAwareRecorderFactory::CreateRecorderFromLogMode(
+    const LogMode& log_mode,
+    const Configuration& config,
+    score::cpp::pmr::memory_resource* memory_resource) const noexcept
+{
+    if (memory_resource == nullptr)
+    {
+        ReportInitializationError(Error::kMemoryResourceError);
+        return CreateStub();
+    }
+
+    auto recorder = CreateRecorderForMode(log_mode, config, memory_resource);
+    if (recorder == nullptr)
+    {
+        ReportInitializationError(Error::kRecorderFactoryUnsupportedLogMode);
+        return CreateStub();
+    }
+
+    return recorder;
+}
+
 // The single definition of CreateRecorderFactory() — always linked via backend:minimal.
 std::unique_ptr<IRecorderFactory> CreateRecorderFactory() noexcept
 {
