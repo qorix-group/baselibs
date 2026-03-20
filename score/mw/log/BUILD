@@ -32,6 +32,20 @@ COMPILER_WARNING_FEATURES = [
     "strict_warnings",
 ]
 
+cc_library(
+    name = "backend_table",
+    srcs = ["backend_table.cpp"],
+    hdrs = ["backend_table.h"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = ["@score_baselibs//score/mw/log:__subpackages__"],
+    deps = [
+        ":recorder",
+        ":shared_types",
+        "@score_baselibs//score/mw/log/configuration",
+    ],
+)
+
 alias(
     name = "log",
     actual = ":frontend",
