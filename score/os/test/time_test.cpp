@@ -404,12 +404,13 @@ TEST(TimeImplTest, PeriodicTimerCreationSuccess)
     EXPECT_EQ(gettime_result, 0);
 
     // For periodic timer, interval should remain set
+    // The kernel may slightly adjust the interval to its internal timer resolution
     EXPECT_EQ(current_value.it_interval.tv_sec, 0);
-    EXPECT_EQ(current_value.it_interval.tv_nsec, 50000000);
+    EXPECT_NEAR(current_value.it_interval.tv_nsec, 50000000, 2000000);
 
     // Timer should be armed with remaining time less than interval
     EXPECT_GE(current_value.it_value.tv_nsec, 0);
-    EXPECT_LT(current_value.it_value.tv_nsec, 50000000);
+    EXPECT_LT(current_value.it_value.tv_nsec, 52000000);
 
     Time::instance().timer_delete(timerid);
 }
