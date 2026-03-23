@@ -21,6 +21,7 @@ on:
       - main
   merge_group:
     types: [checks_requested]
+  workflow_call:
 jobs:
   clang-tidy:
     runs-on: ubuntu-latest
