@@ -24,6 +24,9 @@ namespace filesystem
 // NOLINTBEGIN(modernize-use-equals-default): See above
 // false-positive: can't create delegate due to defaulted constructors and can't mix init list with in-class init
 // coverity[autosar_cpp14_a12_1_5_violation]
+// Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
+// Calling std::terminate() if any exceptions are thrown is expected as per safety requirements
+// coverity[autosar_cpp14_a15_5_3_violation]
 RecursiveDirectoryIterator::RecursiveDirectoryIterator() noexcept {}
 // NOLINTEND(modernize-use-equals-default)
 
@@ -39,6 +42,9 @@ RecursiveDirectoryIterator::~RecursiveDirectoryIterator() noexcept = default;
 
 // false-positive: can't create delegate due to defaulted constructors and can't mix init list with in-class init
 // coverity[autosar_cpp14_a12_1_5_violation]
+// Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
+// Calling std::terminate() if any exceptions are thrown is expected as per safety requirements
+// coverity[autosar_cpp14_a15_5_3_violation]
 RecursiveDirectoryIterator::RecursiveDirectoryIterator(const Path& path,
                                                        const DirectoryOptions directory_options) noexcept
 {
@@ -81,6 +87,9 @@ RecursiveDirectoryIterator::pointer RecursiveDirectoryIterator::operator->() con
     return &operator*();
 }
 
+// Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
+// Calling std::terminate() if any exceptions are thrown is expected as per safety requirements
+// coverity[autosar_cpp14_a15_5_3_violation]
 bool RecursiveDirectoryIterator::OperatorIncFolderHelper(const FileType file_type) noexcept
 {
     bool is_folder{file_type == FileType::kDirectory};

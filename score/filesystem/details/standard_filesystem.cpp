@@ -427,6 +427,8 @@ score::ResultBlank StandardFilesystem::RemoveAll(const Path& path) const noexcep
     return result;
 }
 
+// Refer on top for suppression justification
+// coverity[autosar_cpp14_a15_5_3_violation : FALSE]
 ResultBlank StandardFilesystem::RemoveContentFromExistingDirectory(const Path& path) const noexcept
 {
     ResultBlank result{};

@@ -197,6 +197,8 @@ ResultBlank FileUtils::CreateDirectories(const Path& path, const score::os::Stat
     return {};
 }
 
+// Refer on top for suppression justification
+// coverity[autosar_cpp14_a15_5_3_violation : FALSE]
 ResultBlank FileUtils::ChangeGroup(const Path& path, const std::string& group_name) const noexcept
 {
     std::lock_guard<std::mutex> guard{groupname_mutex_};
@@ -221,6 +223,8 @@ ResultBlank FileUtils::ChangeGroup(const Path& path, const gid_t group_id) const
     return {};
 }
 
+// Refer on top for suppression justification
+// coverity[autosar_cpp14_a15_5_3_violation : FALSE]
 Result<bool> FileUtils::ValidateGroup(const Path& path, const std::string& group_name) const noexcept
 {
     std::lock_guard<std::mutex> guard{groupname_mutex_};
@@ -359,6 +363,8 @@ Result<bool> FileUtils::FileContentsAreIdentical(const Path& path1, const Path& 
     return IsFileContentIdentical(**file1, **file2);
 }
 
+// Refer on top for suppression justification
+// coverity[autosar_cpp14_a15_5_3_violation : FALSE]
 ResultBlank FileUtils::CheckFileSystem(const Path& partition) const noexcept
 {
     const std::string cmd = std::string{"e2fsck -n "} + partition.Native();
@@ -370,6 +376,8 @@ ResultBlank FileUtils::CheckFileSystem(const Path& partition) const noexcept
     return {};
 }
 
+// Refer on top for suppression justification
+// coverity[autosar_cpp14_a15_5_3_violation : FALSE]
 ResultBlank FileUtils::RepairFileSystem(const Path& partition) const noexcept
 {
     const std::string cmd = std::string{"e2fsck -p "} + partition.Native();
@@ -381,6 +389,8 @@ ResultBlank FileUtils::RepairFileSystem(const Path& partition) const noexcept
     return {};
 }
 
+// Refer on top for suppression justification
+// coverity[autosar_cpp14_a15_5_3_violation : FALSE]
 ResultBlank FileUtils::FormatPartition(const Path& partition) const noexcept
 {
     // Reference: broken_link_c/issue/4757296

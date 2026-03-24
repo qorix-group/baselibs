@@ -39,6 +39,8 @@ constexpr std::int32_t kSystemTicksDigitsLength = 8;
 constexpr std::uint32_t kSystemTicksDigitsCropMask = 100'000'000U;
 
 }  // namespace
+// coverity[autosar_cpp14_a15_5_3_violation]: Memory allocation failure extremely unlikely for small temp filename
+// generation
 std::string ComposeTempFilename(std::string_view original_filename,
                                 std::size_t threa_id_hash,
                                 std::uint64_t timestamp) noexcept
