@@ -12,9 +12,9 @@
  ********************************************************************************/
 #include "score/mw/log/detail/registry_aware_recorder_factory.h"
 
+#include "score/mw/log/backend_table.h"
 #include "score/mw/log/configuration/target_config_reader_mock.h"
-#include "score/mw/log/detail/backend_table.h"
-#include "score/mw/log/detail/common/composite_recorder.h"
+#include "score/mw/log/detail/composite_recorder.h"
 #include "score/mw/log/detail/empty_recorder.h"
 #include "score/mw/log/detail/error.h"
 #include "score/mw/log/detail/irecorder_factory.h"
@@ -137,7 +137,15 @@ TEST_F(RegistryAwareRecorderFactoryTest, CreateWithConsoleLoggingOnlyReturnsReco
     auto recorder = factory.CreateWithConsoleLoggingOnly(score::cpp::pmr::get_default_resource());
 
     EXPECT_NE(recorder, nullptr);
-    EXPECT_TRUE(IsRecorderOfType<TextRecorder>(recorder));
+
+    if (IsBackendAvailable(LogMode::kConsole))
+    {
+        EXPECT_TRUE(IsRecorderOfType<TextRecorder>(recorder));
+    }
+    else
+    {
+        EXPECT_TRUE(IsRecorderOfType<EmptyRecorder>(recorder));
+    }
 }
 
 TEST_F(RegistryAwareRecorderFactoryTest, CreateWithConsoleLoggingOnlyWithNullResourceFallsBackToDefault)
@@ -149,7 +157,15 @@ TEST_F(RegistryAwareRecorderFactoryTest, CreateWithConsoleLoggingOnlyWithNullRes
     auto recorder = factory.CreateWithConsoleLoggingOnly(nullptr);
 
     EXPECT_NE(recorder, nullptr);
-    EXPECT_TRUE(IsRecorderOfType<TextRecorder>(recorder));
+
+    if (IsBackendAvailable(LogMode::kConsole))
+    {
+        EXPECT_TRUE(IsRecorderOfType<TextRecorder>(recorder));
+    }
+    else
+    {
+        EXPECT_TRUE(IsRecorderOfType<EmptyRecorder>(recorder));
+    }
 }
 
 TEST_F(RegistryAwareRecorderFactoryTest, CreateWithConsoleLoggingOnlyFallsBackToEmptyIfConsoleNotRegistered)
@@ -216,7 +232,14 @@ TEST_F(RegistryAwareRecorderFactoryConfigFixture, ConfigurationErrorShallFallbac
     SetTargetConfigReaderResult(score::MakeUnexpected(Error::kConfigurationFilesNotFound));
     auto recorder = CreateFromConfiguration();
 
-    EXPECT_TRUE(IsRecorderOfType<TextRecorder>(recorder));
+    if (IsBackendAvailable(LogMode::kConsole))
+    {
+        EXPECT_TRUE(IsRecorderOfType<TextRecorder>(recorder));
+    }
+    else
+    {
+        EXPECT_TRUE(IsRecorderOfType<EmptyRecorder>(recorder));
+    }
 }
 
 TEST_F(RegistryAwareRecorderFactoryConfigFixture, NoRecorderConfiguredShallReturnEmptyRecorder)
@@ -244,7 +267,14 @@ TEST_F(RegistryAwareRecorderFactoryConfigFixture, ConsoleConfiguredShallReturnCo
     SetConfigurationWithLogMode({LogMode::kConsole});
     auto recorder = CreateFromConfiguration();
 
-    EXPECT_TRUE(IsRecorderOfType<TextRecorder>(recorder));
+    if (IsBackendAvailable(LogMode::kConsole))
+    {
+        EXPECT_TRUE(IsRecorderOfType<TextRecorder>(recorder));
+    }
+    else
+    {
+        EXPECT_TRUE(IsRecorderOfType<EmptyRecorder>(recorder));
+    }
 }
 
 TEST_F(RegistryAwareRecorderFactoryConfigFixture, InvalidLogModeShallReturnEmptyRecorder)
@@ -284,9 +314,17 @@ TEST_F(RegistryAwareRecorderFactoryConfigFixture, MultipleLogModesShallReturnCom
     RecordProperty("TestingTechnique", "Requirements-based test");
     RecordProperty("DerivationTechnique", "Analysis of requirements");
 
-    // Register a fake "file" backend so we have two backends available.
+    // Clear and register two fake backends to be independent of flag combinations.
+    gBackendCreators.fill(nullptr);
+
     RegisterBackend(
         LogMode::kFile,
+        [](const Configuration& /*config*/, score::cpp::pmr::memory_resource* /*mem*/) -> std::unique_ptr<Recorder> {
+            return std::make_unique<EmptyRecorder>();
+        });
+
+    RegisterBackend(
+        LogMode::kConsole,
         [](const Configuration& /*config*/, score::cpp::pmr::memory_resource* /*mem*/) -> std::unique_ptr<Recorder> {
             return std::make_unique<EmptyRecorder>();
         });

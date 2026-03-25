@@ -22,12 +22,12 @@ namespace log
 
 /// \brief Feature constants for safety-critical backend exclusion.
 ///
-/// When KCONSOLE_LOGGING is not defined the console backend
-/// registration returns an EmptyRecorder, and fallback to console paths produce no output.
-/// When KFILE_LOGGING is not defined, the file backend registration returns an EmptyRecorder.
-/// When KREMOTE_LOGGING is not defined, the remote backend registration returns an EmptyRecorder.
-/// When KCUSTOM_LOGGING is not defined (default), the custom backend registration returns
-/// an EmptyRecorder.
+/// When KCONSOLE_LOGGING is not defined, the console backend is not registered.
+/// When KFILE_LOGGING is not defined, the file backend is not registered.
+/// When KREMOTE_LOGGING is not defined, the remote backend is not registered.
+/// When KCUSTOM_LOGGING is not defined (default), the custom backend is not registered.
+/// Unregistered backends leave their slot empty in the backend table;
+/// callers handle the fallback centrally (e.g. via EmptyRecorder).
 
 /*
 Deviation from Rule A16-0-1:

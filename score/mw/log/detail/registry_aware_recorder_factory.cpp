@@ -12,9 +12,9 @@
  ********************************************************************************/
 #include "score/mw/log/detail/registry_aware_recorder_factory.h"
 
+#include "score/mw/log/backend_table.h"
 #include "score/mw/log/configuration/target_config_reader.h"
-#include "score/mw/log/detail/backend_table.h"
-#include "score/mw/log/detail/common/composite_recorder.h"
+#include "score/mw/log/detail/composite_recorder.h"
 #include "score/mw/log/detail/empty_recorder.h"
 #include "score/mw/log/detail/error.h"
 #include "score/mw/log/detail/initialization_reporter.h"

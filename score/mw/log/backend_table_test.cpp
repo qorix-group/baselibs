@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/backend_table.h"
+#include "score/mw/log/backend_table.h"
 
 #include "score/mw/log/detail/empty_recorder.h"
 
@@ -22,10 +22,11 @@ namespace mw
 {
 namespace log
 {
-namespace detail
-{
 namespace
 {
+
+using detail::Configuration;
+using detail::EmptyRecorder;
 
 class BackendTableTest : public ::testing::Test
 {
@@ -269,7 +270,6 @@ TEST_F(BackendTableTest, RegisterBackendOverwritesPreviousRegistration)
 }
 
 }  // namespace
-}  // namespace detail
 }  // namespace log
 }  // namespace mw
 }  // namespace score

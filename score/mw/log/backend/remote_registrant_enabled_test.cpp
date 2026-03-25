@@ -10,7 +10,9 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#include "score/mw/log/detail/backend_table.h"
+#include "score/mw/log/backend_table.h"
+
+#include "gtest/gtest.h"
 
 namespace score
 {
@@ -20,10 +22,20 @@ namespace log
 {
 namespace detail
 {
+namespace
+{
 
-// Constant-initialized: std::array of null function pointers.
-std::array<RecorderCreatorFn, kMaxBackendSlots> gBackendCreators{};
+TEST(RemoteRegistrantTest, RemoteBackendIsRegisteredAfterStaticInitialization)
+{
+    RecordProperty("Description",
+                   "The remote backend registrant shall register a creator for LogMode::kRemote during static init.");
+    RecordProperty("TestType", "Verification of the control flow and data flow");
+    RecordProperty("DerivationTechnique", "Analysis of functional dependencies");
 
+    EXPECT_TRUE(IsBackendAvailable(LogMode::kRemote));
+}
+
+}  // namespace
 }  // namespace detail
 }  // namespace log
 }  // namespace mw

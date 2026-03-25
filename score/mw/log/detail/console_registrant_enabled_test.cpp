@@ -25,14 +25,28 @@ namespace detail
 namespace
 {
 
-TEST(SlogRegistrantTest, SlogBackendIsRegisteredAfterStaticInitialization)
+TEST(ConsoleRegistrantTest, ConsoleBackendIsRegisteredAfterStaticInitialization)
 {
-    RecordProperty("Description",
-                   "The slog backend registrant shall register a creator for LogMode::kSystem during static init.");
+    RecordProperty("Description", "The console backend registrant shall be registered for LogMode::kConsole");
     RecordProperty("TestType", "Verification of the control flow and data flow");
     RecordProperty("DerivationTechnique", "Analysis of functional dependencies");
 
-    EXPECT_TRUE(IsBackendAvailable(LogMode::kSystem));
+    EXPECT_TRUE(IsBackendAvailable(LogMode::kConsole));
+}
+
+TEST(ConsoleRegistrantTest, ConsoleBackendCreatorReturnsNonNullRecorder)
+{
+    RecordProperty("Description",
+                   "The registered console backend shall return a non-null Recorder given valid configuration.");
+    RecordProperty("TestType", "Interface test");
+    RecordProperty("DerivationTechnique", "Analysis of functional dependencies");
+
+    ASSERT_TRUE(IsBackendAvailable(LogMode::kConsole));
+
+    const Configuration config;
+    auto recorder = CreateRecorderForMode(LogMode::kConsole, config, score::cpp::pmr::get_default_resource());
+
+    EXPECT_NE(recorder, nullptr);
 }
 
 }  // namespace

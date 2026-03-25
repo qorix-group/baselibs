@@ -10,8 +10,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
-#ifndef SCORE_MW_LOG_DETAIL_BACKEND_TABLE_H
-#define SCORE_MW_LOG_DETAIL_BACKEND_TABLE_H
+#ifndef SCORE_MW_LOG_BACKEND_TABLE_H
+#define SCORE_MW_LOG_BACKEND_TABLE_H
 
 #include "score/mw/log/configuration/configuration.h"
 #include "score/mw/log/log_mode.h"
@@ -30,11 +30,9 @@ namespace mw
 {
 namespace log
 {
-namespace detail
-{
 
 /// \brief Plain function pointer type for backend recorder creation.
-using RecorderCreatorFn = std::unique_ptr<Recorder> (*)(const Configuration& config,
+using RecorderCreatorFn = std::unique_ptr<Recorder> (*)(const detail::Configuration& config,
                                                         score::cpp::pmr::memory_resource* memory_resource);
 
 /// \brief Maximum number of supported log modes. Matches the LogMode enum.
@@ -94,7 +92,7 @@ inline bool IsBackendAvailable(const LogMode mode) noexcept
 /// \brief Create a recorder using the registered backend for the given mode.
 /// \return A Recorder instance, or nullptr if no backend is registered for this mode.
 inline std::unique_ptr<Recorder> CreateRecorderForMode(const LogMode mode,
-                                                       const Configuration& config,
+                                                       const detail::Configuration& config,
                                                        score::cpp::pmr::memory_resource* memory_resource) noexcept
 {
     const auto index = ModeToSlotIndex(mode);
@@ -117,9 +115,8 @@ struct BackendRegistrant final
     }
 };
 
-}  // namespace detail
 }  // namespace log
 }  // namespace mw
 }  // namespace score
 
-#endif  // SCORE_MW_LOG_DETAIL_BACKEND_TABLE_H
+#endif  // SCORE_MW_LOG_BACKEND_TABLE_H

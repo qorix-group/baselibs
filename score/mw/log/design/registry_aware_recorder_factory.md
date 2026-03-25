@@ -96,7 +96,7 @@ class MyRecorderFactory : public LogRecorderFactory<MyRecorderFactory>
 Create `score/mw/log/backend/my_registrant.cpp`:
 
 ```cpp
-#include "score/mw/log/detail/backend_table.h"
+#include "score/mw/log/backend_table.h"
 #include "path/to/my_recorder_factory.h"
 
 namespace
