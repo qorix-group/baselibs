@@ -40,15 +40,28 @@ config_setting(
 )
 
 cc_library(
-    name = "interface",
-    srcs = [
-        "i_json_parser.cpp",
-        "i_json_writer.cpp",
-    ],
+    name = "parser_interface",
+    srcs = ["i_json_parser.cpp"],
     hdrs = [
         "i_json_parser.h",
-        "i_json_writer.h",
         "json_parser.h",
+    ],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "@score_baselibs//score/json:__subpackages__",
+    ],
+    deps = [
+        "@score_baselibs//score/json/internal/model",
+        "@score_baselibs//score/result",
+    ],
+)
+
+cc_library(
+    name = "writer_interface",
+    srcs = ["i_json_writer.cpp"],
+    hdrs = [
+        "i_json_writer.h",
         "json_writer.h",
     ],
     features = COMPILER_WARNING_FEATURES,
@@ -65,23 +78,55 @@ cc_library(
 )
 
 cc_library(
-    name = "json",
-    srcs = [
-        "json_parser.cpp",
-        "json_writer.cpp",
+    name = "interface",
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = [
+        "@score_baselibs//score/json:__subpackages__",
     ],
+    deps = [
+        ":parser_interface",
+        ":writer_interface",
+    ],
+)
+
+cc_library(
+    name = "json_parser_impl",
+    srcs = ["json_parser.cpp"],
     features = COMPILER_WARNING_FEATURES,
     local_defines = select({
         ":base_library_nlohmann": ["NLOHMANN"],
         ":base_library_vajson": ["VAJSON"],
     }),
+    tags = ["FFI"],
+    visibility = ["@score_baselibs//score/json:__subpackages__"],
+    deps = [
+        ":parser_interface",
+        "@score_baselibs//score/json/internal/parser",
+    ],
+)
+
+cc_library(
+    name = "json_writer_impl",
+    srcs = ["json_writer.cpp"],
+    features = COMPILER_WARNING_FEATURES,
+    tags = ["FFI"],
+    visibility = ["@score_baselibs//score/json:__subpackages__"],
+    deps = [
+        ":writer_interface",
+        "@score_baselibs//score/json/internal/writer/json_serialize",
+        "@score_baselibs//score/language/safecpp/safe_math",
+    ],
+)
+
+cc_library(
+    name = "json",
+    features = COMPILER_WARNING_FEATURES,
     tags = ["FUSA"],
     visibility = LIB_JSON_VISIBILITY,
     deps = [
-        ":interface",
-        "@score_baselibs//score/json/internal/parser",
-        "@score_baselibs//score/json/internal/writer/json_serialize",
-        "@score_baselibs//score/language/safecpp/safe_math",
+        ":json_parser_impl",
+        ":json_writer_impl",
     ],
 )
 
@@ -104,7 +149,7 @@ cc_library(
 
 alias(
     name = "json_parser",
-    actual = ":json",
+    actual = ":json_parser_impl",
     visibility = [
         "//visibility:public",  # platform_only
     ],
