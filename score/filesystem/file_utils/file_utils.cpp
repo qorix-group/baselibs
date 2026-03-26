@@ -197,7 +197,9 @@ ResultBlank FileUtils::CreateDirectories(const Path& path, const score::os::Stat
     return {};
 }
 
-// Refer on top for suppression justification
+// Suppress "AUTOSAR C++14 A15-5-3" rule finding. This rule states: "The std::terminate() function shall
+// not be called implicitly". Since path_.has_value() is checked before calling path_.value(),
+// std::bad_optional_access should never be thrown. This is false positive.
 // coverity[autosar_cpp14_a15_5_3_violation : FALSE]
 ResultBlank FileUtils::ChangeGroup(const Path& path, const std::string& group_name) const noexcept
 {
@@ -223,7 +225,9 @@ ResultBlank FileUtils::ChangeGroup(const Path& path, const gid_t group_id) const
     return {};
 }
 
-// Refer on top for suppression justification
+// Suppress "AUTOSAR C++14 A15-5-3" rule finding. This rule states: "The std::terminate() function shall
+// not be called implicitly". Since path_.has_value() is checked before calling path_.value(),
+// std::bad_optional_access should never be thrown. This is false positive.
 // coverity[autosar_cpp14_a15_5_3_violation : FALSE]
 Result<bool> FileUtils::ValidateGroup(const Path& path, const std::string& group_name) const noexcept
 {
@@ -363,7 +367,9 @@ Result<bool> FileUtils::FileContentsAreIdentical(const Path& path1, const Path& 
     return IsFileContentIdentical(**file1, **file2);
 }
 
-// Refer on top for suppression justification
+// Suppress "AUTOSAR C++14 A15-5-3" rule finding. This rule states: "The std::terminate() function shall
+// not be called implicitly". Since path_.has_value() is checked before calling path_.value(),
+// std::bad_optional_access should never be thrown. This is false positive.
 // coverity[autosar_cpp14_a15_5_3_violation : FALSE]
 ResultBlank FileUtils::CheckFileSystem(const Path& partition) const noexcept
 {
@@ -376,7 +382,9 @@ ResultBlank FileUtils::CheckFileSystem(const Path& partition) const noexcept
     return {};
 }
 
-// Refer on top for suppression justification
+// Suppress "AUTOSAR C++14 A15-5-3" rule finding. This rule states: "The std::terminate() function shall
+// not be called implicitly". Since path_.has_value() is checked before calling path_.value(),
+// std::bad_optional_access should never be thrown. This is false positive.
 // coverity[autosar_cpp14_a15_5_3_violation : FALSE]
 ResultBlank FileUtils::RepairFileSystem(const Path& partition) const noexcept
 {
@@ -389,7 +397,9 @@ ResultBlank FileUtils::RepairFileSystem(const Path& partition) const noexcept
     return {};
 }
 
-// Refer on top for suppression justification
+// Suppress "AUTOSAR C++14 A15-5-3" rule finding. This rule states: "The std::terminate() function shall
+// not be called implicitly". Since path_.has_value() is checked before calling path_.value(),
+// std::bad_optional_access should never be thrown. This is false positive.
 // coverity[autosar_cpp14_a15_5_3_violation : FALSE]
 ResultBlank FileUtils::FormatPartition(const Path& partition) const noexcept
 {
