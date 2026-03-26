@@ -278,6 +278,12 @@ Result<std::unique_ptr<FileStream>> FileFactory::AtomicUpdate(const Path& path,
         return MakeUnexpected(ErrorCode::kWritePermissionDenied);
     }
 
+    if (!metadata.has_value() && (metadata.error() == ErrorCode::kNotImplemented))
+    {
+        // Target file is not a regular file
+        return MakeUnexpected(ErrorCode::kNotImplemented);
+    }
+
     auto file_handle = details::OpenFileHandle(temp_path, mode, create_mode);
     if (!file_handle.has_value())
     {
