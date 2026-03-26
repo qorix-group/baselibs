@@ -18,6 +18,7 @@ cc_library(
     name = "arguments",
     srcs = ["arguments.cpp"],
     hdrs = ["arguments.h"],
+    visibility = ["//visibility:public"],
     deps = ["@score_baselibs//score/language/safecpp/string_view:zstring_view"],
 )
 
