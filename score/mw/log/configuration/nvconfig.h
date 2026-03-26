@@ -47,7 +47,7 @@ class NvConfig : public INvConfig
 
     NvConfig(NvConfig&&) noexcept = default;
 
-    NvConfig& operator=(NvConfig&& other)
+    NvConfig& operator=(NvConfig&& other) noexcept
     {
         if (this != &other)
         {
