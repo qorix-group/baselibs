@@ -97,7 +97,7 @@ TEST(Error, RetrieveMessage)
     const auto message = unit.Message();
 
     // That the message equals the expected one
-    EXPECT_STREQ(message.data(), "First Error!");
+    EXPECT_EQ(message, "First Error!");
 }
 
 TEST(Error, RetrieveUserMessage)
@@ -109,7 +109,7 @@ TEST(Error, RetrieveUserMessage)
     const auto user_message = unit.UserMessage();
 
     // That the message equals the expected one
-    EXPECT_STREQ(user_message.data(), "We had a parsing failure");
+    EXPECT_EQ(user_message, "We had a parsing failure");
 }
 
 TEST(Error, RetrieveUserMessageWhenNotProvided)
@@ -121,7 +121,7 @@ TEST(Error, RetrieveUserMessageWhenNotProvided)
     const auto user_message = unit.UserMessage();
 
     // That the message equals the expected one
-    EXPECT_STREQ(user_message.data(), "");
+    EXPECT_EQ(user_message, "");
 }
 
 TEST(Error, CanCompareForEqual)
