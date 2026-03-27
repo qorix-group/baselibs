@@ -24,3 +24,4 @@ path = "lib.rs"
 
 [dependencies]
 elementary.workspace = true
+score_log.workspace = true

@@ -13,6 +13,7 @@
 
 use core::fmt;
 use core::ops;
+use score_log::fmt::{FormatSpec, Result as ScoreLogResult, ScoreDebug, Writer};
 
 use crate::generic::vec::GenericVec;
 use crate::storage::Inline;
@@ -76,6 +77,12 @@ impl<T: Copy, const CAPACITY: usize> ops::DerefMut for InlineVec<T, CAPACITY> {
 impl<T: Copy + fmt::Debug, const CAPACITY: usize> fmt::Debug for InlineVec<T, CAPACITY> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         fmt::Debug::fmt(self.as_slice(), f)
+    }
+}
+
+impl<T: Copy + ScoreDebug, const CAPACITY: usize> ScoreDebug for InlineVec<T, CAPACITY> {
+    fn fmt(&self, f: Writer, spec: &FormatSpec) -> ScoreLogResult {
+        ScoreDebug::fmt(self.as_slice(), f, spec)
     }
 }
 

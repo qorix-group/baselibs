@@ -11,12 +11,14 @@
 // SPDX-License-Identifier: Apache-2.0
 // *******************************************************************************
 
+use core::fmt;
 use core::iter::FusedIterator;
 use core::marker::PhantomData;
 use core::mem::needs_drop;
 use core::ops::Range;
 use core::ptr;
 use core::slice;
+use score_log::fmt::{DebugList, FormatSpec, Result as ScoreLogResult, ScoreDebug, Writer};
 
 use crate::storage::Storage;
 use crate::InsufficientCapacity;
@@ -275,6 +277,18 @@ impl<T, S: Storage<T>> GenericQueue<T, S> {
         } else {
             None
         }
+    }
+}
+
+impl<T: fmt::Debug, S: Storage<T>> fmt::Debug for GenericQueue<T, S> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_list().entries(self.iter()).finish()
+    }
+}
+
+impl<T: ScoreDebug, S: Storage<T>> ScoreDebug for GenericQueue<T, S> {
+    fn fmt(&self, f: Writer, spec: &FormatSpec) -> ScoreLogResult {
+        DebugList::new(f, spec).entries(self.iter()).finish()
     }
 }
 

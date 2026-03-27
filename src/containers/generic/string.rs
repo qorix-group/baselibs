@@ -14,6 +14,7 @@
 use core::fmt;
 use core::ops;
 use core::str;
+use score_log::fmt::{FormatSpec, Result as ScoreLogResult, ScoreDebug, Writer};
 
 use super::vec::GenericVec;
 use crate::storage::Storage;
@@ -134,6 +135,12 @@ impl<S: Storage<u8>> ops::DerefMut for GenericString<S> {
 impl<S: Storage<u8>> fmt::Debug for GenericString<S> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         fmt::Debug::fmt(self.as_str(), f)
+    }
+}
+
+impl<S: Storage<u8>> ScoreDebug for GenericString<S> {
+    fn fmt(&self, f: Writer, spec: &FormatSpec) -> ScoreLogResult {
+        ScoreDebug::fmt(self.as_str(), f, spec)
     }
 }
 

@@ -13,6 +13,7 @@
 
 use core::fmt;
 use core::ops;
+use score_log::fmt::{FormatSpec, Result as ScoreLogResult, ScoreDebug, Writer};
 
 use crate::generic::string::GenericString;
 use crate::storage::Inline;
@@ -78,6 +79,12 @@ impl<const CAPACITY: usize> ops::DerefMut for InlineString<CAPACITY> {
 impl<const CAPACITY: usize> fmt::Debug for InlineString<CAPACITY> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         fmt::Debug::fmt(self.as_str(), f)
+    }
+}
+
+impl<const CAPACITY: usize> ScoreDebug for InlineString<CAPACITY> {
+    fn fmt(&self, f: Writer, spec: &FormatSpec) -> ScoreLogResult {
+        ScoreDebug::fmt(self.as_str(), f, spec)
     }
 }
 

@@ -16,6 +16,7 @@ use core::marker::PhantomData;
 use core::mem::needs_drop;
 use core::ops;
 use core::ptr;
+use score_log::fmt::{FormatSpec, Result as ScoreLogResult, ScoreDebug, Writer};
 
 use crate::storage::Storage;
 use crate::InsufficientCapacity;
@@ -172,6 +173,12 @@ impl<T, S: Storage<T>> ops::DerefMut for GenericVec<T, S> {
 impl<T: fmt::Debug, S: Storage<T>> fmt::Debug for GenericVec<T, S> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         fmt::Debug::fmt(self.as_slice(), f)
+    }
+}
+
+impl<T: ScoreDebug, S: Storage<T>> ScoreDebug for GenericVec<T, S> {
+    fn fmt(&self, f: Writer, spec: &FormatSpec) -> ScoreLogResult {
+        ScoreDebug::fmt(self.as_slice(), f, spec)
     }
 }
 

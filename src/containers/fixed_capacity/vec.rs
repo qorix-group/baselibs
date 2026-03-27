@@ -16,6 +16,7 @@ use crate::storage::Heap;
 use core::fmt;
 use core::ops;
 use elementary::{BasicAllocator, HeapAllocator, GLOBAL_ALLOCATOR};
+use score_log::fmt::{FormatSpec, Result as ScoreLogResult, ScoreDebug, Writer};
 
 /// A fixed-capacity vector, using provided allocator.
 ///
@@ -85,6 +86,12 @@ impl<T: fmt::Debug, A: BasicAllocator> fmt::Debug for FixedCapacityVecIn<'_, T, 
     }
 }
 
+impl<T: ScoreDebug, A: BasicAllocator> ScoreDebug for FixedCapacityVecIn<'_, T, A> {
+    fn fmt(&self, f: Writer, spec: &FormatSpec) -> ScoreLogResult {
+        ScoreDebug::fmt(self.as_slice(), f, spec)
+    }
+}
+
 /// A fixed-capacity vector, using global allocator.
 /// Refer to [`FixedCapacityVecIn`] for more information.
 pub struct FixedCapacityVec<T>(FixedCapacityVecIn<'static, T, HeapAllocator>);
@@ -128,6 +135,12 @@ impl<T> ops::DerefMut for FixedCapacityVec<T> {
 impl<T: fmt::Debug> fmt::Debug for FixedCapacityVec<T> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         fmt::Debug::fmt(self.0.as_slice(), f)
+    }
+}
+
+impl<T: ScoreDebug> ScoreDebug for FixedCapacityVec<T> {
+    fn fmt(&self, f: Writer, spec: &FormatSpec) -> ScoreLogResult {
+        ScoreDebug::fmt(&self.0, f, spec)
     }
 }
 
