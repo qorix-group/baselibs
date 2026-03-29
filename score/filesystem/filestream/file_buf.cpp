@@ -15,6 +15,7 @@
 #include "score/filesystem/error.h"
 #include "score/os/stdio.h"
 #include "score/os/unistd.h"
+#include "score/scope_exit/scope_exit.h"
 
 namespace score::filesystem::details
 {
@@ -46,6 +47,12 @@ ResultBlank AtomicFileBuf::Close()
         return {};
     }
 
+    // If any of the operations fail, remove the temporary file to avoid littering the file system
+    // with garbage files. If unlink fails there is not much we can do about it anyway.
+    utils::ScopeExit cleanup{[this]() {
+        score::cpp::ignore = os::Unistd::instance().unlink(from_path_.CStr());
+    }};
+
     if (sync() != 0)
     {
         return MakeUnexpected(ErrorCode::kFsyncFailed);
@@ -70,6 +77,7 @@ ResultBlank AtomicFileBuf::Close()
         return MakeUnexpected(ErrorCode::kCouldNotRenameFile);
     }
 
+    cleanup.Release();
     return {};
 }
 
