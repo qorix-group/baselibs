@@ -13,6 +13,7 @@
 #include "score/filesystem/filestream/file_buf.h"
 #include "score/filesystem/error.h"
 #include "score/filesystem/filestream/file_stream.h"
+#include "score/os/mocklib/fcntl_mock.h"
 #include "score/os/mocklib/stdiomock.h"
 #include "score/os/mocklib/unistdmock.h"
 
@@ -33,9 +34,10 @@ class FileBufTest : public ::testing::Test
 class AtomicFileBufTest : public ::testing::Test
 {
   protected:
-    AtomicFileBuf atomic_filebuf{0, std::ios::in, "from_path", "to_path"};
+    AtomicFileBuf atomic_filebuf{0, std::ios::in, "from_path", "/some/dir/to_path"};
     os::MockGuard<os::UnistdMock> unistd_;
     os::MockGuard<os::StdioMock> stdio_;
+    os::MockGuard<os::FcntlMock> fcntl_;
 };
 
 TEST_F(FileBufTest, TestFailureOnClose)
@@ -105,6 +107,60 @@ TEST_F(AtomicFileBufTest, TestFailureOnRename)
     auto result = atomic_filebuf.Close();
     EXPECT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), ErrorCode::kCouldNotRenameFile);
+}
+
+TEST_F(AtomicFileBufTest, TestSuccessfulCloseFsyncsParentDirectory)
+{
+    constexpr int kDirFd = 42;
+
+    EXPECT_CALL(atomic_filebuf, is_open()).WillRepeatedly(Return(true));
+    EXPECT_CALL(atomic_filebuf, sync()).WillOnce(Return(0));
+    EXPECT_CALL(*unistd_, fsync(0)).WillOnce(Return(score::cpp::expected_blank<score::os::Error>{}));
+    EXPECT_CALL(atomic_filebuf, close()).WillOnce(Return(&atomic_filebuf));
+    EXPECT_CALL(*stdio_, rename(_, _)).WillOnce(Return(score::cpp::expected_blank<score::os::Error>{}));
+
+    EXPECT_CALL(*fcntl_, open(StrEq("/some/dir"), _)).WillOnce(Return(kDirFd));
+    EXPECT_CALL(*unistd_, fsync(kDirFd)).WillOnce(Return(score::cpp::expected_blank<score::os::Error>{}));
+    EXPECT_CALL(*unistd_, close(kDirFd)).WillOnce(Return(score::cpp::expected_blank<score::os::Error>{}));
+
+    auto result = atomic_filebuf.Close();
+    EXPECT_TRUE(result.has_value());
+}
+
+TEST_F(AtomicFileBufTest, TestCloseFailsWhenParentDirOpenFails)
+{
+    EXPECT_CALL(atomic_filebuf, is_open()).WillRepeatedly(Return(true));
+    EXPECT_CALL(atomic_filebuf, sync()).WillOnce(Return(0));
+    EXPECT_CALL(*unistd_, fsync(0)).WillOnce(Return(score::cpp::expected_blank<score::os::Error>{}));
+    EXPECT_CALL(atomic_filebuf, close()).WillOnce(Return(&atomic_filebuf));
+    EXPECT_CALL(*stdio_, rename(_, _)).WillOnce(Return(score::cpp::expected_blank<score::os::Error>{}));
+
+    EXPECT_CALL(*fcntl_, open(StrEq("/some/dir"), _))
+        .WillOnce(Return(score::cpp::make_unexpected(score::os::Error::createUnspecifiedError())));
+
+    auto result = atomic_filebuf.Close();
+    EXPECT_FALSE(result.has_value());
+    EXPECT_EQ(result.error(), ErrorCode::kCouldNotSyncDirectory);
+}
+
+TEST_F(AtomicFileBufTest, TestCloseFailsWhenParentDirFsyncFails)
+{
+    constexpr int kDirFd = 42;
+
+    EXPECT_CALL(atomic_filebuf, is_open()).WillRepeatedly(Return(true));
+    EXPECT_CALL(atomic_filebuf, sync()).WillOnce(Return(0));
+    EXPECT_CALL(*unistd_, fsync(0)).WillOnce(Return(score::cpp::expected_blank<score::os::Error>{}));
+    EXPECT_CALL(atomic_filebuf, close()).WillOnce(Return(&atomic_filebuf));
+    EXPECT_CALL(*stdio_, rename(_, _)).WillOnce(Return(score::cpp::expected_blank<score::os::Error>{}));
+
+    EXPECT_CALL(*fcntl_, open(StrEq("/some/dir"), _)).WillOnce(Return(kDirFd));
+    EXPECT_CALL(*unistd_, fsync(kDirFd))
+        .WillOnce(Return(score::cpp::make_unexpected(score::os::Error::createUnspecifiedError())));
+    EXPECT_CALL(*unistd_, close(kDirFd)).WillOnce(Return(score::cpp::expected_blank<score::os::Error>{}));
+
+    auto result = atomic_filebuf.Close();
+    EXPECT_FALSE(result.has_value());
+    EXPECT_EQ(result.error(), ErrorCode::kCouldNotSyncDirectory);
 }
 
 TEST(FileStreamTest, TestNullBuffer)
