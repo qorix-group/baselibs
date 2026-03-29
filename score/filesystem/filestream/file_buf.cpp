@@ -40,6 +40,14 @@ AtomicFileBuf::AtomicFileBuf(int fd, std::ios::openmode mode, Path from_path, Pa
 {
 }
 
+AtomicFileBuf::~AtomicFileBuf()
+{
+    if (is_open())
+    {
+        score::cpp::ignore = os::Unistd::instance().unlink(from_path_.CStr());
+    }
+}
+
 ResultBlank AtomicFileBuf::Close()
 {
     if (!is_open())
