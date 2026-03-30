@@ -574,10 +574,10 @@ bool operator<(const Path& lhs, const Path& rhs) noexcept
 // Path::Parse method is called conditionally in Path constructor.
 // In Path::Parse itself all Path instances created with (parse == false) => no recursion.
 // NOLINTNEXTLINE(misc-no-recursion): See above
-void Path::Parse(const string_type& path) noexcept
 // Suppress "AUTOSAR C++14 A15-5-3" rule findings: "The std::terminate() function shall not be called implicitly".
 // Calling std::terminate() if any exceptions are thrown is expected as per safety requirements
 // coverity[autosar_cpp14_a15_5_3_violation]
+void Path::Parse(const string_type& path) noexcept
 {
     parts_.clear();
     if (path.empty())
@@ -619,7 +619,8 @@ void Path::Parse(const string_type& path) noexcept
 // NOLINTNEXTLINE(misc-no-recursion) See above
 // Suppress "AUTOSAR C++14 A15-5-3" rule finding. This rule states: "The std::terminate() function shall
 // not be called implicitly". Since getline is check whether the data is successfully read before using the data,
-// std::bad_alloc should never be thrown. This is false positive. coverity[autosar_cpp14_a15_5_3_violation : FALSE]
+// std::bad_alloc should never be thrown. This is false positive.
+// coverity[autosar_cpp14_a15_5_3_violation : FALSE]
 void Path::AddPathPartToParts(std::stringstream& stringstream_path, std::string& path_part) noexcept
 {
     while (!std::getline(stringstream_path, path_part, preferred_separator).fail())
