@@ -115,16 +115,6 @@ cc_library(
     ],
 )
 
-cc_library(
-    name = "recorder_config",
-    hdrs = ["recorder_config.h"],
-    features = COMPILER_WARNING_FEATURES,
-    tags = ["FFI"],
-    visibility = [
-        "@score_baselibs//score/mw/log:__subpackages__",
-    ],
-)
-
 alias(
     name = "console_only_backend",
     actual = ":console",
