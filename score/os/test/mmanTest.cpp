@@ -176,7 +176,7 @@ TEST(mmap, GetInfoInvalidFD)
     auto info_result = score::os::Mman::instance().posix_typed_mem_get_info(invalid_fd, &info);
 
     EXPECT_FALSE(info_result.has_value());
-    EXPECT_EQ(info_result.error(), Error::Code::kNoSuchFileOrDirectory);
+    EXPECT_EQ(info_result.error(), Error::Code::kBadFileDescriptor);
 }
 
 TEST(mmap, OpenTypedMemory)
