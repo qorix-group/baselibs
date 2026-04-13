@@ -13,38 +13,12 @@
 #include "score/filesystem/filestream/file_buf.h"
 
 #include "score/filesystem/error.h"
-#include "score/os/fcntl.h"
 #include "score/os/stdio.h"
 #include "score/os/unistd.h"
 #include "score/scope_exit/scope_exit.h"
 
 namespace score::filesystem::details
 {
-
-namespace
-{
-
-ResultBlank SyncDirectory(const Path& dir_path)
-{
-    // NOLINTNEXTLINE(score-banned-function): We need to use the POSIX open call to obtain a file descriptor.
-    auto dir_fd = os::Fcntl::instance().open(dir_path.CStr(), os::Fcntl::Open::kReadOnly | os::Fcntl::Open::kDirectory);
-    if (!dir_fd.has_value())
-    {
-        return MakeUnexpected(ErrorCode::kCouldNotSyncDirectory);
-    }
-
-    auto fsync_result = os::Unistd::instance().fsync(*dir_fd);
-    score::cpp::ignore = os::Unistd::instance().close(*dir_fd);
-
-    if (!fsync_result.has_value())
-    {
-        return MakeUnexpected(ErrorCode::kCouldNotSyncDirectory);
-    }
-
-    return {};
-}
-
-}  // namespace
 
 ResultBlank StdioFileBuf::Close()
 {
@@ -112,7 +86,7 @@ ResultBlank AtomicFileBuf::Close()
     }
 
     cleanup.Release();
-    return SyncDirectory(to_path_.ParentPath());
+    return {};
 }
 
 }  // namespace score::filesystem::details
