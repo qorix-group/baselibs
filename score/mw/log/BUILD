@@ -34,8 +34,7 @@ COMPILER_WARNING_FEATURES = [
 
 alias(
     name = "log",
-    actual = ":frontend",
-    deprecation = "DEPRECATED: use @score_baselibs//score/mw/log:frontend instead. Refer usage in mw/log/README.md",
+    actual = ":console",
     visibility = ["//visibility:public"],
 )
 
