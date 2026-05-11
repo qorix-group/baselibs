@@ -1,16 +1,21 @@
-alias(
-    name = "require_typed_memory",  # only for the client apps using the GTL, not for internal use
-    actual = "@score_baselibs//score/analysis/tracing/daemon/flags:force_typed_memory",
-    visibility = ["@score_baselibs//score/analysis/tracing/generic_trace_library:__subpackages__"],
-)
+# *******************************************************************************
+# Copyright (c) 2024 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0
+#
+# SPDX-License-Identifier: Apache-2.0
+# *******************************************************************************
 
 config_setting(
-    name = "require_typed_memory_enabled",
+    name = "require_typed_memory",  #This is a stub and should always be false
     constraint_values = [
         "@platforms//os:qnx",
+        "@platforms//os:linux",  # Contradicts qnx — ensures this config_setting never matches (stub)
     ],
-    flag_values = {
-        ":require_typed_memory": "True",
-    },
-    visibility = ["@score_baselibs//score/analysis/tracing/generic_trace_library:__subpackages__"],
+    visibility = ["//visibility:public"],
 )
