@@ -80,9 +80,11 @@ References:
 
 #### REQ-DD-3: Configuration-Driven Backend Loading
 
-The dynamic backend loader shall load only the backend .so files explicitly listed in the logging configuration file (E.g.: ecu_logging_config.json field "backends": ["libmwlog_file_backend.so", "libmwlog_remote_backend.so", etc.]). It shall not blindly scan the backend directory for all matching files. Each listed filename is joined with the well-known backend directory path (compile-time default /opt/mwlog/backends/, overridable via config file - never via environment variable). If a listed file is absent, it is treated as "not deployed". If no configuration is provided, no backends are loaded and the system uses console-only logging.
+The dynamic backend loader shall load only the backend .so files explicitly listed in the logging configuration file located at /opt/mwlog/backend_config.json (field "backends": ["libmwlog_file_backend.so", "libmwlog_remote_backend.so", etc.]). It shall not blindly scan the backend directory for all matching files. Each listed filename is joined with the well-known backend directory path /opt/mwlog/backends/ (compile-time default, never overridable via environment variable). If a listed file is absent, it is treated as "not deployed". If no configuration is provided, no backends are loaded and the system uses console-only logging.
 
-Reasoning: Glob-based directory scanning creates a wider attack surface - a malicious .so matching the naming pattern placed in the backend directory would be loaded automatically. Configuration-driven loading eliminates this risk and gives the integrator explicit control over which backends are loaded and in what order.
+Both the configuration file and all backend .so files reside in /opt/mwlog/backends/ on a read-only qtsafefs-mounted filesystem under /opt. The read-only nature of qtsafefs ensures that no process can create, modify, or delete files in the backend directory at runtime. This eliminates the risk of a rogue .so being injected into the directory post-deployment. Configuration-driven loading provides an additional layer of defense-in-depth on top of the filesystem-level immutability.
+
+Reasoning: Even though the read-only qtsafefs filesystem prevents runtime injection of malicious .so files, configuration-driven loading remains valuable as a defense-in-depth measure. It gives the integrator explicit control over which backends are loaded (which exact versions) and in what order, and ensures that a directory scan cannot accidentally discover files that were deployed but not intended for the current configuration.
 
 References:
 - [CWE-426: Untrusted Search Path](https://cwe.mitre.org/data/definitions/426.html)
@@ -303,9 +305,15 @@ References:
 
 #### REQ-SEC-2: qtsafefs Enforcement
 
-The backend directory shall reside on a qtsafefs-mounted filesystem. At init, the dynamic backend loader shall verify this by calling statvfs() on the backend directory and checking the filesystem type - not merely checking the path prefix.
+The backend directory /opt/mwlog/backends/ shall reside on a read-only qtsafefs-mounted filesystem (under /opt). At init, the dynamic backend loader shall verify this by calling statvfs() on the backend directory and checking the filesystem type - not merely checking the path prefix.
 
-Reasoning: qtsafefs provides integrity checking (hash verification) for all files on the filesystem. This is the primary protection against loading a tampered .so. A path-prefix check alone is insufficient - an attacker could mount a non-qtsafefs filesystem at the expected path.
+The read-only qtsafefs filesystem provides two complementary security properties:
+1. **Integrity checking**: qtsafefs performs hash verification for all files on the filesystem, preventing loading of tampered .so files.
+2. **Immutability**: The filesystem is mounted read-only, preventing any runtime modification - no files can be created, modified, or deleted in the backend directory after deployment.
+
+Together, these properties eliminate the primary attack vectors for plugin injection: an attacker cannot place a malicious .so in the backend directory, nor tamper with existing backend .so files or the backend_config.json configuration file.
+
+Reasoning: A path-prefix check alone is insufficient - an attacker could mount a non-qtsafefs filesystem at the expected path. The statvfs() runtime check is a defense-in-depth measure ensuring the expected filesystem properties are actually in effect.
 
 References:
 - [QNX 8.0 qtsafefs](https://www.qnx.com/developers/docs/8.0/com.qnx.doc.neutrino.qtsafefs/topic/qtsafefsd.html)
@@ -322,9 +330,9 @@ dlopen() shall use RTLD_NOW | RTLD_LOCAL (without RTLD_NOSHARE). The decision to
 | 4 | procnto -mX | REQ-SEC-9 | Prevents PROT_EXEC on files without +x - blocks loading from /dev/shmem, /tmp |
 | 5 | Configuration-driven loading | REQ-DD-3 | Only explicitly listed .so files are loaded - no glob-scan, no auto-discovery |
 
-Without RTLD_NOSHARE, the following attack is theoretically possible: If a compromised component calls dlopen("libmwlog_remote_backend.so", ...) with a relative path before dynamic backend loader runs, the linker may return the already-loaded (malicious) handle. With all five compensating controls in place, this attack requires a build-chain compromise of a pathtrust-verified binary on a qtsafefs filesystem - a significantly higher bar than the RTLD_NOSHARE scenario alone addresses.
+Without RTLD_NOSHARE, the following attack is theoretically possible: If a compromised component calls dlopen("libmwlog_remote_backend.so", ...) with a relative path before dynamic backend loader runs, the linker may return the already-loaded (malicious) handle. With all five compensating controls in place - and critically, with the backend directory residing on a read-only qtsafefs filesystem - this attack requires a build-chain compromise of a pathtrust-verified binary on an immutable, integrity-checked filesystem. The read-only qtsafefs mount eliminates the possibility of placing a malicious .so in the backend directory at runtime, making this attack vector practically infeasible.
 
-Reasoning: RTLD_NOSHARE creates a private libc/libstdc++ copy for the plugin, making C++ types unusable across the boundary. Since the design choice is to preserve the existing C++ backend implementation (REQ-DD-1, REQ-DD-6), RTLD_NOSHARE is incompatible with the architecture. The five compensating controls collectively provide equivalent or stronger security guarantees for the threat model.
+Reasoning: RTLD_NOSHARE creates a private libc/libstdc++ copy for the plugin, making C++ types unusable across the boundary. Since the design choice is to preserve the existing C++ backend implementation (REQ-DD-1, REQ-DD-6), RTLD_NOSHARE is incompatible with the architecture. The five compensating controls - reinforced by the read-only qtsafefs filesystem under /opt - collectively provide equivalent or stronger security guarantees for the threat model.
 
 References:
 - [CWE-427: Uncontrolled Search Path Element](https://cwe.mitre.org/data/definitions/427.html)
@@ -444,7 +452,7 @@ At init, the dynamic backend loader shall stat() the backend directory and verif
 
 If either check fails, a critical warning shall be logged.
 
-Reasoning: On qtsafefs, the filesystem is read-only and integrity-checked. On non-qtsafefs deployments (E.g.: development environments), a world-writable backend directory would allow any process to inject a malicious plugin.
+Reasoning: In production, the backend directory /opt/mwlog/backends/ resides on a read-only qtsafefs filesystem, which inherently satisfies both ownership and write-permission constraints - the filesystem is immutable and integrity-checked, making runtime modification impossible. The stat() check serves as a defense-in-depth measure and is primarily relevant for non-qtsafefs deployments (E.g.: development environments, Linux-based targets) where a world-writable backend directory would allow any process to inject a malicious plugin.
 
 ### 3.2 Verification Requirements
 
@@ -468,7 +476,7 @@ Verify that all five compensating controls (REQ-SEC-3) are active and correctly 
 2. secpol: Verify process has PROCMGR_AID_UNTRUSTED_EXEC denied would untrusted .so cannot load.
 3. setuid: Verify LD_LIBRARY_PATH and LD_PRELOAD are unset by runtime linker before main().
 4. procnto -mX: Remove +x from a .so would verify dlopen() fails.
-5. Config-driven: Place an extra libmwlog_hacky_backend.so in the backend directory (not in config) would verify it is not loaded.
+5. Config-driven: Place an extra libmwlog_hacky_backend.so in the backend directory (not in config) would verify it is not loaded. Note: On a read-only qtsafefs filesystem, placing an extra .so at runtime is not possible - this test must use a specially prepared filesystem image.
 
 Verification method: Target integration test (ITF) on QNX
 
@@ -580,9 +588,9 @@ Verify that the toolchain identity CI gate (REQ-DD-1) does not add measurable ov
 
 These requirements define the operational context and constraints that the integrator, deployer, and plugin author must satisfy for the dynamic loading architecture to function correctly and safely.
 
-#### AOU-1: qtsafefs Backend Directory
+#### AOU-1: qtsafefs Backend Directory (Read-Only)
 
-The backend directory (default /opt/mwlog/backends/) shall reside on a qtsafefs-mounted filesystem with integrity checking enabled.
+The backend directory /opt/mwlog/backends/ shall reside on a read-only qtsafefs-mounted filesystem (under /opt) with integrity checking enabled. Both the backend .so files and the logging configuration file (backend_config.json) are co-located in this directory. The read-only mount ensures that no process can create, modify, or delete files in the backend directory at runtime, eliminating runtime injection and tampering attack vectors.
 
 #### AOU-2: pathtrust-Enabled Filesystems
 
@@ -603,13 +611,15 @@ All deployed backend .so files shall:
 - Be owned by root (or the designated system user).
 - Not be world-writable.
 
+Note: Since the backend directory resides on a read-only qtsafefs filesystem, these permissions are set at image build/deployment time and cannot be altered at runtime. The read-only filesystem guarantees that the deployed permission state is preserved for the entire lifetime of the filesystem image.
+
 #### AOU-6: Environment Variable Integrity
 
 LD_PRELOAD, LD_LIBRARY_PATH, DL_DEBUG, LD_DEBUG, and PATH shall not be modified after process start. The process should use the setuid bit to have the runtime linker automatically unset LD_LIBRARY_PATH and LD_PRELOAD.
 
 #### AOU-7: Logging Configuration File
 
-The logging configuration file (E.g.: ecu_logging_config.json) shall explicitly list the backend .so filenames to load. It shall reside on a qtsafefs-mounted filesystem to prevent tampering.
+The logging configuration file (backend_config.json) shall be located at /opt/mwlog/backends/backend_config.json, co-located with the backend .so files. It shall explicitly list the backend .so filenames to load. Since it resides on the same read-only qtsafefs-mounted filesystem as the backends (under /opt), it is protected against both tampering and unauthorized modification at runtime.
 
 #### AOU-8: No mw::log in Plugin Constructors
 
@@ -641,10 +651,10 @@ The integrator shall ensure that the EM and PHM checkpoint timing budget for ini
 
 ## TODOs
 
-1. The security requirements heavily focus on QNX (qtsafefs, pathtrust, secpol, procnto). Document security hardening for Linux-based targets or development environments.
+1. The security requirements heavily focus on QNX (qtsafefs, pathtrust, secpol, procnto). Document security hardening for Linux-based targets or development environments where qtsafefs read-only guarantees are not available.
 2. Measure memory footprint per application (static-link vs. dynamic).
 3. Measure dlopen() latency on target ECU flash.
 4. Investigate what Linux/QNX 8.0 does if we load the same soname from two different absolute paths.
-5. Documentation on handling updates to per-backend .so files.
+5. Documentation on handling updates to per-backend .so files. Note: Since /opt is on a read-only qtsafefs filesystem, backend updates require a new filesystem image deployment.
 6. Document EM/PHM checkpoint timing budgets apply to the init sequence.
 7. Document abilities (secpol) required for processes additionally.
