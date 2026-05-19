@@ -398,6 +398,14 @@ TEST_F(RegistryAwareRecorderFactoryConfigFixture, CreateFromConfigurationFallsBa
     auto recorder = factory.CreateFromConfiguration(score::cpp::pmr::get_default_resource());
 
     EXPECT_NE(recorder, nullptr);
+    if (IsBackendAvailable(LogMode::kConsole))
+    {
+        EXPECT_TRUE(IsRecorderOfType<TextRecorder>(recorder));
+    }
+    else
+    {
+        EXPECT_TRUE(IsRecorderOfType<EmptyRecorder>(recorder));
+    }
 }
 
 TEST_F(RegistryAwareRecorderFactoryConfigFixture,
@@ -445,6 +453,7 @@ TEST_F(RegistryAwareRecorderFactoryConfigFixture,
     auto recorder = factory.CreateFromConfiguration(score::cpp::pmr::get_default_resource());
 
     EXPECT_NE(recorder, nullptr);
+    EXPECT_FALSE(IsBackendAvailable(LogMode::kFile));
     if (IsBackendAvailable(LogMode::kConsole))
     {
         EXPECT_TRUE(IsRecorderOfType<TextRecorder>(recorder));
@@ -473,6 +482,8 @@ TEST_F(RegistryAwareRecorderFactoryConfigFixture,
     RegistryAwareRecorderFactory factory;
     auto recorder = factory.CreateFromConfiguration(score::cpp::pmr::get_default_resource());
 
+    EXPECT_FALSE(IsBackendAvailable(LogMode::kFile));
+    EXPECT_FALSE(IsBackendAvailable(LogMode::kConsole));
     EXPECT_TRUE(IsRecorderOfType<EmptyRecorder>(recorder));
 }
 
@@ -487,8 +498,17 @@ TEST_F(RegistryAwareRecorderFactoryConfigFixture,
     RecordProperty("TestingTechnique", "Requirements-based test");
     RecordProperty("DerivationTechnique", "requirements-analysis"); // requirements
 
+    // Clear and register both backends explicitly to be independent of build flag combinations.
+    gBackendCreators.fill(nullptr);
+
     RegisterBackend(
         LogMode::kFile,
+        [](const detail::Configuration& /*config*/, score::cpp::pmr::memory_resource* /*mem*/) -> std::unique_ptr<Recorder> {
+            return std::make_unique<EmptyRecorder>();
+        });
+
+    RegisterBackend(
+        LogMode::kConsole,
         [](const detail::Configuration& /*config*/, score::cpp::pmr::memory_resource* /*mem*/) -> std::unique_ptr<Recorder> {
             return std::make_unique<EmptyRecorder>();
         });
@@ -498,11 +518,7 @@ TEST_F(RegistryAwareRecorderFactoryConfigFixture,
     RegistryAwareRecorderFactory factory;
     auto recorder = factory.CreateFromConfiguration(score::cpp::pmr::get_default_resource());
 
-    ASSERT_NE(recorder, nullptr);
-    if (IsBackendAvailable(LogMode::kConsole))
-    {
-        EXPECT_TRUE(IsRecorderOfType<CompositeRecorder>(recorder));
-    }
+    ASSERT_TRUE(IsRecorderOfType<CompositeRecorder>(recorder));
 }
 
 TEST_F(RegistryAwareRecorderFactoryConfigFixture,
