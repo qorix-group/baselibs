@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 /*!        \file
- *        \brief  composition parser impl
+ *        \brief  Composition parser impl
  *
  *********************************************************************************************************************/
 #ifndef SCORE_LIB_JSON_INTERNAL_PARSER_VAJSON_JSON_READER_INTERNAL_PARSERS_COMPOSITION_PARSER_IMPL_H_
