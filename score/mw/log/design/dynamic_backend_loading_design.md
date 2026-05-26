@@ -50,7 +50,17 @@ Rationale:
 
 ## 1. Detailed Design
 
-Covers requirements for Detailed Design (DD) and Implementation
+Covers requirements for Detailed Design (DD) and Implementation.
+
+The ![dynamic backend selection diagram](./score/mw/log/design/dynamic_backend_selection.puml) show the backend selection sequence.
+
+The diagram uses swimlanes to clearly separate the two configuration layers:
+
+Layer 1 (Integrator / backend_config.json): Shows the global backend creator slot population flow. Each backend .so becomes available but no recorder is created yet.
+
+Layer 2 (User / logging.json): Shows CreateFromConfiguration reading the logMode set, then for each mode checking IsBackendAvailable() against the already-populated global backend creator and calls CreateRecorderForMode() to instantiate only what the user selected. If a requested mode has NO slot populated (integrator didn't deploy that .so), it falls back to console.
+
+Runtime init: Wraps both layers, enforcing the REQ-DD-7 ordering invariant, and shows the final CompositeRecorder / single recorder / EmptyRecorder outcome.
 
 ### 1.1 Detailed Design Requirments
 
@@ -90,6 +100,8 @@ References:
 - [CWE-426: Untrusted Search Path](https://cwe.mitre.org/data/definitions/426.html)
 
 #### REQ-DD-4: Fallback Chain
+
+Refer ![dynamic backend selection diagram](./score/mw/log/design/dynamic_backend_selection.puml) for the backend sequence.
 
 The dynamic backend loader shall implement the following fallback chain:
 
