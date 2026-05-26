@@ -45,6 +45,30 @@ TEST(DlfcnImpl, DlopenReturnsErrorForNonexistentLibrary)
     EXPECT_FALSE(result.has_value());
 }
 
+TEST(DlfcnImpl, DlopenSetsLastDlErrorOnFailure)
+{
+    RecordProperty("Description", "DlfcnImpl::dlerror returns a non-null string after a failed dlopen");
+    RecordProperty("TestType", "interface-test");
+    RecordProperty("DerivationTechnique", "equivalence-classes"); // equivalence classes
+
+    const DlfcnImpl dlfcn{};
+    const auto result{dlfcn.dlopen("/no/such/library_xyz.so", Dlfcn::DlOpenFlag::kNow)};
+    ASSERT_FALSE(result.has_value());
+    EXPECT_TRUE(dlfcn.dlerror().has_value());
+}
+
+TEST(DlfcnImpl, DlopenClearsDlErrorOnSuccess)
+{
+    RecordProperty("Description", "DlfcnImpl::dlerror returns nullptr after a successful dlopen");
+    RecordProperty("TestType", "interface-test");
+    RecordProperty("DerivationTechnique", "equivalence-classes"); // equivalence classes
+
+    const DlfcnImpl dlfcn{};
+    const auto result{dlfcn.dlopen(nullptr, Dlfcn::DlOpenFlag::kLazy)};
+    ASSERT_TRUE(result.has_value());
+    EXPECT_FALSE(dlfcn.dlerror().has_value());
+}
+
 TEST(DlfcnImpl, DlsymResolvesKnownSymbol)
 {
     RecordProperty("Description", "DlfcnImpl::dlsym resolves a known symbol from the global symbol table");
@@ -55,7 +79,7 @@ TEST(DlfcnImpl, DlsymResolvesKnownSymbol)
     const auto handle_result{dlfcn.dlopen(nullptr, Dlfcn::DlOpenFlag::kLazy)};
     ASSERT_TRUE(handle_result.has_value());
 
-    const auto symbol_result{dlfcn.dlsym(handle_result.value(), "strlen")};  // guaranteed by libc
+    const auto symbol_result{dlfcn.dlsym(handle_result.value(), "strlen")};  // strlen guaranteed by libc
     ASSERT_TRUE(symbol_result.has_value());
     EXPECT_NE(symbol_result.value(), nullptr);
 }
@@ -72,6 +96,36 @@ TEST(DlfcnImpl, DlsymReturnsErrorForUnknownSymbol)
 
     const auto symbol_result{dlfcn.dlsym(handle_result.value(), "no_such_symbol_xyz_42")};
     EXPECT_FALSE(symbol_result.has_value());
+}
+
+TEST(DlfcnImpl, DlsymSetsLastDlErrorOnFailure)
+{
+    RecordProperty("Description", "DlfcnImpl::dlerror returns a non-null string after a failed dlsym");
+    RecordProperty("TestType", "interface-test");
+    RecordProperty("DerivationTechnique", "equivalence-classes"); // equivalence classes
+
+    const DlfcnImpl dlfcn{};
+    const auto handle_result{dlfcn.dlopen(nullptr, Dlfcn::DlOpenFlag::kLazy)};
+    ASSERT_TRUE(handle_result.has_value());
+
+    const auto symbol_result{dlfcn.dlsym(handle_result.value(), "no_such_symbol_xyz_42")};
+    ASSERT_FALSE(symbol_result.has_value());
+    EXPECT_TRUE(dlfcn.dlerror().has_value());
+}
+
+TEST(DlfcnImpl, DlsymClearsDlErrorOnSuccess)
+{
+    RecordProperty("Description", "DlfcnImpl::dlerror returns nullptr after a successful dlsym");
+    RecordProperty("TestType", "interface-test");
+    RecordProperty("DerivationTechnique", "equivalence-classes"); // equivalence classes
+
+    const DlfcnImpl dlfcn{};
+    const auto handle_result{dlfcn.dlopen(nullptr, Dlfcn::DlOpenFlag::kLazy)};
+    ASSERT_TRUE(handle_result.has_value());
+
+    const auto symbol_result{dlfcn.dlsym(handle_result.value(), "strlen")};  // strlen guaranteed by libc
+    ASSERT_TRUE(symbol_result.has_value());
+    EXPECT_FALSE(dlfcn.dlerror().has_value());
 }
 
 TEST(DlfcnImpl, DlopenWithCombinedFlags)
@@ -108,7 +162,7 @@ TEST(DlfcnImpl, DlsymAsResolvesKnownFunctionSymbol)
     const auto handle_result{dlfcn.dlopen(nullptr, Dlfcn::DlOpenFlag::kLazy)};
     ASSERT_TRUE(handle_result.has_value());
 
-    const auto fn_result{dlfcn.DlsymAs<StrlenFn>(handle_result.value(), "strlen")};
+    const auto fn_result{dlfcn.DlsymAs<StrlenFn>(handle_result.value(), "strlen")};  // strlen guaranteed by libc
     ASSERT_TRUE(fn_result.has_value());
     EXPECT_NE(fn_result.value(), nullptr);
     EXPECT_EQ(fn_result.value()("hello"), 5U);

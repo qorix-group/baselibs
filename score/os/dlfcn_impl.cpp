@@ -14,7 +14,9 @@
 #include "score/os/dlfcn_impl.h"
 
 #include <dlfcn.h>
-#include <iostream>
+#include <cstring>
+#include <optional>
+#include <string_view>
 #include <type_traits>
 
 namespace score::os
@@ -54,15 +56,10 @@ score::cpp::expected<void*, Error> DlfcnImpl::dlopen(const char* const file_name
     void* const handle{::dlopen(file_name, DlOpenFlagsToNative(flags))};
     if (handle == nullptr)
     {
-        const char* const dl_error{::dlerror()};
-        if (dl_error != nullptr)
-        {
-            // Intentional - last resort for diagnosing dlopen failures, since dlerror() is the only way to get error
-            // details.
-            std::cerr << "dlopen failed: " << dl_error << '\n';
-        }
+        static_cast<void>(CacheDlError());
         return score::cpp::make_unexpected(Error::createUnspecifiedError());
     }
+    has_dl_error_ = false;
     return handle;
 }
 
@@ -72,15 +69,34 @@ score::cpp::expected<void*, Error> DlfcnImpl::dlsym(void* const handle, const ch
     // (dlsym may legitimately return nullptr for a valid symbol).
     static_cast<void>(::dlerror());
     void* const symbol{::dlsym(handle, symbol_name)};
-    const char* const dl_error{::dlerror()};
-    if (dl_error != nullptr)
+    if (CacheDlError())
     {
-        // Intentional - last resort for diagnosing dlsym failures, since dlerror() is the only way to get error
-        // details.
-        std::cerr << "dlsym failed: " << dl_error << '\n';
         return score::cpp::make_unexpected(Error::createUnspecifiedError());
     }
     return symbol;
+}
+
+std::optional<std::string_view> DlfcnImpl::dlerror() const noexcept
+{
+    if (has_dl_error_)
+    {
+        return std::string_view{last_dl_error_.data()};
+    }
+    return std::nullopt;
+}
+
+bool DlfcnImpl::CacheDlError() const noexcept
+{
+    const char* const dl_error{::dlerror()};
+    if (dl_error != nullptr)
+    {
+        std::strncpy(last_dl_error_.data(), dl_error, kDlErrorBufSize - 1U);
+        last_dl_error_[kDlErrorBufSize - 1U] = '\0';
+        has_dl_error_ = true;
+        return true;
+    }
+    has_dl_error_ = false;
+    return false;
 }
 
 }  // namespace score::os

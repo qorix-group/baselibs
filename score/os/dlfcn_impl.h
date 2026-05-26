@@ -16,6 +16,9 @@
 
 #include "score/os/dlfcn.h"
 
+#include <array>
+#include <cstdint>
+
 namespace score
 {
 namespace os
@@ -24,10 +27,19 @@ namespace os
 class DlfcnImpl final : public Dlfcn
 {
   public:
-    constexpr DlfcnImpl() = default;
+    DlfcnImpl() = default;
 
     score::cpp::expected<void*, Error> dlopen(const char* const file_name, const DlOpenFlag flags) const noexcept override;
     score::cpp::expected<void*, Error> dlsym(void* const handle, const char* const symbol_name) const noexcept override;
+    std::optional<std::string_view> dlerror() const noexcept override;
+
+  private:
+    static constexpr std::size_t kDlErrorBufSize{256U};
+
+    [[nodiscard]] bool CacheDlError() const noexcept;
+
+    mutable std::array<char, kDlErrorBufSize> last_dl_error_{};
+    mutable bool has_dl_error_{false};
 };
 
 }  // namespace os

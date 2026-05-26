@@ -21,6 +21,8 @@
 
 #include <cstdint>
 #include <cstring>
+#include <optional>
+#include <string_view>
 #include <type_traits>
 
 namespace score
@@ -48,7 +50,20 @@ class Dlfcn
     ///
     /// @return The address of the symbol as void*, or an Error if not found.
     virtual score::cpp::expected<void*, Error> dlsym(void* const handle, const char* const symbol_name) const noexcept = 0;
-
+    /// \brief Returns the last dynamic linker error message, or std::nullopt if none.
+    ///
+    /// @details After a failed dlopen() or dlsym() call, this method returns the diagnostic
+    ///          string produced by the dynamic linker (equivalent to ::dlerror()).
+    ///
+    ///          The returned string_view is only valid until the next call to dlopen(), dlsym(),
+    ///          or dlerror() on the same instance — callers must consume it immediately
+    ///          and must not store the view for later use.
+    ///
+    /// @note This class is not thread-safe. Concurrent calls to dlopen(), dlsym(), or dlerror()
+    ///       on the same instance from multiple threads constitute a data race.
+    ///
+    /// @return A string_view of the error message, or std::nullopt if no error is pending.
+    virtual std::optional<std::string_view> dlerror() const noexcept = 0;
     /// \brief Type-safe wrapper around dlsym that returns a typed function pointer.
     ///
     /// @return The resolved function pointer, or an Error if the symbol was not found.
