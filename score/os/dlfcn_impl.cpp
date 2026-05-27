@@ -76,6 +76,17 @@ score::cpp::expected<void*, Error> DlfcnImpl::dlsym(void* const handle, const ch
     return symbol;
 }
 
+score::cpp::expected_blank<Error> DlfcnImpl::dlclose(void* const handle) const noexcept
+{
+    if (::dlclose(handle) != 0)
+    {
+        static_cast<void>(CacheDlError());
+        return score::cpp::make_unexpected(Error::createUnspecifiedError());
+    }
+    has_dl_error_ = false;
+    return {};
+}
+
 std::optional<std::string_view> DlfcnImpl::dlerror() const noexcept
 {
     if (has_dl_error_)

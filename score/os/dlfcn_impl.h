@@ -31,6 +31,7 @@ class DlfcnImpl final : public Dlfcn
 
     score::cpp::expected<void*, Error> dlopen(const char* const file_name, const DlOpenFlag flags) const noexcept override;
     score::cpp::expected<void*, Error> dlsym(void* const handle, const char* const symbol_name) const noexcept override;
+    score::cpp::expected_blank<Error> dlclose(void* handle) const noexcept override;
     std::optional<std::string_view> dlerror() const noexcept override;
 
   private:

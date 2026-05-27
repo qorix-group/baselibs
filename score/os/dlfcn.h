@@ -50,6 +50,11 @@ class Dlfcn
     ///
     /// @return The address of the symbol as void*, or an Error if not found.
     virtual score::cpp::expected<void*, Error> dlsym(void* const handle, const char* const symbol_name) const noexcept = 0;
+    /// \brief Closes a shared library handle previously returned by dlopen().
+    ///
+    /// @return score::cpp::expected_blank<Error> - success or an Error on failure.
+    virtual score::cpp::expected_blank<Error> dlclose(void* handle) const noexcept = 0;
+
     /// \brief Returns the last dynamic linker error message, or std::nullopt if none.
     ///
     /// @details After a failed dlopen() or dlsym() call, this method returns the diagnostic

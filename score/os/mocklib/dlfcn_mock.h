@@ -28,6 +28,7 @@ class DlfcnMock : public Dlfcn
   public:
     MOCK_METHOD((score::cpp::expected<void*, Error>), dlopen, (const char*, DlOpenFlag), (const, noexcept, override));
     MOCK_METHOD((score::cpp::expected<void*, Error>), dlsym, (void*, const char*), (const, noexcept, override));
+    MOCK_METHOD((score::cpp::expected_blank<Error>), dlclose, (void*), (const, noexcept, override));
     MOCK_METHOD((std::optional<std::string_view>), dlerror, (), (const, noexcept, override));
 };
 
