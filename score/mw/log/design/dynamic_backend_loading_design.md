@@ -4,7 +4,7 @@
 
 - mw/log as a single shared library (.so) with console backend/sink built-in.
 - backend .so files (libmwlog_file_backend.so, libmwlog_remote_backend.so, libmwlog_slog_backend.so) deployed to a well-known directory by the integrator. Each backend is an independent shared library.
-- At runtime, mw/log discovers and loads all *backend.so files from the backend directory and registers the available backends.
+- At runtime, mw/log loads and registers all the *backend.so files specified by the integrator.
 - Libraries and binaries depend on a single mw/log target. No per-backend deps needed.
 - Customer-provided backends (libmwlog_custom_backend.so) use the same directory based discovery mechanism.
 
@@ -28,9 +28,9 @@
 
 Dynamic loading introduces an ABI boundary between the main binary and the backend plugin .so. Unlike static linking where the compiler and linker can verify type compatibility at build time, dynamic linking defers binding to runtime making ABI stability an explicit design concern.
 
-## Design Decision for dl_open() based solution
+## Design Decision for dlopen() based solution
 
-For detailed design decision please refer: ../score/mw/log/design/design_decisions.md
+The rationale for choosing a dlopen-based solution is documented in the [Design Decisions](./design_decisions.md).
 
 mw::log would use dlopen() based dynamic loading to compose recorders and respective backends at runtime. A libmwlog.so (frontend + console backend + dynamic backend loader) is the sole build dependency for all consumers. Per-backend .so files (libmwlog_file_backend.so, libmwlog_remote_backend.so, libmwlog_slog_backend.so) are deployed by the integrator and loaded at runtime from a configuration-specified list. The plugin boundary uses a C++ interface - backend .so files export a C++ recorder factory function discovered via a minimal extern "C" entry point.
 
@@ -52,7 +52,7 @@ Rationale:
 
 Covers requirements for Detailed Design (DD) and Implementation.
 
-The ![dynamic backend selection diagram](./score/mw/log/design/dynamic_backend_selection.puml) show the backend selection sequence.
+The ![dynamic backend selection diagram](./dynamic_backend_selection.puml) shows the backend selection sequence.
 
 The diagram uses swimlanes to clearly separate the two configuration layers:
 
@@ -62,11 +62,11 @@ Layer 2 (User / logging.json): Shows CreateFromConfiguration reading the logMode
 
 Runtime init: Wraps both layers, enforcing the REQ-DD-7 ordering invariant, and shows the final CompositeRecorder / single recorder / EmptyRecorder outcome.
 
-### 1.1 Detailed Design Requirments
+### 1.1 Detailed Design Requirements
 
 #### REQ-DD-1: C++ Plugin Boundary with Toolchain Identity
 
-The plugin .so files shall use the existing C++ Recorder interface. Each backend .so exports two extern "C" entry points: MwLogVersion() (ABI version gate) and MwLogRegisterBackends() (registration callback). The registration callback calls RegisterBackend() from backend_table.h, which stores a RecorderCreatorFn function pointer. The RecorderCreatorFn returns std::unique_ptr<Recorder>. C++ types (std::unique_ptr, Configuration&, score::cpp::pmr::memory_resource*) are permitted to cross the dlopen() boundary at recorder creation time. "RTLD_NOSHARE" shall not be used - all backend .so files share the process's libc and libstdc++ instances.
+The plugin .so files shall use the existing C++ Recorder interface. Each backend .so exports two extern "C" entry points: MwLogVersion() (ABI version gate) and MwLogRegisterBackends() (registration callback). The registration callback calls RegisterBackend() from backend_table.h, which stores a RecorderCreatorFn function pointer. The RecorderCreatorFn returns std::unique_ptr<Recorder>. C++ types (std::unique_ptr, Configuration&, std::pmr::memory_resource*) are permitted to cross the dlopen() boundary at recorder creation time. "RTLD_NOSHARE" shall not be used - all backend .so files share the process's libc and libstdc++ instances.
 
 Toolchain identity constraint: All backend .so files and libmwlog.so shall be built with the identical toolchain: same compiler version, same -std=c++XX flag, same optimization level (-O2), and same libstdc++/libc++ version. A CI gate shall enforce this by comparing compiler identification hashes (E.g.: gcc --version fingerprint) embedded in each .so at build time.
 
@@ -90,18 +90,93 @@ References:
 
 #### REQ-DD-3: Configuration-Driven Backend Loading
 
-The dynamic backend loader shall load only the backend .so files explicitly listed in the logging configuration file located at /opt/mwlog/backend_config.json (field "backends": ["libmwlog_file_backend.so", "libmwlog_remote_backend.so", etc.]). It shall not blindly scan the backend directory for all matching files. Each listed filename is joined with the well-known backend directory path /opt/mwlog/backends/ (compile-time default, never overridable via environment variable). If a listed file is absent, it is treated as "not deployed". If no configuration is provided, no backends are loaded and the system uses console-only logging.
+The dynamic backend loader shall load only the backend .so files explicitly listed in the logging backend configuration file (E.g.: backend_config.json field "backends": ["libmwlog_file_backend.so", "libmwlog_remote_backend.so", etc.]). It shall not blindly scan the backend directory for all matching files. Each listed filename is joined with the backend directory path, which is determined exclusively at compile time via Bazel feature flags (see below).
 
-Both the configuration file and all backend .so files reside in /opt/mwlog/backends/ on a read-only qtsafefs-mounted filesystem under /opt. The read-only nature of qtsafefs ensures that no process can create, modify, or delete files in the backend directory at runtime. This eliminates the risk of a rogue .so being injected into the directory post-deployment. Configuration-driven loading provides an additional layer of defense-in-depth on top of the filesystem-level immutability.
+Reasoning: Glob-based directory scanning creates a wider attack surface - An incompatible backend version could potentially crash the application. An explicit compatible version is safe. Feature flags improve discoverability, and allow per-integration overrides without modifying source files. Security is preserved because feature flags are build-time constants, not runtime-configurable values.
 
-Reasoning: Even though the read-only qtsafefs filesystem prevents runtime injection of malicious .so files, configuration-driven loading remains valuable as a defense-in-depth measure. It gives the integrator explicit control over which backends are loaded (which exact versions) and in what order, and ensures that a directory scan cannot accidentally discover files that were deployed but not intended for the current configuration.
+##### Backend Directory and Config Path Resolution via Feature Flags
+
+The backend directory path and config file path should be compile-time constants controlled via Bazel `string_flag` feature flags defined in `//score/mw/log/flags:BUILD`.
+
+Flag definitions in `//score/mw/log/flags/BUILD`:
+
+```python
+load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
+
+string_flag(
+    name = "backend_dir",
+    build_setting_default = "/opt/libmwlog/backends/",
+    visibility = [
+        "@score_baselibs//score/mw/log:__subpackages__",
+    ],
+)
+
+string_flag(
+    name = "backend_config_path",
+    build_setting_default = "/opt/libmwlog/backend_config.json",
+    visibility = [
+        "@score_baselibs//score/mw/log:__subpackages__",
+    ],
+)
+```
+
+Propagation to C++ is done via `expand_template` generating a header with the flag values, avoiding the `select()`/`config_setting` enumeration limitation inherent to arbitrary string paths:
+
+```python
+expand_template(
+    name = "backend_paths_header",
+    out = "backend_paths_config.h",
+    template = "backend_paths_config.h.tpl",
+    substitutions = {
+        "@BACKEND_DIR@": "$(//score/mw/log/flags:backend_dir)",
+        "@BACKEND_CONFIG_PATH@": "$(//score/mw/log/flags:backend_config_path)",
+    },
+)
+```
+
+Per-integration override via command line:
+
+```bash
+bazel build //... \
+  --//score/mw/log/flags:backend_dir="/xyz/platform/opt/mwlog/" \
+  --//score/mw/log/flags:backend_config_path="/xyz/platform/opt/mwlog/backend_config.json"
+```
+
+Or via `.bazelrc`:
+
+```bash
+build:ipnext_isoc --//score/mw/log/flags:backend_dir="/xyz/platform/opt/mwlog/"
+build:ipnext_isoc --//score/mw/log/flags:backend_config_path="/xyz/platform/opt/mwlog/backend_config.json"
+```
+
+The paths shall never be sourced from an environment variable or from the runtime configuration file. Feature flags are build-time settings, ensuring the paths are immutable after build and preventing runtime manipulation.
+
+- Default values match the most productive/stable configuration (`/opt/libmwlog/backends/` and `/opt/libmwlog/backend_config.json`).
+
+Constraints on the backend directory path:
+- Must be an absolute path (starts with `/`).
+- The dynamic backend loader shall `static_assert` that the backend directory path starts with `/` at compile time.
+
+Constraints on the backend config path:
+- Must be an absolute path (starts with `/`).
+- Must reside on a qtsafefs-mounted filesystem that is RO to prevent tampering (AOU-7).
+
+If a listed file is absent, it is treated as "not deployed". If no configuration is provided, no backends are loaded and the system uses console-only logging.
+
+NOTE: config file placed at the path specified by `backend_config_path` (default: `/opt/libmwlog/backend_config.json`) with content:
+
+{
+  "backends": [
+    "libmwlog_file_backend.so",
+    "libmwlog_remote_backend.so"
+  ]
+}
 
 References:
 - [CWE-426: Untrusted Search Path](https://cwe.mitre.org/data/definitions/426.html)
+- [EP-23: Feature Flags in Bazel](../../docs/enhancement_proposals/proposals/23_feature_flags.md)
 
 #### REQ-DD-4: Fallback Chain
-
-Refer ![dynamic backend selection diagram](./score/mw/log/design/dynamic_backend_selection.puml) for the backend sequence.
 
 The dynamic backend loader shall implement the following fallback chain:
 
@@ -148,7 +223,7 @@ References:
 LoadConfiguredBackends() shall be called inside Runtime::Runtime(), before RegistryAwareRecorderFactory::CreateFromConfiguration(). The execution sequence within the Runtime constructor shall be:
 
 1. LoadConfiguredBackends() - writes to gBackendCreators[] via RegisterBackend().
-2. CreateRecorderFactory() would CreateFromConfiguration() - reads gBackendCreators[] via CreateRecorderForMode().
+2. CreateRecorderFactory() calls CreateFromConfiguration() which invokes gBackendCreators[] via CreateRecorderForMode().
 
 This ordering guarantees that all writes to gBackendCreators[] complete before any reads, within the same function call on the same thread. No synchronization primitive (mutex, atomic) is required on gBackendCreators[] itself.
 
@@ -159,7 +234,9 @@ Invariants:
 - All writes to gBackendCreators[] (both static-init registrants like console and dynamic-load registrants) complete before CreateFromConfiguration() reads the table.
 - After Runtime::Runtime() returns, gBackendCreators[] shall not be modified.
 
-Implementation note: Runtime::Runtime() must read the backend configuration (directory path, filenames) before calling LoadConfiguredBackends(). This requires splitting config reading into two phases: (1) read backend list for LoadConfiguredBackends(), (2) read full config for CreateFromConfiguration(). Alternatively, LoadConfiguredBackends() can read the backend list independently from the same config source.
+Implementation note: Runtime::Runtime() must read the backend configuration (directory path, filenames) before calling LoadConfiguredBackends(). The preferred approach is single-read + pass-through: read and parse the backend configuration file once, then pass the parsed backend list to LoadConfiguredBackends() and the full configuration to CreateFromConfiguration(). This avoids parsing the config file twice.
+
+If the config file is read independently by LoadConfiguredBackends() and CreateFromConfiguration(), a TOCTOU race exists on the config file content between the two reads. On production QNX targets with RO qtsafefs (AOU-7) this is safe because the file is immutable. However, on development Linux environments where the config file is on a read-write filesystem, a concurrent modification between the two reads could cause LoadConfiguredBackends() and CreateFromConfiguration() to operate on inconsistent configuration state. The single-read + pass-through approach eliminates this race.
 
 References:
 - [C++11 Standard - [stmt.dcl] p4](https://timsong-cpp.github.io/cppwp/n4659/stmt.dcl#3) - concurrent execution of block-scope static variable initialization.
@@ -176,7 +253,7 @@ Verification method: unit test
 
 #### REQ-DD-V2: Configuration-Driven Loading
 
-Verify that the dynamic backend loader loads only the .so files listed in the configuration. Place an additional libmwlog_rogue_backend.so in the backend directory that is not listed in the configuration. Verify it is not loaded.
+Verify that the dynamic backend loader loads only the .so files listed in the configuration.
 
 Verification method: component test/sctf.
 
@@ -186,10 +263,10 @@ Verify all fallback chain paths:
 1. All configured backends load successfully and all registered.
 2. One configured backend missing and remaining load
 3. One configured backend corrupt/failing and remaining load; error logged.
-4. All configured backends fail amd console-only fallback activates.
+4. All configured backends fail and console-only fallback activates.
 5. Console allocation fails and EmptyRecorder stub is returned.
 
-Verification method: component test/sctf.
+Verification method: unit/component testing.
 
 #### REQ-DD-V4: Backend Loading Order Inside Runtime Constructor
 
@@ -224,7 +301,7 @@ The plugin .so shall not use mw::log in any __attribute__((constructor)) functio
 Reasoning: Plugin constructors execute during dlopen() - before the version guard (MwLogVersion()) is checked. A constructor calling mw::log creates a circular dependency and potential deadlock (the logging runtime may not yet be initialized). Constructors that modify global process state (setenv, signal handlers) can interfere with the frontend's FFI guarantees.
 
 References:
-- [GCC Common Function Attributes - constructor](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html)execution semantics.
+- [GCC Common Function Attributes - constructor](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html).
 - [CWE-764: Multiple Locks](https://cwe.mitre.org/data/definitions/764.html) - deadlock risk from circular re-entrant locking during init.
 
 #### REQ-SAFE-3: FMEA Coverage for dlopen() Path
@@ -235,22 +312,24 @@ Reasoning: ISO 26262 Part 5 requires FMEA for all safety-relevant failure modes.
 
 #### REQ-SAFE-4: Pre-dlopen() ELF Section Version Marker (CI/Deploy-Time Gate)
 
-Each plugin .so SHALL embed a version integer in a dedicated ELF section (e.g., .note.mwlog_abi) at build time. This marker is intended for offline verification - it is NOT read at runtime by the dynamic backend loader.
+Each plugin .so SHALL embed a version integer in a dedicated ELF section `.mwlog_abi` at build time. This marker is intended for offline verification - it is NOT read at runtime by the dynamic backend loader.
 
-CI/deploy-time enforcement: A CI gate or deployment validation script SHALL read the .note.mwlog_abi section from each backend .so (using readelf or objdump) and verify that the embedded version matches the MW_LOG_ABI_VERSION compiled into libmwlog.so. Backend .so files with mismatched versions SHALL NOT be deployed to the target filesystem.
+CI/deploy-time enforcement: A CI gate or deployment validation script SHALL read the `.mwlog_abi` section from each backend .so (using `readelf -x .mwlog_abi`) and verify that the embedded version matches the MW_LOG_ABI_VERSION compiled into libmwlog.so. Backend .so files with mismatched versions SHALL NOT be deployed to the target filesystem.
 
 This check catches version mismatches before deployment, preventing a scenario where dlopen() executes plugin constructors (REQ-SAFE-2) from an incompatible binary before the application can call MwLogVersion(). The runtime MwLogVersion() check (REQ-DD-2) remains the defense-in-depth mechanism for detecting mismatches that escape the CI gate.
 
 Reasoning: dlopen() executes plugin constructors before the application can call MwLogVersion(). A pre-deployment check avoids running any plugin code from an incompatible binary on the target. Runtime ELF section parsing was considered but rejected due to implementation complexity (requires ELF header parsing in application code) and marginal benefit over the deploy-time gate combined with pathtrust/qtsafefs as the primary protection against untrusted binaries.
 
+Note on section naming: A custom section name `.mwlog_abi` is used instead of a `.note.*` prefix. The ELF `.note` section format requires a structured header (namesz, descsz, type, name, desc) per the ELF specification. Placing a raw `uint32_t` into a `.note.*`-prefixed section without this structure would confuse tools like `readelf -n` that expect proper note formatting. Since the CI gate uses `readelf -x` (hex dump), the simpler custom section approach is sufficient and avoids misleading section naming.
+
 References:
-- [ELF Specification](https://refspecs.linuxfoundation.org/elf/elf.pdf) - .note section format for embedding metadata in ELF binaries.
+- [ELF Specification](https://refspecs.linuxfoundation.org/elf/elf.pdf) - section and .note format for embedding metadata in ELF binaries.
 - [NIST: Security and Privacy Engineering Principles](https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final)
 
 ```cpp
 // Plugin side - static marker (readable offline via readelf/objdump, not loaded at runtime)
 extern "C" {
-    const uint32_t kMwLogAbiVersion __attribute__((section(".note.mwlog_abi"))) = 1U;
+    const uint32_t kMwLogAbiVersion __attribute__((section(".mwlog_abi"))) = 1U;
 }
 ```
 
@@ -258,8 +337,8 @@ CI gate example:
 ```bash
 #!/bin/bash
 # Verify ABI version in backend .so matches libmwlog.so
-EXPECTED_VERSION=$(readelf -x .note.mwlog_abi libmwlog.so | awk '...')
-PLUGIN_VERSION=$(readelf -x .note.mwlog_abi "$1" | awk '...')
+EXPECTED_VERSION=$(readelf -x .mwlog_abi libmwlog.so | awk '...')
+PLUGIN_VERSION=$(readelf -x .mwlog_abi "$1" | awk '...')
 if [ "$EXPECTED_VERSION" != "$PLUGIN_VERSION" ]; then
     echo "FAIL: ABI version mismatch in $1 (expected $EXPECTED_VERSION, got $PLUGIN_VERSION)"
     exit 1
@@ -270,7 +349,7 @@ fi
 
 #### REQ-SAFE-V1: dlopen() Failure Path Testing on Target ECU
 
-All dlopen() failure paths shall be tested on the actual target ECU and QNX version:
+Execute REQ-DD-V3 scenarios on target ECU to confirm that all dlopen() failure paths behave correctly on actual hardware.
 
 Verification method: ITF
 
@@ -280,19 +359,13 @@ All existing ASIL B init sequence - EM/PHM checkpoint tests shall be re-executed
 
 Verification method: ITF
 
-#### REQ-SAFE-V3: Plugin ABI Mismatch Handling
-
-Verify that a plugin built with a different MW_LOG_ABI_VERSION is rejected, the fallback chain activates correctly, and no undefined behavior occurs.
-
-Verification method: unit test
-
-#### REQ-SAFE-V4: Stub Logging Detection
+#### REQ-SAFE-V3: Stub Logging Detection
 
 Verify that in a fully deployed production system, the EmptyRecorder stub is never the active recorder.
 
 Verification method: ITF
 
-#### REQ-SAFE-V5: No mw::log Usage in Plugin Constructors
+#### REQ-SAFE-V4: No mw::log Usage in Plugin Constructors
 
 Verify that loading a plugin whose constructor calls mw::log does not deadlock or crash the init sequence.
 
@@ -315,20 +388,11 @@ References:
 - [POSIX dlopen()](https://pubs.opengroup.org/onlinepubs/9699919799/functions/dlopen.html) - specifies search order when a bare filename (no /) is passed.
 - [QNX 8.0 dlopen() - Search Order](https://www.qnx.com/developers/docs/8.0/com.qnx.doc.neutrino.lib_ref/topic/d/dlopen.html) - QNX-specific _CS_LIBPATH search behavior.
 
-#### REQ-SEC-2: qtsafefs Enforcement
+#### REQ-SEC-2: qtsafefs Enforcement for production software runnning QNX
 
-The backend directory /opt/mwlog/backends/ shall reside on a read-only qtsafefs-mounted filesystem (under /opt). At init, the dynamic backend loader shall verify this by calling statvfs() on the backend directory and checking the filesystem type - not merely checking the path prefix.
+Reasoning: A path-prefix check alone is insufficient - anyone could mount a non-qtsafefs filesystem at the expected path.
 
-The read-only qtsafefs filesystem provides two complementary security properties:
-1. **Integrity checking**: qtsafefs performs hash verification for all files on the filesystem, preventing loading of tampered .so files.
-2. **Immutability**: The filesystem is mounted read-only, preventing any runtime modification - no files can be created, modified, or deleted in the backend directory after deployment.
-
-Together, these properties eliminate the primary attack vectors for plugin injection: an attacker cannot place a malicious .so in the backend directory, nor tamper with existing backend .so files or the backend_config.json configuration file.
-
-Reasoning: A path-prefix check alone is insufficient - an attacker could mount a non-qtsafefs filesystem at the expected path. The statvfs() runtime check is a defense-in-depth measure ensuring the expected filesystem properties are actually in effect.
-
-References:
-- [QNX 8.0 qtsafefs](https://www.qnx.com/developers/docs/8.0/com.qnx.doc.neutrino.qtsafefs/topic/qtsafefsd.html)
+Should be satisfied by AOU-1. This is a security enforced requirement.
 
 #### REQ-SEC-3: Compensating Controls for Omitted RTLD_NOSHARE
 
@@ -342,9 +406,9 @@ dlopen() shall use RTLD_NOW | RTLD_LOCAL (without RTLD_NOSHARE). The decision to
 | 4 | procnto -mX | REQ-SEC-9 | Prevents PROT_EXEC on files without +x - blocks loading from /dev/shmem, /tmp |
 | 5 | Configuration-driven loading | REQ-DD-3 | Only explicitly listed .so files are loaded - no glob-scan, no auto-discovery |
 
-Without RTLD_NOSHARE, the following attack is theoretically possible: If a compromised component calls dlopen("libmwlog_remote_backend.so", ...) with a relative path before dynamic backend loader runs, the linker may return the already-loaded (malicious) handle. With all five compensating controls in place - and critically, with the backend directory residing on a read-only qtsafefs filesystem - this attack requires a build-chain compromise of a pathtrust-verified binary on an immutable, integrity-checked filesystem. The read-only qtsafefs mount eliminates the possibility of placing a malicious .so in the backend directory at runtime, making this attack vector practically infeasible.
+Without RTLD_NOSHARE, the following attack is theoretically possible: If a compromised component calls dlopen("libmwlog_remote_backend.so", ...) with a relative path before dynamic backend loader runs, the linker may return the already-loaded (malicious) handle. With all five compensating controls in place, this attack requires a build-chain compromise of a pathtrust-verified binary on a qtsafefs filesystem - a significantly higher bar than the RTLD_NOSHARE scenario alone addresses.
 
-Reasoning: RTLD_NOSHARE creates a private libc/libstdc++ copy for the plugin, making C++ types unusable across the boundary. Since the design choice is to preserve the existing C++ backend implementation (REQ-DD-1, REQ-DD-6), RTLD_NOSHARE is incompatible with the architecture. The five compensating controls - reinforced by the read-only qtsafefs filesystem under /opt - collectively provide equivalent or stronger security guarantees for the threat model.
+Reasoning: RTLD_NOSHARE creates a private libc/libstdc++ copy for the plugin, making C++ types unusable across the boundary. Since the design choice is to preserve the existing C++ backend implementation (REQ-DD-1, REQ-DD-6), RTLD_NOSHARE is incompatible with the architecture. The five compensating controls collectively provide equivalent or stronger security guarantees for the threat model.
 
 References:
 - [CWE-427: Uncontrolled Search Path Element](https://cwe.mitre.org/data/definitions/427.html)
@@ -354,7 +418,7 @@ References:
 
 Each backend .so shall be built with:
 - -Wl,--disable-new-dtags - ensures RPATH is used (not RUNPATH). RPATH is not overridden by LD_LIBRARY_PATH.
-- An explicit, absolute RPATH pointing only to qtsafefs-backed library directories (E.g.: -Wl,-rpath,/opt/mwlog/lib). No $ORIGIN-relative paths.
+- An explicit, absolute RPATH pointing only to qtsafefs-backed library directories (E.g.: -Wl,-rpath,/opt/libmwlog/backends). No $ORIGIN-relative paths.
 
 Reasoning: When dlopen() loads a backend .so, the runtime linker resolves its DT_NEEDED transitive dependencies using the search order: RPATH -> LD_LIBRARY_PATH -> _CS_LIBPATH. If RUNPATH is used instead of RPATH, LD_LIBRARY_PATH takes precedence, allowing an attacker to inject transitive dependencies. Absolute RPATH with --disable-new-dtags ensures transitive deps are resolved only from trusted paths.
 
@@ -451,20 +515,12 @@ All backend .so files and libmwlog.so shall be built with:
 | -fstack-protector-strong | Stack canary protection |
 | -fPIC | Position-independent code |
 
+NOTE: Flags (1) and (2) are complimentary.
+
 Reasoning: Standard ELF hardening per Red Hat security hardening guidelines. Full RELRO prevents GOT overwrite attacks. Non-executable stack mitigates stack-based code injection. These are baseline requirements for any shared library in a safety-critical system.
 
 References:
 - [Red Hat Enterprise Linux - Security Hardening Guide](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/) - ELF hardening best practices.
-
-#### REQ-SEC-11: Backend Directory Ownership Verification
-
-At init, the dynamic backend loader shall stat() the backend directory and verify:
-- Owned by root or the expected system user.
-- Not world-writable.
-
-If either check fails, a critical warning shall be logged.
-
-Reasoning: In production, the backend directory /opt/mwlog/backends/ resides on a read-only qtsafefs filesystem, which inherently satisfies both ownership and write-permission constraints - the filesystem is immutable and integrity-checked, making runtime modification impossible. The stat() check serves as a defense-in-depth measure and is primarily relevant for non-qtsafefs deployments (E.g.: development environments, Linux-based targets) where a world-writable backend directory would allow any process to inject a malicious plugin.
 
 ### 3.2 Verification Requirements
 
@@ -474,9 +530,11 @@ Verify that dynamic backend loader rejects any attempt to load a plugin via a re
 
 Verification method: Unit test
 
-#### REQ-SEC-V2: qtsafefs Mount Verification
+#### REQ-SEC-V2: Backend Directory Ownership Verification
 
-Verify that dynamic backend loader rejects a backend directory that is not on a qtsafefs filesystem.
+Verify that the backend directory has the the right mandatory access controls setup.
+
+Reasoning: On qtsafefs, the filesystem is read-only and integrity-checked. On non-qtsafefs deployments (E.g.: development environments), a rw backend directory would allow any process to inject a wrong plugin.
 
 Verification method: Integration test (ITF)
 
@@ -488,7 +546,7 @@ Verify that all five compensating controls (REQ-SEC-3) are active and correctly 
 2. secpol: Verify process has PROCMGR_AID_UNTRUSTED_EXEC denied would untrusted .so cannot load.
 3. setuid: Verify LD_LIBRARY_PATH and LD_PRELOAD are unset by runtime linker before main().
 4. procnto -mX: Remove +x from a .so would verify dlopen() fails.
-5. Config-driven: Place an extra libmwlog_hacky_backend.so in the backend directory (not in config) would verify it is not loaded. Note: On a read-only qtsafefs filesystem, placing an extra .so at runtime is not possible - this test must use a specially prepared filesystem image.
+5. Config-driven: Place an extra libmwlog_hacky_backend.so in the backend directory (not in config) would verify it is not loaded.
 
 Verification method: Target integration test (ITF) on QNX
 
@@ -524,7 +582,7 @@ Verification method: Target integration test (ITF) on QNX
 
 #### REQ-SEC-V9: Environment Variable Mutation Detection
 
-Verify that dynamic backend loader detects a change to LD_LIBRARY_PATH between init and dlopen() and aborts loading.
+Verify that dynamic backend loader detects a change to LD_LIBRARY_PATH between init and dlopen() and logs a diagnostic message.
 
 Verification method: Component test
 
@@ -552,11 +610,11 @@ After initialization, the dynamic-loading architecture shall introduce zero addi
 
 Reasoning: The backend's Recorder object is held via std::unique_ptr<Recorder> - the same ownership model as the static-link case. No additional wrappers, adapters, or indirection layers are introduced. The dlopen() boundary is crossed only during init.
 
-#### REQ-PERF-2: dlopen() with RTLD_NOW
+#### REQ-PERF-2: dlopen() with RTLD_NOW and RTLD_LOCAL
 
-Backend .so files shall be loaded with RTLD_NOW (immediate symbol resolution) rather than RTLD_LAZY.
+Backend .so files shall be loaded with RTLD_NOW | RTLD_LOCAL (immediate symbol resolution, symbols not available to subsequently loaded libraries). RTLD_LAZY shall not be used. The full flag set is specified in REQ-SEC-3.
 
-Reasoning: RTLD_NOW performs all symbol resolution at load time, exposing any missing symbol errors immediately during init. RTLD_LAZY defers resolution to first use, which could cause a crash on the first record() call - unacceptable for an ASIL B component. The latency cost is paid once during init, which is already covered as unbounded (Restriction #1).
+Reasoning: RTLD_NOW performs all symbol resolution at load time, exposing any missing symbol errors immediately during init. RTLD_LAZY defers resolution to first use, which could cause a crash on the first record() call - unacceptable for an ASIL B component. RTLD_LOCAL prevents backend symbols from polluting the global symbol namespace, reducing symbol collision risk. The latency cost is paid once during init, which is already covered as unbounded (TODO: Link existing AoU).
 
 References:
 - [POSIX dlopen() - RTLD_NOW vs RTLD_LAZY](https://pubs.opengroup.org/onlinepubs/9699919799/functions/dlopen.html) - specifies immediate vs. deferred symbol resolution semantics.
@@ -600,9 +658,9 @@ Verify that the toolchain identity CI gate (REQ-DD-1) does not add measurable ov
 
 These requirements define the operational context and constraints that the integrator, deployer, and plugin author must satisfy for the dynamic loading architecture to function correctly and safely.
 
-#### AOU-1: qtsafefs Backend Directory (Read-Only)
+#### AOU-1: qtsafefs Backend Directory
 
-The backend directory /opt/mwlog/backends/ shall reside on a read-only qtsafefs-mounted filesystem (under /opt) with integrity checking enabled. Both the backend .so files and the logging configuration file (backend_config.json) are co-located in this directory. The read-only mount ensures that no process can create, modify, or delete files in the backend directory at runtime, eliminating runtime injection and tampering attack vectors.
+The backend directory (integrator-defined, resolved via the `backend_dir` feature flag in `//score/mw/log/flags`, default `/opt/libmwlog/backends/`) shall reside on a qtsafefs-mounted filesystem with integrity checking enabled.
 
 #### AOU-2: pathtrust-Enabled Filesystems
 
@@ -623,15 +681,13 @@ All deployed backend .so files shall:
 - Be owned by root (or the designated system user).
 - Not be world-writable.
 
-Note: Since the backend directory resides on a read-only qtsafefs filesystem, these permissions are set at image build/deployment time and cannot be altered at runtime. The read-only filesystem guarantees that the deployed permission state is preserved for the entire lifetime of the filesystem image.
-
 #### AOU-6: Environment Variable Integrity
 
 LD_PRELOAD, LD_LIBRARY_PATH, DL_DEBUG, LD_DEBUG, and PATH shall not be modified after process start. The process should use the setuid bit to have the runtime linker automatically unset LD_LIBRARY_PATH and LD_PRELOAD.
 
 #### AOU-7: Logging Configuration File
 
-The logging configuration file (backend_config.json) shall be located at /opt/mwlog/backends/backend_config.json, co-located with the backend .so files. It shall explicitly list the backend .so filenames to load. Since it resides on the same read-only qtsafefs-mounted filesystem as the backends (under /opt), it is protected against both tampering and unauthorized modification at runtime.
+The logging configuration file (E.g.: backend_config.json) shall explicitly list the backend .so filenames to load. It shall reside on a qtsafefs-mounted filesystem that is RO to prevent tampering.
 
 #### AOU-8: No mw::log in Plugin Constructors
 
@@ -663,10 +719,10 @@ The integrator shall ensure that the EM and PHM checkpoint timing budget for ini
 
 ## TODOs
 
-1. The security requirements heavily focus on QNX (qtsafefs, pathtrust, secpol, procnto). Document security hardening for Linux-based targets or development environments where qtsafefs read-only guarantees are not available.
+1. The security requirements heavily focus on QNX (qtsafefs, pathtrust, secpol, procnto). Document security hardening for Linux-based targets or development environments.
 2. Measure memory footprint per application (static-link vs. dynamic).
 3. Measure dlopen() latency on target ECU flash.
 4. Investigate what Linux/QNX 8.0 does if we load the same soname from two different absolute paths.
-5. Documentation on handling updates to per-backend .so files. Note: Since /opt is on a read-only qtsafefs filesystem, backend updates require a new filesystem image deployment.
+5. Documentation on handling updates to per-backend .so files.
 6. Document EM/PHM checkpoint timing budgets apply to the init sequence.
 7. Document abilities (secpol) required for processes additionally.

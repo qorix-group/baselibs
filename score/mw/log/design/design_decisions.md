@@ -2,9 +2,9 @@
 
 ## Dynamic backend loading for mw::log
 
-### Appoach Comparision for the intended use case
+### Appoach Comparison for the intended use case
 
-| Criterion | *dlopen() | **DT_NEEDED | Weak Symbols | Global Backend Table (static) - exisiting implemenation |
+| Criterion | *dlopen() | **DT_NEEDED | Weak Symbols | Global Backend Table (static) - existing implemenation |
 |-----------|----------------------|--------------------------|---------------------------|--------------------------------------|
 | Graceful degradation | Yes - fallback chain (console to stub) | No - process fails if .so missing | Yes - weak defaults | Yes - console fallback for unavailable backends |
 | Runtime dependency | Plugin .so must be on trusted filesystem | .so must be on loader search path | None beyond normal linking | None - all resolved at link time |
@@ -18,7 +18,7 @@
 
 **DT_NEEDED - Is a declarative, link-time mechanism. The dependency is recorded in the ELF .dynamic section when you link with -lfoo. The runtime linker (ld.so / ldqnx.so) resolves all DT_NEEDED entries automatically before main() runs. If any listed .so is missing, the process aborts at startup - the application never gets a chance to handle the failure.
 
-dlopen() satisfies all the criterias especially the graceful degradation and extensibility for plugin based backend selection. Hence dl_open solution is preferred for the usecase in ../dynamic_backend_loading_design.md
+dlopen() satisfies all the criteria especially the graceful degradation and extensibility for plugin based backend selection. Hence dl_open solution is preferred for the usecase in ./dynamic_backend_loading_design.md
 
 References:
 - [POSIX dlopen](https://man7.org/linux/man-pages/man3/dlopen.3.html)
