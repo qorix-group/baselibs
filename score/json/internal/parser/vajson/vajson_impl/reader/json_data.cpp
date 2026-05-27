@@ -135,8 +135,7 @@ auto JsonData::FromBuffer(const score::cpp::span<const char> buffer) noexcept ->
 auto JsonData::Snap() noexcept -> Result<void>
 {
     std::streampos pos = this->GetStream().tellg();
-    auto result =
-        MakeErrorResult<void>(JsonErrc::kStreamFailure, "JsonData::Snap: Could not get stream position.");
+    auto result = MakeErrorResult<void>(JsonErrc::kStreamFailure, "JsonData::Snap: Could not get stream position.");
     if (!this->GetStream().fail())
     {
         result.emplace();
@@ -160,8 +159,7 @@ auto JsonData::Snap() noexcept -> Result<void>
  */
 auto JsonData::Restore() noexcept -> Result<void>
 {
-    Result<void> result{
-        MakeErrorResult<void>(JsonErrc::kStreamFailure, "JsonData::Restore: No snapshot available.")};
+    Result<void> result{MakeErrorResult<void>(JsonErrc::kStreamFailure, "JsonData::Restore: No snapshot available.")};
 
     if (this->has_backup_)
     {
@@ -170,7 +168,7 @@ auto JsonData::Restore() noexcept -> Result<void>
         if (pos > static_cast<std::uint64_t>(std::numeric_limits<std::int64_t>::max()))
         {
             result = MakeErrorResult<void>(JsonErrc::kStreamFailure,
-                                                    "JsonData::Restore: Stream position exceeds max seek count.");
+                                           "JsonData::Restore: Stream position exceeds max seek count.");
         }
         else
         {
@@ -179,8 +177,7 @@ auto JsonData::Restore() noexcept -> Result<void>
 
             if (this->stream_.get().fail())
             {
-                result =
-                    MakeErrorResult<void>(JsonErrc::kStreamFailure, "Unable to restore original position.");
+                result = MakeErrorResult<void>(JsonErrc::kStreamFailure, "Unable to restore original position.");
             }
             else
             {
@@ -188,8 +185,7 @@ auto JsonData::Restore() noexcept -> Result<void>
                 std::uint64_t const curr{static_cast<std::uint64_t>(this->stream_.get().tellg())};
                 if (curr != this->pos_backup_)
                 {
-                    result = MakeErrorResult<void>(JsonErrc::kStreamFailure,
-                                                            "Unable to restore original position.");
+                    result = MakeErrorResult<void>(JsonErrc::kStreamFailure, "Unable to restore original position.");
                 }
                 else
                 {

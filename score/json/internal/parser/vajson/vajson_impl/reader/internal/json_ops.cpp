@@ -194,8 +194,7 @@ auto JsonOps::RewindIf(const bool condition, std::size_t const num) noexcept -> 
 
         if (stream.fail())
         {
-            result =
-                MakeErrorResult<void>(JsonErrc::kStreamFailure, "JsonOps::RewindIf: Could not seek back.");
+            result = MakeErrorResult<void>(JsonErrc::kStreamFailure, "JsonOps::RewindIf: Could not seek back.");
         }
     }
 

@@ -246,8 +246,7 @@ class JsonOps final
     /// \threadsafe      FALSE
     /// \reentrant       FALSE
     auto ReadExactly(std::uint64_t num_to_read,
-                     const score::cpp::move_only_function<void(std::string_view)>& callback) noexcept
-        -> Result<void>;
+                     const score::cpp::move_only_function<void(std::string_view)>& callback) noexcept -> Result<void>;
 
     /// \brief            Reads characters as long as the delimiter is not found and executes the action for each span
     /// of characters \param[in]       delimiter                  to decide if the character should be skipped.

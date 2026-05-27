@@ -184,8 +184,8 @@ class DepthCounter final
         if (this->is_finished_)
         {
 
-            result = MakeErrorResult<void>(JsonErrc::kInvalidJson,
-                                                    "DepthCounter::AddKey: Multiple top level elements.");
+            result =
+                MakeErrorResult<void>(JsonErrc::kInvalidJson, "DepthCounter::AddKey: Multiple top level elements.");
         }
         else if (this->comma_expected_)
         {
@@ -233,8 +233,8 @@ class DepthCounter final
 
         if (this->is_finished_)
         {
-            result = MakeErrorResult<void>(JsonErrc::kInvalidJson,
-                                                    "DepthCounter::AddValue: Multiple top level elements.");
+            result =
+                MakeErrorResult<void>(JsonErrc::kInvalidJson, "DepthCounter::AddValue: Multiple top level elements.");
         }
         else if (this->comma_expected_)
         {
@@ -262,8 +262,7 @@ class DepthCounter final
                     break;
                 default:
 
-                    result = MakeErrorResult<void>(JsonErrc::kInvalidJson,
-                                                            "DepthCounter::AddValue: Expected a key.");
+                    result = MakeErrorResult<void>(JsonErrc::kInvalidJson, "DepthCounter::AddValue: Expected a key.");
                     break;
             }
         }
@@ -426,20 +425,18 @@ class DepthCounter final
         if (this->is_finished_)
         {
 
-            result = MakeErrorResult<void>(JsonErrc::kInvalidJson,
-                                                    "DepthCounter::AddElement: Multiple top level elements.");
+            result =
+                MakeErrorResult<void>(JsonErrc::kInvalidJson, "DepthCounter::AddElement: Multiple top level elements.");
         }
         else if (this->CheckLastElement('{'))
         {
 
-            result =
-                MakeErrorResult<void>(JsonErrc::kInvalidJson, "DepthCounter::AddElement: Expected a key.");
+            result = MakeErrorResult<void>(JsonErrc::kInvalidJson, "DepthCounter::AddElement: Expected a key.");
         }
         else if (this->comma_expected_)
         {
 
-            result =
-                MakeErrorResult<void>(JsonErrc::kInvalidJson, "DepthCounter::AddElement: Expected a comma.");
+            result = MakeErrorResult<void>(JsonErrc::kInvalidJson, "DepthCounter::AddElement: Expected a comma.");
         }
         else
         {
