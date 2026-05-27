@@ -132,14 +132,14 @@ auto JsonData::FromBuffer(const score::cpp::span<const char> buffer) noexcept ->
  * - Return the Result of the operation.
  * \endinternal
  */
-auto JsonData::Snap() noexcept -> Result<vajson::Blank>
+auto JsonData::Snap() noexcept -> Result<void>
 {
     std::streampos pos = this->GetStream().tellg();
     auto result =
-        MakeErrorResult<vajson::Blank>(JsonErrc::kStreamFailure, "JsonData::Snap: Could not get stream position.");
+        MakeErrorResult<void>(JsonErrc::kStreamFailure, "JsonData::Snap: Could not get stream position.");
     if (!this->GetStream().fail())
     {
-        result.emplace(vajson::Blank{});
+        result.emplace();
         this->depth_counter_backup_ = this->depth_counter_;
         this->pos_backup_ = static_cast<std::uint64_t>(pos);
         this->has_backup_ = true;
@@ -158,10 +158,10 @@ auto JsonData::Snap() noexcept -> Result<vajson::Blank>
  * - Return the Result of the operation.
  * \endinternal
  */
-auto JsonData::Restore() noexcept -> Result<vajson::Blank>
+auto JsonData::Restore() noexcept -> Result<void>
 {
-    Result<vajson::Blank> result{
-        MakeErrorResult<vajson::Blank>(JsonErrc::kStreamFailure, "JsonData::Restore: No snapshot available.")};
+    Result<void> result{
+        MakeErrorResult<void>(JsonErrc::kStreamFailure, "JsonData::Restore: No snapshot available.")};
 
     if (this->has_backup_)
     {
@@ -169,7 +169,7 @@ auto JsonData::Restore() noexcept -> Result<vajson::Blank>
 
         if (pos > static_cast<std::uint64_t>(std::numeric_limits<std::int64_t>::max()))
         {
-            result = MakeErrorResult<vajson::Blank>(JsonErrc::kStreamFailure,
+            result = MakeErrorResult<void>(JsonErrc::kStreamFailure,
                                                     "JsonData::Restore: Stream position exceeds max seek count.");
         }
         else
@@ -180,7 +180,7 @@ auto JsonData::Restore() noexcept -> Result<vajson::Blank>
             if (this->stream_.get().fail())
             {
                 result =
-                    MakeErrorResult<vajson::Blank>(JsonErrc::kStreamFailure, "Unable to restore original position.");
+                    MakeErrorResult<void>(JsonErrc::kStreamFailure, "Unable to restore original position.");
             }
             else
             {
@@ -188,14 +188,14 @@ auto JsonData::Restore() noexcept -> Result<vajson::Blank>
                 std::uint64_t const curr{static_cast<std::uint64_t>(this->stream_.get().tellg())};
                 if (curr != this->pos_backup_)
                 {
-                    result = MakeErrorResult<vajson::Blank>(JsonErrc::kStreamFailure,
+                    result = MakeErrorResult<void>(JsonErrc::kStreamFailure,
                                                             "Unable to restore original position.");
                 }
                 else
                 {
                     this->depth_counter_ = std::move(this->depth_counter_backup_);
                     this->has_backup_ = false;
-                    result = Result<vajson::Blank>{vajson::Blank{}};
+                    result = Result<void>{};
                 }
             }
         }

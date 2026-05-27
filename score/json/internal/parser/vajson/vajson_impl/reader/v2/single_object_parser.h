@@ -97,7 +97,7 @@ class SingleObjectParser : public v2::Parser
     auto OnEndObject(std::size_t) noexcept -> ParserResult final
     {
         return this->validator_.Leave().and_then([this](ParserState state) noexcept {
-            return this->Finalize().transform([&state](vajson::Blank) noexcept {
+            return this->Finalize().transform([&state](void) noexcept {
                 return state;
             });
         });
@@ -126,9 +126,9 @@ class SingleObjectParser : public v2::Parser
     /// \pre             -
     /// \threadsafe      FALSE
     /// \reentrant       FALSE
-    virtual auto Finalize() noexcept -> Result<vajson::Blank>
+    virtual auto Finalize() noexcept -> Result<void>
     {
-        return Result<vajson::Blank>{vajson::Blank{}};
+        return Result<void>{};
     }
 
   private:

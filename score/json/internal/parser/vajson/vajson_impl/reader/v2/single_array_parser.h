@@ -84,7 +84,7 @@ class SingleArrayParser : public v2::Parser
             .and_then([this](ParserState) noexcept {
                 return this->GetJsonDocument().Snap();
             })
-            .transform([](vajson::Blank) noexcept {
+            .transform([](void) noexcept {
                 return ParserState::kRunning;
             });
     }
@@ -106,7 +106,7 @@ class SingleArrayParser : public v2::Parser
     auto OnEndArray(std::size_t) noexcept -> ParserResult final
     {
         return this->validator_.Leave().and_then([this](ParserState state) noexcept {
-            return Finalize().transform([&state](vajson::Blank) noexcept {
+            return Finalize().transform([&state](void) noexcept {
                 return state;
             });
         });
@@ -134,15 +134,15 @@ class SingleArrayParser : public v2::Parser
         return MakeResult(this->validator_.IsInside(),
                           {JsonErrc::kUserValidationFailed, "Expected to parse an array of elements."})
 
-            .and_then([this](vajson::Blank) noexcept {
+            .and_then([this](void) noexcept {
                 return this->GetJsonDocument().Restore();
             })
-            .and_then([this](vajson::Blank) noexcept {
+            .and_then([this](void) noexcept {
                 return this->OnElement();
             })
 
             .and_then([this](ParserState state) noexcept {
-                return this->GetJsonDocument().Snap().transform([this, &state](vajson::Blank) {
+                return this->GetJsonDocument().Snap().transform([this, &state](void) {
                     index_++;
                     return state;
                 });
@@ -178,9 +178,9 @@ class SingleArrayParser : public v2::Parser
     /// \pre             -
     /// \threadsafe      FALSE
     /// \reentrant       FALSE
-    virtual auto Finalize() noexcept -> Result<vajson::Blank>
+    virtual auto Finalize() noexcept -> Result<void>
     {
-        return vajson::ResultBlank{vajson::Blank{}};
+        return score::Result<void>{};
     }
 };
 

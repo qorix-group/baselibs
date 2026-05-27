@@ -25,9 +25,6 @@
 #include <utility>
 #include <vector>
 
-#include "score/blank.hpp"
-#include "score/span.hpp"
-
 #include "score/json/internal/parser/vajson/vajson_impl/reader/json_data.h"
 namespace score
 {
@@ -133,13 +130,13 @@ auto JsonOps::Skip(const char character) noexcept -> bool
  * \endinternal
  */
 auto JsonOps::CheckString(std::string_view const string, std::string_view const error_msg) noexcept
-    -> vajson::ResultBlank
+    -> score::Result<void>
 {
     return ReadString(string).and_then([&error_msg](bool val) noexcept {
-        vajson::ResultBlank result{MakeErrorResult<vajson::Blank>(JsonErrc::kInvalidJson, error_msg)};
+        score::Result<void> result{MakeErrorResult<void>(JsonErrc::kInvalidJson, error_msg)};
         if (val)
         {
-            result.emplace(vajson::Blank{});
+            result.emplace();
         }
         return result;
     });
@@ -176,7 +173,7 @@ auto JsonOps::ReadString(std::string_view const string) noexcept -> Result<bool>
         .and_then([this, &is_same, &total_size](std::size_t read_size) noexcept {
             return this->RewindIf((!is_same) || (total_size != read_size), read_size);
         })
-        .transform([&is_same](vajson::Blank) noexcept {
+        .transform([&is_same](void) noexcept {
             return is_same;
         });
 }
@@ -187,9 +184,9 @@ auto JsonOps::ReadString(std::string_view const string) noexcept -> Result<bool>
  *  - Seek back the number of bytes passed from the current position.
  * \endinternal
  */
-auto JsonOps::RewindIf(const bool condition, std::size_t const num) noexcept -> vajson::ResultBlank
+auto JsonOps::RewindIf(const bool condition, std::size_t const num) noexcept -> score::Result<void>
 {
-    vajson::ResultBlank result{};
+    score::Result<void> result{};
     if (condition)
     {
         std::istream& stream = this->GetStream();
@@ -198,7 +195,7 @@ auto JsonOps::RewindIf(const bool condition, std::size_t const num) noexcept -> 
         if (stream.fail())
         {
             result =
-                MakeErrorResult<vajson::Blank>(JsonErrc::kStreamFailure, "JsonOps::RewindIf: Could not seek back.");
+                MakeErrorResult<void>(JsonErrc::kStreamFailure, "JsonOps::RewindIf: Could not seek back.");
         }
     }
 
@@ -290,13 +287,13 @@ auto JsonOps::Read(std::uint64_t const num_to_read,
  */
 auto JsonOps::ReadExactly(std::uint64_t const num_to_read,
                           const score::cpp::move_only_function<void(std::string_view)>& callback) noexcept
-    -> Result<vajson::Blank>
+    -> Result<void>
 {
 
     String& buffer{this->GetJsonDocument().GetClearedStringBuffer()};
 
     bool callback_executed{false};
-    Result<vajson::Blank> result =
+    Result<void> result =
         Drop(Read(num_to_read, [&buffer, &callback, &num_to_read, &callback_executed](std::string_view view) noexcept {
                  if (view.size() == num_to_read)
                  {
@@ -308,11 +305,11 @@ auto JsonOps::ReadExactly(std::uint64_t const num_to_read,
                      static_cast<void>(buffer.append(view));
                  }
              }).and_then([&num_to_read](const std::uint64_t& read) noexcept {
-            vajson::ResultBlank result{
-                MakeErrorResult<vajson::Blank>(JsonErrc::kInvalidJson, "JsonOps::ReadExactly: Unexpected EOF.")};
+            score::Result<void> result{
+                MakeErrorResult<void>(JsonErrc::kInvalidJson, "JsonOps::ReadExactly: Unexpected EOF.")};
             if (num_to_read == read)
             {
-                result.emplace(vajson::Blank{});
+                result.emplace();
             }
             return result;
         }));
