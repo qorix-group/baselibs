@@ -49,7 +49,7 @@ jobs:
               - 'score/language/safecpp/safe_math/**'
               - 'score/language/safecpp/string_view/**'
               - 'score/language/safecpp/test/**'
-              - 'score/memory/**'
+              - 'score/memory/**/!(string_comparison_adaptor|string_literal)*'
               - 'score/mw/**'
               - 'score/network/**'
               - 'score/os/**'
