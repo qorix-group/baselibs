@@ -80,8 +80,10 @@ score::cpp::expected_blank<Error> DlfcnImpl::dlclose(void* const handle) const n
 {
     if (::dlclose(handle) != 0)
     {
+        // LCOV_EXCL_START (no safe way to make ::dlclose fail without undefined behavior)
         static_cast<void>(CacheDlError());
         return score::cpp::make_unexpected(Error::createUnspecifiedError());
+        // LCOV_EXCL_STOP
     }
     has_dl_error_ = false;
     return {};
