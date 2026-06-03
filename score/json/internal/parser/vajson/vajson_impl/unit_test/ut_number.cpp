@@ -385,7 +385,7 @@ TEST_F(UT__Number, OnesAndZerosCanBeParsedToBool)
 
 /*!
  * \brief           Tests that errno is unset before the next conversion
- * \trace           amsr::json::JsonNumber::New
+ * \trace           score::json::vajson::JsonNumber::New
  */
 TEST_F(UT__Number, ErrnoIsUnsetBeforeConversion)
 {
@@ -428,7 +428,7 @@ TEST_F(UT__Number, ErrnoIsUnsetBeforeConversion)
 
 /*!
  * \brief           Tests if numbers can be manually parsed by the user
- * \trace           amsr::json::JsonNumber::New
+ * \trace           score::json::vajson::JsonNumber::New
  */
 TEST_F(UT__Number, StringsCanBeCustomParsed)
 {
@@ -445,7 +445,7 @@ TEST_F(UT__Number, StringsCanBeCustomParsed)
 
 /*!
  * \brief           Tests if numbers can be requested as JsonNumber
- * \trace           amsr::json::JsonNumber
+ * \trace           score::json::vajson::JsonNumber
  */
 TEST_F(UT__Number, AsJsonNumber)
 {
@@ -464,7 +464,7 @@ TEST_F(UT__Number, AsJsonNumber)
  * - Assert that a single minus sign is detected as invalid.
  * - Assert that an empty view is detected as invalid.
  * - Assert that a number to a negative char is detected as invalid.
- * \trace           amsr::json::JsonNumber::New
+ * \trace           score::json::vajson::JsonNumber::New
  */
 TEST_F(UT__Number, InvalidNumber)
 {
@@ -523,7 +523,7 @@ class UT__Number__I8Failure : public NumberTest<std::int8_t>
 
 /*!
  * \brief           Test that checks that conversions succeed if valid values are passed
- * \trace           amsr::json::JsonNumber::TryAs
+ * \trace           score::json::vajson::JsonNumber::TryAs
  */
 TEST_P(UT__Number__I8Success, ConvertsValidIntegers8bit)
 {
@@ -552,7 +552,7 @@ INSTANTIATE_TEST_SUITE_P(SignedIntTest8bit,
 
 /*!
  * \brief           Test that checks that conversions fail if invalid values are passed
- * \trace           amsr::json::JsonNumber::TryAs
+ * \trace           score::json::vajson::JsonNumber::TryAs
  */
 TEST_P(UT__Number__I8Failure, FailsOnInvalidIntegers8bit)
 {
@@ -600,7 +600,7 @@ class UT__Number__U8Failure : public NumberTest<std::uint8_t>
 
 /*!
  * \brief           Test that checks that conversions succeed if valid values are passed
- * \trace           amsr::json::JsonNumber::TryAs
+ * \trace           score::json::vajson::JsonNumber::TryAs
  */
 TEST_P(UT__Number__U8Success, ConvertsValidIntegers8bit)
 {
@@ -676,7 +676,7 @@ class UT__Number__DoubleFailure : public NumberTest<double>
 
 /*!
  * \brief           Test that checks that conversions succeed if valid values are passed
- * \trace           amsr::json::JsonNumber::TryAs
+ * \trace           score::json::vajson::JsonNumber::TryAs
  */
 TEST_P(UT__Number__DoubleSuccess, ConvertsValidDoubles)
 {
@@ -707,7 +707,7 @@ INSTANTIATE_TEST_SUITE_P(FloatTestDouble,
 
 /*!
  * \brief           Test that checks that conversions fail if invalid values are passed
- * \trace           amsr::json::JsonNumber::TryAs
+ * \trace           score::json::vajson::JsonNumber::TryAs
  */
 TEST_P(UT__Number__DoubleFailure, FailsOnInvalidDoubles)
 {

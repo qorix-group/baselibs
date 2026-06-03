@@ -30,7 +30,7 @@ namespace unit_test
 {
 /*!
  * \brief           Test that DepthCounter can be move assigned
- * \trace           score::json::vajson::DepthCounter::DepthCounter
+ * \trace           score::json::vajson::internal::DepthCounter::DepthCounter
  */
 TEST(UT__DepthCounter, MoveAssignment)
 {
@@ -57,7 +57,7 @@ TEST(UT__DepthCounter, MoveAssignment)
  * - Move construct another DepthCounter from the first one.
  * - Assert that the array can be popped.
  *
- * \trace           score::json::internal::DepthCounter::DepthCounter
+ * \trace           score::json::vajson::internal::DepthCounter::DepthCounter
  */
 TEST(UT__DepthCounter, MoveConstruction)
 {

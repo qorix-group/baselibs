@@ -33,12 +33,11 @@ cc_test(
 )
 
 cc_unit_test_suites_for_host_and_qnx(
-    name = "unit_test_suite",
+    name = "vajson_unit_test_suite",
     cc_unit_tests = [
-        ":vajson_parser_test",
-        ":number_parser_test",
+        ":vajson_unit_tests",
     ],
     visibility = [
-        "@score_baselibs//score/json/internal/parser:__pkg__",
+        "@score_baselibs//score/json/internal/parser/vajson/vajson_impl:__pkg__",
     ],
 )
