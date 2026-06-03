@@ -14,13 +14,13 @@
  *        \brief  Unit tests for Number
  *
  *********************************************************************************************************************/
+#include <gtest/gtest.h>
 #include <cstdlib>
 #include <limits>
 #include <string>
 #include <type_traits>
 #include <utility>
 
-#include "gtest/gtest.h"
 #include "score/json/internal/parser/vajson/vajson_impl/util/number.h"
 #include "score/json/internal/parser/vajson/vajson_impl/util/types.h"
 #include "score/language/futurecpp/include/score/optional.hpp"
@@ -258,7 +258,7 @@ template <typename T>
  * \brief           Fixture for all parameterized number tests
  */
 template <typename Num, typename = typename std::enable_if_t<std::is_arithmetic<Num>::value>>
-class NumberTest : public TestWithParam<TestValue<Num>>
+class NumberTest : public testing::TestWithParam<TestValue<Num>>
 {
   protected:
     /*!
