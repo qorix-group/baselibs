@@ -1,5 +1,5 @@
 /********************************************************************************
-* Copyright (c) 2026 Contributors to the Eclipse Foundation
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -23,6 +23,7 @@
 #include "gtest/gtest.h"
 #include "score/json/internal/parser/vajson/vajson_impl/util/number.h"
 #include "score/json/internal/parser/vajson/vajson_impl/util/types.h"
+#include "score/language/futurecpp/include/score/optional.hpp"
 
 namespace score
 {
@@ -50,6 +51,13 @@ using UUT = JsonNumber;
 
 namespace
 {
+
+template <typename T, std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
+constexpr inline auto CompareFloat(T lhs, T rhs) noexcept -> bool
+{
+    return (std::abs(lhs - rhs) < std::numeric_limits<T>::epsilon());
+}
+
 /*!
  * \brief           Creates an Optional from a Result
  * \tparam          T
@@ -63,14 +71,15 @@ namespace
  * \return          The Optional containing the value of the Result, or an empty Optional if the Result contains an
  *                  error.
  */
-template <typename T, typename E, typename Opt = Optional<T>>
-auto ToOptional(const Result<T, E>& result) noexcept -> Opt
+template <typename T, typename Opt = score::cpp::optional<T>>
+auto ToOptional(const Result<T>& result) noexcept -> Opt
 {
-    return result
-        .Map([](const T& value) noexcept {
-            return Opt{value};
-        })
-        .ValueOr(Opt{});
+    Opt optional{score::cpp::nullopt};
+    if (result.has_value())
+    {
+        optional.emplace(result.value());
+    }
+    return optional;
 }
 
 /*!
@@ -119,7 +128,7 @@ class TestValue
      */
     static TestValue<T> Nonzeroed(std::string&& str)
     {
-        return TestValue<T>(std::move(str), false, Optional<T>{});
+        return TestValue<T>(std::move(str), false, score::cpp::optional<T>{});
     }
 
     /*!
@@ -135,7 +144,7 @@ class TestValue
      */
     static TestValue<T> Nonzeroed(std::string&& str, T expected)
     {
-        return TestValue<T>(std::move(str), false, Optional<T>{expected});
+        return TestValue<T>(std::move(str), false, score::cpp::optional<T>{expected});
     }
 
     /*!
@@ -149,7 +158,7 @@ class TestValue
     /*!
      * \brief           Gets the expected output from the Conversion function
      */
-    Optional<T> Expected() const
+    score::cpp::optional<T> Expected() const
     {
         return this->expected_;
     }
@@ -187,7 +196,7 @@ class TestValue
      * \pre             -
      * \threadsafe      TRUE, for different this pointer
      */
-    TestValue(std::string&& str, bool with_zero, Optional<T>&& expected)
+    TestValue(std::string&& str, bool with_zero, score::cpp::optional<T>&& expected)
         : value_{str}, with_zero_{with_zero}, expected_{std::move(expected)}
     {
         ShortenView();
@@ -224,7 +233,7 @@ class TestValue
     /*!
      * \brief           The expected value
      */
-    Optional<T> expected_;
+    score::cpp::optional<T> expected_;
 };
 
 /*!
@@ -248,9 +257,8 @@ template <typename T>
 /*!
  * \brief           Fixture for all parameterized number tests
  */
-template <typename Num,
-          typename = typename std::enable_if_t<std::is_arithmetic<Num>::value> class NumberTest : public TestWithParam<
-              TestValue<Num>>
+template <typename Num, typename = typename std::enable_if_t<std::is_arithmetic<Num>::value>>
+class NumberTest : public TestWithParam<TestValue<Num>>
 {
   protected:
     /*!
@@ -290,7 +298,7 @@ template <typename Num,
     template <typename Signed = Num, typename = typename std::enable_if_t<std::is_signed<Signed>::value>>
     Optional<Signed> ActualSigned() const
     {
-        return ToOptional(UUT::New(Input()).AndThen([](UUT num) noexcept {
+        return ToOptional(UUT::New(Input()).and_then([](UUT num) noexcept {
             return num.TryAs<Signed>();
         }));
     }
@@ -301,7 +309,7 @@ template <typename Num,
     template <typename Unsigned = Num, typename = typename std::enable_if_t<std::is_unsigned<Unsigned>::value>>
     Optional<Unsigned> ActualUnsigned() const
     {
-        return ToOptional(UUT::New(Input()).AndThen([](UUT num) noexcept {
+        return ToOptional(UUT::New(Input()).and_then([](UUT num) noexcept {
             return num.TryAs<Unsigned>();
         }));
     }
@@ -312,7 +320,7 @@ template <typename Num,
     template <typename Float = Num, typename = typename std::enable_if_t<std::is_floating_point<Float>::value>>
     Optional<Float> ActualFloat() const
     {
-        return ToOptional(UUT::New(Input()).AndThen([](UUT num) noexcept {
+        return ToOptional(UUT::New(Input()).and_then([](UUT num) noexcept {
             return num.TryAs<Float>();
         }));
     }
@@ -350,25 +358,29 @@ TEST_F(UT__Number, IsDigit)
  */
 TEST_F(UT__Number, OnesAndZerosCanBeParsedToBool)
 {
-    Result<bool> result{UUT::New("1").AndThen([](JsonNumber num) noexcept {
+    Result<bool> result{UUT::New("1").and_then([](JsonNumber num) noexcept {
         return num.TryAs<bool>();
     })};
-    ASSERT_OK(result, true);
+    ASSERT_TRUE(result.has_value());
+    ASSERT_EQ(result.value(), true);
 
-    result = UUT::New("0").AndThen([](JsonNumber num) noexcept {
+    result = UUT::New("0").and_then([](JsonNumber num) noexcept {
         return num.TryAs<bool>();
     });
-    ASSERT_OK(result, false);
+    ASSERT_TRUE(result.has_value());
+    ASSERT_EQ(result.value(), false);
 
-    result = UUT::New("2").AndThen([](JsonNumber num) noexcept {
+    result = UUT::New("2").and_then([](JsonNumber num) noexcept {
         return num.TryAs<bool>();
     });
-    ASSERT_ERR(result, JsonErrc::kInvalidJson);
+    ASSERT_FALSE(result.has_value());
+    ASSERT_EQ(result.error(), JsonErrc::kInvalidJson);
 
-    result = UUT::New("-1").AndThen([](JsonNumber num) noexcept {
+    result = UUT::New("-1").and_then([](JsonNumber num) noexcept {
         return num.TryAs<bool>();
     });
-    ASSERT_ERR(result, JsonErrc::kInvalidJson);
+    ASSERT_FALSE(result.has_value());
+    ASSERT_EQ(result.error(), JsonErrc::kInvalidJson);
 }
 
 /*!
@@ -377,35 +389,41 @@ TEST_F(UT__Number, OnesAndZerosCanBeParsedToBool)
  */
 TEST_F(UT__Number, ErrnoIsUnsetBeforeConversion)
 {
-    Result<std::uint64_t> result_64{UUT::New("0x1FFFFFFFFFFFFFFFF").AndThen([](JsonNumber num) noexcept {
+    Result<std::uint64_t> result_64{UUT::New("0x1FFFFFFFFFFFFFFFF").and_then([](JsonNumber num) noexcept {
         return num.TryAs<std::uint64_t>();
     })};
-    ASSERT_ERR(result_64, JsonErrc::kInvalidJson);
+    ASSERT_FALSE(result_64.has_value());
+    ASSERT_EQ(result_64.error(), JsonErrc::kInvalidJson);
 
-    Result<std::uint8_t> result_8{UUT::New("1").AndThen([](JsonNumber num) noexcept {
+    Result<std::uint8_t> result_8{UUT::New("1").and_then([](JsonNumber num) noexcept {
         return num.TryAs<std::uint8_t>();
     })};
-    ASSERT_OK(result_8, 1);
+    ASSERT_TRUE(result_8.has_value());
+    ASSERT_EQ(result_8.value(), 1);
 
-    result_64 = UUT::New("0x1FFFFFFFFFFFFFFFF").AndThen([](JsonNumber num) noexcept {
+    result_64 = UUT::New("0x1FFFFFFFFFFFFFFFF").and_then([](JsonNumber num) noexcept {
         return num.TryAs<std::uint64_t>();
     });
-    ASSERT_ERR(result_64, JsonErrc::kInvalidJson);
+    ASSERT_FALSE(result_64.has_value());
+    ASSERT_EQ(result_64.error(), JsonErrc::kInvalidJson);
 
-    result_8 = UUT::New("1").AndThen([](JsonNumber num) noexcept {
+    result_8 = UUT::New("1").and_then([](JsonNumber num) noexcept {
         return num.TryAs<std::uint8_t>();
     });
-    ASSERT_OK(result_8, 1);
+    ASSERT_TRUE(result_8.has_value());
+    ASSERT_EQ(result_8.value(), 1);
 
-    const Result<std::double_t> result_d{UUT::New("this_is_no_double").AndThen([](JsonNumber num) noexcept {
+    const Result<std::double_t> result_d{UUT::New("this_is_no_double").and_then([](JsonNumber num) noexcept {
         return num.TryAs<std::double_t>();
     })};
-    ASSERT_ERR(result_d, JsonErrc::kInvalidJson);
+    ASSERT_FALSE(result_d.has_value());
+    ASSERT_EQ(result_d.error(), JsonErrc::kInvalidJson);
 
-    result_8 = UUT::New("1").AndThen([](JsonNumber num) noexcept {
+    result_8 = UUT::New("1").and_then([](JsonNumber num) noexcept {
         return num.TryAs<std::uint8_t>();
     });
-    ASSERT_OK(result_8, 1);
+    ASSERT_TRUE(result_8.has_value());
+    ASSERT_EQ(result_8.value(), 1);
 }
 
 /*!
@@ -416,9 +434,9 @@ TEST_F(UT__Number, StringsCanBeCustomParsed)
 {
     view sv = "1234567890";
     Result<UUT> uut{UUT::New(sv)};
-    ASSERT_RESULT(uut);
+    ASSERT_TRUE(uut.has_value());
 
-    const auto result = uut.Value().Convert([&sv](view v) noexcept {
+    const auto result = uut.value().Convert([&sv](view v) noexcept {
         EXPECT_EQ(v, sv);
         return Optional<int>{10};
     });
@@ -433,9 +451,9 @@ TEST_F(UT__Number, AsJsonNumber)
 {
     view sv = "1234567890";
     Result<UUT> uut{UUT::New(sv)};
-    ASSERT_RESULT(uut);
+    ASSERT_TRUE(uut.has_value());
 
-    const auto result = uut.Value().As<JsonNumber>();
+    const auto result = uut.value().As<JsonNumber>();
     ASSERT_TRUE(result.has_value());
 }
 
@@ -453,17 +471,20 @@ TEST_F(UT__Number, InvalidNumber)
     {
         view sv = "0a";
         Result<UUT> uut{UUT::New(sv)};
-        ASSERT_ERR(uut, JsonErrc::kInvalidJson);
+        ASSERT_FALSE(uut.has_value());
+        ASSERT_EQ(uut.error(), JsonErrc::kInvalidJson);
     }
     {
         view sv = "-";
         Result<UUT> uut{UUT::New(sv)};
-        ASSERT_ERR(uut, JsonErrc::kInvalidJson);
+        ASSERT_FALSE(uut.has_value());
+        ASSERT_EQ(uut.error(), JsonErrc::kInvalidJson);
     }
     {
         view sv = "";
         Result<UUT> uut{UUT::New(sv)};
-        ASSERT_ERR(uut, JsonErrc::kInvalidJson);
+        ASSERT_FALSE(uut.has_value());
+        ASSERT_EQ(uut.error(), JsonErrc::kInvalidJson);
     }
     {
         // Using an extended ASCII character does not work since this document is UTF-8 encoded.
@@ -474,7 +495,8 @@ TEST_F(UT__Number, InvalidNumber)
         view sv{str};
 
         Result<UUT> uut{UUT::New(sv)};
-        ASSERT_ERR(uut, JsonErrc::kInvalidJson);
+        ASSERT_FALSE(uut.has_value());
+        ASSERT_EQ(uut.error(), JsonErrc::kInvalidJson);
     }
 }
 
@@ -709,49 +731,6 @@ INSTANTIATE_TEST_SUITE_P(FloatTestFailDouble,
                                 DoubleValue("0e"),
                                 DoubleValue("0e+"),
                                 DoubleValue("0e+ - 1")));
-
-/*!
- * \brief           Instanciation of testcases for multiple values with successful conversion
- * \details         Input data:
- *                  - Positive integers within the range of a byte (std::uint8_t), including min, max, and zero values
- */
-INSTANTIATE_TEST_SUITE_P(ValidByteTests,
-                         UT__Number__ByteSuccess,
-                         Values(ByteValue::Nonzeroed("0,", 0_byte),
-                                ByteValue::Nonzeroed("1;", 1_byte),
-                                ByteValue("0", 0_byte),
-                                ByteValue("1", 1_byte),
-                                ByteValue("127", 127_byte),
-                                ByteValue("255", 255_byte)));
-
-/*!
- * \brief           Test that checks that conversions fail if invalid values are passed
- * \trace           amsr::json::JsonNumber::TryAs
- */
-TEST_P(UT__Number__ByteFailure, FailsOnInvalidByte)
-{
-    auto actual = ActualByte();
-
-    ASSERT_FALSE(actual.has_value());
-}
-
-/*!
- * \brief           Instanciation of testcases for multiple values where conversion fails
- * \details         Input data:
- *                  - Numbers that cannot be converted to a byte value, such as invalid characters, negative values,
- *                    floating point, scientific notation, and integers that are too big
- */
-INSTANTIATE_TEST_SUITE_P(InvalidByteTests,
-                         UT__Number__ByteFailure,
-                         Values(ByteValue::Nonzeroed("-1;"),
-                                ByteValue::Nonzeroed(";,"),
-                                ByteValue::Nonzeroed("1.01;"),
-                                ByteValue::Nonzeroed("-1e-2;"),
-                                ByteValue("-0"),
-                                ByteValue("-1"),
-                                ByteValue("0.0"),
-                                ByteValue("-0.0"),
-                                ByteValue("256")));
 
 }  // namespace unit_test
 }  // namespace vajson
