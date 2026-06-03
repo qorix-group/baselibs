@@ -14,28 +14,12 @@ load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
 load("@score_baselibs//:bazel/unit_tests.bzl", "cc_unit_test_suites_for_host_and_qnx")
 load("@score_baselibs//score/language/safecpp:toolchain_features.bzl", "COMPILER_WARNING_FEATURES")
 
-cc_library(
-    name = "vajson_parser",
-    srcs = ["vajson_parser.cpp"],
-    hdrs = ["vajson_parser.h"],
-    features = COMPILER_WARNING_FEATURES,
-    tags = ["FFI"],
-    target_compatible_with = select({
-        "@score_baselibs//score/json:base_library_nlohmann": ["@platforms//:incompatible"],
-        "@score_baselibs//score/json:base_library_vajson": [],
-    }),
-    visibility = ["@score_baselibs//score/json:__subpackages__"],
-    deps = [
-        "@score_baselibs//score/json:parser_interface",
-        "@score_baselibs//score/json/internal/model",
-        "@score_baselibs//score/json/internal/parser/vajson/vajson_impl",
-        "@score_baselibs//score/result",
-    ],
-)
-
 cc_test(
     name = "vajson_unit_tests",
-    srcs = ["ut_depth_counter.cpp"],
+    srcs = [
+        "ut_depth_counter.cpp",
+        "ut_number.cpp",
+    ],
     features = COMPILER_WARNING_FEATURES + ["aborts_upon_exception"],
     local_defines = ["VAJSON"],
     tags = ["unit"],
