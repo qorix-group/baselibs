@@ -71,6 +71,7 @@ cc_test(
 cc_test(
     name = "vajson_impl_unit_tests",
     srcs = [
+        "unit_test/ct_vajson_v2_parsers.cpp",
         "unit_test/parser/ut_array.cpp",
         "unit_test/parser/ut_binary.cpp",
         "unit_test/parser/ut_bool.cpp",
