@@ -68,11 +68,44 @@ cc_test(
     ],
 )
 
+cc_test(
+    name = "vajson_impl_unit_tests",
+    srcs = [
+        "unit_test/parser/ut_array.cpp",
+        "unit_test/parser/ut_binary.cpp",
+        "unit_test/parser/ut_bool.cpp",
+        "unit_test/parser/ut_invalid.cpp",
+        "unit_test/parser/ut_key.cpp",
+        "unit_test/parser/ut_level_validator.cpp",
+        "unit_test/parser/ut_null.cpp",
+        "unit_test/parser/ut_number.cpp",
+        "unit_test/parser/ut_object.cpp",
+        "unit_test/parser/ut_parser.cpp",
+        "unit_test/parser/ut_single_array_parser.cpp",
+        "unit_test/parser/ut_single_object_parser.cpp",
+        "unit_test/parser/ut_string.cpp",
+        "unit_test/parser/ut_valid.cpp",
+        "unit_test/ut_depth_counter.cpp",
+        "unit_test/ut_number.cpp",
+    ],
+    features = COMPILER_WARNING_FEATURES + ["aborts_upon_exception"],
+    local_defines = ["VAJSON"],
+    tags = ["unit"],
+    visibility = [
+        "@score_baselibs//score/json:__subpackages__",
+    ],
+    deps = [
+        ":vajson_parser",
+        "@googletest//:gtest_main",
+    ],
+)
+
 cc_unit_test_suites_for_host_and_qnx(
     name = "unit_test_suite",
     cc_unit_tests = [
         ":vajson_parser_test",
         ":number_parser_test",
+        ":vajson_impl_unit_tests",
     ],
     visibility = [
         "@score_baselibs//score/json/internal/parser:__pkg__",
