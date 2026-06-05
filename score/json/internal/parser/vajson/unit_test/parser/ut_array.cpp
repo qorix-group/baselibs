@@ -157,7 +157,7 @@ TEST(UT__Parser__Array, Dynamic__NoArrays)
 
 /*!
  * Tests that when the overridden OnEndArray method returns an error, that error is propagated.
- * \trace           amsr::json::internal::StructureParserBase::ParseEndArray
+ * \trace           score::json::vajson::internal::StructureParserBase::ParseEndArray
  */
 TEST(UT__Parser__Array__Error, Dynamic__OnEndArray)
 {
@@ -173,7 +173,7 @@ TEST(UT__Parser__Array__Error, Dynamic__OnEndArray)
 
 /*!
  * Tests that when the overridden OnStartArray method returns an error, that error is propagated.
- * \trace           amsr::json::internal::StructureParserBase::ParseStartArray
+ * \trace           score::json::vajson::internal::StructureParserBase::ParseStartArray
  */
 TEST(UT__Parser__Array__Error, Dynamic__OnStartArray)
 {

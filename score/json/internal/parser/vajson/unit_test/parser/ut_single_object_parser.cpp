@@ -44,7 +44,7 @@ class DynamicSingleObjectParser : public v2::SingleObjectParser
 
 /*!
  * Tests the dynamic interface version of the SingleObjectParser with an empty (comma-filled) object.
- * \trace           amsr::json::v1::SingleObjectParser
+ * \trace           score::json::vajson::v1::SingleObjectParser
  */
 TEST(UT__Parser__SingleObjectParser, Dynamic__EmptyObject)
 {
@@ -57,7 +57,7 @@ TEST(UT__Parser__SingleObjectParser, Dynamic__EmptyObject)
 
 /*!
  * Test that the dynamic interface version of the SingleObjectParser fails if an element is not parsed.
- * \trace           amsr::json::v1::SingleObjectParser
+ * \trace           score::json::vajson::v1::SingleObjectParser
  */
 TEST(UT__Parser__SingleObjectParser, Dynamic__Unexpected)
 {

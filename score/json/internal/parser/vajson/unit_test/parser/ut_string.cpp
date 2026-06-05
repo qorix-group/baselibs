@@ -84,7 +84,7 @@ TEST(UT__Parser__String, Dynamic__StringArray)
 
 /*!
  * Tests that when the overridden OnString method returns an error, that error is propagated.
- * \trace           amsr::json::internal::StructureParserBase::ParseUnescapedString
+ * \trace           score::json::vajson::internal::StructureParserBase::ParseUnescapedString
  */
 TEST(UT__Parser__String, Dynamic__ParseUnescapedString__Error)
 {

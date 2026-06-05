@@ -88,7 +88,7 @@ class UT__Parser__SingleArrayParser__Dynamic : public ::testing::TestWithParam<I
 
 /*!
  * Tests the dynamic interface version of the SingleArrayParser.
- * \trace           amsr::json::v2::SingleArrayParser::GetIndex
+ * \trace           score::json::vajson::v2::SingleArrayParser::GetIndex
  */
 TEST_P(UT__Parser__SingleArrayParser__Dynamic, Success)
 {

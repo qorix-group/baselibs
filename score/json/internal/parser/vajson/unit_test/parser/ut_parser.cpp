@@ -91,7 +91,7 @@ class EmptyParser final : public internal::VirtualParser
 
 /*!
  * Test that GetJsonDocument with const qualifier returns the current JsonData object.
- * \trace           amsr::json::internal::StrictParser::GetJsonDocument
+ * \trace           score::json::vajson::internal::StrictParser::GetJsonDocument
  */
 TEST(UT__Parser, Static__GetJsonDocumentConst)
 {
@@ -105,7 +105,7 @@ TEST(UT__Parser, Static__GetJsonDocumentConst)
 
 /*!
  * Test that GetJsonDocument with const qualifier returns the current JsonData object of the VirtualParser.
- * \trace           amsr::json::internal::StrictParser::GetJsonDocument
+ * \trace           score::json::vajson::internal::StrictParser::GetJsonDocument
  */
 TEST(UT__Parser, Dynamic__GetJsonDocumentConst)
 {
@@ -119,7 +119,7 @@ TEST(UT__Parser, Dynamic__GetJsonDocumentConst)
 
 /*!
  * Test that GetCurrentKey with const qualifier returns the last parsed key.
- * \trace           amsr::json::internal::StrictParser::GetCurrentKey
+ * \trace           score::json::vajson::internal::StrictParser::GetCurrentKey
  */
 TEST(UT__Parser, Static__GetCurrentKeyConst)
 {
@@ -135,7 +135,7 @@ TEST(UT__Parser, Static__GetCurrentKeyConst)
 
 /*!
  * Test that GetCurrentKey with const qualifier returns the last parsed key of the VirtualParser.
- * \trace           amsr::json::internal::StrictParser::GetCurrentKey
+ * \trace           score::json::vajson::internal::StrictParser::GetCurrentKey
  */
 TEST(UT__Parser, Dynamic__GetCurrentKeyConst)
 {
@@ -151,7 +151,7 @@ TEST(UT__Parser, Dynamic__GetCurrentKeyConst)
 
 /*!
  * Test that SubParse succeeds.
- * \trace           amsr::json::internal::StrictParser::SubParse
+ * \trace           score::json::vajson::internal::StrictParser::SubParse
  */
 TEST(UT__Parser, Static__SubParse)
 {
@@ -167,7 +167,7 @@ TEST(UT__Parser, Static__SubParse)
 
 /*!
  * Test that a parser that does not overwrite any methods uses the default methods which return an error.
- * \trace           amsr::json::internal::StrictParser
+ * \trace           score::json::vajson::internal::StrictParser
  */
 TEST(UT__Parser, Static__Empty)
 {

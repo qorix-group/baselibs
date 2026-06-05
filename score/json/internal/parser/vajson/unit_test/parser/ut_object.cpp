@@ -145,7 +145,7 @@ TEST(UT__Parser__Object, Dynamic__NoObjects)
 
 /*!
  * Tests that when the overridden OnEndObject method returns an error, that error is propagated.
- * \trace           amsr::json::internal::StructureParserBase::ParseEndObject
+ * \trace           score::json::vajson::internal::StructureParserBase::ParseEndObject
  */
 TEST(UT__Parser__Object__Error, Dynamic__OnEndObject)
 {
@@ -161,7 +161,7 @@ TEST(UT__Parser__Object__Error, Dynamic__OnEndObject)
 
 /*!
  * Tests that when the overridden OnStartObject method returns an error, that error is propagated.
- * \trace           amsr::json::internal::StructureParserBase::ParseStartObject
+ * \trace           score::json::vajson::internal::StructureParserBase::ParseStartObject
  */
 TEST(UT__Parser__Object__Error, Dynamic__OnStartObject)
 {

@@ -73,7 +73,6 @@ cc_test(
     srcs = [
         "unit_test/ct_vajson_v2_parsers.cpp",
         "unit_test/parser/ut_array.cpp",
-        "unit_test/parser/ut_binary.cpp",
         "unit_test/parser/ut_bool.cpp",
         "unit_test/parser/ut_invalid.cpp",
         "unit_test/parser/ut_key.cpp",

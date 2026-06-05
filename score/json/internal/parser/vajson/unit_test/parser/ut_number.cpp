@@ -84,7 +84,7 @@ TEST(UT__Parser__Number, Dynamic__FloatArray)
 /*!
  * Tests that when OnNumber is called with a number not convertible to the NumberParser's number type,
  * that error is propagated to the Parse() call.
- * \trace           amsr::json::internal::NumberParser::OnNumber
+ * \trace           score::json::vajson::internal::NumberParser::OnNumber
  */
 TEST(UT__Parser__Number, TryAs__Error)
 {

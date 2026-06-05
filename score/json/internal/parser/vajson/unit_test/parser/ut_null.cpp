@@ -109,7 +109,7 @@ TEST(UT__Parser__Null, Dynamic__NoNulls)
 
 /*!
  * Test that parsing fails if 'null' is used as key without quotation marks.
- * \trace           amsr::json::internal::StructureParserBase::ParseValue
+ * \trace           score::json::vajson::internal::StructureParserBase::ParseValue
  */
 TEST(UT__Parser__Null, Dynamic__WrongFormat)
 {
@@ -125,7 +125,7 @@ TEST(UT__Parser__Null, Dynamic__WrongFormat)
 
 /*!
  * Tests that when the overridden OnNull method returns an error, that error is propagated.
- * \trace           amsr::json::internal::StructureParserBase::ParseNull
+ * \trace           score::json::vajson::internal::StructureParserBase::ParseNull
  */
 TEST(UT__Parser__Null, Dynamic__OnNull__Error)
 {

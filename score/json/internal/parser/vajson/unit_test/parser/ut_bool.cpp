@@ -126,7 +126,7 @@ TEST(UT__Parser__Bool, Dynamic__Bools)
 
 /*!
  * Test that parsing fails if 'true' is not expected.
- * \trace           ::amsr::json::internal::StructureParserBase::ParseValue
+ * \trace           ::score::json::vajson::internal::StructureParserBase::ParseValue
  */
 TEST(UT__Parser__Bool, Dynamic__ParseTrue_WrongFormat)
 {
@@ -142,7 +142,7 @@ TEST(UT__Parser__Bool, Dynamic__ParseTrue_WrongFormat)
 
 /*!
  * Test that parsing fails if 'false' is not expected.
- * \trace           ::amsr::json::internal::StructureParserBase::ParseValue
+ * \trace           ::score::json::vajson::internal::StructureParserBase::ParseValue
  */
 TEST(UT__Parser__Bool, Dynamic__ParseFalse__WrongFormat)
 {
@@ -158,7 +158,7 @@ TEST(UT__Parser__Bool, Dynamic__ParseFalse__WrongFormat)
 
 /*!
  * Tests that when the overridden OnBool method returns an error, that error is propagated.
- * \trace           amsr::json::internal::StructureParserBase::ParseFalse
+ * \trace           score::json::vajson::internal::StructureParserBase::ParseFalse
  */
 TEST(UT__Parser__Bool, Dynamic__ParseFalse__Error)
 {
@@ -174,7 +174,7 @@ TEST(UT__Parser__Bool, Dynamic__ParseFalse__Error)
 
 /*!
  * Tests that when the overridden OnBool method returns an error, that error is propagated.
- * \trace           amsr::json::internal::StructureParserBase::ParseTrue
+ * \trace           score::json::vajson::internal::StructureParserBase::ParseTrue
  */
 TEST(UT__Parser__Bool, Dynamic__ParseTrue__Error)
 {
