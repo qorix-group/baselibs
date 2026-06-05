@@ -14,8 +14,8 @@
 load("@score_bazel_tools_cc//quality:defs.bzl", "clang_format_config", "quality_clang_tidy_config")
 load("@score_docs_as_code//:docs.bzl", "docs")
 load("@score_tooling//:defs.bzl", "copyright_checker", "dash_license_checker", "rust_coverage_report", "setup_starpls", "use_format_targets")
-load(":qemu.bzl", "qemu_aarch64")
 load("//:project_config.bzl", "PROJECT_CONFIG")
+load(":qemu.bzl", "qemu_aarch64")
 
 setup_starpls(
     name = "starpls_server",

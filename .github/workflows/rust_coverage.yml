@@ -15,7 +15,6 @@ on:
   pull_request:
     types: [opened, reopened, synchronize]
   workflow_dispatch:
-
 jobs:
   rust_coverage:
     uses: eclipse-score/cicd-workflows/.github/workflows/rust-coverage.yml@main

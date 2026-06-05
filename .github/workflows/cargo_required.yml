@@ -10,20 +10,16 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-
 name: cargo build, test, coverage and miri report
-
 on:
   push:
     branches: [main, development]
   pull_request:
     branches: [main, development]
     types: [opened, ready_for_review, reopened, synchronize]
-
 env:
   CARGO_TERM_COLOR: always
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 jobs:
   cargo-checks:
     #permissions for docs deployment
@@ -36,26 +32,21 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
       - name: Setup Rust Build Environment
         uses: ./.github/actions/setup-rust-build
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-
       # ---------- BUILD ----------
       - name: Cargo build
         run: cargo build --verbose
-
       # ---------- TARPAULIN(TEST + COVERAGE) ----------
       - name: Run tests under coverage
         run: cargo +nightly tarpaulin --version 0.32.7 --skip-clean --out Html --verbose --no-dead-code --engine llvm --all-features
-
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: tarpaulin-report.html
-
       # ---------- MIRI ----------
       - name: Install nightly + miri (minimal profile)
         uses: actions-rs/toolchain@v1
@@ -65,21 +56,17 @@ jobs:
           profile: minimal
           components: miri
           override: true
-
       - name: Prefetch crates for nightly
         if: github.event.pull_request.draft == false
         run: cargo +nightly-2025-12-15 fetch --locked
-
       - name: Purge Miri artifacts
         if: github.event.pull_request.draft == false
         run: |
           rm -rf target/miri
           rm -rf ~/.cache/miri
-
       - name: Prefetch and build dependencies for Miri
         if: github.event.pull_request.draft == false
         run: cargo +nightly-2025-12-15 miri setup
-
       - name: Run Miri and save report
         if: github.event.pull_request.draft == false
         env:
