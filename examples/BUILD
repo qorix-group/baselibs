@@ -11,17 +11,11 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-name: Formatting checks
-
-on:
-  pull_request:
-    types: [opened, reopened, synchronize]
-  merge_group:
-    types: [checks_requested]
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-jobs:
-  formatting-check:
-    uses: eclipse-score/cicd-workflows/.github/workflows/format.yml@main
-    with:
-      bazel-target: "test --lockfile_mode=error //:format.check" # optional, this is the default
+# Needed for Dash tool to check python dependency licenses.
+filegroup(
+    name = "cargo_lock",
+    srcs = [
+        "Cargo.lock",
+    ],
+    visibility = ["//visibility:public"],
+)

@@ -11,17 +11,26 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-name: Formatting checks
+load("@bazel_skylib//rules:common_settings.bzl", "string_flag")
 
-on:
-  pull_request:
-    types: [opened, reopened, synchronize]
-  merge_group:
-    types: [checks_requested]
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-jobs:
-  formatting-check:
-    uses: eclipse-score/cicd-workflows/.github/workflows/format.yml@main
-    with:
-      bazel-target: "test --lockfile_mode=error //:format.check" # optional, this is the default
+string_flag(
+    name = "safety_level",
+    build_setting_default = "asil_b",
+    values = [
+        "asil_b",
+        "qm",
+    ],
+    visibility = [":__subpackages__"],
+)
+
+config_setting(
+    name = "safety_level_qm",
+    flag_values = {":safety_level": "qm"},
+    visibility = [":__subpackages__"],
+)
+
+config_setting(
+    name = "safety_level_asil_b",
+    flag_values = {":safety_level": "asil_b"},
+    visibility = [":__subpackages__"],
+)

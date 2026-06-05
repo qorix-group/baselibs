@@ -11,17 +11,27 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-name: Formatting checks
+load("@rules_cc//cc:defs.bzl", "cc_binary")
+load("@rules_rust//rust:defs.bzl", "rust_static_library")
 
-on:
-  pull_request:
-    types: [opened, reopened, synchronize]
-  merge_group:
-    types: [checks_requested]
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-jobs:
-  formatting-check:
-    uses: eclipse-score/cicd-workflows/.github/workflows/format.yml@main
-    with:
-      bazel-target: "test --lockfile_mode=error //:format.check" # optional, this is the default
+rust_static_library(
+    name = "example_lib",
+    srcs = ["src/example_lib.rs"],
+    edition = "2021",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//src/log/score_log",
+        "//src/log/stdout_logger",
+    ],
+)
+
+cc_binary(
+    name = "log_cpp_init",
+    srcs = ["src/main.cpp"],
+    linkopts = ["-lpthread"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":example_lib",
+        "//src/log/stdout_logger_cpp_init",
+    ],
+)

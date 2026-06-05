@@ -11,17 +11,21 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-name: Formatting checks
+name: Bazel Clippy
 
 on:
   pull_request:
     types: [opened, reopened, synchronize]
+  push:
+    branches:
+      - main
   merge_group:
     types: [checks_requested]
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
-  formatting-check:
-    uses: eclipse-score/cicd-workflows/.github/workflows/format.yml@main
+  lint-clippy:
+    uses: eclipse-score/cicd-workflows/.github/workflows/static-analysis.yml@main
     with:
-      bazel-target: "test --lockfile_mode=error //:format.check" # optional, this is the default
+      bazel-targets: "//src/..."
+      bazel-config: "lint"
+      bazel-args: "--lockfile_mode=error"

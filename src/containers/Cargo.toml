@@ -11,17 +11,17 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-name: Formatting checks
+[package]
+name = "containers"
+description = "Fixed-capacity and inline-storage containers"
+version = "0.1.0"
+authors = ["Contributors to the Eclipse Foundation"]
+edition = "2021"
+license-file = "../../LICENSE.md"
 
-on:
-  pull_request:
-    types: [opened, reopened, synchronize]
-  merge_group:
-    types: [checks_requested]
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-jobs:
-  formatting-check:
-    uses: eclipse-score/cicd-workflows/.github/workflows/format.yml@main
-    with:
-      bazel-target: "test --lockfile_mode=error //:format.check" # optional, this is the default
+[lib]
+path = "lib.rs"
+
+[dependencies]
+elementary.workspace = true
+score_log.workspace = true

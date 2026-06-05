@@ -1,5 +1,5 @@
 # *******************************************************************************
-# Copyright (c) 2025 Contributors to the Eclipse Foundation
+# Copyright (c) 2026 Contributors to the Eclipse Foundation
 #
 # See the NOTICE file(s) distributed with this work for additional
 # information regarding copyright ownership.
@@ -10,18 +10,19 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
-
-name: Formatting checks
-
+name: Rust Coverage (Demo)
 on:
   pull_request:
     types: [opened, reopened, synchronize]
-  merge_group:
-    types: [checks_requested]
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  workflow_dispatch:
+
 jobs:
-  formatting-check:
-    uses: eclipse-score/cicd-workflows/.github/workflows/format.yml@main
+  rust_coverage:
+    uses: eclipse-score/cicd-workflows/.github/workflows/rust-coverage.yml@main
     with:
-      bazel-target: "test --lockfile_mode=error //:format.check" # optional, this is the default
+      bazel-test-targets: "//src/..."
+      bazel-test-config-flags: "--config=ferrocene-coverage"
+      bazel-test-args: "--lockfile_mode=error"
+      coverage-target: "//:rust_coverage"
+      min-coverage: 0
+      coverage-artifact-name: "rust-coverage-html"

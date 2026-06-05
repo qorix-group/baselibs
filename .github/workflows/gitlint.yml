@@ -11,17 +11,24 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-name: Formatting checks
-
+name: Gitlint check
 on:
   pull_request:
-    types: [opened, reopened, synchronize]
-  merge_group:
-    types: [checks_requested]
+    types: [opened, synchronize, reopened]
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
-  formatting-check:
-    uses: eclipse-score/cicd-workflows/.github/workflows/format.yml@main
-    with:
-      bazel-target: "test --lockfile_mode=error //:format.check" # optional, this is the default
+  lint-commits:
+    name: check-commit-messages
+    runs-on: ${{ vars.REPO_RUNNER_LABELS && fromJSON(vars.REPO_RUNNER_LABELS) || 'ubuntu-latest' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Run Gitlint Action
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: ./.github/actions/gitlint
+        with:
+          pr-number: ${{ github.event.number }}
+          base-branch: ${{ github.event.pull_request.base.ref }}

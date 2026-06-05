@@ -10,18 +10,26 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
+load("@rules_rust//rust:defs.bzl", "rust_library", "rust_test")
 
-name: Formatting checks
+rust_library(
+    name = "score_log_fmt",
+    srcs = glob(["**/*.rs"]),
+    crate_features = select({
+        "//src/log:safety_level_qm": ["qm"],
+        "//src/log:safety_level_asil_b": [],
+    }),
+    visibility = [
+        "//src/log/score_log:__pkg__",
+        "//src/log/score_log_fmt_macro:__pkg__",
+    ],
+)
 
-on:
-  pull_request:
-    types: [opened, reopened, synchronize]
-  merge_group:
-    types: [checks_requested]
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-jobs:
-  formatting-check:
-    uses: eclipse-score/cicd-workflows/.github/workflows/format.yml@main
-    with:
-      bazel-target: "test --lockfile_mode=error //:format.check" # optional, this is the default
+rust_test(
+    name = "tests",
+    crate = "score_log_fmt",
+    tags = [
+        "unit_tests",
+        "ut",
+    ],
+)
