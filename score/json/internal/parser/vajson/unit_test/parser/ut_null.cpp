@@ -18,11 +18,11 @@
 /**********************************************************************************************************************
  *  INCLUDES
  *********************************************************************************************************************/
-#include <utility>
 #include "gtest/gtest.h"
 #include "score/json/internal/parser/vajson/vajson_impl/reader/internal/parsers/virtual_parser.h"
 #include "score/json/internal/parser/vajson/vajson_impl/reader/json_data.h"
 #include "score/json/internal/parser/vajson/vajson_impl/util/json_error_domain.h"
+#include <utility>
 
 namespace score
 {
@@ -48,7 +48,10 @@ class DynamicNullParser final : public internal::VirtualParser
         return ParserState::kRunning;
     }
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 
     Count null_{0};
 };
@@ -63,7 +66,10 @@ class ErrorNullParser final : public internal::VirtualParser
         return MakeErrorResult<ParserState>(JsonErrc::kUserValidationFailed, "OnNull called.");
     }
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 };
 
 }  // namespace
@@ -118,7 +124,7 @@ TEST(UT__Parser__Null, Dynamic__WrongFormat)
     JsonData data{std::move(result).value()};
 
     DynamicNullParser parser{data};
-    auto const parse_result = parser.Parse();
+    const auto parse_result = parser.Parse();
     ASSERT_FALSE(parse_result.has_value());
     ASSERT_EQ(parse_result.error(), JsonErrc::kInvalidJson);
 }
@@ -133,7 +139,7 @@ TEST(UT__Parser__Null, Dynamic__OnNull__Error)
     ASSERT_TRUE(doc.has_value());
     ErrorNullParser parser(doc.value());
 
-    auto const parser_result = parser.Parse();
+    const auto parser_result = parser.Parse();
     ASSERT_FALSE(parser_result.has_value());
     ASSERT_EQ(parser_result.error(), JsonErrc::kUserValidationFailed);
     ASSERT_EQ(parser_result.error().UserMessage(), std::string_view{"OnNull called."});

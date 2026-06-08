@@ -18,12 +18,12 @@
 /**********************************************************************************************************************
  *  INCLUDES
  *********************************************************************************************************************/
-#include <string>
-#include <vector>
 #include "gtest/gtest.h"
 #include "score/json/internal/parser/vajson/vajson_impl/reader/internal/parsers/virtual_parser.h"
 #include "score/json/internal/parser/vajson/vajson_impl/reader/json_data.h"
 #include "score/json/internal/parser/vajson/vajson_impl/util/json_error_domain.h"
+#include <string>
+#include <vector>
 
 namespace score
 {
@@ -49,7 +49,10 @@ class DynamicStringParser final : public internal::VirtualParser
         return ParserState::kRunning;
     }
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 
     Strings strings;
 };
@@ -64,7 +67,10 @@ class ErrorStringParser final : public internal::VirtualParser
         return MakeErrorResult<ParserState>(JsonErrc::kUserValidationFailed, "OnString called.");
     }
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 };
 
 }  // namespace
@@ -92,7 +98,7 @@ TEST(UT__Parser__String, Dynamic__ParseUnescapedString__Error)
     ASSERT_TRUE(doc.has_value());
     ErrorStringParser parser(doc.value());
 
-    auto const parser_result = parser.Parse();
+    const auto parser_result = parser.Parse();
     ASSERT_FALSE(parser_result.has_value());
     ASSERT_EQ(parser_result.error(), JsonErrc::kUserValidationFailed);
     ASSERT_EQ(parser_result.error().UserMessage(), std::string_view{"OnString called."});

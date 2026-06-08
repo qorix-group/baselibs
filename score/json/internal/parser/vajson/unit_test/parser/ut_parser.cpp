@@ -18,11 +18,11 @@
 /**********************************************************************************************************************
  *  INCLUDES
  *********************************************************************************************************************/
-#include <utility>
 #include "gtest/gtest.h"
 #include "score/json/internal/parser/vajson/vajson_impl/reader/internal/parsers/virtual_parser.h"
 #include "score/json/internal/parser/vajson/vajson_impl/reader/json_data.h"
 #include "score/json/internal/parser/vajson/vajson_impl/util/json_error_domain.h"
+#include <utility>
 
 namespace score
 {
@@ -40,13 +40,25 @@ class StaticTestParser final : public internal::VirtualParser
   public:
     using internal::VirtualParser::VirtualParser;
 
-    auto OnKey(StringView) noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnKey(StringView) noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 
-    auto GetDoc() const noexcept -> JsonData const& { return internal::VirtualParser::GetJsonDocument(); }
+    auto GetDoc() const noexcept -> const JsonData&
+    {
+        return internal::VirtualParser::GetJsonDocument();
+    }
 
-    auto GetKey() const noexcept -> CStringView { return internal::VirtualParser::GetCurrentKey(); }
+    auto GetKey() const noexcept -> CStringView
+    {
+        return internal::VirtualParser::GetCurrentKey();
+    }
 };
 
 class DynamicTestParser final : public internal::VirtualParser
@@ -54,13 +66,25 @@ class DynamicTestParser final : public internal::VirtualParser
   public:
     using internal::VirtualParser::VirtualParser;
 
-    auto OnKey(StringView) noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnKey(StringView) noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 
-    auto GetDoc() const noexcept -> JsonData const& { return internal::VirtualParser::GetJsonDocument(); }
+    auto GetDoc() const noexcept -> const JsonData&
+    {
+        return internal::VirtualParser::GetJsonDocument();
+    }
 
-    auto GetKey() const noexcept -> CStringView { return internal::VirtualParser::GetCurrentKey(); }
+    auto GetKey() const noexcept -> CStringView
+    {
+        return internal::VirtualParser::GetCurrentKey();
+    }
 };
 
 class EmptyParser final : public internal::VirtualParser
@@ -99,7 +123,7 @@ TEST(UT__Parser, Static__GetJsonDocumentConst)
     ASSERT_TRUE(result.has_value());
     JsonData data{std::move(result).value()};
 
-    StaticTestParser const parser{data};
+    const StaticTestParser parser{data};
     ASSERT_EQ(&data, &parser.GetDoc());
 }
 
@@ -113,7 +137,7 @@ TEST(UT__Parser, Dynamic__GetJsonDocumentConst)
     ASSERT_TRUE(result.has_value());
     JsonData data{std::move(result).value()};
 
-    DynamicTestParser const parser{data};
+    const DynamicTestParser parser{data};
     ASSERT_EQ(&data, &parser.GetDoc());
 }
 
@@ -160,7 +184,7 @@ TEST(UT__Parser, Static__SubParse)
     JsonData data{std::move(result).value()};
 
     StaticTestParser parser{data};
-    auto const sub_result = parser.SubParse();
+    const auto sub_result = parser.SubParse();
     ASSERT_TRUE(sub_result.has_value());
     ASSERT_EQ(sub_result.value(), ParserState::kRunning);
 }
@@ -181,7 +205,7 @@ TEST(UT__Parser, Static__Empty)
         JsonData data{std::move(result).value()};
 
         EmptyParser parser{data, idx};
-        auto const parse_result = parser.Parse();
+        const auto parse_result = parser.Parse();
         ASSERT_FALSE(parse_result.has_value());
         ASSERT_EQ(parse_result.error(), JsonErrc::kUserValidationFailed);
     }

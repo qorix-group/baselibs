@@ -39,7 +39,10 @@ class DynamicAnyParser final : public internal::VirtualParser
   public:
     using internal::VirtualParser::VirtualParser;
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 };
 
 }  // namespace

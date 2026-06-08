@@ -82,7 +82,7 @@ TEST(UT__JsonOps__JsonData, ConstructFromCStringView)
 TEST(UT__JsonOps__JsonData, ConstructFromSpan)
 {
     std::string const data{"doesntmatter"};
-    const score::cpp::span<char const> view{data.data(), data.size()};
+    const score::cpp::span<const char> view{data.data(), data.size()};
 
     const Result<JsonData> result{JsonData::FromBuffer(view)};
 

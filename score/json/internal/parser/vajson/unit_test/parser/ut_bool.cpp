@@ -18,11 +18,11 @@
 /**********************************************************************************************************************
  *  INCLUDES
  *********************************************************************************************************************/
-#include <utility>
 #include "gtest/gtest.h"
 #include "score/json/internal/parser/vajson/vajson_impl/reader/internal/parsers/virtual_parser.h"
 #include "score/json/internal/parser/vajson/vajson_impl/reader/json_data.h"
 #include "score/json/internal/parser/vajson/vajson_impl/util/json_error_domain.h"
+#include <utility>
 
 namespace score
 {
@@ -58,7 +58,10 @@ class DynamicBoolParser final : public internal::VirtualParser
         return ParserState::kRunning;
     }
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 
     Count true_{0};
     Count false_{0};
@@ -77,7 +80,10 @@ class ErrorBoolParser final : public internal::VirtualParser
         return MakeErrorResult<ParserState>(JsonErrc::kUserValidationFailed, "OnBool called.");
     }
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 };
 
 }  // namespace
@@ -135,7 +141,7 @@ TEST(UT__Parser__Bool, Dynamic__ParseTrue_WrongFormat)
     JsonData data{std::move(result).value()};
 
     DynamicBoolParser parser{data};
-    auto const parse_result = parser.Parse();
+    const auto parse_result = parser.Parse();
     ASSERT_FALSE(parse_result.has_value());
     ASSERT_EQ(parse_result.error(), JsonErrc::kInvalidJson);
 }
@@ -151,7 +157,7 @@ TEST(UT__Parser__Bool, Dynamic__ParseFalse__WrongFormat)
     JsonData data{std::move(result).value()};
 
     DynamicBoolParser parser{data};
-    auto const parse_result = parser.Parse();
+    const auto parse_result = parser.Parse();
     ASSERT_FALSE(parse_result.has_value());
     ASSERT_EQ(parse_result.error(), JsonErrc::kInvalidJson);
 }
@@ -166,7 +172,7 @@ TEST(UT__Parser__Bool, Dynamic__ParseFalse__Error)
     ASSERT_TRUE(doc.has_value());
     ErrorBoolParser parser(doc.value());
 
-    auto const parser_result = parser.Parse();
+    const auto parser_result = parser.Parse();
     ASSERT_FALSE(parser_result.has_value());
     ASSERT_EQ(parser_result.error(), JsonErrc::kUserValidationFailed);
     ASSERT_EQ(parser_result.error().UserMessage(), std::string_view{"OnBool called."});
@@ -182,7 +188,7 @@ TEST(UT__Parser__Bool, Dynamic__ParseTrue__Error)
     ASSERT_TRUE(doc.has_value());
     ErrorBoolParser parser(doc.value());
 
-    auto const parser_result = parser.Parse();
+    const auto parser_result = parser.Parse();
     ASSERT_FALSE(parser_result.has_value());
     ASSERT_EQ(parser_result.error(), JsonErrc::kUserValidationFailed);
     ASSERT_EQ(parser_result.error().UserMessage(), std::string_view{"OnBool called."});

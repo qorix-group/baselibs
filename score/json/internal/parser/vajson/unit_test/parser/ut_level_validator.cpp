@@ -64,7 +64,7 @@ TEST(UT__Parser__LevelValidator, EnterAgain)
 {
     internal::LevelValidator lv{};
     ASSERT_TRUE(lv.Enter().has_value());
-    auto const result = lv.Enter();
+    const auto result = lv.Enter();
     ASSERT_FALSE(result.has_value());
     ASSERT_EQ(result.error(), JsonErrc::kUserValidationFailed);
 }
@@ -76,7 +76,7 @@ TEST(UT__Parser__LevelValidator, EnterAgain)
 TEST(UT__Parser__LevelValidator, LeaveOnEmpty)
 {
     internal::LevelValidator lv{};
-    auto const result = lv.Leave();
+    const auto result = lv.Leave();
     ASSERT_FALSE(result.has_value());
     ASSERT_EQ(result.error(), JsonErrc::kUserValidationFailed);
 }

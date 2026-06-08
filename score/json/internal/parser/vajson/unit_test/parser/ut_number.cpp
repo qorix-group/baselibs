@@ -48,7 +48,10 @@ class DynamicNumberParser final : public internal::VirtualParser
         return ParserState::kRunning;
     }
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 
     Count number_{0};
 };
@@ -91,11 +94,11 @@ TEST(UT__Parser__Number, TryAs__Error)
     auto json_data_result = JsonData::FromBuffer(std::string_view{"-123"});
     ASSERT_TRUE(json_data_result.has_value());
     internal::NumberParser<std::uint8_t> parser{json_data_result.value(),
-                                                 [](std::uint8_t) noexcept -> score::Result<void> {
-                                                     return score::Result<void>{};
-                                                 }};
+                                                [](std::uint8_t) noexcept -> score::Result<void> {
+                                                    return score::Result<void>{};
+                                                }};
 
-    auto const result = parser.Parse();
+    const auto result = parser.Parse();
     ASSERT_FALSE(result.has_value());
     ASSERT_EQ(result.error(), JsonErrc::kInvalidJson);
     ASSERT_EQ(result.error().UserMessage(), std::string_view{"Could not convert number."});

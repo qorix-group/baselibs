@@ -18,12 +18,12 @@
 /**********************************************************************************************************************
  *  INCLUDES
  *********************************************************************************************************************/
-#include <string>
-#include <vector>
 #include "gtest/gtest.h"
 #include "score/json/internal/parser/vajson/vajson_impl/reader/internal/parsers/virtual_parser.h"
 #include "score/json/internal/parser/vajson/vajson_impl/reader/json_data.h"
 #include "score/json/internal/parser/vajson/vajson_impl/util/json_error_domain.h"
+#include <string>
+#include <vector>
 
 namespace score
 {
@@ -49,7 +49,10 @@ struct DynamicKeyParser final : public internal::VirtualParser
         return ParserState::kRunning;
     }
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 
     Keys keys{};
 };

@@ -57,7 +57,7 @@ TEST(UT__ErrorDomain, MakeResult__FromOptional)
 {
     {
         Optional<std::string> opt{};
-        Result<std::string> const result{
+        const Result<std::string> result{
             MakeResult(std::move(opt), MakeError(JsonErrc::kNotInitialized, "This is my error message"))};
 
         ASSERT_FALSE(result.has_value());
@@ -67,7 +67,7 @@ TEST(UT__ErrorDomain, MakeResult__FromOptional)
     {
         Optional<std::string> opt_2{};
         opt_2.emplace(std::string("SomeString"));
-        Result<std::string> const result_2{
+        const Result<std::string> result_2{
             MakeResult(opt_2, MakeError(JsonErrc::kNotInitialized, "This is my error message"))};
         ASSERT_TRUE(result_2.has_value());
         ASSERT_EQ(result_2.value(), "SomeString");
@@ -81,13 +81,13 @@ TEST(UT__ErrorDomain, MakeResult__FromOptional)
  */
 TEST(UT__ErrorDomain, MakeResult__FromValue)
 {
-    Result<void> const result{MakeResult(false, MakeError(JsonErrc::kNotInitialized, "This is my error message"))};
+    const Result<void> result{MakeResult(false, MakeError(JsonErrc::kNotInitialized, "This is my error message"))};
 
     ASSERT_FALSE(result.has_value());
     ASSERT_EQ(result.error(), JsonErrc::kNotInitialized);
     ASSERT_EQ(result.error().UserMessage(), std::string_view{"This is my error message"});
 
-    Result<void> const result2{MakeResult(true, MakeError(JsonErrc::kNotInitialized, "This is my error message"))};
+    const Result<void> result2{MakeResult(true, MakeError(JsonErrc::kNotInitialized, "This is my error message"))};
     ASSERT_TRUE(result2.has_value());
 }
 

@@ -59,7 +59,10 @@ class DynamicObjectParser final : public internal::VirtualParser
         return ParserResult{ParserState::kRunning};
     }
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 
     Count start_{0};
     Count end_{0};
@@ -71,14 +74,20 @@ class EndObjectParser final : public internal::VirtualParser
   public:
     using internal::VirtualParser::VirtualParser;
 
-    auto OnStartObject() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnStartObject() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 
     auto OnEndObject(std::size_t) noexcept -> ParserResult override
     {
         return MakeErrorResult<ParserState>(JsonErrc::kUserValidationFailed, "OnEndObject called.");
     }
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 };
 
 class StartObjectParser final : public internal::VirtualParser
@@ -91,9 +100,15 @@ class StartObjectParser final : public internal::VirtualParser
         return MakeErrorResult<ParserState>(JsonErrc::kUserValidationFailed, "OnStartObject called.");
     }
 
-    auto OnEndObject(std::size_t) noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnEndObject(std::size_t) noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 };
 
 }  // namespace
@@ -153,7 +168,7 @@ TEST(UT__Parser__Object__Error, Dynamic__OnEndObject)
     ASSERT_TRUE(doc.has_value());
     EndObjectParser parser(doc.value());
 
-    auto const parser_result = parser.Parse();
+    const auto parser_result = parser.Parse();
     ASSERT_FALSE(parser_result.has_value());
     ASSERT_EQ(parser_result.error(), JsonErrc::kUserValidationFailed);
     ASSERT_EQ(parser_result.error().UserMessage(), std::string_view{"OnEndObject called."});
@@ -169,7 +184,7 @@ TEST(UT__Parser__Object__Error, Dynamic__OnStartObject)
     ASSERT_TRUE(doc.has_value());
     StartObjectParser parser(doc.value());
 
-    auto const parser_result = parser.Parse();
+    const auto parser_result = parser.Parse();
     ASSERT_FALSE(parser_result.has_value());
     ASSERT_EQ(parser_result.error(), JsonErrc::kUserValidationFailed);
     ASSERT_EQ(parser_result.error().UserMessage(), std::string_view{"OnStartObject called."});

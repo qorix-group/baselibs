@@ -59,7 +59,10 @@ class DynamicArrayParser final : public internal::VirtualParser
         return ParserResult{ParserState::kRunning};
     }
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 
     Count start_{0};
     Count end_{0};
@@ -71,7 +74,10 @@ class LimitedEndArrayParser final : public internal::VirtualParser
   public:
     using internal::VirtualParser::VirtualParser;
 
-    auto OnStartArray() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnStartArray() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 
     auto OnEndArray(std::size_t number_of_elems) noexcept -> ParserResult override
     {
@@ -83,7 +89,10 @@ class LimitedEndArrayParser final : public internal::VirtualParser
         return ParserResult{ParserState::kRunning};
     }
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 };
 
 class LimitedStartArrayParser final : public internal::VirtualParser
@@ -96,16 +105,21 @@ class LimitedStartArrayParser final : public internal::VirtualParser
         static std::uint8_t call_cnt{0};
         if (call_cnt > 0)
         {
-            return MakeErrorResult<ParserState>(JsonErrc::kUserValidationFailed,
-                                                "OnStartArray called a second time.");
+            return MakeErrorResult<ParserState>(JsonErrc::kUserValidationFailed, "OnStartArray called a second time.");
         }
         call_cnt++;
         return ParserResult{ParserState::kRunning};
     }
 
-    auto OnEndArray(std::size_t) noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnEndArray(std::size_t) noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 
-    auto OnUnexpectedEvent() noexcept -> ParserResult override { return ParserState::kRunning; }
+    auto OnUnexpectedEvent() noexcept -> ParserResult override
+    {
+        return ParserState::kRunning;
+    }
 };
 
 }  // namespace
@@ -165,7 +179,7 @@ TEST(UT__Parser__Array__Error, Dynamic__OnEndArray)
     ASSERT_TRUE(doc.has_value());
     LimitedEndArrayParser parser(doc.value());
 
-    auto const parser_result = parser.Parse();
+    const auto parser_result = parser.Parse();
     ASSERT_FALSE(parser_result.has_value());
     ASSERT_EQ(parser_result.error(), JsonErrc::kUserValidationFailed);
     ASSERT_EQ(parser_result.error().UserMessage(), std::string_view{"OnEndArray called with array size >=2."});
@@ -181,7 +195,7 @@ TEST(UT__Parser__Array__Error, Dynamic__OnStartArray)
     ASSERT_TRUE(doc.has_value());
     LimitedStartArrayParser parser(doc.value());
 
-    auto const parser_result = parser.Parse();
+    const auto parser_result = parser.Parse();
     ASSERT_FALSE(parser_result.has_value());
     ASSERT_EQ(parser_result.error(), JsonErrc::kUserValidationFailed);
     ASSERT_EQ(parser_result.error().UserMessage(), std::string_view{"OnStartArray called a second time."});

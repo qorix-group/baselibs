@@ -65,7 +65,7 @@ TEST(UT__Parser__SingleObjectParser, Dynamic__Unexpected)
     ASSERT_TRUE(data.has_value());
 
     DynamicSingleObjectParser parser{data.value()};
-    auto const result = parser.Parse();
+    const auto result = parser.Parse();
     ASSERT_FALSE(result.has_value());
     ASSERT_EQ(result.error(), JsonErrc::kUserValidationFailed);
 }
