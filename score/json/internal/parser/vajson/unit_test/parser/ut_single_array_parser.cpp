@@ -105,6 +105,82 @@ INSTANTIATE_TEST_SUITE_P(
         return input.param.name;
     });
 
+/*!
+ * Verify that v2 OnStartArray returns kStreamFailure when the underlying stream is already in a failed state.
+ *
+ * The test constructs a parser from an input stream, marks that stream as failed, and then checks that
+ * entering the array reports the stream failure to the caller.
+ *
+ * \trace            score::json::vajson::v2::SingleArrayParser::OnStartArray
+ */
+TEST(UT__Parser__SingleArrayParser__Dynamic, OnStartArray__SteamErrorTell)
+{
+    std::istringstream dummy_stream{R"({"key":[]})"};
+    JsonData json_data{dummy_stream};
+
+    DynamicSingleArrayParser parser{json_data};
+    ON_CALL(parser, OnElement()).WillByDefault([&parser]() noexcept {
+        return parser.Number<std::uint8_t>([](std::uint8_t) noexcept {});
+    });
+
+    dummy_stream.setstate(std::ios_base::failbit);
+    auto result = parser.OnStartArray();
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(result.error(), json::vajson::JsonErrc::kStreamFailure);
+}
+
+/*!
+ * Verify that v2 OnUnexpectedEvent returns kStreamFailure when the stream enters a failed state while parsing
+ * array elements.
+ *
+ * The test first transitions the parser into array-processing mode via OnStartArray(), then marks the backing
+ * stream as failed, and finally checks that OnUnexpectedEvent propagates the stream failure.
+ *
+ * \trace            score::json::vajson::v2::SingleArrayParser::OnUnexpectedEvent
+ */
+TEST(UT__Parser__SingleArrayParser__Dynamic, OnUnexpectedEvent__SteamErrorSeek)
+{
+
+    std::istringstream dummy_stream{R"({"key":[]})"};
+
+    JsonData json_data{dummy_stream};
+    DynamicSingleArrayParser parser{json_data};
+    ON_CALL(parser, OnElement()).WillByDefault([&parser]() noexcept {
+        return parser.Number<std::uint8_t>([](std::uint8_t) noexcept {});
+    });
+
+    auto result = parser.OnStartArray();
+    ASSERT_TRUE(result.has_value());
+
+    dummy_stream.setstate(std::ios_base::failbit);
+    auto unexpected_event_result = parser.OnUnexpectedEvent();
+    ASSERT_FALSE(unexpected_event_result.has_value());
+    EXPECT_EQ(unexpected_event_result.error(), vajson::JsonErrc::kStreamFailure);
+}
+
+/*!
+ * Verify that v2 OnUnexpectedEvent forwards an error returned by OnElement().
+ *
+ * The test enters array-processing mode with OnStartArray(), configures OnElement() to fail with
+ * kUserValidationFailed, and then checks that OnUnexpectedEvent returns the same error to the caller.
+ *
+ * \trace            score::json::vajson::v2::SingleArrayParser::OnUnexpectedEvent
+ */
+TEST(UT__Parser__SingleArrayParser__Dynamic, OnUnexpectedEvent__OnElementFails)
+{
+
+    std::istringstream dummy_stream{R"({"key":[]})"};
+    JsonData json_data{dummy_stream};
+    DynamicSingleArrayParser parser{json_data};
+    EXPECT_CALL(parser, OnElement()).WillRepeatedly(testing::Return(MakeUnexpected(JsonErrc::kUserValidationFailed)));
+
+    auto result = parser.OnStartArray();
+    ASSERT_TRUE(result.has_value());
+    auto unexpected_event_result = parser.OnUnexpectedEvent();
+    ASSERT_FALSE(unexpected_event_result.has_value());
+    EXPECT_EQ(unexpected_event_result.error(), JsonErrc::kUserValidationFailed);
+}
+
 }  // namespace unit_test
 }  // namespace vajson
 }  // namespace json
