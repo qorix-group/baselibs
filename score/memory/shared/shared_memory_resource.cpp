@@ -36,7 +36,6 @@
 #include <score/assert.hpp>
 #include <score/hash.hpp>
 #include <score/move_only_function.hpp>
-#include <score/string_view.hpp>
 #include <score/utility.hpp>
 #include <cerrno>
 
