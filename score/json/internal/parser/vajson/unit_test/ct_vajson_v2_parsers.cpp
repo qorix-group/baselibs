@@ -13,9 +13,6 @@
 /*!        \file
  *        \brief  Contains component tests for VaJson V2 Parsers.
  *
- * \details  Tests depending on amsr::stream, StreamFixture, or binary parsing
- *           infrastructure have been omitted as that infrastructure is not
- *           available in this project.
  *
  *********************************************************************************************************************/
 /**********************************************************************************************************************
