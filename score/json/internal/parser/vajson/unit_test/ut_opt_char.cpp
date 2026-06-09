@@ -46,8 +46,7 @@ TEST(UT__JsonOps__OptChar, ValidChar)
  */
 TEST(UT__JsonOps__OptChar, EofChar)
 {
-    char constexpr value{-1};
-    internal::OptChar const opt{static_cast<std::int64_t>(value)};
+    internal::OptChar const opt{static_cast<std::int64_t>(-1)};
     ASSERT_FALSE(opt.HasValue());
     ASSERT_TRUE(opt.EofFound());
     ASSERT_DEATH(opt.Value(), ".*");
