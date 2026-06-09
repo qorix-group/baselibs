@@ -21,10 +21,6 @@ cc_library(
     hdrs = ["vajson_parser.h"],
     features = COMPILER_WARNING_FEATURES,
     tags = ["FFI"],
-    target_compatible_with = select({
-        "@score_baselibs//score/json:base_library_nlohmann": ["@platforms//:incompatible"],
-        "@score_baselibs//score/json:base_library_vajson": [],
-    }),
     visibility = ["@score_baselibs//score/json:__subpackages__"],
     deps = [
         "@score_baselibs//score/json:parser_interface",
@@ -73,7 +69,6 @@ cc_unit_test_suites_for_host_and_qnx(
     cc_unit_tests = [
         ":vajson_parser_test",
         ":number_parser_test",
-        "//score/json/internal/parser/vajson/unit_test:vajson_impl_unit_tests",
     ],
     visibility = [
         "@score_baselibs//score/json/internal/parser:__pkg__",
