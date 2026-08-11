@@ -63,6 +63,33 @@ const IntWrapper* GetObj(const LPtr2IntW& ptr)
 {
     return ptr.get();
 }
+auto opt_value_by_10 = [](LPtr2IntW& lp) -> score::cpp::optional<double> {
+    return lp->value / 10.0;
+};
+
+auto copt_value_by_10 = [](const LPtr2IntW& lp) -> score::cpp::optional<double> {
+    return lp->value / 10.0;
+};
+
+auto value_if_positive = [](LPtr2IntW& lp) -> score::cpp::optional<int> {
+    if (lp->value > 0)
+    {
+        return lp->value;
+    }
+    return score::cpp::nullopt;
+};
+
+auto cvalue_if_positive = [](const LPtr2IntW& lp) -> score::cpp::optional<int> {
+    if (lp->value > 0)
+    {
+        return lp->value;
+    }
+    return score::cpp::nullopt;
+};
+
+auto opt_move_get = [](LPtr2IntW lp) -> score::cpp::optional<IntWrapper*> {
+    return lp.get();
+};
 }  // namespace
 
 TEST(LockedPtrTest, ConstructionWithTypes)
@@ -522,6 +549,123 @@ TEST(LockedPtrTest, TransformRvalueRefNull)
 
     EXPECT_EQ(LockedPtr(nullp, std::unique_lock{mut}).transform(GetObj), score::cpp::optional<const IntWrapper*>{});
     EXPECT_EQ(LockedPtr(nullp, std::unique_lock{mut}).transform(CValueBy10), score::cpp::nullopt);
+}
+
+TEST(LockedPtrTest, AndThenLvalueRefNotNull)
+{
+    IntWrapper obj{42};
+    MockMutex mut;
+    LockedPtr lockedptr(&obj, std::unique_lock{mut});
+
+    EXPECT_EQ(lockedptr.and_then(opt_value_by_10), score::cpp::optional{4.2});
+    EXPECT_EQ(lockedptr.and_then(copt_value_by_10), score::cpp::optional{4.2});
+
+    auto result = lockedptr.and_then(opt_value_by_10);
+    ASSERT_TRUE((std::is_same_v<decltype(result), score::cpp::optional<double>>))
+        << "and_then should return score::cpp::optional<double>";
+}
+
+TEST(LockedPtrTest, AndThenLvalueRefNull)
+{
+    IntWrapper* nullp = nullptr;
+    MockMutex mut;
+    auto lp = LockedPtr(nullp, std::unique_lock{mut});
+
+    EXPECT_EQ(lp.and_then(opt_value_by_10), score::cpp::nullopt);
+    EXPECT_EQ(lp.and_then(copt_value_by_10), score::cpp::nullopt);
+}
+
+TEST(LockedPtrTest, AndThenLvalueRefCallableReturnsNullopt)
+{
+    IntWrapper obj{-5};
+    MockMutex mut;
+    LockedPtr lockedptr(&obj, std::unique_lock{mut});
+
+    EXPECT_EQ(lockedptr.and_then(value_if_positive), score::cpp::nullopt);
+
+    obj.value = 10;
+    EXPECT_EQ(lockedptr.and_then(value_if_positive), score::cpp::optional{10});
+}
+
+TEST(LockedPtrTest, AndThenConstLvalueRefNotNull)
+{
+    IntWrapper obj{42};
+    MockMutex mut;
+    const auto lockedptr = LockedPtr(&obj, std::unique_lock{mut});
+
+    EXPECT_EQ(lockedptr.and_then(copt_value_by_10), score::cpp::optional{4.2});
+
+    auto result = lockedptr.and_then(copt_value_by_10);
+    ASSERT_TRUE((std::is_same_v<decltype(result), score::cpp::optional<double>>))
+        << "and_then should return score::cpp::optional<double>";
+}
+
+TEST(LockedPtrTest, AndThenConstLvalueRefNull)
+{
+    IntWrapper* nullp = nullptr;
+    MockMutex mut;
+    const auto lp = LockedPtr(nullp, std::unique_lock{mut});
+
+    EXPECT_EQ(lp.and_then(copt_value_by_10), score::cpp::nullopt);
+}
+
+TEST(LockedPtrTest, AndThenConstLvalueRefCallableReturnsNullopt)
+{
+    IntWrapper obj{-5};
+    MockMutex mut;
+    const auto lockedptr = LockedPtr(&obj, std::unique_lock{mut});
+
+    EXPECT_EQ(lockedptr.and_then(cvalue_if_positive), score::cpp::nullopt);
+
+    obj.value = 10;
+    EXPECT_EQ(lockedptr.and_then(cvalue_if_positive), score::cpp::optional{10});
+}
+
+TEST(LockedPtrTest, AndThenRvalueRefNotNull)
+{
+    IntWrapper obj{42};
+    MockMutex mut;
+    auto lp = LockedPtr(&obj, std::unique_lock{mut});
+
+    auto result = std::move(lp).and_then(opt_move_get);
+
+    ASSERT_TRUE((std::is_same_v<decltype(result), score::cpp::optional<IntWrapper*>>))
+        << "and_then should return score::cpp::optional<IntWrapper*>";
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result.value(), &obj);
+    EXPECT_FALSE(lp);
+}
+
+TEST(LockedPtrTest, AndThenRvalueRefNull)
+{
+    IntWrapper* nullp = nullptr;
+    MockMutex mut;
+
+    auto result = LockedPtr(nullp, std::unique_lock{mut}).and_then(opt_move_get);
+
+    EXPECT_EQ(result, score::cpp::nullopt);
+}
+
+TEST(LockedPtrTest, AndThenConstRvalueRefNotNull)
+{
+    IntWrapper obj{42};
+    MockMutex mut;
+    const auto lp = LockedPtr(&obj, std::unique_lock{mut});
+
+    auto result = std::move(lp).and_then(copt_value_by_10);
+
+    ASSERT_TRUE((std::is_same_v<decltype(result), score::cpp::optional<double>>))
+        << "and_then should return score::cpp::optional<double>";
+    EXPECT_EQ(result, score::cpp::optional{4.2});
+}
+
+TEST(LockedPtrTest, AndThenConstRvalueRefNull)
+{
+    IntWrapper* nullp = nullptr;
+    MockMutex mut;
+    const auto lp = LockedPtr(nullp, std::unique_lock{mut});
+
+    EXPECT_EQ(std::move(lp).and_then(copt_value_by_10), score::cpp::nullopt);
 }
 
 }  // namespace test
