@@ -11,9 +11,9 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 #
-# Runs clang-tidy and Clippy through rules_lint in one job. Each build uses
-# fail_on_violation=false so violating targets still produce SARIF; the job
-# fails at the end, once everything has been collected and uploaded.
+# Runs clang-tidy, Clippy, and Ruff through rules_lint in one job. Each build
+# uses fail_on_violation=false so violating targets still produce SARIF; the
+# job fails at the end, once everything has been collected and uploaded.
 name: Linter checks
 permissions:
   contents: read

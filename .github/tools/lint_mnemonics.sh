@@ -16,4 +16,5 @@
 declare -A LINT_MNEMONICS=(
   [clang-tidy]=AspectRulesLintClangTidy
   [clippy]=AspectRulesLintClippy
+  [ruff]=AspectRulesLintRuff
 )
