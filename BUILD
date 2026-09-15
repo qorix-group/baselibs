@@ -14,7 +14,10 @@
 load("@score_docs_as_code//:docs.bzl", "docs")
 load(":qemu.bzl", "qemu_aarch64")
 
-exports_files([".clang-tidy"])
+exports_files([
+    ".clang-tidy",
+    "ruff.toml",
+])
 
 # Exported for //tools, which hosts the score_tooling-backed copyright checker.
 exports_files(

@@ -126,7 +126,7 @@ instead of this repo's stricter baseline.
 ### Rust clippy
 
 ```bash
-bazel build --config=lint -- //score/...
+bazel build --config=clippy -- //score/...
 ```
 
 ### C++ Sanitizers
