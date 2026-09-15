@@ -13,8 +13,6 @@
 #ifndef SCORE_LIB_CONCURRENCY_TYPE_TRAITS_H
 #define SCORE_LIB_CONCURRENCY_TYPE_TRAITS_H
 
-#include <score/optional.hpp>
-
 #include <type_traits>
 
 namespace score
