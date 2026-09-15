@@ -11,7 +11,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-load("@hedron_compile_commands//:refresh_compile_commands.bzl", "refresh_compile_commands")
 load("@score_docs_as_code//:docs.bzl", "docs")
 load(":qemu.bzl", "qemu_aarch64")
 
@@ -99,17 +98,6 @@ docs(
         "@score_process_description//:needs_json_file",
     ],
     source_dir = "docs",
-)
-
-# Generate `compile_commands.json`.
-# Required for `clangd` support.
-refresh_compile_commands(
-    name = "generate_compile_commands",
-    exclude_external_sources = True,
-    target_compatible_with = ["@platforms//os:linux"],
-    targets = {
-        "//...": "",
-    },
 )
 
 # Generate `rust_project.json`.

@@ -11,11 +11,23 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 
-# CI tooling entrypoints backed by @score_tooling.
-# Kept out of the root BUILD so that package stays free of score_tooling deps.
+# Tooling entrypoints backed by @score_tooling and @hedron_compile_commands.
+# Kept out of the root BUILD so that package stays free of these dev dependencies.
+load("@hedron_compile_commands//:refresh_compile_commands.bzl", "refresh_compile_commands")
 load("@score_tooling//:defs.bzl", "copyright_checker", "dash_license_checker")
 load("@score_tooling//third_party/format:macros.bzl", "use_format_targets")
 load("//:project_config.bzl", "PROJECT_CONFIG")
+
+# Generate `compile_commands.json`.
+# Required for `clangd` support.
+refresh_compile_commands(
+    name = "generate_compile_commands",
+    exclude_external_sources = True,
+    target_compatible_with = ["@platforms//os:linux"],
+    targets = {
+        "//...": "",
+    },
+)
 
 copyright_checker(
     name = "copyright",
