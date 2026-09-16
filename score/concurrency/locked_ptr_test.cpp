@@ -577,8 +577,21 @@ TEST(LockedPtrTest, AndThenLvalueRefNull)
     MockMutex mut;
     auto lp = LockedPtr(nullp, std::unique_lock{mut});
 
-    EXPECT_EQ(lp.and_then(OptValueBy10), score::cpp::nullopt);
-    EXPECT_EQ(lp.and_then(COptValueBy10), score::cpp::nullopt);
+    bool is_invoked = false;
+    auto opt_value_by_10_invocation_tracked = [&is_invoked](LPtr2IntW& value) {
+        is_invoked = true;
+        return OptValueBy10(value);
+    };
+    EXPECT_EQ(lp.and_then(opt_value_by_10_invocation_tracked), score::cpp::nullopt);
+    EXPECT_FALSE(is_invoked);
+
+    is_invoked = false;
+    auto copt_value_by_10_invocation_tracked = [&is_invoked](const LPtr2IntW& value) {
+        is_invoked = true;
+        return COptValueBy10(value);
+    };
+    EXPECT_EQ(lp.and_then(copt_value_by_10_invocation_tracked), score::cpp::nullopt);
+    EXPECT_FALSE(is_invoked);
 }
 
 TEST(LockedPtrTest, AndThenLvalueRefCallableReturnsNullopt)
@@ -612,7 +625,13 @@ TEST(LockedPtrTest, AndThenConstLvalueRefNull)
     MockMutex mut;
     const auto lp = LockedPtr(nullp, std::unique_lock{mut});
 
-    EXPECT_EQ(lp.and_then(COptValueBy10), score::cpp::nullopt);
+    bool is_invoked = false;
+    auto copt_value_by_10_invocation_tracked = [&is_invoked](const LPtr2IntW& value) {
+        is_invoked = true;
+        return COptValueBy10(value);
+    };
+    EXPECT_EQ(lp.and_then(copt_value_by_10_invocation_tracked), score::cpp::nullopt);
+    EXPECT_FALSE(is_invoked);
 }
 
 TEST(LockedPtrTest, AndThenConstLvalueRefCallableReturnsNullopt)
@@ -671,7 +690,13 @@ TEST(LockedPtrTest, AndThenConstRvalueRefNull)
     MockMutex mut;
     const auto lp = LockedPtr(nullp, std::unique_lock{mut});
 
-    EXPECT_EQ(std::move(lp).and_then(COptValueBy10), score::cpp::nullopt);
+    bool is_invoked = false;
+    auto COptValueBy10InvocationTracked = [&is_invoked](const LPtr2IntW& lp) {
+        is_invoked = true;
+        return COptValueBy10(lp);
+    };
+    EXPECT_EQ(std::move(lp).and_then(COptValueBy10InvocationTracked), score::cpp::nullopt);
+    EXPECT_FALSE(is_invoked);
 }
 
 }  // namespace test
