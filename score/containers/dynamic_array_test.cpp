@@ -430,7 +430,7 @@ TYPED_TEST(DynamicArrayTestFixture, CanConstructWithTriviallyConstructableDestru
 TYPED_TEST(DynamicArrayTestFixture, ConstructingDynamicArrayWithTrivialTypeWithTooManyElementsTerminates)
 {
     this->RecordProperty("PartiallyVerifies", "comp_req__containers__dynamic_array");
-    this->RecordProperty("TestType", "fault-injection");
+    this->RecordProperty("TestType", "requirements-based");
     this->RecordProperty("DerivationTechnique", "boundary-values");
     this->RecordProperty("Description",
                          "Check that constructing a DynamicArray whose requested size overflows allocation capacity "
@@ -462,7 +462,7 @@ TYPED_TEST(DynamicArrayTestFixture, ConstructingDynamicArrayWithTrivialTypeWithT
 TYPED_TEST(DynamicArrayTestFixture, AccessingConstRefArrayOutOfBoundsTerminates)
 {
     this->RecordProperty("PartiallyVerifies", "comp_req__containers__dynamic_array");
-    this->RecordProperty("TestType", "fault-injection");
+    this->RecordProperty("TestType", "requirements-based");
     this->RecordProperty("DerivationTechnique", "boundary-values");
     this->RecordProperty("Description",
                          "Check that accessing a const element one past the last valid index terminates via contract "
@@ -748,7 +748,7 @@ TYPED_TEST(DynamicArrayTestFixture, SizeReturnsZeroWhenArrayIsEmptyWithValue)
 TYPED_TEST(DynamicArrayTestFixture, AccessingElementWithAtWhenArrayIsEmptyTerminates)
 {
     this->RecordProperty("PartiallyVerifies", "comp_req__containers__dynamic_array");
-    this->RecordProperty("TestType", "fault-injection");
+    this->RecordProperty("TestType", "requirements-based");
     this->RecordProperty("DerivationTechnique", "boundary-values");
     this->RecordProperty("Description",
                          "Check that at() on an empty DynamicArray terminates via contract violation instead of "
@@ -765,7 +765,7 @@ TYPED_TEST(DynamicArrayTestFixture, AccessingElementWithAtWhenArrayIsEmptyTermin
 TYPED_TEST(DynamicArrayTestFixture, AccessingElementWithIndexOperatorWhenArrayIsEmptyTerminates)
 {
     this->RecordProperty("PartiallyVerifies", "comp_req__containers__dynamic_array");
-    this->RecordProperty("TestType", "fault-injection");
+    this->RecordProperty("TestType", "requirements-based");
     this->RecordProperty("DerivationTechnique", "boundary-values");
     this->RecordProperty("Description",
                          "Check that operator[] on an empty DynamicArray terminates via contract violation instead of "
@@ -837,7 +837,7 @@ TEST(EmptyDynamicArrayOfTrivialElementTypeMemoryTest, TestNeverFailsButMemcheckD
 TEST(DynamicArrayCopyConstructorMemoryTest, CopyConstructorWithZeroSizeArrayDoesNotLeakMemory)
 {
     this->RecordProperty("PartiallyVerifies", "comp_req__containers__dynamic_array");
-    this->RecordProperty("TestType", "fault-injection");
+    this->RecordProperty("TestType", "requirements-based");
     this->RecordProperty("DerivationTechnique", "boundary-values");
     this->RecordProperty(
         "Description",
@@ -863,7 +863,7 @@ TEST(DynamicArrayCopyConstructorMemoryTest, CopyConstructorWithZeroSizeArrayDoes
 TEST(DynamicArrayCopyConstructorMemoryTest, CopyConstructorWithNonTrivialZeroSizeArrayDoesNotLeakMemory)
 {
     this->RecordProperty("PartiallyVerifies", "comp_req__containers__dynamic_array");
-    this->RecordProperty("TestType", "fault-injection");
+    this->RecordProperty("TestType", "requirements-based");
     this->RecordProperty("DerivationTechnique", "boundary-values");
     this->RecordProperty("Description",
                          "Check that copy-constructing from a zero-size DynamicArray of a non-trivial element type "

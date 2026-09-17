@@ -145,7 +145,6 @@ TYPED_TEST(NonRelocatableVectorFixture, ConstructingWithNonZeroElementsSetsCapac
 
 TYPED_TEST(NonRelocatableVectorPolymorphicAllocatorFixture, ConstructingWithNonZeroElementsAllocatesAllElements)
 {
-    this->RecordProperty("PartiallyVerifies", "comp_req__containers__deterministic_behavior");
     this->RecordProperty("TestType", "resource-usage");
     this->RecordProperty("DerivationTechnique", "equivalence-classes");
     this->RecordProperty("Description",
@@ -370,7 +369,6 @@ TYPED_TEST(NonRelocatableVectorNonMoveableAndCopyableElementTypeFixture, CannotC
 
 TYPED_TEST(NonRelocatableVectorCopyableAndMoveablePolymorphicAllocatorFixture, CopyConstructingAllocatesBasedOnCapacity)
 {
-    this->RecordProperty("PartiallyVerifies", "comp_req__containers__deterministic_behavior");
     this->RecordProperty("TestType", "resource-usage");
     this->RecordProperty("DerivationTechnique", "equivalence-classes");
     this->RecordProperty("Description",

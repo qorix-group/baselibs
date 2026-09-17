@@ -396,4 +396,25 @@ TEST_F(NonRelocatableVectorPointerInteractionFixture, EndDereferencesBeginAndEnd
     EXPECT_EQ(arrow_args[1], end_it - 1);
 }
 
+TYPED_TEST(NonRelocatableVectorTrivialFixture, EmplaceBackPreservesExistingElementAddress)
+{
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "boundary-values");
+    this->RecordProperty("Description",
+                         "Check that an existing element address remains stable after subsequent emplace_back() "
+                         "operations.");
+
+    this->GivenANonRelocatableVectorConstructedWithNumberOfElements(kNonZeroNumberElements);
+    auto& first_element = this->unit_->emplace_back();
+    const auto* first_element_address = &first_element;
+
+    for (std::size_t i = 1U; i < kNonZeroNumberElements; ++i)
+    {
+        score::cpp::ignore = this->unit_->emplace_back();
+    }
+
+    EXPECT_EQ(first_element_address, &this->unit_->at(0U));
+}
+
 }  // namespace score::containers

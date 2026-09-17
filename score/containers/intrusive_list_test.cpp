@@ -174,7 +174,7 @@ TEST(IntrusiveList, SingleElementMinimalChecks)
 {
     RecordProperty("PartiallyVerifies", "comp_req__containers__intrusive_list");
     RecordProperty("TestType", "requirements-based");
-    RecordProperty("DerivationTechnique", "equivalence-classes");
+    RecordProperty("DerivationTechnique", "boundary-values");
     RecordProperty("Description",
                    "Check that a list constructed from a single-range element is non-empty and becomes empty "
                    "after clear().");
@@ -201,9 +201,9 @@ static_assert(refers_to_const_v<decltype(std::declval<List::const_reverse_iterat
 
 TEST(IntrusiveList, SingleElementBasedIteratorChecks)
 {
-    RecordProperty("PartiallyVerifies", "comp_req__containers__intrusive_list, comp_req__containers__type_safety");
+    RecordProperty("PartiallyVerifies", "comp_req__containers__intrusive_list");
     RecordProperty("TestType", "requirements-based");
-    RecordProperty("DerivationTechnique", "equivalence-classes");
+    RecordProperty("DerivationTechnique", "boundary-values");
     RecordProperty("Description",
                    "Check iterator/reverse_iterator/const_iterator/const_reverse_iterator dereference, member "
                    "access, comparison, and increment/decrement semantics on a single-element list, and "
@@ -399,7 +399,7 @@ TEST(IntrusiveList, SingleElementInsertRemoveChecks)
 {
     RecordProperty("PartiallyVerifies", "comp_req__containers__intrusive_list");
     RecordProperty("TestType", "requirements-based");
-    RecordProperty("DerivationTechnique", "equivalence-classes");
+    RecordProperty("DerivationTechnique", "boundary-values");
     RecordProperty("Description",
                    "Check that push_back/pop_back, push_front/pop_front, move construction, insert/remove, and "
                    "insert/remove_if on a single element correctly transition the list between empty and "
@@ -454,7 +454,7 @@ TEST(IntrusiveList, TwoElementsInsertRemoveChecks)
 {
     RecordProperty("PartiallyVerifies", "comp_req__containers__intrusive_list");
     RecordProperty("TestType", "requirements-based");
-    RecordProperty("DerivationTechnique", "equivalence-classes");
+    RecordProperty("DerivationTechnique", "boundary-values");
     RecordProperty("Description",
                    "Check push/pop/insert/remove/move-construction ordering (front/back) for a two-element list.");
 
@@ -661,7 +661,7 @@ TEST(IntrusiveList, EraseTest)
 {
     RecordProperty("PartiallyVerifies", "comp_req__containers__intrusive_list");
     RecordProperty("TestType", "requirements-based");
-    RecordProperty("DerivationTechnique", "equivalence-classes");
+    RecordProperty("DerivationTechnique", "boundary-values");
     RecordProperty("Description",
                    "Check erase() of a single iterator, a range, an empty range, and a full-range erase update "
                    "size, the returned iterator, and the remaining elements correctly.");
