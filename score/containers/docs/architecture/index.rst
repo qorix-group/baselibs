@@ -53,7 +53,7 @@ Static Architecture
    :safety:  ASIL_B
    :status: valid
    :version: 1
-   :fulfils: comp_req__containers__dynamic_array[version==1], comp_req__containers__intrusive_list[version==1], comp_req__containers__type_safety[version==1], comp_req__containers__non_relocatable_vector[version==1], comp_req__containers__deterministic_behavior[version==1]
+   :fulfils: comp_req__containers__dynamic_array[version==1], comp_req__containers__intrusive_list[version==1], comp_req__containers__non_relocatable_vector[version==1], comp_req__containers__deterministic_behavior[version==1]
    :belongs_to: comp__baselibs_containers[version==1]
 
    .. needarch::
