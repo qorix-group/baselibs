@@ -285,9 +285,10 @@ TYPED_TEST(DynamicArrayTestFixture, MoveAssignNonTrivial)
     this->RecordProperty("PartiallyVerifies", "comp_req__containers__dynamic_array");
     this->RecordProperty("TestType", "requirements-based");
     this->RecordProperty("DerivationTechnique", "equivalence-classes");
-    this->RecordProperty("Description",
-                         "Check that move-assignment of non-trivial elements transfers values and destroys only the "
-                         "previously held elements exactly once.");
+    this->RecordProperty(
+        "Description",
+        "Check that move-assignment transfers non-trivial element values without invoking destructors during "
+        "assignment and that all source and target elements are destroyed when both arrays leave scope.");
 
     auto non_trivial_type_alloc = this->template getTypeSpecificAllocator<NonMoveableAndCopyableElementType>();
     const std::size_t array_size1{10U};

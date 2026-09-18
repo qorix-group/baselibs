@@ -208,7 +208,7 @@ TYPED_TEST(NonRelocatableVectorNonMoveableAndCopyableElementTypeFixture, Emplace
 TYPED_TEST(NonRelocatableVectorFixture, CallingEmplaceBackMoreTimesThanWereReservedTerminates)
 {
     this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
-    this->RecordProperty("TestType", "fault-injection");
+    this->RecordProperty("TestType", "requirements-based");
     this->RecordProperty("DerivationTechnique", "boundary-values");
     this->RecordProperty("Description",
                          "Check that calling emplace_back() more times than the vector's reserved capacity "
