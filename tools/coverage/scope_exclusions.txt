@@ -34,7 +34,6 @@
 //score/result/rust:result_example_cpp  # C++ side of the example
 
 # --- deprecated shims (replacements are in scope) ---
-//score/memory:string_literal  # deprecated; use //score/string_manipulation:string_literal (in scope)
 //score/memory/shared:atomic_interface  # deprecated; use //score/concurrency:atomic_interface (in scope)
 
 # --- restricted / platform-limited ---
