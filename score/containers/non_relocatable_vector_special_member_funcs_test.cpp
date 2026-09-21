@@ -454,6 +454,13 @@ TYPED_TEST(NonRelocatableVectorTrivialFixture, MoveConstructingMovesAllElements)
 
 TYPED_TEST(NonRelocatableVectorTrivialFixture, MoveConstructingLeavesSourceWithZeroSizeAndCapacity)
 {
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty(
+        "Description",
+        "Check that move-constructing from a NonRelocatableVector leaves the source with zero size and capacity.");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "requirements-analysis");
+
     // Given a NonRelocatableVector which has been filled with elements
     this->GivenANonRelocatableVectorConstructedWithNumberOfElements(kNonZeroNumberElements);
 

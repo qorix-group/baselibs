@@ -81,6 +81,11 @@ class NonRelocatableVectorSpecialMemberFunctionRecorderFixture
 
 TYPED_TEST(NonRelocatableVectorFixture, EmptyIsTrueWhenConstructedWithZeroCapacity)
 {
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty("Description", "Check that empty() returns true for a vector constructed with zero capacity.");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "boundary-values");
+
     // When constructing a NonRelocatableVector with zero capacity
     auto vector = this->MakeVector(0U);
 
@@ -90,6 +95,13 @@ TYPED_TEST(NonRelocatableVectorFixture, EmptyIsTrueWhenConstructedWithZeroCapaci
 
 TYPED_TEST(NonRelocatableVectorFixture, EmptyIsTrueWhenConstructedWithNonZeroCapacity)
 {
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty(
+        "Description",
+        "Check that empty() returns true for a vector constructed with non-zero capacity but no emplaced elements.");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "requirements-analysis");
+
     // When constructing a NonRelocatableVector with a non-zero capacity but no emplaced elements
     auto vector = this->MakeVector(kNonZeroNumberElements);
 
@@ -99,6 +111,11 @@ TYPED_TEST(NonRelocatableVectorFixture, EmptyIsTrueWhenConstructedWithNonZeroCap
 
 TYPED_TEST(NonRelocatableVectorFixture, EmptyIsFalseAfterEmplaceBack)
 {
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty("Description", "Check that empty() returns false after an element has been emplaced.");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "requirements-analysis");
+
     auto vector = this->MakeVector(kNonZeroNumberElements);
 
     // When emplacing an element
@@ -110,6 +127,12 @@ TYPED_TEST(NonRelocatableVectorFixture, EmptyIsFalseAfterEmplaceBack)
 
 TYPED_TEST(NonRelocatableVectorFixture, EmptyIsTrueAgainAfterPopBackEmptiesSingleElementVector)
 {
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty("Description",
+                         "Check that empty() returns true again after pop_back() removes the only element.");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "boundary-values");
+
     auto vector = this->MakeVector(1U);
     score::cpp::ignore = vector.emplace_back();
 
@@ -122,6 +145,11 @@ TYPED_TEST(NonRelocatableVectorFixture, EmptyIsTrueAgainAfterPopBackEmptiesSingl
 
 TYPED_TEST(NonRelocatableVectorFixture, PopBackDecrementsSize)
 {
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty("Description", "Check that pop_back() reduces size() by one.");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "requirements-analysis");
+
     auto vector = this->MakeVector(kNonZeroNumberElements);
     for (std::size_t i = 0; i < kNonZeroNumberElements; ++i)
     {
@@ -137,6 +165,11 @@ TYPED_TEST(NonRelocatableVectorFixture, PopBackDecrementsSize)
 
 TYPED_TEST(NonRelocatableVectorTrivialFixture, PopBackLeavesRemainingElementsUnchanged)
 {
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty("Description", "Check that pop_back() does not alter the values of the remaining elements.");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "requirements-analysis");
+
     auto vector = this->MakeVector(kNonZeroNumberElements);
     for (std::size_t i = 0; i < kNonZeroNumberElements; ++i)
     {
@@ -155,6 +188,11 @@ TYPED_TEST(NonRelocatableVectorTrivialFixture, PopBackLeavesRemainingElementsUnc
 
 TEST_F(NonRelocatableVectorSpecialMemberFunctionRecorderFixture, PopBackDestroysRemovedElement)
 {
+    RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    RecordProperty("Description", "Check that pop_back() calls the destructor of the removed element exactly once.");
+    RecordProperty("TestType", "requirements-based");
+    RecordProperty("DerivationTechnique", "requirements-analysis");
+
     auto vector = this->MakeVector(kNonZeroNumberElements);
     for (std::size_t i = 0; i < kNonZeroNumberElements; ++i)
     {
@@ -170,6 +208,11 @@ TEST_F(NonRelocatableVectorSpecialMemberFunctionRecorderFixture, PopBackDestroys
 
 TYPED_TEST(NonRelocatableVectorFixture, PopBackOnEmptyVectorTerminates)
 {
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty("Description", "Check that pop_back() on an empty vector terminates the program.");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "error-guessing");
+
     auto vector = this->MakeVector(kNonZeroNumberElements);
 
     // When calling pop_back on an empty vector
@@ -179,6 +222,11 @@ TYPED_TEST(NonRelocatableVectorFixture, PopBackOnEmptyVectorTerminates)
 
 TYPED_TEST(NonRelocatableVectorFixture, PopBackDoesNotChangeCapacity)
 {
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty("Description", "Check that pop_back() does not change capacity().");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "requirements-analysis");
+
     auto vector = this->MakeVector(kNonZeroNumberElements);
     for (std::size_t i = 0; i < kNonZeroNumberElements; ++i)
     {
@@ -194,6 +242,11 @@ TYPED_TEST(NonRelocatableVectorFixture, PopBackDoesNotChangeCapacity)
 
 TYPED_TEST(NonRelocatableVectorPolymorphicAllocatorFixture, PopBackDoesNotDeallocateOrAllocateMemory)
 {
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty("Description", "Check that pop_back() does not allocate or deallocate memory.");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "requirements-analysis");
+
     auto vector = this->MakeVector(kNonZeroNumberElements);
     for (std::size_t i = 0; i < kNonZeroNumberElements; ++i)
     {
@@ -211,6 +264,12 @@ TYPED_TEST(NonRelocatableVectorPolymorphicAllocatorFixture, PopBackDoesNotDeallo
 
 TYPED_TEST(NonRelocatableVectorFixture, EmplaceBackAfterPopBackReusesFreedSlot)
 {
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty(
+        "Description", "Check that emplace_back() can reuse the slot pop_back() freed, up to the original capacity().");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "requirements-analysis");
+
     auto vector = this->MakeVector(kNonZeroNumberElements);
     for (std::size_t i = 0; i < kNonZeroNumberElements; ++i)
     {
@@ -227,6 +286,13 @@ TYPED_TEST(NonRelocatableVectorFixture, EmplaceBackAfterPopBackReusesFreedSlot)
 
 TYPED_TEST(NonRelocatableVectorFixture, PoppingAllElementsOneByOneEmptiesTheVector)
 {
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty(
+        "Description",
+        "Check that repeatedly calling pop_back() empties a multi-element vector one element at a time.");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "boundary-values");
+
     auto vector = this->MakeVector(kNonZeroNumberElements);
     for (std::size_t i = 0; i < kNonZeroNumberElements; ++i)
     {
@@ -250,6 +316,11 @@ TYPED_TEST(NonRelocatableVectorFixture, PoppingAllElementsOneByOneEmptiesTheVect
 
 TYPED_TEST(NonRelocatableVectorFixture, ClearSetsSizeToZero)
 {
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty("Description", "Check that clear() reduces size() to zero.");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "requirements-analysis");
+
     auto vector = this->MakeVector(kNonZeroNumberElements);
     for (std::size_t i = 0; i < kNonZeroNumberElements; ++i)
     {
@@ -266,6 +337,11 @@ TYPED_TEST(NonRelocatableVectorFixture, ClearSetsSizeToZero)
 
 TEST_F(NonRelocatableVectorSpecialMemberFunctionRecorderFixture, ClearDestroysAllElements)
 {
+    RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    RecordProperty("Description", "Check that clear() calls the destructor of every element exactly once.");
+    RecordProperty("TestType", "requirements-based");
+    RecordProperty("DerivationTechnique", "requirements-analysis");
+
     auto vector = this->MakeVector(kNonZeroNumberElements);
     for (std::size_t i = 0; i < kNonZeroNumberElements; ++i)
     {
@@ -281,6 +357,12 @@ TEST_F(NonRelocatableVectorSpecialMemberFunctionRecorderFixture, ClearDestroysAl
 
 TEST_F(NonRelocatableVectorSpecialMemberFunctionRecorderFixture, ClearOnEmptyVectorIsANoOp)
 {
+    RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    RecordProperty("Description",
+                   "Check that calling clear() on an already-empty vector performs no further destructor calls.");
+    RecordProperty("TestType", "requirements-based");
+    RecordProperty("DerivationTechnique", "boundary-values");
+
     auto vector = this->MakeVector(kNonZeroNumberElements);
     for (std::size_t i = 0; i < kNonZeroNumberElements; ++i)
     {
@@ -299,6 +381,11 @@ TEST_F(NonRelocatableVectorSpecialMemberFunctionRecorderFixture, ClearOnEmptyVec
 
 TYPED_TEST(NonRelocatableVectorFixture, ClearDoesNotChangeCapacity)
 {
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty("Description", "Check that clear() does not change capacity().");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "requirements-analysis");
+
     auto vector = this->MakeVector(kNonZeroNumberElements);
     for (std::size_t i = 0; i < kNonZeroNumberElements; ++i)
     {
@@ -314,6 +401,11 @@ TYPED_TEST(NonRelocatableVectorFixture, ClearDoesNotChangeCapacity)
 
 TYPED_TEST(NonRelocatableVectorPolymorphicAllocatorFixture, ClearDoesNotDeallocateOrAllocateMemory)
 {
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty("Description", "Check that clear() does not allocate or deallocate memory.");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "requirements-analysis");
+
     auto vector = this->MakeVector(kNonZeroNumberElements);
     for (std::size_t i = 0; i < kNonZeroNumberElements; ++i)
     {
@@ -331,6 +423,12 @@ TYPED_TEST(NonRelocatableVectorPolymorphicAllocatorFixture, ClearDoesNotDealloca
 
 TYPED_TEST(NonRelocatableVectorFixture, EmplaceBackAfterClearRefillsUpToCapacity)
 {
+    this->RecordProperty("PartiallyVerifies", "comp_req__containers__non_relocatable_vector");
+    this->RecordProperty("Description",
+                         "Check that emplace_back() can refill a cleared vector up to its original capacity().");
+    this->RecordProperty("TestType", "requirements-based");
+    this->RecordProperty("DerivationTechnique", "requirements-analysis");
+
     auto vector = this->MakeVector(kNonZeroNumberElements);
     for (std::size_t i = 0; i < kNonZeroNumberElements; ++i)
     {
