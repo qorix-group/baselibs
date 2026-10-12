@@ -46,7 +46,7 @@ SCOPE_DEPS_COMMON = [
     "//score/hash/code/core/factory/impl:factory_headers",
     "//score/hash/code/crc:mocks",
     # Parser/writer-facing interface: not reachable from the impl libs
-    # under the default base_library select; has a coverage grant.
+    # directly; has a coverage grant.
     "//score/json:interface",
     "//score/json:json_serializer",
     "//score/json/internal/parser/vajson:vajson_parser",
