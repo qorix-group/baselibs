@@ -22,7 +22,7 @@ Requirements
    :safety: ASIL_B
    :security: YES
    :realizes: wp__requirements_comp[version==1]
-   :tags: requirements, result_library
+   :tags: requirements, result_lib
 
 Functional Requirements
 =======================
@@ -100,6 +100,7 @@ Functional Requirements
    :derived_from: feat_req__baselibs__result_library[version==2]
    :status: valid
    :version: 1
+   :tags: inspected
    :satisfied_by: comp__baselibs_result[version==1]
 
    The Result library shall provide conversion utilities to transform Result objects into score::cpp::expected objects with the same value and error types and vice versa, and to transform a Result object's value into a score::cpp::optional<T>. The conversion to score::cpp::optional<T> shall require explicit handling of error cases before discarding error information, ensuring that errors cannot be silently ignored.
