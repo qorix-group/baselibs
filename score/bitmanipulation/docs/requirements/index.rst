@@ -52,6 +52,7 @@ Functional Requirements
    :status: valid
    :version: 2
    :satisfied_by: comp__baselibs_bit_manipulation[version==1]
+   :tags: inspected
 
    The bit manipulation component shall provide byte and half-byte types, with a byte composable from and decomposable into two half-bytes.
 
@@ -64,6 +65,7 @@ Functional Requirements
    :status: valid
    :version: 1
    :satisfied_by: comp__baselibs_bit_manipulation[version==1]
+   :tags: inspected
 
    The bit manipulation component shall provide an API to extract the byte at a given position from any integral type up to 64 bits.
 

@@ -16,7 +16,7 @@
 .. document:: Result Library Requirements Inspection Checklist
    :id: doc__result_library_req_inspection
    :status: valid
-   :version: 1
+   :version: 2
    :safety: ASIL_B
    :security: YES
    :realizes: wp__requirements_inspect[version==1]
@@ -32,7 +32,7 @@ Requirement Inspection Checklist
 
    As described in the concept :need:`doc_concept__wp_inspections` the following "inspection roles" are expected to be filled:
 
-   - author: `<https://github.com/4og>`_
+   - author: `<https://github.com/4og>`_, `<https://github.com/Nikhil2206>`_
    - reviewer: `<https://github.com/aschemmel-tech>`_
    - moderator: only needed for conflict resolution between author and reviewers, is the safety manager, security manager or quality manager called in as a reviewer (can be derived from version mgt tool)
    - test expert: `<https://github.com/rahulthakre29>`_
@@ -157,10 +157,10 @@ Note: If a Review ID is not applicable for your requirement, then state "n/a" in
 The following requirements in "valid" state and with "inspected" tag set are in the scope of this inspection:
 
 .. needtable::
-   :filter: docname is not None and "result" in docname and "requirements" in docname and status == "valid"
+   :filter: "result" in docname and "requirements" in docname and docname is not None and status == "valid"
    :style: table
    :types: comp_req
-   :tags: result_library
+   :tags: result_lib
    :columns: id;status;tags
    :colwidths: 25,25,25
    :sort: title
@@ -170,10 +170,10 @@ And also the following AoUs in "valid" state and with "inspected" tag set (for t
 the questions above as if the AoUs are requirements, except questions REQ_03_01 and REQ_03_02):
 
 .. needtable::
-   :filter: docname is not None and "result" in docname and "requirements" in docname and status == "valid"
+   :filter: "result" in docname and "requirements" in docname and docname is not None and status == "valid"
    :style: table
    :types: aou_req
-   :tags: result_library
+   :tags: result_lib
    :columns: id;status;tags
    :colwidths: 25,25,25
    :sort: title
